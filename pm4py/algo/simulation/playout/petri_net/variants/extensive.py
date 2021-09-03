@@ -1,18 +1,16 @@
 import datetime
+import sys
 from collections import Counter
 from enum import Enum
+from typing import Optional, Dict, Any, Union
 
+from pm4py.objects import petri_net
 from pm4py.objects.log import obj as log_instance
-from pm4py.objects.petri_net import semantics
-from pm4py.objects.petri_net.obj import PetriNet
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants
-import sys
-
-from pm4py.objects.petri_net.obj import PetriNet, Marking
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
 
 
 class Parameters(Enum):
@@ -22,6 +20,7 @@ class Parameters(Enum):
     MAX_TRACE_LENGTH = "maxTraceLength"
     RETURN_ELEMENTS = "return_elements"
     MAX_MARKING_OCC = "max_marking_occ"
+    PETRI_SEMANTICS = "petri_semantics"
 
 
 POSITION_MARKING = 0
@@ -29,7 +28,8 @@ POSITION_TRACE = 1
 POSITION_ELEMENTS = 2
 
 
-def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking = None, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
+def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking = None,
+          parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Do the playout of a Petrinet generating a log (extensive search; stop at the maximum
     trace length specified
@@ -45,6 +45,7 @@ def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking = None
     parameters
         Parameters of the algorithm:
             Parameters.MAX_TRACE_LENGTH -> Maximum trace length
+            Parameters.PETRI_SEMANTICS -> Petri net semantics
     """
     if parameters is None:
         parameters = {}
@@ -56,6 +57,7 @@ def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking = None
     max_trace_length = exec_utils.get_param_value(Parameters.MAX_TRACE_LENGTH, parameters, 10)
     return_elements = exec_utils.get_param_value(Parameters.RETURN_ELEMENTS, parameters, False)
     max_marking_occ = exec_utils.get_param_value(Parameters.MAX_MARKING_OCC, parameters, sys.maxsize)
+    semantics = exec_utils.get_param_value(Parameters.PETRI_SEMANTICS, parameters, petri_net.semantics.ClassicSemantics())
 
     # assigns to each event an increased timestamp from 1970
     curr_timestamp = 10000000
@@ -91,7 +93,7 @@ def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking = None
             if counter_elements[m] > max_marking_occ:
                 continue
 
-            new_m = semantics.weak_execute(t, m)
+            new_m = semantics.weak_execute(t, net, m)
             if t.label is not None:
                 new_trace = trace + (t.label,)
             else:
