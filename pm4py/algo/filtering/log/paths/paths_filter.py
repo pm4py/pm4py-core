@@ -21,8 +21,9 @@ from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes
-from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
 import deprecation
+import sys
 
 from typing import Optional, Dict, Any, Union, Tuple, List
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
@@ -32,6 +33,9 @@ class Parameters(Enum):
     ATTRIBUTE_KEY = PARAMETER_CONSTANT_ATTRIBUTE_KEY
     DECREASING_FACTOR = "decreasingFactor"
     POSITIVE = "positive"
+    TIMESTAMP_KEY = PARAMETER_CONSTANT_TIMESTAMP_KEY
+    MIN_PERFORMANCE = "min_performance"
+    MAX_PERFORMANCE = "max_performance"
 
 
 def apply(log: EventLog, paths: List[Tuple[str, str]], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
@@ -67,6 +71,53 @@ def apply(log: EventLog, paths: List[Tuple[str, str]], parameters: Optional[Dict
             if path in paths:
                 found = True
                 break
+        if (found and positive) or (not found and not positive):
+            filtered_log.append(trace)
+    return filtered_log
+
+
+def apply_performance(log: EventLog, provided_path: Tuple[str, str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
+    """
+    Filters the cases of an event log where there is at least one occurrence of the provided path
+    occurring in the defined timedelta range.
+
+    Parameters
+    ----------------
+    log
+        Event log
+    provided_path
+        Path between two activities (expressed as tuple)
+    parameters
+        Parameters of the filter, including:
+            Parameters.ATTRIBUTE_KEY -> Attribute identifying the activity in the log
+            Parameters.TIMESTAMP_KEY -> Attribute identifying the timestamp in the log
+            Parameters.POSITIVE -> Indicate if events should be kept/removed
+            Parameters.MIN_PERFORMANCE -> Minimal allowed performance of the provided path
+            Parameters.MAX_PERFORMANCE -> Maximal allowed performance of the provided path
+
+    Returns
+    ----------------
+    filtered_log
+        Filtered event log
+    """
+    if parameters is None:
+        parameters = {}
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
+    min_performance = exec_utils.get_param_value(Parameters.MIN_PERFORMANCE, parameters, 0)
+    max_performance = exec_utils.get_param_value(Parameters.MAX_PERFORMANCE, parameters, sys.maxsize)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
+    filtered_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
+                            omni_present=log.omni_present, properties=log.properties)
+    for trace in log:
+        found = False
+        for i in range(len(trace) - 1):
+            path = (trace[i][attribute_key], trace[i + 1][attribute_key])
+            if path == provided_path:
+                timediff = trace[i + 1][timestamp_key].timestamp() - trace[i][timestamp_key].timestamp()
+                if min_performance <= timediff <= max_performance:
+                    found = True
+                    break
         if (found and positive) or (not found and not positive):
             filtered_log.append(trace)
     return filtered_log

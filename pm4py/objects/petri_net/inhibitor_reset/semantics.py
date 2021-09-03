@@ -16,23 +16,79 @@
 '''
 import copy
 from pm4py.objects.petri_net import properties
+from pm4py.objects.petri_net.sem_interface import Semantics
 
 
+class InhibitorResetSemantics(Semantics):
+    def is_enabled(self, t, pn, m, **kwargs):
+        """
+        Verifies whether a given transition is enabled in a given Petri net and marking
+
+        Parameters
+        ----------
+        :param t: transition to check
+        :param pn: Petri net
+        :param m: marking to check
+
+        Returns
+        -------
+        :return: true if enabled, false otherwise
+        """
+        return is_enabled(t, pn, m)
+
+    def execute(self, t, pn, m, **kwargs):
+        """
+        Executes a given transition in a given Petri net and Marking
+
+        Parameters
+        ----------
+        :param t: transition to execute
+        :param pn: Petri net
+        :param m: marking to use
+
+        Returns
+        -------
+        :return: newly reached marking if :param t: is enabled, None otherwise
+        """
+        return execute(t, pn, m)
+
+    def weak_execute(self, t, pn, m, **kwargs):
+        """
+        Execute a transition even if it is not fully enabled
+
+        Parameters
+        ----------
+        :param t: transition to execute
+        :param pn: Petri net
+        :param m: marking to use
+
+        Returns
+        -------
+        :return: newly reached marking if :param t: is enabled, None otherwise
+        """
+        return weak_execute(t, m)
+
+    def enabled_transitions(self, pn, m, **kwargs):
+        """
+        Returns a set of enabled transitions in a Petri net and given marking
+
+        Parameters
+        ----------
+        :param pn: Petri net
+        :param m: marking of the pn
+
+        Returns
+        -------
+        :return: set of enabled transitions
+        """
+        return enabled_transitions(pn, m)
+
+
+# 29/08/2021: the following methods have been incapsulated in the InhibitorResetSemantics class.
+# the long term idea is to remove them. However, first we need to adapt the existing code to the new
+# structure. Moreover, for performance reason, it is better to leave the code here, without having
+# to instantiate a InhibitorResetSemantics object.
 def is_enabled(t, pn, m):
-    """
-    Verifies whether a given transition is enabled in a given Petri net and marking
-
-    Parameters
-    ----------
-    :param t: transition to check
-    :param pn: Petri net
-    :param m: marking to check
-
-    Returns
-    -------
-    :return: true if enabled, false otherwise
-    """
-
     if t not in pn.transitions:
         return False
     else:
@@ -48,20 +104,6 @@ def is_enabled(t, pn, m):
 
 
 def execute(t, pn, m):
-    """
-    Executes a given transition in a given Petri net and Marking
-
-    Parameters
-    ----------
-    :param t: transition to execute
-    :param pn: Petri net
-    :param m: marking to use
-
-    Returns
-    -------
-    :return: newly reached marking if :param t: is enabled, None otherwise
-    """
-
     if not is_enabled(t, pn, m):
         return None
 
@@ -83,27 +125,7 @@ def execute(t, pn, m):
     return m_out
 
 
-def try_to_execute(t, pn, m):
-    if not is_enabled(t, pn, m):
-        return None
-    else:
-        return execute(t, pn, m)
-
-
 def weak_execute(t, m):
-    """
-    Execute a transition even if it is not fully enabled
-
-    Parameters
-    ----------
-    :param t: transition to execute
-    :param m: marking to use
-
-    Returns
-    -------
-    :return: newly reached marking if :param t: is enabled, None otherwise
-    """
-
     m_out = copy.copy(m)
     for a in t.in_arcs:
         if properties.ARCTYPE in a.properties and a.properties[properties.ARCTYPE] == properties.RESET_ARC:
@@ -121,18 +143,6 @@ def weak_execute(t, m):
 
 
 def enabled_transitions(pn, m):
-    """
-    Returns a set of enabled transitions in a Petri net and given marking
-
-    Parameters
-    ----------
-    :param pn: Petri net
-    :param m: marking of the pn
-
-    Returns
-    -------
-    :return: set of enabled transitions
-    """
     enabled = set()
     for t in pn.transitions:
         if is_enabled(t, pn, m):

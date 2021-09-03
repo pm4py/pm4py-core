@@ -14,4 +14,15 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.streaming import algo, stream, importer, util, conversion
+class Semantics(object):
+    def is_enabled(self, t, pn, m, **kwargs):
+        pass
+
+    def execute(self, t, pn, m, **kwargs):
+        pass
+
+    def weak_execute(self, t, pn, m, **kwargs):
+        pass
+
+    def enabled_transitions(self, pn, m, **kwargs):
+        pass
