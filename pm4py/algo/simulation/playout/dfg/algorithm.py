@@ -1,4 +1,4 @@
-from pm4py.algo.simulation.playout.dfg.variants import classic
+from pm4py.algo.simulation.playout.dfg.variants import classic, performance
 from enum import Enum
 from pm4py.util import exec_utils
 from typing import Optional, Dict, Any, Union, Tuple
@@ -7,6 +7,7 @@ from pm4py.objects.log.obj import EventLog, EventStream
 
 class Variants(Enum):
     CLASSIC = classic
+    PERFORMANCE = performance
 
 
 def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end_activities: Dict[str, int], variant=Variants.CLASSIC, parameters: Optional[Dict[Any, Any]] = None) -> Union[EventLog, Dict[Tuple[str, str], int]]:
@@ -24,6 +25,7 @@ def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end
     variant
         Variant of the playout to be used, possible values:
         - Variants.CLASSIC
+        - Variants.PERFORMANCE
     parameters
         Parameters of the algorithm
 
