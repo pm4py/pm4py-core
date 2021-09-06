@@ -8,6 +8,7 @@ libraries are added/removed.
 | --------------------------- | ------------------------------------------------------------ | --------------------------- | ------------------- |
 | backcall | https://pypi.org/project/backcall | BSD License | 0.2.0 |
 | colorama | https://pypi.org/project/colorama | BSD License (BSD) | 0.4.4 |
+| cvxopt | https://pypi.org/project/cvxopt | GNU General Public License v3 (GPLv3) (GNU GPL version 3) | 1.2.6 |
 | cycler | https://pypi.org/project/cycler | BSD | 0.10.0 |
 | decorator | https://pypi.org/project/decorator | BSD License (new BSD License) | 5.0.9 |
 | deprecation | https://pypi.org/project/deprecation | Apache Software License (Apache 2) | 2.1.0 |
