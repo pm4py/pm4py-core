@@ -3,7 +3,6 @@ from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.algo.analysis.marking_equation import algorithm as marking_equation
 from pm4py.algo.analysis.extended_marking_equation import algorithm as extended_marking_equation
 import os
-#import pm4pycvxopt
 
 
 def execute_script():

@@ -4,6 +4,48 @@ import sys
 import traceback
 
 
+def enrich_log_with_align():
+    from examples import enrich_log_with_align
+    print("\n\nenrich_log_with_align")
+    enrich_log_with_align.execute_script()
+
+
+def extended_marking_equation():
+    from examples import extended_marking_equation
+    print("\n\nextended_marking_equation")
+    extended_marking_equation.execute_script()
+
+
+def features_locally_linear_embedding():
+    from examples import features_locally_linear_embedding
+    print("\n\nfeatures_locally_linear_embedding")
+    features_locally_linear_embedding.execute_script()
+
+
+def discovery_data_petri_net():
+    from examples import discovery_data_petri_net
+    print("\n\ndiscovery_data_petri_net")
+    discovery_data_petri_net.execute_script()
+
+
+def pandas_iterable():
+    from examples import pandas_iterable
+    print("\n\npandas_iterable")
+    pandas_iterable.execute_script()
+
+
+def pandas_iterable_to_trace_stream():
+    from examples import pandas_iterable_to_trace_stream
+    print("\n\npandas_iterable_to_trace_stream")
+    pandas_iterable_to_trace_stream.execute_script()
+
+
+def performance_dfg_simulation():
+    from examples import performance_dfg_simulation
+    print("\n\nperformance_dfg_simulation")
+    performance_dfg_simulation.execute_script()
+
+
 def data_petri_nets():
     from examples import data_petri_nets
     print("\n\ndata_petri_nets")
@@ -417,6 +459,12 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(enrich_log_with_align)
+    execute_script(extended_marking_equation)
+    execute_script(features_locally_linear_embedding)
+    execute_script(discovery_data_petri_net)
+    execute_script(pandas_iterable)
+    execute_script(pandas_iterable_to_trace_stream)
     execute_script(data_petri_nets)
     execute_script(inhibitor_reset_arcs)
     execute_script(dotted_chart)
