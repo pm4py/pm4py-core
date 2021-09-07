@@ -82,6 +82,7 @@ def _construct_result_dictionary(state: SGASearchState, variant: List[str]):
         current_state = current_state.parent
     result['alignment'] = list(reversed(alignment))
     result['optimal'] = True
+    result['state'] = state
     return result
 
 
