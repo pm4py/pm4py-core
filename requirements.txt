@@ -1,6 +1,6 @@
 backcall
 colorama
-cvxopt
+cvxopt; python_version < "3.10"
 cycler
 decorator
 deprecation
