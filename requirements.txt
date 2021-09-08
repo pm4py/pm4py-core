@@ -6,7 +6,6 @@ deprecation
 graphviz
 intervaltree
 ipython
-ipython-genutils
 jedi
 jinja2
 joblib
