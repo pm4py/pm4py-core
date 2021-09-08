@@ -1,7 +1,7 @@
 # PM4Py Third Party Dependencies
 
-PM4Py depends on third party libraries to implement some functionality. This document describes which libraries 
-PM4Py depends upon. This is a best effort attempt to describe the library's dependencies, it is subject to change as 
+PM4Py depends on third party libraries to implement some functionality. This document describes which libraries
+PM4Py depends upon. This is a best effort attempt to describe the library's dependencies, it is subject to change as
 libraries are added/removed.
 
 | Name | URL | License | Version |
@@ -23,7 +23,7 @@ libraries are added/removed.
 | lxml | https://pypi.org/project/lxml | BSD License (BSD) | 4.6.3 |
 | MarkupSafe | https://pypi.org/project/MarkupSafe | BSD License (BSD-3-Clause) | 2.0.1 |
 | matplotlib | https://pypi.org/project/matplotlib | Python Software Foundation License (PSF) | 3.5.0b1 |
-| matplotlib-inline | https://pypi.org/project/matplotlib-inline | BSD 3-Clause | 0.1.2 |
+| matplotlib-inline | https://pypi.org/project/matplotlib-inline | BSD 3-Clause | 0.1.3 |
 | mpmath | https://pypi.org/project/mpmath | BSD License (BSD) | 1.2.1 |
 | networkx | https://pypi.org/project/networkx | BSD License | 2.6.2 |
 | numpy | https://pypi.org/project/numpy | BSD License (BSD) | 1.21.2 |
@@ -33,16 +33,16 @@ libraries are added/removed.
 | pickleshare | https://pypi.org/project/pickleshare | MIT License (MIT) | 0.7.5 |
 | pillow | https://pypi.org/project/pillow | Historical Permission Notice and Disclaimer (HPND) (HPND) | 8.3.2 |
 | prompt-toolkit | https://pypi.org/project/prompt-toolkit | BSD License | 3.0.20 |
-| pulp | https://pypi.org/project/pulp | BSD License | 2.5.0 |
+| pulp | https://pypi.org/project/pulp | BSD License | 2.1 |
 | pydotplus | https://pypi.org/project/pydotplus | MIT License (UNKNOWN) | 2.0.2 |
 | pygments | https://pypi.org/project/pygments | BSD License (BSD License) | 2.10.0 |
 | pyparsing | https://pypi.org/project/pyparsing | MIT License (MIT License) | 3.0.0b3 |
 | python-dateutil | https://pypi.org/project/python-dateutil | Apache Software License, BSD License (Dual License) | 2.8.2 |
 | pytz | https://pypi.org/project/pytz | MIT License (MIT) | 2021.1 |
 | pyvis | https://pypi.org/project/pyvis | BSD | 0.1.9 |
-| scikit-learn | https://pypi.org/project/scikit-learn | OSI Approved (new BSD) | 0.24.2 |
+| scikit-learn | https://pypi.org/project/scikit-learn | OSI Approved (new BSD) | 1.0rc1 |
 | scipy | https://pypi.org/project/scipy | BSD License (BSD) | 1.7.1 |
-| setuptools | https://pypi.org/project/setuptools | MIT License | 58.0.0 |
+| setuptools | https://pypi.org/project/setuptools | MIT License | 58.0.3 |
 | six | https://pypi.org/project/six | MIT License (MIT) | 1.16.0 |
 | sortedcontainers | https://pypi.org/project/sortedcontainers | Apache Software License (Apache 2.0) | 2.4.0 |
 | stringdist | https://pypi.org/project/stringdist | MIT License (MIT) | 1.0.9 |
