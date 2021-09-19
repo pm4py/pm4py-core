@@ -83,9 +83,7 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=No
 
     best_worst = apply(trace, petri_net, initial_marking, final_marking, parameters=parameters)
 
-    if best_worst['cost'] > 0:
-        return best_worst['cost'] // utils.STD_MODEL_LOG_MOVE_COST
-    return 0
+    return best_worst['cost']
 
 
 def apply(trace: Trace, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> typing.AlignmentResult:
@@ -114,7 +112,6 @@ def apply(trace: Trace, petri_net: PetriNet, initial_marking: Marking, final_mar
     if parameters is None:
         parameters = {}
 
-    parameters = copy(parameters)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
     trace_cost_function = exec_utils.get_param_value(Parameters.PARAM_TRACE_COST_FUNCTION, parameters, None)
     model_cost_function = exec_utils.get_param_value(Parameters.PARAM_MODEL_COST_FUNCTION, parameters, None)

@@ -39,8 +39,10 @@ def execute_script():
         else:
             model_cost_function[t] = 1
 
-    alignments = ali.petri_net.algorithm.apply(log, net, marking, fmarking)
-    print(alignments)
+    alignments = []
+    for trace in log:
+        alignments.append(align(trace, net, marking, fmarking, model_cost_function, sync_cost_function))
+
     pretty_print_alignments(alignments)
 
 
