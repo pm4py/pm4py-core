@@ -157,7 +157,7 @@ def apply_numeric_events(log: EventLog, int1: float, int2: float, parameters: Op
             list(filter(lambda x: attribute_key in x and (x[attribute_key] < int1 or x[attribute_key] > int2), stream)),
             attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
             omni_present=log.omni_present, properties=log.properties)
-    filtered_log = log_converter.apply(stream)
+    filtered_log = log_converter.apply(stream, parameters)
 
     return filtered_log
 
@@ -201,7 +201,7 @@ def apply_events(log: EventLog, values: List[str], parameters: Optional[Dict[Uni
                              extensions=log.extensions, classifiers=log.classifiers,
                              omni_present=log.omni_present, properties=log.properties)
 
-    filtered_log = log_converter.apply(stream)
+    filtered_log = log_converter.apply(stream, parameters)
 
     return filtered_log
 
