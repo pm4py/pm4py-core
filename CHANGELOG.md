@@ -26,7 +26,12 @@
 ### Added
 
 ### Other
-
+* d58d34fd
+  * Upgraded Dockerfile to Python 3.9
+* 50114175
+  * Resolved issue with the upcoming Python 3.10 release
+* 89314905
+  * Security issue in requirements
 
 ## PM4Py 2.2.13 (2021.09.03)
 
