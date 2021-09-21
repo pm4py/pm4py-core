@@ -17,14 +17,16 @@
 import datetime
 import heapq
 import math
+import sys
+import time
 from collections import Counter
 from copy import deepcopy
 from enum import Enum
-
-from pm4py.objects.log.obj import EventLog, Trace, Event
-from pm4py.util import exec_utils, constants, xes_constants
 from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.log.obj import Trace, Event
+from pm4py.util import exec_utils, constants, xes_constants
 
 
 class Parameters(Enum):
@@ -36,6 +38,7 @@ class Parameters(Enum):
     INTERRUPT_SIMULATION_WHEN_DFG_COMPLETE = "interrupt_simulation_when_dfg_complete"
     ADD_TRACE_IF_TAKES_NEW_ELS_TO_DFG = "add_trace_if_takes_new_els_to_dfg"
     RETURN_VARIANTS = "return_variants"
+    MAX_EXECUTION_TIME = "max_execution_time"
 
 
 def get_node_tr_probabilities(dfg, start_activities, end_activities):
@@ -139,7 +142,9 @@ def get_traces(dfg, start_activities, end_activities, parameters=None):
                     heapq.heappush(partial_traces, (prob - prob_new_act, tuple(trace[1] + [new_act])))
 
 
-def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end_activities: Dict[str, int], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[EventLog, Dict[Tuple[str, str], int]]:
+def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end_activities: Dict[str, int],
+          parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[
+    EventLog, Dict[Tuple[str, str], int]]:
     """
     Applies the playout algorithm on a DFG, extracting the most likely traces according to the DFG
 
@@ -186,6 +191,7 @@ def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end
     add_trace_if_takes_new_els_to_dfg = exec_utils.get_param_value(Parameters.ADD_TRACE_IF_TAKES_NEW_ELS_TO_DFG,
                                                                    parameters, False)
     return_variants = exec_utils.get_param_value(Parameters.RETURN_VARIANTS, parameters, False)
+    max_execution_time = exec_utils.get_param_value(Parameters.MAX_EXECUTION_TIME, parameters, sys.maxsize)
 
     # keep track of the DFG, start activities and end activities of the (ongoing) simulation
     simulated_traces_dfg = set()
@@ -196,9 +202,13 @@ def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end
 
     final_traces = []
 
+    start_time = time.time()
     for tr, p in get_traces(dfg, start_activities, end_activities, parameters=parameters):
         if (interrupt_simulation_when_dfg_complete and interrupt_break_condition) or not (
                 len(final_traces) < max_no_variants and overall_probability <= min_weighted_probability):
+            break
+        current_time = time.time()
+        if (current_time - start_time) > max_execution_time:
             break
         overall_probability += p
         diff_sa = {tr[0]}.difference(simulated_traces_sa)

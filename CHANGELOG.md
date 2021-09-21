@@ -1,5 +1,38 @@
 # PM4Py Changelog
 
+## PM4Py 2.2.13.1
+
+### Fixed
+
+* 816fb4ad
+  * Fixed a bug in the Pandas case size filter (the constraints were not applied correctly).
+* 40f142c4
+  * Fixed a bug in the format_dataframe function (columns were duplicated if already existing with the same name).
+* 00d1a7de
+  * Reverted stream converter to old variant (in a slightly slower but safer way).
+
+### Removed
+
+### Deprecated
+
+### Changed
+* 991a09d4
+  * Introduce a time limit in the DFG playout.
+* ae5d2a07
+  * Return the state of the process tree along with the alignment for the process tree alignments.
+* 8b77384f
+  * Refactoring of the calculation of the fitness for Petri net alignments (scattered code).
+
+### Added
+
+### Other
+* d58d34fd
+  * Upgraded Dockerfile to Python 3.9
+* 50114175
+  * Resolved issue with the upcoming Python 3.10 release
+* 89314905
+  * Security issue in requirements
+
 ## PM4Py 2.2.13 (2021.09.03)
 
 ### Fixed

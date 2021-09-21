@@ -96,9 +96,7 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=No
 
     best_worst = apply(trace, petri_net, initial_marking, final_marking, parameters=parameters)
 
-    if best_worst['cost'] > 0:
-        return best_worst['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST
-    return 0
+    return best_worst['cost']
 
 
 def apply_from_variants_list_petri_string(var_list, petri_net_string, parameters=None):
