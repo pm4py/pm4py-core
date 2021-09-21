@@ -10,7 +10,7 @@ libraries are added/removed.
 | colorama | https://pypi.org/project/colorama | BSD License (BSD) | 0.4.4 |
 | cvxopt | https://pypi.org/project/cvxopt | GNU General Public License v3 (GPLv3) (GNU GPL version 3) | 1.2.6 |
 | cycler | https://pypi.org/project/cycler | BSD | 0.10.0 |
-| decorator | https://pypi.org/project/decorator | BSD License (new BSD License) | 5.0.9 |
+| decorator | https://pypi.org/project/decorator | BSD License (new BSD License) | 5.1.0 |
 | deprecation | https://pypi.org/project/deprecation | Apache Software License (Apache 2) | 2.1.0 |
 | graphviz | https://pypi.org/project/graphviz | MIT License (MIT) | 0.17 |
 | intervaltree | https://pypi.org/project/intervaltree | Apache Software License (Apache License, Version 2.0) | 3.1.0 |
@@ -25,10 +25,10 @@ libraries are added/removed.
 | matplotlib | https://pypi.org/project/matplotlib | Python Software Foundation License (PSF) | 3.5.0b1 |
 | matplotlib-inline | https://pypi.org/project/matplotlib-inline | BSD 3-Clause | 0.1.3 |
 | mpmath | https://pypi.org/project/mpmath | BSD License (BSD) | 1.2.1 |
-| networkx | https://pypi.org/project/networkx | BSD License | 2.6.2 |
+| networkx | https://pypi.org/project/networkx | BSD License | 2.6.3 |
 | numpy | https://pypi.org/project/numpy | BSD License (BSD) | 1.21.2 |
 | packaging | https://pypi.org/project/packaging | Apache Software License, BSD License (BSD-2-Clause or Apache-2.0) | 21.0 |
-| pandas | https://pypi.org/project/pandas | BSD License (BSD-3-Clause) | 1.3.2 |
+| pandas | https://pypi.org/project/pandas | BSD License (BSD-3-Clause) | 1.3.3 |
 | parso | https://pypi.org/project/parso | MIT License (MIT) | 0.8.2 |
 | pickleshare | https://pypi.org/project/pickleshare | MIT License (MIT) | 0.7.5 |
 | pillow | https://pypi.org/project/pillow | Historical Permission Notice and Disclaimer (HPND) (HPND) | 8.3.2 |
@@ -36,13 +36,13 @@ libraries are added/removed.
 | pulp | https://pypi.org/project/pulp | BSD License | 2.1 |
 | pydotplus | https://pypi.org/project/pydotplus | MIT License (UNKNOWN) | 2.0.2 |
 | pygments | https://pypi.org/project/pygments | BSD License (BSD License) | 2.10.0 |
-| pyparsing | https://pypi.org/project/pyparsing | MIT License (MIT License) | 3.0.0b3 |
+| pyparsing | https://pypi.org/project/pyparsing | MIT License (MIT License) | 3.0.0rc1 |
 | python-dateutil | https://pypi.org/project/python-dateutil | Apache Software License, BSD License (Dual License) | 2.8.2 |
 | pytz | https://pypi.org/project/pytz | MIT License (MIT) | 2021.1 |
 | pyvis | https://pypi.org/project/pyvis | BSD | 0.1.9 |
-| scikit-learn | https://pypi.org/project/scikit-learn | OSI Approved (new BSD) | 1.0rc1 |
+| scikit-learn | https://pypi.org/project/scikit-learn | OSI Approved (new BSD) | 1.0rc2 |
 | scipy | https://pypi.org/project/scipy | BSD License (BSD) | 1.7.1 |
-| setuptools | https://pypi.org/project/setuptools | MIT License | 58.0.3 |
+| setuptools | https://pypi.org/project/setuptools | MIT License | 58.0.4 |
 | six | https://pypi.org/project/six | MIT License (MIT) | 1.16.0 |
 | sortedcontainers | https://pypi.org/project/sortedcontainers | Apache Software License (Apache 2.0) | 2.4.0 |
 | stringdist | https://pypi.org/project/stringdist | MIT License (MIT) | 1.0.9 |

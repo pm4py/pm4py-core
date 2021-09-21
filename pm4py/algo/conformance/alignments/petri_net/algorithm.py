@@ -60,6 +60,8 @@ class Parameters(Enum):
     VARIANTS_IDX = "variants_idx"
     SHOW_PROGRESS_BAR = "show_progress_bar"
     CORES = 'cores'
+    BEST_WORST_COST_INTERNAL = "best_worst_cost_internal"
+    FITNESS_ROUND_DIGITS = "fitness_round_digits"
 
 
 DEFAULT_VARIANT = Variants.VERSION_STATE_EQUATION_A_STAR
@@ -116,8 +118,42 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
     """
     if parameters is None:
         parameters = copy({PARAMETER_CONSTANT_ACTIVITY_KEY: DEFAULT_NAME_KEY})
-    return exec_utils.get_variant(variant).apply(trace, petri_net, initial_marking, final_marking,
+
+    parameters = copy(parameters)
+    best_worst_cost = exec_utils.get_param_value(Parameters.BEST_WORST_COST_INTERNAL, parameters,
+                                                 __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters))
+
+    ali = exec_utils.get_variant(variant).apply(trace, petri_net, initial_marking, final_marking,
                                                  parameters=parameters)
+
+    trace_cost_function = exec_utils.get_param_value(Parameters.PARAM_TRACE_COST_FUNCTION, parameters, [])
+    # Instead of using the length of the trace, use the sum of the trace cost function
+    trace_cost_function_sum = sum(trace_cost_function)
+
+    ltrace_bwc = trace_cost_function_sum + best_worst_cost
+
+    fitness = 1 - (ali['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST) / (
+                ltrace_bwc // align_utils.STD_MODEL_LOG_MOVE_COST) if ltrace_bwc > 0 else 0
+
+    # other possibility: avoid integer division but proceed to rounding.
+    # could lead to small differences with respect to the adopted-since-now fitness
+    # (since it is rounded)
+
+    """
+    initial_trace_cost_function = exec_utils.get_param_value(Parameters.PARAM_TRACE_COST_FUNCTION, parameters, None)
+    initial_model_cost_function = exec_utils.get_param_value(Parameters.PARAM_MODEL_COST_FUNCTION, parameters, None)
+    initial_sync_cost_function = exec_utils.get_param_value(Parameters.PARAM_SYNC_COST_FUNCTION, parameters, None)
+    uses_standard_cost_function = initial_trace_cost_function is None and initial_model_cost_function is None and \
+                                initial_sync_cost_function is None
+        
+    fitness = 1 - ali['cost'] / ltrace_bwc if ltrace_bwc > 0 else 0
+    fitness_round_digits = exec_utils.get_param_value(Parameters.FITNESS_ROUND_DIGITS, parameters, 3)
+    fitness = round(fitness, fitness_round_digits)
+    """
+
+    ali["fitness"] = fitness
+
+    return ali
 
 
 def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, variant=DEFAULT_VARIANT):
@@ -161,6 +197,7 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     best_worst_cost = __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters)
     variants_idxs, one_tr_per_var = __get_variants_structure(log, parameters)
     progress = __get_progress_bar(len(one_tr_per_var), parameters)
+    parameters[Parameters.BEST_WORST_COST_INTERNAL] = best_worst_cost
 
     all_alignments = []
     for trace in one_tr_per_var:
@@ -172,7 +209,6 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
             progress.update()
 
     alignments = __form_alignments(log, variants_idxs, all_alignments)
-    __assign_fitness(log, alignments, best_worst_cost)
     __close_progress_bar(progress)
 
     return alignments
@@ -207,6 +243,7 @@ def apply_multiprocessing(log, petri_net, initial_marking, final_marking, parame
 
     best_worst_cost = __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters)
     variants_idxs, one_tr_per_var = __get_variants_structure(log, parameters)
+    parameters[Parameters.BEST_WORST_COST_INTERNAL] = best_worst_cost
 
     all_alignments = []
     with ProcessPoolExecutor(max_workers=num_cores) as executor:
@@ -229,7 +266,6 @@ def apply_multiprocessing(log, petri_net, initial_marking, final_marking, parame
         __close_progress_bar(progress)
 
     alignments = __form_alignments(log, variants_idxs, all_alignments)
-    __assign_fitness(log, alignments, best_worst_cost)
 
     return alignments
 
@@ -279,15 +315,6 @@ def __form_alignments(log, variants_idxs, all_alignments):
         alignments.append(al_idx[i])
 
     return alignments
-
-
-def __assign_fitness(log, alignments, best_worst_cost):
-    for index, align in enumerate(alignments):
-        ltrace_bwc = len(log[index]) + best_worst_cost
-        if ltrace_bwc > 0:
-            align['fitness'] = 1 - ((align['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST) / ltrace_bwc)
-        else:
-            align['fitness'] = 0
 
 
 def __close_progress_bar(progress):

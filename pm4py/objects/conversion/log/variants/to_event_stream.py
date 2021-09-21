@@ -139,7 +139,7 @@ def apply(log, parameters=None):
     if pkgutil.find_loader("pandas"):
         import pandas
         if isinstance(log, pandas.DataFrame):
-            return __transform_dataframe_to_event_stream_new(log, stream_post_processing=stream_post_processing, compress=compress)
+            return __transform_dataframe_to_event_stream(log, stream_post_processing=stream_post_processing, compress=compress)
 
     if isinstance(log, EventLog):
         return __transform_event_log_to_event_stream(log, include_case_attributes=include_case_attributes,

@@ -61,8 +61,18 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
         raise Exception(activity_key + " column (activity) is not in the dataframe!")
     if timestamp_key not in df.columns:
         raise Exception(timestamp_key + " column (timestamp) is not in the dataframe!")
-    df = df.rename(columns={case_id: constants.CASE_CONCEPT_NAME, activity_key: xes_constants.DEFAULT_NAME_KEY,
-                            timestamp_key: xes_constants.DEFAULT_TIMESTAMP_KEY})
+    if case_id != constants.CASE_CONCEPT_NAME:
+        if constants.CASE_CONCEPT_NAME in df.columns:
+            del df[constants.CASE_CONCEPT_NAME]
+        df = df.rename(columns={case_id: constants.CASE_CONCEPT_NAME})
+    if activity_key != xes_constants.DEFAULT_NAME_KEY:
+        if xes_constants.DEFAULT_NAME_KEY in df.columns:
+            del df[xes_constants.DEFAULT_NAME_KEY]
+        df = df.rename(columns={activity_key: xes_constants.DEFAULT_NAME_KEY})
+    if timestamp_key != xes_constants.DEFAULT_TIMESTAMP_KEY:
+        if xes_constants.DEFAULT_TIMESTAMP_KEY in df.columns:
+            del df[xes_constants.DEFAULT_TIMESTAMP_KEY]
+        df = df.rename(columns={timestamp_key: xes_constants.DEFAULT_TIMESTAMP_KEY})
     df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype(str)
     # makes sure that the timestamps column are of timestamp type
     df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=timest_format)
