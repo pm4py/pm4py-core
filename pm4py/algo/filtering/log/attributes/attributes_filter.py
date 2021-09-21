@@ -106,7 +106,7 @@ def apply_numeric(log: EventLog, int1: float, int2: float, parameters: Optional[
             attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
             omni_present=log.omni_present, properties=log.properties)
 
-    all_cases_ids = set(x["case:" + case_key] for x in stream)
+    all_cases_ids = set(x[case_key] for x in stream)
 
     filtered_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
                             omni_present=log.omni_present, properties=log.properties)
