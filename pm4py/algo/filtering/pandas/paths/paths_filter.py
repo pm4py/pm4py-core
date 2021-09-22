@@ -58,6 +58,7 @@ def apply(df: pd.DataFrame, paths: List[Tuple[str, str]], parameters: Optional[D
     filt_dif_shifted = filt_df.shift(-1)
     filt_dif_shifted.columns = [str(col) + '_2' for col in filt_dif_shifted.columns]
     stacked_df = pd.concat([filt_df, filt_dif_shifted], axis=1)
+    stacked_df = stacked_df[stacked_df[case_id_glue] == stacked_df[case_id_glue + '_2']]
     stacked_df["@@path"] = stacked_df[attribute_key] + "," + stacked_df[attribute_key + "_2"]
     stacked_df = stacked_df[stacked_df["@@path"].isin(paths)]
     i1 = df.set_index(case_id_glue).index
