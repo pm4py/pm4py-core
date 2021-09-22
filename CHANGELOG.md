@@ -1,6 +1,25 @@
 # PM4Py Changelog
 
-## PM4Py 2.2.13.1
+## PM4Py 2.2.13.2
+
+### Fixed
+* 706d42c0
+  * Bug fix paths filter for Pandas
+* c5ecaa4f
+  * Bug fix numeric attribute filter XES (custom case attribute glue)
+
+### Deprecated
+
+### Changed
+
+### Added
+
+### Other
+* ac00be2f
+  * Added the specification of Python 3.9.x among the supported versions.
+  * Not suggesting anymore Python 3.6.x
+
+## PM4Py 2.2.13.1 (2021.09.21)
 
 ### Fixed
 
