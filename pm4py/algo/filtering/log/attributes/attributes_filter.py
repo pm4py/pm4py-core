@@ -11,7 +11,7 @@ from pm4py.statistics.attributes.log.get import get_attribute_values
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_KEY_CASE_GLUE
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from copy import copy
 import deprecation
@@ -23,6 +23,7 @@ class Parameters(Enum):
     ATTRIBUTE_KEY = PARAMETER_CONSTANT_ATTRIBUTE_KEY
     ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
     CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
+    PARAMETER_KEY_CASE_GLUE = PARAMETER_KEY_CASE_GLUE
     DECREASING_FACTOR = "decreasingFactor"
     POSITIVE = "positive"
     STREAM_FILTER_KEY1 = "stream_filter_key1"
@@ -57,6 +58,7 @@ def apply_numeric(log: EventLog, int1: float, int2: float, parameters: Optional[
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
     case_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, xes.DEFAULT_TRACEID_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
+    case_attribute_prefix = exec_utils.get_param_value(Parameters.PARAMETER_KEY_CASE_GLUE, parameters, constants.CASE_ATTRIBUTE_PREFIX)
     # stream_filter_key is helpful to filter on cases containing an event with an attribute
     # in the specified value set, but such events shall have an activity in particular.
 
@@ -90,7 +92,7 @@ def apply_numeric(log: EventLog, int1: float, int2: float, parameters: Optional[
             attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
             omni_present=log.omni_present, properties=log.properties)
 
-    all_cases_ids = set(x["case:" + case_key] for x in stream)
+    all_cases_ids = set(x[case_attribute_prefix + case_key] for x in stream)
 
     filtered_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
                             omni_present=log.omni_present, properties=log.properties)
@@ -141,7 +143,7 @@ def apply_numeric_events(log: EventLog, int1: float, int2: float, parameters: Op
             list(filter(lambda x: attribute_key in x and (x[attribute_key] < int1 or x[attribute_key] > int2), stream)),
             attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
             omni_present=log.omni_present, properties=log.properties)
-    filtered_log = log_converter.apply(stream)
+    filtered_log = log_converter.apply(stream, parameters=conversion_parameters)
 
     return filtered_log
 
@@ -185,7 +187,7 @@ def apply_events(log: EventLog, values: List[str], parameters: Optional[Dict[Uni
                              extensions=log.extensions, classifiers=log.classifiers,
                              omni_present=log.omni_present, properties=log.properties)
 
-    filtered_log = log_converter.apply(stream)
+    filtered_log = log_converter.apply(stream, parameters=conversion_parameters)
 
     return filtered_log
 
