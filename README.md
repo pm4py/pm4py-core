@@ -18,7 +18,7 @@ pm4py.view_bpmn(process_model)
 ```
 
 ## Installation
-PM4Py can be installed on Python 3.6.x / 3.7.x / 3.8.x by doing:
+PM4Py can be installed on Python 3.7.x / 3.8.x / 3.9.x by doing:
 `pip install -U pm4py`
 
 ## Change Log
