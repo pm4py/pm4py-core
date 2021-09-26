@@ -111,25 +111,3 @@ class Constant0(Uniform):
         if len(values) == len(values_0):
             return sys.float_info.max
         return -sys.float_info.max
-
-    def __str__(self):
-        """
-        Returns a representation of the current object
-
-        Returns
-        ----------
-        repr
-            Representation of the current object
-        """
-        return self.get_distribution_type()
-
-    def __repr__(self):
-        """
-        Returns a representation of the current object
-
-        Returns
-        ----------
-        repr
-            Representation of the current object
-        """
-        return self.get_distribution_type()
