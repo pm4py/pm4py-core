@@ -1,1 +1,1 @@
-from pm4py.objects.random_variables import constant0, normal, uniform, exponential, random_variable
+from pm4py.objects.random_variables import constant0, normal, uniform, exponential, random_variable, lognormal, gamma
