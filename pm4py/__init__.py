@@ -34,7 +34,9 @@ from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_p
     discover_performance_dfg
 from pm4py.filtering import filter_start_activities, filter_end_activities, filter_attribute_values, filter_variants, \
     filter_variants_percentage, filter_directly_follows_relation, filter_time_range, filter_trace_attribute, \
-    filter_eventually_follows_relation, filter_event_attribute_values, filter_trace_attribute_values
+    filter_eventually_follows_relation, filter_event_attribute_values, filter_trace_attribute_values, \
+    filter_between, filter_case_size, filter_case_performance, filter_activities_rework, filter_paths_performance, \
+    filter_variants_by_coverage_percentage, filter_variants_top_k
 from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
 from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
     __maintainer__, __maintainer_email__

@@ -1,37 +1,81 @@
 # PM4Py Changelog
 
-## PM4Py 2.2.13.1
+## PM4Py 2.2.14 (2021.10.01)
+
+### Fixed
+
+* 706d42c0
+    * bug fix paths filter for Pandas
+* c5ecaa4f
+    * bug fix numeric attribute filter XES (custom case attribute glue)
+
+### Deprecated
+
+### Changed
+
+### Added
+
+* 8ba67034
+    * added random variables that are able to check gamma and log normal distributions
+* 1d22d99d
+    * added dfg -> petri net translation that has unique labels (routing is performed by invisible transitions)
+* 004ec93f
+    * add support for log-level fitness in the alignment output
+* 56efe270
+    * add fitness value for the dfg-based alignments
+* d9da1ab8
+    * add raw performance values for the elements of the performance-based dfg
+* 0eeda19d
+    * when visualizing a dfg without log attached to it, i.e., incoming edges are used to count
+* 03ee6b8e
+  * allow counting of occurrences of activities/open cases/resource activities in a given time range
+* ae5a3973
+  * add various new filtering functionalities
+
+### Other
+
+* ac00be2f
+    * added the specification of Python 3.9.x among the supported versions.
+    * not suggesting anymore Python 3.6.x
+
+---
+
+## PM4Py 2.2.13.1 (2021.09.21)
 
 ### Fixed
 
 * 816fb4ad
-  * Fixed a bug in the Pandas case size filter (the constraints were not applied correctly).
+    * fixed a bug in the Pandas case size filter (the constraints were not applied correctly).
 * 40f142c4
-  * Fixed a bug in the format_dataframe function (columns were duplicated if already existing with the same name).
+    * fixed a bug in the format_dataframe function (columns were duplicated if already existing with the same name).
 * 00d1a7de
-  * Reverted stream converter to old variant (in a slightly slower but safer way).
+    * reverted stream converter to old variant (in a slightly slower but safer way).
 
 ### Removed
 
 ### Deprecated
 
 ### Changed
+
 * 991a09d4
-  * Introduce a time limit in the DFG playout.
+    * introduce a time limit in the DFG playout.
 * ae5d2a07
-  * Return the state of the process tree along with the alignment for the process tree alignments.
+    * return the state of the process tree along with the alignment for the process tree alignments.
 * 8b77384f
-  * Refactoring of the calculation of the fitness for Petri net alignments (scattered code).
+    * refactoring of the calculation of the fitness for Petri net alignments (scattered code).
 
 ### Added
 
 ### Other
+
 * d58d34fd
-  * Upgraded Dockerfile to Python 3.9
+    * upgraded Dockerfile to Python 3.9
 * 50114175
-  * Resolved issue with the upcoming Python 3.10 release
+    * resolved issue with the upcoming Python 3.10 release
 * 89314905
-  * Security issue in requirements
+    * security issue in requirements
+
+---
 
 ## PM4Py 2.2.13 (2021.09.03)
 
@@ -42,25 +86,27 @@
 ### Deprecated
 
 ### Changed
+
 * 5723df7b
     * xes exporter now reports on xes features and xmlns
 * 3b632548
-  * graphviz based visualizations now expose background color as a parameter
+    * graphviz based visualizations now expose background color as a parameter
 
 ### Added
+
 * 0592157b
     * new dfg playout including performance specification
 * 85739ba0
-    * allow pandas df to be used as an iterable for streaming simulation 
+    * allow pandas df to be used as an iterable for streaming simulation
 * 2fa9993f
-    * path filter  that filters the cases of an event log where there is at least one occurrence of the provided path
-    occurring in a given time range.
+    * path filter that filters the cases of an event log where there is at least one occurrence of the provided path
+      occurring in a given time range.
 * a7ee73a8
     * added filter based on rework detection
 * c03b6188
-    * add petri net, reset/inhibitor net and data petri net semantics 
-### Other
+    * add petri net, reset/inhibitor net and data petri net semantics
 
+### Other
 
 ---
 
@@ -73,7 +119,7 @@
 * e88a6546
     * https://github.com/pm4py/pm4py-core/issues/249
 * 84511628
-    * fix minor bug in the calculation of the handover and subcontracting metrics. 
+    * fix minor bug in the calculation of the handover and subcontracting metrics.
 
 ### Removed
 
@@ -84,8 +130,7 @@
 * 01fd0402
     * The ```pm4py.view_petri_net()``` method now uses ```None``` as a default initial and final marking.
 * 72ed7d0d
-    * Improved performance of variant discovery of dataframes.   
-
+    * Improved performance of variant discovery of dataframes.
 
 ### Added
 
@@ -99,7 +144,7 @@
 * 4b594228
     * add support for adding decision points to data petri nets.
 * 9261270e
-  *  add support for performance dfg discovery in ```pm4py.discover_performance_dfg()```.
+    * add support for performance dfg discovery in ```pm4py.discover_performance_dfg()```.
 
 ### Other
 

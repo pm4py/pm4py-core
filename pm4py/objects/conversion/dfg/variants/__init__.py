@@ -14,4 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.conversion.dfg.variants import to_petri_net_activity_defines_place
+from pm4py.objects.conversion.dfg.variants import to_petri_net_activity_defines_place, to_petri_net_invisibles_no_duplicates

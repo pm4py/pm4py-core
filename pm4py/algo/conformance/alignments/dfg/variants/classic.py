@@ -132,12 +132,20 @@ def apply_log(log, dfg, sa, ea, parameters=None):
     aligned_traces = []
     align_dict = {}
 
+    al_empty_cost = __apply_list_activities([], dfg, sa, ea, parameters=parameters)["cost"]
+
     for trace in log:
         trace_act = tuple(x[activity_key] for x in trace)
         if trace_act in align_dict:
             aligned_traces.append(align_dict[trace_act])
         else:
+            log_move_cost_function = exec_utils.get_param_value(Parameters.LOG_MOVE_COST_FUNCTION, parameters,
+                                                                {x: align_utils.STD_MODEL_LOG_MOVE_COST for x in
+                                                                 trace_act})
+            trace_bwc_cost = sum(log_move_cost_function[x] for x in trace_act)
             al_tr = __apply_list_activities(trace_act, dfg, sa, ea, parameters=parameters)
+            al_tr["fitness"] = 1.0 - al_tr["cost"] / (al_empty_cost + trace_bwc_cost)
+            al_tr["bwc"] = al_empty_cost + trace_bwc_cost
             align_dict[trace_act] = al_tr
             aligned_traces.append(align_dict[trace_act])
 

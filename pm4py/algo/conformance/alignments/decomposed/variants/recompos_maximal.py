@@ -506,6 +506,8 @@ def apply_trace(trace, list_nets, parameters=None):
         cost1 = cost // utils.STD_MODEL_LOG_MOVE_COST
         fitness = 1.0 - cost1 / (best_worst_cost + len(trace))
         res["fitness"] = fitness
+        res["bwc"] = (best_worst_cost + len(trace)) * utils.STD_MODEL_LOG_MOVE_COST
+    
     return res
 
 
