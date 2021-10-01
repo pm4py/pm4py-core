@@ -91,6 +91,7 @@ def apply(log1: EventLog, log2: EventLog, parameters: Optional[Dict[Union[str, P
                         (align['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST) / (len(log1[index]) + best_worst_cost))
             else:
                 align['fitness'] = 0
+            align["bwc"] = (len(log1[index]) + best_worst_cost) * align_utils.STD_MODEL_LOG_MOVE_COST
 
     return aligned_traces
 

@@ -14,4 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.random_variables import constant0, normal, uniform, exponential, random_variable
+from pm4py.objects.random_variables import constant0, normal, uniform, exponential, random_variable, lognormal, gamma
