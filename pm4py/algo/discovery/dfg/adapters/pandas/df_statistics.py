@@ -108,6 +108,8 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
             dfg_performance = {}
             for key in dfg_performance_mean:
                 dfg_performance[key] = {"mean": dfg_performance_mean[key], "median": dfg_performance_median[key], "max": dfg_performance_max[key], "min": dfg_performance_min[key], "sum": dfg_performance_sum[key], "stdev": dfg_performance_std[key]}
+        elif perf_aggregation_key == "raw_values":
+            dfg_performance = directly_follows_grouping.apply(list).to_dict()
         else:
             dfg_performance = directly_follows_grouping.agg(perf_aggregation_key).to_dict()
 
