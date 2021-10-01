@@ -1,5 +1,5 @@
 import warnings
-from typing import List, Union, Set, List
+from typing import List, Union, Set, List, Tuple
 
 import deprecation
 import pandas as pd
@@ -387,3 +387,235 @@ def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mo
         else:
             warnings.warn('mode provided: ' + mode + ' is not recognized; original log returned!')
             return log
+
+
+def filter_between(log: Union[EventLog, pd.DataFrame], act1: str, act2: str) -> Union[EventLog, pd.DataFrame]:
+    """
+    Finds all the sub-cases leading from an event with activity "act1" to an event with activity "act2" in the log,
+    and returns a log containing only them.
+
+    Example:
+
+    Log
+    A B C D E F
+    A B E F C
+    A B F C B C B E F C
+
+    act1 = B
+    act2 = C
+
+    Returned sub-cases:
+    B C (from the first case)
+    B E F C (from the second case)
+    B F C (from the third case)
+    B C (from the third case)
+    B E F C (from the third case)
+
+    Parameters
+    -----------------
+    log
+        Event log / Pandas dataframe
+    act1
+        Source activity
+    act2
+        Target activity
+
+    Returns
+    -----------------
+    filtered_log
+        Log containing all the subcases
+    """
+    parameters = get_properties(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.algo.filtering.pandas.between import between_filter
+        return between_filter.apply(log, act1, act2, parameters=parameters)
+    else:
+        from pm4py.algo.filtering.log.between import between_filter
+        return between_filter.apply(log, act1, act2, parameters=parameters)
+
+
+def filter_case_size(log: Union[EventLog, pd.DataFrame], min_size: int, max_size: int) -> Union[EventLog, pd.DataFrame]:
+    """
+    Filters the event log, keeping the cases having a length (number of events) included between min_size
+    and max_size
+
+    Parameters
+    -----------------
+    log
+        Event log / Pandas dataframe
+    min_size
+        Minimum allowed number of events
+    max_size
+        Maximum allowed number of events
+
+    Returns
+    ----------------
+    filtered_log
+        Log with cases having the desidered number of events.
+    """
+    parameters = get_properties(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.algo.filtering.pandas.cases import case_filter
+        case_id = parameters[
+            constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else constants.CASE_CONCEPT_NAME
+        return case_filter.filter_on_case_size(log, case_id, min_size, max_size)
+    else:
+        from pm4py.algo.filtering.log.cases import case_filter
+        return case_filter.filter_on_case_size(log, min_size, max_size)
+
+
+def filter_case_performance(log: Union[EventLog, pd.DataFrame], min_performance: float, max_performance: float) -> Union[EventLog, pd.DataFrame]:
+    """
+    Filters the event log, keeping the cases having a duration (the timestamp of the last event minus the timestamp
+    of the first event) included between min_performance and max_performance
+
+    Parameters
+    ----------------
+    log
+        Event log / Pandas dataframe
+    min_performance
+        Minimum allowed case duration
+    max_performance
+        Maximum allowed case duration
+
+    Returns
+    ----------------
+    filtered_log
+        Log with cases having a duration in the specified range
+    """
+    parameters = get_properties(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.algo.filtering.pandas.cases import case_filter
+        return case_filter.filter_case_performance(log, min_performance, max_performance, parameters=parameters)
+    else:
+        from pm4py.algo.filtering.log.cases import case_filter
+        return case_filter.filter_case_performance(log, min_performance, max_performance, parameters=parameters)
+
+
+def filter_activities_rework(log: Union[EventLog, pd.DataFrame], activity: str, min_occurrences: int = 2) -> Union[EventLog, pd.DataFrame]:
+    """
+    Filters the event log, keeping the cases where the specified activity occurs at least min_occurrences times.
+
+    Parameters
+    -----------------
+    log
+        Event log / Pandas dataframe
+    activity
+        Activity
+    min_occurrences
+        Minimum desidered number of occurrences
+
+    Returns
+    -----------------
+    filtered_log
+        Log with cases having at least min_occurrences occurrences of the given activity
+    """
+    parameters = get_properties(log)
+    parameters["min_occurrences"] = min_occurrences
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.algo.filtering.pandas.rework import rework_filter
+        return rework_filter.apply(log, activity, parameters=parameters)
+    else:
+        from pm4py.algo.filtering.log.rework import rework_filter
+        return rework_filter.apply(log, activity, parameters=parameters)
+
+
+def filter_paths_performance(log: Union[EventLog, pd.DataFrame], path: Tuple[str, str], min_performance: float, max_performance: float, keep=True) -> Union[EventLog, pd.DataFrame]:
+    """
+    Filters the event log, either:
+    - (keep=True) keeping the cases having the specified path (tuple of 2 activities) with a duration included between min_performance and max_performance
+    - (keep=False) discarding the cases having the specified path with a duration included between min_performance and max_performance
+
+    Parameters
+    ----------------
+    log
+        Event log
+    path
+        Tuple of two activities (source_activity, target_activity)
+    min_performance
+        Minimum allowed performance (of the path)
+    max_performance
+        Maximum allowed performance (of the path)
+    keep
+        Keep/discard the cases having the specified path with a duration included between min_performance and max_performance
+
+    Returns
+    ----------------
+    filtered_log
+        Filtered log with the desidered behavior
+    """
+    parameters = get_properties(log)
+    parameters["positive"] = keep
+    parameters["min_performance"] = min_performance
+    parameters["max_performance"] = max_performance
+    path = tuple(path)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.algo.filtering.pandas.paths import paths_filter
+        return paths_filter.apply_performance(log, path, parameters=parameters)
+    else:
+        from pm4py.algo.filtering.log.paths import paths_filter
+        return paths_filter.apply_performance(log, path, parameters=parameters)
+
+
+def filter_variants_top_k(log: Union[EventLog, pd.DataFrame], k: int) -> Union[EventLog, pd.DataFrame]:
+    """
+    Keeps the top-k variants of the log
+
+    Parameters
+    -------------
+    log
+        Event log
+    k
+        Number of variants that should be kept
+    parameters
+        Parameters
+
+    Returns
+    -------------
+    filtered_log
+        Filtered log
+    """
+    parameters = get_properties(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.algo.filtering.pandas.variants import variants_filter
+        return variants_filter.filter_variants_top_k(log, k, parameters=parameters)
+    else:
+        from pm4py.algo.filtering.log.variants import variants_filter
+        return variants_filter.filter_variants_top_k(log, k, parameters=parameters)
+
+
+def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], min_coverage_percentage: float) -> Union[EventLog, pd.DataFrame]:
+    """
+    Filters the variants of the log by a coverage percentage
+    (e.g., if min_coverage_percentage=0.4, and we have a log with 1000 cases,
+    of which 500 of the variant 1, 400 of the variant 2, and 100 of the variant 3,
+    the filter keeps only the traces of variant 1 and variant 2).
+
+    Parameters
+    ---------------
+    log
+        Event log
+    min_coverage_percentage
+        Minimum allowed percentage of coverage
+    parameters
+        Parameters
+
+    Returns
+    ---------------
+    filtered_log
+        Filtered log
+    """
+    parameters = get_properties(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.algo.filtering.pandas.variants import variants_filter
+        return variants_filter.filter_variants_by_coverage_percentage(log, min_coverage_percentage, parameters=parameters)
+    else:
+        from pm4py.algo.filtering.log.variants import variants_filter
+        return variants_filter.filter_variants_by_coverage_percentage(log, min_coverage_percentage, parameters=parameters)
