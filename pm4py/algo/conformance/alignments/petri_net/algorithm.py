@@ -136,6 +136,8 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
     """
 
     ali["fitness"] = fitness
+    # returning also the best worst cost, for log fitness computation
+    ali["bwc"] = ltrace_bwc
 
     return ali
 
