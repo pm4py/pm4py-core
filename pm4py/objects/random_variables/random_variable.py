@@ -4,6 +4,8 @@ from pm4py.objects.random_variables.constant0.random_variable import Constant0
 from pm4py.objects.random_variables.exponential.random_variable import Exponential
 from pm4py.objects.random_variables.normal.random_variable import Normal
 from pm4py.objects.random_variables.uniform.random_variable import Uniform
+from pm4py.objects.random_variables.lognormal.random_variable import LogNormal
+from pm4py.objects.random_variables.gamma.random_variable import Gamma
 
 
 class RandomVariable(object):
@@ -29,6 +31,12 @@ class RandomVariable(object):
             self.random_variable.read_from_string(distribution_parameters)
         elif distribution_type == "EXPONENTIAL":
             self.random_variable = Exponential()
+            self.random_variable.read_from_string(distribution_parameters)
+        elif distribution_type == "LOGNORMAL":
+            self.random_variable = LogNormal()
+            self.random_variable.read_from_string(distribution_parameters)
+        elif distribution_type == "GAMMA":
+            self.random_variable = Gamma()
             self.random_variable.read_from_string(distribution_parameters)
         elif distribution_type == "IMMEDIATE":
             self.random_variable = Constant0()
@@ -113,6 +121,8 @@ class RandomVariable(object):
             unif = Uniform()
             expon = Exponential()
             constant = Constant0()
+            lognormal = LogNormal()
+            gamma = Gamma()
 
             if not force_distribution or not force_distribution == "EXPONENTIAL":
                 likelihoods = list()
