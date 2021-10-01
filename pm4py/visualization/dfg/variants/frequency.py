@@ -260,8 +260,8 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     max_no_of_edges_in_diagram = exec_utils.get_param_value(Parameters.MAX_NO_EDGES_IN_DIAGRAM, parameters, 100000)
-    start_activities = exec_utils.get_param_value(Parameters.START_ACTIVITIES, parameters, [])
-    end_activities = exec_utils.get_param_value(Parameters.END_ACTIVITIES, parameters, [])
+    start_activities = exec_utils.get_param_value(Parameters.START_ACTIVITIES, parameters, {})
+    end_activities = exec_utils.get_param_value(Parameters.END_ACTIVITIES, parameters, {})
     font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 12)
     font_size = str(font_size)
     activities = dfg_utils.get_activities_from_dfg(dfg)
@@ -271,7 +271,16 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
         if log is not None:
             activities_count = attr_get.get_attribute_values(log, activity_key, parameters=parameters)
         else:
-            activities_count = {key: 1 for key in activities}
+            # 11/09/2021: if we have the specification of the start activities,
+            # we can compute the activities count without the log in a smarter way.
+            if type(start_activities) is dict and start_activities:
+                activities_count = {key: 0 for key in set(activities).union(set(start_activities))}
+                for act in start_activities:
+                    activities_count[act] += start_activities[act]
+                for el in dfg:
+                    activities_count[el[1]] += dfg[el]
+            else:
+                activities_count = {key: 1 for key in activities}
 
     if soj_time is None:
         if log is not None:
