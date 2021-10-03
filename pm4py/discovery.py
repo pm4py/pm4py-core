@@ -88,7 +88,7 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, 
         activity_key = properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in properties else xes_constants.DEFAULT_NAME_KEY
         timestamp_key = properties[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in properties else xes_constants.DEFAULT_TIMESTAMP_KEY
         case_id_key = properties[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in properties else constants.CASE_CONCEPT_NAME
-        dfg = get_dfg_graph(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_glue=case_id_key, measure="performance")
+        dfg = get_dfg_graph(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_glue=case_id_key, measure="performance", perf_aggregation_key="all")
         from pm4py.statistics.start_activities.pandas import get as start_activities_module
         from pm4py.statistics.end_activities.pandas import get as end_activities_module
         start_activities = start_activities_module.get_start_activities(log, parameters=properties)
