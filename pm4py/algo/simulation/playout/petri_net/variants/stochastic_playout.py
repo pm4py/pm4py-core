@@ -31,7 +31,7 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
                   case_id_key=xes_constants.DEFAULT_TRACEID_KEY,
                   activity_key=xes_constants.DEFAULT_NAME_KEY, timestamp_key=xes_constants.DEFAULT_TIMESTAMP_KEY,
                   final_marking=None, smap=None, log=None, return_visited_elements=False,
-                  semantics=petri_net.semantics.ClassicSemantics()):
+                  semantics=petri_net.semantics.ClassicSemantics(), parameters=None):
     """
     Do the playout of a Petrinet generating a log
 
@@ -66,9 +66,14 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
     if smap is None:
         if log is None:
             raise Exception("please provide at least one between stochastic map and log")
+        if parameters is None:
+            parameters = {}
+        parameters_rep = copy(parameters)
+        parameters_rep[Parameters.ACTIVITY_KEY] = activity_key
+        parameters_rep[Parameters.TIMESTAMP_KEY] = timestamp_key
         smap = replay.get_map_from_log_and_net(log, net, initial_marking, final_marking,
-                                               parameters={Parameters.ACTIVITY_KEY: activity_key,
-                                                           Parameters.TIMESTAMP_KEY: timestamp_key})
+                                               parameters=parameters_rep)
+
     # assigns to each event an increased timestamp from 1970
     curr_timestamp = 10000000
     all_visited_elements = []
@@ -159,4 +164,4 @@ def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking = None
                          case_id_key=case_id_key, activity_key=activity_key, timestamp_key=timestamp_key,
                          final_marking=final_marking, smap=smap, log=log,
                          return_visited_elements=return_visited_elements,
-                         semantics=semantics)
+                         semantics=semantics, parameters=None)

@@ -8,6 +8,7 @@ from pm4py.algo.conformance.tokenreplay import algorithm as executor
 
 from enum import Enum
 from pm4py.util import constants
+from copy import copy
 
 
 class Parameters(Enum):
@@ -67,7 +68,11 @@ def get_map_from_log_and_net(log, net, initial_marking, final_marking, force_dis
     variants_idx = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters_variants)
     variants = variants_module.convert_variants_trace_idx_to_trace_obj(log, variants_idx)
 
-    parameters_tr = {token_replay.Parameters.ACTIVITY_KEY: activity_key, token_replay.Parameters.VARIANTS: variants}
+    parameters_tr = copy(parameters)
+    parameters_tr[token_replay.Parameters.ACTIVITY_KEY] = activity_key
+    parameters_tr[token_replay.Parameters.VARIANTS] = variants
+
+    parameters_ses = copy(parameters)
 
     # do the replay
     aligned_traces = executor.apply(log, net, initial_marking, final_marking, variant=token_replay_variant,
@@ -77,7 +82,7 @@ def get_map_from_log_and_net(log, net, initial_marking, final_marking, force_dis
                                                                    aligned_traces, variants_idx,
                                                                    activity_key=activity_key,
                                                                    timestamp_key=timestamp_key,
-                                                                   parameters={"business_hours": True})
+                                                                   parameters=parameters_ses)
 
     for el in element_statistics:
         if type(el) is PetriNet.Transition and "performance" in element_statistics[el]:
