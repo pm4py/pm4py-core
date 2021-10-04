@@ -21,6 +21,8 @@ class Parameters(Enum):
     MAX_NO_CASES = "max_no_cases"
     MIN_DIFFERENT_OCC_STR_ATTR = 5
     MAX_DIFFERENT_OCC_STR_ATTR = 50
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
 def insert_partitioning(df, num_partitions, parameters=None):
@@ -203,10 +205,13 @@ def automatic_feature_selection_df(df, parameters=None):
         parameters = {}
 
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+
     mandatory_attributes = exec_utils.get_param_value(Parameters.MANDATORY_ATTRIBUTES, parameters,
                                                       set(df.columns).intersection(
-                                                          {constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_NAME_KEY,
-                                                           xes_constants.DEFAULT_TIMESTAMP_KEY}))
+                                                          {case_id_key, activity_key,
+                                                           timestamp_key}))
 
     min_different_occ_str_attr = exec_utils.get_param_value(Parameters.MIN_DIFFERENT_OCC_STR_ATTR, parameters, 5)
     max_different_occ_str_attr = exec_utils.get_param_value(Parameters.MAX_DIFFERENT_OCC_STR_ATTR, parameters, 50)
@@ -353,9 +358,16 @@ def automatic_feature_extraction_df(df: pd.DataFrame, parameters: Optional[Dict[
     if parameters is None:
         parameters = {}
 
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+
     fea_sel_df = automatic_feature_selection_df(df, parameters=parameters)
     columns = set(fea_sel_df.columns)
-    columns.remove(constants.CASE_CONCEPT_NAME)
-    columns.remove(xes_constants.DEFAULT_TIMESTAMP_KEY)
 
-    return get_features_df(fea_sel_df, columns, parameters=parameters)
+    if case_id_key in columns:
+        columns.remove(case_id_key)
+
+    if timestamp_key in columns:
+        columns.remove(timestamp_key)
+
+    return get_features_df(fea_sel_df, list(columns), parameters=parameters)
