@@ -34,6 +34,11 @@ DEFAULT_CLASSIFIER_ATTRIBUTE = "@@classifier"
 
 DEFAULT_ENCODING = "utf-8"
 
+PARAM_ARTIFICIAL_START_ACTIVITY = "pm4py:param:art_start_act"
+PARAM_ARTIFICIAL_END_ACTIVITY = "pm4py:param:art_end_act"
+DEFAULT_ARTIFICIAL_START_ACTIVITY = "▶"
+DEFAULT_ARTIFICIAL_END_ACTIVITY = "■"
+
 from enum import Enum
 
 
