@@ -43,7 +43,7 @@ class Parameters(Enum):
     FONT_SIZE = "font_size"
     AGGREGATION_MEASURE = "aggregation_measure"
     BGCOLOR = "bgcolor"
-
+    STAT_LOCALE = "stat_locale"
 
 def get_min_max_value(dfg):
     """
@@ -129,7 +129,8 @@ def get_activities_color_soj_time(soj_time):
 
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
-                           max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, soj_time=None, font_size="12", 
+                           max_no_of_edges_in_diagram=100000, start_activities=None, 
+                           end_activities=None, soj_time=None, font_size="12", 
                            bgcolor="transparent", stat_locale: dict = {}):
     """
     Do GraphViz visualization of a DFG graph
@@ -283,6 +284,7 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     activities = dfg_utils.get_activities_from_dfg(dfg)
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+    stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, {})
 
     if activities_count is None:
         if log is not None:
@@ -311,5 +313,6 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
 
     return graphviz_visualization(activities_count, dfg, image_format=image_format, measure="performance",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
-                                  start_activities=start_activities, end_activities=end_activities, soj_time=soj_time,
-                                  font_size=font_size, bgcolor=bgcolor)
+                                  start_activities=start_activities, end_activities=end_activities, 
+                                  soj_time=soj_time, font_size=font_size, bgcolor=bgcolor, 
+                                  stat_locale=stat_locale)
