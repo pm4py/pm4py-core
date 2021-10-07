@@ -29,8 +29,10 @@ def human_readable_stat(timedelta_seconds, stat_locale: dict = {}):
 
     Parameters
     ----------
-    c
+    timedelta_seconds
         Timedelta expressed in seconds
+    stat_locale
+        Dict mapping stat strings
 
     Returns
     ----------
