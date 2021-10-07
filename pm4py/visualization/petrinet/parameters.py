@@ -26,3 +26,4 @@ class Parameters(Enum):
     TIMESTAMP_KEY = PARAMETER_CONSTANT_TIMESTAMP_KEY
     AGGREGATION_MEASURE = "aggregationMeasure"
     FONT_SIZE = "font_size"
+    STAT_LOCALE = "stat_locale"

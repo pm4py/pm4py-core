@@ -129,8 +129,9 @@ def get_activities_color(activities_count):
 
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
-                           max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, soj_time=None, font_size="12", 
-                           bgcolor="transparent", stat_locale: dict = {}):
+                           max_no_of_edges_in_diagram=100000, start_activities=None, 
+                           end_activities=None, soj_time=None, font_size="12", 
+                           bgcolor="transparent"):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -297,5 +298,5 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
 
     return graphviz_visualization(activities_count, dfg, image_format=image_format, measure="frequency",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
-                                  start_activities=start_activities, end_activities=end_activities, soj_time=soj_time,
-                                  font_size=font_size, bgcolor=bgcolor)
+                                  start_activities=start_activities, end_activities=end_activities, 
+                                  soj_time=soj_time, font_size=font_size, bgcolor=bgcolor)

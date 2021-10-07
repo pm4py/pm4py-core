@@ -55,6 +55,7 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
                                                      "sum" if "frequency" in variant else "mean")
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, {})
 
     # we find the DFG
     if variant == "performance":
@@ -68,7 +69,8 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
     aggregated_statistics = get_decorations_from_dfg_spaths_acticount(net, dfg, spaths,
                                                                       activities_count,
                                                                       variant=variant,
-                                                                      aggregation_measure=aggregation_measure)
+                                                                      aggregation_measure=aggregation_measure,
+                                                                      stat_locale=stat_locale)
 
     return visualize.apply(net, initial_marking, final_marking, parameters=parameters,
                            decorations=aggregated_statistics)
