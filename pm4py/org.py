@@ -4,7 +4,7 @@ import pandas as pd
 
 from pm4py.objects.log.obj import EventLog
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
-from pm4py.utils import get_properties
+from pm4py.utils import get_properties, general_checks_classical_event_log
 
 
 def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0):
@@ -26,6 +26,7 @@ def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0
     metric_values
         Values of the metric
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.organizational_mining.sna import algorithm as sna
     parameters = get_properties(log)
     parameters["beta"] = beta
@@ -51,6 +52,7 @@ def discover_working_together_network(log: Union[EventLog, pd.DataFrame]):
     metric_values
         Values of the metric
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.organizational_mining.sna import algorithm as sna
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -73,6 +75,7 @@ def discover_activity_based_resource_similarity(log: Union[EventLog, pd.DataFram
     metric_values
         Values of the metric
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.organizational_mining.sna import algorithm as sna
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -97,6 +100,7 @@ def discover_subcontracting_network(log: Union[EventLog, pd.DataFrame], n=2):
     metric_values
         Values of the metric
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.organizational_mining.sna import algorithm as sna
     parameters = get_properties(log)
     parameters["n"] = n
@@ -125,6 +129,7 @@ def discover_organizational_roles(log: Union[EventLog, pd.DataFrame]):
         - The second element of the sublist is a dictionary containing the resources of the role
         and the number of times they executed activities belonging to the role.
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.organizational_mining.roles import algorithm as roles
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
