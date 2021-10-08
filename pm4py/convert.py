@@ -7,7 +7,7 @@ from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
-from pm4py.utils import get_properties
+from pm4py.utils import get_properties, general_checks_classical_event_log
 
 
 def convert_to_event_log(obj: Union[pd.DataFrame, EventStream]) -> EventLog:
@@ -24,6 +24,7 @@ def convert_to_event_log(obj: Union[pd.DataFrame, EventStream]) -> EventLog:
     log
         Event log object
     """
+    general_checks_classical_event_log(obj)
     from pm4py.objects.conversion.log import converter
     log = converter.apply(obj, variant=converter.Variants.TO_EVENT_LOG, parameters=get_properties(obj))
     return log
@@ -43,6 +44,7 @@ def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame]) -> EventStream:
     stream
         Event stream object
     """
+    general_checks_classical_event_log(obj)
     from pm4py.objects.conversion.log import converter
     stream = converter.apply(obj, variant=converter.Variants.TO_EVENT_STREAM, parameters=get_properties(obj))
     return stream
@@ -62,6 +64,7 @@ def convert_to_dataframe(obj: Union[EventStream, EventLog]) -> pd.DataFrame:
     df
         Dataframe
     """
+    general_checks_classical_event_log(obj)
     from pm4py.objects.conversion.log import converter
     df = converter.apply(obj, variant=converter.Variants.TO_DATA_FRAME, parameters=get_properties(obj))
     return df
