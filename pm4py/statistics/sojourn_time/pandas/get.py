@@ -14,18 +14,19 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import pandas as pd
 from enum import Enum
 
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.util.business_hours import soj_time_business_hours_diff
-import pandas as pd
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Optional, Dict, Any, Union
 
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    AGGREGATION_MEASURE = "aggregationMeasure"
     BUSINESS_HOURS = "business_hours"
     WORKTIMING = "worktiming"
     WEEKENDS = "weekends"
@@ -54,6 +55,7 @@ def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Union[str, Paramete
                                         Default: [7, 17] (work shift from 07:00 to 17:00)
         - Parameters.WEEKENDS => indexes of the days of the week that are weekend
                                         Default: [6, 7] (weekends are Saturday and Sunday)
+        - Parameters.AGGREGATION_MEASURE => performance aggregation measure (sum, min, max, mean, median)
 
     Returns
     --------------
@@ -72,6 +74,8 @@ def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Union[str, Paramete
                                                      xes_constants.DEFAULT_TIMESTAMP_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
+    aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, 
+                                                     parameters, "mean")
 
     if business_hours:
         dataframe[DIFF_KEY] = dataframe.apply(
@@ -79,11 +83,23 @@ def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Union[str, Paramete
                                                    weekends), axis=1)
     else:
         dataframe[DIFF_KEY] = (
-                dataframe[timestamp_key] - dataframe[start_timestamp_key]).astype('timedelta64[s]')
+            dataframe[timestamp_key] - dataframe[start_timestamp_key]
+        ).astype('timedelta64[s]')
 
     dataframe = dataframe.reset_index()
 
-    ret_dict = dataframe.groupby(activity_key)[DIFF_KEY].mean().to_dict()
+    column = dataframe.groupby(activity_key)[DIFF_KEY]
+    if aggregation_measure == "median":
+        ret_dict = column.median().to_dict()
+    elif aggregation_measure == "min":
+        ret_dict = column.min().to_dict()
+    elif aggregation_measure == "max":
+        ret_dict = column.max().to_dict()
+    elif aggregation_measure == "sum":
+        ret_dict = column.sum().to_dict()
+    else:
+        ret_dict = column.mean().to_dict()
+
     # assure to avoid problems with np.float64, by using the Python float type
     for el in ret_dict:
         ret_dict[el] = float(ret_dict[el])

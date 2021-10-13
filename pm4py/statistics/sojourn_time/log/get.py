@@ -15,12 +15,12 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from enum import Enum
-from statistics import mean
+from statistics import mean, median
 
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.util.business_hours import BusinessHours
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog
 
 
@@ -28,6 +28,7 @@ class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    AGGREGATION_MEASURE = "aggregationMeasure"
     BUSINESS_HOURS = "business_hours"
     WORKTIMING = "worktiming"
     WEEKENDS = "weekends"
@@ -56,6 +57,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
                                         Default: [7, 17] (work shift from 07:00 to 17:00)
         - Parameters.WEEKENDS => indexes of the days of the week that are weekend
                                         Default: [6, 7] (weekends are Saturday and Sunday)
+        - Parameters.AGGREGATION_MEASURE => performance aggregation measure (sum, min, max, mean, median)
 
     Returns
     --------------
@@ -76,6 +78,8 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
                                                      xes_constants.DEFAULT_TIMESTAMP_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
+    aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, 
+                                                     parameters, "mean")
 
     durations_dict = {}
     activities = [ev[activity_key] for trace in log for ev in trace]
@@ -96,6 +100,15 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
                 durations_dict[activity].append(complete_time - start_time)
 
     for act in durations_dict:
-        durations_dict[act] = mean(durations_dict[act])
+        if aggregation_measure == "median":
+            durations_dict[act] = median(durations_dict[act])
+        elif aggregation_measure == "min":
+            durations_dict[act] = min(durations_dict[act])
+        elif aggregation_measure == "max":
+            durations_dict[act] = max(durations_dict[act])
+        elif aggregation_measure == "sum":
+            durations_dict[act] = sum(durations_dict[act])
+        else:
+            durations_dict[act] = mean(durations_dict[act])  
 
     return durations_dict
