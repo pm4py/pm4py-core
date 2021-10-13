@@ -6,6 +6,7 @@ from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.utils import general_checks_classical_event_log
 
 
 def write_xes(log: EventLog, file_path: str) -> None:
@@ -23,6 +24,7 @@ def write_xes(log: EventLog, file_path: str) -> None:
     -------------
     void
     """
+    general_checks_classical_event_log(log)
     from pm4py.objects.log.exporter.xes import exporter as xes_exporter
     xes_exporter.apply(log, file_path)
 

@@ -2,7 +2,7 @@ from typing import Optional, Tuple, Any
 
 import pandas as pd
 
-from pm4py.objects.log.obj import EventLog
+from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import constants, xes_constants, pandas_utils
 
@@ -38,6 +38,7 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     df
         Dataframe
     """
+    general_checks_classical_event_log(df)
     from pm4py.objects.log.util import dataframe_utils
     if case_id not in df.columns:
         raise Exception(case_id + " column (case ID) is not in the dataframe!")
@@ -212,6 +213,7 @@ def get_properties(log):
     prop_dict
         Dictionary containing the properties of the log object
     """
+    general_checks_classical_event_log(log)
     from copy import copy
     parameters = copy(log.properties) if hasattr(log, 'properties') else copy(log.attrs) if hasattr(log, 'attrs') else {}
     return parameters
@@ -238,6 +240,7 @@ def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASS
     log
         The same event log (methods acts inplace)
     """
+    general_checks_classical_event_log(log)
     if type(classifier) is list:
         pass
     elif type(classifier) is str:
@@ -262,3 +265,16 @@ def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASS
         raise Exception("setting classifier is not defined for this class of objects")
 
     return log
+
+
+def general_checks_classical_event_log(log):
+    """
+    Method to checks the consistency of the provided classical event log.
+    Throws an error if some problems occur.
+
+    Parameters
+    -----------------
+    log
+        Event log
+    """
+    return True
