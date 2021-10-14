@@ -1,7 +1,5 @@
 import uuid
 
-import networkx as nx
-
 DEFAULT_PROCESS = str(uuid.uuid4())
 
 
@@ -170,6 +168,8 @@ class BPMN(object):
             return self.__repr__()
 
     def __init__(self, name="", nodes=None, flows=None):
+        import networkx as nx
+
         self.__id = uuid.uuid4()
         self.__name = name
         self.__graph = nx.MultiDiGraph()
