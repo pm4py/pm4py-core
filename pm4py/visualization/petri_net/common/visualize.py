@@ -6,7 +6,7 @@ from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.util import exec_utils
 from enum import Enum
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY, DEFAULT_ARTIFICIAL_START_ACTIVITY, DEFAULT_ARTIFICIAL_END_ACTIVITY
 
 
 class Parameters(Enum):
@@ -139,9 +139,10 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
 
     for p in places_sort_list:
         if p in initial_marking:
-            viz.node(str(id(p)), str(initial_marking[p]), style='filled', fillcolor="green", fontsize=font_size, shape='circle', fixedsize='true', width='0.75')
+            viz.node(str(id(p)), "<&#9679;>", fontsize="34", fixedsize='true', shape="circle", width='0.75')
         elif p in final_marking:
-            viz.node(str(id(p)), "", style='filled', fillcolor="orange", fontsize=font_size, shape='circle', fixedsize='true', width='0.75')
+            # <&#9632;>
+            viz.node(str(id(p)), "<&#9632;>", fontsize="32", shape='doublecircle', fixedsize='true', width='0.75')
         else:
             if debug:
                 viz.node(str(id(p)), str(p.name), fontsize=font_size, shape="ellipse")
