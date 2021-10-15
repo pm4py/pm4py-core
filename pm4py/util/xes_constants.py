@@ -14,6 +14,9 @@ TAG_STRING = 'string'
 TAG_TRACE = 'trace'
 TAG_VALUES = 'values'
 
+# XES 2.0 tags
+TAG_CONTAINER = 'container'
+
 # XES/INTERNAL KEYS
 KEY_CHILDREN = 'children'
 KEY_KEY = 'key'
