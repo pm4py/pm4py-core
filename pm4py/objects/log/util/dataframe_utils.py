@@ -8,7 +8,7 @@ from pm4py.objects.log.obj import EventStream
 from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import points_subset
-from pm4py.util import xes_constants
+from pm4py.util import xes_constants, pandas_utils
 
 LEGACY_PARQUET_TP_REPLACER = "AAA"
 LEGACY_PARQUET_CASECONCEPTNAME = "caseAAAconceptAAAname"
@@ -23,6 +23,9 @@ class Parameters(Enum):
     MAX_DIFFERENT_OCC_STR_ATTR = 50
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    PARAM_ARTIFICIAL_START_ACTIVITY = constants.PARAM_ARTIFICIAL_START_ACTIVITY
+    PARAM_ARTIFICIAL_END_ACTIVITY = constants.PARAM_ARTIFICIAL_END_ACTIVITY
+    INDEX_KEY = "index_key"
 
 
 def insert_partitioning(df, num_partitions, parameters=None):
@@ -371,3 +374,56 @@ def automatic_feature_extraction_df(df: pd.DataFrame, parameters: Optional[Dict[
         columns.remove(timestamp_key)
 
     return get_features_df(fea_sel_df, list(columns), parameters=parameters)
+
+
+def insert_artificial_start_end(df0: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> pd.DataFrame:
+    """
+    Inserts the artificial start/end activities in a Pandas dataframe
+
+    Parameters
+    ------------------
+    df0
+        Dataframe
+    parameters
+        Parameters of the algorithm, including:
+        - Parameters.CASE_ID_KEY: the case identifier
+        - Parameters.TIMESTAMP_KEY: the timestamp
+        - Parameters.ACTIVITY_KEY: the activity
+
+    Returns
+    -----------------
+    enriched_df
+        Dataframe with artificial start/end activities
+    """
+    if parameters is None:
+        parameters = {}
+
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+
+    artificial_start_activity = exec_utils.get_param_value(Parameters.PARAM_ARTIFICIAL_START_ACTIVITY, parameters, constants.DEFAULT_ARTIFICIAL_START_ACTIVITY)
+    artificial_end_activity = exec_utils.get_param_value(Parameters.PARAM_ARTIFICIAL_END_ACTIVITY, parameters, constants.DEFAULT_ARTIFICIAL_END_ACTIVITY)
+
+    index_key = exec_utils.get_param_value(Parameters.INDEX_KEY, parameters, constants.DEFAULT_INDEX_KEY)
+
+    df = df0.copy()
+    df = pandas_utils.insert_index(df, index_key)
+    df = df.sort_values([case_id_key, timestamp_key, index_key])
+
+    start_df = df[[case_id_key, timestamp_key]].groupby(case_id_key).first().reset_index()
+    end_df = df[[case_id_key, timestamp_key]].groupby(case_id_key).last().reset_index()
+    # stability trick: remove 1ms from the artificial start activity timestamp, add 1ms to the artificial end activity timestamp
+    start_df[timestamp_key] = start_df[timestamp_key] - pd.Timedelta("1 ms")
+    end_df[timestamp_key] = end_df[timestamp_key] + pd.Timedelta("1 ms")
+
+    start_df[activity_key] = artificial_start_activity
+    end_df[activity_key] = artificial_end_activity
+
+    df = pd.concat([start_df, df, end_df])
+    df = pandas_utils.insert_index(df, index_key)
+    df = df.sort_values([case_id_key, timestamp_key, index_key])
+
+    df.attrs = df0.attrs
+
+    return df
