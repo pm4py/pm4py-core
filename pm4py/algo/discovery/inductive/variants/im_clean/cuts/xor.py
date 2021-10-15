@@ -1,8 +1,5 @@
 from typing import Optional, Dict
 
-import networkx as nx
-
-import pm4py
 from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
 from pm4py.algo.discovery.inductive.variants.im_clean.d_types import DFG, Cut
 from pm4py.objects.log.obj import EventLog, Trace
@@ -32,6 +29,8 @@ def detect(dfg: DFG, alphabet: Dict[str, int]) -> Optional[Cut]:
         None if no cut is found.
 
     '''
+    import networkx as nx
+
     nx_dfg = im_utils.transform_dfg_to_directed_nx_graph(dfg, alphabet)
     nx_und = nx_dfg.to_undirected()
     conn_comps = [nx_und.subgraph(c).copy() for c in nx.connected_components(nx_und)]
@@ -62,3 +61,28 @@ def project(log, groups, activity_key):
                 new_trace.append(e)
         logs[count[0][0]].append(new_trace)
     return logs
+
+
+def project_dfg(dfg_sa_ea_actcount, groups):
+    dfgs = []
+    skippable = []
+    for gind, g in enumerate(groups):
+        start_activities = {}
+        end_activities = {}
+        activities = {}
+        paths_frequency = {}
+        for act in dfg_sa_ea_actcount.start_activities:
+            if act in g:
+                start_activities[act] = dfg_sa_ea_actcount.start_activities[act]
+        for act in dfg_sa_ea_actcount.end_activities:
+            if act in g:
+                end_activities[act] = dfg_sa_ea_actcount.end_activities[act]
+        for act in dfg_sa_ea_actcount.act_count:
+            if act in g:
+                activities[act] = dfg_sa_ea_actcount.act_count[act]
+        for arc in dfg_sa_ea_actcount.dfg:
+            if arc[0] in g and arc[1] in g:
+                paths_frequency[arc] = dfg_sa_ea_actcount.dfg[arc]
+        dfgs.append(im_utils.DfgSaEaActCount(paths_frequency, start_activities, end_activities, activities))
+        skippable.append(False)
+    return [dfgs, skippable]
