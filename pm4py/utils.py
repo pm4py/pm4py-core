@@ -1,8 +1,9 @@
-from typing import Optional, Tuple, Any
+import datetime
+from typing import Optional, Tuple, Any, Collection
 
 import pandas as pd
 
-from pm4py.objects.log.obj import EventLog, Trace
+from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import constants, xes_constants, pandas_utils
 
@@ -264,6 +265,47 @@ def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASS
     else:
         raise Exception("setting classifier is not defined for this class of objects")
 
+    return log
+
+
+def parse_event_log_string(traces: Collection[str], sep: str = ",",
+                           activity_key: str = xes_constants.DEFAULT_NAME_KEY,
+                           timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
+                           case_id_key : str = xes_constants.DEFAULT_TRACEID_KEY) -> EventLog:
+    """
+    Parse a collection of traces expressed as strings
+    (e.g., ["A,B,C,D", "A,C,B,D", "A,D"])
+    to an event log
+
+    Parameters
+    ------------------
+    traces
+        Collection of traces expressed as strings
+    sep
+        Separator used to split the activities of a string trace
+    activity_key
+        The attribute that should be used as activity
+    timestamp_key
+        The attribute that should be used as timestamp
+    case_id_key
+        The attribute that should be used as case identifier
+
+    Returns
+    -----------------
+    log
+        Event log
+    """
+    log = EventLog()
+    this_timest = 10000000
+    for index, trace in enumerate(traces):
+        activities = trace.split(sep)
+        trace = Trace()
+        trace.attributes[case_id_key] = str(index)
+        for act in activities:
+            event = Event({activity_key: act, timestamp_key: datetime.datetime.fromtimestamp(this_timest)})
+            trace.append(event)
+            this_timest = this_timest + 1
+        log.append(trace)
     return log
 
 
