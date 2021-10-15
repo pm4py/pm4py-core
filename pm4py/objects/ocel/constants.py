@@ -1,0 +1,36 @@
+PARAM_EVENT_ID = "param:event:id"
+PARAM_EVENT_ACTIVITY = "param:event:activity"
+PARAM_EVENT_TIMESTAMP = "param:event:timestamp"
+PARAM_OBJECT_ID = "param:object:id"
+PARAM_OBJECT_TYPE = "param:object:type"
+PARAM_OBJECT_TYPE_PREFIX_EXTENDED = "param:object:type:prefix:extended"
+
+DEFAULT_EVENT_ID = "ocel:eid"
+DEFAULT_EVENT_ACTIVITY = "ocel:activity"
+DEFAULT_EVENT_TIMESTAMP = "ocel:timestamp"
+DEFAULT_OBJECT_ID = "ocel:oid"
+DEFAULT_OBJECT_TYPE = "ocel:type"
+DEFAULT_OBJECT_TYPE_PREFIX_EXTENDED = "ocel:type:"
+
+OCEL_PREFIX = "ocel:"
+OCEL_EVENTS_KEY = "ocel:events"
+OCEL_OBJECTS_KEY = "ocel:objects"
+OCEL_ID_KEY = "ocel:id"
+OCEL_OMAP_KEY = "ocel:omap"
+OCEL_VMAP_KEY = "ocel:vmap"
+OCEL_OVMAP_KEY = "ocel:ovmap"
+OCEL_GLOBAL_LOG = "ocel:global-log"
+OCEL_GLOBAL_LOG_ATTRIBUTE_NAMES = "ocel:attribute-names"
+OCEL_GLOBAL_LOG_OBJECT_TYPES = "ocel:object-types"
+OCEL_GLOBAL_LOG_VERSION = "ocel:version"
+OCEL_GLOBAL_LOG_ORDERING = "ocel:ordering"
+OCEL_GLOBAL_EVENT = "ocel:global-event"
+OCEL_GLOBAL_OBJECT = "ocel:global-object"
+
+PARAM_INTERNAL_INDEX = "param:internal:index"
+DEFAULT_INTERNAL_INDEX = "@@index"
+
+DEFAULT_GLOBAL_EVENT = {"ocel:activity": "__INVALID__"}
+DEFAULT_GLOBAL_OBJECT = {"ocel:type": "__INVALID__"}
+DEFAULT_ORDERING = "timestamp"
+CURRENT_VERSION = "1.0"
