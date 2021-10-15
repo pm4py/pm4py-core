@@ -1,13 +1,14 @@
 import pkgutil
 from enum import Enum
 
-from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line, iterparse_mem_compressed
+from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line, iterparse_mem_compressed, iterparse_20
 
 
 class Variants(Enum):
     ITERPARSE = iterparse
     LINE_BY_LINE = line_by_line
     ITERPARSE_MEM_COMPRESSED = iterparse_mem_compressed
+    ITERPARSE_20 = iterparse_20
 
 
 if pkgutil.find_loader("lxml"):
