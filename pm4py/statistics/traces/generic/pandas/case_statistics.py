@@ -1,12 +1,15 @@
-from pm4py.util import xes_constants as xes
-from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
-from pm4py.statistics.traces.generic.common import case_duration as case_duration_commons
-from pm4py.util.constants import CASE_CONCEPT_NAME
-from pm4py.util import exec_utils, constants, pandas_utils
 from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple, List
+
 import pandas as pd
+
+from pm4py.statistics.traces.generic.common import case_duration as case_duration_commons
+from pm4py.util import exec_utils, constants, pandas_utils
 from pm4py.util import variants_util
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.util import xes_constants as xes
+from pm4py.util.business_hours import soj_time_business_hours_diff
+from pm4py.util.constants import CASE_CONCEPT_NAME
+from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 
 
 class Parameters(Enum):
@@ -22,8 +25,13 @@ class Parameters(Enum):
     SORT_ASCENDING = "sort_ascending"
     MAX_RET_CASES = "max_ret_cases"
 
+    BUSINESS_HOURS = "business_hours"
+    WORKTIMING = "worktiming"
+    WEEKENDS = "weekends"
 
-def get_variant_statistics(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[List[Dict[str, int]], List[Dict[List[str], int]]]:
+
+def get_variant_statistics(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[
+    List[Dict[str, int]], List[Dict[List[str], int]]]:
     """
     Get variants from a Pandas dataframe
 
@@ -49,7 +57,7 @@ def get_variant_statistics(df: pd.DataFrame, parameters: Optional[Dict[Union[str
 
     max_variants_to_return = exec_utils.get_param_value(Parameters.MAX_VARIANTS_TO_RETURN, parameters, None)
     variants_df = exec_utils.get_param_value(Parameters.VARIANTS_DF, parameters, get_variants_df(df,
-                                                                                                parameters=parameters))
+                                                                                                 parameters=parameters))
 
     variants_df = variants_df.reset_index()
     variants_list = pandas_utils.to_dict_records(variants_df.groupby("variant").agg("count").reset_index())
@@ -59,7 +67,8 @@ def get_variant_statistics(df: pd.DataFrame, parameters: Optional[Dict[Union[str
     return variants_list
 
 
-def get_variants_df_and_list(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[pd.DataFrame, Union[List[Dict[str, int]], List[Dict[List[str], int]]]]:
+def get_variants_df_and_list(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[
+    pd.DataFrame, Union[List[Dict[str, int]], List[Dict[List[str], int]]]]:
     """
     (Technical method) Provides variants_df and variants_list out of the box
 
@@ -94,7 +103,8 @@ def get_variants_df_and_list(df: pd.DataFrame, parameters: Optional[Dict[Union[s
     return variants_df, variants_list
 
 
-def get_cases_description(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Dict[str, Any]]:
+def get_cases_description(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[
+    str, Dict[str, Any]]:
     """
     Get a description of traces present in the Pandas dataframe
 
@@ -129,6 +139,10 @@ def get_cases_description(df: pd.DataFrame, parameters: Optional[Dict[Union[str,
     sort_ascending = exec_utils.get_param_value(Parameters.SORT_ASCENDING, parameters, True)
     max_ret_cases = exec_utils.get_param_value(Parameters.MAX_RET_CASES, parameters, None)
 
+    business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
+    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
+    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+
     grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
     # grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
     first_eve_df = grouped_df.first()
@@ -142,6 +156,15 @@ def get_cases_description(df: pd.DataFrame, parameters: Optional[Dict[Union[str,
     del stacked_df[case_id_glue + "_2"]
     stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
     stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
+
+    if business_hours:
+        stacked_df['caseDuration'] = stacked_df.apply(
+            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], worktiming,
+                                                   weekends), axis=1)
+    else:
+        stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
+        stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
+
     stacked_df[timestamp_key + "_2"] = stacked_df[timestamp_key + "_2"].astype('int64') // 10 ** 9
     stacked_df[timestamp_key] = stacked_df[timestamp_key].astype('int64') // 10 ** 9
     stacked_df = stacked_df.rename(columns={timestamp_key: 'startTime', timestamp_key + "_2": 'endTime'})
@@ -215,6 +238,10 @@ def get_variants_df_with_case_duration(df, parameters=None):
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
 
+    business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
+    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
+    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+
     grouped_df = df[[case_id_glue, timestamp_key, activity_key]].groupby(df[case_id_glue])
 
     df1 = None
@@ -236,13 +263,21 @@ def get_variants_df_with_case_duration(df, parameters=None):
     del stacked_df[case_id_glue + "_2"]
     stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
     stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
+    if business_hours:
+        stacked_df['caseDuration'] = stacked_df.apply(
+            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], worktiming,
+                                                   weekends), axis=1)
+    else:
+        stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
+        stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
     new_df = pd.concat([df1, stacked_df], axis=1)
     del df1
     del stacked_df
     return new_df
 
 
-def get_events(df: pd.DataFrame, case_id: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Dict[str, Any]]:
+def get_events(df: pd.DataFrame, case_id: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[
+    Dict[str, Any]]:
     """
     Get events belonging to the specified case
 
