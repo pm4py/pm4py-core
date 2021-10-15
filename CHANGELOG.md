@@ -1,5 +1,61 @@
 # PM4Py Changelog
 
+## PM4Py 2.2.15 (2021.10.15)
+
+### Fixed
+
+* 6e26b003
+    * fixed pandas performance DFG discovery
+* 92153184
+    * fixed parameters usage in simulation packages
+* ca6750d4
+    * fixed hardcoded parameters in dataframe_utils
+
+### Removed
+
+* 53af01f6
+    * removed strong dependencies on intervaltree and stringdist
+
+### Deprecated
+
+### Changed
+
+* dcebaf8e
+    * moving networkx dependency
+* f19762ac
+    * update IMD cut detection to use IM_CLEAN cuts (correct implementation of IM CUTS)
+* d5d0b49c
+    * change the visualization of initial and final markings
+* fcc4eeb0
+  * variant separator (between activities of the same variant) is now a pm4py constant, for increased compatibility with other tools, e.g., celonis.
+
+### Added
+
+* 32c396b8
+    * add sanity checks on event logs objects in simplified interface
+* 5b85d5dc
+    * add utility to parse a collection of traces in string form to an event log
+* a87a39c9
+    * add support for importing XES 2.0
+* b43d425b
+  * add artificial start and end events to event logs
+* d22dd490
+  * add initial support for OCEL 1.0
+* 829f091c & 56fca738
+  * support for business hours in the pandas dfg calculation
+  * support for business hours in the temporal profiles for pandas dataframes
+  * support for business hours in pandas df case duration
+  * support for business hours in filtering for case performance (pandas)
+  * support for calculating of sojourn time with different aggregation metrics
+* 841e3e55
+  * add etc conformance for dfg models
+* 04caa3d3
+  * add dfg filtering that keeps the dfg connected
+
+### Other
+
+---
+
 ## PM4Py 2.2.14 (2021.10.01)
 
 ### Fixed
@@ -8,6 +64,8 @@
     * bug fix paths filter for Pandas
 * c5ecaa4f
     * bug fix numeric attribute filter XES (custom case attribute glue)
+
+### Removed
 
 ### Deprecated
 
@@ -28,9 +86,9 @@
 * 0eeda19d
     * when visualizing a dfg without log attached to it, i.e., incoming edges are used to count
 * 03ee6b8e
-  * allow counting of occurrences of activities/open cases/resource activities in a given time range
+    * allow counting of occurrences of activities/open cases/resource activities in a given time range
 * ae5a3973
-  * add various new filtering functionalities
+    * add various new filtering functionalities
 
 ### Other
 

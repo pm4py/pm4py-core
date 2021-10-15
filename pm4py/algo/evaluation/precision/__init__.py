@@ -14,5 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.evaluation.precision import algorithm, variants, utils
-
+from pm4py.algo.evaluation.precision import algorithm, variants, utils, dfg

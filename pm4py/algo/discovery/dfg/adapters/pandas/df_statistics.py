@@ -15,12 +15,14 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.util import xes_constants, pandas_utils, constants
+from pm4py.util.business_hours import soj_time_business_hours_diff
 
 
 def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name",
                   start_timestamp_key=None, timestamp_key="time:timestamp", perf_aggregation_key="mean",
                   sort_caseid_required=True,
-                  sort_timestamp_along_case_id=True, keep_once_per_case=False, window=1):
+                  sort_timestamp_along_case_id=True, keep_once_per_case=False, window=1,
+                  business_hours=False, worktiming=None, weekends=None):
     """
     Get DFG graph from Pandas dataframe
 
@@ -92,13 +94,21 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     all_columns = list(all_columns - set([activity_key, activity_key + '_2']))
 
     if measure == "performance" or measure == "both":
-        # calculate the difference between the timestamps of two successive events
-        df_successive_rows[constants.DEFAULT_FLOW_TIME] = (
-                df_successive_rows[start_timestamp_key + '_2'] - df_successive_rows[timestamp_key]).astype(
-            'timedelta64[s]')
         # in the arc performance calculation, make sure to consider positive or null values
-        df_successive_rows[constants.DEFAULT_FLOW_TIME] = df_successive_rows[constants.DEFAULT_FLOW_TIME].apply(
-            lambda x: max(x, 0))
+        df_successive_rows[start_timestamp_key + '_2'] = df_successive_rows[[start_timestamp_key + '_2', timestamp_key]].max(axis=1)
+        # calculate the difference between the timestamps of two successive events
+        if business_hours:
+            if worktiming is None:
+                worktiming = [7, 17]
+            if weekends is None:
+                weekends = [6, 7]
+            df_successive_rows[constants.DEFAULT_FLOW_TIME] = df_successive_rows.apply(
+            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[start_timestamp_key + '_2'], worktiming,
+                                                   weekends), axis=1)
+        else:
+            df_successive_rows[constants.DEFAULT_FLOW_TIME] = (
+                    df_successive_rows[start_timestamp_key + '_2'] - df_successive_rows[timestamp_key]).astype(
+                'timedelta64[s]')
         # groups couple of attributes (directly follows relation, we can measure the frequency and the performance)
         directly_follows_grouping = df_successive_rows.groupby([activity_key, activity_key + '_2'])[
             constants.DEFAULT_FLOW_TIME]
@@ -142,7 +152,8 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
 def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="time:timestamp",
                                 case_id_glue="case:concept:name", activity_key="concept:name",
                                 sort_caseid_required=True,
-                                sort_timestamp_along_case_id=True, reduce_dataframe=True, keep_first_following=True):
+                                sort_timestamp_along_case_id=True, reduce_dataframe=True, keep_first_following=True,
+                                business_hours=False, worktiming=None, weekends=None):
     """
     Gets the partial order between events (of the same case) in a Pandas dataframe
 
@@ -195,10 +206,20 @@ def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="tim
 
     df = df.join(df_copy, rsuffix="_2").dropna()
     df = df[df[constants.DEFAULT_INDEX_KEY] < df[constants.DEFAULT_INDEX_KEY + "_2"]]
-    df = df[df[timestamp_key] <= df[start_timestamp_key + "_2"]]
+    df[start_timestamp_key + '_2'] = df[[start_timestamp_key + '_2', timestamp_key]].max(axis=1)
+
     df = df.reset_index()
 
-    df[constants.DEFAULT_FLOW_TIME] = (df[start_timestamp_key + "_2"] - df[timestamp_key]).astype('timedelta64[s]')
+    if business_hours:
+        if worktiming is None:
+            worktiming = [7, 17]
+        if weekends is None:
+            weekends = [6, 7]
+        df[constants.DEFAULT_FLOW_TIME] = df.apply(
+            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[start_timestamp_key + '_2'], worktiming,
+                                                   weekends), axis=1)
+    else:
+        df[constants.DEFAULT_FLOW_TIME] = (df[start_timestamp_key + "_2"] - df[timestamp_key]).astype('timedelta64[s]')
 
     if keep_first_following:
         df = df.groupby(constants.DEFAULT_INDEX_KEY).first().reset_index()

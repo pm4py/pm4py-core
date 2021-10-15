@@ -21,6 +21,7 @@ import deprecation
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.log.obj import EventLog
+from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 
@@ -176,3 +177,32 @@ def read_bpmn(file_path: str) -> BPMN:
     from pm4py.objects.bpmn.importer import importer as bpmn_importer
     bpmn_graph = bpmn_importer.apply(file_path)
     return bpmn_graph
+
+
+def read_ocel(file_path: str, objects_path: str = None) -> OCEL:
+    """
+    Reads an object-centric event log from a file
+    (to get an explanation of what an object-centric event log is,
+    you can refer to http://www.ocel-standard.org/).
+
+    Parameters
+    ----------------
+    file_path
+        Path from which the object-centric event log should be read.
+    objects_path
+        (Optional, only used in CSV exporter) Path from which the objects dataframe should be read.
+
+    Returns
+    ----------------
+    ocel
+        Object-centric event log
+    """
+    if file_path.lower().endswith("csv"):
+        from pm4py.objects.ocel.importer.csv import importer as csv_importer
+        return csv_importer.apply(file_path, objects_path=objects_path)
+    elif file_path.lower().endswith("jsonocel"):
+        from pm4py.objects.ocel.importer.jsonocel import importer as jsonocel_importer
+        return jsonocel_importer.apply(file_path)
+    elif file_path.lower().endswith("xmlocel"):
+        from pm4py.objects.ocel.importer.xmlocel import importer as xmlocel_importer
+        return xmlocel_importer.apply(file_path)

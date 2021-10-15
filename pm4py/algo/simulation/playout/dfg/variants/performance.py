@@ -32,6 +32,8 @@ class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     CASE_ARRIVAL_RATE = "case_arrival_rate"
     PERFORMANCE_DFG = "performance_dfg"
+    PARAM_ARTIFICIAL_START_ACTIVITY = constants.PARAM_ARTIFICIAL_START_ACTIVITY
+    PARAM_ARTIFICIAL_END_ACTIVITY = constants.PARAM_ARTIFICIAL_END_ACTIVITY
 
 
 def dict_based_choice(dct: Dict[str, float]) -> str:
@@ -102,13 +104,16 @@ def apply(frequency_dfg: Dict[Tuple[str, str], int], start_activities: Dict[str,
     performance_dfg = copy(exec_utils.get_param_value(Parameters.PERFORMANCE_DFG, parameters, None))
     frequency_dfg = copy(frequency_dfg)
 
+    artificial_start_activity = exec_utils.get_param_value(Parameters.PARAM_ARTIFICIAL_START_ACTIVITY, parameters, constants.DEFAULT_ARTIFICIAL_START_ACTIVITY)
+    artificial_end_activity = exec_utils.get_param_value(Parameters.PARAM_ARTIFICIAL_END_ACTIVITY, parameters, constants.DEFAULT_ARTIFICIAL_END_ACTIVITY)
+
     for sa in start_activities:
-        frequency_dfg[("▶", sa)] = start_activities[sa]
-        performance_dfg[("▶", sa)] = 0
+        frequency_dfg[(artificial_start_activity, sa)] = start_activities[sa]
+        performance_dfg[(artificial_start_activity, sa)] = 0
 
     for ea in end_activities:
-        frequency_dfg[(ea, "■")] = end_activities[ea]
-        performance_dfg[(ea, "■")] = 0
+        frequency_dfg[(ea, artificial_end_activity)] = end_activities[ea]
+        performance_dfg[(ea, artificial_end_activity)] = 0
 
     choices = {}
     for el in frequency_dfg:
@@ -128,10 +133,10 @@ def apply(frequency_dfg: Dict[Tuple[str, str], int], start_activities: Dict[str,
         curr_t = curr_st
         trace = Trace(attributes={case_id_key: str(i)})
         log.append(trace)
-        curr_act = "▶"
+        curr_act = artificial_start_activity
         while True:
             next_act = dict_based_choice(choices[curr_act])
-            if next_act == "■" or next_act is None:
+            if next_act == artificial_end_activity or next_act is None:
                 break
             perf = performance_dfg[(curr_act, next_act)]
             if type(perf) is dict:

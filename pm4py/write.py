@@ -20,8 +20,10 @@ import deprecation
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.log.obj import EventLog
+from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.utils import general_checks_classical_event_log
 
 
 def write_xes(log: EventLog, file_path: str) -> None:
@@ -39,6 +41,7 @@ def write_xes(log: EventLog, file_path: str) -> None:
     -------------
     void
     """
+    general_checks_classical_event_log(log)
     from pm4py.objects.log.exporter.xes import exporter as xes_exporter
     xes_exporter.apply(log, file_path)
 
@@ -176,3 +179,29 @@ def write_bpmn(bpmn_graph: BPMN, file_path: str, enable_layout: bool = True):
         bpmn_graph = layouter.apply(bpmn_graph)
     from pm4py.objects.bpmn.exporter import exporter
     exporter.apply(bpmn_graph, file_path)
+
+
+def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
+    """
+    Stores the content of the object-centric event log to a file.
+    Different formats are supported, including CSV (flat table), JSON-OCEL and XML-OCEL
+    (described in the site http://www.ocel-standard.org/).
+
+    Parameters
+    -----------------
+    ocel
+        Object-centric event log
+    file_path
+        Path at which the object-centric event log should be stored
+    objects_path
+        (Optional, only used in CSV exporter) Path where the objects dataframe should be stored
+    """
+    if file_path.lower().endswith("csv"):
+        from pm4py.objects.ocel.exporter.csv import exporter as csv_exporter
+        return csv_exporter.apply(ocel, file_path, objects_path=objects_path)
+    elif file_path.lower().endswith("jsonocel"):
+        from pm4py.objects.ocel.exporter.jsonocel import exporter as jsonocel_exporter
+        return jsonocel_exporter.apply(ocel, file_path)
+    elif file_path.lower().endswith("xmlocel"):
+        from pm4py.objects.ocel.exporter.xmlocel import exporter as xmlocel_exporter
+        return xmlocel_exporter.apply(ocel, file_path)

@@ -28,7 +28,7 @@ from pm4py.objects.log.obj import EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
-from pm4py.utils import get_properties, xes_constants
+from pm4py.utils import get_properties, xes_constants, general_checks_classical_event_log
 
 
 def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
@@ -49,6 +49,7 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
     end_activities
         End activities
     """
+    general_checks_classical_event_log(log)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.util import constants
@@ -75,10 +76,11 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
 
 
 def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
+    general_checks_classical_event_log(log)
     return discover_dfg(log)
 
 
-def discover_performance_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
+def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7]) -> Tuple[dict, dict, dict]:
     """
     Discovers a performance directly-follows graph from an event log
 
@@ -86,6 +88,12 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, 
     ---------------
     log
         Event log
+    business_hours
+        Enables/disables the computation based on the business hours (default: False)
+    worktiming
+        (If the business hours are enabled) The hour range in which the resources of the log are working (default: 7 to 17)
+    weekends
+        (If the business hours are enabled) The weekends days (default: Saturday (6), Sunday (7))
 
     Returns
     ---------------
@@ -96,6 +104,7 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, 
     end_activities
         End activities
     """
+    general_checks_classical_event_log(log)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.util import constants
@@ -104,7 +113,8 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, 
         activity_key = properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in properties else xes_constants.DEFAULT_NAME_KEY
         timestamp_key = properties[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in properties else xes_constants.DEFAULT_TIMESTAMP_KEY
         case_id_key = properties[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in properties else constants.CASE_CONCEPT_NAME
-        dfg = get_dfg_graph(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_glue=case_id_key, measure="performance")
+        dfg = get_dfg_graph(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_glue=case_id_key, measure="performance", perf_aggregation_key="all",
+                            business_hours=business_hours, worktiming=worktiming, weekends=weekends)
         from pm4py.statistics.start_activities.pandas import get as start_activities_module
         from pm4py.statistics.end_activities.pandas import get as end_activities_module
         start_activities = start_activities_module.get_start_activities(log, parameters=properties)
@@ -113,6 +123,9 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, 
         from pm4py.algo.discovery.dfg.variants import performance as dfg_discovery
         properties = get_properties(log)
         properties[dfg_discovery.Parameters.AGGREGATION_MEASURE] = "all"
+        properties[dfg_discovery.Parameters.BUSINESS_HOURS] = business_hours
+        properties[dfg_discovery.Parameters.WORKTIMING] = worktiming
+        properties[dfg_discovery.Parameters.WEEKENDS] = weekends
         dfg = dfg_discovery.apply(log, parameters=properties)
         from pm4py.statistics.start_activities.log import get as start_activities_module
         from pm4py.statistics.end_activities.log import get as end_activities_module
@@ -139,6 +152,7 @@ def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame]) -> Tuple[PetriN
     final_marking
         Final marking
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC, parameters=get_properties(log))
 
@@ -161,6 +175,7 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame]) -> Tuple[P
     final_marking
         Final marking
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS, parameters=get_properties(log))
 
@@ -186,6 +201,7 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_thres
     final_marking
         Final marking
     """
+    general_checks_classical_event_log(log)
     pt = discover_process_tree_inductive(log, noise_threshold)
     from pm4py.convert import convert_to_petri_net
     return convert_to_petri_net(pt)
@@ -217,6 +233,7 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
     final_marking
         Final marking
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     heu_parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
     parameters = get_properties(log)
@@ -243,6 +260,7 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
     process_tree
         Process tree object
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.discovery.inductive import algorithm as inductive_miner
     parameters = get_properties(log)
     parameters[inductive_miner.Variants.IM_CLEAN.value.Parameters.NOISE_THRESHOLD] = noise_threshold
@@ -268,6 +286,7 @@ def discover_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
     process_tree
         Process tree object
     """
+    general_checks_classical_event_log(log)
     return discover_process_tree_inductive(log, noise_threshold)
 
 
@@ -293,6 +312,7 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
     heu_net
         Heuristics net
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     heu_parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
     parameters = get_properties(log)
@@ -318,6 +338,7 @@ def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream]) -
         -------
             dict mapping an activity to its self-distance, if it exists, otherwise it is not part of the dict.
         '''
+    general_checks_classical_event_log(log)
     from pm4py.algo.discovery.minimum_self_distance import algorithm as msd
     return msd.apply(log, parameters=get_properties(log))
 
@@ -350,6 +371,7 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame]) -> Dic
     eventually_follows_graph
         Dictionary of tuples of activities that eventually follows each other; along with the number of occurrences
     """
+    general_checks_classical_event_log(log)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.eventually_follows.pandas import get
@@ -375,6 +397,7 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
         bpmn_diagram
             BPMN diagram
         """
+    general_checks_classical_event_log(log)
     pt = discover_process_tree_inductive(log, noise_threshold)
     from pm4py.convert import convert_to_bpmn
     return convert_to_bpmn(pt)
