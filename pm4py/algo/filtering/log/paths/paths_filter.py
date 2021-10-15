@@ -5,7 +5,7 @@ from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes
-from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY, DEFAULT_VARIANT_SEP
 import deprecation
 import sys
 
@@ -127,7 +127,7 @@ def get_paths_from_log(log, attribute_key="concept:name"):
     for trace in log:
         for i in range(0, len(trace) - 1):
             if attribute_key in trace[i] and attribute_key in trace[i + 1]:
-                path = trace[i][attribute_key] + "," + trace[i + 1][attribute_key]
+                path = trace[i][attribute_key] + DEFAULT_VARIANT_SEP + trace[i + 1][attribute_key]
                 if path not in paths:
                     paths[path] = 0
                 paths[path] = paths[path] + 1
@@ -209,7 +209,7 @@ def filter_log_by_paths(log, paths, variants, vc, threshold, attribute_key="conc
     fvft = variants[vc[0][0]][0]
     fvp = set()
     for i in range(0, len(fvft) - 1):
-        path = fvft[i][attribute_key] + "," + fvft[i + 1][attribute_key]
+        path = fvft[i][attribute_key] + DEFAULT_VARIANT_SEP + fvft[i + 1][attribute_key]
         fvp.add(path)
     for trace in log:
         new_trace = Trace()
@@ -221,7 +221,7 @@ def filter_log_by_paths(log, paths, variants, vc, threshold, attribute_key="conc
                 if j >= len(trace):
                     break
                 if attribute_key in trace[j] and attribute_key in trace[j + 1]:
-                    path = trace[j][attribute_key] + "," + trace[j + 1][attribute_key]
+                    path = trace[j][attribute_key] + DEFAULT_VARIANT_SEP + trace[j + 1][attribute_key]
                     if path in paths:
                         if path in fvp or paths[path] >= threshold:
                             new_trace.append(trace[j])

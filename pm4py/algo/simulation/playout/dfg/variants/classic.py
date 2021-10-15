@@ -227,7 +227,7 @@ def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end
         # returns the variants instead of the log
         variants = []
         for p, tr in final_traces:
-            variants.append({"variant": ",".join(tr), "count": math.ceil(-p * max_no_variants)})
+            variants.append({"variant": constants.DEFAULT_VARIANT_SEP.join(tr), "count": math.ceil(-p * max_no_variants)})
         return variants
     else:
         event_log = EventLog()

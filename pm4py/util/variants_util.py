@@ -60,6 +60,6 @@ def get_variant_from_trace(trace, parameters=None):
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
 
     if VARIANT_SPECIFICATION == VariantsSpecifications.STRING:
-        return ",".join([x[activity_key] for x in trace])
+        return constants.DEFAULT_VARIANT_SEP.join([x[activity_key] for x in trace])
     elif VARIANT_SPECIFICATION == VariantsSpecifications.LIST:
         return tuple([x[activity_key] for x in trace])

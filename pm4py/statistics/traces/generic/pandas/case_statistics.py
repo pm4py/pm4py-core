@@ -179,7 +179,7 @@ def get_variants_df(df, parameters=None):
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
 
     if variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.STRING:
-        new_df = df.groupby(case_id_glue)[activity_key].agg(lambda col: ",".join(pd.Series.to_list(col))).to_frame()
+        new_df = df.groupby(case_id_glue)[activity_key].agg(lambda col: constants.DEFAULT_VARIANT_SEP.join(pd.Series.to_list(col))).to_frame()
     elif variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.LIST:
         new_df = df.groupby(case_id_glue)[activity_key].agg(lambda col: tuple(pd.Series.to_list(col))).to_frame()
 
@@ -219,7 +219,7 @@ def get_variants_df_with_case_duration(df, parameters=None):
 
     df1 = None
     if variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.STRING:
-        df1 = grouped_df[activity_key].agg(lambda col: ",".join(pd.Series.to_list(col))).to_frame()
+        df1 = grouped_df[activity_key].agg(lambda col: constants.DEFAULT_VARIANT_SEP.join(pd.Series.to_list(col))).to_frame()
     elif variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.LIST:
         df1 = grouped_df[activity_key].agg(lambda col: tuple(pd.Series.to_list(col))).to_frame()
     new_cols = list(df1.columns)
