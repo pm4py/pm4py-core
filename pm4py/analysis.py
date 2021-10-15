@@ -1,7 +1,11 @@
-from typing import List, Optional, Tuple, Dict
+from typing import List, Optional, Tuple, Dict, Union
 
-from pm4py.objects.log.obj import Trace
+from pm4py.objects.log.obj import Trace, EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.utils import get_properties
+from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
+
+import pandas as pd
 
 
 def construct_synchronous_product_net(trace: Trace, petri_net: PetriNet, initial_marking: Marking,
@@ -139,3 +143,28 @@ def check_soundness(petri_net: PetriNet, initial_marking: Marking,
     """
     from pm4py.algo.analysis.woflan import algorithm as woflan
     return woflan.apply(petri_net, initial_marking, final_marking)
+
+
+def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame]) -> Union[EventLog, pd.DataFrame]:
+    """
+    Inserts the artificial start/end activities in an event log / Pandas dataframe
+
+    Parameters
+    ------------------
+    log
+        Event log / Pandas dataframe
+
+    Returns
+    ------------------
+    log
+        Event log / Pandas dataframe with artificial start / end activities
+    """
+    properties = get_properties(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.objects.log.util import dataframe_utils
+        return dataframe_utils.insert_artificial_start_end(log, parameters=properties)
+    else:
+        from pm4py.objects.log.util import artificial
+        return artificial.insert_artificial_start_end(log, parameters=properties)
+
