@@ -3,7 +3,7 @@ import time
 
 from pm4py import util, objects, statistics, algo, visualization
 from pm4py.analysis import check_soundness, solve_marking_equation, solve_extended_marking_equation, \
-    construct_synchronous_product_net
+    construct_synchronous_product_net, insert_artificial_start_end
 from pm4py.conformance import conformance_diagnostics_token_based_replay, conformance_diagnostics_alignments, \
     fitness_token_based_replay, \
     fitness_alignments, precision_token_based_replay, \
