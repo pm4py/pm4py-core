@@ -25,7 +25,7 @@ from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
 from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
     __maintainer__, __maintainer_email__
 from pm4py.read import read_xes, read_petri_net, read_process_tree, read_dfg, \
-    read_bpmn, read_pnml, read_ptml
+    read_bpmn, read_pnml, read_ptml, read_ocel
 from pm4py.sim import play_out, generate_process_tree
 from pm4py.stats import get_start_activities, get_end_activities, get_event_attributes, get_attributes, get_event_attribute_values, get_attribute_values, get_variants, \
     get_trace_attributes, get_variants_as_tuples, get_trace_attribute_values, get_case_arrival_average, \
@@ -37,9 +37,10 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
     save_vis_process_tree, \
     view_heuristics_net, save_vis_heuristics_net, view_bpmn, save_vis_bpmn, view_sna, save_vis_sna,\
     view_dotted_chart, save_vis_dotted_chart, view_performance_spectrum, save_vis_performance_spectrum, view_case_duration_graph, view_events_per_time_graph, save_vis_case_duration_graph, save_vis_events_per_time_graph, view_events_distribution_graph, save_vis_events_distribution_graph, view_performance_dfg, save_vis_performance_dfg
-from pm4py.write import write_xes, write_petri_net, write_process_tree, write_dfg, write_bpmn, write_pnml, write_ptml
+from pm4py.write import write_xes, write_petri_net, write_process_tree, write_dfg, write_bpmn, write_pnml, write_ptml, write_ocel
 from pm4py.org import discover_handover_of_work_network, discover_activity_based_resource_similarity, discover_subcontracting_network, discover_working_together_network, discover_organizational_roles
 from pm4py.ml import split_train_test, get_prefixes_from_log
+from pm4py.ocel import ocel_get_object_types, ocel_get_attribute_names, ocel_flattening
 
 time.clock = time.process_time
 
