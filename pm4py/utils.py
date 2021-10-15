@@ -5,6 +5,7 @@ import pandas as pd
 
 from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants, xes_constants, pandas_utils
 
 
@@ -319,4 +320,6 @@ def general_checks_classical_event_log(log):
     log
         Event log
     """
+    if type(log) is OCEL:
+        raise Exception("the method cannot be applied on object-centric event logs!")
     return True
