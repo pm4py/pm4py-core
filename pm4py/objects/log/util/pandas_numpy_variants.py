@@ -75,7 +75,7 @@ def apply(dataframe: pd.DataFrame, parameters=None):
         variants[acts] += 1
 
     if variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.STRING:
-        variants = {",".join(x): y for x, y in variants.items()}
+        variants = {constants.DEFAULT_VARIANT_SEP.join(x): y for x, y in variants.items()}
     else:
         variants = {x: y for x, y in variants.items()}
 

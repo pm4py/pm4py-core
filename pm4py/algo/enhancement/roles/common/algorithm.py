@@ -197,7 +197,7 @@ def aggregate_roles_iteration(roles, parameters=None):
         for j in range(i + 1, len(roles)):
             sim.append((i, j, roles[i][0], roles[j][0], -find_role_similarity(roles, i, j, parameters=parameters)))
 
-    sim = sorted(sim, key=lambda x: (x[-1], ",".join(x[-3]), ",".join(x[-2])))
+    sim = sorted(sim, key=lambda x: (x[-1], constants.DEFAULT_VARIANT_SEP.join(x[-3]), constants.DEFAULT_VARIANT_SEP.join(x[-2])))
 
     found_feasible = False
 
@@ -216,7 +216,7 @@ def aggregate_roles_iteration(roles, parameters=None):
 
             roles.append([total_set_act, total_set_res])
 
-            roles = sorted(roles, key=lambda x: ",".join(x[0]))
+            roles = sorted(roles, key=lambda x: constants.DEFAULT_VARIANT_SEP.join(x[0]))
 
             found_feasible = True
 
@@ -281,7 +281,7 @@ def get_initial_roles(res_act_couples, parameters=None):
     for act in roles0:
         roles.append([[act], roles0[act]])
 
-    roles = sorted(roles, key=lambda x: ",".join(x[0]))
+    roles = sorted(roles, key=lambda x: constants.DEFAULT_VARIANT_SEP.join(x[0]))
 
     roles = aggregate_roles_algorithm(roles, parameters=parameters)
 

@@ -25,7 +25,7 @@ from sklearn.manifold import LocallyLinearEmbedding
 
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log.obj import EventLog
-from pm4py.objects.log.util import get_log_representation
+from pm4py.algo.transformation.log_to_features import algorithm as log_to_features
 from pm4py.objects.log.util import sorting
 from pm4py.util import constants, xes_constants
 from pm4py.util import exec_utils
@@ -96,8 +96,7 @@ def apply(log: EventLog, parameters: Optional[Dict[str, Any]] = None) -> Tuple[L
     log = sorting.sort_timestamp(log, timestamp_key)
 
     x = [trace[0][timestamp_key] for trace in log]
-    data, feature_names = get_log_representation.get_representation(log, [], [activity_key], [], [],
-                                                                    str_evsucc_attr=[activity_key])
+    data, feature_names = log_to_features.apply(log, parameters={"str_ev_attr": [activity_key], "str_evsucc_attr": [activity_key]})
 
     tsne = LocallyLinearEmbedding(n_components=1)
     data = tsne.fit_transform(data)

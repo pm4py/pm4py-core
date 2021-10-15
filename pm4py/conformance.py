@@ -24,7 +24,7 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from collections import Counter
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import xes_constants
-from pm4py.utils import get_properties
+from pm4py.utils import get_properties, general_checks_classical_event_log
 
 
 @deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
@@ -52,6 +52,7 @@ def conformance_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Marking
     replay_results
         A list of replay results for each trace of the log
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
     return token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=get_properties(log))
 
@@ -78,6 +79,7 @@ def conformance_diagnostics_token_based_replay(log: EventLog, petri_net: PetriNe
     replay_results
         A list of replay results for each trace of the log (in the same order as the traces in the event log)
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
     return token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=get_properties(log))
 
@@ -101,6 +103,7 @@ def conformance_diagnostics_alignments(log: EventLog, *args, multi_processing: b
     aligned_traces
         A list of alignments for each trace of the log (in the same order as the traces in the event log)
     """
+    general_checks_classical_event_log(log)
     if len(args) == 3:
         if type(args[0]) is PetriNet:
             # Petri net alignments
@@ -156,6 +159,7 @@ def conformance_alignments(log: EventLog, petri_net: PetriNet, initial_marking: 
     aligned_traces
         A list of alignments for each trace of the log
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
     return alignments.apply(log, petri_net, initial_marking, final_marking, parameters=get_properties(log))
 
@@ -184,6 +188,7 @@ def fitness_token_based_replay(log: EventLog, petri_net: PetriNet, initial_marki
     fitness_dictionary
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.TOKEN_BASED, parameters=get_properties(log))
@@ -214,6 +219,7 @@ def evaluate_fitness_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Ma
     fitness_dictionary
         Fitness dictionary (from TBR)
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.TOKEN_BASED, parameters=get_properties(log))
@@ -242,6 +248,7 @@ def fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Mark
     fitness_dictionary
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
     parameters = get_properties(log)
     parameters["multiprocessing"] = multi_processing
@@ -273,6 +280,7 @@ def evaluate_fitness_alignments(log: EventLog, petri_net: PetriNet, initial_mark
     fitness_dictionary
         Fitness dictionary (from alignments)
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.ALIGNMENT_BASED, parameters=get_properties(log))
@@ -299,6 +307,7 @@ def precision_token_based_replay(log: EventLog, petri_net: PetriNet, initial_mar
     precision
         float representing the precision value
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN, parameters=get_properties(log))
@@ -328,6 +337,7 @@ def evaluate_precision_tbr(log: EventLog, petri_net: PetriNet, initial_marking: 
     precision
         float representing the precision value
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN, parameters=get_properties(log))
@@ -356,6 +366,7 @@ def precision_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Ma
     precision
         float representing the precision value
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
     parameters = get_properties(log)
     parameters["multiprocessing"] = multi_processing
@@ -388,6 +399,7 @@ def evaluate_precision_alignments(log: EventLog, petri_net: PetriNet, initial_ma
     precision
         float representing the precision value
     """
+    general_checks_classical_event_log(log)
     from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE, parameters=get_properties(log))

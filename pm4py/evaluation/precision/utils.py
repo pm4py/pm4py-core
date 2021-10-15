@@ -16,7 +16,7 @@
 '''
 from collections import Counter
 from pm4py.objects.log.obj import EventLog, Event, Trace
-from pm4py.util import xes_constants as xes_util
+from pm4py.util import xes_constants as xes_util, constants
 import heapq
 from pm4py.objects.petri_net.utils.petri_utils import decorate_places_preset_trans, decorate_transitions_prepostset
 from pm4py.objects.petri_net.utils import align_utils as utils
@@ -116,7 +116,7 @@ def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
     for trace in log:
         for i in range(1, len(trace)):
             red_trace = trace[0:i]
-            prefix = ",".join([x[activity_key] for x in red_trace])
+            prefix = constants.DEFAULT_VARIANT_SEP.join([x[activity_key] for x in red_trace])
             next_activity = trace[i][activity_key]
             if prefix not in prefixes:
                 prefixes[prefix] = set()
@@ -139,7 +139,7 @@ def form_fake_log(prefixes_keys, activity_key=xes_util.DEFAULT_NAME_KEY):
     fake_log = EventLog()
     for prefix in prefixes_keys:
         trace = Trace()
-        prefix_activities = prefix.split(",")
+        prefix_activities = prefix.split(constants.DEFAULT_VARIANT_SEP)
         for activity in prefix_activities:
             event = Event()
             event[activity_key] = activity

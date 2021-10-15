@@ -31,6 +31,9 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     ZETA = "zeta"
+    BUSINESS_HOURS = "business_hours"
+    WORKTIMING = "worktiming"
+    WEEKENDS = "weekends"
 
 
 def apply(df: pd.DataFrame, temporal_profile: typing.TemporalProfile,
@@ -77,6 +80,10 @@ def apply(df: pd.DataFrame, temporal_profile: typing.TemporalProfile,
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     zeta = exec_utils.get_param_value(Parameters.ZETA, parameters, 6.0)
 
+    business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
+    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
+    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+
     temporal_profile = pd.DataFrame([{activity_key: x[0], activity_key + "_2": x[1], "@@min": y[0] - zeta * y[1],
                                       "@@max": y[0] + zeta * y[1], "@@mean": y[0], "@@std": y[1]} for x, y in
                                      temporal_profile.items()])
@@ -85,7 +92,8 @@ def apply(df: pd.DataFrame, temporal_profile: typing.TemporalProfile,
     ret = [[] for c in cases]
     efg = get_partial_order_dataframe(df, activity_key=activity_key, timestamp_key=timestamp_key,
                                       start_timestamp_key=start_timestamp_key, case_id_glue=case_id_key,
-                                      keep_first_following=False)
+                                      keep_first_following=False, business_hours=business_hours, worktiming=worktiming,
+                                      weekends=weekends)
     efg = efg[[case_id_key, activity_key, activity_key + "_2", "@@flow_time"]]
     efg = efg.merge(temporal_profile, on=[activity_key, activity_key + "_2"])
     efg = efg[(efg["@@flow_time"] < efg["@@min"]) | (efg["@@flow_time"] > efg["@@max"])][

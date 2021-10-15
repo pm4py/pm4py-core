@@ -22,11 +22,16 @@ from copy import copy
 import deprecation
 from typing import Optional, Dict, Any, Union, Tuple, List
 import pandas as pd
+from pm4py.util.business_hours import soj_time_business_hours_diff
 
 
 class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+
+    BUSINESS_HOURS = "business_hours"
+    WORKTIMING = "worktiming"
+    WEEKENDS = "weekends"
 
 
 def filter_on_ncases(df: pd.DataFrame, case_id_glue: str = constants.CASE_CONCEPT_NAME, max_no_cases: int = 1000):
@@ -88,7 +93,8 @@ def filter_on_case_size(df0: pd.DataFrame, case_id_glue: str = "case:concept:nam
 
 def filter_on_case_performance(df: pd.DataFrame, case_id_glue: str = constants.CASE_CONCEPT_NAME,
                                timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
-                               min_case_performance: float = 0, max_case_performance: float = 10000000000) -> pd.DataFrame:
+                               min_case_performance: float = 0, max_case_performance: float = 10000000000,
+                               business_hours=False, worktiming=[7, 17], weekends=[6, 7]) -> pd.DataFrame:
     """
     Filter a dataframe on case performance
 
@@ -115,8 +121,13 @@ def filter_on_case_performance(df: pd.DataFrame, case_id_glue: str = constants.C
     end_events = grouped_df.last()
     end_events.columns = [str(col) + '_2' for col in end_events.columns]
     stacked_df = pd.concat([start_events, end_events], axis=1)
-    stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
-    stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
+    if business_hours:
+        stacked_df['caseDuration'] = stacked_df.apply(
+            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], worktiming,
+                                                   weekends), axis=1)
+    else:
+        stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
+        stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
     stacked_df = stacked_df[stacked_df['caseDuration'] <= max_case_performance]
     stacked_df = stacked_df[stacked_df['caseDuration'] >= min_case_performance]
     i1 = df.set_index(case_id_glue).index
@@ -132,9 +143,14 @@ def filter_case_performance(df: pd.DataFrame, min_case_performance: float = 0, m
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     case_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
+    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
+    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+
     return filter_on_case_performance(df, min_case_performance=min_case_performance,
                                       max_case_performance=max_case_performance, timestamp_key=timestamp_key,
-                                      case_id_glue=case_glue)
+                                      case_id_glue=case_glue, business_hours=business_hours, worktiming=worktiming,
+                                      weekends=weekends)
 
 
 def apply(df, parameters=None):

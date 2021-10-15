@@ -4,6 +4,7 @@ cvxopt; python_version < "3.10"
 cycler
 decorator
 deprecation
+fonttools
 graphviz
 intervaltree
 ipython
@@ -18,9 +19,9 @@ matplotlib
 matplotlib-inline
 mpmath
 networkx
-numpy>=1.19.5
+numpy
 packaging
-pandas>=1.1.5
+pandas
 parso
 pickleshare
 pillow
@@ -35,11 +36,13 @@ pyvis
 scikit-learn
 scipy
 setuptools
+setuptools-scm
 six
 sortedcontainers
 stringdist
 sympy
 threadpoolctl
+tomli
 tqdm
 traitlets
 wcwidth

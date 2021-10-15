@@ -14,5 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.discovery.inductive.variants.im_clean import algorithm, d_types, utils, cuts, fall_throughs
-
+from pm4py.algo.discovery.inductive.variants.im_clean import algorithm, d_types, utils, cuts, fall_throughs, log_im

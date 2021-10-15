@@ -18,6 +18,7 @@ from typing import Union, Tuple
 import pandas as pd
 from pm4py.objects.log.obj import EventLog
 from pm4py.util import constants
+from pm4py.utils import general_checks_classical_event_log
 import random
 
 
@@ -40,6 +41,7 @@ def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float
     test_log
         Test event log
     """
+    general_checks_classical_event_log(log)
     if type(log) is pd.DataFrame:
         cases = set(log[constants.CASE_CONCEPT_NAME].unique())
         train_cases = set()
@@ -76,6 +78,7 @@ def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int) -> Un
         - if a trace has lower or identical length, it is included as-is
         - if a trace has greater length, it is cut
     """
+    general_checks_classical_event_log(log)
     if type(log) is pd.DataFrame:
         from pm4py.util import pandas_utils
         log = pandas_utils.insert_ev_in_tr_index(log)

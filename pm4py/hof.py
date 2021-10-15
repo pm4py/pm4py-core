@@ -18,6 +18,7 @@ import warnings
 from typing import Callable, Any, Union
 
 from pm4py.objects.log import obj as log_inst
+from pm4py.utils import general_checks_classical_event_log
 
 
 def filter_log(f: Callable[[Any], bool], log: log_inst.EventLog) -> Union[log_inst.EventLog, log_inst.EventStream]:
@@ -37,6 +38,7 @@ def filter_log(f: Callable[[Any], bool], log: log_inst.EventLog) -> Union[log_in
         filtered event log if object provided is correct; original log if not correct
 
     """
+    general_checks_classical_event_log(log)
     if isinstance(log, log_inst.EventLog):
         return log_inst.EventLog(list(filter(f, log)), attributes=log.attributes, classifiers=log.classifiers,
                                  omni_present=log.omni_present, extensions=log.extensions, properties=log.properties)
@@ -87,6 +89,7 @@ def sort_log(log: log_inst.EventLog, key, reverse: bool = False) -> Union[log_in
     -------
         sorted event log if object provided is correct; original log if not correct
     """
+    general_checks_classical_event_log(log)
     if isinstance(log, log_inst.EventLog):
         return log_inst.EventLog(sorted(log, key=key, reverse=reverse), attributes=log.attributes,
                                  classifiers=log.classifiers, omni_present=log.omni_present, extensions=log.extensions, properties=log.properties)

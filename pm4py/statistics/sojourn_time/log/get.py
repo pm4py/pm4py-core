@@ -78,7 +78,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
                                                      xes_constants.DEFAULT_TIMESTAMP_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
-    aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, 
+    aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE,
                                                      parameters, "mean")
 
     durations_dict = {}
@@ -109,6 +109,6 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
         elif aggregation_measure == "sum":
             durations_dict[act] = sum(durations_dict[act])
         else:
-            durations_dict[act] = mean(durations_dict[act])  
+            durations_dict[act] = mean(durations_dict[act])
 
     return durations_dict

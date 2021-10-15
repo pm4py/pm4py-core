@@ -204,7 +204,7 @@ def get_prefix_matrix_from_var_str(var_str, activities, parameters=None):
     skip_last = parameters[SKIP_LAST] if SKIP_LAST in parameters else False
     prefix_mat = []
     this_prefix_repr = [0] * len(activities)
-    variant = var_str.split(",")
+    variant = var_str.split(constants.DEFAULT_VARIANT_SEP)
     for index, act in enumerate(variant):
         if skip_last and index == len(variant) - 1:
             break

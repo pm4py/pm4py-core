@@ -18,7 +18,7 @@ PARAMETER_CONSTANT_ACTIVITY_KEY = 'pm4py:param:activity_key'
 PARAMETER_CONSTANT_ATTRIBUTE_KEY = "pm4py:param:attribute_key"
 PARAMETER_CONSTANT_TIMESTAMP_KEY = 'pm4py:param:timestamp_key'
 PARAMETER_CONSTANT_START_TIMESTAMP_KEY = 'pm4py:param:start_timestamp_key'
-PARAMETER_CONSTANT_CASEID_KEY = 'case_id_glue'
+PARAMETER_CONSTANT_CASEID_KEY = 'pm4py:param:case_id_key'
 PARAMETER_CONSTANT_RESOURCE_KEY = 'pm4py:param:resource_key'
 PARAMETER_CONSTANT_TRANSITION_KEY = 'pm4py:param:transition_key'
 PARAMETER_CONSTANT_GROUP_KEY = 'pm4py:param:group_key'
@@ -49,6 +49,11 @@ DEFAULT_FLOW_TIME = "@@flow_time"
 DEFAULT_CLASSIFIER_ATTRIBUTE = "@@classifier"
 
 DEFAULT_ENCODING = "utf-8"
+
+PARAM_ARTIFICIAL_START_ACTIVITY = "pm4py:param:art_start_act"
+PARAM_ARTIFICIAL_END_ACTIVITY = "pm4py:param:art_end_act"
+DEFAULT_ARTIFICIAL_START_ACTIVITY = "▶"
+DEFAULT_ARTIFICIAL_END_ACTIVITY = "■"
 
 from enum import Enum
 

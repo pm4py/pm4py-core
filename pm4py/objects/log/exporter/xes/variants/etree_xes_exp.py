@@ -185,7 +185,7 @@ def __export_attributes_element(log_element, xml_element):
     if hasattr(log_element, "attributes"):
         log_element = log_element.attributes
 
-    if isinstance(log_element, list):
+    if isinstance(log_element, list) or isinstance(log_element, set):
         items = log_element
     else:
         items = log_element.items()

@@ -67,7 +67,7 @@ def occu_var_suc(var_list, parameters=None):
 
     binarize = exec_utils.get_param_value(Parameters.BINARIZE, parameters, True)
 
-    comb_list = [var_list[i] + ',' + var_list[i + 1] for i in range(len(var_list) - 1)]
+    comb_list = [var_list[i] + constants.DEFAULT_VARIANT_SEP + var_list[i + 1] for i in range(len(var_list) - 1)]
     result = Counter(comb_list)  # count number of occurrence of each element
     df = pd.DataFrame.from_dict(dict(result), orient='index', columns=['freq'])
     df = df.reset_index().rename(columns={'index': 'direct_suc'})

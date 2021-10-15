@@ -74,7 +74,7 @@ def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Union[str, Paramete
                                                      xes_constants.DEFAULT_TIMESTAMP_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
-    aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, 
+    aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE,
                                                      parameters, "mean")
 
     if business_hours:

@@ -1,0 +1,321 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<log>
+  <global scope="event">
+    <string key="ocel:activity" value="__INVALID__"/>
+  </global>
+  <global scope="object">
+    <string key="ocel:type" value="__INVALID__"/>
+  </global>
+  <global scope="log">
+    <list key="attribute-names"/>
+    <list key="object-types">
+      <string key="object-type" value="order"/>
+      <string key="object-type" value="element"/>
+      <string key="object-type" value="delivery"/>
+    </list>
+    <string key="version" value="1.0"/>
+    <string key="ordering" value="timestamp"/>
+  </global>
+  <events>
+    <event>
+      <string key="id" value="e1"/>
+      <date key="timestamp" value="1980-01-01T00:00:00"/>
+      <string key="activity" value="Create Order"/>
+      <list key="omap">
+        <string key="object-id" value="i4"/>
+        <string key="object-id" value="i1"/>
+        <string key="object-id" value="o1"/>
+        <string key="object-id" value="i3"/>
+        <string key="object-id" value="i2"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e2"/>
+      <date key="timestamp" value="1980-01-02T00:00:00"/>
+      <string key="activity" value="Confirm Order"/>
+      <list key="omap">
+        <string key="object-id" value="o1"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e3"/>
+      <date key="timestamp" value="1980-01-03T00:00:00"/>
+      <string key="activity" value="Item out of Stock"/>
+      <list key="omap">
+        <string key="object-id" value="i3"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e4"/>
+      <date key="timestamp" value="1980-01-04T00:00:00"/>
+      <string key="activity" value="Create Delivery"/>
+      <list key="omap">
+        <string key="object-id" value="d1"/>
+        <string key="object-id" value="i2"/>
+        <string key="object-id" value="i1"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e5"/>
+      <date key="timestamp" value="1980-01-05T00:00:00"/>
+      <string key="activity" value="Item back in Stock"/>
+      <list key="omap">
+        <string key="object-id" value="i3"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e6"/>
+      <date key="timestamp" value="1980-01-08T00:00:00"/>
+      <string key="activity" value="Delivery Failed"/>
+      <list key="omap">
+        <string key="object-id" value="d1"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e7"/>
+      <date key="timestamp" value="1980-01-09T00:00:00"/>
+      <string key="activity" value="Retry Delivery"/>
+      <list key="omap">
+        <string key="object-id" value="d1"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e8"/>
+      <date key="timestamp" value="1980-01-10T00:00:00"/>
+      <string key="activity" value="Delivery Successful"/>
+      <list key="omap">
+        <string key="object-id" value="d1"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e9"/>
+      <date key="timestamp" value="1980-01-11T00:00:00"/>
+      <string key="activity" value="Invoice Sent"/>
+      <list key="omap">
+        <string key="object-id" value="o1"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e10"/>
+      <date key="timestamp" value="1980-01-12T00:00:00"/>
+      <string key="activity" value="Pay Order"/>
+      <list key="omap">
+        <string key="object-id" value="o1"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e11"/>
+      <date key="timestamp" value="1981-01-01T00:00:00"/>
+      <string key="activity" value="Create Order"/>
+      <list key="omap">
+        <string key="object-id" value="i6"/>
+        <string key="object-id" value="o2"/>
+        <string key="object-id" value="i5"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e12"/>
+      <date key="timestamp" value="1981-01-02T00:00:00"/>
+      <string key="activity" value="Remove Item"/>
+      <list key="omap">
+        <string key="object-id" value="i5"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e13"/>
+      <date key="timestamp" value="1981-01-03T00:00:00"/>
+      <string key="activity" value="Cancel Order"/>
+      <list key="omap">
+        <string key="object-id" value="o2"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e14"/>
+      <date key="timestamp" value="1981-01-04T00:00:00"/>
+      <string key="activity" value="Create Order"/>
+      <list key="omap">
+        <string key="object-id" value="i8"/>
+        <string key="object-id" value="o3"/>
+        <string key="object-id" value="i7"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e15"/>
+      <date key="timestamp" value="1981-01-05T00:00:00"/>
+      <string key="activity" value="Add Item to Order"/>
+      <list key="omap">
+        <string key="object-id" value="i9"/>
+        <string key="object-id" value="o3"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e16"/>
+      <date key="timestamp" value="1981-01-06T00:00:00"/>
+      <string key="activity" value="Create Delivery"/>
+      <list key="omap">
+        <string key="object-id" value="i3"/>
+        <string key="object-id" value="d2"/>
+        <string key="object-id" value="i4"/>
+        <string key="object-id" value="i7"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e17"/>
+      <date key="timestamp" value="1981-01-07T00:00:00"/>
+      <string key="activity" value="Delivery Successful"/>
+      <list key="omap">
+        <string key="object-id" value="d2"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e18"/>
+      <date key="timestamp" value="1981-01-08T00:00:00"/>
+      <string key="activity" value="Create Delivery"/>
+      <list key="omap">
+        <string key="object-id" value="d3"/>
+        <string key="object-id" value="i8"/>
+        <string key="object-id" value="i9"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e19"/>
+      <date key="timestamp" value="1981-01-09T00:00:00"/>
+      <string key="activity" value="Delivery Successful"/>
+      <list key="omap">
+        <string key="object-id" value="d3"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e20"/>
+      <date key="timestamp" value="1981-01-10T00:00:00"/>
+      <string key="activity" value="Invoice Sent"/>
+      <list key="omap">
+        <string key="object-id" value="o3"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e21"/>
+      <date key="timestamp" value="1981-01-11T00:00:00"/>
+      <string key="activity" value="Payment Reminder"/>
+      <list key="omap">
+        <string key="object-id" value="o3"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e22"/>
+      <date key="timestamp" value="1981-01-11T00:00:00"/>
+      <string key="activity" value="Payment Reminder"/>
+      <list key="omap">
+        <string key="object-id" value="o3"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+    <event>
+      <string key="id" value="e23"/>
+      <date key="timestamp" value="1981-01-12T00:00:00"/>
+      <string key="activity" value="Send for Credit Collection"/>
+      <list key="omap">
+        <string key="object-id" value="o3"/>
+      </list>
+      <list key="vmap"/>
+    </event>
+  </events>
+  <objects>
+    <object>
+      <string key="id" value="o1"/>
+      <string key="type" value="order"/>
+      <list key="ovmap"/>
+    </object>
+    <object>
+      <string key="id" value="i1"/>
+      <string key="type" value="element"/>
+      <list key="ovmap"/>
+    </object>
+    <object>
+      <string key="id" value="i2"/>
+      <string key="type" value="element"/>
+      <list key="ovmap"/>
+    </object>
+    <object>
+      <string key="id" value="i3"/>
+      <string key="type" value="element"/>
+      <list key="ovmap"/>
+    </object>
+    <object>
+      <string key="id" value="i4"/>
+      <string key="type" value="element"/>
+      <list key="ovmap"/>
+    </object>
+    <object>
+      <string key="id" value="d1"/>
+      <string key="type" value="delivery"/>
+      <list key="ovmap"/>
+    </object>
+    <object>
+      <string key="id" value="o2"/>
+      <string key="type" value="order"/>
+      <list key="ovmap"/>
+    </object>
+    <object>
+      <string key="id" value="i5"/>
+      <string key="type" value="element"/>
+      <list key="ovmap"/>
+    </object>
+    <object>
+      <string key="id" value="i6"/>
+      <string key="type" value="element"/>
+      <list key="ovmap"/>
+    </object>
+    <object>
+      <string key="id" value="o3"/>
+      <string key="type" value="order"/>
+      <list key="ovmap"/>
+    </object>
+    <object>
+      <string key="id" value="i7"/>
+      <string key="type" value="element"/>
+      <list key="ovmap"/>
+    </object>
+    <object>
+      <string key="id" value="i8"/>
+      <string key="type" value="element"/>
+      <list key="ovmap"/>
+    </object>
+    <object>
+      <string key="id" value="i9"/>
+      <string key="type" value="element"/>
+      <list key="ovmap"/>
+    </object>
+    <object>
+      <string key="id" value="d2"/>
+      <string key="type" value="delivery"/>
+      <list key="ovmap"/>
+    </object>
+    <object>
+      <string key="id" value="d3"/>
+      <string key="type" value="delivery"/>
+      <list key="ovmap"/>
+    </object>
+  </objects>
+</log>
