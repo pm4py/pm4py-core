@@ -27,10 +27,7 @@ from pm4py.util import exec_utils
 from pm4py.statistics.sojourn_time.log import get as soj_time_get
 from enum import Enum
 from pm4py.util import constants
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
-from pm4py.util import typing
-import graphviz
+from typing import Optional, Dict, Any, Tuple
 from pm4py.objects.log.obj import EventLog
 
 
@@ -132,8 +129,9 @@ def get_activities_color(activities_count):
 
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
-                           max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, soj_time=None,
-                            font_size="12", bgcolor="transparent"):
+                           max_no_of_edges_in_diagram=100000, start_activities=None, 
+                           end_activities=None, soj_time=None, font_size="12", 
+                           bgcolor="transparent"):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -155,7 +153,9 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         End activities of the log
     soj_time
         For each activity, the sojourn time in the log
-
+    stat_locale
+        Dict to locale the stat strings
+    
     Returns
     -----------
     viz
@@ -212,7 +212,8 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
                      fillcolor=activities_color[act], fontsize=font_size)
             activities_map[act] = str(hash(act))
         else:
-            viz.node(str(hash(act)), act + " (" + human_readable_stat(soj_time[act]) + ")", fontsize=font_size)
+            stat_string = human_readable_stat(soj_time[act], stat_locale)
+            viz.node(str(hash(act)), act + f" ({stat_string})", fontsize=font_size)
             activities_map[act] = str(hash(act))
 
     # make edges addition always in the same order
@@ -223,7 +224,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         if "frequency" in measure:
             label = str(dfg[edge])
         else:
-            label = human_readable_stat(dfg[edge])
+            label = human_readable_stat(dfg[edge], stat_locale)
         viz.edge(str(hash(edge[0])), str(hash(edge[1])), label=label, penwidth=str(penwidth[edge]), fontsize=font_size)
 
     start_activities_to_include = [act for act in start_activities if act in activities_map]
@@ -248,7 +249,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     return viz
 
 
-def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Optional[Dict[Any, Any]] = None, activities_count : Dict[str, int] = None, soj_time: Dict[str, float] = None) -> graphviz.Digraph:
+def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Optional[Dict[Any, Any]] = None, activities_count : Dict[str, int] = None, soj_time: Dict[str, float] = None) -> Digraph:
     """
     Visualize a frequency directly-follows graph
 
@@ -306,5 +307,5 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
 
     return graphviz_visualization(activities_count, dfg, image_format=image_format, measure="frequency",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
-                                  start_activities=start_activities, end_activities=end_activities, soj_time=soj_time,
-                                  font_size=font_size, bgcolor=bgcolor)
+                                  start_activities=start_activities, end_activities=end_activities, 
+                                  soj_time=soj_time, font_size=font_size, bgcolor=bgcolor)
