@@ -64,7 +64,7 @@ def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame]) -> Tuple
     return discover_dfg(log)
 
 
-def discover_performance_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
+def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7]) -> Tuple[dict, dict, dict]:
     """
     Discovers a performance directly-follows graph from an event log
 
@@ -72,6 +72,12 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, 
     ---------------
     log
         Event log
+    business_hours
+        Enables/disables the computation based on the business hours (default: False)
+    worktiming
+        (If the business hours are enabled) The hour range in which the resources of the log are working (default: 7 to 17)
+    weekends
+        (If the business hours are enabled) The weekends days (default: Saturday (6), Sunday (7))
 
     Returns
     ---------------
@@ -91,7 +97,8 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, 
         activity_key = properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in properties else xes_constants.DEFAULT_NAME_KEY
         timestamp_key = properties[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in properties else xes_constants.DEFAULT_TIMESTAMP_KEY
         case_id_key = properties[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in properties else constants.CASE_CONCEPT_NAME
-        dfg = get_dfg_graph(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_glue=case_id_key, measure="performance", perf_aggregation_key="all")
+        dfg = get_dfg_graph(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_glue=case_id_key, measure="performance", perf_aggregation_key="all",
+                            business_hours=business_hours, worktiming=worktiming, weekends=weekends)
         from pm4py.statistics.start_activities.pandas import get as start_activities_module
         from pm4py.statistics.end_activities.pandas import get as end_activities_module
         start_activities = start_activities_module.get_start_activities(log, parameters=properties)
@@ -100,6 +107,9 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, 
         from pm4py.algo.discovery.dfg.variants import performance as dfg_discovery
         properties = get_properties(log)
         properties[dfg_discovery.Parameters.AGGREGATION_MEASURE] = "all"
+        properties[dfg_discovery.Parameters.BUSINESS_HOURS] = business_hours
+        properties[dfg_discovery.Parameters.WORKTIMING] = worktiming
+        properties[dfg_discovery.Parameters.WEEKENDS] = weekends
         dfg = dfg_discovery.apply(log, parameters=properties)
         from pm4py.statistics.start_activities.log import get as start_activities_module
         from pm4py.statistics.end_activities.log import get as end_activities_module
