@@ -1,9 +1,6 @@
 import copy
 from typing import List, Optional, Set, Dict
 
-import networkx as nx
-from networkx.classes.graph import Graph
-
 from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
 from pm4py.algo.discovery.inductive.variants.im_clean.d_types import Cut, DFG
 from pm4py.objects.log.obj import EventLog, Trace
@@ -127,7 +124,8 @@ def _exclude_sets_no_reachable_from_end(dfg: DFG, start_activities: Dict[str, in
 
 
 def _compute_connected_components(dfg: DFG, alphabet: Set[str], start_activities: Dict[str, int],
-                                  end_activities: Dict[str, int], do_set: Set[str]) -> List[Graph]:
+                                  end_activities: Dict[str, int], do_set: Set[str]):
+    import networkx as nx
     reduced_dfg = copy.copy(dfg)
     for (a, b) in dfg:
         if a in end_activities or a in end_activities or b in start_activities or b in end_activities:
@@ -176,3 +174,38 @@ def _append_trace_to_redo_log(redo_trace: Trace, redo_logs: List[List[Trace]], r
     inte = sorted(inte, key=lambda x: (x[1], x[0]), reverse=True)
     redo_logs[inte[0][0]].append(redo_trace)
     return redo_logs
+
+
+def project_dfg(dfg_sa_ea_actcount, groups):
+    dfgs = []
+    skippable = [False, False]
+    for gind, g in enumerate(groups):
+        activities = {}
+        start_activities = {}
+        end_activities = {}
+        paths_frequency = {}
+        for act in dfg_sa_ea_actcount.act_count:
+            if act in g:
+                activities[act] = dfg_sa_ea_actcount.act_count[act]
+        for arc in dfg_sa_ea_actcount.dfg:
+            if arc[0] in g and arc[1] in g:
+                paths_frequency[arc] = dfg_sa_ea_actcount.dfg[arc]
+            if arc[1] in dfg_sa_ea_actcount.start_activities and arc[0] in dfg_sa_ea_actcount.end_activities:
+                skippable[1] = True
+        if gind == 0:
+            for act in dfg_sa_ea_actcount.start_activities:
+                if act in g:
+                    start_activities[act] = dfg_sa_ea_actcount.start_activities[act]
+                else:
+                    skippable[0] = True
+            for act in dfg_sa_ea_actcount.end_activities:
+                if act in g:
+                    end_activities[act] = dfg_sa_ea_actcount.end_activities[act]
+                else:
+                    skippable[1] = True
+        elif gind == 1:
+            for act in g:
+                start_activities[act] = 1
+                end_activities[act] = 1
+        dfgs.append(im_utils.DfgSaEaActCount(paths_frequency, start_activities, end_activities, activities))
+    return [dfgs, skippable]

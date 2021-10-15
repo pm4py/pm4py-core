@@ -1,7 +1,7 @@
 from itertools import product
 
 import pm4py
-from pm4py.algo.discovery.inductive.variants.im_clean import utils
+from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
 from pm4py.objects.log.obj import EventLog
 
 
@@ -11,10 +11,10 @@ def detect(dfg, alphabet, start_activities, end_activities, msd=None):
         return None
     for a, b in product(alphabet, alphabet):
         if (a, b) not in dfg or (b, a) not in dfg:
-            groups = utils.__merge_groups_for_acts(a, b, groups)
+            groups = im_utils.__merge_groups_for_acts(a, b, groups)
         elif msd is not None:
             if (a in msd and b in msd[a]) or (b in msd and a in msd[b]):
-                groups = utils.__merge_groups_for_acts(a, b, groups)
+                groups = im_utils.__merge_groups_for_acts(a, b, groups)
 
     groups = list(sorted(groups, key=lambda g: len(g)))
     i = 0
@@ -40,3 +40,28 @@ def project(log, groups, activity_key):
             proj.append(pm4py.filter_trace(lambda e: e[activity_key] in group, t))
         logs.append(proj)
     return logs
+
+
+def project_dfg(dfg_sa_ea_actcount, groups):
+    dfgs = []
+    skippable = []
+    for gind, g in enumerate(groups):
+        start_activities = {}
+        end_activities = {}
+        activities = {}
+        paths_frequency = {}
+        for act in dfg_sa_ea_actcount.start_activities:
+            if act in g:
+                start_activities[act] = dfg_sa_ea_actcount.start_activities[act]
+        for act in dfg_sa_ea_actcount.end_activities:
+            if act in g:
+                end_activities[act] = dfg_sa_ea_actcount.end_activities[act]
+        for act in dfg_sa_ea_actcount.act_count:
+            if act in g:
+                activities[act] = dfg_sa_ea_actcount.act_count[act]
+        for arc in dfg_sa_ea_actcount.dfg:
+            if arc[0] in g and arc[1] in g:
+                paths_frequency[arc] = dfg_sa_ea_actcount.dfg[arc]
+        dfgs.append(im_utils.DfgSaEaActCount(paths_frequency, start_activities, end_activities, activities))
+        skippable.append(False)
+    return [dfgs, skippable]

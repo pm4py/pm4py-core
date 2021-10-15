@@ -1,8 +1,8 @@
+from collections import Counter
 from itertools import product
 
-import pm4py
+from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
 from pm4py.objects.log.obj import EventLog, Trace
-from pm4py.algo.discovery.inductive.variants.im_clean import utils
 
 
 def detect(alphabet, transitive_predecessors, transitive_successors):
@@ -38,14 +38,11 @@ def detect(alphabet, transitive_predecessors, transitive_successors):
     for a, b in product(alphabet, alphabet):
         if (b in transitive_successors[a] and a in transitive_successors[b]) or (
                 b not in transitive_successors[a] and a not in transitive_successors[b]):
-            groups = utils.__merge_groups_for_acts(a, b, groups)
+            groups = im_utils.__merge_groups_for_acts(a, b, groups)
 
     groups = list(sorted(groups, key=lambda g: len(
         transitive_predecessors[next(iter(g))]) + (len(alphabet) - len(transitive_successors[next(iter(g))]))))
     return groups if len(groups) > 1 else None
-
-
-
 
 
 def project(log, groups, activity_key):
@@ -113,3 +110,78 @@ def _is_strict_subset(A, B):
 
 def _is_strict_superset(A, B):
     return A != B and A.issuperset(B)
+
+
+def project_dfg(dfg_sa_ea_actcount, groups):
+    start_activities = []
+    end_activities = []
+    activities = []
+    dfgs = []
+    skippable = []
+    for g in groups:
+        skippable.append(False)
+    activities_idx = {}
+    for gind, g in enumerate(groups):
+        for act in g:
+            activities_idx[act] = int(gind)
+    i = 0
+    while i < len(groups):
+        to_succ_arcs = Counter()
+        from_prev_arcs = Counter()
+        if i < len(groups) - 1:
+            for arc in dfg_sa_ea_actcount.dfg:
+                if arc[0] in groups[i] and arc[1] in groups[i + 1]:
+                    to_succ_arcs[arc[0]] += dfg_sa_ea_actcount.dfg[arc]
+
+        if i > 0:
+            for arc in dfg_sa_ea_actcount.dfg:
+                if arc[0] in groups[i - 1] and arc[1] in groups[i]:
+                    from_prev_arcs[arc[1]] += dfg_sa_ea_actcount.dfg[arc]
+
+        if i == 0:
+            start_activities.append({})
+            for act in dfg_sa_ea_actcount.start_activities:
+                if act in groups[i]:
+                    start_activities[i][act] = dfg_sa_ea_actcount.start_activities[act];
+                else:
+                    j = i
+                    while j < activities_idx[act]:
+                        skippable[j] = True
+                        j = j + 1
+        else:
+            start_activities.append(from_prev_arcs)
+
+        if i == len(groups) - 1:
+            end_activities.append({})
+            for act in dfg_sa_ea_actcount.end_activities:
+                if act in groups[i]:
+                    end_activities[i][act] = dfg_sa_ea_actcount.end_activities[act]
+                else:
+                    j = activities_idx[act] + 1
+                    while j <= i:
+                        skippable[j] = True
+                        j = j + 1
+        else:
+            end_activities.append(to_succ_arcs)
+
+        activities.append({})
+        for act in groups[i]:
+            activities[i][act] = dfg_sa_ea_actcount.act_count[act]
+        dfgs.append({})
+        for arc in dfg_sa_ea_actcount.dfg:
+            if arc[0] in groups[i] and arc[1] in groups[i]:
+                dfgs[i][arc] = dfg_sa_ea_actcount.dfg[arc]
+
+        i = i + 1
+
+    i = 0
+    while i < len(dfgs):
+        dfgs[i] = im_utils.DfgSaEaActCount(dfgs[i], start_activities[i], end_activities[i], activities[i])
+        i = i + 1
+    for arc in dfg_sa_ea_actcount.dfg:
+        z = activities_idx[arc[1]]
+        j = activities_idx[arc[0]] + 1
+        while j < z:
+            skippable[j] = False
+            j = j + 1
+    return [dfgs, skippable]
