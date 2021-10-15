@@ -35,6 +35,7 @@ class Parameters(Enum):
     TIMESTAMP_KEY = PARAMETER_CONSTANT_TIMESTAMP_KEY
     AGGREGATION_MEASURE = "aggregationMeasure"
     FONT_SIZE = "font_size"
+    STAT_LOCALE = "stat_locale"
 
 
 def get_decorations(log, net, initial_marking, final_marking, parameters=None, measure="frequency",
@@ -72,6 +73,7 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
+    stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, {})
 
     variants_idx = variants_get.get_variants_from_log_trace_idx(log, parameters=parameters)
     variants = variants_get.convert_variants_trace_idx_to_trace_obj(log, variants_idx)
@@ -92,7 +94,8 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
                                                                    ht_perf_method=ht_perf_method)
 
     aggregated_statistics = performance_map.aggregate_statistics(element_statistics, measure=measure,
-                                                                 aggregation_measure=aggregation_measure)
+                                                                 aggregation_measure=aggregation_measure,
+                                                                 stat_locale=stat_locale)
 
     return aggregated_statistics
 

@@ -18,8 +18,8 @@ from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from pm4py.statistics.variants.log import get as variants_get
 from pm4py.visualization.petrinet.common import visualize
 from pm4py.visualization.petrinet.util import performance_map
-from pm4py.util import exec_utils, xes_constants
 from pm4py.visualization.petrinet.parameters import Parameters
+from pm4py.util import exec_utils, xes_constants
 
 
 def get_decorations(log, net, initial_marking, final_marking, parameters=None, measure="frequency",
