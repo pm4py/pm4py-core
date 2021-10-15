@@ -1,0 +1,282 @@
+{
+  "ocel:global-event": {
+    "ocel:activity": "__INVALID__"
+  },
+  "ocel:global-object": {
+    "ocel:type": "__INVALID__"
+  },
+  "ocel:global-log": {
+    "ocel:attribute-names": [],
+    "ocel:object-types": [
+      "delivery",
+      "element",
+      "order"
+    ],
+    "ocel:version": "1.0",
+    "ocel:ordering": "timestamp"
+  },
+  "ocel:events": {
+    "e1": {
+      "ocel:activity": "Create Order",
+      "ocel:timestamp": "1980-01-01T00:00:00",
+      "ocel:omap": [
+        "i4",
+        "i1",
+        "o1",
+        "i3",
+        "i2"
+      ],
+      "ocel:vmap": {}
+    },
+    "e2": {
+      "ocel:activity": "Confirm Order",
+      "ocel:timestamp": "1980-01-02T00:00:00",
+      "ocel:omap": [
+        "o1"
+      ],
+      "ocel:vmap": {}
+    },
+    "e3": {
+      "ocel:activity": "Item out of Stock",
+      "ocel:timestamp": "1980-01-03T00:00:00",
+      "ocel:omap": [
+        "i3"
+      ],
+      "ocel:vmap": {}
+    },
+    "e4": {
+      "ocel:activity": "Create Delivery",
+      "ocel:timestamp": "1980-01-04T00:00:00",
+      "ocel:omap": [
+        "d1",
+        "i2",
+        "i1"
+      ],
+      "ocel:vmap": {}
+    },
+    "e5": {
+      "ocel:activity": "Item back in Stock",
+      "ocel:timestamp": "1980-01-05T00:00:00",
+      "ocel:omap": [
+        "i3"
+      ],
+      "ocel:vmap": {}
+    },
+    "e6": {
+      "ocel:activity": "Delivery Failed",
+      "ocel:timestamp": "1980-01-08T00:00:00",
+      "ocel:omap": [
+        "d1"
+      ],
+      "ocel:vmap": {}
+    },
+    "e7": {
+      "ocel:activity": "Retry Delivery",
+      "ocel:timestamp": "1980-01-09T00:00:00",
+      "ocel:omap": [
+        "d1"
+      ],
+      "ocel:vmap": {}
+    },
+    "e8": {
+      "ocel:activity": "Delivery Successful",
+      "ocel:timestamp": "1980-01-10T00:00:00",
+      "ocel:omap": [
+        "d1"
+      ],
+      "ocel:vmap": {}
+    },
+    "e9": {
+      "ocel:activity": "Invoice Sent",
+      "ocel:timestamp": "1980-01-11T00:00:00",
+      "ocel:omap": [
+        "o1"
+      ],
+      "ocel:vmap": {}
+    },
+    "e10": {
+      "ocel:activity": "Pay Order",
+      "ocel:timestamp": "1980-01-12T00:00:00",
+      "ocel:omap": [
+        "o1"
+      ],
+      "ocel:vmap": {}
+    },
+    "e11": {
+      "ocel:activity": "Create Order",
+      "ocel:timestamp": "1981-01-01T00:00:00",
+      "ocel:omap": [
+        "i6",
+        "o2",
+        "i5"
+      ],
+      "ocel:vmap": {}
+    },
+    "e12": {
+      "ocel:activity": "Remove Item",
+      "ocel:timestamp": "1981-01-02T00:00:00",
+      "ocel:omap": [
+        "i5"
+      ],
+      "ocel:vmap": {}
+    },
+    "e13": {
+      "ocel:activity": "Cancel Order",
+      "ocel:timestamp": "1981-01-03T00:00:00",
+      "ocel:omap": [
+        "o2"
+      ],
+      "ocel:vmap": {}
+    },
+    "e14": {
+      "ocel:activity": "Create Order",
+      "ocel:timestamp": "1981-01-04T00:00:00",
+      "ocel:omap": [
+        "i8",
+        "o3",
+        "i7"
+      ],
+      "ocel:vmap": {}
+    },
+    "e15": {
+      "ocel:activity": "Add Item to Order",
+      "ocel:timestamp": "1981-01-05T00:00:00",
+      "ocel:omap": [
+        "i9",
+        "o3"
+      ],
+      "ocel:vmap": {}
+    },
+    "e16": {
+      "ocel:activity": "Create Delivery",
+      "ocel:timestamp": "1981-01-06T00:00:00",
+      "ocel:omap": [
+        "i3",
+        "d2",
+        "i4",
+        "i7"
+      ],
+      "ocel:vmap": {}
+    },
+    "e17": {
+      "ocel:activity": "Delivery Successful",
+      "ocel:timestamp": "1981-01-07T00:00:00",
+      "ocel:omap": [
+        "d2"
+      ],
+      "ocel:vmap": {}
+    },
+    "e18": {
+      "ocel:activity": "Create Delivery",
+      "ocel:timestamp": "1981-01-08T00:00:00",
+      "ocel:omap": [
+        "d3",
+        "i8",
+        "i9"
+      ],
+      "ocel:vmap": {}
+    },
+    "e19": {
+      "ocel:activity": "Delivery Successful",
+      "ocel:timestamp": "1981-01-09T00:00:00",
+      "ocel:omap": [
+        "d3"
+      ],
+      "ocel:vmap": {}
+    },
+    "e20": {
+      "ocel:activity": "Invoice Sent",
+      "ocel:timestamp": "1981-01-10T00:00:00",
+      "ocel:omap": [
+        "o3"
+      ],
+      "ocel:vmap": {}
+    },
+    "e21": {
+      "ocel:activity": "Payment Reminder",
+      "ocel:timestamp": "1981-01-11T00:00:00",
+      "ocel:omap": [
+        "o3"
+      ],
+      "ocel:vmap": {}
+    },
+    "e22": {
+      "ocel:activity": "Payment Reminder",
+      "ocel:timestamp": "1981-01-11T00:00:00",
+      "ocel:omap": [
+        "o3"
+      ],
+      "ocel:vmap": {}
+    },
+    "e23": {
+      "ocel:activity": "Send for Credit Collection",
+      "ocel:timestamp": "1981-01-12T00:00:00",
+      "ocel:omap": [
+        "o3"
+      ],
+      "ocel:vmap": {}
+    }
+  },
+  "ocel:objects": {
+    "o1": {
+      "ocel:type": "order",
+      "ocel:ovmap": {}
+    },
+    "i1": {
+      "ocel:type": "element",
+      "ocel:ovmap": {}
+    },
+    "i2": {
+      "ocel:type": "element",
+      "ocel:ovmap": {}
+    },
+    "i3": {
+      "ocel:type": "element",
+      "ocel:ovmap": {}
+    },
+    "i4": {
+      "ocel:type": "element",
+      "ocel:ovmap": {}
+    },
+    "d1": {
+      "ocel:type": "delivery",
+      "ocel:ovmap": {}
+    },
+    "o2": {
+      "ocel:type": "order",
+      "ocel:ovmap": {}
+    },
+    "i5": {
+      "ocel:type": "element",
+      "ocel:ovmap": {}
+    },
+    "i6": {
+      "ocel:type": "element",
+      "ocel:ovmap": {}
+    },
+    "o3": {
+      "ocel:type": "order",
+      "ocel:ovmap": {}
+    },
+    "i7": {
+      "ocel:type": "element",
+      "ocel:ovmap": {}
+    },
+    "i8": {
+      "ocel:type": "element",
+      "ocel:ovmap": {}
+    },
+    "i9": {
+      "ocel:type": "element",
+      "ocel:ovmap": {}
+    },
+    "d2": {
+      "ocel:type": "delivery",
+      "ocel:ovmap": {}
+    },
+    "d3": {
+      "ocel:type": "delivery",
+      "ocel:ovmap": {}
+    }
+  }
+}
