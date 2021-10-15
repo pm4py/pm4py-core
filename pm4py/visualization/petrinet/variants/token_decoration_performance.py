@@ -18,8 +18,8 @@ from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from pm4py.statistics.variants.log import get as variants_get
 from pm4py.visualization.petrinet.common import visualize
 from pm4py.visualization.petrinet.util import performance_map
-from pm4py.util import exec_utils, xes_constants
 from pm4py.visualization.petrinet.parameters import Parameters
+from pm4py.util import exec_utils, xes_constants
 
 
 def get_decorations(log, net, initial_marking, final_marking, parameters=None, measure="frequency",
@@ -57,6 +57,7 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
+    stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, {})
 
     variants_idx = variants_get.get_variants_from_log_trace_idx(log, parameters=parameters)
     variants = variants_get.convert_variants_trace_idx_to_trace_obj(log, variants_idx)
@@ -77,7 +78,8 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
                                                                    ht_perf_method=ht_perf_method)
 
     aggregated_statistics = performance_map.aggregate_statistics(element_statistics, measure=measure,
-                                                                 aggregation_measure=aggregation_measure)
+                                                                 aggregation_measure=aggregation_measure,
+                                                                 stat_locale=stat_locale)
 
     return aggregated_statistics
 

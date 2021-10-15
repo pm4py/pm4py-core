@@ -28,6 +28,7 @@ from typing import Optional, Dict, Any, Union, Tuple
 
 class Parameters(Enum):
     FORMAT = "format"
+    STAT_LOCALE = "stat_locale"
 
 
 def get_corr_hex(num):
@@ -126,6 +127,7 @@ def apply(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Parameter
     parameters
         Possible parameters of the algorithm, including:
             - Parameters.FORMAT
+            - Parameters.STAT_LOCALE
 
     Returns
     ------------
@@ -136,6 +138,7 @@ def apply(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Parameter
         parameters = {}
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
+    stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, {})
 
     graph = pydotplus.Dot(strict=True)
     graph.obj_dict['attributes']['bgcolor'] = 'transparent'
@@ -154,9 +157,10 @@ def apply(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Parameter
                                label=node_name + " (" + str(node_occ) + ")", fillcolor=node.get_fill_color(graycolor),
                                fontcolor=node.get_font_color())
         else:
+            time_str = f" ({human_readable_stat(heu_net.sojourn_times[node_name], stat_locale)})" if (
+                node_name in heu_net.sojourn_times) else node_name + " (0s)"
             n = pydotplus.Node(name=node_name, shape="box", style="filled",
-                               label=node_name + " (" + human_readable_stat(heu_net.sojourn_times[
-                                                                                node_name]) + ")" if node_name in heu_net.sojourn_times else node_name + " (0s)",
+                               label=node_name + time_str,
                                fillcolor=node.get_fill_color(graycolor),
                                fontcolor=node.get_font_color())
         corr_nodes[node] = n
@@ -188,7 +192,7 @@ def apply(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Parameter
                                                penwidth=edge.get_penwidth(this_pen_width))
                         else:
                             e = pydotplus.Edge(src=corr_nodes[node], dst=corr_nodes[other_node],
-                                               label=edge.net_name + " (" + human_readable_stat(repr_value) + ")",
+                                               label=f"{edge.net_name} ({human_readable_stat(repr_value, stat_locale)})",
                                                color=edge.get_color(),
                                                fontcolor=edge.get_font_color(),
                                                penwidth=edge.get_penwidth(this_pen_width))
@@ -200,7 +204,7 @@ def apply(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Parameter
                                                penwidth=edge.get_penwidth(this_pen_width))
                         else:
                             e = pydotplus.Edge(src=corr_nodes[node], dst=corr_nodes[other_node],
-                                               label=human_readable_stat(repr_value),
+                                               label=human_readable_stat(repr_value, stat_locale),
                                                color=edge.get_color(),
                                                fontcolor=edge.get_font_color(),
                                                penwidth=edge.get_penwidth(this_pen_width))
