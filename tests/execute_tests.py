@@ -38,7 +38,9 @@ if __name__ == "__main__":
     from tests.imp_exp_from_string import ImpExpFromString
     from tests.woflan_tests import WoflanTest
     from tests.simplified_interface import SimplifiedInterfaceTest
+    from tests.ocel_filtering_test import OcelFilteringTest
 
+    ocel_filtering_test = OcelFilteringTest()
     test_ts = TransitionSystemTest()
     test_ies = ImpExpFromString()
     test_doc_tests = DocTests()
