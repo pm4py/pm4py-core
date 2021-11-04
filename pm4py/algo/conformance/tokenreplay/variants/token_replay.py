@@ -1,13 +1,36 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.util import xes_constants as xes_util
-from pm4py.objects.petri import semantics
-from pm4py.objects.petri.petrinet import Marking
-from pm4py.objects.petri.utils import get_places_shortest_path_by_hidden, get_s_components_from_petri
-from pm4py.objects.log import log as log_implementation
-from pm4py.objects.petri import align_utils
+from pm4py.objects.petri_net import semantics
+from pm4py.objects.petri_net.obj import Marking
+from pm4py.objects.petri_net.utils.petri_utils import get_places_shortest_path_by_hidden, get_s_components_from_petri
+from pm4py.objects.log import obj as log_implementation
+from pm4py.objects.petri_net.utils import align_utils
 from copy import copy
 from enum import Enum
 from pm4py.util import exec_utils, constants
+from pm4py.util import variants_util
+import pkgutil
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.util import typing
 
 
 class Parameters(Enum):
@@ -26,6 +49,7 @@ class Parameters(Enum):
     TRY_TO_REACH_FINAL_MARKING_THROUGH_HIDDEN = "try_to_reach_final_marking_through_hidden"
     CONSIDER_REMAINING_IN_FITNESS = "consider_remaining_in_fitness"
     ENABLE_PLTR_FITNESS = "enable_pltr_fitness"
+    SHOW_PROGRESS_BAR = "show_progress_bar"
 
 
 class TechnicalParameters(Enum):
@@ -877,7 +901,9 @@ def get_variant_from_trace(trace, activity_key, disable_variants=False):
     """
     if disable_variants:
         return str(hash(trace))
-    return ",".join([x[activity_key] for x in trace])
+    parameters = {}
+    parameters[variants_util.Parameters.ACTIVITY_KEY] = activity_key
+    return variants_util.get_variant_from_trace(trace, parameters=parameters)
 
 
 def get_variants_from_log(log, activity_key, disable_variants=False):
@@ -912,7 +938,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
               activity_key="concept:name", reach_mark_through_hidden=True, stop_immediately_unfit=False,
               walk_through_hidden_trans=True, places_shortest_path_by_hidden=None,
               variants=None, is_reduction=False, thread_maximum_ex_time=TechnicalParameters.MAX_DEF_THR_EX_TIME.value,
-              cleaning_token_flood=False, disable_variants=False, return_object_names=False):
+              cleaning_token_flood=False, disable_variants=False, return_object_names=False, show_progress_bar=True):
     """
     Apply token-based replay to a log
 
@@ -987,6 +1013,12 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
             if activity_key in log[0][0]:
                 if variants is None:
                     variants = get_variants_from_log(log, activity_key, disable_variants=disable_variants)
+
+                progress = None
+                if pkgutil.find_loader("tqdm") and show_progress_bar and len(variants) > 1:
+                    from tqdm.auto import tqdm
+                    progress = tqdm(total=len(variants), desc="replaying log with TBR, completed variants :: ")
+
                 vc = variants_module.get_variants_sorted_by_count(variants)
                 threads = {}
                 threads_results = {}
@@ -1011,6 +1043,9 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                                                              cleaning_token_flood=cleaning_token_flood,
                                                              s_components=s_components, trace_occurrences=vc[i][1])
                     threads[variant].run()
+                    if progress is not None:
+                        progress.update()
+
                     t = threads[variant]
                     threads_results[variant] = {"trace_is_fit": copy(t.t_fit),
                                                 "trace_fitness": float(copy(t.t_value)),
@@ -1049,6 +1084,11 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                     if trace_variant in threads_results:
                         t = threads_results[trace_variant]
                         aligned_traces.append(t)
+
+                # gracefully close progress bar
+                if progress is not None:
+                    progress.close()
+                del progress
             else:
                 raise NoConceptNameException("at least an event is without " + activity_key)
 
@@ -1058,7 +1098,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
         return aligned_traces
 
 
-def apply(log, net, initial_marking, final_marking, parameters=None):
+def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> typing.ListAlignments:
     """
     Method to apply token-based replay
 
@@ -1097,6 +1137,8 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
     variants = exec_utils.get_param_value(Parameters.VARIANTS, parameters, None)
 
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+
     return apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=enable_pltr_fitness,
                      consider_remaining_in_fitness=consider_remaining_in_fitness,
                      reach_mark_through_hidden=try_to_reach_final_marking_through_hidden,
@@ -1105,7 +1147,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
                      places_shortest_path_by_hidden=places_shortest_path_by_hidden, activity_key=activity_key,
                      variants=variants, is_reduction=is_reduction, thread_maximum_ex_time=thread_maximum_ex_time,
                      cleaning_token_flood=cleaning_token_flood, disable_variants=disable_variants,
-                     return_object_names=return_names)
+                     return_object_names=return_names, show_progress_bar=show_progress_bar)
 
 
 def apply_variants_list(variants_list, net, initial_marking, final_marking, parameters=None):
@@ -1113,17 +1155,10 @@ def apply_variants_list(variants_list, net, initial_marking, final_marking, para
         parameters = {}
     parameters[Parameters.RETURN_NAMES] = True
 
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
-    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
-                                                   ",")
-
     log = log_implementation.EventLog()
     for var_item in variants_list:
-        variant = var_item[0].split(variant_delimiter)
-        trace = log_implementation.Trace()
-        for activ in variant:
-            event = log_implementation.Event({activity_key: activ})
-            trace.append(event)
+        trace = variants_util.variant_to_trace(var_item[0], parameters=parameters)
+
         log.append(trace)
 
     return apply(log, net, initial_marking, final_marking, parameters=parameters)
@@ -1141,7 +1176,7 @@ def apply_variants_list_petri_string(variants_list, petri_string, parameters=Non
     if parameters is None:
         parameters = {}
 
-    from pm4py.objects.petri.importer.variants import pnml as petri_importer
+    from pm4py.objects.petri_net.importer.variants import pnml as petri_importer
 
     net, im, fm = petri_importer.import_petri_from_string(petri_string, parameters=parameters)
 
@@ -1157,7 +1192,7 @@ def apply_variants_list_petri_string_multiprocessing(output, variants_list, petr
     output.put(ret)
 
 
-def get_diagnostics_dataframe(log, tbr_output, parameters=None):
+def get_diagnostics_dataframe(log: EventLog, tbr_output: typing.ListAlignments, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Gets the results of token-based replay in a dataframe
 

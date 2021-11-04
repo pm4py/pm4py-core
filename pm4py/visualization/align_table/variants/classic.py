@@ -1,12 +1,36 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from graphviz import Source
 import tempfile
 
 from pm4py.statistics.variants.log import get as variants_get
 from pm4py.util import exec_utils
-from pm4py.visualization.parameters import Parameters
+from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.util import typing
+import graphviz
 
 
-def apply(log, aligned_traces, parameters=None):
+class Parameters(Enum):
+    FORMAT = "format"
+
+
+def apply(log: EventLog, aligned_traces: typing.ListAlignments, parameters: Optional[Dict[Any, Any]] = None) -> graphviz.Source:
     """
     Gets the alignment table visualization from the alignments output
 

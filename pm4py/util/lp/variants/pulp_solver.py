@@ -1,14 +1,49 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import sys
 import tempfile
-import numpy as np
 
-from pulp import LpProblem, LpMinimize, LpVariable, LpStatus, value, PULP_CBC_CMD
-from pm4py.util.lp.parameters import Parameters
+import numpy as np
+import pulp
+from pulp import LpProblem, LpMinimize, LpVariable, LpStatus, value
+
 from pm4py.util import exec_utils
+
+from enum import Enum
+
+
+class Parameters(Enum):
+    REQUIRE_ILP = "require_ilp"
+
 
 MIN_THRESHOLD = 10 ** -12
 # max safe number of constraints (log10)
 MAX_NUM_CONSTRAINTS = 7
+
+# keeps compatibility with 1.6.x versions of PuLP in which the interface
+# for solving was the latter one
+if hasattr(pulp, "__version__"):
+    # new interface
+    from pulp import PULP_CBC_CMD
+
+    solver = lambda prob: PULP_CBC_CMD(msg=0).solve(prob)
+else:
+    # old interface
+    solver = lambda prob: prob.solve()
 
 
 def get_terminal_part_name_num(num):
@@ -60,20 +95,12 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
 
     require_ilp = exec_utils.get_param_value(Parameters.REQUIRE_ILP, parameters, False)
 
-    Aub = np.asmatrix(Aub)
-    if type(bub) is list and len(bub) == 1:
-        bub = bub[0]
-    if Aeq is not None:
-        Aeq = np.asmatrix(Aeq)
-    if beq is not None and type(beq) is list and len(beq) == 1:
-        beq = beq[0]
-
     prob = LpProblem("", LpMinimize)
 
     x_list = []
     for i in range(Aub.shape[1]):
         if require_ilp:
-            x_list.append(LpVariable("x_" + get_terminal_part_name_num(i), cat='Binary'))
+            x_list.append(LpVariable("x_" + get_terminal_part_name_num(i), cat='Integer'))
         else:
             x_list.append(LpVariable("x_" + get_terminal_part_name_num(i)))
 
@@ -98,10 +125,11 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                     eval_str = eval_str + " + "
                 eval_str = eval_str + str(Aub[i, j]) + "*x_list[" + str(j) + "]"
                 expr_count = expr_count + 1
-        eval_str = eval_str + "<=" + str(
-            bub[i].reshape(-1, ).tolist()[0][0]) + ", \"vinc_" + get_terminal_part_name_num(i) + "\""
+        if eval_str:
+            eval_str = eval_str + "<=" + str(
+                bub[i]) + ", \"vinc_" + get_terminal_part_name_num(i) + "\""
 
-        prob += eval(eval_str)
+            prob += eval(eval_str)
 
     if Aeq is not None and beq is not None:
         for i in range(Aeq.shape[0]):
@@ -115,14 +143,15 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                     eval_str = eval_str + str(Aeq[i, j]) + "*x_list[" + str(j) + "]"
                     expr_count = expr_count + 1
             if eval_str:
-                eval_str = eval_str + "==" + str(beq[i].reshape(-1, ).tolist()[0][0]) + ", \"vinceq_" + get_terminal_part_name_num(
+                eval_str = eval_str + "==" + str(
+                    beq[i]) + ", \"vinceq_" + get_terminal_part_name_num(
                     i + 1 + Aub.shape[0]) + "\""
 
                 prob += eval(eval_str)
 
     filename = tempfile.NamedTemporaryFile(suffix='.lp').name
     prob.writeLP(filename)
-    PULP_CBC_CMD(msg=0).solve(prob)
+    solver(prob)
 
     return prob
 

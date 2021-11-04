@@ -1,12 +1,42 @@
-from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TIMESTAMP_KEY
-from pm4py.statistics.parameters import Parameters
-from pm4py.util import exec_utils
-from pm4py.util.constants import DEFAULT_VARIANT_SEP
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple, List
 
 import numpy as np
 
+from pm4py.objects.log.obj import EventLog, Trace
+from pm4py.util import constants
+from pm4py.util import exec_utils, variants_util
+from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 
-def get_language(log, parameters=None):
+
+class Parameters(Enum):
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    MAX_NO_POINTS_SAMPLE = "max_no_of_points_to_sample"
+    KEEP_ONCE_PER_CASE = "keep_once_per_case"
+
+
+def get_language(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[
+    Dict[List[str], float], Dict[str, float]]:
     """
     Gets the stochastic language of the log (from the variants)
 
@@ -24,14 +54,16 @@ def get_language(log, parameters=None):
         (variant associated to a number between 0 and 1; the sum is 1)
     """
     vars = get_variants(log, parameters=parameters)
-    vars = {tuple(x.split(DEFAULT_VARIANT_SEP)): len(y) for x,y in vars.items()}
+    vars = {variants_util.get_activities_from_variant(x): len(y) for x, y in vars.items()}
+
     all_values_sum = sum(vars.values())
     for x in vars:
         vars[x] = vars[x] / all_values_sum
     return vars
 
 
-def get_variants(log, parameters=None):
+def get_variants(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[
+    Dict[List[str], List[Trace]], Dict[str, List[Trace]]]:
     """
     Gets a dictionary whose key is the variant and as value there
     is the list of traces that share the variant
@@ -57,7 +89,9 @@ def get_variants(log, parameters=None):
     return all_var
 
 
-def get_variants_along_with_case_durations(log, parameters=None):
+def get_variants_along_with_case_durations(log: EventLog,
+                                           parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[
+    Union[Dict[List[str], List[Trace]], Dict[str, List[Trace]]], np.array]:
     """
     Gets a dictionary whose key is the variant and as value there
     is the list of traces that share the variant
@@ -118,11 +152,9 @@ def get_variants_from_log_trace_idx(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    attribute_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
-
     variants = {}
     for trace_idx, trace in enumerate(log):
-        variant = DEFAULT_VARIANT_SEP.join([x[attribute_key] for x in trace if attribute_key in x])
+        variant = variants_util.get_variant_from_trace(trace, parameters=parameters)
         if variant not in variants:
             variants[variant] = []
         variants[variant].append(trace_idx)
@@ -148,7 +180,7 @@ def get_variants_sorted_by_count(variants):
     var_count = []
     for variant in variants:
         var_count.append([variant, len(variants[variant])])
-    var_count = sorted(var_count, key=lambda x: x[1], reverse=True)
+    var_count = sorted(var_count, key=lambda x: (x[1], x[0]), reverse=True)
     return var_count
 
 

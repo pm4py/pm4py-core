@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from scipy.cluster.hierarchy import to_tree, linkage
 from pm4py.statistics.attributes.log import get as attributes_filter
 from pm4py.algo.clustering.trace_attribute_driven.merge_log import merge_log
@@ -5,6 +21,9 @@ from pm4py.algo.clustering.trace_attribute_driven.util import evaluation
 from pm4py.objects.conversion.log import converter as log_converter
 from enum import Enum
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
 
 
 class Variants(Enum):
@@ -42,7 +61,7 @@ def bfs(tree):
     return output
 
 
-def apply(log, trace_attribute, variant=VARIANT_DMM_LEVEN, parameters=None):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], trace_attribute: str, variant=VARIANT_DMM_LEVEN, parameters: Optional[Dict[Any, Any]] = None) -> Any:
     """
     Apply the hierarchical clustering to a log starting from a trace attribute.
 

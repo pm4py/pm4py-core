@@ -1,4 +1,20 @@
-from pm4py.objects.petri import petrinet
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+from pm4py.objects.petri import obj
 from pm4py.objects.petri.networkx_graph import create_networkx_undirected_graph
 from pm4py.objects.petri import explore_path
 
@@ -181,7 +197,7 @@ def check_easy_soundness_of_wfnet(net):
     source = list(x for x in net.places if len(x.in_arcs) == 0)[0]
     sink = list(x for x in net.places if len(x.out_arcs) == 0)[0]
 
-    ini = petrinet.Marking({source: 1})
-    fin = petrinet.Marking({sink: 1})
+    ini = obj.Marking({source: 1})
+    fin = obj.Marking({sink: 1})
 
     return check_easy_soundness_net_in_fin_marking(net, ini, fin)

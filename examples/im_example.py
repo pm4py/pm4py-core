@@ -4,14 +4,14 @@ import traceback
 import pm4py
 from pm4py.algo.discovery.inductive import algorithm as inductive
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.visualization.petrinet import visualizer as pn_vis
+from pm4py.visualization.petri_net import visualizer as pn_vis
 
 
 def execute_script():
     log_path = os.path.join("..", "tests", "input_data", "running-example.xes")
 
     log = xes_importer.apply(log_path)
-    net, marking, final_marking = inductive.apply(log, variant=inductive.Variants.IM)
+    net, marking, final_marking = inductive.apply(log, variant=inductive.Variants.IM_CLEAN)
     for place in marking:
         print("initial marking " + place.name)
     for place in final_marking:
@@ -27,7 +27,7 @@ def execute_script():
         for i in range(0, len(log)):
             try:
                 print("\n", i, [x["concept:name"] for x in log[i]])
-                cf_result = pm4py.algo.conformance.alignments.variants.state_equation_a_star.apply(log[i], net, marking,
+                cf_result = pm4py.algo.conformance.alignments.petri_net.variants.state_equation_a_star.apply(log[i], net, marking,
                                                                                                    final_marking)[
                     'alignment']
                 if cf_result is None:

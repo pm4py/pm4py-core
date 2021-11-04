@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.common.end_activities import end_activities_common
 from pm4py.statistics.end_activities.pandas.get import get_end_activities
@@ -9,6 +25,10 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_CONSTA
 from pm4py.util.constants import PARAM_MOST_COMMON_VARIANT
 from enum import Enum
 from pm4py.util import exec_utils
+from copy import copy
+import deprecation
+from typing import Optional, Dict, Any, Union, Tuple, List
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -20,7 +40,7 @@ class Parameters(Enum):
     RETURN_EA_COUNT = RETURN_EA_COUNT_DICT_AUTOFILTER
 
 
-def apply(df, values, parameters=None):
+def apply(df: pd.DataFrame, values: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Filter dataframe on end activities
 
@@ -54,6 +74,7 @@ def apply(df, values, parameters=None):
                                        positive=positive, grouped_df=grouped_df)
 
 
+@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
 def apply_auto_filter(df, parameters=None):
     """
     Apply auto filter on end activities
@@ -135,8 +156,11 @@ def filter_df_on_end_activities(df, values, case_id_glue=CASE_CONCEPT_NAME,
     i1 = df.set_index(case_id_glue).index
     i2 = last_eve_df.index
     if positive:
-        return df[i1.isin(i2)]
-    return df[~i1.isin(i2)]
+        ret = df[i1.isin(i2)]
+    else:
+        ret = df[~i1.isin(i2)]
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def filter_df_on_end_activities_nocc(df, nocc, ea_count0=None, case_id_glue=CASE_CONCEPT_NAME,
@@ -184,9 +208,11 @@ def filter_df_on_end_activities_nocc(df, nocc, ea_count0=None, case_id_glue=CASE
             first_eve_df = first_eve_df[first_eve_df[activity_key].isin(ea_count)]
             i1 = df.set_index(case_id_glue).index
             i2 = first_eve_df.index
+            ret = df[i1.isin(i2)]
+            ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
             if return_dict:
-                return df[i1.isin(i2)], ea_count_dict
-            return df[i1.isin(i2)]
+                return ret, ea_count_dict
+            return ret
         if return_dict:
             return df, ea_count_dict
     return df

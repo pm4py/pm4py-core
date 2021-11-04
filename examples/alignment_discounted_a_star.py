@@ -1,13 +1,13 @@
 import os
 import time
-from pm4py.algo.conformance.alignments import algorithm as ali
+from pm4py.algo.conformance.alignments.petri_net import algorithm as ali
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.objects.petri.importer import importer as petri_importer
+from pm4py.objects.petri_net.importer import importer as petri_importer
 
 
 def testSynchronousDiscountedAlignment():
     '''
-    This function runs an alignment based on the exponential cost function
+    This function runs an alignment based on the discounted edit distance
     By using the synchronous product
     :return:
     '''
@@ -21,7 +21,7 @@ def testSynchronousDiscountedAlignment():
 
     start=time.time()
 
-    alignments1 = ali.apply(log, net, marking, fmarking,
+    alignments1 = ali.apply(log._list[0], net, marking, fmarking,
                             variant=ali.VERSION_DISCOUNTED_A_STAR,
                             parameters={ali.Parameters.SYNCHRONOUS:True,ali.Parameters.EXPONENT:1.1})
     print(alignments1)
@@ -29,9 +29,8 @@ def testSynchronousDiscountedAlignment():
 
 def testNoSynchronousDiscountedAlignment():
     '''
-    This function runs an alignment based on the exponential cost function
-    By using the Petri net and exponentialCost function
-    :return:
+    This function runs an alignment based on the discounted edit distance
+    By using the Petri net and petri_net.utils.align_utils.discountedEditDistance function
     '''
     log_path = os.path.join("..", "tests", "input_data", "running-example.xes")
     pnml_path = os.path.join("..", "tests", "input_data", "running-example.pnml")
@@ -48,6 +47,6 @@ def testNoSynchronousDiscountedAlignment():
 
 
 if __name__ == '__main__':
+    # example on the first trace
     testSynchronousDiscountedAlignment()
-    # currently plays only the first trace
     testNoSynchronousDiscountedAlignment()

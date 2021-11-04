@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import numpy as np, pkgutil, logging
 
 from copy import copy
@@ -8,7 +24,7 @@ from pm4py.objects.dfg.utils.dfg_utils import filter_dfg_on_act, negate, get_act
     get_activities_self_loop, get_activities_direction
 from pm4py.objects.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges, get_activities_from_dfg, \
     infer_start_activities, infer_end_activities
-from pm4py.objects.dfg.filtering.dfg_filtering import clean_dfg_based_on_noise_thresh
+from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
 from pm4py.objects.dfg.utils.dfg_utils import infer_start_activities_from_prev_connections_and_current_dfg, \
     infer_end_activities_from_succ_connections_and_current_dfg, transform_dfg_to_directed_nx_graph
 from pm4py.algo.discovery.inductive.util import parallel_cut_utils, detection_utils

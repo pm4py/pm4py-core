@@ -1,12 +1,35 @@
-from pm4py.algo.discovery.heuristics.variants import classic
-from pm4py.objects.conversion.log import converter as log_conversion
-from pm4py.util import exec_utils
-from enum import Enum
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import pkgutil
+from enum import Enum
+
+from pm4py.algo.discovery.heuristics.variants import classic, plusplus
+from pm4py.objects.conversion.log import converter as log_conversion
+from pm4py.objects.heuristics_net.obj import HeuristicsNet
+from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 
 
 class Variants(Enum):
     CLASSIC = classic
+    PLUSPLUS = plusplus
 
 
 CLASSIC = Variants.CLASSIC
@@ -15,7 +38,7 @@ DEFAULT_VARIANT = CLASSIC
 VERSIONS = {CLASSIC}
 
 
-def apply(log, parameters=None, variant=CLASSIC):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None, variant=CLASSIC) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using Heuristics Miner
 
@@ -38,6 +61,7 @@ def apply(log, parameters=None, variant=CLASSIC):
     variant
         Variant of the algorithm:
             - Variants.CLASSIC
+            - Variants.PLUSPLUS
 
     Returns
     ------------
@@ -58,8 +82,8 @@ def apply(log, parameters=None, variant=CLASSIC):
                                                  parameters=parameters)
 
 
-def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
-              parameters=None, variant=CLASSIC):
+def apply_dfg(dfg: Dict[Tuple[str, str], int], activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
+              parameters=None, variant=CLASSIC) -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using Heuristics Miner
 
@@ -106,7 +130,7 @@ def apply_dfg(dfg, activities=None, activities_occurrences=None, start_activitie
                                                      parameters=parameters)
 
 
-def apply_heu(log, parameters=None, variant=CLASSIC):
+def apply_heu(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None, variant=CLASSIC) -> HeuristicsNet:
     """
     Discovers an Heuristics Net using Heuristics Miner
 
@@ -139,11 +163,11 @@ def apply_heu(log, parameters=None, variant=CLASSIC):
     fm
         Final marking
     """
-    return exec_utils.get_variant(variant).apply_heu(log, parameters=parameters)
+    return exec_utils.get_variant(variant).apply_heu(log_conversion.apply(log, parameters=parameters), parameters=parameters)
 
 
-def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
-                  parameters=None, variant=CLASSIC):
+def apply_heu_dfg(dfg: Dict[Tuple[str, str], int], activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
+                  parameters=None, variant=CLASSIC) -> HeuristicsNet:
     """
     Discovers an Heuristics Net using Heuristics Miner
 

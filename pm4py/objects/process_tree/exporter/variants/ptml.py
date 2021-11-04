@@ -1,8 +1,27 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+import copy
 import uuid
 
 from lxml import etree
-from pm4py.objects.process_tree.pt_operator import Operator
-from pm4py.objects.process_tree.process_tree import ProcessTree
+
+from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.process_tree.obj import Operator
+from pm4py.util import constants
 
 
 def get_list_nodes_from_tree(tree, parameters=None):
@@ -52,11 +71,12 @@ def export_ptree_tree(tree, parameters=None):
     xml_tree
         XML tree object
     """
+    tree = copy.deepcopy(tree)
     if parameters is None:
         parameters = {}
 
     nodes = get_list_nodes_from_tree(tree, parameters=parameters)
-    nodes_dict = {x: str(uuid.uuid4()) for x in nodes}
+    nodes_dict = {(id(x), x): str(uuid.uuid4()) for x in nodes}
 
     # make sure that in the exporting, loops have 3 children
     # (for ProM compatibility)
@@ -66,20 +86,20 @@ def export_ptree_tree(tree, parameters=None):
             third_children = ProcessTree(operator=None, label=None)
             third_children.parent = node
             node.children.append(third_children)
-            nodes_dict[third_children] = str(uuid.uuid4())
+            nodes_dict[(id(third_children), third_children)] = str(uuid.uuid4())
 
     # repeat twice (structure has changed)
     nodes = get_list_nodes_from_tree(tree, parameters=parameters)
-    nodes_dict = {x: str(uuid.uuid4()) for x in nodes}
+    nodes_dict = {(id(x), x): str(uuid.uuid4()) for x in nodes}
 
     root = etree.Element("ptml")
     processtree = etree.SubElement(root, "processTree")
     processtree.set("name", str(uuid.uuid4()))
-    processtree.set("root", nodes_dict[tree])
+    processtree.set("root", nodes_dict[(id(tree), tree)])
     processtree.set("id", str(uuid.uuid4()))
 
     for node in nodes:
-        nk = nodes_dict[node]
+        nk = nodes_dict[(id(node), node)]
         child = None
         if node.operator is None:
             if node.label is None:
@@ -106,11 +126,10 @@ def export_ptree_tree(tree, parameters=None):
         if not node == tree:
             child = etree.SubElement(processtree, "parentsNode")
             child.set("id", str(uuid.uuid4()))
-            child.set("sourceId", nodes_dict[node.parent])
-            child.set("targetId", nodes_dict[node])
+            child.set("sourceId", nodes_dict[(id(node.parent), node.parent)])
+            child.set("targetId", nodes_dict[(id(node), node)])
 
     tree = etree.ElementTree(root)
-
     return tree
 
 
@@ -136,7 +155,7 @@ def export_tree_as_string(tree, parameters=None):
     # gets the XML tree
     tree = export_ptree_tree(tree, parameters=parameters)
 
-    return etree.tostring(tree, xml_declaration=True, encoding="utf-8").decode('utf-8')
+    return etree.tostring(tree, xml_declaration=True, encoding=constants.DEFAULT_ENCODING)
 
 
 def apply(tree, output_path, parameters=None):
@@ -159,6 +178,6 @@ def apply(tree, output_path, parameters=None):
     tree = export_ptree_tree(tree, parameters=parameters)
 
     # exports the tree to a file
-    tree.write(output_path, pretty_print=True, xml_declaration=True, encoding="utf-8")
+    tree.write(output_path, pretty_print=True, xml_declaration=True, encoding=constants.DEFAULT_ENCODING)
 
     return tree

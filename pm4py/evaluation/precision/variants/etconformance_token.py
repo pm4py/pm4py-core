@@ -1,10 +1,26 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.algo.conformance.tokenreplay.variants import token_replay
 from pm4py.algo.conformance.tokenreplay import algorithm as executor
 
 from pm4py.objects import log as log_lib
 from pm4py.evaluation.precision import utils as precision_utils
 from pm4py.statistics.start_activities.log.get import get_start_activities
-from pm4py.objects.petri.align_utils import get_visible_transitions_eventually_enabled_by_marking
+from pm4py.objects.petri_net.utils.align_utils import get_visible_transitions_eventually_enabled_by_marking
 from pm4py.evaluation.precision.parameters import Parameters
 from pm4py.util import exec_utils
 

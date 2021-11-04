@@ -1,16 +1,43 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+import pkgutil
 from enum import Enum
 
-from lxml import etree
+try:
+    # do not compromise anymore importing the XES "exporter" package if "lxml" is / cannot be installed,
+    # and this variant cannot be used.
+    # after all, the default variant is now the "line_by_line" one.
+    from lxml import etree
+except:
+    pass
 
 from pm4py.objects.conversion.log import converter as log_converter
-from pm4py.objects.log import log as log_instance
-from pm4py.objects.log.exporter.xes.util import compression
+from pm4py.objects.log import obj as log_instance
 from pm4py.objects.log.util import xes as xes_util
-from pm4py.util import parameters as param_util
+from pm4py.util import constants
+from pm4py.util import exec_utils
+from io import BytesIO
+import gzip
 
 
 class Parameters(Enum):
-    COMPRESS = False
+    COMPRESS = "compress"
+    SHOW_PROGRESS_BAR = "show_progress_bar"
+    ENCODING = "encoding"
 
 
 # defines correspondence between Python types and XES types
@@ -27,16 +54,20 @@ __TYPE_CORRESPONDENCE = {
 __DEFAULT_TYPE = xes_util.TAG_STRING
 
 
-def __get_xes_attr_type(attr_type):
+def __get_xes_attr_type(attr_name, attr_type):
     """
     Transform a Python attribute type (e.g. str, datetime) into a XES attribute type (e.g. string, date)
 
     Parameters
     ----------
+    attr_name
+        Name of the attribute
     attr_type:
         Python attribute type
     """
-    if attr_type in __TYPE_CORRESPONDENCE:
+    if attr_name == xes_util.DEFAULT_NAME_KEY:
+        return xes_util.TAG_STRING
+    elif attr_type in __TYPE_CORRESPONDENCE:
         attr_type_xes = __TYPE_CORRESPONDENCE[attr_type]
     else:
         attr_type_xes = __DEFAULT_TYPE
@@ -56,14 +87,7 @@ def __get_xes_attr_value(attr_value, attr_type_xes):
 
     """
     if attr_type_xes == xes_util.TAG_DATE:
-        if attr_value.strftime('%z') and len(attr_value.strftime('%z')) >= 5:
-            default_date_repr = attr_value.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] + attr_value.strftime('%z')[
-                                                                                   0:3] + ":" + attr_value.strftime(
-                '%z')[
-                                                                                                3:5]
-        else:
-            default_date_repr = attr_value.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3] + "+00:00"
-        return default_date_repr.replace(" ", "T")
+        return attr_value.isoformat()
     elif attr_type_xes == xes_util.TAG_BOOLEAN:
         return str(attr_value).lower()
     return str(attr_value)
@@ -161,15 +185,15 @@ def __export_attributes_element(log_element, xml_element):
     if hasattr(log_element, "attributes"):
         log_element = log_element.attributes
 
-    if isinstance(log_element, list):
+    if isinstance(log_element, list) or isinstance(log_element, set):
         items = log_element
     else:
         items = log_element.items()
 
     for attr, attr_value in items:
-        if attr is not None:
+        if attr is not None and attr_value is not None:
             attr_type = type(attr_value).__name__
-            attr_type_xes = __get_xes_attr_type(attr_type)
+            attr_type_xes = __get_xes_attr_type(attr, attr_type)
             if attr_type is not None and attr_type_xes is not None:
                 if attr_type_xes == xes_util.TAG_LIST:
                     if attr_value['value'] is None:
@@ -179,7 +203,7 @@ def __export_attributes_element(log_element, xml_element):
                         __export_attributes_element(attr_value['children'], this_attribute_values)
                     else:
                         attr_type = type(attr_value['value']).__name__
-                        attr_type_xes = __get_xes_attr_type(attr_type)
+                        attr_type_xes = __get_xes_attr_type(attr, attr_type)
                         if attr_type is not None and attr_type_xes is not None:
                             if attr_value is not None:
                                 this_attribute = etree.SubElement(xml_element, attr_type_xes)
@@ -212,7 +236,7 @@ def __export_traces_events(tr, trace):
         __export_attributes_element(ev, event)
 
 
-def __export_traces(log, root):
+def __export_traces(log, root, parameters=None):
     """
     Export XES traces from a PM4PY log
 
@@ -224,13 +248,30 @@ def __export_traces(log, root):
         Output XML root element
 
     """
+    if parameters is None:
+        parameters = {}
+
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+
+    progress = None
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
+        from tqdm.auto import tqdm
+        progress = tqdm(total=len(log), desc="exporting log, completed traces :: ")
+
     for tr in log:
         trace = etree.SubElement(root, xes_util.TAG_TRACE)
         __export_attributes_element(tr, trace)
         __export_traces_events(tr, trace)
+        if progress is not None:
+            progress.update()
+
+    # gracefully close progress bar
+    if progress is not None:
+        progress.close()
+    del progress
 
 
-def __export_log_tree(log):
+def export_log_tree(log, parameters=None):
     """
     Get XES log XML tree from a PM4Py log
 
@@ -248,6 +289,9 @@ def __export_log_tree(log):
     if type(log) is log_instance.EventStream:
         log = log_converter.apply(log)
     root = etree.Element(xes_util.TAG_LOG)
+    root.set(xes_util.TAG_VERSION, xes_util.VALUE_XES_VERSION)
+    root.set(xes_util.TAG_FEATURES, xes_util.VALUE_XES_FEATURES)
+    root.set(xes_util.TAG_XMLNS, xes_util.VALUE_XMLNS)
 
     # add attributes at the log level
     __export_attributes(log, root)
@@ -258,7 +302,7 @@ def __export_log_tree(log):
     # add classifiers at the log level
     __export_classifiers(log, root)
     # add traces at the log level
-    __export_traces(log, root)
+    __export_traces(log, root, parameters=parameters)
 
     tree = etree.ElementTree(root)
 
@@ -283,12 +327,26 @@ def export_log_as_string(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    del parameters
+
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+    compress = exec_utils.get_param_value(Parameters.COMPRESS, parameters, False)
 
     # Gets the XML tree to export
-    tree = __export_log_tree(log)
+    tree = export_log_tree(log, parameters=parameters)
 
-    return etree.tostring(tree, xml_declaration=True, encoding="utf-8", pretty_print=True)
+    b = BytesIO()
+
+    if compress:
+        d = gzip.GzipFile(fileobj=b, mode="wb")
+    else:
+        d = b
+
+    tree.write(d, pretty_print=True, xml_declaration=True, encoding=encoding)
+
+    if compress:
+        d.close()
+
+    return b.getvalue()
 
 
 def __export_log(log, output_file_path, parameters=None):
@@ -307,13 +365,23 @@ def __export_log(log, output_file_path, parameters=None):
     """
     parameters = dict() if parameters is None else parameters
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+    compress = exec_utils.get_param_value(Parameters.COMPRESS, parameters, output_file_path.lower().endswith(".gz"))
+
     # Gets the XML tree to export
-    tree = __export_log_tree(log)
-    # Effectively do the export of the event log
-    tree.write(output_file_path, pretty_print=True, xml_declaration=True, encoding="utf-8")
-    compress = param_util.fetch(Parameters.COMPRESS, parameters)
+    tree = export_log_tree(log, parameters=parameters)
+
     if compress:
-        compression.compress(output_file_path)
+        if not output_file_path.lower().endswith(".gz"):
+            output_file_path = output_file_path + ".gz"
+        f = gzip.open(output_file_path, mode="wb")
+    else:
+        f = open(output_file_path, "wb")
+
+    # Effectively do the export of the event log
+    tree.write(f, pretty_print=True, xml_declaration=True, encoding=encoding)
+
+    f.close()
 
 
 def apply(log, output_file_path, parameters=None):

@@ -13,11 +13,13 @@ for log_name in os.listdir(LOGS_FOLDER):
         print(log_path)
         if "xes" in log_name:
             log = pm4py.read_xes(log_path)
-            variants = pm4py.get_variants(log)
+            variants = pm4py.get_variants_as_tuples(log)
+            variants = {",".join(x): y for x, y in variants.items()}
             fp_log = pm4py.algo.discovery.footprints.log.variants.entire_event_log.apply(log)
         elif "parquet" in log_name:
             dataframe = pd.read_parquet(log_path)
-            variants = pm4py.get_variants(dataframe)
+            variants = pm4py.get_variants_as_tuples(dataframe)
+            variants = {",".join(x): y for x, y in variants.items()}
             fp_log = pm4py.algo.discovery.footprints.log.variants.entire_dataframe.apply(dataframe)
         tree_im = inductive_miner.apply_tree_variants(variants, variant=inductive_miner.Variants.IM)
         tree_imf = inductive_miner.apply_tree_variants(variants, variant=inductive_miner.Variants.IMf)

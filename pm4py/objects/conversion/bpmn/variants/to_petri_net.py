@@ -1,9 +1,25 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import uuid
 from enum import Enum
 
-from pm4py.objects.petri import reduction
-from pm4py.objects.petri.petrinet import PetriNet, Marking
-from pm4py.objects.petri.utils import add_arc_from_to
+from pm4py.objects.petri_net.utils import reduction
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.util import exec_utils
 
 
@@ -63,7 +79,7 @@ def apply(bpmn_graph, parameters=None):
         parameters = {}
 
     import networkx as nx
-    from pm4py.objects.bpmn.bpmn_graph import BPMN
+    from pm4py.objects.bpmn.obj import BPMN
 
     use_id = exec_utils.get_param_value(Parameters.USE_ID, parameters, False)
 

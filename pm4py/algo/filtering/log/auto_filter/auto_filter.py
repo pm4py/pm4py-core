@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.algo.filtering.log.end_activities import end_activities_filter
@@ -7,6 +23,7 @@ from pm4py.util import xes_constants as xes
 from pm4py.util import constants
 from enum import Enum
 from pm4py.util import exec_utils
+import deprecation
 
 
 class Parameters(Enum):
@@ -21,6 +38,7 @@ class Parameters(Enum):
     ENABLE_END_ACTIVITIES_FILTER = "enable_end_activities_filter"
 
 
+@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
 def apply_auto_filter(log, parameters=None):
     """
     Apply some filters in battery to the log in order to get a simplified log

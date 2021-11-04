@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py import util as pmutil
 from pm4py.algo.conformance.tokenreplay.variants import token_replay
 from pm4py.evaluation.generalization.variants import token_based as generalization_token_based
@@ -10,6 +26,9 @@ from pm4py.util import xes_constants as xes_util
 from pm4py.util import constants
 from enum import Enum
 from pm4py.util import exec_utils
+import deprecation
+from pm4py.meta import VERSION
+import warnings
 
 
 class Parameters(Enum):
@@ -20,6 +39,9 @@ class Parameters(Enum):
     PARAM_GENERALIZATION_WEIGHT = 'generalization_weight'
 
 
+@deprecation.deprecated(deprecated_in="2.2.5", removed_in="3.0",
+                        current_version=VERSION,
+                        details="Use the pm4py.algo.evaluation.evaluator class")
 def apply(log, net, initial_marking, final_marking, parameters=None):
     """
     Calculates all metrics based on token-based replay and returns a unified dictionary
@@ -43,6 +65,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
         Dictionary containing fitness, precision, generalization and simplicity; along with the average weight of
         these metrics
     """
+    warnings.warn("Use the pm4py.algo.evaluation.evaluator class")
     if parameters is None:
         parameters = {}
     log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)

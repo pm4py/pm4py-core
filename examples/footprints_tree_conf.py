@@ -4,8 +4,7 @@ from pm4py.algo.discovery.footprints import algorithm as fp_discovery
 from pm4py.algo.conformance.footprints import algorithm as fp_conformance
 from pm4py.algo.conformance.footprints.util import tree_visualization
 from pm4py.visualization.process_tree import visualizer as pt_visualizer
-from pm4py.statistics.traces.log import case_statistics
-from pm4py.algo.filtering.log.variants import variants_filter
+from pm4py.statistics.traces.generic.log import case_statistics
 from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
 from pm4py.algo.filtering.log.paths import paths_filter
 from pm4py.util.vis_utils import human_readable_stat
@@ -16,10 +15,10 @@ import os
 
 def execute_script():
     log = xes_importer.apply(os.path.join("..", "tests", "input_data", "receipt.xes"))
-    throughput_time = case_statistics.get_median_caseduration(log)
+    throughput_time = case_statistics.get_median_case_duration(log)
     variants, variants_times = variants_filter.get_variants_along_with_case_durations(log)
     dfg = dfg_discovery.apply(log)
-    filtered_log = variants_filter.apply_auto_filter(deepcopy(log))
+    filtered_log = variants_filter.filter_log_variants_percentage(log, 0.2)
     # filtered_log = log
     tree = inductive_miner.apply_tree(filtered_log)
     fp_log = fp_discovery.apply(log, variant=fp_discovery.Variants.ENTIRE_EVENT_LOG)
@@ -32,7 +31,7 @@ def execute_script():
         path = conf_occ[i][0]
         occ = conf_occ[i][1]
         red_log = paths_filter.apply(log, [path])
-        red_throughput_time = case_statistics.get_median_caseduration(red_log)
+        red_throughput_time = case_statistics.get_median_case_duration(red_log)
         print("%s\t\t%s\t\t%d\t\t%s\t\t%s" % (
             path[0], path[1], occ, human_readable_stat(throughput_time), human_readable_stat(red_throughput_time)))
     variants_length = sorted([(x, len(variants[x])) for x in variants.keys()], key=lambda y: (y[1], y[0]), reverse=True)
@@ -46,7 +45,7 @@ def execute_script():
         fp_log_var = fp_discovery.apply(variants[var], variant=fp_discovery.Variants.ENTIRE_EVENT_LOG)
         conf_var = fp_conformance.apply(fp_log_var, fp_model)
         is_fit = str(len(conf_var) == 0)
-        var_throughput = case_statistics.get_median_caseduration(variants[var])
+        var_throughput = case_statistics.get_median_case_duration(variants[var])
         print("%s\t\t%d\t\t%s\t\t%s\t\t%s" % (vark, occ, is_fit, throughput_time, human_readable_stat(var_throughput)))
 
     # print(conf_occ)

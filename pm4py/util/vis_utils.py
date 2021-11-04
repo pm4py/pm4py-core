@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import base64
 import os
 import subprocess
@@ -7,38 +23,41 @@ MAX_EDGE_PENWIDTH_GRAPHVIZ = 2.6
 MIN_EDGE_PENWIDTH_GRAPHVIZ = 1.0
 
 
-def human_readable_stat(c):
+def human_readable_stat(timedelta_seconds, stat_locale: dict = {}):
     """
     Transform a timedelta expressed in seconds into a human readable string
 
     Parameters
     ----------
-    c
+    timedelta_seconds
         Timedelta expressed in seconds
+    stat_locale
+        Dict mapping stat strings
 
     Returns
     ----------
     string
         Human readable string
     """
-    c = int(float(c))
-    years = c // 31104000
-    months = c // 2592000
-    days = c // 86400
-    hours = c // 3600 % 24
-    minutes = c // 60 % 60
-    seconds = c % 60
+    timedelta_seconds = int(float(timedelta_seconds))
+    years = timedelta_seconds // 31104000
+    months = timedelta_seconds // 2592000
+    days = timedelta_seconds // 86400
+    hours = timedelta_seconds // 3600 % 24
+    minutes = timedelta_seconds // 60 % 60
+    seconds = timedelta_seconds % 60
+    
     if years > 0:
-        return str(years) + "Y"
+        return str(years) + stat_locale.get("year", "Y")
     if months > 0:
-        return str(months) + "MO"
+        return str(months) + stat_locale.get("month", "MO")
     if days > 0:
-        return str(days) + "D"
+        return str(days) + stat_locale.get("day", "D")
     if hours > 0:
-        return str(hours) + "h"
+        return str(hours) + stat_locale.get("hour", "h")
     if minutes > 0:
-        return str(minutes) + "m"
-    return str(seconds) + "s"
+        return str(minutes) + stat_locale.get("minute", "m")
+    return str(seconds) + stat_locale.get("second", "s")
 
 
 def get_arc_penwidth(arc_measure, min_arc_measure, max_arc_measure):
@@ -131,7 +150,7 @@ def check_visualization_inside_jupyter():
     """
     try:
         shell = get_ipython().__class__.__name__
-        if shell == "ZMQInteractiveShell":
+        if shell == "ZMQInteractiveShell" or shell == "Shell":
             return True
         else:
             return False

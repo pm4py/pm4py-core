@@ -1,8 +1,28 @@
-from pm4py.statistics.traces.pandas import case_statistics
-from collections import Counter
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+from typing import Optional, Dict, Any, Union, List, Set
+
+import pandas as pd
+
+from pm4py.objects.log.util import pandas_numpy_variants
 
 
-def get_variants_count(df, parameters=None):
+def get_variants_count(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> Union[
+    Dict[str, int], Dict[List[str], int]]:
     """
     Gets the dictionary of variants from the current dataframe
 
@@ -21,14 +41,11 @@ def get_variants_count(df, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    var_stats = case_statistics.get_variant_statistics(df, parameters=parameters)
-    if var_stats:
-        count_key = list(x for x in var_stats[0].keys() if not x == "variant")[0]
-        return {x["variant"]: x[count_key] for x in var_stats}
-    return {}
+
+    return pandas_numpy_variants.apply(df, parameters=parameters)
 
 
-def get_variants_set(df, parameters=None):
+def get_variants_set(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> Union[Set[str], Set[List[str]]]:
     """
     Gets the set of variants from the current dataframe
 
@@ -47,5 +64,7 @@ def get_variants_set(df, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    var_stats = case_statistics.get_variant_statistics(df, parameters=parameters)
-    return set(x["variant"] for x in var_stats)
+
+    variants_dict = get_variants_count(df, parameters=parameters)
+
+    return set(variants_dict.keys())

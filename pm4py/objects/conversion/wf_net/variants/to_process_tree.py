@@ -1,14 +1,30 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import datetime
 import itertools
 import uuid
-
 from copy import deepcopy
 from enum import Enum
 
-from pm4py.objects.petri import utils as pn_util
-from pm4py.objects.petri.petrinet import PetriNet
-from pm4py.objects.process_tree import pt_operator
-from pm4py.objects.process_tree import util as pt_util
+from pm4py.objects.petri_net.utils import petri_utils as pn_util
+from pm4py.objects.petri_net.obj import PetriNet
+from pm4py.objects.process_tree import obj as pt_operator
+from pm4py.objects.process_tree.utils import generic as pt_util
+from pm4py.objects.process_tree.utils.generic import tree_sort
 from pm4py.util import exec_utils
 
 TRANSITION_PREFIX = str(uuid.uuid4())
@@ -235,7 +251,7 @@ def group_blocks_in_net(net, parameters=None):
     if parameters is None:
         parameters = {}
 
-    from pm4py.evaluation.wf_net import evaluator as wf_eval
+    from pm4py.algo.analysis.workflow_net import algorithm as wf_eval
 
     if not wf_eval.apply(net):
         raise ValueError('The Petri net provided is not a WF-net')
@@ -286,9 +302,11 @@ def apply(net, im, fm, parameters=None):
     if len(grouped_net.transitions) == 1:
         pt_str = list(grouped_net.transitions)[0].label
         pt = pt_util.parse(pt_str)
-        return pt_util.fold(pt) if fold else pt
+        ret = pt_util.fold(pt) if fold else pt
+        tree_sort(ret)
+        return ret
     else:
         if debug:
-            from pm4py.visualization.petrinet import visualizer as pn_viz
+            from pm4py.visualization.petri_net import visualizer as pn_viz
             pn_viz.view(pn_viz.apply(grouped_net, parameters={"format": "svg"}))
         raise ValueError('Parsing of WF-net Failed')

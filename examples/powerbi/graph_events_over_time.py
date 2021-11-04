@@ -1,9 +1,12 @@
 if True:
     # ignore this part in true PowerBI executions
+    import os
     import pandas as pd
     from pm4py.objects.log.util import dataframe_utils
 
-    dataset = pd.read_csv("C:/running-example.csv")
+    log_path = os.path.join("..", "..", "tests", "input_data", "running-example.csv")
+
+    dataset = pd.read_csv(log_path)
     dataset = dataframe_utils.convert_timestamp_columns_in_df(dataset)
 
 import pandas as pd

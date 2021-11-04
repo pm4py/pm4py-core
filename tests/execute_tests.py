@@ -17,8 +17,8 @@ if __name__ == "__main__":
     from tests.alpha_test import AlphaMinerTest
     from tests.inductive_test import InductiveMinerTest
     from tests.inductive_tree_test import InductiveMinerTreeTest
-    from tests.inductive_other_tests import InductiveMinerOtherTests
     from tests.alignment_test import AlignmentTest
+    from tests.dfg_tests import DfgTests
     from tests.sna_test import SnaTests
     from tests.petri_imp_exp_test import PetriImportExportTest
     from tests.bpmn_tests import BPMNTests
@@ -28,21 +28,20 @@ if __name__ == "__main__":
     from tests.dec_tree_test import DecisionTreeTest
     from tests.graphs_forming import GraphsForming
     from tests.heuminer_test import HeuMinerTest
-    from tests.matrix_rep_test import MatrixRepTest
     from tests.main_fac_test import MainFactoriesTest
     from tests.algorithm_test import AlgorithmTest
     from tests.filtering_log_test import LogFilteringTest
     from tests.filtering_pandas_test import DataframePrefilteringTest
-    from tests.map_filter_functions_test import MapFilterFunctionsTest
     from tests.statistics_log_test import StatisticsLogTest
     from tests.statistics_df_test import StatisticsDfTest
     from tests.trans_syst_tests import TransitionSystemTest
+    from tests.imp_exp_from_string import ImpExpFromString
     from tests.woflan_tests import WoflanTest
     from tests.simplified_interface import SimplifiedInterfaceTest
 
     test_ts = TransitionSystemTest()
+    test_ies = ImpExpFromString()
     test_doc_tests = DocTests()
-    test_map_filter = MapFilterFunctionsTest()
     test_stats_log = StatisticsLogTest
     test_stats_df = StatisticsDfTest
     test_log_filter = LogFilteringTest()
@@ -56,7 +55,7 @@ if __name__ == "__main__":
     test4_object = AlphaMinerTest()
     test5_object = InductiveMinerTest()
     test55_object = InductiveMinerTreeTest()
-    test56_object = InductiveMinerOtherTests()
+    test_dfg = DfgTests()
     test6_object = AlignmentTest()
     test7_object = PetriImportExportTest()
     bpmn_test = BPMNTests()
@@ -66,7 +65,6 @@ if __name__ == "__main__":
     sna_tests = SnaTests()
     graphforming_test = GraphsForming()
     heuminer_test = HeuMinerTest()
-    matrixrep_test = MatrixRepTest()
     main_factories_test = MainFactoriesTest()
     algorithm_test = AlgorithmTest()
     woflan_test = WoflanTest()

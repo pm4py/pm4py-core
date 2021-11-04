@@ -4,7 +4,7 @@ import os
 from pm4py.objects.log.importer.xes import importer as xes_importer
 import pandas as pd
 from pm4py.objects.log.util import dataframe_utils
-from pm4py.algo.enhancement.roles import algorithm as role_mining
+from pm4py.algo.organizational_mining.roles import algorithm as role_mining
 
 
 class RoleDetectionTest(unittest.TestCase):

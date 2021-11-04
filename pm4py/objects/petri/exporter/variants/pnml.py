@@ -1,9 +1,25 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import uuid
 
 from lxml import etree
 
-from pm4py.objects.petri.petrinet import PetriNet
-from pm4py.objects.petri.petrinet import Marking
+from pm4py.objects.petri.obj import Marking
+from pm4py.objects.petri.obj import PetriNet
 from pm4py.util import constants
 
 
@@ -178,7 +194,8 @@ def export_petri_as_string(petrinet, marking, final_marking=None, export_prom5=F
     tree = export_petri_tree(petrinet, marking, final_marking=final_marking,
                              export_prom5=export_prom5)
 
-    return etree.tostring(tree, xml_declaration=True, encoding="utf-8").decode('utf-8')
+    # removing default decoding (return binary string as in other parts of the application)
+    return etree.tostring(tree, xml_declaration=True, encoding=constants.DEFAULT_ENCODING)
 
 
 def export_net(petrinet, marking, output_filename, final_marking=None, export_prom5=False,
@@ -207,4 +224,4 @@ def export_net(petrinet, marking, output_filename, final_marking=None, export_pr
                              export_prom5=export_prom5)
 
     # write the tree to a file
-    tree.write(output_filename, pretty_print=True, xml_declaration=True, encoding="utf-8")
+    tree.write(output_filename, pretty_print=True, xml_declaration=True, encoding=constants.DEFAULT_ENCODING)

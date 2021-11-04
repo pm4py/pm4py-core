@@ -28,12 +28,12 @@ class StatisticsDfTest(unittest.TestCase):
         get.get_start_activities(df)
 
     def test_case_arrival(self):
-        from pm4py.statistics.traces.pandas import case_arrival
+        from pm4py.statistics.traces.generic.pandas import case_arrival
         df = self.get_dataframe()
         case_arrival.get_case_arrival_avg(df)
 
     def test_case_statistics(self):
-        from pm4py.statistics.traces.pandas import case_statistics
+        from pm4py.statistics.traces.generic.pandas import case_statistics
         df = self.get_dataframe()
         case_statistics.get_cases_description(df)
         case_statistics.get_variants_df(df)
@@ -48,6 +48,38 @@ class StatisticsDfTest(unittest.TestCase):
         from pm4py.statistics.variants.pandas import get
         df = self.get_dataframe()
         get.get_variants_set(df)
+
+    def test_batch_detection(self):
+        from pm4py.algo.discovery.batches.variants import pandas as pandas_batches
+        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe)
+        pandas_batches.apply(dataframe)
+
+    def test_case_overlap(self):
+        from pm4py.statistics.overlap.cases.pandas import get as overlap_get
+        df = self.get_dataframe()
+        overlap_get.apply(df)
+
+    def test_cycle_time(self):
+        from pm4py.statistics.traces.cycle_time.pandas import get as cycle_time_get
+        df = self.get_dataframe()
+        cycle_time_get.apply(df)
+
+    def test_rework(self):
+        from pm4py.statistics.rework.pandas import get as rework_get
+        df = self.get_dataframe()
+        rework_get.apply(df)
+
+    def test_events_distribution(self):
+        from pm4py.statistics.attributes.pandas import get as attributes_get
+        df = self.get_dataframe()
+        attributes_get.get_events_distribution(df)
+
+    def test_msd(self):
+        from pm4py.algo.discovery.minimum_self_distance.variants import pandas as msd_pandas
+        df = self.get_dataframe()
+        msd_pandas.apply(df)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,7 +1,40 @@
-from pm4py.objects.process_tree.pt_operator import Operator
-from pm4py.algo.discovery.footprints.outputs import Outputs
-from pm4py.objects.process_tree import bottomup as bottomup_disc
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+from pm4py.objects.process_tree.obj import Operator
+from pm4py.objects.process_tree.utils import bottomup as bottomup_disc
 from copy import copy
+
+from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.process_tree.obj import ProcessTree
+
+
+class Outputs(Enum):
+    DFG = "dfg"
+    SEQUENCE = "sequence"
+    PARALLEL = "parallel"
+    START_ACTIVITIES = "start_activities"
+    END_ACTIVITIES = "end_activities"
+    ACTIVITIES = "activities"
+    SKIPPABLE = "skippable"
+    ACTIVITIES_ALWAYS_HAPPENING = "activities_always_happening"
+    MIN_TRACE_LENGTH = "min_trace_length"
+    TRACE = "trace"
+
 
 START_ACTIVITIES = Outputs.START_ACTIVITIES.value
 END_ACTIVITIES = Outputs.END_ACTIVITIES.value
@@ -326,7 +359,7 @@ def get_footprints(node, footprints_dictio):
         return get_footprints_leaf(node, footprints_dictio)
     elif node.operator == Operator.XOR:
         return get_footprints_xor(node, footprints_dictio)
-    elif node.operator == Operator.PARALLEL:
+    elif node.operator == Operator.PARALLEL or node.operator == Operator.OR:
         return get_footprints_parallel(node, footprints_dictio)
     elif node.operator == Operator.SEQUENCE:
         return get_footprints_sequence(node, footprints_dictio)
@@ -362,7 +395,7 @@ def get_all_footprints(tree, parameters=None):
     return footprints_dictio
 
 
-def apply(tree, parameters=None):
+def apply(tree: ProcessTree, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
     """
     Footprints detection on process tree
 

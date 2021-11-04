@@ -2,7 +2,7 @@ import os
 from pm4py.algo.conformance.multialignments.variants.discounted_a_star import apply as multii
 from pm4py.algo.conformance.multialignments.algorithm import Parameters
 from pm4py.objects.log.importer.xes import importer as xes_importer
-from pm4py.objects.petri.importer import importer as petri_importer
+from pm4py.objects.petri_net.importer import importer as petri_importer
 
 
 if __name__ == '__main__':

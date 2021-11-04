@@ -1,4 +1,51 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import datetime
+from typing import List
+
+
+def soj_time_business_hours_diff(st: datetime.datetime, et: datetime.datetime, worktiming: List[int],
+                                 weekends: List[int]) -> float:
+    """
+    Calculates the difference between the provided timestamps based on the business hours
+
+    Parameters
+    -----------------
+    st
+        Start timestamp
+    et
+        Complete timestamp
+    worktiming
+        work schedule of the company (provided as a list where the first number is the start
+            of the work time, and the second number is the end of the work time), if business hours are enabled
+                                        Default: [7, 17] (work shift from 07:00 to 17:00)
+    weekends
+        indexes of the days of the week that are weekend
+                                            Default: [6, 7] (weekends are Saturday and Sunday)
+
+    Returns
+    -----------------
+    diff
+        Difference in business hours
+    """
+    bh = BusinessHours(st.replace(tzinfo=None), et.replace(tzinfo=None),
+                       worktiming=worktiming,
+                       weekends=weekends)
+    return bh.getseconds()
 
 
 class BusinessHours:

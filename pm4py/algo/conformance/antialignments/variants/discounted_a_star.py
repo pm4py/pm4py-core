@@ -1,9 +1,9 @@
 import heapq
 import time
 
-from pm4py.objects.petri.align_utils import levenshtein, discountedEditDistance
-from pm4py.objects.petri.utils import decorate_places_preset_trans, decorate_transitions_prepostset
-from pm4py.objects.petri import align_utils as utils
+from pm4py.objects.petri_net.utils.align_utils import levenshtein, discountedEditDistance
+from pm4py.objects.petri_net.utils.petri_utils import decorate_places_preset_trans, decorate_transitions_prepostset
+from pm4py.objects.petri_net.utils import align_utils as utils
 from pm4py.util import exec_utils
 from copy import copy
 from enum import Enum
@@ -15,7 +15,7 @@ from pm4py.statistics.variants.log import get as variants_module
 This algorithm computes discounted anti-alignment and brings a precision of process model
 See the paper "An A*-Algorithm for Computing Discounted Anti-Alignments in Process Mining" for more details
 It is inspired by the verison of the dijkstra_no_heuristic.py for alignment algorithm. 
-Author: Boltenhagen Mathilde
+Author: Boltenhagen Mathilde, Thomas Chatain, Josep Carmona
 Date: Jan. 2021
 '''
 

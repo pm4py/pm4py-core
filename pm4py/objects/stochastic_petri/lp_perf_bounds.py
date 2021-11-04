@@ -1,12 +1,28 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from copy import copy
 
 import numpy as np
 
-from pm4py.objects.petri.petrinet import PetriNet, Marking
-from pm4py.objects.petri.utils import remove_place, remove_transition, add_arc_from_to
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.petri_net.utils.petri_utils import remove_place, remove_transition, add_arc_from_to
 from pm4py.objects.random_variables.exponential.random_variable import Exponential
 from pm4py.util.lp import solver as lp_solver
-from pm4py.util.lp.util import aeq_redundant_fix
+import deprecation
 
 DEFAULT_REPLACEMENT_IMMEDIATE = 1000
 
@@ -14,6 +30,7 @@ DEFAULT_LP_SOLVER_VARIANT = lp_solver.ORTOOLS_SOLVER
 
 
 class LpPerfBounds(object):
+    @deprecation.deprecated('2.2.7', '3.0.0')
     def __init__(self, net, initial_marking, final_marking, smap, avg_time_starts):
         """
         Construct the LpPerfBounds object
@@ -148,8 +165,6 @@ class LpPerfBounds(object):
             (aub_1, aub_2, aub_3, aub_4, aub_5, aub_6, aub_18, aub_19, aub_21, aub_22, aub_26, aub_general))
         self.bub = np.vstack(
             (bub_1, bub_2, bub_3, bub_4, bub_5, bub_6, bub_18, bub_19, bub_21, bub_22, bub_26, bub_general))
-
-        self.Aeq, self.beq = aeq_redundant_fix.remove_redundant_rows(self.Aeq, self.beq)
 
         if DEFAULT_LP_SOLVER_VARIANT == lp_solver.CVXOPT:
             self.Aeq = np.transpose(self.Aeq.astype(np.float64)).tolist()

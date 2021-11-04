@@ -1,6 +1,24 @@
-from pm4py.objects.petri.petrinet import PetriNet, Marking
-from pm4py.objects.petri.utils import add_arc_from_to
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import hashlib
+
+from pm4py.objects.petri.obj import PetriNet, Marking
+from pm4py.objects.petri.utils import add_arc_from_to
+from pm4py.util import constants
 
 
 def get_graph_components(places, inv_trans, trans_dup_label, tmap):
@@ -15,7 +33,7 @@ def get_graph_components(places, inv_trans, trans_dup_label, tmap):
         G.add_node(x)
     for x in trans_dup_label:
         i = 0
-        while i < len(tmap[x])-1:
+        while i < len(tmap[x]) - 1:
             j = i + 1
             while j < len(tmap[x]):
                 G.add_edge(tmap[x][i].label, tmap[x][j].label)
@@ -79,7 +97,9 @@ def decompose(net, im, fm):
                 if old_place in fm:
                     fm_new[lmap[el]] = fm[old_place]
         lvis_labels = sorted([t.label for t in net_new.transitions if t.label is not None])
-        t_tuple = tuple(sorted(list(int(hashlib.md5(t.name.encode('utf-8')).hexdigest(), 16) for t in net_new.transitions)))
+        t_tuple = tuple(
+            sorted(list(int(hashlib.md5(t.name.encode(constants.DEFAULT_ENCODING)).hexdigest(), 16) for t in
+                        net_new.transitions)))
         net_new.lvis_labels = lvis_labels
         net_new.t_tuple = t_tuple
 
@@ -134,7 +154,8 @@ def merge_comp(comp1, comp2):
             add_arc_from_to(trans[arc.source.name], places[arc.target.name], net)
 
     lvis_labels = sorted([t.label for t in net.transitions if t.label is not None])
-    t_tuple = tuple(sorted(list(int(hashlib.md5(t.name.encode('utf-8')).hexdigest(), 16) for t in net.transitions)))
+    t_tuple = tuple(sorted(
+        list(int(hashlib.md5(t.name.encode(constants.DEFAULT_ENCODING)).hexdigest(), 16) for t in net.transitions)))
     net.lvis_labels = lvis_labels
     net.t_tuple = t_tuple
 

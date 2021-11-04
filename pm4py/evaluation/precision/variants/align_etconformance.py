@@ -1,15 +1,31 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.objects import log as log_lib
 from pm4py.evaluation.precision import utils as precision_utils
-from pm4py.objects.petri import align_utils as utils
-from pm4py.objects.petri import check_soundness
-from pm4py.objects.petri.petrinet import Marking
-from pm4py.objects.petri.utils import construct_trace_net
-from pm4py.objects.petri.synchronous_product import construct
+from pm4py.objects.petri_net.utils import align_utils as utils, check_soundness
+from pm4py.objects.petri_net.obj import Marking
+from pm4py.objects.petri_net.utils.petri_utils import construct_trace_net
+from pm4py.objects.petri_net.utils.synchronous_product import construct
 from pm4py.statistics.start_activities.log.get import get_start_activities
-from pm4py.objects.petri.align_utils import get_visible_transitions_eventually_enabled_by_marking
+from pm4py.objects.petri_net.utils.align_utils import get_visible_transitions_eventually_enabled_by_marking
 from pm4py.evaluation.precision.parameters import Parameters
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants
+import pkgutil
 
 
 def apply(log, net, marking, final_marking, parameters=None):
@@ -176,7 +192,16 @@ def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameter
     """
     if parameters is None:
         parameters = {}
+
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+
     align_result = []
+
+    progress = None
+    if pkgutil.find_loader("tqdm") and show_progress_bar and len(fake_log) > 1:
+        from tqdm.auto import tqdm
+        progress = tqdm(total=len(fake_log), desc="computing precision with alignments, completed variants :: ")
+
     for i in range(len(fake_log)):
         trace = fake_log[i]
         sync_net, sync_initial_marking, sync_final_marking = build_sync_net(trace, net, marking, final_marking,
@@ -205,6 +230,13 @@ def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameter
             # if there is no path from the initial marking
             # replaying the given prefix, then add None
             align_result.append(None)
+        if progress is not None:
+            progress.update()
+
+    # gracefully close progress bar
+    if progress is not None:
+        progress.close()
+    del progress
 
     return align_result
 

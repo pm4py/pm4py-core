@@ -1,12 +1,27 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from copy import deepcopy
+from enum import Enum
 
 import numpy as np
 
+from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.objects.log.util import basic_filter
-from pm4py.objects.log.log import EventLog, Trace, Event
-from enum import Enum
 from pm4py.util import exec_utils
-from pm4py.util import constants
 
 
 class Parameters(Enum):
@@ -87,12 +102,14 @@ def form_representation_from_dictio_couple(first_cases_repr, second_cases_repr, 
     feature_names
         Array of feature names
     """
-    from pm4py.objects.log.util import get_log_representation
+    from pm4py.algo.transformation.log_to_features import algorithm as log_to_features
 
     log = form_log_from_dictio_couple(first_cases_repr, second_cases_repr,
                                       enable_multiplier=enable_multiplier)
 
-    data, feature_names = get_log_representation.get_representation(log, [], string_attributes, [], numeric_attributes)
+    data, feature_names = log_to_features.apply(log, variant=log_to_features.Variants.TRACE_BASED,
+                                                parameters={"str_tr_attr": [], "str_ev_attr": string_attributes,
+                                                            "num_tr_attr": [], "num_ev_attr": numeric_attributes})
 
     return data, feature_names
 
