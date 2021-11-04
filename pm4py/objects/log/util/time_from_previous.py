@@ -1,11 +1,29 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.util import constants
 from pm4py.util import xes_constants as xes
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log.util import sorting
 from pm4py.util.business_hours import BusinessHours
+import deprecation
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def insert_time_from_previous(log, parameters=None):
     """
     Inserts the time from the previous event, both in normal and business hours

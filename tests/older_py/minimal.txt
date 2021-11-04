@@ -1,0 +1,9 @@
+stringdist
+graphviz
+intervaltree
+numpy
+pydotplus
+networkx
+pulp
+deprecation
+pandas

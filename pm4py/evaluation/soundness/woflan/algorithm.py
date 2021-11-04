@@ -1,37 +1,52 @@
-import networkx as nx
-from pm4py.util import exec_utils
-from enum import Enum
-from pm4py.objects.petri.petrinet import PetriNet
-from pm4py.objects.petri import utils
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import copy
+import warnings
+from enum import Enum
+
+import deprecation
+import networkx as nx
 import numpy as np
-
-# Importing for place invariants related stuff (s-components, uniform and weighted place invariants)
-from pm4py.evaluation.soundness.woflan.place_invariants.place_invariants import compute_place_invariants
-from pm4py.evaluation.soundness.woflan.place_invariants.utility import transform_basis
-from pm4py.evaluation.soundness.woflan.place_invariants.s_component import compute_s_components
-from pm4py.evaluation.soundness.woflan.place_invariants.s_component import compute_uncovered_places_in_component
-from pm4py.evaluation.soundness.woflan.place_invariants.utility import \
-    compute_uncovered_places as compute_uncovered_place_in_invariants
-
-# Importing to discover not-well handled pairs
-from pm4py.evaluation.soundness.woflan.not_well_handled_pairs.not_well_handled_pairs import \
-    apply as compute_not_well_handled_pairs
 
 # Minimal Coverability Graph
 from pm4py.evaluation.soundness.woflan.graphs.minimal_coverability_graph.minimal_coverability_graph import \
     apply as minimal_coverability_graph
+# reachability Graph Creation
+from pm4py.evaluation.soundness.woflan.graphs.reachability_graph.reachability_graph import apply as reachability_graph
+# Restricted coverability graph
+from pm4py.evaluation.soundness.woflan.graphs.restricted_coverability_graph.restricted_coverability_graph import \
+    construct_tree as restricted_coverability_tree
 from pm4py.evaluation.soundness.woflan.graphs.utility import check_for_dead_tasks
 from pm4py.evaluation.soundness.woflan.graphs.utility import check_for_improper_conditions
 from pm4py.evaluation.soundness.woflan.graphs.utility import check_for_substates
 from pm4py.evaluation.soundness.woflan.graphs.utility import convert_marking
-
-# Restricted coverability graph
-from pm4py.evaluation.soundness.woflan.graphs.restricted_coverability_graph.restricted_coverability_graph import \
-    construct_tree as restricted_coverability_tree
-
-# reachability Graph Creation
-from pm4py.evaluation.soundness.woflan.graphs.reachability_graph.reachability_graph import apply as reachability_graph
+# Importing to discover not-well handled pairs
+from pm4py.evaluation.soundness.woflan.not_well_handled_pairs.not_well_handled_pairs import \
+    apply as compute_not_well_handled_pairs
+# Importing for place invariants related stuff (s-components, uniform and weighted place invariants)
+from pm4py.evaluation.soundness.woflan.place_invariants.place_invariants import compute_place_invariants
+from pm4py.evaluation.soundness.woflan.place_invariants.s_component import compute_s_components
+from pm4py.evaluation.soundness.woflan.place_invariants.s_component import compute_uncovered_places_in_component
+from pm4py.evaluation.soundness.woflan.place_invariants.utility import \
+    compute_uncovered_places as compute_uncovered_place_in_invariants
+from pm4py.evaluation.soundness.woflan.place_invariants.utility import transform_basis
+from pm4py.objects.petri_net.utils import petri_utils
+from pm4py.objects.petri_net.obj import PetriNet
+from pm4py.util import exec_utils
 
 
 class Parameters(Enum):
@@ -252,8 +267,8 @@ def short_circuit_petri_net(net, print_diagnostics=False):
         t_1 = PetriNet.Transition("short_circuited_transition", "short_circuited_transition")
         s_c_net.transitions.add(t_1)
         # add arcs in short-circuited net
-        utils.add_arc_from_to(sink, t_1, s_c_net)
-        utils.add_arc_from_to(t_1, source, s_c_net)
+        petri_utils.add_arc_from_to(sink, t_1, s_c_net)
+        petri_utils.add_arc_from_to(t_1, source, s_c_net)
         return s_c_net
     else:
         if sink is None:
@@ -503,6 +518,8 @@ def step_13(woflan_object, return_asap_when_unsound=False):
     return False
 
 
+@deprecation.deprecated('2.2.2', removed_in='3.0.0',
+                        details='deprecated version of WOFLAN; use pm4py.algo.analysis.woflan')
 def apply(net, i_m, f_m, parameters=None):
     """
     Apply the Woflan Soundness check. Trough this process, different steps are executed.
@@ -511,6 +528,8 @@ def apply(net, i_m, f_m, parameters=None):
     :param f_m: final marking of given Net. Marking object of PM4Py
     :return: True, if net is sound; False otherwise.
     """
+    warnings.warn('deprecated version of WOFLAN; use pm4py.algo.analysis.woflan',
+                  DeprecationWarning)
     if parameters is None:
         parameters = {}
     return_asap_when_unsound = exec_utils.get_param_value(Parameters.RETURN_ASAP_WHEN_NOT_SOUND, parameters, False)

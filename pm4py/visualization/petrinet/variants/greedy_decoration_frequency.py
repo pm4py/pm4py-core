@@ -1,4 +1,20 @@
-from pm4py.objects.dfg.retrieval import log as log_retrieval
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+from pm4py.algo.discovery.dfg.variants import native, performance
 from pm4py.statistics.attributes.log import get as attr_get
 from pm4py.util import xes_constants as xes
 from pm4py.visualization.petrinet.common import visualize
@@ -42,9 +58,9 @@ def get_decorated_net(net, initial_marking, final_marking, log, parameters=None,
 
     # we find the DFG
     if variant == "performance":
-        dfg = log_retrieval.performance(log, parameters=parameters)
+        dfg = performance.performance(log, parameters=parameters)
     else:
-        dfg = log_retrieval.native(log, parameters=parameters)
+        dfg = native.native(log, parameters=parameters)
     # we find shortest paths
     spaths = get_shortest_paths(net)
     # we find the number of activities occurrences in the log

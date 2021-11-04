@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.statistics.attributes.common import get as attributes_common
 from pm4py.statistics.attributes.pandas.get import get_kde_numeric_attribute_json, get_kde_numeric_attribute, get_kde_date_attribute_json, get_kde_date_attribute, get_attribute_values
 from pm4py.util.constants import CASE_CONCEPT_NAME
@@ -9,6 +25,10 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAM_MOST_COMMON_VARIANT
 from enum import Enum
 from pm4py.util import exec_utils
+from copy import copy
+import deprecation
+from typing import Optional, Dict, Any, Union, Tuple, List
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -23,7 +43,7 @@ class Parameters(Enum):
     STREAM_FILTER_VALUE2 = "stream_filter_value2"
 
 
-def apply_numeric_events(df, int1, int2, parameters=None):
+def apply_numeric_events(df: pd.DataFrame, int1: float, int2: float, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Apply a filter on events (numerical filter)
 
@@ -52,12 +72,15 @@ def apply_numeric_events(df, int1, int2, parameters=None):
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     if positive:
-        return df[(df[attribute_key] >= int1) & (df[attribute_key] <= int2)]
+        ret = df[(df[attribute_key] >= int1) & (df[attribute_key] <= int2)]
     else:
-        return df[(df[attribute_key] < int1) | (df[attribute_key] > int2)]
+        ret = df[(df[attribute_key] < int1) | (df[attribute_key] > int2)]
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
-def apply_numeric(df, int1, int2, parameters=None):
+def apply_numeric(df: pd.DataFrame, int1: float, int2: float, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Filter dataframe on attribute values (filter cases)
 
@@ -102,11 +125,15 @@ def apply_numeric(df, int1, int2, parameters=None):
     i1 = df.set_index(case_id_glue).index
     i2 = filtered_df_by_ev.set_index(case_id_glue).index
     if positive:
-        return df[i1.isin(i2)]
-    return df[~i1.isin(i2)]
+        ret = df[i1.isin(i2)]
+    else:
+        ret = df[~i1.isin(i2)]
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
-def apply_events(df, values, parameters=None):
+def apply_events(df: pd.DataFrame, values: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Filter dataframe on attribute values (filter events)
 
@@ -133,12 +160,15 @@ def apply_events(df, values, parameters=None):
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     if positive:
-        return df[df[attribute_key].isin(values)]
+        ret = df[df[attribute_key].isin(values)]
     else:
-        return df[~df[attribute_key].isin(values)]
+        ret = df[~df[attribute_key].isin(values)]
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
-def apply(df, values, parameters=None):
+def apply(df: pd.DataFrame, values: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Filter dataframe on attribute values (filter traces)
 
@@ -170,6 +200,7 @@ def apply(df, values, parameters=None):
                                          positive=positive)
 
 
+@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
 def apply_auto_filter(df, parameters=None):
     """
     Apply auto filter on activity values
@@ -239,8 +270,12 @@ def filter_df_on_attribute_values(df, values, case_id_glue="case:concept:name", 
     i1 = df.set_index(case_id_glue).index
     i2 = filtered_df_by_ev.set_index(case_id_glue).index
     if positive:
-        return df[i1.isin(i2)]
-    return df[~i1.isin(i2)]
+        ret = df[i1.isin(i2)]
+    else:
+        ret = df[~i1.isin(i2)]
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def filter_df_keeping_activ_exc_thresh(df, thresh, act_count0=None, activity_key="concept:name",
@@ -271,11 +306,15 @@ def filter_df_keeping_activ_exc_thresh(df, thresh, act_count0=None, activity_key
         act_count0 = get_attribute_values(df, activity_key)
     act_count = [k for k, v in act_count0.items() if v >= thresh or k in most_common_variant]
     if len(act_count) < len(act_count0):
-        df = df[df[activity_key].isin(act_count)]
-    return df
+        ret = df[df[activity_key].isin(act_count)]
+    else:
+        ret = df
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
-def filter_df_keeping_spno_activities(df, activity_key="concept:name", max_no_activities=25):
+def filter_df_keeping_spno_activities(df: pd.DataFrame, activity_key: str = "concept:name", max_no_activities: int = 25):
     """
     Filter a dataframe on the specified number of attributes
 
@@ -304,5 +343,9 @@ def filter_df_keeping_spno_activities(df, activity_key="concept:name", max_no_ac
     activity_to_keep = [x[0] for x in activity_values_ordered_list]
 
     if len(activity_to_keep) < len(activity_values_dict):
-        df = df[df[activity_key].isin(activity_to_keep)]
+        ret = df[df[activity_key].isin(activity_to_keep)]
+    else:
+        ret = df
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
     return df

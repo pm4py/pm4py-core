@@ -1,6 +1,38 @@
-from enum import Enum
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.util import exec_utils, xes_constants, constants
-from pm4py.algo.discovery.footprints.outputs import Outputs
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.log.obj import EventLog
+import pandas as pd
+
+from enum import Enum
+
+
+class Outputs(Enum):
+    DFG = "dfg"
+    SEQUENCE = "sequence"
+    PARALLEL = "parallel"
+    START_ACTIVITIES = "start_activities"
+    END_ACTIVITIES = "end_activities"
+    ACTIVITIES = "activities"
+    SKIPPABLE = "skippable"
+    ACTIVITIES_ALWAYS_HAPPENING = "activities_always_happening"
+    MIN_TRACE_LENGTH = "min_trace_length"
+    TRACE = "trace"
 
 
 class Parameters(Enum):
@@ -8,7 +40,7 @@ class Parameters(Enum):
     STRICT = "strict"
 
 
-def apply_single(log_footprints, model_footprints, parameters=None):
+def apply_single(log_footprints: Dict[str, Any], model_footprints: Dict[str, Any], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Any]:
     """
     Apply footprints conformance between a log footprints object
     and a model footprints object
@@ -49,7 +81,7 @@ def apply_single(log_footprints, model_footprints, parameters=None):
     return violations
 
 
-def apply(log_footprints, model_footprints, parameters=None):
+def apply(log_footprints: Union[Dict[str, Any], List[Dict[str, Any]]], model_footprints: Dict[str, Any], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
     """
     Apply footprints conformance between a log footprints object
     and a model footprints object
@@ -78,7 +110,7 @@ def apply(log_footprints, model_footprints, parameters=None):
     return apply_single(log_footprints, model_footprints, parameters=parameters)
 
 
-def get_diagnostics_dataframe(log, conf_result, parameters=None):
+def get_diagnostics_dataframe(log: EventLog, conf_result: Union[List[Dict[str, Any]], Dict[str, Any]], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Gets the diagnostics dataframe from the log
     and the results of footprints conformance checking

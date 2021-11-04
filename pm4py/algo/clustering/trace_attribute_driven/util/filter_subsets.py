@@ -1,13 +1,40 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import pandas as pd
 import numpy as np
 from collections import Counter
-from pm4py.objects.log.log import EventLog, Trace
-from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
+from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
-from pm4py.statistics.traces.log import case_statistics
+from pm4py.statistics.traces.generic.log import case_statistics
 from pm4py.statistics.variants.log import get as variants_statistics
 from pm4py.util import exec_utils
-from pm4py.algo.clustering.trace_attribute_driven.parameters import Parameters
+from pm4py.util import variants_util
+from enum import Enum
+from pm4py.util import constants
+
+
+class Parameters(Enum):
+    ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    SINGLE = "single"
+    BINARIZE = "binarize"
+    POSITIVE = "positive"
+    LOWER_PERCENT = "lower_percent"
+
 
 
 def apply_trace_attributes(log, list_of_values, parameters=None):
@@ -78,9 +105,8 @@ def sublog2varlist(log, freq_thres, num):
 
     # union set ensure the ordered union will be satisfied
     filtered_var_list = filtered_var_list_1 + filtered_var_list_2
-    str_var_list = []
-    for str in filtered_var_list:
-        str_var_list.extend([str.split(',')])
+    str_var_list = [variants_util.get_activities_from_variant(v) for v in filtered_var_list]
+
     return str_var_list
 
 
@@ -108,9 +134,8 @@ def sublog_percent(log, upper_percent, parameters=None):
     df_w_count = df.iloc[len(num_list_lower):len(num_list), :]
     # get correspond var_list
     filtered_var_list = df_w_count['variant'].values.tolist()
-    str_var_list = []
-    for str in filtered_var_list:
-        str_var_list.extend([str.split(',')])
+    str_var_list = [variants_util.get_activities_from_variant(v) for v in filtered_var_list]
+
     return df_w_count, str_var_list
 
 
@@ -138,9 +163,8 @@ def sublog_percent2actlist(log, upper_percent, parameters=None):
     df_w_count = df.iloc[len(num_list_lower):len(num_list), :]
     # get correspond var_list
     filtered_var_list = df_w_count['variant'].values.tolist()
-    str_var_list = []
-    for str in filtered_var_list:
-        str_var_list.extend(str.split(','))
+    str_var_list = [variants_util.get_activities_from_variant(v) for v in filtered_var_list]
+
     return df_w_count, str_var_list
 
 

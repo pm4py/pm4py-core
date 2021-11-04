@@ -1,10 +1,26 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from collections import Counter
-from pm4py.objects.log.log import EventLog, Event, Trace
-from pm4py.util import xes_constants as xes_util
+from pm4py.objects.log.obj import EventLog, Event, Trace
+from pm4py.util import xes_constants as xes_util, constants
 import heapq
-from pm4py.objects.petri.utils import decorate_places_preset_trans, decorate_transitions_prepostset
-from pm4py.objects.petri import align_utils as utils
-from pm4py.objects.petri.incidence_matrix import construct
+from pm4py.objects.petri_net.utils.petri_utils import decorate_places_preset_trans, decorate_transitions_prepostset
+from pm4py.objects.petri_net.utils import align_utils as utils
+from pm4py.objects.petri_net.utils.incidence_matrix import construct
 
 def __search(sync_net, ini, fin, stop, cost_function, skip):
     decorate_transitions_prepostset(sync_net)
@@ -57,12 +73,11 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
         closed.add(current_marking)
         visited += 1
 
-        possible_enabling_transitions = set()
+        enabled_trans = set()
         for p in current_marking:
             for t in p.ass_trans:
-                possible_enabling_transitions.add(t)
-
-        enabled_trans = [t for t in possible_enabling_transitions if t.sub_marking <= current_marking]
+                if t.sub_marking <= current_marking:
+                    enabled_trans.add(t)
 
         trans_to_visit_with_cost = [(t, cost_function[t]) for t in enabled_trans if
                                     not (t is None or utils.__is_log_move(t, skip) or (
@@ -101,7 +116,7 @@ def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
     for trace in log:
         for i in range(1, len(trace)):
             red_trace = trace[0:i]
-            prefix = ",".join([x[activity_key] for x in red_trace])
+            prefix = constants.DEFAULT_VARIANT_SEP.join([x[activity_key] for x in red_trace])
             next_activity = trace[i][activity_key]
             if prefix not in prefixes:
                 prefixes[prefix] = set()
@@ -124,7 +139,7 @@ def form_fake_log(prefixes_keys, activity_key=xes_util.DEFAULT_NAME_KEY):
     fake_log = EventLog()
     for prefix in prefixes_keys:
         trace = Trace()
-        prefix_activities = prefix.split(",")
+        prefix_activities = prefix.split(constants.DEFAULT_VARIANT_SEP)
         for activity in prefix_activities:
             event = Event()
             event[activity_key] = activity

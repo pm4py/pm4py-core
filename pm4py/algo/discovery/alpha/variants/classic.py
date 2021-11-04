@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 """
 This module implements the \"classic\" alpha miner [1]_.
 It converts the input event log, which should be a log, to the (well-known) directly follows abstraction.
@@ -21,13 +37,26 @@ from pm4py.algo.discovery.alpha.data_structures import alpha_classic_abstraction
 from pm4py.algo.discovery.alpha.utils import endpoints
 from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.algo.discovery.dfg.variants import native as dfg_inst
-from pm4py.objects.petri.petrinet import PetriNet, Marking
-from pm4py.objects.petri.utils import add_arc_from_to
-from pm4py.algo.discovery.parameters import Parameters
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.util import exec_utils
 
+from pm4py.util import constants
+from enum import Enum
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 
-def apply(log, parameters=None):
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+
+
+def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[PetriNet, Marking, Marking]:
     """
     This method calls the \"classic\" alpha miner [1]_.
 
@@ -66,7 +95,7 @@ def apply(log, parameters=None):
     return apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=parameters)
 
 
-def apply_dfg(dfg, parameters=None):
+def apply_dfg(dfg: Dict[Tuple[str, str], int], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[PetriNet, Marking, Marking]:
     """
     Applying Alpha Miner starting from the knowledge of the Directly Follows graph,
     and of the start activities and end activities in the log inferred from the DFG
@@ -92,7 +121,7 @@ def apply_dfg(dfg, parameters=None):
     return apply_dfg_sa_ea(dfg, None, None, parameters=parameters)
 
 
-def apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=None):
+def apply_dfg_sa_ea(dfg: Dict[str, int], start_activities: Union[None, Dict[str, int]], end_activities: Union[None, Dict[str, int]], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[PetriNet, Marking, Marking]:
     """
     Applying Alpha Miner starting from the knowledge of the Directly Follows graph,
     and of the start activities and end activities in the log (possibly inferred from the DFG)

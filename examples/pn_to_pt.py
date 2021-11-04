@@ -2,8 +2,8 @@ import os
 import traceback
 
 import pm4py
-from pm4py.evaluation.soundness.woflan import algorithm as woflan
-from pm4py.evaluation.wf_net import evaluator as is_wf_net
+from pm4py.algo.analysis.woflan import algorithm as woflan
+from pm4py.algo.analysis.workflow_net import algorithm as is_wf_net
 from pm4py.objects.conversion.process_tree import converter as pt_converter
 from pm4py.objects.conversion.wf_net import converter as wf_net_converter
 
@@ -12,7 +12,7 @@ def execute_script():
     log = pm4py.read_xes(os.path.join("..", "tests", "input_data", "running-example.xes"))
     alpha_petri_net, alpha_im, alpha_fm = pm4py.discover_petri_net_alpha(log)
     heuristics_petri_net, heuristics_im, heuristics_fm = pm4py.discover_petri_net_heuristics(log)
-    tree = pm4py.discover_tree_inductive(log)
+    tree = pm4py.discover_process_tree_inductive(log)
     print("tree discovered by inductive miner=")
     print(tree)
     inductive_petri_net, inductive_im, inductive_fm = pt_converter.apply(tree)

@@ -1,22 +1,41 @@
-import logging
-from enum import Enum
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
 
-from pm4py.objects.log.log import EventLog, Trace, Event
-from pm4py.objects.log.util import sorting, index_attribute
-from pm4py.objects.log.util import xes as xes_util
-from pm4py.util import parameters as param_util
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+import gzip
+import logging
+import pkgutil
+import sys
+from enum import Enum
+from io import BytesIO
+
+from pm4py.objects.log.obj import EventLog, Trace, Event
+from pm4py.objects.log.util import sorting
+from pm4py.util import exec_utils, constants
 from pm4py.util import xes_constants
 from pm4py.util.dt_parsing import parser as dt_parser
 
-import pkgutil
-
 
 class Parameters(Enum):
-    TIMESTAMP_SORT = False
-    TIMESTAMP_KEY = xes_util.DEFAULT_TIMESTAMP_KEY
-    REVERSE_SORT = False
-    INSERT_TRACE_INDICES = False
-    MAX_TRACES = 1000000000
+    TIMESTAMP_SORT = "timestamp_sort"
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    REVERSE_SORT = "reverse_sort"
+    MAX_TRACES = "max_traces"
+    SHOW_PROGRESS_BAR = "show_progress_bar"
+    DECOMPRESS_SERIALIZATION = "decompress_serialization"
+    ENCODING = "encoding"
 
 
 # ITERPARSE EVENTS
@@ -24,60 +43,72 @@ _EVENT_END = 'end'
 _EVENT_START = 'start'
 
 
-def apply(filename, parameters=None):
-    return import_log(filename, parameters)
-
-
-def import_log(filename, parameters=None):
+def count_traces(context):
     """
-    Imports an XES file into a log object
+    Efficiently count the number of traces of a XES event log
 
     Parameters
-    ----------
-    filename:
-        Absolute filename
+    -------------
+    context
+        XML iterparse context
+    Returns
+    -------------
+    num_traces
+        Number of traces of the XES log
+    """
+    num_traces = 0
+
+    for tree_event, elem in context:
+        if tree_event == _EVENT_START:  # starting to read
+            if elem.tag.endswith(xes_constants.TAG_TRACE):
+                num_traces = num_traces + 1
+        elem.clear()
+
+    del context
+
+    return num_traces
+
+
+def import_from_context(context, num_traces, parameters=None):
+    """
+    Import a XES log from an iterparse context
+
+    Parameters
+    --------------
+    context
+        Iterparse context
+    num_traces
+        Number of traces of the XES log
     parameters
-        Parameters of the algorithm, including
-            Parameters.TIMESTAMP_SORT -> Specify if we should sort log by timestamp
-            Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
-            Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
-            Parameters.INSERT_TRACE_INDICES -> Specify if trace indexes should be added as event attribute for each event
-            Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+        Parameters of the algorithm
 
     Returns
-    -------
-    log : :class:`pm4py.log.log.EventLog`
-        A log
+    --------------
+    log
+        Event log
     """
-    from lxml import etree
+    if parameters is None:
+        parameters = {}
 
-    parameters = dict() if parameters is None else parameters
-
-    insert_trace_indexes = param_util.fetch(Parameters.INSERT_TRACE_INDICES, parameters)
-    max_no_traces_to_import = param_util.fetch(Parameters.MAX_TRACES, parameters)
+    max_no_traces_to_import = exec_utils.get_param_value(Parameters.MAX_TRACES, parameters, sys.maxsize)
+    timestamp_sort = exec_utils.get_param_value(Parameters.TIMESTAMP_SORT, parameters, False)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
+                                               xes_constants.DEFAULT_TIMESTAMP_KEY)
+    reverse_sort = exec_utils.get_param_value(Parameters.REVERSE_SORT, parameters, False)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
 
     date_parser = dt_parser.get()
-    context = etree.iterparse(filename, events=[_EVENT_START, _EVENT_END])
-
-    # check to see if log has a namespace before looking for traces  (but this might be more effort than worth)
-    # but you could just assume that log use on the standard namespace desbried in XES
-    # to only find elements that start a trace use tag="{http://www.xes-standard.org}trace"
-    # or just use the {*} syntax to match to all namespaces with a trace element
-
-    #count number of traces and setup progress bar
-    no_trace = sum ( [ 1 for trace in  etree.iterparse(filename, events=[_EVENT_START],tag="{*}trace") ])
-
-    # make tqdm facultative
     progress = None
-    if pkgutil.find_loader("tqdm"):
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
         from tqdm.auto import tqdm
-        progress = tqdm(total=no_trace,desc="parsing log, completed traces :: ")
+        progress = tqdm(total=num_traces, desc="parsing log, completed traces :: ")
 
     log = None
     trace = None
     event = None
 
     tree = {}
+
     for tree_event, elem in context:
         if tree_event == _EVENT_START:  # starting to read
             parent = tree[elem.getparent()] if elem.getparent() in tree else None
@@ -212,7 +243,6 @@ def import_log(filename, parameters=None):
             elif elem.tag.endswith(xes_constants.TAG_TRACE):
                 log.append(trace)
 
-                #update progress bar as we have a completed trace
                 if progress is not None:
                     progress.update()
 
@@ -221,20 +251,163 @@ def import_log(filename, parameters=None):
 
             elif elem.tag.endswith(xes_constants.TAG_LOG):
                 continue
-            
-    #gracefully close progress bar
+
+    # gracefully close progress bar
     if progress is not None:
         progress.close()
     del context, progress
 
-    if Parameters.TIMESTAMP_SORT in parameters and parameters[Parameters.TIMESTAMP_SORT]:
-        log = sorting.sort_timestamp(log,
-                                     timestamp_key=param_util.fetch(Parameters.TIMESTAMP_KEY, parameters),
-                                     reverse_sort=param_util.fetch(Parameters.REVERSE_SORT, parameters))
-    if insert_trace_indexes:
-        log = index_attribute.insert_event_index_as_event_attribute(log)
+    if timestamp_sort:
+        log = sorting.sort_timestamp(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
+
+    # sets the activity key as default classifier in the log's properties
+    log.properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_constants.DEFAULT_NAME_KEY
+    log.properties[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = xes_constants.DEFAULT_NAME_KEY
+    # sets the default timestamp key
+    log.properties[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = xes_constants.DEFAULT_TIMESTAMP_KEY
+    # sets the default resource key
+    log.properties[constants.PARAMETER_CONSTANT_RESOURCE_KEY] = xes_constants.DEFAULT_RESOURCE_KEY
+    # sets the default transition key
+    log.properties[constants.PARAMETER_CONSTANT_TRANSITION_KEY] = xes_constants.DEFAULT_TRANSITION_KEY
+    # sets the default group key
+    log.properties[constants.PARAMETER_CONSTANT_GROUP_KEY] = xes_constants.DEFAULT_GROUP_KEY
 
     return log
+
+
+def apply(filename, parameters=None):
+    """
+    Imports an XES file into a log object
+
+    Parameters
+    ----------
+    filename:
+        Absolute filename
+    parameters
+        Parameters of the algorithm, including
+            Parameters.TIMESTAMP_SORT -> Specify if we should sort log by timestamp
+            Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
+            Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
+            Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            Parameters.SHOW_PROGRESS_BAR -> Enables/disables the progress bar (default: True)
+            Parameters.ENCODING -> regulates the encoding (default: utf-8)
+
+    Returns
+    -------
+    log : :class:`pm4py.log.log.EventLog`
+        A log
+    """
+    return import_log(filename, parameters)
+
+
+def import_log(filename, parameters=None):
+    """
+    Imports an XES file into a log object
+
+    Parameters
+    ----------
+    filename:
+        Absolute filename
+    parameters
+        Parameters of the algorithm, including
+            Parameters.TIMESTAMP_SORT -> Specify if we should sort log by timestamp
+            Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
+            Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
+            Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            Parameters.SHOW_PROGRESS_BAR -> Enables/disables the progress bar (default: True)
+            Parameters.ENCODING -> regulates the encoding (default: utf-8)
+
+    Returns
+    -------
+    log : :class:`pm4py.log.log.EventLog`
+        A log
+    """
+    from lxml import etree
+
+    if parameters is None:
+        parameters = {}
+
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    is_compressed = filename.lower().endswith(".gz")
+
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
+        if is_compressed:
+            f = gzip.open(filename, "rb")
+        else:
+            f = open(filename, "rb")
+        context = etree.iterparse(f, events=[_EVENT_START, _EVENT_END], encoding=encoding)
+        num_traces = count_traces(context)
+    else:
+        # avoid the iteration to calculate the number of traces is "tqdm" is not used
+        num_traces = 0
+
+    if is_compressed:
+        f = gzip.open(filename, "rb")
+    else:
+        f = open(filename, "rb")
+    context = etree.iterparse(f, events=[_EVENT_START, _EVENT_END], encoding=encoding)
+
+    return import_from_context(context, num_traces, parameters=parameters)
+
+
+def import_from_string(log_string, parameters=None):
+    """
+    Deserialize a text/binary string representing a XES log
+
+    Parameters
+    -----------
+    log_string
+        String that contains the XES
+    parameters
+        Parameters of the algorithm, including
+            Parameters.TIMESTAMP_SORT -> Specify if we should sort log by timestamp
+            Parameters.TIMESTAMP_KEY -> If sort is enabled, then sort the log by using this key
+            Parameters.REVERSE_SORT -> Specify in which direction the log should be sorted
+            Parameters.INSERT_TRACE_INDICES -> Specify if trace indexes should be added as event attribute for each event
+            Parameters.MAX_TRACES -> Specify the maximum number of traces to import from the log (read in order in the XML file)
+            Parameters.SHOW_PROGRESS_BAR -> Enables/disables the progress bar (default: True)
+            Parameters.ENCODING -> regulates the encoding (default: utf-8)
+
+    Returns
+    -----------
+    log
+        Trace log object
+    """
+    from lxml import etree
+
+    if parameters is None:
+        parameters = {}
+
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    decompress_serialization = exec_utils.get_param_value(Parameters.DECOMPRESS_SERIALIZATION, parameters, False)
+
+    if type(log_string) is str:
+        log_string = log_string.encode(constants.DEFAULT_ENCODING)
+
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
+        # first iteration: count the number of traces
+        b = BytesIO(log_string)
+        if decompress_serialization:
+            s = gzip.GzipFile(fileobj=b, mode="rb")
+        else:
+            s = b
+        context = etree.iterparse(s, events=[_EVENT_START, _EVENT_END], encoding=encoding)
+        num_traces = count_traces(context)
+    else:
+        # avoid the iteration to calculate the number of traces is "tqdm" is not used
+        num_traces = 0
+
+    # second iteration: actually read the content
+    b = BytesIO(log_string)
+    if decompress_serialization:
+        s = gzip.GzipFile(fileobj=b, mode="rb")
+    else:
+        s = b
+    context = etree.iterparse(s, events=[_EVENT_START, _EVENT_END], encoding=encoding)
+
+    return import_from_context(context, num_traces, parameters=parameters)
 
 
 def __parse_attribute(elem, store, key, value, tree):

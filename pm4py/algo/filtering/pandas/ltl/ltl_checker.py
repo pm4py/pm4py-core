@@ -1,9 +1,31 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+from enum import Enum
+
+import deprecation
+
+from pm4py.util import exec_utils, pandas_utils, constants
 from pm4py.util.constants import CASE_CONCEPT_NAME
-from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_RESOURCE_KEY, DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_CASEID_KEY, \
     PARAMETER_CONSTANT_RESOURCE_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
-from enum import Enum
-from pm4py.util import exec_utils, pandas_utils, constants
+from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_RESOURCE_KEY, DEFAULT_TIMESTAMP_KEY
+from copy import copy
+from typing import Optional, Dict, Any, Union, Tuple, List
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -21,6 +43,7 @@ ENABLE_TIMESTAMP = Parameters.ENABLE_TIMESTAMP
 TIMESTAMP_DIFF_BOUNDARIES = Parameters.TIMESTAMP_DIFF_BOUNDARIES
 
 
+@deprecation.deprecated('2.2.6', '3.0.0', 'please use pm4py.algo.filtering.pandas.ltl.ltl_checker.eventually_follows')
 def A_eventually_B(df0, A, B, parameters=None):
     """
     Applies the A eventually B rule
@@ -67,7 +90,7 @@ def A_eventually_B(df0, A, B, parameters=None):
     df_B = df_B.groupby(case_id_glue).last().set_index("@@conceptname")
 
     df_join = df_A.join(df_B, on=case_id_glue, rsuffix="_2").dropna()
-    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY+"_2"] - df_join[constants.DEFAULT_INDEX_KEY]
+    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY + "_2"] - df_join[constants.DEFAULT_INDEX_KEY]
     df_join = df_join[df_join["@@diffindex"] > 0]
 
     if enable_timestamp:
@@ -80,11 +103,15 @@ def A_eventually_B(df0, A, B, parameters=None):
     i2 = df_join.set_index(case_id_glue).index
 
     if positive:
-        return df0[i1.isin(i2)]
+        ret = df0[i1.isin(i2)]
     else:
-        return df0[~i1.isin(i2)]
+        ret = df0[~i1.isin(i2)]
+
+    ret.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+    return ret
 
 
+@deprecation.deprecated('2.2.6', '3.0.0', 'please use pm4py.algo.filtering.pandas.ltl.ltl_checker.eventually_follows')
 def A_eventually_B_eventually_C(df0, A, B, C, parameters=None):
     """
     Applies the A eventually B eventually C rule
@@ -136,10 +163,10 @@ def A_eventually_B_eventually_C(df0, A, B, C, parameters=None):
     df_C = df_C.groupby(case_id_glue).last().set_index("@@conceptname")
 
     df_join = df_A.join(df_B, on=case_id_glue, rsuffix="_2").dropna()
-    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY+"_2"] - df_join[constants.DEFAULT_INDEX_KEY]
+    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY + "_2"] - df_join[constants.DEFAULT_INDEX_KEY]
     df_join = df_join[df_join["@@diffindex"] > 0]
     df_join = df_join.join(df_C, on=case_id_glue, rsuffix="_3").dropna()
-    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY+"_3"] - df_join[constants.DEFAULT_INDEX_KEY+"_2"]
+    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY + "_3"] - df_join[constants.DEFAULT_INDEX_KEY + "_2"]
     df_join = df_join[df_join["@@diffindex2"] > 0]
 
     if enable_timestamp:
@@ -156,11 +183,15 @@ def A_eventually_B_eventually_C(df0, A, B, C, parameters=None):
     i2 = df_join.set_index(case_id_glue).index
 
     if positive:
-        return df0[i1.isin(i2)]
+        ret = df0[i1.isin(i2)]
     else:
-        return df0[~i1.isin(i2)]
+        ret = df0[~i1.isin(i2)]
+
+    ret.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+    return ret
 
 
+@deprecation.deprecated('2.2.6', '3.0.0', 'please use pm4py.algo.filtering.pandas.ltl.ltl_checker.eventually_follows')
 def A_eventually_B_eventually_C_eventually_D(df0, A, B, C, D, parameters=None):
     """
     Applies the A eventually B eventually C rule
@@ -220,13 +251,13 @@ def A_eventually_B_eventually_C_eventually_D(df0, A, B, C, D, parameters=None):
     df_D = df_D.groupby(case_id_glue).last().set_index("@@conceptname")
 
     df_join = df_A.join(df_B, on=case_id_glue, rsuffix="_2").dropna()
-    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY+"_2"] - df_join[constants.DEFAULT_INDEX_KEY]
+    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY + "_2"] - df_join[constants.DEFAULT_INDEX_KEY]
     df_join = df_join[df_join["@@diffindex"] > 0]
     df_join = df_join.join(df_C, on=case_id_glue, rsuffix="_3").dropna()
-    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY+"_3"] - df_join[constants.DEFAULT_INDEX_KEY+"_2"]
+    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY + "_3"] - df_join[constants.DEFAULT_INDEX_KEY + "_2"]
     df_join = df_join[df_join["@@diffindex2"] > 0]
     df_join = df_join.join(df_D, on=case_id_glue, rsuffix="_4").dropna()
-    df_join["@@diffindex3"] = df_join[constants.DEFAULT_INDEX_KEY+"_4"] - df_join[constants.DEFAULT_INDEX_KEY+"_3"]
+    df_join["@@diffindex3"] = df_join[constants.DEFAULT_INDEX_KEY + "_4"] - df_join[constants.DEFAULT_INDEX_KEY + "_3"]
     df_join = df_join[df_join["@@diffindex3"] > 0]
 
     if enable_timestamp:
@@ -248,12 +279,89 @@ def A_eventually_B_eventually_C_eventually_D(df0, A, B, C, D, parameters=None):
     i2 = df_join.set_index(case_id_glue).index
 
     if positive:
-        return df0[i1.isin(i2)]
+        ret = df0[i1.isin(i2)]
     else:
-        return df0[~i1.isin(i2)]
+        ret = df0[~i1.isin(i2)]
+
+    ret.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+    return ret
 
 
-def A_next_B_next_C(df0, A, B, C, parameters=None):
+def eventually_follows(df0: pd.DataFrame, attribute_values: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
+    """
+    Applies the eventually follows rule
+
+    Parameters
+    ------------
+    df0
+        Dataframe
+    attribute_values
+        A list of attribute_values attribute_values[n] follows attribute_values[n-1] follows ... follows attribute_values[0]
+
+    parameters
+        Parameters of the algorithm, including the attribute key and the positive parameter:
+        - If True, returns all the cases containing all attribute_values and in which attribute_values[i] was eventually followed by attribute_values[i + 1]
+        - If False, returns all the cases not containing all attribute_values, or in which an instance of attribute_values[i] was not eventually
+        followed by an instance of attribute_values[i + 1]
+
+    Returns
+    ------------
+    filtered_df
+        Filtered dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+    positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
+    enable_timestamp = exec_utils.get_param_value(Parameters.ENABLE_TIMESTAMP, parameters, False)
+    timestamp_diff_boundaries = exec_utils.get_param_value(Parameters.TIMESTAMP_DIFF_BOUNDARIES, parameters, [])
+
+    colset = [case_id_glue, attribute_key]
+    if enable_timestamp:
+        colset.append(timestamp_key)
+
+    df = df0.copy()
+    df = df[colset]
+    df = pandas_utils.insert_index(df)
+
+    df_a = [df[df[attribute_key] == attribute_value].copy() for attribute_value in attribute_values]
+
+    df_join = df_a[0].merge(df_a[1], on=case_id_glue, suffixes=('_0', "_1")).dropna()
+    df_join[constants.DEFAULT_INDEX_KEY] = df_join[constants.DEFAULT_INDEX_KEY + "_0"]
+    df_join["@@diffindex0"] = df_join[constants.DEFAULT_INDEX_KEY + "_1"] - df_join[constants.DEFAULT_INDEX_KEY + "_0"]
+    df_join = df_join[df_join["@@diffindex0"] > 0]
+
+    for i in range(2, len(df_a)):
+        df_join = df_join.merge(df_a[i], on=case_id_glue, suffixes=('', "_%d" % i)).dropna()
+        df_join["@@diffindex%d" % (i - 1)] = df_join[constants.DEFAULT_INDEX_KEY + "_%d" % i] - df_join[
+            constants.DEFAULT_INDEX_KEY + "_%d" % (i - 1)]
+        df_join = df_join[df_join["@@diffindex%d" % (i - 1)] > 0]
+
+    if enable_timestamp:
+        for i in range(2, len(df_a)):
+            df_join["@@difftimestamp%d" % (i - 1)] = (
+                        df_join[timestamp_key + "_%d" % i] - df_join[timestamp_key + '_%d' % (i-1)]).astype(
+                'timedelta64[s]')
+
+            if timestamp_diff_boundaries:
+                df_join = df_join[df_join["@@difftimestamp%d" % (i-1)] >= timestamp_diff_boundaries[i-1][0]]
+                df_join = df_join[df_join["@@difftimestamp%d" % (i-1)] <= timestamp_diff_boundaries[i-1][1]]
+
+    i1 = df.set_index(case_id_glue).index
+    i2 = df_join.set_index(case_id_glue).index
+    if positive:
+        ret = df0[i1.isin(i2)]
+    else:
+        ret = df0[~i1.isin(i2)]
+
+    ret.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+    return ret
+
+
+def A_next_B_next_C(df0: pd.DataFrame, A: str, B: str, C: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Applies the A net B next C rule
 
@@ -297,8 +405,8 @@ def A_next_B_next_C(df0, A, B, C, parameters=None):
     df_C = df_C.groupby(case_id_glue).last().set_index("@@conceptname")
 
     df_join = df_A.join(df_B, on=case_id_glue, rsuffix="_2").dropna().join(df_C, on=case_id_glue, rsuffix="_3").dropna()
-    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY+"_2"] - df_join[constants.DEFAULT_INDEX_KEY]
-    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY+"_3"] - df_join[constants.DEFAULT_INDEX_KEY+"_2"]
+    df_join["@@diffindex"] = df_join[constants.DEFAULT_INDEX_KEY + "_2"] - df_join[constants.DEFAULT_INDEX_KEY]
+    df_join["@@diffindex2"] = df_join[constants.DEFAULT_INDEX_KEY + "_3"] - df_join[constants.DEFAULT_INDEX_KEY + "_2"]
     df_join = df_join[df_join["@@diffindex"] == 1]
     df_join = df_join[df_join["@@diffindex2"] == 1]
 
@@ -306,12 +414,15 @@ def A_next_B_next_C(df0, A, B, C, parameters=None):
     i2 = df_join.set_index(case_id_glue).index
 
     if positive:
-        return df0[i1.isin(i2)]
+        ret = df0[i1.isin(i2)]
     else:
-        return df0[~i1.isin(i2)]
+        ret = df0[~i1.isin(i2)]
+
+    ret.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+    return ret
 
 
-def four_eyes_principle(df0, A, B, parameters=None):
+def four_eyes_principle(df0: pd.DataFrame, A: str, B: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Verifies the Four Eyes Principle given A and B
 
@@ -360,12 +471,15 @@ def four_eyes_principle(df0, A, B, parameters=None):
     i3 = df_join_neg.set_index(case_id_glue).index
 
     if positive:
-        return df0[i1.isin(i3) & ~i1.isin(i2)]
+        ret = df0[i1.isin(i3) & ~i1.isin(i2)]
     else:
-        return df0[i1.isin(i2)]
+        ret = df0[i1.isin(i2)]
+
+    ret.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+    return ret
 
 
-def attr_value_different_persons(df0, A, parameters=None):
+def attr_value_different_persons(df0: pd.DataFrame, A: str, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Checks whether an attribute value is assumed on events done by different resources
 
@@ -408,6 +522,9 @@ def attr_value_different_persons(df0, A, parameters=None):
     i2 = df_join_neg.set_index(case_id_glue).index
 
     if positive:
-        return df0[i1.isin(i2)]
+        ret = df0[i1.isin(i2)]
     else:
-        return df0[~i1.isin(i2)]
+        ret = df0[~i1.isin(i2)]
+
+    ret.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
+    return ret

@@ -1,93 +1,17 @@
-from pm4py.objects.dfg.utils.dfg_utils import get_max_activity_count, get_activities_from_dfg
-from pm4py.util import constants
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
 
-DEFAULT_NOISE_THRESH_DF = 0.16
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-def clean_dfg_based_on_noise_thresh(dfg, activities, noise_threshold, parameters=None):
-    """
-    Clean Directly-Follows graph based on noise threshold
-
-    Parameters
-    ----------
-    dfg
-        Directly-Follows graph
-    activities
-        Activities in the DFG graph
-    noise_threshold
-        Noise threshold
-
-    Returns
-    ----------
-    newDfg
-        Cleaned dfg based on noise threshold
-    """
-    if parameters is None:
-        parameters = {}
-
-    most_common_paths = parameters[
-        constants.PARAM_MOST_COMMON_PATHS] if constants.PARAM_MOST_COMMON_PATHS in parameters else None
-    if most_common_paths is None:
-        most_common_paths = []
-
-    new_dfg = None
-    activ_max_count = {}
-    for act in activities:
-        activ_max_count[act] = get_max_activity_count(dfg, act)
-
-    for el in dfg:
-        if type(el[0]) is str:
-            if new_dfg is None:
-                new_dfg = {}
-            act1 = el[0]
-            act2 = el[1]
-            val = dfg[el]
-        else:
-            if new_dfg is None:
-                new_dfg = []
-            act1 = el[0][0]
-            act2 = el[0][1]
-            val = el[1]
-
-        if not el in most_common_paths and val < min(activ_max_count[act1] * noise_threshold,
-                                                     activ_max_count[act2] * noise_threshold):
-            pass
-        else:
-            if type(el[0]) is str:
-                new_dfg[el] = dfg[el]
-                pass
-            else:
-                new_dfg.append(el)
-                pass
-
-    if new_dfg is None:
-        return dfg
-
-    return new_dfg
-
-
-def apply(dfg, parameters=None):
-    """
-    Clean Directly-Follows graph based on noise threshold
-
-    Parameters
-    -----------
-    dfg
-        Directly-Follows graph
-    parameters
-        Possible parameters of the algorithm, including:
-            noiseThreshold -> Threshold of noise in the algorithm
-
-    Returns
-    ----------
-    newDfg
-        Cleaned dfg based on noise threshold
-    """
-    if parameters is None:
-        parameters = {}
-    noise_threshold = parameters[
-        "noiseThreshold"] if "noiseThreshold" in parameters else DEFAULT_NOISE_THRESH_DF
-
-    activities = get_activities_from_dfg(dfg)
-
-    return clean_dfg_based_on_noise_thresh(dfg, activities, noise_threshold)
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+from pm4py.algo.filtering.dfg.dfg_filtering import *

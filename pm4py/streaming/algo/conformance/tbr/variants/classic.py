@@ -1,9 +1,25 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.util import constants, exec_utils, xes_constants
 from pm4py.streaming.util.dictio import generator
 import logging
-from pm4py.objects.petri.petrinet import PetriNet, Marking
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.streaming.algo.interface import StreamingAlgorithm
-from pm4py.objects.petri import semantics
+from pm4py.objects.petri_net import semantics
 from copy import copy
 import sys
 
@@ -62,7 +78,7 @@ class TbrStreamingConformance(StreamingAlgorithm):
              - Parameters.MISSING_DICT_ID: identifier of the dictionary hosting the missing tokens (1)
              - Parameters.REMAINING_DICT_ID: identifier of the dictionary hosting the remaining tokens (2)
         """
-        dict_variant = exec_utils.get_param_value(Parameters.DICT_VARIANT, parameters, generator.Variants.CLASSIC)
+        dict_variant = exec_utils.get_param_value(Parameters.DICT_VARIANT, parameters, generator.Variants.THREAD_SAFE)
         case_dict_id = exec_utils.get_param_value(Parameters.CASE_DICT_ID, parameters, 0)
         missing_dict_id = exec_utils.get_param_value(Parameters.MISSING_DICT_ID, parameters, 1)
         remaining_dict_id = exec_utils.get_param_value(Parameters.REMAINING_DICT_ID, parameters, 2)
@@ -201,7 +217,7 @@ class TbrStreamingConformance(StreamingAlgorithm):
                     pl = a.source
                     mark = a.weight
                     if pl not in marking or new_marking[pl] < mark:
-                        self.missing[case] = self.missing[case] + (mark - marking[pl])
+                        self.missing[case] = int(self.missing[case]) + (mark - marking[pl])
                         marking[pl] = mark
                 new_marking = semantics.weak_execute(t, marking)
                 self.case_dict[case] = self.encode_marking(new_marking)
@@ -256,7 +272,7 @@ class TbrStreamingConformance(StreamingAlgorithm):
             Case
         """
         if case in self.case_dict:
-            return {"marking": self.decode_marking(self.case_dict[case]), "missing": self.missing[case]}
+            return {"marking": self.decode_marking(self.case_dict[case]), "missing": int(self.missing[case])}
         else:
             self.message_case_not_in_dictionary(case)
 
@@ -287,12 +303,12 @@ class TbrStreamingConformance(StreamingAlgorithm):
                     for m in fm_copy:
                         if not m in new_marking:
                             new_marking[m] = 0
-                        self.missing[case] = self.missing[case] + (fm_copy[m] - new_marking[m])
+                        self.missing[case] = int(self.missing[case]) + (fm_copy[m] - new_marking[m])
                     for m in new_marking:
                         if not m in fm_copy:
                             fm_copy[m] = 0
                         remaining += new_marking[m] - fm_copy[m]
-            missing = self.missing[case]
+            missing = int(self.missing[case])
             is_fit = missing == 0 and remaining == 0
             ret = {"marking": self.decode_marking(self.case_dict[case]), "missing": missing, "remaining": remaining, "is_fit": is_fit}
             del self.case_dict[case]

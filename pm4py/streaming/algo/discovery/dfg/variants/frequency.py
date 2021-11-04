@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from collections import Counter
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.streaming.util.dictio import generator
@@ -56,7 +72,7 @@ class StreamingDfgDiscovery(StreamingAlgorithm):
              - Parameters.ACT_ID: identifier of the dictionary hosting the count of the activities (2)
              - Parameters.START_ACT_DICT_ID: identifier of the dictionary hosting the count of the start activities (3)
         """
-        dict_variant = exec_utils.get_param_value(Parameters.DICT_VARIANT, parameters, generator.Variants.CLASSIC)
+        dict_variant = exec_utils.get_param_value(Parameters.DICT_VARIANT, parameters, generator.Variants.THREAD_SAFE)
         case_dict_id = exec_utils.get_param_value(Parameters.CASE_DICT_ID, parameters, 0)
         dfg_dict_id = exec_utils.get_param_value(Parameters.DFG_DICT_ID, parameters, 1)
         act_dict_id = exec_utils.get_param_value(Parameters.ACT_DICT_ID, parameters, 2)
@@ -111,21 +127,21 @@ class StreamingDfgDiscovery(StreamingAlgorithm):
         if self.case_id_key in event and self.activity_key in event:
             case = self.encode_str(event[self.case_id_key])
             activity = self.encode_str(event[self.activity_key])
-            if case not in self.case_dict:
-                if activity not in self.start_activities:
+            if case not in self.case_dict.keys():
+                if activity not in self.start_activities.keys():
                     self.start_activities[activity] = 1
                 else:
-                    self.start_activities[activity] = self.start_activities[activity] + 1
+                    self.start_activities[activity] = int(self.start_activities[activity]) + 1
             else:
                 df = self.encode_tuple((self.case_dict[case], activity))
-                if df not in self.dfg:
+                if df not in self.dfg.keys():
                     self.dfg[df] = 1
                 else:
-                    self.dfg[df] = self.dfg[df] + 1
-            if activity not in self.activities:
+                    self.dfg[df] = int(self.dfg[df]) + 1
+            if activity not in self.activities.keys():
                 self.activities[activity] = 1
             else:
-                self.activities[activity] = self.activities[activity] + 1
+                self.activities[activity] = int(self.activities[activity]) + 1
             self.case_dict[case] = activity
         else:
             self.event_without_activity_or_case(event)
@@ -145,10 +161,10 @@ class StreamingDfgDiscovery(StreamingAlgorithm):
         end_activities
             End activities
         """
-        dfg = {eval(x): y for x, y in self.dfg.items()}
-        activities = dict(self.activities)
-        start_activities = dict(self.start_activities)
-        end_activities = dict(Counter(self.case_dict.values()))
+        dfg = {eval(x): int(self.dfg[x]) for x in self.dfg.keys()}
+        activities = {x: int(self.activities[x]) for x in self.activities.keys()}
+        start_activities = {x: int(self.start_activities[x]) for x in self.start_activities.keys()}
+        end_activities = dict(Counter(self.case_dict[x] for x in self.case_dict.keys()))
         return dfg, activities, start_activities, end_activities
 
 

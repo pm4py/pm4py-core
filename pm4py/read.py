@@ -1,13 +1,34 @@
-import logging
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+import warnings
+from typing import Tuple
 
 import deprecation
 
-from pm4py import VERSION
+from pm4py.objects.bpmn.obj import BPMN
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.ocel.obj import OCEL
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.process_tree.obj import ProcessTree
 
 INDEX_COLUMN = "@@index"
 
 
-def read_xes(file_path):
+def read_xes(file_path: str) -> EventLog:
     """
     Reads an event log in the XES standard
 
@@ -26,109 +47,7 @@ def read_xes(file_path):
     return log
 
 
-@deprecation.deprecated(deprecated_in="2.0.1.3", removed_in="3.0",
-                        current_version=VERSION,
-                        details="Use pandas to import CSV files")
-def read_csv(file_path, sep=",", quotechar=None, encoding='utf-8', nrows=10000000, timest_format=None):
-    """
-    Reads an event log in the CSV format (Pandas adapter)
-
-    Parameters
-    ----------------
-    file_path
-        File path
-    sep
-        Separator; default: ,
-    quotechar
-        Quote char; default: None
-    encoding
-        Encoding; default: default of Pandas
-    nrows
-        maximum number of rows to read (default 10000000)
-    timest_format
-        Format of the timestamp columns
-
-    Returns
-    ----------------
-    dataframe
-        Dataframe
-    """
-    from pm4py.objects.log.util import dataframe_utils
-    import pandas as pd
-    if quotechar is not None:
-        df = pd.read_csv(file_path, sep=sep, quotechar=quotechar, encoding=encoding, nrows=nrows)
-    else:
-        df = pd.read_csv(file_path, sep=sep, encoding=encoding, nrows=nrows)
-    df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=timest_format)
-    if len(df.columns) < 2:
-        logging.error(
-            "Less than three columns were imported from the CSV file. Please check the specification of the separation and the quote character!")
-    else:
-        # logging.warning(
-        #    "Please specify the format of the dataframe: df = pm4py.format_dataframe(df, case_id='<name of the case ID column>', activity_key='<name of the activity column>', timestamp_key='<name of the timestamp column>')")
-        pass
-
-    return df
-
-
-def convert_to_event_log(obj):
-    """
-    Converts a log object to an event log
-
-    Parameters
-    -------------
-    obj
-        Log object
-
-    Returns
-    -------------
-    log
-        Event log object
-    """
-    from pm4py.objects.conversion.log import converter
-    log = converter.apply(obj, variant=converter.Variants.TO_EVENT_LOG)
-    return log
-
-
-def convert_to_event_stream(obj):
-    """
-    Converts a log object to an event stream
-
-    Parameters
-    --------------
-    obj
-        Log object
-
-    Returns
-    --------------
-    stream
-        Event stream object
-    """
-    from pm4py.objects.conversion.log import converter
-    stream = converter.apply(obj, variant=converter.Variants.TO_EVENT_STREAM)
-    return stream
-
-
-def convert_to_dataframe(obj):
-    """
-    Converts a log object to a dataframe
-
-    Parameters
-    --------------
-    obj
-        Log object
-
-    Returns
-    --------------
-    df
-        Dataframe
-    """
-    from pm4py.objects.conversion.log import converter
-    df = converter.apply(obj, variant=converter.Variants.TO_DATA_FRAME)
-    return df
-
-
-def read_petri_net(file_path):
+def read_pnml(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
     """
     Reads a Petri net from the .PNML format
 
@@ -146,12 +65,38 @@ def read_petri_net(file_path):
     final_marking
         Final marking
     """
-    from pm4py.objects.petri.importer import importer as pnml_importer
+    from pm4py.objects.petri_net.importer import importer as pnml_importer
     net, im, fm = pnml_importer.apply(file_path)
     return net, im, fm
 
 
-def read_process_tree(file_path):
+@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
+                        details='read_petri_net is deprecated, use read_pnml instead')
+def read_petri_net(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
+    warnings.warn('read_petri_net is deprecated, use read_pnml instead', DeprecationWarning)
+    """
+    Reads a Petri net from the .PNML format
+
+    Parameters
+    ----------------
+    file_path
+        File path
+
+    Returns
+    ----------------
+    petri_net
+        Petri net object
+    initial_marking
+        Initial marking
+    final_marking
+        Final marking
+    """
+    from pm4py.objects.petri_net.importer import importer as pnml_importer
+    net, im, fm = pnml_importer.apply(file_path)
+    return net, im, fm
+
+
+def read_ptml(file_path: str) -> ProcessTree:
     """
     Reads a process tree from a .ptml file
 
@@ -170,7 +115,29 @@ def read_process_tree(file_path):
     return tree
 
 
-def read_dfg(file_path):
+@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
+                        details='read_process_tree is deprecated, use read_ptml instead')
+def read_process_tree(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
+    warnings.warn('read_process_tree is deprecated, use read_ptml instead', DeprecationWarning)
+    """
+    Reads a process tree from a .ptml file
+
+    Parameters
+    ---------------
+    file_path
+        File path
+
+    Returns
+    ----------------
+    tree
+        Process tree
+    """
+    from pm4py.objects.process_tree.importer import importer as tree_importer
+    tree = tree_importer.apply(file_path)
+    return tree
+
+
+def read_dfg(file_path: str) -> Tuple[dict, dict, dict]:
     """
     Reads a DFG from a .dfg file
 
@@ -193,7 +160,7 @@ def read_dfg(file_path):
     return dfg, start_activities, end_activities
 
 
-def read_bpmn(file_path):
+def read_bpmn(file_path: str) -> BPMN:
     """
     Reads a BPMN from a .bpmn file
 
@@ -210,3 +177,32 @@ def read_bpmn(file_path):
     from pm4py.objects.bpmn.importer import importer as bpmn_importer
     bpmn_graph = bpmn_importer.apply(file_path)
     return bpmn_graph
+
+
+def read_ocel(file_path: str, objects_path: str = None) -> OCEL:
+    """
+    Reads an object-centric event log from a file
+    (to get an explanation of what an object-centric event log is,
+    you can refer to http://www.ocel-standard.org/).
+
+    Parameters
+    ----------------
+    file_path
+        Path from which the object-centric event log should be read.
+    objects_path
+        (Optional, only used in CSV exporter) Path from which the objects dataframe should be read.
+
+    Returns
+    ----------------
+    ocel
+        Object-centric event log
+    """
+    if file_path.lower().endswith("csv"):
+        from pm4py.objects.ocel.importer.csv import importer as csv_importer
+        return csv_importer.apply(file_path, objects_path=objects_path)
+    elif file_path.lower().endswith("jsonocel"):
+        from pm4py.objects.ocel.importer.jsonocel import importer as jsonocel_importer
+        return jsonocel_importer.apply(file_path)
+    elif file_path.lower().endswith("xmlocel"):
+        from pm4py.objects.ocel.importer.xmlocel import importer as xmlocel_importer
+        return xmlocel_importer.apply(file_path)

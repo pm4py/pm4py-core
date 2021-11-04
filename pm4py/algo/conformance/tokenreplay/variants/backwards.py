@@ -1,11 +1,33 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.statistics.variants.log import get as variants_filter
-from pm4py.objects.petri.semantics import is_enabled, weak_execute
-from pm4py.objects.petri.align_utils import get_visible_transitions_eventually_enabled_by_marking
+from pm4py.objects.petri_net.semantics import is_enabled, weak_execute
+from pm4py.objects.petri_net.utils.align_utils import get_visible_transitions_eventually_enabled_by_marking
 from copy import copy
-from pm4py.objects.petri.petrinet import Marking
+from pm4py.objects.petri_net.obj import Marking
 from collections import Counter
 from pm4py.util import exec_utils, constants, xes_constants
 from enum import Enum
+from pm4py.util import variants_util
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.util import typing
 
 
 class Parameters(Enum):
@@ -249,7 +271,7 @@ def tr_vlist(vlist, net, im, fm, tmap, bmap, parameters=None):
             "enabled_transitions_in_marking": enabled_transitions_in_marking}
 
 
-def apply(log, net, initial_marking, final_marking, parameters=None):
+def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> typing.ListAlignments:
     """
     Method to apply token-based replay
 
@@ -295,7 +317,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
             tmap[t.label].append(t)
 
     for variant in variants_idxs:
-        vlist = variant.split(",")
+        vlist = variants_util.get_activities_from_variant(variant)
         result = tr_vlist(vlist, net, initial_marking, final_marking, tmap, bmap, parameters=parameters)
         results.append(result)
 
@@ -311,7 +333,7 @@ def apply(log, net, initial_marking, final_marking, parameters=None):
     return ret
 
 
-def get_diagnostics_dataframe(log, tbr_output, parameters=None):
+def get_diagnostics_dataframe(log: EventLog, tbr_output: typing.ListAlignments, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Gets the results of token-based replay in a dataframe
 

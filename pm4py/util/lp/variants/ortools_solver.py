@@ -1,10 +1,31 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import sys
 import tempfile
 import numpy as np
 
 from ortools.linear_solver import pywraplp
-from pm4py.util.lp.parameters import Parameters
 from pm4py.util import exec_utils
+
+from enum import Enum
+
+
+class Parameters(Enum):
+    REQUIRE_ILP = "require_ilp"
 
 
 MIN_THRESHOLD = 10 ** -12
@@ -39,14 +60,6 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
 
     require_ilp = exec_utils.get_param_value(Parameters.REQUIRE_ILP, parameters, False)
 
-    Aub = np.asmatrix(Aub)
-    if type(bub) is list and len(bub) == 1:
-        bub = bub[0]
-    if Aeq is not None:
-        Aeq = np.asmatrix(Aeq)
-    if beq is not None and type(beq) is list and len(beq) == 1:
-        beq = beq[0]
-
     solver = pywraplp.Solver('LinearProgrammingExample',
                              pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
     solver.Clear()
@@ -72,7 +85,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                 ok = True
                 break
         if ok:
-            constraint = solver.Constraint(-solver.infinity(), bub[i].reshape(-1, ).tolist()[0][0])
+            constraint = solver.Constraint(-solver.infinity(), bub[i])
             for j in range(Aub.shape[1]):
                 if abs(Aub[i, j]) > MIN_THRESHOLD:
                     constraint.SetCoefficient(x_list[j], Aub[i, j])
@@ -85,7 +98,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
                     ok = True
                     break
             if ok:
-                constraint = solver.Constraint(beq[i].reshape(-1,).tolist()[0][0], beq[i].reshape(-1,).tolist()[0][0])
+                constraint = solver.Constraint(beq[i], beq[i])
                 for j in range(Aeq.shape[1]):
                     if abs(Aeq[i, j]) > MIN_THRESHOLD:
                         constraint.SetCoefficient(x_list[j], Aeq[i, j])

@@ -1,6 +1,23 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import abc
 from threading import Lock
 #from typing import final
+import traceback
 
 
 class StreamingAlgorithm(abc.ABC):
@@ -17,11 +34,18 @@ class StreamingAlgorithm(abc.ABC):
 
     def get(self):
         self._lock.acquire()
-        ret = self._current_result()
+        try:
+            ret = self._current_result()
+        except:
+            traceback.print_exc()
+            ret = None
         self._lock.release()
         return ret
 
     def receive(self, event):
         self._lock.acquire()
-        self._process(event)
+        try:
+            self._process(event)
+        except:
+            traceback.print_exc()
         self._lock.release()

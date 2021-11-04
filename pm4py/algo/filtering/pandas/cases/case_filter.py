@@ -1,15 +1,40 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import pandas as pd
 from pm4py.util import constants, xes_constants
 from enum import Enum
 from pm4py.util import exec_utils
+from copy import copy
+import deprecation
+from typing import Optional, Dict, Any, Union, Tuple, List
+import pandas as pd
+from pm4py.util.business_hours import soj_time_business_hours_diff
 
 
 class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
+    BUSINESS_HOURS = "business_hours"
+    WORKTIMING = "worktiming"
+    WEEKENDS = "weekends"
 
-def filter_on_ncases(df, case_id_glue=constants.CASE_CONCEPT_NAME, max_no_cases=1000):
+
+def filter_on_ncases(df: pd.DataFrame, case_id_glue: str = constants.CASE_CONCEPT_NAME, max_no_cases: int = 1000):
     """
     Filter a dataframe keeping only the specified maximum number of traces
 
@@ -32,11 +57,12 @@ def filter_on_ncases(df, case_id_glue=constants.CASE_CONCEPT_NAME, max_no_cases=
     for case in cases_values_dict:
         cases_to_keep.append(case)
     cases_to_keep = cases_to_keep[0:min(len(cases_to_keep), max_no_cases)]
-    df = df[df[case_id_glue].isin(cases_to_keep)]
-    return df
+    ret = df[df[case_id_glue].isin(cases_to_keep)]
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
-def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, max_case_size=None):
+def filter_on_case_size(df0: pd.DataFrame, case_id_glue: str = "case:concept:name", min_case_size: int = 2, max_case_size=None):
     """
     Filter a dataframe keeping only traces with at least the specified number of events
 
@@ -56,17 +82,19 @@ def filter_on_case_size(df, case_id_glue="case:concept:name", min_case_size=2, m
     df
         Filtered dataframe
     """
+    df = df0.copy()
     element_group_size = df[case_id_glue].groupby(df[case_id_glue]).transform('size')
     df = df[element_group_size >= min_case_size]
-    if max_case_size:
-        element_group_size = df[case_id_glue].groupby(df[case_id_glue]).transform('size')
+    if max_case_size is not None:
         df = df[element_group_size <= max_case_size]
+    df.attrs = copy(df0.attrs) if hasattr(df0, 'attrs') else {}
     return df
 
 
-def filter_on_case_performance(df, case_id_glue=constants.CASE_CONCEPT_NAME,
-                               timestamp_key=xes_constants.DEFAULT_TIMESTAMP_KEY,
-                               min_case_performance=0, max_case_performance=10000000000):
+def filter_on_case_performance(df: pd.DataFrame, case_id_glue: str = constants.CASE_CONCEPT_NAME,
+                               timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
+                               min_case_performance: float = 0, max_case_performance: float = 10000000000,
+                               business_hours=False, worktiming=[7, 17], weekends=[6, 7]) -> pd.DataFrame:
     """
     Filter a dataframe on case performance
 
@@ -93,24 +121,36 @@ def filter_on_case_performance(df, case_id_glue=constants.CASE_CONCEPT_NAME,
     end_events = grouped_df.last()
     end_events.columns = [str(col) + '_2' for col in end_events.columns]
     stacked_df = pd.concat([start_events, end_events], axis=1)
-    stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
-    stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
-    stacked_df = stacked_df[stacked_df['caseDuration'] < max_case_performance]
-    stacked_df = stacked_df[stacked_df['caseDuration'] > min_case_performance]
+    if business_hours:
+        stacked_df['caseDuration'] = stacked_df.apply(
+            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], worktiming,
+                                                   weekends), axis=1)
+    else:
+        stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
+        stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
+    stacked_df = stacked_df[stacked_df['caseDuration'] <= max_case_performance]
+    stacked_df = stacked_df[stacked_df['caseDuration'] >= min_case_performance]
     i1 = df.set_index(case_id_glue).index
     i2 = stacked_df.set_index(case_id_glue).index
-    return df[i1.isin(i2)]
+    ret = df[i1.isin(i2)]
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
-def filter_case_performance(df, min_case_performance=0, max_case_performance=10000000000, parameters=None):
+def filter_case_performance(df: pd.DataFrame, min_case_performance: float = 0, max_case_performance: float = 10000000000, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     if parameters is None:
         parameters = {}
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     case_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
+    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
+    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+
     return filter_on_case_performance(df, min_case_performance=min_case_performance,
                                       max_case_performance=max_case_performance, timestamp_key=timestamp_key,
-                                      case_id_glue=case_glue)
+                                      case_id_glue=case_glue, business_hours=business_hours, worktiming=worktiming,
+                                      weekends=weekends)
 
 
 def apply(df, parameters=None):

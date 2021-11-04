@@ -1,5 +1,22 @@
-from pm4py.objects.petri.petrinet import PetriNet, Marking
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+from pm4py.objects.petri.obj import PetriNet, Marking
 from pm4py.objects.petri.utils import add_arc_from_to
+from pm4py.objects.petri import properties
 
 
 def construct(pn1, im1, fm1, pn2, im2, fm2, skip):
@@ -28,6 +45,11 @@ def construct(pn1, im1, fm1, pn2, im2, fm2, skip):
             if t1.label == t2.label:
                 sync = PetriNet.Transition((t1.name, t2.name), (t1.label, t2.label))
                 sync_net.transitions.add(sync)
+                # copy the properties of the transitions inside the transition of the sync net
+                for p1 in t1.properties:
+                    sync.properties[p1] = t1.properties[p1]
+                for p2 in t2.properties:
+                    sync.properties[p2] = t2.properties[p2]
                 for a in t1.in_arcs:
                     add_arc_from_to(p1_map[a.source], sync, sync_net)
                 for a in t2.in_arcs:
@@ -47,6 +69,9 @@ def construct(pn1, im1, fm1, pn2, im2, fm2, skip):
         sync_fm[p1_map[p]] = fm1[p]
     for p in fm2:
         sync_fm[p2_map[p]] = fm2[p]
+
+    # update 06/02/2021: to distinguish the sync nets that are output of this method, put a property in the sync net
+    sync_net.properties[properties.IS_SYNC_NET] = True
 
     return sync_net, sync_im, sync_fm
 
@@ -88,6 +113,11 @@ def construct_cost_aware(pn1, im1, fm1, pn2, im2, fm2, skip, pn1_costs, pn2_cost
                 sync = PetriNet.Transition((t1.name, t2.name), (t1.label, t2.label))
                 sync_net.transitions.add(sync)
                 costs[sync] = sync_costs[(t1, t2)]
+                # copy the properties of the transitions inside the transition of the sync net
+                for p1 in t1.properties:
+                    sync.properties[p1] = t1.properties[p1]
+                for p2 in t2.properties:
+                    sync.properties[p2] = t2.properties[p2]
                 for a in t1.in_arcs:
                     add_arc_from_to(p1_map[a.source], sync, sync_net)
                 for a in t2.in_arcs:
@@ -108,6 +138,9 @@ def construct_cost_aware(pn1, im1, fm1, pn2, im2, fm2, skip, pn1_costs, pn2_cost
     for p in fm2:
         sync_fm[p2_map[p]] = fm2[p]
 
+    # update 06/02/2021: to distinguish the sync nets that are output of this method, put a property in the sync net
+    sync_net.properties[properties.IS_SYNC_NET] = True
+
     return sync_net, sync_im, sync_fm, costs
 
 
@@ -118,11 +151,17 @@ def __copy_into(source_net, target_net, upper, skip):
         name = (t.name, skip) if upper else (skip, t.name)
         label = (t.label, skip) if upper else (skip, t.label)
         t_map[t] = PetriNet.Transition(name, label)
+        if properties.TRACE_NET_TRANS_INDEX in t.properties:
+            # 16/02/2021: copy the index property from the transition of the trace net
+            t_map[t].properties[properties.TRACE_NET_TRANS_INDEX] = t.properties[properties.TRACE_NET_TRANS_INDEX]
         target_net.transitions.add(t_map[t])
 
     for p in source_net.places:
         name = (p.name, skip) if upper else (skip, p.name)
         p_map[p] = PetriNet.Place(name)
+        if properties.TRACE_NET_PLACE_INDEX in p.properties:
+            # 16/02/2021: copy the index property from the place of the trace net
+            p_map[p].properties[properties.TRACE_NET_PLACE_INDEX] = p.properties[properties.TRACE_NET_PLACE_INDEX]
         target_net.places.add(p_map[p])
 
     for t in source_net.transitions:

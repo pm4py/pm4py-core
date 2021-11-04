@@ -1,4 +1,20 @@
-from pm4py.objects.log import log
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+from pm4py.objects.log import obj
 from copy import copy, deepcopy
 import logging
 
@@ -21,7 +37,7 @@ def empty_trace(l):
             contains_empty_trace = True
 
     if contains_empty_trace:
-        new_log = log.EventLog()
+        new_log = obj.EventLog()
         for trace in l:
             if len(trace) != 0:
                 new_log.append(trace)
@@ -34,9 +50,9 @@ def filter_activity_from_log(l, act, activity_key):
     # remove the activity from every trace in the log
     # as trace doesnt have remove function, we just create new traces without chosen_activity
     act_str = str(act)
-    new_log = log.EventLog()
+    new_log = obj.EventLog()
     for trace in l:
-        new_trace = log.Trace()
+        new_trace = obj.Trace()
         for event in trace:
             if not event[activity_key] == act_str:
                 new_trace.append(event)
@@ -58,12 +74,12 @@ def index_containing(l, activities, activity_key):
 def filter_activity_use_idx(l, act, activity_key, idx):
     act_str = str(act)
     i_act = idx[act]
-    new_log = log.EventLog()
+    new_log = obj.EventLog()
     i = 0
     j = 0
     while i < len(l):
         if j < len(i_act) and i == i_act[j]:
-            new_trace = log.Trace()
+            new_trace = obj.Trace()
             for event in l[i]:
                 if not event[activity_key] == act_str:
                     new_trace.append(event)
@@ -76,9 +92,9 @@ def filter_activity_use_idx(l, act, activity_key, idx):
 
 
 def act_once_per_trace(l, activities, activity_key):
-    small_log = log.EventLog()
-    small_trace = log.Trace()
-    new_log = log.EventLog()
+    small_log = obj.EventLog()
+    small_trace = obj.Trace()
+    new_log = obj.EventLog()
     number_of_traces = len(l)
     possible_activities = list()
     # transform dict of activities to list
@@ -127,11 +143,11 @@ def act_once_per_trace(l, activities, activity_key):
 def activity_concurrent(self, l, activities, activity_key, parameters=None):
     from pm4py.algo.discovery.inductive.variants.im.data_structures import subtree_plain as subtree
 
-    small_log = log.EventLog()
-    test_log = log.EventLog()
+    small_log = obj.EventLog()
+    test_log = obj.EventLog()
     key = None
     activities_copy = copy(activities)
-    empty_trace = log.Trace()
+    empty_trace = obj.Trace()
     idx = index_containing(l, activities, activity_key)
 
     for key, value in activities_copy.items():  # iterate through activities (saved in key)
@@ -153,7 +169,7 @@ def activity_concurrent(self, l, activities, activity_key, parameters=None):
         if cut:
             # save act to small_trace, so that it can be appended as leaf later on
             for trace in l:
-                small_trace = log.Trace()
+                small_trace = obj.Trace()
                 contains_activity = False
                 for element in trace:
                     if element[activity_key] == key:
@@ -173,8 +189,8 @@ def activity_concurrent(self, l, activities, activity_key, parameters=None):
 def split_between_end_and_start(trace, start_activities, end_activities, activity_key):
     # splits a trace between the first occurrence of an end activity  following a start activity
     found_split = False
-    new_trace_1 = log.Trace()
-    new_trace_2 = log.Trace()
+    new_trace_1 = obj.Trace()
+    new_trace_2 = obj.Trace()
     i = 0
 
     while not found_split and i < len(trace) - 1:
@@ -195,7 +211,7 @@ def split_between_end_and_start(trace, start_activities, end_activities, activit
 
 
 def strict_tau_loop(l, start_activities, end_activities, activity_key):
-    new_log = log.EventLog()
+    new_log = obj.EventLog()
     for trace in l:  # for all traces
         t1, t2, found_split = split_between_end_and_start(trace, start_activities, end_activities,
                                                           activity_key)  # look for split
@@ -221,8 +237,8 @@ def split_before_start(trace, start_activities, activity_key):
         return trace, trace, False
     # if none of the above cases apply, we split at the occurence of a start activity
     found_split = False
-    new_trace_1 = log.Trace()
-    new_trace_2 = log.Trace()
+    new_trace_1 = obj.Trace()
+    new_trace_2 = obj.Trace()
     i = 1
     while not found_split and i < len(trace):  # for all events in trace
         if trace[i][activity_key] in start_activities and len(trace) > 1:
@@ -238,7 +254,7 @@ def split_before_start(trace, start_activities, activity_key):
 
 def tau_loop(l, start_activities, activity_key):
     # pretty much the same code as in strict_tau_loop, just that we split at a different point
-    new_log = log.EventLog()
+    new_log = obj.EventLog()
     for trace in l:
         t1, t2, found_split = split_before_start(trace, start_activities, activity_key)
         if found_split and len(t2) != 0:

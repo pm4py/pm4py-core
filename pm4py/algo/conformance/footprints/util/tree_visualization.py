@@ -1,6 +1,35 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.algo.discovery.footprints.tree.variants import bottomup as bottomup_discovery
-from pm4py.objects.process_tree import bottomup as bottomup_util
-from pm4py.algo.discovery.footprints.outputs import Outputs
+from pm4py.objects.process_tree.utils import bottomup as bottomup_util
+from enum import Enum
+
+class Outputs(Enum):
+    DFG = "dfg"
+    SEQUENCE = "sequence"
+    PARALLEL = "parallel"
+    START_ACTIVITIES = "start_activities"
+    END_ACTIVITIES = "end_activities"
+    ACTIVITIES = "activities"
+    SKIPPABLE = "skippable"
+    ACTIVITIES_ALWAYS_HAPPENING = "activities_always_happening"
+    MIN_TRACE_LENGTH = "min_trace_length"
+    TRACE = "trace"
+
 
 FP_DEV_COLOR = "red"
 FP_START_END_DEV_COLOR = "blue"

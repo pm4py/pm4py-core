@@ -1,26 +1,59 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+import pkgutil
 import sys
 from collections import Counter
 
-from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py import util as pmutil
+from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.algo.discovery.dfg.variants import native as dfg_inst
 from pm4py.algo.discovery.inductive.util import shared_constants
+from pm4py.algo.discovery.inductive.util import tree_consistency
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.variants.im_d.data_structures.subtree import SubtreeDFGBased
 from pm4py.algo.discovery.inductive.variants.im_d.util import get_tree_repr_dfg_based
+from pm4py.objects.conversion.log import converter as log_conversion
+from pm4py.objects.conversion.process_tree import converter as tree_to_petri
+from pm4py.objects.dfg.utils import dfg_utils
+from pm4py.objects.process_tree.utils import generic
+from pm4py.objects.process_tree.utils.generic import tree_sort
 from pm4py.statistics.attributes.log import get as log_attributes_stats
 from pm4py.statistics.end_activities.log import get as log_end_act_stats
 from pm4py.statistics.start_activities.log import get as log_start_act_stats
-from pm4py.objects.conversion.process_tree import converter as tree_to_petri
-from pm4py.objects.conversion.log import converter as log_conversion
-from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.util import exec_utils
-from pm4py.algo.discovery.inductive.parameters import Parameters
-from pm4py.algo.discovery.inductive.util import tree_consistency
-from pm4py.objects.process_tree import util
-import pkgutil
 
 sys.setrecursionlimit(shared_constants.REC_LIMIT)
+
+from pm4py.util import constants
+from enum import Enum
+import deprecation
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    NOISE_THRESHOLD = "noiseThreshold"
+    EMPTY_TRACE_KEY = "empty_trace"
+    ONCE_PER_TRACE_KEY = "once_per_trace"
+    CONCURRENT_KEY = "concurrent"
+    STRICT_TAU_LOOP_KEY = "strict_tau_loop"
+    TAU_LOOP_KEY = "tau_loop"
 
 
 def apply(log, parameters=None):
@@ -51,7 +84,7 @@ def apply(log, parameters=None):
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters,
                                               pmutil.xes_constants.DEFAULT_NAME_KEY)
     start_timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
-                                               None)
+                                                     None)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                pmutil.xes_constants.DEFAULT_TIMESTAMP_KEY)
     if pkgutil.find_loader("pandas"):
@@ -67,7 +100,8 @@ def apply(log, parameters=None):
             start_activities = pd_start_act_stats.get_start_activities(log, parameters=parameters)
             end_activities = pd_end_act_stats.get_end_activities(log, parameters=parameters)
             activities = pd_attributes_stats.get_attribute_values(log, activity_key, parameters=parameters)
-            return apply_dfg(dfg, activities=activities, start_activities=start_activities, end_activities=end_activities,
+            return apply_dfg(dfg, activities=activities, start_activities=start_activities,
+                             end_activities=end_activities,
                              parameters=parameters)
     log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
     tree = apply_tree(log, parameters=parameters)
@@ -219,6 +253,7 @@ def apply_dfg(dfg, parameters=None, activities=None, contains_empty_traces=False
     return net, initial_marking, final_marking
 
 
+@deprecation.deprecated('2.2.10', '3.0.0', details='use newer IM implementation (IM_CLEAN)')
 def apply_tree_dfg(dfg, parameters=None, activities=None, contains_empty_traces=False, start_activities=None,
                    end_activities=None):
     """
@@ -269,6 +304,8 @@ def apply_tree_dfg(dfg, parameters=None, activities=None, contains_empty_traces=
     # Fixes a 1 child XOR that is added when single-activities flowers are found
     tree_consistency.fix_one_child_xor_flower(tree_repr)
     # folds the process tree (to simplify it in case fallthroughs/filtering is applied)
-    tree_repr = util.fold(tree_repr)
+    tree_repr = generic.fold(tree_repr)
+    # sorts the process tree to ensure consistency in different executions of the algorithm
+    tree_sort(tree_repr)
 
     return tree_repr

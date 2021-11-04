@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import sys
 
 from pm4py.objects.random_variables.uniform.random_variable import Uniform
@@ -111,25 +127,3 @@ class Constant0(Uniform):
         if len(values) == len(values_0):
             return sys.float_info.max
         return -sys.float_info.max
-
-    def __str__(self):
-        """
-        Returns a representation of the current object
-
-        Returns
-        ----------
-        repr
-            Representation of the current object
-        """
-        return self.get_distribution_type()
-
-    def __repr__(self):
-        """
-        Returns a representation of the current object
-
-        Returns
-        ----------
-        repr
-            Representation of the current object
-        """
-        return self.get_distribution_type()

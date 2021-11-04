@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.algo.conformance.tokenreplay import algorithm as tr_algorithm
 from pm4py.util.colors import get_string_from_int_below_255
 from collections import Counter
@@ -5,6 +21,7 @@ from copy import copy
 import matplotlib as mpl
 import matplotlib.cm as cm
 import math
+import deprecation
 
 
 def give_color_to_direction_dynamic(dir):
@@ -55,6 +72,7 @@ def give_color_to_direction_static(dir):
             return col[1]
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.comparison.petrinet.element_usage_comparison instead')
 def compare_element_usage_two_logs(net, im, fm, log1, log2, parameters=None):
     """
     Returns some statistics (also visual) about the comparison of the usage

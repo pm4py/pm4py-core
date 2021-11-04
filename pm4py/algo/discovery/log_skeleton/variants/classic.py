@@ -1,10 +1,60 @@
-from pm4py.objects.log.util import xes
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from collections import Counter
+from enum import Enum
+
 from pm4py.algo.discovery.log_skeleton import trace_skel
-from pm4py.algo.discovery.log_skeleton.parameters import Parameters
-from pm4py.algo.discovery.log_skeleton.outputs import Outputs
-from pm4py.util import exec_utils, constants
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.log.util import xes
+from pm4py.util import exec_utils
+from pm4py.util import variants_util
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY
+from typing import Optional, Dict, Any, Union, Tuple, List
+from pm4py.objects.log.obj import EventLog, EventStream
+import pandas as pd
+
+
+class Parameters(Enum):
+    # parameter for the noise threshold
+    NOISE_THRESHOLD = "noise_threshold"
+    # considered constraints in conformance checking among: equivalence, always_after, always_before, never_together, directly_follows, activ_freq
+    CONSIDERED_CONSTRAINTS = "considered_constraints"
+    # default choice for conformance checking
+    DEFAULT_CONSIDERED_CONSTRAINTS = ["equivalence", "always_after", "always_before", "never_together",
+                                      "directly_follows", "activ_freq"]
+    CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
+    ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
+    PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
+
+
+NOISE_THRESHOLD = Parameters.NOISE_THRESHOLD
+CONSIDERED_CONSTRAINTS = Parameters.CONSIDERED_CONSTRAINTS
+DEFAULT_CONSIDERED_CONSTRAINTS = Parameters.DEFAULT_CONSIDERED_CONSTRAINTS
+ACTIVITY_KEY = Parameters.ACTIVITY_KEY
+PARAMETER_VARIANT_DELIMITER = Parameters.PARAMETER_VARIANT_DELIMITER
+
+
+class Outputs(Enum):
+    EQUIVALENCE = "equivalence"
+    ALWAYS_AFTER = "always_after"
+    ALWAYS_BEFORE = "always_before"
+    NEVER_TOGETHER = "never_together"
+    DIRECTLY_FOLLOWS = "directly_follows"
+    ACTIV_FREQ = "activ_freq"
 
 
 def equivalence(logs_traces, all_activs, noise_threshold=0):
@@ -196,7 +246,7 @@ def activ_freq(logs_traces, all_activs, len_log, noise_threshold=0):
     return ret
 
 
-def apply(log, parameters=None):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Any]:
     """
     Discover a log skeleton from an event log
 
@@ -254,17 +304,10 @@ def apply_from_variants_list(var_list, parameters=None):
     if parameters is None:
         parameters = {}
 
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
-    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
-                                                   constants.DEFAULT_VARIANT_SEP)
-
     log = EventLog()
     for cv in var_list:
         v = cv[0]
-        tr = v.split(variant_delimiter)
-        trace = Trace()
-        for act in tr:
-            trace.append(Event({activity_key: act}))
+        trace = variants_util.variant_to_trace(v, parameters=parameters)
         log.append(trace)
 
     return apply(log, parameters=parameters)

@@ -1,9 +1,28 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.statistics.attributes.log.get import get_attribute_values, get_all_event_attributes_from_log, get_all_trace_attributes_from_log, get_trace_attribute_values
 from pm4py.objects.log.util import sampling
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.log.obj import EventLog
+
 
 DEFAULT_MAX_CASES_FOR_ATTR_SELECTION = 50
 
-def select_attributes_from_log_for_tree(log, max_cases_for_attr_selection=DEFAULT_MAX_CASES_FOR_ATTR_SELECTION,
+def select_attributes_from_log_for_tree(log: EventLog, max_cases_for_attr_selection=DEFAULT_MAX_CASES_FOR_ATTR_SELECTION,
                                         max_diff_occ=DEFAULT_MAX_CASES_FOR_ATTR_SELECTION / 4):
     """
     Select attributes from log for tree
@@ -63,7 +82,7 @@ def select_attributes_from_log_for_tree(log, max_cases_for_attr_selection=DEFAUL
     return string_trace_attributes_to_consider, string_event_attributes_to_consider, numeric_trace_attributes_to_consider, numeric_event_attributes_to_consider
 
 
-def check_trace_attributes_presence(log, attributes_set):
+def check_trace_attributes_presence(log: EventLog, attributes_set: Union[Set[str], List[str]]) -> Union[Set[str], List[str]]:
     """
     Check trace attributes presence in all the traces of the log
 
@@ -86,7 +105,7 @@ def check_trace_attributes_presence(log, attributes_set):
     return attributes_set
 
 
-def check_event_attributes_presence(log, attributes_set):
+def check_event_attributes_presence(log: EventLog, attributes_set: Union[Set[str], List[str]]) -> Union[Set[str], List[str]]:
     """
     Check event attributes presence in all the traces of the log
 
@@ -109,7 +128,7 @@ def check_event_attributes_presence(log, attributes_set):
     return attributes_set
 
 
-def verify_if_event_attribute_is_in_each_trace(log, attribute):
+def verify_if_event_attribute_is_in_each_trace(log: EventLog, attribute: str) -> bool:
     """
     Verify if the event attribute is in each trace
 
@@ -136,7 +155,7 @@ def verify_if_event_attribute_is_in_each_trace(log, attribute):
     return True
 
 
-def verify_if_trace_attribute_is_in_each_trace(log, attribute):
+def verify_if_trace_attribute_is_in_each_trace(log: EventLog, attribute: str) -> bool:
     """
     Verify if the trace attribute is in each trace
 

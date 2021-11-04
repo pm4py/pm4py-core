@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from copy import copy
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_activities_from_dfg, \
     infer_start_activities, infer_end_activities
@@ -8,16 +24,30 @@ from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thre
 from pm4py.algo.discovery.inductive.variants.im.util import base_case
 from pm4py import util as pmutil
 from pm4py.algo.discovery.inductive.variants.im.util import splitting as split
-from pm4py.algo.filtering.log.attributes import attributes_filter
-from pm4py.algo.filtering.log.end_activities import end_activities_filter
-from pm4py.algo.filtering.log.start_activities import start_activities_filter
+from pm4py.statistics.attributes.log import get as attributes_get
+from pm4py.statistics.end_activities.log import get as end_activities_get
+from pm4py.statistics.start_activities.log import get  as start_activities_get
 from pm4py.algo.discovery.inductive.util import parallel_cut_utils, detection_utils, cut_detection
 from pm4py.algo.discovery.inductive.variants.im_f import splitting_infrequent, fall_through_infrequent
 from pm4py.algo.discovery.inductive.variants.im.util import fall_through
-from pm4py.algo.discovery.inductive.parameters import Parameters
 from pm4py.util import exec_utils
 import pkgutil
 import logging
+from pm4py.util import constants
+from enum import Enum
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    NOISE_THRESHOLD = "noiseThreshold"
+    EMPTY_TRACE_KEY = "empty_trace"
+    ONCE_PER_TRACE_KEY = "once_per_trace"
+    CONCURRENT_KEY = "concurrent"
+    STRICT_TAU_LOOP_KEY = "strict_tau_loop"
+    TAU_LOOP_KEY = "tau_loop"
 
 
 class SubtreeInfrequent(object):
@@ -232,8 +262,8 @@ class SubtreeInfrequent(object):
         if self.contains_empty_trace():
             return [False, []]
         start_activities = list(
-            start_activities_filter.get_start_activities(self.log, parameters=self.parameters).keys())
-        end_activities = list(end_activities_filter.get_end_activities(self.log, parameters=self.parameters).keys())
+            start_activities_get.get_start_activities(self.log, parameters=self.parameters).keys())
+        end_activities = list(end_activities_get.get_end_activities(self.log, parameters=self.parameters).keys())
         p1 = []
         for act in start_activities:
             if act not in p1:
@@ -398,11 +428,11 @@ class SubtreeInfrequent(object):
             new_logs = split.split_xor(cut[1], self.log, activity_key)
             for l in new_logs:
                 new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters=self.parameters).items() if v > 0]
-                activities = attributes_filter.get_attribute_values(l, activity_key)
+                activities = attributes_get.get_attribute_values(l, activity_key)
                 start_activities = list(
-                    start_activities_filter.get_start_activities(l, parameters=self.parameters).keys())
+                    start_activities_get.get_start_activities(l, parameters=self.parameters).keys())
                 end_activities = list(
-                    end_activities_filter.get_end_activities(l, parameters=self.parameters).keys())
+                    end_activities_get.get_end_activities(l, parameters=self.parameters).keys())
                 self.children.append(
                     SubtreeInfrequent(l, new_dfg, self.master_dfg, self.initial_dfg, activities, self.counts,
                                       self.rec_depth + 1, self.f,
@@ -415,11 +445,11 @@ class SubtreeInfrequent(object):
             self.detected_cut = "sequential"
             for l in new_logs:
                 new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters=self.parameters).items() if v > 0]
-                activities = attributes_filter.get_attribute_values(l, activity_key)
+                activities = attributes_get.get_attribute_values(l, activity_key)
                 start_activities = list(
-                    start_activities_filter.get_start_activities(l, parameters=self.parameters).keys())
+                    start_activities_get.get_start_activities(l, parameters=self.parameters).keys())
                 end_activities = list(
-                    end_activities_filter.get_end_activities(l, parameters=self.parameters).keys())
+                    end_activities_get.get_end_activities(l, parameters=self.parameters).keys())
                 self.children.append(
                     SubtreeInfrequent(l, new_dfg, self.master_dfg, self.initial_dfg, activities, self.counts,
                                       self.rec_depth + 1, self.f,
@@ -432,11 +462,11 @@ class SubtreeInfrequent(object):
             self.detected_cut = "parallel"
             for l in new_logs:
                 new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters=self.parameters).items() if v > 0]
-                activities = attributes_filter.get_attribute_values(l, activity_key)
+                activities = attributes_get.get_attribute_values(l, activity_key)
                 start_activities = list(
-                    start_activities_filter.get_start_activities(l, parameters=self.parameters).keys())
+                    start_activities_get.get_start_activities(l, parameters=self.parameters).keys())
                 end_activities = list(
-                    end_activities_filter.get_end_activities(l, parameters=self.parameters).keys())
+                    end_activities_get.get_end_activities(l, parameters=self.parameters).keys())
                 self.children.append(
                     SubtreeInfrequent(l, new_dfg, self.master_dfg, self.initial_dfg, activities, self.counts,
                                       self.rec_depth + 1, self.f,
@@ -449,11 +479,11 @@ class SubtreeInfrequent(object):
             self.detected_cut = "loopCut"
             for l in new_logs:
                 new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters=self.parameters).items() if v > 0]
-                activities = attributes_filter.get_attribute_values(l, activity_key)
+                activities = attributes_get.get_attribute_values(l, activity_key)
                 start_activities = list(
-                    start_activities_filter.get_start_activities(l, parameters=self.parameters).keys())
+                    start_activities_get.get_start_activities(l, parameters=self.parameters).keys())
                 end_activities = list(
-                    end_activities_filter.get_end_activities(l, parameters=self.parameters).keys())
+                    end_activities_get.get_end_activities(l, parameters=self.parameters).keys())
                 self.children.append(
                     SubtreeInfrequent(l, new_dfg, self.master_dfg, self.initial_dfg, activities, self.counts,
                                       self.rec_depth + 1, self.f,
@@ -494,11 +524,11 @@ class SubtreeInfrequent(object):
                         new_logs = splitting_infrequent.split_xor_infrequent(cut[1], self.log, activity_key)
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters=parameters).items() if v > 0]
-                            activities = attributes_filter.get_attribute_values(l, activity_key)
+                            activities = attributes_get.get_attribute_values(l, activity_key)
                             start_activities = list(
-                                start_activities_filter.get_start_activities(l, parameters=parameters).keys())
+                                start_activities_get.get_start_activities(l, parameters=parameters).keys())
                             end_activities = list(
-                                end_activities_filter.get_end_activities(l, parameters=parameters).keys())
+                                end_activities_get.get_end_activities(l, parameters=parameters).keys())
                             self.children.append(
                                 SubtreeInfrequent(l, new_dfg, self.master_dfg, self.initial_dfg, activities,
                                                   self.counts,
@@ -515,11 +545,11 @@ class SubtreeInfrequent(object):
                         self.detected_cut = "sequential"
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters=parameters).items() if v > 0]
-                            activities = attributes_filter.get_attribute_values(l, activity_key)
+                            activities = attributes_get.get_attribute_values(l, activity_key)
                             start_activities = list(
-                                start_activities_filter.get_start_activities(l, parameters=parameters).keys())
+                                start_activities_get.get_start_activities(l, parameters=parameters).keys())
                             end_activities = list(
-                                end_activities_filter.get_end_activities(l, parameters=parameters).keys())
+                                end_activities_get.get_end_activities(l, parameters=parameters).keys())
                             self.children.append(
                                 SubtreeInfrequent(l, new_dfg, self.master_dfg, self.initial_dfg, activities,
                                                   self.counts,
@@ -536,11 +566,11 @@ class SubtreeInfrequent(object):
                         self.detected_cut = "parallel"
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters=parameters).items() if v > 0]
-                            activities = attributes_filter.get_attribute_values(l, activity_key)
+                            activities = attributes_get.get_attribute_values(l, activity_key)
                             start_activities = list(
-                                start_activities_filter.get_start_activities(l, parameters=parameters).keys())
+                                start_activities_get.get_start_activities(l, parameters=parameters).keys())
                             end_activities = list(
-                                end_activities_filter.get_end_activities(l, parameters=parameters).keys())
+                                end_activities_get.get_end_activities(l, parameters=parameters).keys())
                             self.children.append(
                                 SubtreeInfrequent(l, new_dfg, self.master_dfg, self.initial_dfg, activities,
                                                   self.counts,
@@ -557,11 +587,11 @@ class SubtreeInfrequent(object):
                         self.detected_cut = "loopCut"
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters=parameters).items() if v > 0]
-                            activities = attributes_filter.get_attribute_values(l, activity_key)
+                            activities = attributes_get.get_attribute_values(l, activity_key)
                             start_activities = list(
-                                start_activities_filter.get_start_activities(l, parameters=parameters).keys())
+                                start_activities_get.get_start_activities(l, parameters=parameters).keys())
                             end_activities = list(
-                                end_activities_filter.get_end_activities(l, parameters=parameters).keys())
+                                end_activities_get.get_end_activities(l, parameters=parameters).keys())
                             self.children.append(
                                 SubtreeInfrequent(l, new_dfg, self.master_dfg, self.initial_dfg, activities,
                                                   self.counts,
@@ -604,11 +634,11 @@ class SubtreeInfrequent(object):
             logging.debug("empty_trace_if")
             self.detected_cut = 'empty_trace'
             new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters=self.parameters).items() if v > 0]
-            activities = attributes_filter.get_attribute_values(new_log, activity_key)
+            activities = attributes_get.get_attribute_values(new_log, activity_key)
             start_activities = list(
-                                start_activities_filter.get_start_activities(new_log, parameters=parameters).keys())
+                                start_activities_get.get_start_activities(new_log, parameters=parameters).keys())
             end_activities = list(
-                                end_activities_filter.get_end_activities(new_log, parameters=parameters).keys())
+                                end_activities_get.get_end_activities(new_log, parameters=parameters).keys())
             self.children.append(
                 SubtreeInfrequent(new_log, new_dfg, self.master_dfg, self.initial_dfg, activities, self.counts,
                                   self.rec_depth + 1, self.f,
@@ -630,14 +660,14 @@ class SubtreeInfrequent(object):
                 # create two new dfgs as we need them to append to self.children later
                 new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters=parameters).items() if
                            v > 0]
-                activities = attributes_filter.get_attribute_values(new_log, activity_key)
+                activities = attributes_get.get_attribute_values(new_log, activity_key)
                 small_dfg = [(k, v) for k, v in dfg_inst.apply(small_log, parameters=parameters).items() if
                              v > 0]
-                small_activities = attributes_filter.get_attribute_values(small_log, activity_key)
+                small_activities = attributes_get.get_attribute_values(small_log, activity_key)
                 start_activities = list(
-                                start_activities_filter.get_start_activities(new_log, parameters=parameters).keys())
+                                start_activities_get.get_start_activities(new_log, parameters=parameters).keys())
                 end_activities = list(
-                                end_activities_filter.get_end_activities(new_log, parameters=parameters).keys())
+                                end_activities_get.get_end_activities(new_log, parameters=parameters).keys())
                 # append the chosen activity as leaf:
                 self.children.append(
                     SubtreeInfrequent(small_log, small_dfg, self.master_dfg, self.initial_dfg, small_activities,
@@ -670,14 +700,14 @@ class SubtreeInfrequent(object):
                     # create two new dfgs on to append later
                     new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters=parameters).items() if
                                v > 0]
-                    activities = attributes_filter.get_attribute_values(new_log, activity_key)
+                    activities = attributes_get.get_attribute_values(new_log, activity_key)
                     small_dfg = [(k, v) for k, v in dfg_inst.apply(small_log, parameters=parameters).items() if
                                  v > 0]
-                    small_activities = attributes_filter.get_attribute_values(small_log, activity_key)
+                    small_activities = attributes_get.get_attribute_values(small_log, activity_key)
                     start_activities = list(
-                                start_activities_filter.get_start_activities(new_log, parameters=parameters).keys())
+                                start_activities_get.get_start_activities(new_log, parameters=parameters).keys())
                     end_activities = list(
-                                end_activities_filter.get_end_activities(new_log, parameters=parameters).keys())
+                                end_activities_get.get_end_activities(new_log, parameters=parameters).keys())
                     # append the concurrent activity as leaf:
                     self.children.append(
                         SubtreeInfrequent(small_log, small_dfg, self.master_dfg, self.initial_dfg,
@@ -708,11 +738,11 @@ class SubtreeInfrequent(object):
                         self.detected_cut = 'strict_tau_loop'
                         new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters=parameters).items() if
                                    v > 0]
-                        activities = attributes_filter.get_attribute_values(new_log, activity_key)
+                        activities = attributes_get.get_attribute_values(new_log, activity_key)
                         start_activities = list(
-                                start_activities_filter.get_start_activities(new_log, parameters=parameters).keys())
+                                start_activities_get.get_start_activities(new_log, parameters=parameters).keys())
                         end_activities = list(
-                                end_activities_filter.get_end_activities(new_log, parameters=parameters).keys())
+                                end_activities_get.get_end_activities(new_log, parameters=parameters).keys())
                         self.children.append(
                             SubtreeInfrequent(new_log, new_dfg, self.master_dfg, self.initial_dfg,
                                               activities,
@@ -733,11 +763,11 @@ class SubtreeInfrequent(object):
                             self.detected_cut = 'tau_loop'
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters=parameters).items() if
                                        v > 0]
-                            activities = attributes_filter.get_attribute_values(new_log, activity_key)
+                            activities = attributes_get.get_attribute_values(new_log, activity_key)
                             start_activities = list(
-                                start_activities_filter.get_start_activities(new_log, parameters=parameters).keys())
+                                start_activities_get.get_start_activities(new_log, parameters=parameters).keys())
                             end_activities = list(
-                                end_activities_filter.get_end_activities(new_log, parameters=parameters).keys())
+                                end_activities_get.get_end_activities(new_log, parameters=parameters).keys())
                             self.children.append(
                                 SubtreeInfrequent(new_log, new_dfg, self.master_dfg, self.initial_dfg,
                                                   activities,

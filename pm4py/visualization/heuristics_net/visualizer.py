@@ -1,8 +1,27 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import shutil
 from enum import Enum
 
 from pm4py.util import exec_utils, vis_utils
 from pm4py.visualization.heuristics_net.variants import pydotplus
+import tempfile
+from pm4py.objects.heuristics_net.obj import HeuristicsNet
+from typing import Optional, Dict, Any, Union, Tuple
 
 
 class Variants(Enum):
@@ -12,7 +31,7 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.PYDOTPLUS
 
 
-def apply(heu_net, parameters=None, variant=DEFAULT_VARIANT):
+def apply(heu_net: HeuristicsNet, parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT) -> str:
     """
     Gets a representation of an Heuristics Net
 
@@ -76,6 +95,19 @@ def save(figure, output_file_path):
         pass
 
     shutil.copyfile(figure, output_file_path)
+
+
+def serialize(figure: tempfile._TemporaryFileWrapper) -> bytes:
+    """
+    Serialize a figure that has been rendered
+
+    Parameters
+    ----------
+    figure
+        figure
+    """
+    with open(figure.name, "rb") as f:
+        return f.read()
 
 
 def matplotlib_view(figure):

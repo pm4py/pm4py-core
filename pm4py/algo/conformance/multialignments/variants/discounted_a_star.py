@@ -1,7 +1,7 @@
 import heapq
-from pm4py.objects.petri.align_utils import  levenshtein, discountedEditDistance
-from pm4py.objects.petri.utils import  decorate_places_preset_trans,  decorate_transitions_prepostset
-from pm4py.objects.petri import align_utils as utils
+from pm4py.objects.petri_net.utils.align_utils import  levenshtein, discountedEditDistance
+from pm4py.objects.petri_net.utils.petri_utils import  decorate_places_preset_trans,  decorate_transitions_prepostset
+from pm4py.objects.petri_net.utils import align_utils as utils
 from pm4py.util import exec_utils
 from copy import copy
 from enum import Enum
@@ -9,8 +9,8 @@ from pm4py.statistics.variants.log import get as variants_module
 
 '''
 This algorithm computes discounted multi-alignment. 
-More details in Boltenhagen's thesis coming soon
-Author: Boltenhagen Mathilde
+More details in Boltenhagen's thesis 
+Author: Author: Boltenhagen Mathilde, Thomas Chatain, Josep Carmona
 Date: Jan. 2021
 '''
 

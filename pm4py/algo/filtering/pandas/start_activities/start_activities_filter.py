@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.statistics.start_activities.common import get as start_activities_common
@@ -9,6 +25,10 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import GROUPED_DATAFRAME
 from enum import Enum
 from pm4py.util import exec_utils
+from copy import copy
+import deprecation
+from typing import Optional, Dict, Any, Union, Tuple, List
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -19,7 +39,7 @@ class Parameters(Enum):
     POSITIVE = "positive"
 
 
-def apply(df, values, parameters=None):
+def apply(df: pd.DataFrame, values: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Filter dataframe on start activities
 
@@ -53,6 +73,7 @@ def apply(df, values, parameters=None):
                                          positive=positive, grouped_df=grouped_df)
 
 
+@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
 def apply_auto_filter(df, parameters=None):
     """
     Apply auto filter on end activities
@@ -123,8 +144,12 @@ def filter_df_on_start_activities(df, values, case_id_glue=CASE_CONCEPT_NAME,
     i1 = df.set_index(case_id_glue).index
     i2 = first_eve_df.index
     if positive:
-        return df[i1.isin(i2)]
-    return df[~i1.isin(i2)]
+        ret = df[i1.isin(i2)]
+    else:
+        ret = df[~i1.isin(i2)]
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret
 
 
 def filter_df_on_start_activities_nocc(df, nocc, sa_count0=None, case_id_glue=CASE_CONCEPT_NAME,
@@ -167,5 +192,9 @@ def filter_df_on_start_activities_nocc(df, nocc, sa_count0=None, case_id_glue=CA
         first_eve_df = first_eve_df[first_eve_df[activity_key].isin(sa_count)]
         i1 = df.set_index(case_id_glue).index
         i2 = first_eve_df.index
-        return df[i1.isin(i2)]
-    return df
+        ret = df[i1.isin(i2)]
+    else:
+        ret = df
+
+    ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
+    return ret

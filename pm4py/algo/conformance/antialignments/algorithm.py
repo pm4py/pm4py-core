@@ -1,12 +1,10 @@
-
-from pm4py.algo.conformance.antialignments import variants
 from pm4py.objects.conversion.log import converter as log_converter
-from pm4py.objects.petri import check_soundness
+from pm4py.objects.petri_net.utils import check_soundness
 import time
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY
-
+from pm4py.algo.conformance.antialignments import variants
 
 class Variants(Enum):
     VERSION_DISCOUNTED_A_STAR = variants.discounted_a_star

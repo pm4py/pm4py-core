@@ -1,5 +1,21 @@
-from pm4py.algo.conformance.alignments import algorithm as ali
-from pm4py.algo.conformance.alignments.variants import state_equation_a_star as star
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+from pm4py.algo.conformance.alignments.petri_net import algorithm as ali
+from pm4py.algo.conformance.alignments.petri_net.variants import state_equation_a_star as star
 import sys
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
@@ -9,6 +25,7 @@ from pm4py.statistics.attributes.log.select import select_attributes_from_log_fo
 from pm4py.objects.conversion.log import converter as log_converter
 from enum import Enum
 from pm4py.util import exec_utils
+import deprecation
 
 
 class Parameters(Enum):
@@ -60,6 +77,7 @@ def get_decision_tree(log, net, initial_marking, final_marking, decision_point=N
     return dt, list(X.columns.values.tolist()), targets
 
 
+@deprecation.deprecated('2.2.5', '3.0.0', details='use pm4py.algo.decision_mining.algorithm instead')
 def apply(log, net, initial_marking, final_marking, decision_point=None, attributes=None, parameters=None):
     """
     Gets the essential information (features, target class and names of the target class)

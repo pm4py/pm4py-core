@@ -1,8 +1,25 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.util.business_hours import BusinessHours
 from pm4py.objects.log.util import sorting
 from pm4py.util import constants
 from pm4py.util import xes_constants as xes
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
+from copy import copy
 
 
 def to_interval(log, parameters=None):
@@ -45,8 +62,10 @@ def to_interval(log, parameters=None):
             if start_timestamp_key in first_event:
                 return log
 
-        new_log = EventLog()
+        new_log = EventLog(attributes=copy(log.attributes), extensions=copy(log.extensions), classifiers=copy(log.classifiers),
+            omni_present=copy(log.omni_present), properties=copy(log.properties))
         new_log.attributes["PM4PY_TYPE"] = "interval"
+        new_log.properties[constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY] = xes.DEFAULT_START_TIMESTAMP_KEY
 
         for trace in log:
             new_trace = Trace()
@@ -55,20 +74,26 @@ def to_interval(log, parameters=None):
             activities_start = {}
             for event in trace:
                 activity = event[activity_key]
-                transition = event[transition_key]
+                transition = event[transition_key] if transition_key in event else "complete"
                 timestamp = event[timestamp_key]
                 if transition.lower() == "start":
                     if activity not in activities_start:
                         activities_start[activity] = list()
-                    activities_start[activity].append(timestamp)
+                    activities_start[activity].append(event)
                 elif transition.lower() == "complete":
+                    start_event = None
                     start_timestamp = event[timestamp_key]
                     if activity in activities_start and len(activities_start[activity]) > 0:
-                        start_timestamp = activities_start[activity].pop(0)
+                        start_event = activities_start[activity].pop(0)
+                        start_timestamp = start_event[timestamp_key]
                     new_event = Event()
                     for attr in event:
                         if not attr == timestamp_key and not attr == transition_key:
                             new_event[attr] = event[attr]
+                    if start_event is not None:
+                        for attr in start_event:
+                            if not attr == timestamp_key and not attr == transition_key:
+                                new_event["@@startevent_" + attr] = start_event[attr]
                     new_event[start_timestamp_key] = start_timestamp
                     new_event[timestamp_key] = timestamp
                     new_event["@@duration"] = (timestamp - start_timestamp).total_seconds()
@@ -122,7 +147,8 @@ def to_lifecycle(log, parameters=None):
             if transition_key in first_event:
                 return log
 
-        new_log = EventLog()
+        new_log = EventLog(attributes=copy(log.attributes), extensions=copy(log.extensions), classifiers=copy(log.classifiers),
+            omni_present=copy(log.omni_present), properties=copy(log.properties))
         new_log.attributes["PM4PY_TYPE"] = "lifecycle"
 
         for trace in log:

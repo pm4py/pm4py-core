@@ -1,10 +1,29 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util import constants, xes_constants
 from pm4py.objects.conversion.log import converter
-from pm4py.objects.log.log import EventStream, Event
+from pm4py.objects.log.obj import EventStream, Event
 from pm4py.algo.discovery.correlation_mining import util as cm_util
 import numpy as np
+import pandas as pd
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
 
 
@@ -19,7 +38,7 @@ class Parameters(Enum):
 DEFAULT_INDEX_KEY = "@@@index"
 
 
-def apply(log, parameters=None):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Dict[Tuple[str, str], int], Dict[Tuple[str, str], float]]:
     """
     Apply the correlation miner to an event stream
     (other types of logs are converted to that)
@@ -153,6 +172,8 @@ def preprocess_log(log, activities=None, parameters=None):
         # keep only the two columns before conversion
         log = log[list(set([activity_key, timestamp_key, start_timestamp_key]))]
 
+    parameters["deepcopy"] = False
+    parameters["include_case_attributes"] = False
     log = converter.apply(log, variant=converter.TO_EVENT_STREAM, parameters=parameters)
     transf_stream = EventStream()
     for idx, ev in enumerate(log):

@@ -1,4 +1,20 @@
-from pm4py.objects.petri.reachability_graph import construct_reachability_graph
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+from pm4py.objects.petri_net.utils.reachability_graph import construct_reachability_graph
 from pm4py.objects.conversion.log import converter as log_converter
 
 
@@ -29,7 +45,7 @@ def get_tangible_reachability_from_log_net_im_fm(log, net, im, fm, parameters=No
     if parameters is None:
         parameters = {}
 
-    from pm4py.simulation.montecarlo.utils import replay
+    from pm4py.algo.simulation.montecarlo.utils import replay
     stochastic_info = replay.get_map_from_log_and_net(log_converter.apply(log, parameters=parameters), net, im, fm,
                                                       parameters=parameters)
 

@@ -1,11 +1,27 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from copy import copy
 from statistics import stdev
 
 from pm4py.objects.petri import semantics
-from pm4py.objects.petri.petrinet import PetriNet
+from pm4py.objects.petri.obj import PetriNet
 from pm4py.util.vis_utils import human_readable_stat, get_arc_penwidth, get_trans_freq_color
 from statistics import median, mean
-from pm4py.objects.log.log import EventLog
+from pm4py.objects.log.obj import EventLog
 from pm4py.util.business_hours import BusinessHours
 
 MAX_NO_THREADS = 1000
@@ -354,7 +370,8 @@ def find_min_max_arc_performance(statistics, aggregation_measure):
     return min_performance, max_performance
 
 
-def aggregate_statistics(statistics, measure="frequency", aggregation_measure=None):
+def aggregate_statistics(statistics, measure="frequency", aggregation_measure=None,
+                         stat_locale: dict = {}):
     """
     Gets aggregated statistics
 
@@ -366,6 +383,8 @@ def aggregate_statistics(statistics, measure="frequency", aggregation_measure=No
         Desidered view on data (frequency or performance)
     aggregation_measure
         Aggregation measure (e.g. mean, min) to use
+    stat_locale
+        Dict to locale the stat strings
 
     Returns
     ----------
@@ -385,7 +404,7 @@ def aggregate_statistics(statistics, measure="frequency", aggregation_measure=No
             elif measure == "performance":
                 if statistics[elem]["performance"]:
                     aggr_stat = aggregate_stats(statistics, elem, aggregation_measure)
-                    aggr_stat_hr = human_readable_stat(aggr_stat)
+                    aggr_stat_hr = human_readable_stat(aggr_stat, stat_locale)
                     arc_penwidth = get_arc_penwidth(aggr_stat, min_arc_performance, max_arc_performance)
                     aggregated_statistics[elem] = {"label": aggr_stat_hr, "penwidth": str(arc_penwidth)}
         elif type(elem) is PetriNet.Transition:

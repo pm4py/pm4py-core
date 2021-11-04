@@ -1,14 +1,31 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.algo.discovery.footprints.log.variants import entire_event_log, trace_by_trace, entire_dataframe
 from pm4py.algo.discovery.footprints.petri.variants import reach_graph
 from pm4py.algo.discovery.footprints.dfg.variants import dfg
 from pm4py.algo.discovery.footprints.tree.variants import bottomup
-from pm4py.objects.log.log import EventLog
-from pm4py.objects.petri.petrinet import PetriNet
-from pm4py.objects.process_tree.process_tree import ProcessTree
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.petri_net.obj import PetriNet
+from pm4py.objects.process_tree.obj import ProcessTree
 from enum import Enum
 from pm4py.util import exec_utils
 from collections import Counter
 import pkgutil
+from typing import Optional, Dict, Any, Union, Tuple
 
 
 class Variants(Enum):
@@ -20,7 +37,7 @@ class Variants(Enum):
     DFG = dfg
 
 
-def apply(*args, variant=None, parameters=None):
+def apply(*args, variant=None, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
     """
     Discovers a footprint object from a log/model
 

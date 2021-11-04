@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from statistics import mean, median, stdev
 
 from pm4py.visualization.common.utils import *
@@ -142,7 +158,7 @@ def get_shortest_paths(net, enable_extension=False):
 
 
 def get_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_count, variant="frequency",
-                                              aggregation_measure=None):
+                                              aggregation_measure=None, stat_locale: dict = {}):
     """
     Get decorations from Petrinet without doing any replay
     but based on DFG measures, shortest paths and activities count.
@@ -163,7 +179,9 @@ def get_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_count
         Describe how to decorate the Petri net (could be frequency or performance)
     aggregation_measure
         Specifies the aggregation measure
-
+    stat_locale
+        Dict to locale the stat strings
+    
     Returns
     -----------
     decorations
@@ -210,7 +228,7 @@ def get_decorations_from_dfg_spaths_acticount(net, dfg, spaths, activities_count
         arcs_max_value = max(list(decorations_int.values()))
         for arc in decorations_int:
             if "performance" in variant:
-                arc_label = human_readable_stat(decorations_int[arc])
+                arc_label = human_readable_stat(decorations_int[arc], stat_locale)
             else:
                 arc_label = str(decorations_int[arc])
             decorations[arc] = {"label": arc_label,

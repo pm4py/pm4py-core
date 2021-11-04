@@ -1,8 +1,26 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from enum import Enum
 
 from pm4py.objects.conversion.log.variants import to_event_stream
-from pm4py.objects.log import log as log_instance
+from pm4py.objects.log import obj as log_instance
 from pm4py.objects.conversion.log import constants
+from copy import copy
+from pm4py.util import constants as pm4_constants
 
 
 class Parameters(Enum):
@@ -38,7 +56,14 @@ def apply(log, parameters=None):
     if isinstance(log, pd.core.frame.DataFrame):
         return log
     if type(log) is log_instance.EventLog:
-        log = to_event_stream.apply(log, parameters=parameters)
+        new_parameters = copy(parameters)
+        new_parameters["deepcopy"] = False
+        log = to_event_stream.apply(log, parameters=new_parameters)
+    
     transf_log = [dict(x) for x in log]
     df = pd.DataFrame.from_dict(transf_log)
+    df.attrs = copy(log.properties)
+    if pm4_constants.PARAMETER_CONSTANT_CASEID_KEY in df.attrs:
+        del df.attrs[pm4_constants.PARAMETER_CONSTANT_CASEID_KEY]
+
     return df

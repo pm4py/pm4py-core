@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from copy import copy
 import pkgutil
 
@@ -11,14 +27,27 @@ from pm4py.algo.discovery.inductive.variants.im.util import base_case, fall_thro
 from pm4py import util as pmutil
 from pm4py.algo.discovery.inductive.variants.im.util import splitting as split
 from pm4py.algo.discovery.inductive.util import parallel_cut_utils, detection_utils, cut_detection
-from pm4py.algo.filtering.log.attributes import attributes_filter
-from pm4py.algo.filtering.log.end_activities import end_activities_filter
-from pm4py.algo.filtering.log.start_activities import start_activities_filter
-from pm4py.algo.discovery.inductive.variants.im.util import constants as inductive_consts
-from pm4py.algo.discovery.inductive.parameters import Parameters
+from pm4py.statistics.attributes.log import get as attributes_get
+from pm4py.statistics.end_activities.log import get as end_activities_get
+from pm4py.statistics.start_activities.log import get as start_activities_get
 from pm4py.util import exec_utils
 from pm4py.objects.log.util import filtering_utils
 import logging
+from pm4py.util import constants
+from enum import Enum
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    NOISE_THRESHOLD = "noiseThreshold"
+    EMPTY_TRACE_KEY = "empty_trace"
+    ONCE_PER_TRACE_KEY = "once_per_trace"
+    CONCURRENT_KEY = "concurrent"
+    STRICT_TAU_LOOP_KEY = "strict_tau_loop"
+    TAU_LOOP_KEY = "tau_loop"
 
 
 class SubtreePlain(object):
@@ -487,11 +516,11 @@ class SubtreePlain(object):
                         new_logs[i] = filtering_utils.keep_one_trace_per_variant(new_logs[i], parameters=parameters)
                     for l in new_logs:
                         new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters=parameters).items() if v > 0]
-                        activities = attributes_filter.get_attribute_values(l, activity_key)
+                        activities = attributes_get.get_attribute_values(l, activity_key)
                         start_activities = list(
-                            start_activities_filter.get_start_activities(l, parameters=parameters).keys())
+                            start_activities_get.get_start_activities(l, parameters=parameters).keys())
                         end_activities = list(
-                            end_activities_filter.get_end_activities(l, parameters=parameters).keys())
+                            end_activities_get.get_end_activities(l, parameters=parameters).keys())
                         self.children.append(
                             SubtreePlain(l, new_dfg, self.master_dfg, self.initial_dfg, activities, self.counts,
                                          self.rec_depth + 1,
@@ -511,11 +540,11 @@ class SubtreePlain(object):
                         self.detected_cut = "sequential"
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters=parameters).items() if v > 0]
-                            activities = attributes_filter.get_attribute_values(l, activity_key)
+                            activities = attributes_get.get_attribute_values(l, activity_key)
                             start_activities = list(
-                                start_activities_filter.get_start_activities(l, parameters=parameters).keys())
+                                start_activities_get.get_start_activities(l, parameters=parameters).keys())
                             end_activities = list(
-                                end_activities_filter.get_end_activities(l, parameters=parameters).keys())
+                                end_activities_get.get_end_activities(l, parameters=parameters).keys())
                             self.children.append(
                                 SubtreePlain(l, new_dfg, self.master_dfg, self.initial_dfg, activities, self.counts,
                                              self.rec_depth + 1,
@@ -535,12 +564,12 @@ class SubtreePlain(object):
                             self.detected_cut = "parallel"
                             for l in new_logs:
                                 new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters=parameters).items() if v > 0]
-                                activities = attributes_filter.get_attribute_values(l, activity_key)
+                                activities = attributes_get.get_attribute_values(l, activity_key)
                                 start_activities = list(
-                                    start_activities_filter.get_start_activities(l,
-                                                                                 parameters=parameters).keys())
+                                    start_activities_get.get_start_activities(l,
+                                                                              parameters=parameters).keys())
                                 end_activities = list(
-                                    end_activities_filter.get_end_activities(l, parameters=parameters).keys())
+                                    end_activities_get.get_end_activities(l, parameters=parameters).keys())
                                 self.children.append(
                                     SubtreePlain(l, new_dfg, self.master_dfg, self.initial_dfg, activities, self.counts,
                                                  self.rec_depth + 1,
@@ -562,13 +591,13 @@ class SubtreePlain(object):
                                 for l in new_logs:
                                     new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters=parameters).items() if
                                                v > 0]
-                                    activities = attributes_filter.get_attribute_values(l, activity_key)
+                                    activities = attributes_get.get_attribute_values(l, activity_key)
                                     start_activities = list(
-                                        start_activities_filter.get_start_activities(l,
-                                                                                     parameters=parameters).keys())
+                                        start_activities_get.get_start_activities(l,
+                                                                                  parameters=parameters).keys())
                                     end_activities = list(
-                                        end_activities_filter.get_end_activities(l,
-                                                                                 parameters=parameters).keys())
+                                        end_activities_get.get_end_activities(l,
+                                                                              parameters=parameters).keys())
                                     self.children.append(
                                         SubtreePlain(l, new_dfg, self.master_dfg, self.initial_dfg, activities,
                                                      self.counts,
@@ -622,10 +651,10 @@ class SubtreePlain(object):
                         activites_left.append(act[activity_key])
             self.detected_cut = 'empty_trace'
             new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters=parameters).items() if v > 0]
-            activities = attributes_filter.get_attribute_values(new_log, activity_key)
+            activities = attributes_get.get_attribute_values(new_log, activity_key)
             start_activities = list(
-                start_activities_filter.get_start_activities(new_log, parameters=self.parameters).keys())
-            end_activities = list(end_activities_filter.get_end_activities(new_log, parameters=self.parameters).keys())
+                start_activities_get.get_start_activities(new_log, parameters=self.parameters).keys())
+            end_activities = list(end_activities_get.get_end_activities(new_log, parameters=self.parameters).keys())
             self.children.append(
                 SubtreePlain(new_log, new_dfg, self.master_dfg, self.initial_dfg, activities, self.counts,
                              self.rec_depth + 1,
@@ -647,10 +676,10 @@ class SubtreePlain(object):
                 # create two new dfgs as we need them to append to self.children later
                 new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters=parameters).items() if
                            v > 0]
-                activities = attributes_filter.get_attribute_values(new_log, activity_key)
+                activities = attributes_get.get_attribute_values(new_log, activity_key)
                 small_dfg = [(k, v) for k, v in dfg_inst.apply(small_log, parameters=parameters).items() if
                              v > 0]
-                small_activities = attributes_filter.get_attribute_values(small_log, activity_key)
+                small_activities = attributes_get.get_attribute_values(small_log, activity_key)
                 self.children.append(
                     SubtreePlain(small_log, small_dfg, self.master_dfg, self.initial_dfg, small_activities,
                                  self.counts,
@@ -661,9 +690,9 @@ class SubtreePlain(object):
                                  parameters=parameters))
                 # continue with the recursion on the new log
                 start_activities = list(
-                    start_activities_filter.get_start_activities(new_log, parameters=self.parameters).keys())
+                    start_activities_get.get_start_activities(new_log, parameters=self.parameters).keys())
                 end_activities = list(
-                    end_activities_filter.get_end_activities(new_log, parameters=self.parameters).keys())
+                    end_activities_get.get_end_activities(new_log, parameters=self.parameters).keys())
                 self.children.append(
                     SubtreePlain(new_log, new_dfg, self.master_dfg, self.initial_dfg, activities,
                                  self.counts,
@@ -690,10 +719,10 @@ class SubtreePlain(object):
                     # create two new dfgs on to append later
                     new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters=parameters).items() if
                                v > 0]
-                    activities = attributes_filter.get_attribute_values(new_log, activity_key)
+                    activities = attributes_get.get_attribute_values(new_log, activity_key)
                     small_dfg = [(k, v) for k, v in dfg_inst.apply(small_log, parameters=parameters).items() if
                                  v > 0]
-                    small_activities = attributes_filter.get_attribute_values(small_log, activity_key)
+                    small_activities = attributes_get.get_attribute_values(small_log, activity_key)
                     # append the concurrent activity as leaf:
                     self.children.append(
                         SubtreePlain(small_log, small_dfg, self.master_dfg, self.initial_dfg,
@@ -706,9 +735,9 @@ class SubtreePlain(object):
                                      parameters=parameters))
                     # continue with the recursion on the new log:
                     start_activities = list(
-                        start_activities_filter.get_start_activities(new_log, parameters=self.parameters).keys())
+                        start_activities_get.get_start_activities(new_log, parameters=self.parameters).keys())
                     end_activities = list(
-                        end_activities_filter.get_end_activities(new_log, parameters=self.parameters).keys())
+                        end_activities_get.get_end_activities(new_log, parameters=self.parameters).keys())
                     self.children.append(
                         SubtreePlain(new_log, new_dfg, self.master_dfg, self.initial_dfg,
                                      activities,
@@ -736,11 +765,11 @@ class SubtreePlain(object):
                         self.detected_cut = 'strict_tau_loop'
                         new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters=parameters).items() if
                                    v > 0]
-                        activities = attributes_filter.get_attribute_values(new_log, activity_key)
+                        activities = attributes_get.get_attribute_values(new_log, activity_key)
                         start_activities = list(
-                            start_activities_filter.get_start_activities(new_log, parameters=self.parameters).keys())
+                            start_activities_get.get_start_activities(new_log, parameters=self.parameters).keys())
                         end_activities = list(
-                            end_activities_filter.get_end_activities(new_log, parameters=self.parameters).keys())
+                            end_activities_get.get_end_activities(new_log, parameters=self.parameters).keys())
                         self.children.append(
                             SubtreePlain(new_log, new_dfg, self.master_dfg, self.initial_dfg,
                                          activities,
@@ -767,11 +796,11 @@ class SubtreePlain(object):
                             self.detected_cut = 'tau_loop'
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters=parameters).items() if
                                        v > 0]
-                            activities = attributes_filter.get_attribute_values(new_log, activity_key)
-                            start_activities = list(start_activities_filter.get_start_activities(new_log,
-                                                                                                 parameters=self.parameters).keys())
+                            activities = attributes_get.get_attribute_values(new_log, activity_key)
+                            start_activities = list(start_activities_get.get_start_activities(new_log,
+                                                                                              parameters=self.parameters).keys())
                             end_activities = list(
-                                end_activities_filter.get_end_activities(new_log, parameters=self.parameters).keys())
+                                end_activities_get.get_end_activities(new_log, parameters=self.parameters).keys())
                             self.children.append(
                                 SubtreePlain(new_log, new_dfg, self.master_dfg, self.initial_dfg,
                                              activities,

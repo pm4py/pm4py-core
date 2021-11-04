@@ -1,17 +1,35 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from copy import copy
 
 import numpy as np
 import pandas as pd
 
 from pm4py.objects.conversion.log import converter as log_conversion
-from pm4py.objects.log.log import EventStream
+from pm4py.objects.log.obj import EventStream
 from pm4py.util import xes_constants as xes
-from pm4py.util import constants
+from pm4py.util import constants, variants_util
+import deprecation
 
 KEEP_UNIQUE = "keep_unique"
 SKIP_LAST = "skip_last"
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_variants_matrix_from_variants_list(variants_list, activities, parameters=None):
     """
     Gets a numeric matrix where each row is associated to a different set of activities
@@ -37,7 +55,7 @@ def get_variants_matrix_from_variants_list(variants_list, activities, parameters
     keep_unique = parameters[KEEP_UNIQUE] if KEEP_UNIQUE in parameters else True
     variants_mat = []
     for var in variants_list:
-        variant = var[0].split(",")
+        variant = variants_util.get_activities_from_variant(var[0])
         count = var[1]
         this_var_repr = [0] * len(activities)
         for act in variant:
@@ -50,6 +68,7 @@ def get_variants_matrix_from_variants_list(variants_list, activities, parameters
     return variants_mat, activities
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_prefix_repr(prefix, activities):
     """
     Gets the numeric representation (as vector) of a prefix
@@ -73,6 +92,7 @@ def get_prefix_repr(prefix, activities):
     return tuple(this_pref_repr)
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_prefix_matrix_from_variants_list(variants_list, activities, parameters=None):
     """
     Gets a numeric matrix where each row is associated to a different prefix of activities
@@ -98,7 +118,8 @@ def get_prefix_matrix_from_variants_list(variants_list, activities, parameters=N
 
     prefixes = {}
     for var in variants_list:
-        variant = var[0].split(",")
+        variant = variants_util.get_activities_from_variant(var[0])
+
         count = var[1]
         prefix = []
         for index, act in enumerate(variant):
@@ -120,6 +141,7 @@ def get_prefix_matrix_from_variants_list(variants_list, activities, parameters=N
     return prefix_mat, activities
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_prefix_matrix_from_trace(trace, activities, parameters=None):
     """
     Gets a numeric matrix where a trace is associated to different rows, each one is
@@ -157,6 +179,7 @@ def get_prefix_matrix_from_trace(trace, activities, parameters=None):
     return prefix_mat
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_prefix_matrix_from_var_str(var_str, activities, parameters=None):
     """
     Gets a numeric matrix where a variant is associated to different rows, each one is
@@ -181,7 +204,7 @@ def get_prefix_matrix_from_var_str(var_str, activities, parameters=None):
     skip_last = parameters[SKIP_LAST] if SKIP_LAST in parameters else False
     prefix_mat = []
     this_prefix_repr = [0] * len(activities)
-    variant = var_str.split(",")
+    variant = var_str.split(constants.DEFAULT_VARIANT_SEP)
     for index, act in enumerate(variant):
         if skip_last and index == len(variant) - 1:
             break
@@ -192,6 +215,7 @@ def get_prefix_matrix_from_var_str(var_str, activities, parameters=None):
     return prefix_mat
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_prefix_matrix_from_event_log_not_unique(event_log, activities, parameters=None):
     """
     Gets a numeric matrix where each trace is associated to different rows, each one is
@@ -230,6 +254,7 @@ def get_prefix_matrix_from_event_log_not_unique(event_log, activities, parameter
     return prefix_mat, activities
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_variants_list(log, parameters=None):
     """
     Gets the list of variants (along with their count) from the particular log type
@@ -246,8 +271,8 @@ def get_variants_list(log, parameters=None):
     variants_list
         List of variants of the log (along with their count)
     """
-    from pm4py.statistics.traces.pandas import case_statistics as pd_case_statistics
-    from pm4py.statistics.traces.log import case_statistics as log_case_statistics
+    from pm4py.statistics.traces.generic.pandas import case_statistics as pd_case_statistics
+    from pm4py.statistics.traces.generic.log import case_statistics as log_case_statistics
 
     variants_list = []
     if type(log) is pd.DataFrame:
@@ -265,6 +290,7 @@ def get_variants_list(log, parameters=None):
     return variants_list
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_activities_list(log, parameters=None):
     """
     Gets the activities list from a log object, sorted by activity name
@@ -295,6 +321,7 @@ def get_activities_list(log, parameters=None):
     return sorted(list(activities.keys()))
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_prefix_matrix(log, parameters=None):
     """
     Gets the prefix matrix from a log object
@@ -337,6 +364,7 @@ def get_prefix_matrix(log, parameters=None):
     return prefix_matrix, activities
 
 
+@deprecation.deprecated('2.2.7', '3.0.0')
 def get_variants_matrix(log, parameters=None):
     """
     Gets the variants matrix from a log object
@@ -370,6 +398,7 @@ def get_variants_matrix(log, parameters=None):
     return get_variants_matrix_from_variants_list(variants_list, activities, parameters=parameters)
 
 
+@deprecation.deprecated('2.2.10', '3.0.0')
 def get_prefix_variants_matrix(log, parameters=None):
     """
     Gets the prefix variants matrix from a log object

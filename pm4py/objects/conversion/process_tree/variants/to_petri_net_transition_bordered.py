@@ -1,6 +1,22 @@
-from pm4py.objects.petri import petrinet
-from pm4py.objects.petri import utils as pn_util
-from pm4py.objects.process_tree.pt_operator import Operator as pt_opt
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
+from pm4py.objects.petri_net import obj
+from pm4py.objects.petri_net.utils import petri_utils as pn_util
+from pm4py.objects.process_tree.obj import Operator as pt_opt
 
 
 def apply(tree, parameters=None):
@@ -9,7 +25,7 @@ def apply(tree, parameters=None):
     :param tree:
     :return:
     '''
-    net = petrinet.PetriNet(name=str(tree))
+    net = obj.PetriNet(name=str(tree))
     if len(tree.children) == 0:
         pn_util.add_transition(net, label=tree.label, name=str(id(tree)))
     else:
@@ -30,8 +46,8 @@ def apply(tree, parameters=None):
         p_fin = pn_util.add_place(net)
         pn_util.add_arc_from_to(p_ini, _get_src_transition(net), net)
         pn_util.add_arc_from_to(_get_sink_transition(net), p_fin, net)
-        return net, petrinet.Marking({p_ini: 1}), petrinet.Marking({p_fin: 1})
-    return net, petrinet.Marking(), petrinet.Marking()
+        return net, obj.Marking({p_ini: 1}), obj.Marking({p_fin: 1})
+    return net, obj.Marking(), obj.Marking()
 
 
 def _get_src_transition(sub_net):
@@ -53,7 +69,7 @@ def _add_src_sink_transitions(net, p_s, p_t):
     pn_util.add_arc_from_to(src, p_s, net)
     sink = pn_util.add_transition(net)
     pn_util.add_arc_from_to(p_t, sink, net)
-    return net, petrinet.Marking(), petrinet.Marking()
+    return net, obj.Marking(), obj.Marking()
 
 
 def construct_sequence_pattern(net, sub_nets):
@@ -67,7 +83,7 @@ def construct_sequence_pattern(net, sub_nets):
     pn_util.add_arc_from_to(src, places[0], net)
     sink = pn_util.add_transition(net)
     pn_util.add_arc_from_to(places[len(places) - 1], sink, net)
-    return net, petrinet.Marking(), petrinet.Marking()
+    return net, obj.Marking(), obj.Marking()
 
 
 def construct_xor_pattern(net, sub_nets):
@@ -93,7 +109,7 @@ def construct_and_pattern(net, sub_nets):
     sink = pn_util.add_transition(net)
     for p in p_t:
         pn_util.add_arc_from_to(p, sink, net)
-    return net, petrinet.Marking(), petrinet.Marking()
+    return net, obj.Marking(), obj.Marking()
 
 
 def construct_loop_pattern(net, sub_nets):
@@ -105,4 +121,4 @@ def construct_loop_pattern(net, sub_nets):
     pn_util.add_arc_from_to(_get_sink_transition(sub_nets[0]), p_t, net)
     pn_util.add_arc_from_to(_get_sink_transition(sub_nets[1]), p_s, net)
     net, ini, fin = _add_src_sink_transitions(net, p_s, p_t)
-    return net, petrinet.Marking(), petrinet.Marking()
+    return net, obj.Marking(), obj.Marking()

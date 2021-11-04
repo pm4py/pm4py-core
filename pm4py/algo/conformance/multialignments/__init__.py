@@ -1,1 +1,1 @@
-from pm4py.algo.conformance.alignments import variants, algorithm
+from pm4py.algo.conformance.multialignments import variants, algorithm

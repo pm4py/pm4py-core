@@ -1,8 +1,27 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.algo.conformance.log_skeleton.variants import classic
-from pm4py.objects.log.log import Trace
+from pm4py.objects.log.obj import Trace
 from pm4py.objects.conversion.log import converter as log_conversion
 from enum import Enum
 from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.log.obj import EventLog, Trace
+import pandas as pd
 
 
 class Variants(Enum):
@@ -13,7 +32,7 @@ CLASSIC = Variants.CLASSIC
 DEFAULT_VARIANT = Variants.CLASSIC
 
 
-def apply(obj, model, variant=DEFAULT_VARIANT, parameters=None):
+def apply(obj: Union[EventLog, Trace], model: Dict[str, Any], variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> List[Set[Any]]:
     """
     Apply log-skeleton based conformance checking given an event log/trace
     and a log-skeleton model
@@ -50,7 +69,7 @@ def apply(obj, model, variant=DEFAULT_VARIANT, parameters=None):
                                                          parameters=parameters)
 
 
-def apply_from_variants_list(var_list, model, variant=DEFAULT_VARIANT, parameters=None):
+def apply_from_variants_list(var_list: List[List[str]], model: Dict[str, Any], variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> List[Set[Any]]:
     """
     Performs conformance checking using the log skeleton,
     applying it from a list of variants
@@ -78,7 +97,7 @@ def apply_from_variants_list(var_list, model, variant=DEFAULT_VARIANT, parameter
     return exec_utils.get_variant(variant).apply_from_variants_list(var_list, model, parameters=parameters)
 
 
-def get_diagnostics_dataframe(log, conf_result, variant=DEFAULT_VARIANT, parameters=None):
+def get_diagnostics_dataframe(log: EventLog, conf_result: List[Set[Any]], variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> pd.DataFrame:
     """
     Gets the diagnostics dataframe from a log and the results
     of log skeleton-based conformance checking

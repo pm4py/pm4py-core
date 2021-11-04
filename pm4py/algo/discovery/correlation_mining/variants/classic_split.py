@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util import constants, xes_constants
@@ -5,6 +21,9 @@ from pm4py.objects.conversion.log import converter
 from pm4py.algo.discovery.correlation_mining.variants import classic
 from collections import Counter
 import numpy as np
+import pandas as pd
+from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
 
 
@@ -15,7 +34,7 @@ class Parameters(Enum):
     SAMPLE_SIZE = "sample_size"
 
 
-def apply(log, parameters=None):
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Dict[Tuple[str, str], int], Dict[Tuple[str, str], float]]:
     """
     Applies the correlation miner (splits the log in smaller chunks)
 
@@ -53,7 +72,7 @@ def apply(log, parameters=None):
         activities_counter = dict(log[activity_key].value_counts())
         activities = sorted(list(activities_counter.keys()))
     else:
-        log = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM)
+        log = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
         activities_counter = Counter(x[activity_key] for x in log)
         activities = sorted(list(activities_counter.keys()))
 

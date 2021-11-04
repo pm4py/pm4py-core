@@ -1,12 +1,7 @@
-try:
-    import pm4pycvxopt
-except:
-    pass
-
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-from pm4py.algo.conformance.decomp_alignments import algorithm as dec_align
-from pm4py.evaluation.replay_fitness import evaluator as rep_fit
+from pm4py.algo.conformance.alignments.decomposed import algorithm as dec_align
+from pm4py.algo.evaluation.replay_fitness import algorithm as rep_fit
 import os
 import time
 

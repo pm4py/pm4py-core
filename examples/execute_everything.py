@@ -4,6 +4,102 @@ import sys
 import traceback
 
 
+def enrich_log_with_align():
+    from examples import enrich_log_with_align
+    print("\n\nenrich_log_with_align")
+    enrich_log_with_align.execute_script()
+
+
+def extended_marking_equation():
+    from examples import extended_marking_equation
+    print("\n\nextended_marking_equation")
+    extended_marking_equation.execute_script()
+
+
+def features_locally_linear_embedding():
+    from examples import features_locally_linear_embedding
+    print("\n\nfeatures_locally_linear_embedding")
+    features_locally_linear_embedding.execute_script()
+
+
+def discovery_data_petri_net():
+    from examples import discovery_data_petri_net
+    print("\n\ndiscovery_data_petri_net")
+    discovery_data_petri_net.execute_script()
+
+
+def pandas_iterable():
+    from examples import pandas_iterable
+    print("\n\npandas_iterable")
+    pandas_iterable.execute_script()
+
+
+def pandas_iterable_to_trace_stream():
+    from examples import pandas_iterable_to_trace_stream
+    print("\n\npandas_iterable_to_trace_stream")
+    pandas_iterable_to_trace_stream.execute_script()
+
+
+def performance_dfg_simulation():
+    from examples import performance_dfg_simulation
+    print("\n\nperformance_dfg_simulation")
+    performance_dfg_simulation.execute_script()
+
+
+def data_petri_nets():
+    from examples import data_petri_nets
+    print("\n\ndata_petri_nets")
+    data_petri_nets.execute_script()
+
+
+def inhibitor_reset_arcs():
+    from examples import inhibitor_reset_arcs
+    print("\n\ninhibitor_reset_arcs")
+    inhibitor_reset_arcs.execute_script()
+
+
+def batch_detection():
+    from examples import batch_detection
+    print("\n\nbatch_detection")
+    batch_detection.execute_script()
+
+
+def case_overlap_stat():
+    from examples import case_overlap_stat
+    print("\n\ncase_overlap_stat")
+    case_overlap_stat.execute_script()
+
+
+def cycle_time():
+    from examples import cycle_time
+    print("\n\ncycle_time")
+    cycle_time.execute_script()
+
+
+def rework():
+    from examples import rework
+    print("\n\nrework")
+    rework.execute_script()
+
+
+def events_distribution():
+    from examples import events_distribution
+    print("\n\nevents_distribution")
+    events_distribution.execute_script()
+
+
+def dotted_chart():
+    from examples import dotted_chart
+    print("\n\ndotted_chart")
+    dotted_chart.execute_script()
+
+
+def performance_spectrum():
+    from examples import perf_spectrum_visualization
+    print("\n\nperformance_spectrum")
+    perf_spectrum_visualization.execute_script()
+
+
 def woflan():
     from examples import woflan
     print("\n\nwoflan")
@@ -50,30 +146,6 @@ def footprints_petri_net():
     from examples import footprints_petri_net
     print("\n\nfootprints_petri_net")
     footprints_petri_net.execute_script()
-
-
-def events_log_filter():
-    from examples import event_log_filter
-    print("\n\nevent_log_filter")
-    event_log_filter.execute_script()
-
-
-def event_log_map():
-    from examples import event_log_map
-    print("\n\nevent_log_map")
-    event_log_map.execute_script()
-
-
-def event_stream_filter():
-    from examples import event_stream_filter
-    print("\n\nevent_stream_filter")
-    event_stream_filter.execute_script()
-
-
-def event_stream_map():
-    from examples import event_stream_map
-    print("\n\nevent_stream_map")
-    event_stream_map.execute_script()
 
 
 def corr_mining():
@@ -190,6 +262,12 @@ def dfg_min_ex_pandas():
     dfg_min_ex_pandas.execute_script()
 
 
+def dfg_filt_act_paths_perc():
+    from examples import dfg_filt_act_paths_perc
+    print("\n\ndfg_filt_act_paths_perc")
+    dfg_filt_act_paths_perc.execute_script()
+
+
 def graphs_visualization():
     from examples import graphs_visualization
     print("\n\ngraphs_visualization")
@@ -250,6 +328,126 @@ def visualization_align_table():
     visualization_align_table.execute_script()
 
 
+def align_approx_pt():
+    from examples import align_approx_pt
+    print("\n\nalign_approx_pt")
+    align_approx_pt.execute_script()
+
+
+def streaming_conformance_footprints():
+    from examples import streaming_conformance_footprints
+    print("\n\nstreaming_conformance_footprints")
+    streaming_conformance_footprints.execute_script()
+
+
+def streaming_conformance_tbr():
+    from examples import streaming_conformance_tbr
+    print("\n\nstreaming_conformance_tbr")
+    streaming_conformance_tbr.execute_script()
+
+
+def streaming_conformance_temporal_profile():
+    from examples import streaming_conformance_temporal_profile
+    print("\n\nstreaming_conformance_temporal_profile")
+    streaming_conformance_temporal_profile.execute_script()
+
+
+def streaming_csv_reader_event_stream():
+    from examples import streaming_csv_reader_event_stream
+    print("\n\nstreaming_csv_reader_event_stream")
+    streaming_csv_reader_event_stream.execute_script()
+
+
+def streaming_discovery_dfg():
+    from examples import streaming_discovery_dfg
+    print("\n\nstreaming_discovery_dfg")
+    streaming_discovery_dfg.execute_script()
+
+
+def streaming_xes_reader_event_stream():
+    from examples import streaming_xes_reader_event_stream
+    print("\n\nstreaming_xes_reader_event_stream")
+    streaming_xes_reader_event_stream.execute_script()
+
+
+def streaming_xes_reader_trace_stream():
+    from examples import streaming_xes_reader_trace_stream
+    print("\n\nstreaming_xes_reader_trace_stream")
+    streaming_xes_reader_trace_stream.execute_script()
+
+
+def example_check_fitness():
+    from examples import example_check_fitness
+    print("\n\nexample_check_fitness")
+    example_check_fitness.execute_script()
+
+
+def dfg_align_log():
+    from examples import dfg_align_log
+    print("\n\ndfg_align_log")
+    dfg_align_log.execute_script()
+
+
+def dfg_playout():
+    from examples import dfg_playout
+    print("\n\ndfg_playout")
+    dfg_playout.execute_script()
+
+
+def temporal_profile_log():
+    from examples import temporal_profile_log
+    print("\n\ntemporal_profile_log")
+    temporal_profile_log.execute_script()
+
+
+def temporal_profile_dataframe():
+    from examples import temporal_profile_dataframe
+    print("\n\ntemporal_profile_dataframe")
+    temporal_profile_dataframe.execute_script()
+
+
+def dataframe_prefix_and_fea_extraction():
+    from examples import dataframe_prefix_and_fea_extraction
+    print("\n\ndataframe_prefix_and_fea_extraction")
+    dataframe_prefix_and_fea_extraction.execute_script()
+
+
+def logs_alignments():
+    from examples import logs_alignment
+    print("\n\nlogs_alignment")
+    logs_alignment.execute_script()
+
+
+def visualization_serialization():
+    from examples import visualization_serialization
+    print("\n\visualization_serialization")
+    visualization_serialization.execute_script()
+
+
+def orgmining_local_diagn():
+    from examples import orgmining_local_diagn
+    print("\n\norgmining_local_diagn")
+    orgmining_local_diagn.execute_script()
+
+
+def resource_profiles_log():
+    from examples import resource_profiles_log
+    print("\n\nresource_profiles_log")
+    resource_profiles_log.execute_script()
+
+
+def resource_profile_pandas():
+    from examples import resource_profiles_pandas
+    print("\n\nresource_profile_pandas")
+    resource_profiles_pandas.execute_script()
+
+
+def process_tree_reduction():
+    from examples import process_tree_reduction
+    print("\n\nprocess_tree_reduction")
+    process_tree_reduction.execute_script()
+
+
 def execute_script(f):
     try:
         f()
@@ -261,6 +459,23 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(enrich_log_with_align)
+    execute_script(extended_marking_equation)
+    execute_script(features_locally_linear_embedding)
+    execute_script(discovery_data_petri_net)
+    execute_script(pandas_iterable)
+    execute_script(pandas_iterable_to_trace_stream)
+    execute_script(data_petri_nets)
+    execute_script(inhibitor_reset_arcs)
+    execute_script(dotted_chart)
+    execute_script(performance_spectrum)
+    execute_script(orgmining_local_diagn)
+    execute_script(resource_profiles_log)
+    execute_script(resource_profile_pandas)
+    execute_script(process_tree_reduction)
+    execute_script(dataframe_prefix_and_fea_extraction)
+    execute_script(logs_alignments)
+    execute_script(visualization_serialization)
     execute_script(woflan)
     execute_script(bpmn_from_pt)
     execute_script(bpmn_import_and_to_petri_net)
@@ -268,10 +483,6 @@ if __name__ == "__main__":
     execute_script(emd_evaluation)
     execute_script(footprints_tree_conf)
     execute_script(footprints_petri_net)
-    execute_script(events_log_filter)
-    execute_script(event_log_map)
-    execute_script(event_stream_filter)
-    execute_script(event_stream_map)
     execute_script(corr_mining)
     execute_script(log_skeleton)
     execute_script(roles_detection)
@@ -301,3 +512,11 @@ if __name__ == "__main__":
     execute_script(visualization_align_table)
     execute_script(pn_to_pt)
     execute_script(simplified_interface)
+    execute_script(align_approx_pt)
+    execute_script(streaming_conformance_footprints)
+    execute_script(streaming_conformance_tbr)
+    execute_script(streaming_csv_reader_event_stream)
+    execute_script(streaming_discovery_dfg)
+    execute_script(streaming_xes_reader_event_stream)
+    execute_script(streaming_xes_reader_trace_stream)
+    execute_script(example_check_fitness)

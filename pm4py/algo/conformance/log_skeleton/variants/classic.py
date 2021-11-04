@@ -1,13 +1,72 @@
-from pm4py.algo.discovery.log_skeleton.parameters import Parameters
-from pm4py.algo.discovery.log_skeleton.outputs import Outputs as DiscoveryOutputs
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from pm4py.objects.log.util import xes
 from pm4py.algo.discovery.log_skeleton import trace_skel
-from pm4py.algo.conformance.log_skeleton.outputs import Outputs
-from pm4py.objects.log.log import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import variants_util
+from enum import Enum
+from pm4py.util import exec_utils
+from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.log.obj import EventLog, Trace
 
 
-def apply_log(log, model, parameters=None):
+from enum import Enum
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY
+
+
+class Parameters(Enum):
+    # parameter for the noise threshold
+    NOISE_THRESHOLD = "noise_threshold"
+    # considered constraints in conformance checking among: equivalence, always_after, always_before, never_together, directly_follows, activ_freq
+    CONSIDERED_CONSTRAINTS = "considered_constraints"
+    # default choice for conformance checking
+    DEFAULT_CONSIDERED_CONSTRAINTS = ["equivalence", "always_after", "always_before", "never_together",
+                                      "directly_follows", "activ_freq"]
+    CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
+    ACTIVITY_KEY = PARAMETER_CONSTANT_ACTIVITY_KEY
+    PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
+
+
+NOISE_THRESHOLD = Parameters.NOISE_THRESHOLD
+CONSIDERED_CONSTRAINTS = Parameters.CONSIDERED_CONSTRAINTS
+DEFAULT_CONSIDERED_CONSTRAINTS = Parameters.DEFAULT_CONSIDERED_CONSTRAINTS
+ACTIVITY_KEY = Parameters.ACTIVITY_KEY
+PARAMETER_VARIANT_DELIMITER = Parameters.PARAMETER_VARIANT_DELIMITER
+
+
+class DiscoveryOutputs(Enum):
+    EQUIVALENCE = "equivalence"
+    ALWAYS_AFTER = "always_after"
+    ALWAYS_BEFORE = "always_before"
+    NEVER_TOGETHER = "never_together"
+    DIRECTLY_FOLLOWS = "directly_follows"
+    ACTIV_FREQ = "activ_freq"
+
+
+class Outputs(Enum):
+    DEVIATIONS = "deviations"
+    NO_DEV_TOTAL = "no_dev_total"
+    NO_CONSTR_TOTAL = "no_constr_total"
+    DEV_FITNESS = "dev_fitness"
+    IS_FIT = "is_fit"
+
+
+def apply_log(log: EventLog, model: Dict[str, Any], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Set[Any]]:
     """
     Apply log-skeleton based conformance checking given an event log
     and a log-skeleton model
@@ -59,7 +118,7 @@ def apply_log(log, model, parameters=None):
     return res
 
 
-def apply_trace(trace, model, parameters=None):
+def apply_trace(trace: Trace, model: Dict[str, Any], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Set[Any]]:
     """
     Apply log-skeleton based conformance checking given a trace
     and a log-skeleton model
@@ -146,7 +205,7 @@ def apply_actlist(trace, model, parameters=None):
                 for act in this_constraints:
                     if min(this_constraints[act]) > 0 and not act in trace:
                         dev_total += 1
-                        ret[Outputs.DEVIATIONS.value].append((default_considered_constraints[i], (act, this_constraints[act])))
+                        ret[Outputs.DEVIATIONS.value].append((default_considered_constraints[i], (act, 0)))
             elif default_considered_constraints[i] == DiscoveryOutputs.NEVER_TOGETHER.value:
                 this_constraints = {x for x in model[default_considered_constraints[i]] if x[0] in trace}
                 conf_total += len(this_constraints)
@@ -193,18 +252,12 @@ def apply_from_variants_list(var_list, model, parameters=None):
     if parameters is None:
         parameters = {}
 
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
-    variant_delimiter = exec_utils.get_param_value(Parameters.PARAMETER_VARIANT_DELIMITER, parameters,
-                                                   constants.DEFAULT_VARIANT_SEP)
-
     conformance_output = {}
 
     for cv in var_list:
         v = cv[0]
-        tr = v.split(variant_delimiter)
-        trace = Trace()
-        for act in tr:
-            trace.append(Event({activity_key: act}))
+        trace = variants_util.variant_to_trace(v, parameters=parameters)
+
         conformance_output[v] = apply_trace(trace, model, parameters=parameters)
 
     return conformance_output
