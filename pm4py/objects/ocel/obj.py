@@ -16,11 +16,10 @@
 '''
 from enum import Enum
 
-import pandas as pd
-
 from pm4py.objects.ocel import constants
 from pm4py.util import exec_utils
 import pandas as pd
+from copy import copy, deepcopy
 
 
 class Parameters(Enum):
@@ -50,7 +49,8 @@ class OCEL(object):
         self.globals = globals
 
         self.event_id_column = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, constants.DEFAULT_EVENT_ID)
-        self.object_id_column = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, constants.DEFAULT_OBJECT_ID)
+        self.object_id_column = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters,
+                                                           constants.DEFAULT_OBJECT_ID)
         self.object_type_column = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters,
                                                              constants.DEFAULT_OBJECT_TYPE)
 
@@ -58,6 +58,8 @@ class OCEL(object):
                                                          constants.DEFAULT_EVENT_ACTIVITY)
         self.event_timestamp = exec_utils.get_param_value(Parameters.EVENT_TIMESTAMP, parameters,
                                                           constants.DEFAULT_EVENT_TIMESTAMP)
+
+        self.parameters = parameters
 
     def get_extended_table(self, ot_prefix=constants.DEFAULT_OBJECT_TYPE_PREFIX_EXTENDED) -> pd.DataFrame:
         """
@@ -98,3 +100,10 @@ class OCEL(object):
 
     def __repr__(self):
         return str(self.get_summary())
+
+    def __copy__(self):
+        return OCEL(self.events, self.objects, self.relations, copy(self.globals), copy(self.parameters))
+
+    def __deepcopy__(self):
+        return OCEL(self.events.copy(), self.objects.copy(), self.relations.copy(), deepcopy(self.globals),
+                    deepcopy(self.parameters))
