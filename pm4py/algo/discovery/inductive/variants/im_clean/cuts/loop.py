@@ -144,7 +144,7 @@ def _compute_connected_components(dfg: DFG, alphabet: Set[str], start_activities
     import networkx as nx
     reduced_dfg = copy.copy(dfg)
     for (a, b) in dfg:
-        if a in end_activities or a in end_activities or b in start_activities or b in end_activities:
+        if a in start_activities or a in end_activities or b in start_activities or b in end_activities:
             del reduced_dfg[(a, b)]
     reduced_alphabet = set(alphabet).difference(do_set)
     nx_directed = im_utils.transform_dfg_to_directed_nx_graph(reduced_dfg, reduced_alphabet)
