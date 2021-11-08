@@ -2,7 +2,7 @@ import tempfile
 
 from pm4py.util import vis_utils, constants
 from io import BytesIO
-from graphviz.dot import Digraph
+from graphviz import Digraph
 
 
 def view(gviz):
