@@ -4,7 +4,7 @@ cycler
 decorator
 deprecation
 fonttools
-graphviz
+graphviz==0.17
 intervaltree
 ipython
 jedi
