@@ -240,7 +240,7 @@ setup(
     install_requires=[
         "ciso8601; python_version < '3.7'",
         'deprecation',
-        'graphviz',
+        'graphviz==0.17',
         'intervaltree',
         'jsonpickle',
         'lxml',
