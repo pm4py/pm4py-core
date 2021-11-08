@@ -56,9 +56,9 @@ def flatten(ocel: OCEL, ot: str, parameters: Optional[Dict[Any, Any]] = None) ->
         parameters = {}
 
     event_activity = exec_utils.get_param_value(Parameters.EVENT_ACTIVITY, parameters,
-                                                ocel_constants.DEFAULT_EVENT_ACTIVITY)
+                                                ocel.event_activity)
     event_timestamp = exec_utils.get_param_value(Parameters.EVENT_TIMESTAMP, parameters,
-                                                 ocel_constants.DEFAULT_EVENT_TIMESTAMP)
+                                                 ocel.event_timestamp)
 
     objects = ocel.objects[ocel.objects[ocel.object_type_column] == ot]
     objects = objects.rename(columns={ocel.object_id_column: xes_constants.DEFAULT_TRACEID_KEY})

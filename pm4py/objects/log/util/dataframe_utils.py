@@ -26,6 +26,7 @@ from pm4py.util import exec_utils
 from pm4py.util import points_subset
 from pm4py.util import xes_constants, pandas_utils
 
+
 LEGACY_PARQUET_TP_REPLACER = "AAA"
 LEGACY_PARQUET_CASECONCEPTNAME = "caseAAAconceptAAAname"
 
@@ -42,6 +43,7 @@ class Parameters(Enum):
     PARAM_ARTIFICIAL_START_ACTIVITY = constants.PARAM_ARTIFICIAL_START_ACTIVITY
     PARAM_ARTIFICIAL_END_ACTIVITY = constants.PARAM_ARTIFICIAL_END_ACTIVITY
     INDEX_KEY = "index_key"
+    USE_EXTREMES_TIMESTAMP = "use_extremes_timestamp"
 
 
 def insert_partitioning(df, num_partitions, parameters=None):
@@ -417,6 +419,7 @@ def insert_artificial_start_end(df0: pd.DataFrame, parameters: Optional[Dict[Any
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    use_extremes_timestamp = exec_utils.get_param_value(Parameters.USE_EXTREMES_TIMESTAMP, parameters, False)
 
     artificial_start_activity = exec_utils.get_param_value(Parameters.PARAM_ARTIFICIAL_START_ACTIVITY, parameters, constants.DEFAULT_ARTIFICIAL_START_ACTIVITY)
     artificial_end_activity = exec_utils.get_param_value(Parameters.PARAM_ARTIFICIAL_END_ACTIVITY, parameters, constants.DEFAULT_ARTIFICIAL_END_ACTIVITY)
@@ -430,8 +433,14 @@ def insert_artificial_start_end(df0: pd.DataFrame, parameters: Optional[Dict[Any
     start_df = df[[case_id_key, timestamp_key]].groupby(case_id_key).first().reset_index()
     end_df = df[[case_id_key, timestamp_key]].groupby(case_id_key).last().reset_index()
     # stability trick: remove 1ms from the artificial start activity timestamp, add 1ms to the artificial end activity timestamp
-    start_df[timestamp_key] = start_df[timestamp_key] - pd.Timedelta("1 ms")
-    end_df[timestamp_key] = end_df[timestamp_key] + pd.Timedelta("1 ms")
+    if use_extremes_timestamp:
+        start_df[timestamp_key] = pd.Timestamp.min
+        end_df[timestamp_key] = pd.Timestamp.max
+        start_df[timestamp_key] = start_df[timestamp_key].dt.tz_localize("utc")
+        end_df[timestamp_key] = end_df[timestamp_key].dt.tz_localize("utc")
+    else:
+        start_df[timestamp_key] = start_df[timestamp_key] - pd.Timedelta("1 ms")
+        end_df[timestamp_key] = end_df[timestamp_key] + pd.Timedelta("1 ms")
 
     start_df[activity_key] = artificial_start_activity
     end_df[activity_key] = artificial_end_activity

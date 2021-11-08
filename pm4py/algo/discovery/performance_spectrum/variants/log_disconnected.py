@@ -82,7 +82,7 @@ def apply(log: EventLog, list_activities: List[str], sample_size: int, parameter
 
         i = 0
         while i < len(matches) - 1:
-            matchAct = [trace[mi][activity_key] for mi in (matches[i] + matches[i + 1][1:])]
+            matchAct = (trace[mi][activity_key] for mi in (matches[i] + matches[i + 1][1:]))
             if matches[i][-1] == matches[i + 1][0] and matchAct in all_acti_combs:
                 matches[i] = matches[i] + matches[i + 1][1:]
                 del matches[i + 1]
