@@ -55,7 +55,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> Interva
                 if time_j >= time_i:
                     #print(time_i, time_j, (time_i + time_j)/2.0)
                     tree.add(Interval(time_i - epsilon, time_j + epsilon,
-                                      data={"source_event": trace[i], "target_event": trace[j]}))
+                                      data={"source_event": trace[i], "target_event": trace[j], "trace_attributes": trace.attributes}))
                     break
 
     return tree
