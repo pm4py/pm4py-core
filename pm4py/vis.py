@@ -1,7 +1,7 @@
 import os
 from copy import copy
 from typing import Optional
-from typing import Union, List
+from typing import Union, List, Dict, Any
 
 import pandas as pd
 
@@ -630,3 +630,98 @@ def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     gviz = graphs_visualizer.apply(x, y, variant=graphs_visualizer.Variants.BARPLOT, parameters=parameters)
     graphs_visualizer.save(gviz, file_path)
+
+
+def view_ocdfg(ocdfg: Dict[str, Any], annotation: str = "frequency", act_metric: str = "events", edge_metric="event_couples", act_threshold: int = 0, edge_threshold: int = 0, performance_aggregation: str = "mean", format: str = "png"):
+    """
+    Views an OC-DFG (object-centric directly-follows graph) with the provided configuration.
+
+    Parameters
+    ----------
+    ocdfg
+        Object-centric directly-follows graph
+    annotation
+        The annotation to use for the visualization. Values:
+            - "frequency": frequency annotation
+            - "performance": performance annotation
+    act_metric
+        The metric to use for the activities. Available values:
+            - "events" => number of events (default)
+            - "unique_objects" => number of unique objects
+            - "total_objects" => number of total objects
+    edge_metric
+        The metric to use for the edges. Available values:
+            - "event_couples" => number of event couples (default)
+            - "unique_objects" => number of unique objects
+            - "total_objects" => number of total objects
+    act_threshold
+        The threshold to apply on the activities frequency (default: 0). Only activities
+        having a frequency >= than this are kept in the graph.
+    edge_threshold
+        The threshold to apply on the edges frequency (default 0). Only edges
+        having a frequency >= than this are kept in the graph.
+    performance_aggregation
+        The aggregation measure to use for the performance: mean, median, min, max, sum
+    format
+        The format of the output visualization (default: "png")
+    """
+    from pm4py.visualization.ocel.ocdfg import visualizer
+    from pm4py.visualization.ocel.ocdfg.variants import classic
+    parameters = {}
+    parameters[classic.Parameters.FORMAT] = format
+    parameters[classic.Parameters.ANNOTATION] = annotation
+    parameters[classic.Parameters.ACT_METRIC] = act_metric
+    parameters[classic.Parameters.EDGE_METRIC] = edge_metric
+    parameters[classic.Parameters.ACT_THRESHOLD] = act_threshold
+    parameters[classic.Parameters.EDGE_THRESHOLD] = edge_threshold
+    parameters[classic.Parameters.PERFORMANCE_AGGREGATION_MEASURE] = performance_aggregation
+    gviz = classic.apply(ocdfg, parameters=parameters)
+    visualizer.view(gviz)
+
+
+def save_vis_ocdfg(ocdfg: Dict[str, Any], file_path: str, annotation: str = "frequency", act_metric: str = "events", edge_metric="event_couples", act_threshold: int = 0, edge_threshold: int = 0, performance_aggregation: str = "mean"):
+    """
+    Saves the visualization of an OC-DFG (object-centric directly-follows graph) with the provided configuration.
+
+    Parameters
+    ----------
+    ocdfg
+        Object-centric directly-follows graph
+    file_path
+        Destination path (including the extension)
+    annotation
+        The annotation to use for the visualization. Values:
+            - "frequency": frequency annotation
+            - "performance": performance annotation
+    act_metric
+        The metric to use for the activities. Available values:
+            - "events" => number of events (default)
+            - "unique_objects" => number of unique objects
+            - "total_objects" => number of total objects
+    edge_metric
+        The metric to use for the edges. Available values:
+            - "event_couples" => number of event couples (default)
+            - "unique_objects" => number of unique objects
+            - "total_objects" => number of total objects
+    act_threshold
+        The threshold to apply on the activities frequency (default: 0). Only activities
+        having a frequency >= than this are kept in the graph.
+    edge_threshold
+        The threshold to apply on the edges frequency (default 0). Only edges
+        having a frequency >= than this are kept in the graph.
+    performance_aggregation
+        The aggregation measure to use for the performance: mean, median, min, max, sum
+    """
+    format = os.path.splitext(file_path)[1][1:]
+    from pm4py.visualization.ocel.ocdfg import visualizer
+    from pm4py.visualization.ocel.ocdfg.variants import classic
+    parameters = {}
+    parameters[classic.Parameters.FORMAT] = format
+    parameters[classic.Parameters.ANNOTATION] = annotation
+    parameters[classic.Parameters.ACT_METRIC] = act_metric
+    parameters[classic.Parameters.EDGE_METRIC] = edge_metric
+    parameters[classic.Parameters.ACT_THRESHOLD] = act_threshold
+    parameters[classic.Parameters.EDGE_THRESHOLD] = edge_threshold
+    parameters[classic.Parameters.PERFORMANCE_AGGREGATION_MEASURE] = performance_aggregation
+    gviz = classic.apply(ocdfg, parameters=parameters)
+    visualizer.save(gviz, file_path)
