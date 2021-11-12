@@ -1,8 +1,8 @@
 import logging
 from enum import Enum
 
-from pm4py.objects.log.obj import Event
-from pm4py.util import xes_constants, exec_utils
+from pm4py.objects.log.obj import Event, Trace
+from pm4py.util import xes_constants, exec_utils, constants
 from pm4py.util.dt_parsing import parser as dt_parser
 
 
@@ -94,6 +94,7 @@ class StreamingEventXesReader:
         self.event = None
         self.reading_log = True
         self.reading_event = False
+        self.reading_trace = False
         self.tree = {}
 
     def read_event(self):
@@ -112,13 +113,19 @@ class StreamingEventXesReader:
             if tree_event == _EVENT_START:
                 parent = tree[elem.getparent()] if elem.getparent() in tree else None
 
+                if elem.tag.endswith(xes_constants.TAG_TRACE):
+                    self.trace = Trace()
+                    tree[elem] = self.trace.attributes
+                    self.reading_trace = True
+                    continue
+
                 if elem.tag.endswith(xes_constants.TAG_EVENT):
                     self.event = Event()
                     tree[elem] = self.event
                     self.reading_event = True
                     continue
 
-                if self.reading_event:
+                if self.reading_event or self.reading_trace:
                     if elem.tag.endswith(xes_constants.TAG_STRING):
                         if parent is not None:
                             tree = parse_attribute(elem, parent, elem.get(xes_constants.KEY_KEY),
@@ -190,7 +197,13 @@ class StreamingEventXesReader:
                 if elem.tag.endswith(xes_constants.TAG_EVENT):
                     self.reading_event = False
                     if self.acceptance_condition(self.event):
+                        for attr in self.trace.attributes:
+                            self.event[constants.CASE_ATTRIBUTE_PREFIX + attr] = self.trace.attributes[attr]
                         return self.event
+                    continue
+
+                elif elem.tag.endswith(xes_constants.TAG_TRACE):
+                    self.reading_trace = False
                     continue
 
                 elif elem.tag.endswith(xes_constants.TAG_LOG):
