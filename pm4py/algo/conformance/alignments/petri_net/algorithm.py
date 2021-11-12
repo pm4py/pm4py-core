@@ -42,7 +42,7 @@ class Variants(Enum):
     VERSION_TWEAKED_STATE_EQUATION_A_STAR = variants.tweaked_state_equation_a_star
     VERSION_DIJKSTRA_NO_HEURISTICS = variants.dijkstra_no_heuristics
     VERSION_DIJKSTRA_LESS_MEMORY = variants.dijkstra_less_memory
-
+    VERSION_DISCOUNTED_A_STAR = variants.discounted_a_star
 
 class Parameters(Enum):
     PARAM_TRACE_COST_FUNCTION = 'trace_cost_function'
@@ -62,15 +62,18 @@ class Parameters(Enum):
     CORES = 'cores'
     BEST_WORST_COST_INTERNAL = "best_worst_cost_internal"
     FITNESS_ROUND_DIGITS = "fitness_round_digits"
+    SYNCHRONOUS = "synchronous_dijkstra"
+    EXPONENT="theta"
 
 
 DEFAULT_VARIANT = Variants.VERSION_STATE_EQUATION_A_STAR
 VERSION_STATE_EQUATION_A_STAR = Variants.VERSION_STATE_EQUATION_A_STAR
 VERSION_DIJKSTRA_NO_HEURISTICS = Variants.VERSION_DIJKSTRA_NO_HEURISTICS
 VERSION_DIJKSTRA_LESS_MEMORY = Variants.VERSION_DIJKSTRA_LESS_MEMORY
+VERSION_DISCOUNTED_A_STAR = Variants.VERSION_DISCOUNTED_A_STAR
 
 VERSIONS = {Variants.VERSION_DIJKSTRA_NO_HEURISTICS, Variants.VERSION_DIJKSTRA_NO_HEURISTICS,
-            Variants.VERSION_DIJKSTRA_LESS_MEMORY}
+            Variants.VERSION_DIJKSTRA_LESS_MEMORY,VERSION_DISCOUNTED_A_STAR}
 
 
 def apply(obj: Union[EventLog, EventStream, pd.DataFrame, Trace], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT) -> Union[typing.AlignmentResult, typing.ListAlignments]:

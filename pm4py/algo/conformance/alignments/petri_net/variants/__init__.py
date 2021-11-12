@@ -15,4 +15,4 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.algo.conformance.alignments.petri_net.variants import dijkstra_less_memory, dijkstra_no_heuristics, \
-    state_equation_a_star, tweaked_state_equation_a_star
+    state_equation_a_star, tweaked_state_equation_a_star, discounted_a_star

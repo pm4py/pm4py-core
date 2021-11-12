@@ -205,6 +205,7 @@ def __get_alt(open_set, new_marking):
             return item
 
 
+
 def __reconstruct_alignment(state, visited, queued, traversed, ret_tuple_as_trans_desc=False, lp_solved=0):
     alignment = list()
     if state.p is not None and state.t is not None:
@@ -355,6 +356,30 @@ class DijkstraSearchTuple:
                         " path=" + str(self.__get_firing_sequence()) + "\n\n"]
         return " ".join(string_build)
 
+class DijkstraSearchTupleForAntiAndMulti:
+    # in this version we keep the run and not the previous element
+    # the display is different
+    def __init__(self, g, m, r):
+        self.g = g
+        self.m = m
+        self.r = r
+
+    def __lt__(self, other):
+        if self.g < other.g:
+            return True
+        elif other.g < self.g:
+            return False
+        else:
+            return len(other.r) < len(self.r)
+
+    def __get_firing_sequence(self):
+        return self.r
+
+    def __repr__(self):
+        string_build = ["\nm=" + str(self.m), " g=" + str(self.g),
+                        " path=" + str(self.__get_firing_sequence()) + "\n\n"]
+        return " ".join(string_build)
+
 
 class TweakedSearchTuple:
     def __init__(self, f, g, h, m, p, t, x, trust, virgin):
@@ -435,3 +460,78 @@ def get_visible_transitions_eventually_enabled_by_marking(net, marking):
         i = i + 1
 
     return visible_transitions
+
+def discountedEditDistance(s1,s2,exponent=2, modeled=True):
+    '''
+    Fast implementation of the discounted distance
+    Inspired from the faster version of the edit distance
+    '''
+    #print(s1,s2)
+    if len(s1) < len(s2):
+        return discountedEditDistance(s2, s1,exponent=exponent,modeled=False)
+
+    previous_row = [0]
+    for a in range(len(s2)):
+        if not modeled and (s2[a]=="tau" or s2[a]==None or s2[a][0]=="n"):
+            previous_row.append(previous_row[-1])
+        else :
+            previous_row.append(previous_row[-1]+exponent**(-(a)))
+    for i, c1 in enumerate(s1):
+        if modeled:
+            exp1 = sum(exponent**(-(a))  for a in range(i+1) if s1[a]!="tau" and s1[a]!=None and s1[a][0]!="n")
+        else :
+            exp1 = sum(exponent**(-(a))  for a in range(i+1))
+        current_row =  [exp1]
+        for j, c2 in enumerate(s2):
+
+            exp2 = exponent**(-(i+1 + j))
+            if modeled and  (c1 in ["tau", None] or c1[0]=="n" or "skip" in c1):
+                insertions = previous_row[j +1 ]  # j+1 instead of j since previous_row and current_row are one character longer
+                deletions = current_row[j] + exp2    # than s2
+            elif not modeled and (c2 in ["tau", None] or c2[0]=="n"):
+                insertions = previous_row[j +1 ] + exp2 # j+1 instead of j since previous_row and current_row are one character longer
+                deletions = current_row[j]
+            else :
+                insertions = previous_row[j +1 ] + exp2 # j+1 instead of j since previous_row and current_row are one character longer
+                deletions = current_row[j] + exp2
+            if (c1 != c2):
+                current_row.append(min(insertions, deletions))
+            else :
+                substitutions = previous_row[j]
+                current_row.append(min(insertions, deletions, substitutions))
+
+        previous_row = current_row
+    return len(s1)+len(s2),previous_row[-1]
+
+
+def levenshtein(seq1, seq2):
+    '''
+    Edit distance without substitution
+    '''
+    size_x = len(seq1) + 1
+    size_y = len(seq2) + 1
+    matrix = np.zeros ((size_x, size_y))
+    for x in range(size_x):
+        matrix [x, 0] = x
+    for y in range(size_y):
+        matrix [0, y] = y
+
+    for x in range(1, size_x):
+        for y in range(1, size_y):
+            if seq1[x-1] in [None,"tau"] or seq1[x-1][0]=='n' or "skip" in seq1[x-1] or "tau" in seq1[x-1] :
+                matrix [x,y] = min(
+                    matrix[x-1, y],
+                    matrix[x,y-1] + 1
+                )
+            elif seq1[x-1] == seq2[y-1]:
+                matrix [x,y] = min(
+                    matrix[x-1, y] + 1,
+                    matrix[x-1, y-1],
+                    matrix[x, y-1] + 1
+                )
+            else:
+                matrix [x,y] = min(
+                    matrix[x-1,y] + 1,
+                    matrix[x,y-1] + 1
+                )
+    return (matrix[size_x - 1, size_y - 1])
