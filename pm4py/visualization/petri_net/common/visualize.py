@@ -155,7 +155,7 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
 
     for p in places_sort_list:
         if p in initial_marking:
-            viz.node(str(id(p)), "<&#9679;>", fontsize="34", fixedsize='true', shape="circle", width='0.75')
+            viz.node(str(id(p)), f'<&#1012{1+initial_marking[p]};>', fontsize="34", fixedsize='true', shape="circle", width='0.75')
         elif p in final_marking:
             # <&#9632;>
             viz.node(str(id(p)), "<&#9632;>", fontsize="32", shape='doublecircle', fixedsize='true', width='0.75')
