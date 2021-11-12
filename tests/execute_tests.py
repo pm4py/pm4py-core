@@ -39,8 +39,10 @@ if __name__ == "__main__":
     from tests.woflan_tests import WoflanTest
     from tests.simplified_interface import SimplifiedInterfaceTest
     from tests.ocel_filtering_test import OcelFilteringTest
+    from tests.ocel_discovery_test import OcelDiscoveryTest
 
     ocel_filtering_test = OcelFilteringTest()
+    ocel_discovery_test = OcelDiscoveryTest()
     test_ts = TransitionSystemTest()
     test_ies = ImpExpFromString()
     test_doc_tests = DocTests()

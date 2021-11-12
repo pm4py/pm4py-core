@@ -14,48 +14,42 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.visualization.common import gview
-from pm4py.visualization.common import save as gsave
-from pm4py.visualization.transition_system.variants import view_based, trans_frequency
+from graphviz import Digraph
 from enum import Enum
 from pm4py.util import exec_utils
-from pm4py.visualization.common.gview import serialize, serialize_dot
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.transition_system.obj import TransitionSystem
-import graphviz
+from pm4py.visualization.ocel.ocdfg.variants import classic
+from typing import Optional, Dict, Any
+from pm4py.visualization.common import gview
+from pm4py.visualization.common import save as gsave
 
 
 class Variants(Enum):
-    VIEW_BASED = view_based
-    TRANS_FREQUENCY = trans_frequency
+    CLASSIC = classic
 
 
-DEFAULT_VARIANT = Variants.VIEW_BASED
-
-
-def apply(tsys: TransitionSystem, parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT) -> graphviz.Digraph:
+def apply(ocdfg: Dict[str, Any], variant=Variants.CLASSIC, parameters: Optional[Dict[Any, Any]] = None) -> Digraph:
     """
-    Get visualization of a Transition System
+    Visualizes an OC-DFG using one of the provided visualizations.
 
     Parameters
-    -----------
-    tsys
-        Transition system
-    parameters
-        Parameters of the algorithm
+    ----------------
+    ocdfg
+        Object-centric directly-follows graph
     variant
-        Variant of the algorithm to use, including:
-            - Variants.VIEW_BASED
+        Available variants. Possible values:
+        - Variants.CLASSIC
+    parameters
+        Variant-specific parameters
 
     Returns
-    ----------
-    gviz
-        Graph visualization
+    ----------------
+    viz
+        Graphviz DiGraph
     """
-    return exec_utils.get_variant(variant).apply(tsys, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(ocdfg, parameters)
 
 
-def save(gviz: graphviz.Digraph, output_file_path: str):
+def save(gviz: Digraph, output_file_path: str):
     """
     Save the diagram
 
@@ -69,7 +63,7 @@ def save(gviz: graphviz.Digraph, output_file_path: str):
     gsave.save(gviz, output_file_path)
 
 
-def view(gviz: graphviz.Digraph):
+def view(gviz: Digraph):
     """
     View the diagram
 
@@ -81,7 +75,7 @@ def view(gviz: graphviz.Digraph):
     return gview.view(gviz)
 
 
-def matplotlib_view(gviz: graphviz.Digraph):
+def matplotlib_view(gviz: Digraph):
     """
     Views the diagram using Matplotlib
 

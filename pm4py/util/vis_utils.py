@@ -188,3 +188,34 @@ def open_opsystem_image_viewer(file_name):
         os.startfile(file_name)
     elif os.name == 'posix':  # For Linux, Mac, etc.
         subprocess.call(('xdg-open', file_name))
+
+
+def get_corr_hex(num):
+    """
+    Gets correspondence between a number
+    and an hexadecimal string
+
+    Parameters
+    -------------
+    num
+        Number
+
+    Returns
+    -------------
+    hex_string
+        Hexadecimal string
+    """
+    if num < 10:
+        return str(int(num))
+    elif num < 11:
+        return "A"
+    elif num < 12:
+        return "B"
+    elif num < 13:
+        return "C"
+    elif num < 14:
+        return "D"
+    elif num < 15:
+        return "E"
+    elif num < 16:
+        return "F"
