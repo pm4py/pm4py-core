@@ -1,5 +1,5 @@
 import warnings
-from typing import List, Union, Set, List, Tuple
+from typing import List, Union, Set, List, Tuple, Collection, Any, Dict
 
 import deprecation
 import pandas as pd
@@ -9,6 +9,8 @@ from pm4py.objects.log.obj import EventLog
 from pm4py.util import constants
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties, general_checks_classical_event_log
+from pm4py.objects.ocel.obj import OCEL
+import datetime
 
 
 def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: Union[Set[str], List[str]], retain: bool = True) -> \
@@ -636,3 +638,179 @@ def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], m
     else:
         from pm4py.algo.filtering.log.variants import variants_filter
         return variants_filter.filter_variants_by_coverage_percentage(log, min_coverage_percentage, parameters=parameters)
+
+
+def filter_ocel_event_attribute(ocel: OCEL, attribute_key: str, attribute_values: Collection[Any], positive: bool = True) -> OCEL:
+    """
+    Filters the object-centric event log on the provided event attributes values
+
+    Parameters
+    ----------------
+    ocel
+        Object-centric event log
+    attribute_key
+        Attribute at the event level
+    attribute_values
+        Attribute values
+    positive
+        Decides if the values should be kept (positive=True) or removed (positive=False)
+
+    Returns
+    ----------------
+    filtered_ocel
+        Filtered object-centric event log
+    """
+    from pm4py.algo.filtering.ocel import event_attributes
+
+    return event_attributes.apply(ocel, attribute_values, parameters={event_attributes.Parameters.ATTRIBUTE_KEY: attribute_key, event_attributes.Parameters.POSITIVE: positive})
+
+
+def filter_ocel_object_attribute(ocel: OCEL, attribute_key: str, attribute_values: Collection[Any], positive: bool = True) -> OCEL:
+    """
+    Filters the object-centric event log on the provided object attributes values
+
+    Parameters
+    ----------------
+    ocel
+        Object-centric event log
+    attribute_key
+        Attribute at the event level
+    attribute_values
+        Attribute values
+    positive
+        Decides if the values should be kept (positive=True) or removed (positive=False)
+
+    Returns
+    ----------------
+    filtered_ocel
+        Filtered object-centric event log
+    """
+    from pm4py.algo.filtering.ocel import object_attributes
+
+    return object_attributes.apply(ocel, attribute_values, parameters={object_attributes.Parameters.ATTRIBUTE_KEY: attribute_key, object_attributes.Parameters.POSITIVE: positive})
+
+
+def filter_ocel_object_types_allowed_activities(ocel: OCEL, correspondence_dict: Dict[str, Collection[str]]) -> OCEL:
+    """
+    Filters an object-centric event log keeping only the specified object types
+    with the specified activity set (filters out the rest).
+
+    Parameters
+    ----------------
+    ocel
+        Object-centric event log
+    correspondence_dict
+        Dictionary containing, for every object type of interest, a
+        collection of allowed activities.  Example:
+
+        {"order": ["Create Order"], "element": ["Create Order", "Create Delivery"]}
+
+        Keeps only the object types "order" and "element".
+        For the "order" object type, only the activity "Create Order" is kept.
+        For the "element" object type, only the activities "Create Order" and "Create Delivery" are kept.
+
+    Returns
+    -----------------
+    filtered_ocel
+        Filtered object-centric event log
+    """
+    from pm4py.algo.filtering.ocel import activity_type_matching
+
+    return activity_type_matching.apply(ocel, correspondence_dict)
+
+
+def filter_ocel_object_per_type_count(ocel: OCEL, min_num_obj_type: Dict[str, int]) -> OCEL:
+    """
+    Filters the events of the object-centric logs which are related to at least
+    the specified amount of objects per type.
+
+    E.g. pm4py.filter_object_per_type_count(ocel, {"order": 1, "element": 2})
+
+    Would keep the following events:
+
+      ocel:eid ocel:timestamp ocel:activity ocel:type:element ocel:type:order
+    0       e1     1980-01-01  Create Order  [i4, i1, i3, i2]            [o1]
+    1      e11     1981-01-01  Create Order          [i6, i5]            [o2]
+    2      e14     1981-01-04  Create Order          [i8, i7]            [o3]
+
+    Parameters
+    ------------------
+    ocel
+        Object-centric event log
+    min_num_obj_type
+        Minimum number of objects per type
+
+    Returns
+    -----------------
+    filtered_event_log
+        Filtered object-centric event log
+    """
+    from pm4py.algo.filtering.ocel import objects_ot_count
+
+    return objects_ot_count.apply(ocel, min_num_obj_type)
+
+
+def filter_ocel_start_events_per_object_type(ocel: OCEL, object_type: str) -> OCEL:
+    """
+    Filters the events in which a new object for the given object type is spawn.
+    (E.g. an event with activity "Create Order" might spawn new orders).
+
+    Parameters
+    ------------------
+    ocel
+        Object-centric event log
+    object_type
+        Object type to consider
+
+    Returns
+    ------------------
+    filtered_ocel
+        Filtered object-centric event log
+    """
+    from pm4py.algo.filtering.ocel import ot_endpoints
+    return ot_endpoints.filter_start_events_per_object_type(ocel, object_type)
+
+
+def filter_ocel_end_events_per_object_type(ocel: OCEL, object_type: str) -> OCEL:
+    """
+    Filters the events in which an object for the given object type terminates its lifecycle.
+    (E.g. an event with activity "Pay Order" might terminate an order).
+
+    Parameters
+    ------------------
+    ocel
+        Object-centric event log
+    object_type
+        Object type to consider
+
+    Returns
+    ------------------
+    filtered_ocel
+        Filtered object-centric event log
+    """
+    from pm4py.algo.filtering.ocel import ot_endpoints
+    return ot_endpoints.filter_end_events_per_object_type(ocel, object_type)
+
+
+def filter_ocel_events_timestamp(ocel: OCEL, min_timest: Union[datetime.datetime, str], max_timest: Union[datetime.datetime, str], timestamp_key: str = "ocel:timestamp") -> OCEL:
+    """
+    Filters the object-centric event log keeping events in the provided timestamp range
+
+    Parameters
+    -----------------
+    ocel
+        Object-centric event log
+    min_timest
+        Left extreme of the allowed timestamp interval (provided in the format: YYYY-mm-dd HH:MM:SS)
+    max_timest
+        Right extreme of the allowed timestamp interval (provided in the format: YYYY-mm-dd HH:MM:SS)
+    timestamp_key
+        The attribute to use as timestamp (default: ocel:timestamp)
+
+    Returns
+    -----------------
+    filtered_ocel
+        Filtered object-centric event log
+    """
+    from pm4py.algo.filtering.ocel import event_attributes
+    return event_attributes.apply_timestamp(ocel, min_timest, max_timest, parameters={"pm4py:param:timestamp_key": timestamp_key})

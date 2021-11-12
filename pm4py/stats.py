@@ -1,8 +1,9 @@
-from typing import Dict, Union, List, Tuple
+from typing import Dict, Union, List, Tuple, Collection
 from typing import Set
 
 import pandas as pd
 
+from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties, general_checks_classical_event_log
@@ -458,3 +459,46 @@ def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business
         from pm4py.statistics.traces.generic.log import case_statistics
         cd = case_statistics.get_cases_description(log, parameters=properties)
         return cd[case_id]["caseDuration"]
+
+
+def ocel_object_type_activities(ocel: OCEL) ->  Dict[str, Collection[str]]:
+    """
+    Gets the set of activities performed for each object type
+
+    Parameters
+    ----------------
+    ocel
+        Object-centric event log
+
+    Returns
+    ----------------
+    dict
+        A dictionary having as key the object types and as values the activities performed for that object type
+    """
+    from pm4py.statistics.ocel import ot_activities
+
+    return ot_activities.get_object_type_activities(ocel)
+
+
+def ocel_objects_ot_count(ocel: OCEL) ->  Dict[str, Dict[str, int]]:
+    """
+    Counts for each event the number of related objects per type
+
+    Parameters
+    -------------------
+    ocel
+        Object-centric Event log
+    parameters
+        Parameters of the algorithm, including:
+        - Parameters.EVENT_ID => the event identifier to be used
+        - Parameters.OBJECT_ID => the object identifier to be used
+        - Parameters.OBJECT_TYPE => the object type to be used
+
+    Returns
+    -------------------
+    dict_ot
+        Dictionary associating to each event identifier a dictionary with the number of related objects
+    """
+    from pm4py.statistics.ocel import objects_ot_count
+
+    return objects_ot_count.get_objects_ot_count(ocel)
