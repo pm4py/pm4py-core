@@ -29,6 +29,7 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties, xes_constants, general_checks_classical_event_log
+from pm4py.objects.ocel.obj import OCEL
 
 
 def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
@@ -401,3 +402,35 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
     pt = discover_process_tree_inductive(log, noise_threshold)
     from pm4py.convert import convert_to_bpmn
     return convert_to_bpmn(pt)
+
+
+def discover_ocdfg(ocel: OCEL, business_hours=False, worktiming=[7, 17], weekends=[6, 7]) -> Dict[str, Any]:
+    """
+    Discovers an OC-DFG from an object-centric event log.
+
+    Reference paper:
+    Berti, Alessandro, and Wil van der Aalst. "Extracting multiple viewpoint models from relational databases." Data-Driven Process Discovery and Analysis. Springer, Cham, 2018. 24-51.
+
+
+    Parameters
+    ----------------
+    ocel
+        Object-centric event log
+    business_hours
+        Boolean value that enables the usage of the business hours
+    worktiming
+        (if business hours are in use) work timing during the day (default: [7, 17])
+    weekends
+        (if business hours are in use) weekends (default: [6, 7])
+
+    Returns
+    ---------------
+    ocdfg
+        Object-centric directly-follows graph
+    """
+    parameters = {}
+    parameters["business_hours"] = business_hours
+    parameters["worktiming"] = worktiming
+    parameters["weekends"] = weekends
+    from pm4py.algo.discovery.ocel.ocdfg import algorithm as ocdfg_discovery
+    return ocdfg_discovery.apply(ocel, parameters=parameters)
