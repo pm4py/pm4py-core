@@ -29,6 +29,11 @@ class Parameters(Enum):
 
 
 def __imd(dfg_sa_ea_actcount, threshold, root, remove_noise=False):
+    tree = __imd_internal(dfg_sa_ea_actcount, threshold, root, remove_noise)
+    return tree
+
+
+def __imd_internal(dfg_sa_ea_actcount, threshold, root, remove_noise=False):
     alphabet = dfg_sa_ea_actcount.act_count.keys()
     if len(dfg_sa_ea_actcount.act_count) > 0 and len(dfg_sa_ea_actcount.dfg) == 0:
         return __base_case(dfg_sa_ea_actcount, root)

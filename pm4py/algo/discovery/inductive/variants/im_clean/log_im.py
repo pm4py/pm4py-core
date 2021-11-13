@@ -39,6 +39,11 @@ class Parameters(Enum):
 
 
 def __inductive_miner(log, dfg, threshold, root, act_key, use_msd, remove_noise=False):
+    tree = __inductive_miner_internal(log, dfg, threshold, root, act_key, use_msd, remove_noise)
+    return tree
+
+
+def __inductive_miner_internal(log, dfg, threshold, root, act_key, use_msd, remove_noise=False):
     alphabet = pm4py.get_event_attribute_values(log, act_key)
     if threshold > 0 and remove_noise:
         end_activities = get_ends.get_end_activities(log,
