@@ -3,7 +3,7 @@ import pkgutil
 if pkgutil.find_loader("graphviz"):
     # imports the visualizations only if graphviz is installed
     from pm4py.visualization import common, dfg, petri_net, process_tree, transition_system, align_table, \
-        footprints, bpmn, trie, dotted_chart
+        footprints, bpmn, trie, dotted_chart, ocel
     if pkgutil.find_loader("matplotlib") and pkgutil.find_loader("pyvis"):
         # SNA requires both packages matplotlib and pyvis. These are included in the default installation;
         # however, they may lead to problems in some platforms/deployments
