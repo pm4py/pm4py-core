@@ -210,9 +210,9 @@ def __reconstruct_alignment(state, visited, queued, traversed, ret_tuple_as_tran
     if state.p is not None and state.t is not None:
         parent = state.p
         if ret_tuple_as_trans_desc:
-            alignment = [tuple(state.t)]
+            alignment = [(state.t.name, state.t.label)]
             while parent.p is not None:
-                alignment = [tuple(parent.t)] + alignment
+                alignment = [(parent.t.name, parent.t.label)] + alignment
                 parent = parent.p
         else:
             alignment = [state.t.label]
