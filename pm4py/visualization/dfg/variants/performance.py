@@ -272,14 +272,17 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     end_activities_to_include = [act for act in end_activities if act in activities_map]
 
     if start_activities_to_include:
-        viz.node("@@startnode", "@@S", style='filled', shape='circle', fillcolor="#32CD32", fontcolor="#32CD32")
+        viz.node("@@startnode", "<&#9679;>", shape='circle', fontsize="34")
         for act in start_activities_to_include:
-            viz.edge("@@startnode", activities_map[act], fontsize=font_size)
+            label = str(start_activities[act]) if isinstance(start_activities, dict) else ""
+            viz.edge("@@startnode", activities_map[act], label=label, fontsize=font_size)
 
     if end_activities_to_include:
-        viz.node("@@endnode", "@@E", style='filled', shape='circle', fillcolor="#FFA500", fontcolor="#FFA500")
+        # <&#9632;>
+        viz.node("@@endnode", "<&#9632;>", shape='doublecircle', fontsize="32")
         for act in end_activities_to_include:
-            viz.edge(activities_map[act], "@@endnode", fontsize=font_size)
+            label = str(end_activities[act]) if isinstance(end_activities, dict) else ""
+            viz.edge(activities_map[act], "@@endnode", label=label, fontsize=font_size)
 
     viz.attr(overlap='false')
     viz.attr(fontsize='11')
