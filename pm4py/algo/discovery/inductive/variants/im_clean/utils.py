@@ -48,7 +48,8 @@ def __flower(alphabet, root):
     xor = pt.ProcessTree(operator=pt.Operator.XOR)
     operator.children.append(xor)
     for a in alphabet:
-        xor.children.append(pt.ProcessTree(label=a, parent=xor))
+        tree = pt.ProcessTree(label=a, parent=xor)
+        xor.children.append(tree)
     return operator
 
 
