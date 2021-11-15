@@ -41,6 +41,7 @@ class Parameters(Enum):
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     FONT_SIZE = "font_size"
     BGCOLOR = "bgcolor"
+    STAT_LOCALE = "stat_locale"
 
 
 def get_min_max_value(dfg):
@@ -131,7 +132,7 @@ def get_activities_color(activities_count):
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
                            max_no_of_edges_in_diagram=100000, start_activities=None, 
                            end_activities=None, soj_time=None, font_size="12", 
-                           bgcolor="transparent"):
+                           bgcolor="transparent", stat_locale: dict = None):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -165,6 +166,8 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         start_activities = {}
     if end_activities is None:
         end_activities = {}
+    if stat_locale is None:
+        stat_locale = {}
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
@@ -284,6 +287,9 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     font_size = str(font_size)
     activities = dfg_utils.get_activities_from_dfg(dfg)
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+    stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, None)
+    if stat_locale is None:
+        stat_locale = {}
 
     if activities_count is None:
         if log is not None:
@@ -309,4 +315,4 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     return graphviz_visualization(activities_count, dfg, image_format=image_format, measure="frequency",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
                                   start_activities=start_activities, end_activities=end_activities, 
-                                  soj_time=soj_time, font_size=font_size, bgcolor=bgcolor)
+                                  soj_time=soj_time, font_size=font_size, bgcolor=bgcolor, stat_locale=stat_locale)

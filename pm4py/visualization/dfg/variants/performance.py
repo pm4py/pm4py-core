@@ -165,7 +165,7 @@ def get_edges_color(duration_list: list) -> str:
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
                            max_no_of_edges_in_diagram=100000, start_activities=None, 
                            end_activities=None, soj_time=None, font_size="12", 
-                           bgcolor="transparent", stat_locale: dict = {}):
+                           bgcolor="transparent", stat_locale: dict = None):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -199,6 +199,8 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         start_activities = []
     if end_activities is None:
         end_activities = []
+    if stat_locale is None:
+        stat_locale = {}
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
@@ -327,7 +329,10 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     activities = dfg_utils.get_activities_from_dfg(dfg)
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
-    stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, {})
+    stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, None)
+
+    if stat_locale is None:
+        stat_locale = {}
 
     if activities_count is None:
         if log is not None:
