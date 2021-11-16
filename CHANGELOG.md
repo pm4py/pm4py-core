@@ -1,21 +1,6 @@
 # PM4Py Changelog
 
-## PM4Py 2.2.16 (2021.11.12)
-
-### Fixed
-
-### Removed
-
-### Deprecated
-
-### Changed
-
-* 43a076c8
-    * add artificial timestamps to artificial start and end events
-* d65f8077
-    * case attributes are replicated in events of an event stream (for xes input)
-* 9075cbfc
-    * add trace attributes to the interval tree
+## PM4Py 2.2.16 (2021.11.16)
 
 ### Added
 
@@ -26,7 +11,30 @@
 * 51c069fb
     * add discovery of object-centric directly follows multigraphs
 * fa3031aa
-    * add several filters for OCEL. 
+    * add several filters for OCEL.
+* d4747f71
+    * implementation of OCEL-based process discovery according to Reference paper: van der Aalst, Wil MP, and Alessandro
+      Berti. "Discovering object-centric Petri nets." Fundamenta informaticae 175.1-4 (2020): 1-40.
+* 9fbd1c45
+    * add the support for generic network creation based on a given IN/OUT column in which events are connected if the
+      columns match.
+* 2b867f0d
+    * add projection utility to fetch lists of event attributes
+
+### Changed
+
+* 43a076c8
+    * add artificial timestamps to artificial start and end events
+* d65f8077
+    * case attributes are replicated in events of an event stream (for xes input)
+* 9075cbfc
+    * add trace attributes to the interval tree
+
+### Deprecated
+
+### Fixed
+
+### Removed
 
 ### Other
 
