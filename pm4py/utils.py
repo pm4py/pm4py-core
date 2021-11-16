@@ -1,5 +1,5 @@
 import datetime
-from typing import Optional, Tuple, Any, Collection
+from typing import Optional, Tuple, Any, Collection, Union, List
 
 import pandas as pd
 
@@ -7,7 +7,6 @@ from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants, xes_constants, pandas_utils
-
 
 INDEX_COLUMN = "@@index"
 
@@ -154,7 +153,8 @@ def serialize(*args) -> Tuple[str, bytes]:
         return (constants.AvailableSerializations.BPMN.value, bpmn_exporter.serialize(*args))
     elif len(args) == 3 and (isinstance(args[0], dict) or isinstance(args[0], Counter)):
         from pm4py.objects.dfg.exporter import exporter as dfg_exporter
-        return (constants.AvailableSerializations.DFG.value, dfg_exporter.serialize(args[0], parameters={"start_activities": args[1], "end_activities": args[2]}))
+        return (constants.AvailableSerializations.DFG.value,
+                dfg_exporter.serialize(args[0], parameters={"start_activities": args[1], "end_activities": args[2]}))
 
 
 def deserialize(ser_obj: Tuple[str, bytes]) -> Any:
@@ -217,7 +217,8 @@ def get_properties(log):
     """
     general_checks_classical_event_log(log)
     from copy import copy
-    parameters = copy(log.properties) if hasattr(log, 'properties') else copy(log.attrs) if hasattr(log, 'attrs') else {}
+    parameters = copy(log.properties) if hasattr(log, 'properties') else copy(log.attrs) if hasattr(log,
+                                                                                                    'attrs') else {}
     return parameters
 
 
@@ -272,7 +273,7 @@ def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASS
 def parse_event_log_string(traces: Collection[str], sep: str = ",",
                            activity_key: str = xes_constants.DEFAULT_NAME_KEY,
                            timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
-                           case_id_key : str = xes_constants.DEFAULT_TRACEID_KEY) -> EventLog:
+                           case_id_key: str = xes_constants.DEFAULT_TRACEID_KEY) -> EventLog:
     """
     Parse a collection of traces expressed as strings
     (e.g., ["A,B,C,D", "A,C,B,D", "A,D"])
@@ -308,6 +309,50 @@ def parse_event_log_string(traces: Collection[str], sep: str = ",",
             this_timest = this_timest + 1
         log.append(trace)
     return log
+
+
+def project_on_event_attribute(log: Union[EventLog, pd.DataFrame], attribute_key=xes_constants.DEFAULT_NAME_KEY) -> \
+List[List[str]]:
+    """
+    Project the event log on a specified event attribute. The result is a list, containing a list for each case:
+    all the cases are transformed to list of values for the specified attribute.
+
+    Parameters
+    --------------------
+    log
+        Event log / Pandas dataframe
+    attribute_key
+        The attribute to be used
+
+    Returns
+    --------------------
+    projected_cases
+        Projection on the given attribute (a list containing, for each case, a list of its values for the
+        specified attribute).
+
+        Example:
+
+        pm4py.project_on_event_attribute(log, "concept:name")
+
+        [['register request', 'examine casually', 'check ticket', 'decide', 'reinitiate request', 'examine thoroughly', 'check ticket', 'decide', 'pay compensation'],
+        ['register request', 'check ticket', 'examine casually', 'decide', 'pay compensation'],
+        ['register request', 'examine thoroughly', 'check ticket', 'decide', 'reject request'],
+        ['register request', 'examine casually', 'check ticket', 'decide', 'pay compensation'],
+        ['register request', 'examine casually', 'check ticket', 'decide', 'reinitiate request', 'check ticket', 'examine casually', 'decide', 'reinitiate request', 'examine casually', 'check ticket', 'decide', 'reject request'],
+        ['register request', 'check ticket', 'examine thoroughly', 'decide', 'reject request']]
+    """
+    general_checks_classical_event_log(log)
+    output = []
+    if pandas_utils.check_is_pandas_dataframe(log):
+        pandas_utils.check_pandas_dataframe_columns(log)
+        from pm4py.streaming.conversion import from_pandas
+        it = from_pandas.apply(log, parameters={from_pandas.Parameters.ACTIVITY_KEY: attribute_key})
+        for trace in it:
+            output.append([x[xes_constants.DEFAULT_NAME_KEY] if xes_constants.DEFAULT_NAME_KEY is not None else None for x in trace])
+    else:
+        for trace in log:
+            output.append([x[attribute_key] if attribute_key is not None else None for x in trace])
+    return output
 
 
 def general_checks_classical_event_log(log):
