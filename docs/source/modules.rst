@@ -1,5 +1,5 @@
-pm4py-core
-==========
+pm4py-source
+============
 
 .. toctree::
    :maxdepth: 4

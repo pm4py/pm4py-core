@@ -13,6 +13,14 @@ Subpackages
 Submodules
 ----------
 
+pm4py.algo.simulation.montecarlo.algorithm module
+-------------------------------------------------
+
+.. automodule:: pm4py.algo.simulation.montecarlo.algorithm
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.algo.simulation.montecarlo.outputs module
 -----------------------------------------------
 

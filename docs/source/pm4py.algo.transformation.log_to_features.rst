@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   pm4py.algo.transformation.log_to_features.util
    pm4py.algo.transformation.log_to_features.variants
 
 Submodules

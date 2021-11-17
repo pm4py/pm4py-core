@@ -17,6 +17,7 @@ Subpackages
    pm4py.algo.discovery.inductive
    pm4py.algo.discovery.log_skeleton
    pm4py.algo.discovery.minimum_self_distance
+   pm4py.algo.discovery.ocel
    pm4py.algo.discovery.performance_spectrum
    pm4py.algo.discovery.temporal_profile
    pm4py.algo.discovery.transition_system

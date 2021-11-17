@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   pm4py.visualization.decisiontree.util
    pm4py.visualization.decisiontree.variants
 
 Submodules

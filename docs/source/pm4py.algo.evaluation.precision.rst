@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   pm4py.algo.evaluation.precision.dfg
    pm4py.algo.evaluation.precision.variants
 
 Submodules

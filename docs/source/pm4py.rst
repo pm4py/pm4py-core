@@ -83,6 +83,14 @@ pm4py.ml module
    :undoc-members:
    :show-inheritance:
 
+pm4py.ocel module
+-----------------
+
+.. automodule:: pm4py.ocel
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.org module
 ----------------
 

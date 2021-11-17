@@ -4,6 +4,14 @@ pm4py.objects.log.util package
 Submodules
 ----------
 
+pm4py.objects.log.util.artificial module
+----------------------------------------
+
+.. automodule:: pm4py.objects.log.util.artificial
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.objects.log.util.basic\_filter module
 -------------------------------------------
 
@@ -112,6 +120,22 @@ pm4py.objects.log.util.log\_regex module
 ----------------------------------------
 
 .. automodule:: pm4py.objects.log.util.log_regex
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pm4py.objects.log.util.move\_attrs\_to\_trace module
+----------------------------------------------------
+
+.. automodule:: pm4py.objects.log.util.move_attrs_to_trace
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pm4py.objects.log.util.pandas\_numpy\_variants module
+-----------------------------------------------------
+
+.. automodule:: pm4py.objects.log.util.pandas_numpy_variants
    :members:
    :undoc-members:
    :show-inheritance:

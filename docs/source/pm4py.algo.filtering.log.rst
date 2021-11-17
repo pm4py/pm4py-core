@@ -15,6 +15,7 @@ Subpackages
    pm4py.algo.filtering.log.end_activities
    pm4py.algo.filtering.log.ltl
    pm4py.algo.filtering.log.paths
+   pm4py.algo.filtering.log.rework
    pm4py.algo.filtering.log.start_activities
    pm4py.algo.filtering.log.timestamp
    pm4py.algo.filtering.log.variants

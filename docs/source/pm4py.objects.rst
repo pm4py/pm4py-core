@@ -12,6 +12,7 @@ Subpackages
    pm4py.objects.dfg
    pm4py.objects.heuristics_net
    pm4py.objects.log
+   pm4py.objects.ocel
    pm4py.objects.petri
    pm4py.objects.petri_net
    pm4py.objects.process_tree
