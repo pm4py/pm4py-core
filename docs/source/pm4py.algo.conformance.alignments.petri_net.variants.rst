@@ -20,6 +20,14 @@ pm4py.algo.conformance.alignments.petri\_net.variants.dijkstra\_no\_heuristics m
    :undoc-members:
    :show-inheritance:
 
+pm4py.algo.conformance.alignments.petri\_net.variants.discounted\_a\_star module
+--------------------------------------------------------------------------------
+
+.. automodule:: pm4py.algo.conformance.alignments.petri_net.variants.discounted_a_star
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.algo.conformance.alignments.petri\_net.variants.state\_equation\_a\_star module
 -------------------------------------------------------------------------------------
 

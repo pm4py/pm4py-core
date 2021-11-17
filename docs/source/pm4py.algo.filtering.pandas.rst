@@ -10,10 +10,12 @@ Subpackages
    pm4py.algo.filtering.pandas.attr_value_repetition
    pm4py.algo.filtering.pandas.attributes
    pm4py.algo.filtering.pandas.auto_filter
+   pm4py.algo.filtering.pandas.between
    pm4py.algo.filtering.pandas.cases
    pm4py.algo.filtering.pandas.end_activities
    pm4py.algo.filtering.pandas.ltl
    pm4py.algo.filtering.pandas.paths
+   pm4py.algo.filtering.pandas.rework
    pm4py.algo.filtering.pandas.start_activities
    pm4py.algo.filtering.pandas.timestamp
    pm4py.algo.filtering.pandas.variants

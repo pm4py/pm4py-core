@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    pm4py.algo.transformation.log_to_features
+   pm4py.algo.transformation.log_to_interval_tree
    pm4py.algo.transformation.log_to_trie
 
 Module contents

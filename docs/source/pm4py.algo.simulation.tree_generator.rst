@@ -12,6 +12,14 @@ Subpackages
 Submodules
 ----------
 
+pm4py.algo.simulation.tree\_generator.algorithm module
+------------------------------------------------------
+
+.. automodule:: pm4py.algo.simulation.tree_generator.algorithm
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.algo.simulation.tree\_generator.simulator module
 ------------------------------------------------------
 

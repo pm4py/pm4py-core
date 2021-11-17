@@ -9,6 +9,8 @@ Subpackages
 
    pm4py.objects.random_variables.constant0
    pm4py.objects.random_variables.exponential
+   pm4py.objects.random_variables.gamma
+   pm4py.objects.random_variables.lognormal
    pm4py.objects.random_variables.normal
    pm4py.objects.random_variables.uniform
 

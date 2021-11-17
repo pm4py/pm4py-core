@@ -12,6 +12,14 @@ pm4py.objects.log.importer.xes.variants.iterparse module
    :undoc-members:
    :show-inheritance:
 
+pm4py.objects.log.importer.xes.variants.iterparse\_20 module
+------------------------------------------------------------
+
+.. automodule:: pm4py.objects.log.importer.xes.variants.iterparse_20
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.objects.log.importer.xes.variants.iterparse\_mem\_compressed module
 -------------------------------------------------------------------------
 

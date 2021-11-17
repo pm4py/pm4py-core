@@ -29,6 +29,22 @@ pm4py.algo.discovery.inductive.variants.im\_clean.d\_types module
    :undoc-members:
    :show-inheritance:
 
+pm4py.algo.discovery.inductive.variants.im\_clean.dfg\_im module
+----------------------------------------------------------------
+
+.. automodule:: pm4py.algo.discovery.inductive.variants.im_clean.dfg_im
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pm4py.algo.discovery.inductive.variants.im\_clean.log\_im module
+----------------------------------------------------------------
+
+.. automodule:: pm4py.algo.discovery.inductive.variants.im_clean.log_im
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.algo.discovery.inductive.variants.im\_clean.utils module
 --------------------------------------------------------------
 

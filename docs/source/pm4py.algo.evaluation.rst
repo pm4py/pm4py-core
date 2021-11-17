@@ -16,6 +16,14 @@ Subpackages
 Submodules
 ----------
 
+pm4py.algo.evaluation.algorithm module
+--------------------------------------
+
+.. automodule:: pm4py.algo.evaluation.algorithm
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.algo.evaluation.evaluator module
 --------------------------------------
 

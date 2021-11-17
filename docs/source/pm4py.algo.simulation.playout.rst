@@ -14,6 +14,14 @@ Subpackages
 Submodules
 ----------
 
+pm4py.algo.simulation.playout.algorithm module
+----------------------------------------------
+
+.. automodule:: pm4py.algo.simulation.playout.algorithm
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.algo.simulation.playout.simulator module
 ----------------------------------------------
 

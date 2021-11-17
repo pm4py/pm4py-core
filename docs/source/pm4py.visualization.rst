@@ -16,6 +16,8 @@ Subpackages
    pm4py.visualization.footprints
    pm4py.visualization.graphs
    pm4py.visualization.heuristics_net
+   pm4py.visualization.network_analysis
+   pm4py.visualization.ocel
    pm4py.visualization.performance_spectrum
    pm4py.visualization.petri_net
    pm4py.visualization.petrinet
