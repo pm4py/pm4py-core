@@ -1,1 +1,1 @@
-from pm4py.visualization.ocel import ocdfg
+from pm4py.visualization.ocel import ocdfg, ocpn
