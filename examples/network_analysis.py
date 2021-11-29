@@ -15,13 +15,8 @@ def execute_script():
     # EDGE column: the attribute (of the source event) to use to classify the edge. In this case, we use the
     # concept:name (activity)
 
-    frequency_edges = network_analysis.apply(log, parameters={"in_column": "case:concept:name",
-                                                              "out_column": "case:concept:name",
-                                                              "node_column": "org:group", "edge_column": "concept:name",
-                                                              "include_performance": False})
-    gviz_frequency = network_visualizer.apply(frequency_edges, variant=network_visualizer.Variants.FREQUENCY,
-                                              parameters={"edge_threshold": 10, "format": "svg"})
-    network_visualizer.view(gviz_frequency)
+    frequency_edges = pm4py.discover_network_analysis(log, out_column="case:concept:name", in_column="case:concept:name", node_column="org:group", edge_column="concept:name", performance=False)
+    pm4py.view_network_analysis(frequency_edges, variant="frequency", format="svg", edge_threshold=10)
 
     # performance view of the network analysis
 
@@ -31,15 +26,8 @@ def execute_script():
     # EDGE column: the attribute (of the source event) to use to classify the edge. In this case, we use the
     # concept:name (activity)
 
-    performance_edges = network_analysis.apply(log, parameters={"in_column": "case:concept:name",
-                                                                "out_column": "case:concept:name",
-                                                                "node_column": "org:group",
-                                                                "edge_column": "concept:name",
-                                                                "include_performance": True})
-    gviz_performance = network_visualizer.apply(performance_edges, variant=network_visualizer.Variants.PERFORMANCE,
-                                                parameters={"edge_threshold": 10, "format": "svg",
-                                                            "aggregation_measure": "median"})
-    network_visualizer.view(gviz_performance)
+    performance_edges = pm4py.discover_network_analysis(log, out_column="case:concept:name", in_column="case:concept:name", node_column="org:group", edge_column="concept:name", performance=True)
+    pm4py.view_network_analysis(performance_edges, variant="performance", format="svg", edge_threshold=10)
 
 
 if __name__ == "__main__":
