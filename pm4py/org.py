@@ -2,9 +2,11 @@ from typing import Union
 
 import pandas as pd
 
-from pm4py.objects.log.obj import EventLog
+from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties, general_checks_classical_event_log
+from pm4py.util import constants, xes_constants
+from typing import Dict, Tuple, Any
 
 
 def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0):
@@ -136,3 +138,53 @@ def discover_organizational_roles(log: Union[EventLog, pd.DataFrame]):
         return roles.apply(log, variant=roles.Variants.PANDAS, parameters=get_properties(log))
     else:
         return roles.apply(log, variant=roles.Variants.LOG, parameters=get_properties(log))
+
+
+def discover_network_analysis(log: Union[pd.DataFrame, EventLog, EventStream], out_column: str, in_column: str, node_column: str, edge_column: str, performance: bool = False, sorting_column: str = xes_constants.DEFAULT_TIMESTAMP_KEY, timestamp_column: str = xes_constants.DEFAULT_TIMESTAMP_KEY) -> Dict[Tuple[str, str], Dict[str, Any]]:
+    """
+    Performs a network analysis of the log based on the provided parameters.
+    The output is a multigraph.
+    Two events EV1 and EV2 of the log are merged (indipendently from the case notion) based on having
+    EV1.OUT_COLUMN = EV2.IN_COLUMN.
+    Then, an aggregation is applied on the couple of events (NODE_COLUMN) to obtain the nodes that are connected.
+    The edges between these nodes are aggregated based on some property of the *source* event (EDGE_COLUMN).
+
+    Parameters
+    ------------------
+    log
+        Event log / Pandas dataframe
+    out_column
+        The source column of the link (default: the case identifier; events of the same case are linked)
+    in_column
+        The target column of the link (default: the case identifier; events of the same case are linked)
+    node_column
+        The attribute to be used for the node definition (default: the resource of the log, org:resource)
+    edge_column
+        The attribute (of the source event) to be used for the edge definition (default: the activity of the log,
+            concept:name)
+    performance
+        Boolean value that enables the performance calculation on the edges of the network analysis
+    sorting_column
+        The column that should be used to sort the log before performing the network analysis (default: time:timestamp)
+    timestamp_column
+        The column that should be used as timestamp for the performance-related analysis (default: time:timestamp)
+
+    Returns
+    ------------------
+    network_analysis
+        Edges of the network analysis (first key: edge; second key: type; value: number of occurrences)
+    """
+    general_checks_classical_event_log(log)
+
+    from pm4py.algo.organizational_mining.network_analysis.variants import dataframe
+    parameters = {}
+    parameters[dataframe.Parameters.OUT_COLUMN] = out_column
+    parameters[dataframe.Parameters.IN_COLUMN] = in_column
+    parameters[dataframe.Parameters.NODE_COLUMN] = node_column
+    parameters[dataframe.Parameters.EDGE_COLUMN] = edge_column
+    parameters[dataframe.Parameters.SORTING_COLUMN] = sorting_column
+    parameters[dataframe.Parameters.TIMESTAMP_KEY] = timestamp_column
+    parameters[dataframe.Parameters.INCLUDE_PERFORMANCE] = performance
+
+    from pm4py.algo.organizational_mining.network_analysis import algorithm as network_analysis
+    return network_analysis.apply(log, parameters=parameters)
