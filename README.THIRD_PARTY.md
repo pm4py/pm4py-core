@@ -33,7 +33,6 @@ libraries are added/removed.
 | pickleshare | https://pypi.org/project/pickleshare | MIT License (MIT) | 0.7.5 |
 | pillow | https://pypi.org/project/pillow | Historical Permission Notice and Disclaimer (HPND) (HPND) | 8.4.0 |
 | prompt-toolkit | https://pypi.org/project/prompt-toolkit | BSD License | 3.0.23 |
-| pulp | https://pypi.org/project/pulp | BSD License | 2.1 |
 | pydotplus | https://pypi.org/project/pydotplus | MIT License (UNKNOWN) | 2.0.2 |
 | pygments | https://pypi.org/project/pygments | BSD License (BSD License) | 2.10.0 |
 | pyparsing | https://pypi.org/project/pyparsing | MIT License (MIT License) | 3.0.6 |
