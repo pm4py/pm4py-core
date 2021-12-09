@@ -25,7 +25,6 @@ parso
 pickleshare
 pillow
 prompt-toolkit
-pulp==2.1
 pydotplus
 pygments
 pyparsing
