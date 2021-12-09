@@ -1,3 +1,4 @@
+import uuid
 from collections import Counter
 from copy import deepcopy
 from enum import Enum
@@ -5,6 +6,7 @@ from enum import Enum
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.bpmn.util.sorting import get_sorted_nodes_edges
 from pm4py.util import exec_utils
+import tempfile
 
 
 class EndpointDirection(Enum):
@@ -15,9 +17,6 @@ class EndpointDirection(Enum):
 
 
 class Parameters(Enum):
-    FOCUS = "focus"
-    SCALING_FACT_X = "scaling_fact_x"
-    SCALING_FACT_Y = "scaling_fact_y"
     TASK_WH = "task_wh"
 
 
@@ -67,46 +66,57 @@ def apply(bpmn_graph, parameters=None):
     bpmn_graph
         BPMN graph with layout information
     """
+    from graphviz import Digraph
+    from pm4py.visualization.common import save as gsave
+
     if parameters is None:
         parameters = {}
 
-    try:
-        import pygraphviz
-    except ImportError:
-        raise ImportError('missing pygraphviz: ',
-                          'http://pygraphviz.github.io/')
-
     nodes = bpmn_graph.get_nodes()
     flows = bpmn_graph.get_flows()
-    graph = bpmn_graph.get_graph()
 
-    # convert nx graph to pygraphviz graph
-    A = pygraphviz.AGraph(name=bpmn_graph.get_name(), strict=True, directed=True, rankdir="LR")
+    filename_gv = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename_gv.close()
+    filename_svg = tempfile.NamedTemporaryFile(suffix='.svg')
+    filename_svg.close()
+    viz = Digraph(bpmn_graph.get_name(), filename=filename_gv.name, engine='dot')
+    viz.format = "svg"
+    viz.graph_attr['rankdir'] = 'LR'
 
     graph_nodes, graph_edges = get_sorted_nodes_edges(bpmn_graph)
 
+    nodes_dict = {}
+    inv_nodes_dict = {}
     for n in graph_nodes:
-        A.add_node(n)
+        node_uuid = str(uuid.uuid4()).replace("-", "")
+        nodes_dict[n] = node_uuid
+        inv_nodes_dict[node_uuid] = n
+        viz.node(node_uuid, label=" ", shape="box")
 
     for tup in graph_edges:
-        A.add_edge(tup[0], tup[1])
+        viz.edge(nodes_dict[tup[0]], nodes_dict[tup[1]])
 
-    # use built-in layout function from pygraphviz
-    A.layout(prog="dot")
+    gsave.save(viz, filename_svg.name)
 
-    focus = exec_utils.get_param_value(Parameters.FOCUS, parameters, 0.42)
-    scaling_fact_x = exec_utils.get_param_value(Parameters.SCALING_FACT_X, parameters, 320.0) * focus
-    scaling_fact_y = exec_utils.get_param_value(Parameters.SCALING_FACT_Y, parameters, 150.0) * focus
+    nodes_pos = {}
+
+    content = open(filename_svg.name, "r").read()
+    viz_nodes = content.split("class=\"node\">")[1:]
+    for node in viz_nodes:
+        this_id = node.split("<title>")[1].split("</title>")[0]
+        points = node.split("points=\"")[1].split("\"")[0]
+        nodes_pos[inv_nodes_dict[this_id]] = points
+
     task_wh = exec_utils.get_param_value(Parameters.TASK_WH, parameters, 60)
 
     # add node positions to BPMN nodes
     for n in graph_nodes:
-        node = pygraphviz.Node(A, n)
-        xs = node.attr["pos"].split(',')
-        node_pos = tuple(float(x) for x in xs)
-        # width = round(100.0 * float(node.attr["width"]) / 7.0)
-        n.set_x(int(node_pos[0]))
-        n.set_y(int(node_pos[1]))
+        node_pos = nodes_pos[n].split(" ")[0].split(",")
+
+        pos_x = float(node_pos[0])
+        pos_y = float(node_pos[1])
+        n.set_x(pos_x)
+        n.set_y(pos_y)
         n.set_height(task_wh)
         if isinstance(n, BPMN.Task):
             this_width = min(round(2 * task_wh), round(2 * (len(n.get_name()) + 7) * task_wh / 22.0))
@@ -114,14 +124,13 @@ def apply(bpmn_graph, parameters=None):
         else:
             n.set_width(task_wh)
 
-    # stretch BPMN a bit, cause y coordinates are ususally pretty small compared to x
-    max_node_x = max(node.get_x() for node in nodes)
-    max_node_y = max(node.get_y() for node in nodes)
+    max_x = max(1, max(abs(node.get_x()) for node in nodes))
+    max_y = max(1, max(abs(node.get_y()) for node in nodes))
     different_x = len(set(node.get_x() for node in nodes))
     different_y = len(set(node.get_y() for node in nodes))
 
-    stretch_fact_x = scaling_fact_x * different_x / max_node_x
-    stretch_fact_y = scaling_fact_y * different_y / max_node_y
+    stretch_fact_x = 1.25 * 1920.0 / max_x
+    stretch_fact_y = 1080.0 / max_y
 
     for node in nodes:
         node.set_x(round(node.get_x() * stretch_fact_x))
