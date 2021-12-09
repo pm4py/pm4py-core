@@ -350,7 +350,10 @@ def get_process_tree_height(pt: ProcessTree) -> int:
 def process_tree_to_binary_process_tree(pt: ProcessTree) -> ProcessTree:
     if len(pt.children) > 2:
         new_subtree = ProcessTree()
-        new_subtree.operator = pt.operator
+        if pt.operator == pt_op.Operator.LOOP:
+            new_subtree.operator = pt_op.Operator.XOR
+        else:
+            new_subtree.operator = pt.operator
         new_subtree.children = pt.children[1:]
         pt.children = pt.children[:1]
         pt.children.append(new_subtree)
