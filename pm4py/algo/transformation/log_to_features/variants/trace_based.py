@@ -37,6 +37,7 @@ class Parameters(Enum):
     ENABLE_INDIRECT_PATHS_TIMES_LAST_OCC = "enable_indirect_paths_times_last_occ"
     ENABLE_WORK_IN_PROGRESS = "enable_work_in_progress"
     ENABLE_RESOURCE_WORKLOAD = "enable_resource_workload"
+    ENABLE_FIRST_LAST_ACTIVITY_INDEX = "enable_first_last_activity_index"
 
 
 def resource_workload(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Any, List[str]]:
@@ -380,6 +381,64 @@ def times_from_last_occurrence_activity_case(log: EventLog, parameters: Optional
             else:
                 data[-1].append(default_not_present)
                 data[-1].append(default_not_present)
+
+    return data, feature_names
+
+
+def first_last_activity_index_trace(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Any, List[str]]:
+    """
+    Consider as features the first and the last index of an activity inside a case
+
+    Parameters
+    ------------------
+    log
+        Event log
+    parameters
+        Parameters, including:
+        - Parameters.ACTIVITY_KEY => the attribute to use as activity
+        - Parameters.DEFAULT_NOT_PRESENT => the replacement value for activities that are not present for the specific case
+
+    Returns
+    -----------------
+    data
+        Numeric value of the features
+    feature_names
+        Names of the features
+    """
+    if parameters is None:
+        parameters = {}
+
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    default_not_present = exec_utils.get_param_value(Parameters.DEFAULT_NOT_PRESENT, parameters, -1)
+
+    activities_log = set()
+    for trace in log:
+        for event in trace:
+            activities_log.add(event[activity_key])
+    activities_log = sorted(list(activities_log))
+
+    data = []
+    feature_names = []
+    for act in activities_log:
+        feature_names.append("firstIndexAct@@"+act)
+        feature_names.append("lastIndexAct@@"+act)
+    for trace in log:
+        data.append([])
+
+        first_occ = {}
+        last_occ = {}
+        for index, event in enumerate(trace):
+            act = event[activity_key]
+            last_occ[act] = index
+            if act not in first_occ:
+                first_occ[act] = index
+        for act in activities_log:
+            if act not in first_occ:
+                data[-1].append(default_not_present)
+                data[-1].append(default_not_present)
+            else:
+                data[-1].append(first_occ[act])
+                data[-1].append(last_occ[act])
 
     return data, feature_names
 
@@ -937,6 +996,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
         in the case as feature
         - ENABLE_WORK_IN_PROGRESS => enables the work in progress (number of concurrent cases) as a feature
         - ENABLE_RESOURCE_WORKLOAD => enables the resource workload as a feature
+        - ENABLE_FIRST_LAST_ACTIVITY_INDEX => enables the insertion of the indexes of the activities as features
 
     Returns
     -------------
@@ -994,6 +1054,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
             Parameters.ENABLE_INDIRECT_PATHS_TIMES_LAST_OCC, parameters, enable_all)
         enable_work_in_progress = exec_utils.get_param_value(Parameters.ENABLE_WORK_IN_PROGRESS, parameters, enable_all)
         enable_resource_workload = exec_utils.get_param_value(Parameters.ENABLE_RESOURCE_WORKLOAD, parameters, enable_all)
+        enable_first_last_activity_index = exec_utils.get_param_value(Parameters.ENABLE_FIRST_LAST_ACTIVITY_INDEX, parameters, enable_all)
 
         log = converter.apply(log, parameters=parameters)
         if at_least_one_provided:
@@ -1047,6 +1108,12 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
 
         if enable_resource_workload:
             data, features_names = resource_workload(log, parameters=parameters)
+            for i in range(len(datas)):
+                datas[i] = datas[i] + data[i]
+            features_namess = features_namess + features_names
+
+        if enable_first_last_activity_index:
+            data, features_names = first_last_activity_index_trace(log, parameters=parameters)
             for i in range(len(datas)):
                 datas[i] = datas[i] + data[i]
             features_namess = features_namess + features_names
