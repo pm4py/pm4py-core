@@ -39,7 +39,7 @@ def get_groups_from_log(log_obj: Union[pd.DataFrame, EventLog], parameters: Opti
     if parameters is None:
         parameters = {}
 
-    activity_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
     group_key = exec_utils.get_param_value(Parameters.GROUP_KEY, parameters, xes_constants.DEFAULT_GROUP_KEY)
 
@@ -97,7 +97,7 @@ def get_res_act_from_log(log_obj: Union[pd.DataFrame, EventLog], parameters: Opt
     if parameters is None:
         parameters = {}
 
-    activity_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
     group_key = exec_utils.get_param_value(Parameters.GROUP_KEY, parameters, xes_constants.DEFAULT_GROUP_KEY)
 
