@@ -14,7 +14,8 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from typing import List
+
+from typing import List, Dict, Collection
 
 import pandas as pd
 
@@ -78,3 +79,48 @@ def ocel_flattening(ocel: OCEL, object_type: str) -> pd.DataFrame:
     """
     from pm4py.objects.ocel.util import flattening
     return flattening.flatten(ocel, object_type)
+
+
+
+
+def ocel_object_type_activities(ocel: OCEL) ->  Dict[str, Collection[str]]:
+    """
+    Gets the set of activities performed for each object type
+
+    Parameters
+    ----------------
+    ocel
+        Object-centric event log
+
+    Returns
+    ----------------
+    dict
+        A dictionary having as key the object types and as values the activities performed for that object type
+    """
+    from pm4py.statistics.ocel import ot_activities
+
+    return ot_activities.get_object_type_activities(ocel)
+
+
+def ocel_objects_ot_count(ocel: OCEL) -> Dict[str, Dict[str, int]]:
+    """
+    Counts for each event the number of related objects per type
+
+    Parameters
+    -------------------
+    ocel
+        Object-centric Event log
+    parameters
+        Parameters of the algorithm, including:
+        - Parameters.EVENT_ID => the event identifier to be used
+        - Parameters.OBJECT_ID => the object identifier to be used
+        - Parameters.OBJECT_TYPE => the object type to be used
+
+    Returns
+    -------------------
+    dict_ot
+        Dictionary associating to each event identifier a dictionary with the number of related objects
+    """
+    from pm4py.statistics.ocel import objects_ot_count
+
+    return objects_ot_count.get_objects_ot_count(ocel)
