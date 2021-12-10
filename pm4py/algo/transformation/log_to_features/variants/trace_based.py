@@ -30,6 +30,7 @@ class Parameters(Enum):
     DEFAULT_NOT_PRESENT = "default_not_present"
     ENABLE_ALL_EXTRA_FEATURES = "enable_all_extra_features"
     ENABLE_CASE_DURATION = "enable_case_duration"
+    ADD_CASE_IDENTIFIER_COLUMN = "add_case_identifier_column"
     ENABLE_TIMES_FROM_FIRST_OCCURRENCE = "enable_times_from_first_occurrence"
     ENABLE_TIMES_FROM_LAST_OCCURRENCE = "enable_times_from_last_occurrence"
     ENABLE_DIRECT_PATHS_TIMES_LAST_OCC = "enable_direct_paths_times_last_occ"
@@ -927,6 +928,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
         - ENABLE_CASE_DURATION => enables the case duration as additional feature
         - ENABLE_TIMES_FROM_FIRST_OCCURRENCE => enables the addition of the times from start of the case, to the end
         of the case, from the first occurrence of an activity of a case
+        - ADD_CASE_IDENTIFIER_COLUMN => adds the case identifier (string) as column of the feature table (default: False)
         - ENABLE_TIMES_FROM_LAST_OCCURRENCE => enables the addition of the times from start of the case, to the end
         of the case, from the last occurrence of an activity of a case
         - ENABLE_DIRECT_PATHS_TIMES_LAST_OCC => add the duration of the last occurrence of a directed (i, i+1) path
@@ -979,6 +981,8 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
         return fea_df, feature_names
     else:
         enable_all = exec_utils.get_param_value(Parameters.ENABLE_ALL_EXTRA_FEATURES, parameters, False)
+        case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, xes_constants.DEFAULT_TRACEID_KEY)
+        add_case_identifier_column = exec_utils.get_param_value(Parameters.ADD_CASE_IDENTIFIER_COLUMN, parameters, False)
         enable_case_duration = exec_utils.get_param_value(Parameters.ENABLE_CASE_DURATION, parameters, enable_all)
         enable_times_from_first_occ = exec_utils.get_param_value(Parameters.ENABLE_TIMES_FROM_FIRST_OCCURRENCE,
                                                                  parameters, enable_all)
@@ -998,7 +1002,13 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
         else:
             datas, features_namess = get_default_representation(log, parameters=parameters)
 
+        if add_case_identifier_column:
+            for i in range(len(datas)):
+                datas[i] = [log[i].attributes[case_id_key]] + datas[i]
+            features_namess = ["@@case_id_column"] + features_namess
+
         # add additional features
+
         if enable_case_duration:
             data, features_names = case_duration(log, parameters=parameters)
             for i in range(len(datas)):
