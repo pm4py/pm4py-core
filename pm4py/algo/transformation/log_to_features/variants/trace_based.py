@@ -953,6 +953,8 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
     str_evsucc_attr = exec_utils.get_param_value(Parameters.STR_EVSUCC_ATTRIBUTES, parameters, None)
     feature_names = exec_utils.get_param_value(Parameters.FEATURE_NAMES, parameters, None)
 
+    at_least_one_provided = (str_tr_attr is not None) or (num_tr_attr is not None) or (str_ev_attr is not None) or (num_ev_attr is not None)
+
     if str_tr_attr is None:
         str_tr_attr = []
 
@@ -990,7 +992,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
         enable_resource_workload = exec_utils.get_param_value(Parameters.ENABLE_RESOURCE_WORKLOAD, parameters, enable_all)
 
         log = converter.apply(log, parameters=parameters)
-        if str_tr_attr or num_tr_attr or str_ev_attr or num_ev_attr:
+        if at_least_one_provided:
             datas, features_namess = get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr,
                                       str_evsucc_attr=str_evsucc_attr, feature_names=feature_names)
         else:
