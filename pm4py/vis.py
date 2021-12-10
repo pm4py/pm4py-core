@@ -17,7 +17,7 @@
 import os
 from copy import copy
 from typing import Optional
-from typing import Union, List, Dict, Any
+from typing import Union, List, Dict, Any, Tuple
 
 import pandas as pd
 
@@ -741,3 +741,87 @@ def save_vis_ocdfg(ocdfg: Dict[str, Any], file_path: str, annotation: str = "fre
     parameters[classic.Parameters.PERFORMANCE_AGGREGATION_MEASURE] = performance_aggregation
     gviz = classic.apply(ocdfg, parameters=parameters)
     visualizer.save(gviz, file_path)
+
+
+def view_ocpn(ocpn: Dict[str, Any], format: str = "png"):
+    """
+    Visualizes on the screen the object-centric Petri net
+
+    Parameters
+    --------------
+    ocpn
+        Object-centric Petri net
+    format
+        Format of the visualization (default: png)
+    """
+    from pm4py.visualization.ocel.ocpn import visualizer as ocpn_visualizer
+    gviz = ocpn_visualizer.apply(ocpn, parameters={"format": format})
+    ocpn_visualizer.view(gviz)
+
+
+def save_vis_ocpn(ocpn: Dict[str, Any], file_path: str):
+    """
+    Saves the visualization of the object-centric Petri net into a file
+
+    Parameters
+    ----------------
+    ocpn
+        Object-centric Petri net
+    file_path
+        Target path of the visualization
+    """
+    format = os.path.splitext(file_path)[1][1:]
+    from pm4py.visualization.ocel.ocpn import visualizer as ocpn_visualizer
+    gviz = ocpn_visualizer.apply(ocpn, parameters={"format": format})
+    ocpn_visualizer.save(gviz, file_path)
+
+
+def view_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, Any]], variant: str = "frequency", format: str = "png", activity_threshold: int = 1, edge_threshold: int = 1):
+    """
+    Visualizes the network analysis
+
+    Parameters
+    -----------------
+    network_analysis
+        Network analysis
+    variant
+        Variant of the visualization:
+            - frequency (if the discovered network analysis contains the frequency of the interactions)
+            - performance (if the discovered network analysis contains the performance of the interactions)
+    format
+        Format of the visualization (default: png)
+    activity_threshold
+        The minimum number of occurrences for an activity to be included (default: 1)
+    edge_threshold
+        The minimum number of occurrences for an edge to be included (default: 1)
+    """
+    from pm4py.visualization.network_analysis import visualizer as network_analysis_visualizer
+    variant = network_analysis_visualizer.Variants.PERFORMANCE if variant == "performance" else network_analysis_visualizer.Variants.FREQUENCY
+    gviz = network_analysis_visualizer.apply(network_analysis, variant=variant, parameters={"format": format, "activity_threshold": activity_threshold, "edge_threshold": edge_threshold})
+    network_analysis_visualizer.view(gviz)
+
+
+def save_vis_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, Any]], file_path: str, variant: str = "frequency", activity_threshold: int = 1, edge_threshold: int = 1):
+    """
+    Saves the visualization of the network analysis
+
+    Parameters
+    -----------------
+    network_analysis
+        Network analysis
+    file_path
+        Target path of the visualization
+    variant
+        Variant of the visualization:
+            - frequency (if the discovered network analysis contains the frequency of the interactions)
+            - performance (if the discovered network analysis contains the performance of the interactions)
+    activity_threshold
+        The minimum number of occurrences for an activity to be included (default: 1)
+    edge_threshold
+        The minimum number of occurrences for an edge to be included (default: 1)
+    """
+    format = os.path.splitext(file_path)[1][1:]
+    from pm4py.visualization.network_analysis import visualizer as network_analysis_visualizer
+    variant = network_analysis_visualizer.Variants.PERFORMANCE if variant == "performance" else network_analysis_visualizer.Variants.FREQUENCY
+    gviz = network_analysis_visualizer.apply(network_analysis, variant=variant, parameters={"format": format, "activity_threshold": activity_threshold, "edge_threshold": edge_threshold})
+    network_analysis_visualizer.save(gviz, file_path)

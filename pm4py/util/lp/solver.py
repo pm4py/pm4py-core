@@ -20,6 +20,8 @@ import os
 # not available in the latest version of PM4Py
 CVXOPT = "cvxopt"
 PULP = "pulp"
+SCIPY = "scipy"
+
 # not available in the latest version of PM4Py
 CVXOPT_SOLVER_CUSTOM_ALIGN = "cvxopt_solver_custom_align"
 CVXOPT_SOLVER_CUSTOM_ALIGN_ILP = "cvxopt_solver_custom_align_ilp"
@@ -42,6 +44,16 @@ if pkgutil.find_loader("pulp"):
     VERSIONS_GET_POINTS_FROM_SOL[PULP] = pulp_solver.get_points_from_sol
 
     DEFAULT_LP_SOLVER_VARIANT = PULP
+
+if pkgutil.find_loader("scipy"):
+    # in the case scipy is installed, it works
+    from pm4py.util.lp.variants import scipy_solver
+
+    VERSIONS_APPLY[SCIPY] = scipy_solver.apply
+    VERSIONS_GET_PRIM_OBJ[SCIPY] = scipy_solver.get_prim_obj_from_sol
+    VERSIONS_GET_POINTS_FROM_SOL[SCIPY] = scipy_solver.get_points_from_sol
+
+    DEFAULT_LP_SOLVER_VARIANT = SCIPY
 
 if pkgutil.find_loader("ortools"):
     # in the case ortools is installed, it works

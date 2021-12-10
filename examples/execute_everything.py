@@ -4,6 +4,24 @@ import sys
 import traceback
 
 
+def timestamp_interleavings():
+    from examples import timestamp_interleavings
+    print("\n\ntimestamp_interleavings")
+    timestamp_interleavings.execute_script()
+
+
+def object_centric_petri_net_discovery():
+    from examples import object_centric_petri_net_discovery
+    print("\n\nobject_centric_petri_net_discovery")
+    object_centric_petri_net_discovery.execute_script()
+
+
+def trans_system_stochastic_view():
+    from examples import trans_system_stochastic_vis
+    print("\n\ntrans_system_stochastic_view")
+    trans_system_stochastic_vis.execute_script()
+
+
 def network_analysis():
     from examples import network_analysis
     print("\n\nnetwork_analysis")
@@ -477,6 +495,9 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(timestamp_interleavings)
+    execute_script(object_centric_petri_net_discovery)
+    execute_script(trans_system_stochastic_view)
     execute_script(network_analysis)
     execute_script(read_write_ocel)
     execute_script(ocdfg_discovery)

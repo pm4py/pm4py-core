@@ -16,15 +16,15 @@
 '''
 from enum import Enum
 
-from pm4py.objects.bpmn.layout.variants import pygraphviz
+from pm4py.objects.bpmn.layout.variants import graphviz
 from pm4py.util import exec_utils
 
 
 class Variants(Enum):
-    PYGRAPHVIZ = pygraphviz
+    GRAPHVIZ = graphviz
 
 
-DEFAULT_VARIANT = Variants.PYGRAPHVIZ
+DEFAULT_VARIANT = Variants.GRAPHVIZ
 
 
 def apply(bpmn_graph, variant=DEFAULT_VARIANT, parameters=None):
@@ -37,7 +37,7 @@ def apply(bpmn_graph, variant=DEFAULT_VARIANT, parameters=None):
         BPMN graph
     variant
         Variant of the algorithm to use, possible values:
-        - Variants.PYGRAPHVIZ
+        - Variants.GRAPHVIZ
     parameters
         Parameters of the algorithm
 

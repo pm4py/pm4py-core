@@ -434,3 +434,23 @@ def discover_ocdfg(ocel: OCEL, business_hours=False, worktiming=[7, 17], weekend
     parameters["weekends"] = weekends
     from pm4py.algo.discovery.ocel.ocdfg import algorithm as ocdfg_discovery
     return ocdfg_discovery.apply(ocel, parameters=parameters)
+
+
+def discover_oc_petri_net(ocel: OCEL) -> Dict[str, Any]:
+    """
+    Discovers an object-centric Petri net from the provided object-centric event log.
+
+    Reference paper: van der Aalst, Wil MP, and Alessandro Berti. "Discovering object-centric Petri nets." Fundamenta informaticae 175.1-4 (2020): 1-40.
+
+    Parameters
+    -----------------
+    ocel
+        Object-centric event log
+
+    Returns
+    ----------------
+    ocpn
+        Object-centric Petri net
+    """
+    from pm4py.algo.discovery.ocel.ocpn import algorithm as ocpn_discovery
+    return ocpn_discovery.apply(ocel)
