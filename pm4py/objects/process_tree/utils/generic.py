@@ -347,17 +347,25 @@ def get_process_tree_height(pt: ProcessTree) -> int:
         return 1 + max([get_process_tree_height(x) for x in pt.children])
 
 
-def process_tree_to_binary_process_tree(pt: ProcessTree) -> ProcessTree:
-    if len(pt.children) > 2:
-        new_subtree = ProcessTree()
-        new_subtree.operator = pt.operator
-        new_subtree.children = pt.children[1:]
-        pt.children = pt.children[:1]
-        pt.children.append(new_subtree)
-        new_subtree.parent = pt
-    for c in pt.children:
-        process_tree_to_binary_process_tree(c)
-    return pt
+def process_tree_to_binary_process_tree(tree: ProcessTree) -> ProcessTree:
+    if len(tree.children) > 2:
+        left_tree = tree.children[0]
+
+        right_tree_op = tree.operator
+        if tree.operator == pt_op.Operator.LOOP:
+            right_tree_op = pt_op.Operator.XOR
+
+        right_tree = ProcessTree(operator=right_tree_op, parent=tree,
+                                 children=tree.children[1:])
+        for child in right_tree.children:
+            child.parent = right_tree
+
+        tree.children = [left_tree, right_tree]
+
+    for child in tree.children:
+        process_tree_to_binary_process_tree(child)
+
+    return tree
 
 
 def common_ancestor(t1: ProcessTree, t2: ProcessTree) -> Optional[ProcessTree]:
