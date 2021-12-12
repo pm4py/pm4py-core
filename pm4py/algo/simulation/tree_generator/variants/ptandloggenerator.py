@@ -143,8 +143,10 @@ class GeneratedTree(object):
         :param max: Highest number
         :return: Distribution object
         """
-        c = (mode - min) / (max - min)
-        return triangular(c, loc=min, scale=max - min)
+        # manage the case where min = mode = max
+        c = (mode - min + 10**-12) / (max - min + 10**-6)
+        ret = triangular(c, loc=min, scale=max - min)
+        return ret
 
     def draw_random_number_from_distribution(self):
         return self.activity_distribution.rvs(1)[0]
@@ -394,7 +396,7 @@ class GeneratedTree(object):
                                                                           self.parameters["min"],
                                                                           self.parameters["max"])
         # Number of total activities represented in the tree. Also, tau is counted as an activity.
-        self.total_activities = int(math.ceil(self.draw_random_number_from_distribution()))
+        self.total_activities = int(round(self.draw_random_number_from_distribution()))
 
 
     def generate(self):
