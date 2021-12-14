@@ -1,5 +1,48 @@
 # PM4Py Changelog
 
+## PM4Py 2.2.17 (2021.12.10)
+
+### Added
+* 9b795123
+    * add converter from data frame to activity/case table
+* f28fc490
+    * add possibility to add the case identifier in the feature table (see: https://github.com/pm4py/pm4py-core/issues/292)
+* 12b6ec24
+    * add interleaving DFG visualizer for visualizing inter-process dependencies
+* af9c3262
+    * add first/last occurrence index per activity in the feature table
+* 9231a5d7
+    * add support for conversion of interleaving data structure
+* 06f54287
+    * add support to merge two separate logs using an n:m case-relation table
+* 146f49c2
+    * add the possibility to stream OCEL events and define object-specific listeners
+
+### Changed
+* 79920a18
+    * improved string representation of Petri net objects
+* 9358fdf4
+    * minor refactoring for interval detection in event log
+### Deprecated
+
+### Fixed
+* 5dccbe61
+    * fix faulty conversion of process trees to binary equivalent.
+* 976cc601
+    * fix for: https://github.com/pm4py/pm4py-core/issues/293
+* 1e4f602b
+    * fix for: https://github.com/pm4py/pm4py-core/issues/295
+* 
+    * fix for visualizing multiple tokens in the initial marking in the same place
+
+
+### Removed
+
+### Other
+
+---
+
+
 ## PM4Py 2.2.16 (2021.11.16)
 
 ### Added
