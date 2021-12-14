@@ -1,1 +1,1 @@
-from pm4py.objects.ocel.util import attributes_names, extended_table, flattening, related_objects, related_events, filtering_utils, log_ocel
+from pm4py.objects.ocel.util import attributes_names, extended_table, flattening, related_objects, related_events, filtering_utils, log_ocel, sampling
