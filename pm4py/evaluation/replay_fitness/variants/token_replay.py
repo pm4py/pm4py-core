@@ -88,9 +88,10 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
     token_replay_variant = exec_utils.get_param_value(Parameters.TOKEN_REPLAY_VARIANT, parameters,
                                                       executor.Variants.TOKEN_REPLAY)
     cleaning_token_flood = exec_utils.get_param_value(Parameters.CLEANING_TOKEN_FLOOD, parameters, False)
+    remaining_in_fitness = exec_utils.get_param_value(token_replay.Parameters.CONSIDER_REMAINING_IN_FITNESS, parameters, True)
 
     parameters_tr = {token_replay.Parameters.ACTIVITY_KEY: activity_key,
-                     token_replay.Parameters.CONSIDER_REMAINING_IN_FITNESS: True,
+                     token_replay.Parameters.CONSIDER_REMAINING_IN_FITNESS: remaining_in_fitness,
                      token_replay.Parameters.CLEANING_TOKEN_FLOOD: cleaning_token_flood}
 
     aligned_traces = executor.apply(log, petri_net, initial_marking, final_marking, variant=token_replay_variant,
