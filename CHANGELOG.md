@@ -34,8 +34,10 @@
     * fix for: https://github.com/pm4py/pm4py-core/issues/293
 * 1e4f602b
     * fix for: https://github.com/pm4py/pm4py-core/issues/295
-* 
+* be629d97
     * fix for visualizing multiple tokens in the initial marking in the same place
+* a06cc1c8
+    * fix for the correct use of the triangular distribution on generating process trees
 
 
 ### Removed
