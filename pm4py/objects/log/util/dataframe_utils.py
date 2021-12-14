@@ -34,6 +34,8 @@ LEGACY_PARQUET_CASECONCEPTNAME = "caseAAAconceptAAAname"
 class Parameters(Enum):
     PARTITION_COLUMN = "partition_column"
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    CASE_PREFIX = constants.CASE_ATTRIBUTE_PREFIX
+    CASE_ATTRIBUTES = "case_attributes"
     MANDATORY_ATTRIBUTES = "mandatory_attributes"
     MAX_NO_CASES = "max_no_cases"
     MIN_DIFFERENT_OCC_STR_ATTR = 5
@@ -452,3 +454,42 @@ def insert_artificial_start_end(df0: pd.DataFrame, parameters: Optional[Dict[Any
     df.attrs = df0.attrs
 
     return df
+
+
+def dataframe_to_activity_case_table(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None):
+    """
+    Transforms a Pandas dataframe into:
+    - an "activity" table, containing the events and their attributes
+    - a "case" table, containing the cases and their attributes
+
+    Parameters
+    --------------
+    df
+        Dataframe
+    parameters
+        Parameters of the algorithm that should be used, including:
+        - Parameters.CASE_ID_KEY => the column to be used as case ID (shall be included both in the activity table and the case table)
+        - Parameters.CASE_PREFIX => if a list of attributes at the case level is not provided, then all the ones of the dataframe
+                                    starting with one of these are considered.
+        - Parameters.CASE_ATTRIBUTES => the attributes of the dataframe to be used as case columns
+
+    Returns
+    ---------------
+    activity_table
+        Activity table
+    case_table
+        Case table
+    """
+    if parameters is None:
+        parameters = {}
+
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    case_id_prefix = exec_utils.get_param_value(Parameters.CASE_PREFIX, parameters, constants.CASE_ATTRIBUTE_PREFIX)
+
+    case_attributes = exec_utils.get_param_value(Parameters.CASE_ATTRIBUTES, parameters, set([x for x in df.columns if x.startswith(case_id_prefix)]))
+    event_attributes = set([x for x in df.columns if x not in case_attributes])
+
+    activity_table = df[event_attributes.union({case_id_key})]
+    case_table = df[case_attributes.union({case_id_key})].groupby(case_id_key).first().reset_index()
+
+    return activity_table, case_table

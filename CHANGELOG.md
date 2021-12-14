@@ -1,5 +1,62 @@
 # PM4Py Changelog
 
+## PM4Py 2.2.17 (2021.12.14)
+
+### Added
+* 9b795123
+    * add converter from data frame to activity/case table
+* f28fc490
+    * add possibility to add the case identifier in the feature table (see: https://github.com/pm4py/pm4py-core/issues/292)
+* 12b6ec24
+    * add interleaving DFG visualizer for visualizing inter-process dependencies
+* af9c3262
+    * add first/last occurrence index per activity in the feature table
+* 9231a5d7
+    * add support for conversion of interleaving data structure
+* 06f54287
+    * add support to merge two separate logs using an n:m case-relation table
+* 146f49c2
+    * add the possibility to stream OCEL events and define object-specific listeners
+* 573c26c2
+    * add feature extraction functionality that records the position of activities
+* ff62d665
+    * add case and event sampling to the simplified interface
+* d8f71bc3
+    * add activity-position summary in the simplified interface
+* d4011ff1
+    * add link analysis code for OCEL    
+
+### Changed
+* 79920a18
+    * improved string representation of Petri net objects
+* 9358fdf4
+    * minor refactoring for interval detection in event log
+### Deprecated
+
+### Fixed
+* 5dccbe61
+    * fix faulty conversion of process trees to binary equivalent.
+* 976cc601
+    * fix for: https://github.com/pm4py/pm4py-core/issues/293
+* 1e4f602b
+    * fix for: https://github.com/pm4py/pm4py-core/issues/295
+* be629d97
+    * fix for visualizing multiple tokens in the initial marking in the same place
+* a06cc1c8
+    * fix for the correct use of the triangular distribution on generating process trees
+* 51181d6c
+    * fix support for generating multiple process trees in one go
+* 9a0e2be1
+    * general revision of the process tree generator code    
+
+
+### Removed
+
+### Other
+
+---
+
+
 ## PM4Py 2.2.16 (2021.11.16)
 
 ### Added

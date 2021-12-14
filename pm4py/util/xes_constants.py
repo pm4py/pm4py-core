@@ -44,6 +44,7 @@ KEY_URI = 'uri'
 KEY_VALUE = 'value'
 
 DEFAULT_NAME_KEY = 'concept:name'
+DEFAULT_INSTANCE_KEY = 'concept:instance'
 DEFAULT_TIMESTAMP_KEY = 'time:timestamp'
 DEFAULT_START_TIMESTAMP_KEY = 'start_timestamp'
 DEFAULT_TRACEID_KEY = 'concept:name'
