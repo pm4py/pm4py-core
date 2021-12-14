@@ -3,7 +3,7 @@ from typing import Optional, Tuple, Any, Collection, Union, List
 
 import pandas as pd
 
-from pm4py.objects.log.obj import EventLog, Trace, Event
+from pm4py.objects.log.obj import EventLog, EventStream, Trace, Event
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants, xes_constants, pandas_utils
@@ -368,3 +368,53 @@ def general_checks_classical_event_log(log):
     if type(log) is OCEL:
         raise Exception("the method cannot be applied on object-centric event logs!")
     return True
+
+
+def sample_cases(log: Union[EventLog, pd.DataFrame], num_cases: int) -> Union[EventLog, pd.DataFrame]:
+    """
+    (Random) Sample a given number of cases from the event log.
+
+    Parameters
+    ---------------
+    log
+        Event log / Pandas dataframe
+    num_cases
+        Number of cases to sample
+
+    Returns
+    ---------------
+    sampled_log
+        Sampled event log (containing the specified amount of cases)
+    """
+    if isinstance(log, EventLog):
+        from pm4py.objects.log.util import sampling
+        return sampling.sample(log, num_cases)
+    elif isinstance(log, pd.DataFrame):
+        from pm4py.objects.log.util import dataframe_utils
+        return dataframe_utils.sample_dataframe(log, parameters={"max_no_cases": num_cases})
+
+
+def sample_events(log: Union[EventStream, OCEL], num_events: int) -> Union[EventStream, OCEL]:
+    """
+    (Random) Sample a given number of events from the event log.
+
+    Parameters
+    ---------------
+    log
+        Event stream / OCEL / Pandas dataframes
+    num_events
+        Number of events to sample
+
+    Returns
+    ---------------
+    sampled_log
+        Sampled event stream / OCEL / Pandas dataframes (containing the specified amount of events)
+    """
+    if isinstance(log, EventStream):
+        from pm4py.objects.log.util import sampling
+        return sampling.sample_stream(log, num_events)
+    elif isinstance(log, OCEL):
+        from pm4py.objects.ocel.util import sampling
+        return sampling.sample_ocel_events(log, parameters={"num_entities": num_events})
+    elif isinstance(log, pd.DataFrame):
+        return log.sample(n=num_events)
