@@ -41,7 +41,9 @@
 * a06cc1c8
     * fix for the correct use of the triangular distribution on generating process trees
 * 51181d6c
-    * fix support for generating multiple process trees in one go    
+    * fix support for generating multiple process trees in one go
+* 9a0e2be1
+    * general revision of the process tree generator code    
 
 
 ### Removed
