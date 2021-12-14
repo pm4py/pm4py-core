@@ -17,6 +17,8 @@
     * add support to merge two separate logs using an n:m case-relation table
 * 146f49c2
     * add the possibility to stream OCEL events and define object-specific listeners
+* 573c26c2
+    * add feature extraction functionality that records the position of activities 
 
 ### Changed
 * 79920a18
