@@ -23,6 +23,8 @@
     * add case and event sampling to the simplified interface
 * d8f71bc3
     * add activity-position summary in the simplified interface
+* d4011ff1
+    * add link analysis code for OCEL    
 
 ### Changed
 * 79920a18
