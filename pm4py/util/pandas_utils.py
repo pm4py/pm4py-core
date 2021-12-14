@@ -4,6 +4,7 @@ import pandas as pd
 
 from pm4py.util import constants, xes_constants
 import deprecation
+import numpy as np
 
 
 def to_dict_records(df):
@@ -83,6 +84,38 @@ def insert_ev_in_tr_index(df: pd.DataFrame, case_id: str = constants.CASE_CONCEP
     df = df.copy()
     df_trace_idx = df.groupby(case_id).cumcount()
     df[column_name] = df_trace_idx
+    return df
+
+
+def insert_feature_activity_position_in_trace(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAME,
+                                      activity_key: str = xes_constants.DEFAULT_NAME_KEY, prefix="@@position_"):
+    """
+    Inserts additional columns @@position_ACT1, @@position_ACT2 ...
+    which are populated for every event having activity ACT1, ACT2 respectively,
+    with the index of the event inside its case.
+
+    Parameters
+    ------------------
+    df
+        Pandas dataframe
+    case_id
+        Case idntifier
+    activity_key
+        Activity
+    prefix
+        Prefix of the "activity position in trace" feature (default: @@position_)
+
+    Returns
+    ------------------
+    df
+        Pandas dataframe
+    """
+    df = insert_ev_in_tr_index(df, case_id=case_id)
+    activities = set(df[activity_key].unique())
+    for act in activities:
+        df[prefix + act] = df[activity_key].apply(lambda x: np.nan if x == act else -1)
+        df[prefix + act] = df[prefix + act].fillna(df[constants.DEFAULT_INDEX_IN_TRACE_KEY])
+        df[prefix + act] = df[prefix + act].replace(-1, np.nan)
     return df
 
 
