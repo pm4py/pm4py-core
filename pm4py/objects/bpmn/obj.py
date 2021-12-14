@@ -124,16 +124,34 @@ class BPMN(object):
         def __init__(self, name="", gatewayDirection="Unspecified", in_arcs=None, out_arcs=None):
             BPMN.BPMNNode.__init__(self, name, in_arcs, out_arcs)
             self.__gatewayDirection = gatewayDirection
+        
+        def get_gatewayDirection(self):
+            return self.__gatewayDirection
+        
+        def set_gatewayDirection(self, direction : str):
+            self.__gatewayDirection = direction
 
     class ExclusiveGateway(BPMNNode):
         def __init__(self, name="", gatewayDirection="Unspecified", in_arcs=None, out_arcs=None):
             BPMN.BPMNNode.__init__(self, name, in_arcs, out_arcs)
             self.__gatewayDirection = gatewayDirection
+        
+        def get_gatewayDirection(self):
+            return self.__gatewayDirection
+        
+        def set_gatewayDirection(self, direction : str):
+            self.__gatewayDirection = direction
 
     class InclusiveGateway(BPMNNode):
         def __init__(self, name="", gatewayDirection="Unspecified", in_arcs=None, out_arcs=None):
             BPMN.BPMNNode.__init__(self, name, in_arcs, out_arcs)
             self.__gatewayDirection = gatewayDirection
+        
+        def get_gatewayDirection(self):
+            return self.__gatewayDirection
+        
+        def set_gatewayDirection(self, direction : str):
+            self.__gatewayDirection = direction
 
     class Flow(object):
         def __init__(self, source, target, name=""):
