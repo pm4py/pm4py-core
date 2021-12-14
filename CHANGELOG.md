@@ -28,7 +28,7 @@
 * cf72dfe2
     * add support for BPMN Gateway direction properties (community contribution by @gregvanhoudt)
 * 1c675fba
-    * fix hardcoded parameter in replay fitness computation (community contribution by @phil1-h)
+    * fix hardcoded parameter in replay fitness computation (community contribution by @phi1-h)
 
 ### Changed
 * 79920a18
@@ -36,7 +36,7 @@
 * 9358fdf4
     * minor refactoring for interval detection in event log
 * 413cee07
-    * improvement enhancement for token-based reply (community contribution by @phil1-h)
+    * improvement enhancement for token-based reply (community contribution by @phi1-h)
 ### Deprecated
 
 ### Fixed
