@@ -11,7 +11,6 @@ import random
 from typing import Optional, Dict, Any, Union, Tuple
 from string import ascii_lowercase
 import itertools
-from pm4py.objects.process_tree.utils import generic as tree_util
 
 
 def choices(population, weights=None, *, cum_weights=None, k=1):
@@ -298,5 +297,4 @@ class GeneratedTree(object):
         # add duplicates
         self.add_duplicates()
 
-        self.tree = tree_util.fold(self.tree)
         return self.tree
