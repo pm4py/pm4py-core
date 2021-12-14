@@ -18,7 +18,9 @@
 * 146f49c2
     * add the possibility to stream OCEL events and define object-specific listeners
 * 573c26c2
-    * add feature extraction functionality that records the position of activities 
+    * add feature extraction functionality that records the position of activities
+* ff62d665
+    * add case and event sampling to the simplified interface 
 
 ### Changed
 * 79920a18
