@@ -24,13 +24,19 @@
 * d8f71bc3
     * add activity-position summary in the simplified interface
 * d4011ff1
-    * add link analysis code for OCEL    
+    * add link analysis code for OCEL
+* cf72dfe2
+    * add support for BPMN Gateway direction properties (community contribution by @gregvanhoudt)
+* 1c675fba
+    * fix hardcoded parameter in replay fitness computation (community contribution by @phil1-h)
 
 ### Changed
 * 79920a18
     * improved string representation of Petri net objects
 * 9358fdf4
     * minor refactoring for interval detection in event log
+* 413cee07
+    * improvement enhancement for token-based reply (community contribution by @phil1-h)
 ### Deprecated
 
 ### Fixed
