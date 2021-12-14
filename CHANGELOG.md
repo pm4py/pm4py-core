@@ -20,7 +20,9 @@
 * 573c26c2
     * add feature extraction functionality that records the position of activities
 * ff62d665
-    * add case and event sampling to the simplified interface 
+    * add case and event sampling to the simplified interface
+* d8f71bc3
+    * add activity-position summary in the simplified interface
 
 ### Changed
 * 79920a18
