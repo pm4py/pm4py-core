@@ -20,6 +20,19 @@ from pm4py.util import constants
 from pm4py.util import xes_constants as xes
 from pm4py.objects.log.obj import EventLog, Trace, Event
 from copy import copy
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
+    TRANSITION_KEY = constants.PARAMETER_CONSTANT_TRANSITION_KEY
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    LIFECYCLE_INSTANCE_KEY = "pm4py:param:lifecycle:instance:key"
+    BUSINESS_HOURS = "business_hours"
+    WORKTIMING = "worktiming"
+    WEEKENDS = "weekends"
 
 
 def to_interval(log, parameters=None):
@@ -42,17 +55,14 @@ def to_interval(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
-    start_timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY in parameters else xes.DEFAULT_START_TIMESTAMP_KEY
-    transition_key = parameters[
-        constants.PARAMETER_CONSTANT_TRANSITION_KEY] if constants.PARAMETER_CONSTANT_TRANSITION_KEY in parameters else xes.DEFAULT_TRANSITION_KEY
-    activity_key = parameters[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
-    business_hours = parameters["business_hours"] if "business_hours" in parameters else False
-    worktiming = parameters["worktiming"] if "worktiming" in parameters else [7, 17]
-    weekends = parameters["weekends"] if "weekends" in parameters else [6, 7]
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, xes.DEFAULT_START_TIMESTAMP_KEY)
+    transition_key = exec_utils.get_param_value(Parameters.TRANSITION_KEY, parameters, xes.DEFAULT_TRANSITION_KEY)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    lifecycle_instance_key = exec_utils.get_param_value(Parameters.LIFECYCLE_INSTANCE_KEY, parameters, xes.DEFAULT_INSTANCE_KEY)
+    business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
+    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
+    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
 
     if log is not None and len(log) > 0:
         if "PM4PY_TYPE" in log.attributes and log.attributes["PM4PY_TYPE"] == "interval":
@@ -74,6 +84,8 @@ def to_interval(log, parameters=None):
             activities_start = {}
             for event in trace:
                 activity = event[activity_key]
+                instance = event[lifecycle_instance_key] if lifecycle_instance_key in event else None
+                activity = (activity, instance)
                 transition = event[transition_key] if transition_key in event else "complete"
                 timestamp = event[timestamp_key]
                 if transition.lower() == "start":
@@ -132,12 +144,9 @@ def to_lifecycle(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
-    start_timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY in parameters else xes.DEFAULT_START_TIMESTAMP_KEY
-    transition_key = parameters[
-        constants.PARAMETER_CONSTANT_TRANSITION_KEY] if constants.PARAMETER_CONSTANT_TRANSITION_KEY in parameters else xes.DEFAULT_TRANSITION_KEY
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, xes.DEFAULT_START_TIMESTAMP_KEY)
+    transition_key = exec_utils.get_param_value(Parameters.TRANSITION_KEY, parameters, xes.DEFAULT_TRANSITION_KEY)
 
     if log is not None and len(log) > 0:
         if "PM4PY_TYPE" in log.attributes and log.attributes["PM4PY_TYPE"] == "lifecycle":
@@ -196,12 +205,10 @@ def assign_lead_cycle_time(log, parameters=None):
     if parameters is None:
         parameters = {}
 
-    start_timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY in parameters else xes.DEFAULT_START_TIMESTAMP_KEY
-    timestamp_key = parameters[
-        constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else xes.DEFAULT_TIMESTAMP_KEY
-    worktiming = parameters["worktiming"] if "worktiming" in parameters else [7, 17]
-    weekends = parameters["weekends"] if "weekends" in parameters else [6, 7]
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, xes.DEFAULT_START_TIMESTAMP_KEY)
+    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
+    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
 
     interval_log = to_interval(log, parameters=parameters)
 

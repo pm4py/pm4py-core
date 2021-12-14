@@ -16,13 +16,15 @@
 '''
 from typing import Dict, Union, List, Tuple, Collection
 from typing import Set
+from collections import Counter
 
 import pandas as pd
 
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.log.obj import EventLog, Trace
-from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
+from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns, insert_ev_in_tr_index
 from pm4py.utils import get_properties, general_checks_classical_event_log
+from pm4py.util import xes_constants, constants
 from copy import copy
 import deprecation
 
@@ -475,3 +477,44 @@ def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business
         from pm4py.statistics.traces.generic.log import case_statistics
         cd = case_statistics.get_cases_description(log, parameters=properties)
         return cd[case_id]["caseDuration"]
+
+
+def get_activity_position_summary(log: Union[EventLog, pd.DataFrame], activity: str) -> Dict[int, int]:
+    """
+    Given an event log, returns a dictionary which summarize the positions
+    of the activities in the different cases of the event log.
+    E.g., if an activity happens 1000 times in the position 1 (the second event of a case),
+    and 500 times in the position 2 (the third event of a case), then the returned dictionary would be:
+    {1: 1000, 2: 500}
+
+    Parameters
+    -----------------
+    log
+        Event log object / Pandas dataframe
+    activity
+        Activity to consider
+
+    Returns
+    -----------------
+    pos_dict_summary
+        Summary of the positions of the activity in the trace (e.g. {1: 1000, 2: 500})
+    """
+    general_checks_classical_event_log(log)
+    properties = get_properties(log)
+    activity_key = properties[
+        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in properties else xes_constants.DEFAULT_NAME_KEY
+    case_id_key = properties[
+        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in properties else constants.CASE_CONCEPT_NAME
+
+    if check_is_pandas_dataframe(log):
+        log = insert_ev_in_tr_index(log, case_id_key, "@@index_in_trace")
+        ret = log[log[activity_key] == activity]["@@index_in_trace"].value_counts().to_dict()
+        return ret
+    else:
+        ret = Counter()
+        for trace in log:
+            for i in range(len(trace)):
+                this_act = trace[i][activity_key]
+                if this_act == activity:
+                    ret[i] += 1
+        return dict(ret)

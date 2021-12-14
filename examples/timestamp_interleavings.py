@@ -1,6 +1,7 @@
 import pm4py
 import pandas as pd
 from pm4py.algo.discovery.ocel.interleavings import algorithm as interleavings_miner
+from pm4py.visualization.ocel.interleavings import visualizer as interleavings_visualizer
 import os
 
 
@@ -16,6 +17,12 @@ def execute_script():
     print(interleavings_dataframe[["@@source_activity", "@@target_activity", "@@direction"]].value_counts())
     # print the performance of the interleavings
     print(interleavings_dataframe.groupby(["@@source_activity", "@@target_activity", "@@direction"])["@@timestamp_diff"].agg("mean"))
+    # visualizes the frequency of the interleavings
+    gviz_freq = interleavings_visualizer.apply(receipt_even, receipt_odd, interleavings_dataframe, parameters={"annotation": "frequency", "format": "svg"})
+    interleavings_visualizer.view(gviz_freq)
+    # visualizes the performance of the interleavings
+    gviz_perf = interleavings_visualizer.apply(receipt_even, receipt_odd, interleavings_dataframe, parameters={"annotation": "performance", "aggregation_measure": "median", "format": "svg"})
+    interleavings_visualizer.view(gviz_perf)
 
 
 if __name__ == "__main__":

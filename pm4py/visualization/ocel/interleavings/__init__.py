@@ -14,4 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.ocel.util import attributes_names, extended_table, flattening, related_objects, related_events, filtering_utils, log_ocel, sampling
+from pm4py.visualization.ocel.interleavings import visualizer, variants

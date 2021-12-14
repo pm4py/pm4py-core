@@ -156,7 +156,7 @@ def discover_organizational_roles(log: Union[EventLog, pd.DataFrame]):
         return roles.apply(log, variant=roles.Variants.LOG, parameters=get_properties(log))
 
 
-def discover_network_analysis(log: Union[pd.DataFrame, EventLog, EventStream], out_column: str, in_column: str, node_column: str, edge_column: str, performance: bool = False, sorting_column: str = xes_constants.DEFAULT_TIMESTAMP_KEY, timestamp_column: str = xes_constants.DEFAULT_TIMESTAMP_KEY) -> Dict[Tuple[str, str], Dict[str, Any]]:
+def discover_network_analysis(log: Union[pd.DataFrame, EventLog, EventStream], out_column: str, in_column: str, node_column_source: str, node_column_target: str, edge_column: str, edge_reference: str = "_out", performance: bool = False, sorting_column: str = xes_constants.DEFAULT_TIMESTAMP_KEY, timestamp_column: str = xes_constants.DEFAULT_TIMESTAMP_KEY) -> Dict[Tuple[str, str], Dict[str, Any]]:
     """
     Performs a network analysis of the log based on the provided parameters.
     The output is a multigraph.
@@ -173,11 +173,17 @@ def discover_network_analysis(log: Union[pd.DataFrame, EventLog, EventStream], o
         The source column of the link (default: the case identifier; events of the same case are linked)
     in_column
         The target column of the link (default: the case identifier; events of the same case are linked)
-    node_column
-        The attribute to be used for the node definition (default: the resource of the log, org:resource)
+    node_column_source
+        The attribute to be used for the node definition of the source event (default: the resource of the log, org:resource)
+    node_column_target
+        The attribute to be used for the node definition of the target event (default: the resource of the log, org:resource)
     edge_column
-        The attribute (of the source event) to be used for the edge definition (default: the activity of the log,
+        The attribute to be used for the edge definition (default: the activity of the log,
             concept:name)
+    edge_reference
+        Decide if the edge attribute should be picked from the source event. Values:
+                - _out  =>  the source event
+                - _in   =>  the target event
     performance
         Boolean value that enables the performance calculation on the edges of the network analysis
     sorting_column
@@ -196,8 +202,10 @@ def discover_network_analysis(log: Union[pd.DataFrame, EventLog, EventStream], o
     parameters = {}
     parameters[dataframe.Parameters.OUT_COLUMN] = out_column
     parameters[dataframe.Parameters.IN_COLUMN] = in_column
-    parameters[dataframe.Parameters.NODE_COLUMN] = node_column
+    parameters[dataframe.Parameters.NODE_COLUMN_SOURCE] = node_column_source
+    parameters[dataframe.Parameters.NODE_COLUMN_TARGET] = node_column_target
     parameters[dataframe.Parameters.EDGE_COLUMN] = edge_column
+    parameters[dataframe.Parameters.EDGE_REFERENCE] = edge_reference
     parameters[dataframe.Parameters.SORTING_COLUMN] = sorting_column
     parameters[dataframe.Parameters.TIMESTAMP_KEY] = timestamp_column
     parameters[dataframe.Parameters.INCLUDE_PERFORMANCE] = performance

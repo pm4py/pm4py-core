@@ -62,9 +62,10 @@ class Marking(Counter):
         return m
 
     def __repr__(self):
-        # return str([str(p.name) + ":" + str(self.get(p)) for p in self.keys()])
-        # The previous representation had a bug, it took into account the order of the places with tokens
         return str([str(p.name) + ":" + str(self.get(p)) for p in sorted(list(self.keys()), key=lambda x: x.name)])
+
+    def __str__(self):
+        return self.__repr__()
 
     def __deepcopy__(self, memodict={}):
         marking = Marking()
@@ -103,6 +104,9 @@ class PetriNet(object):
 
         def __repr__(self):
             return str(self.name)
+
+        def __str__(self):
+            return self.__repr__()
 
         def __eq__(self, other):
             # keep the ID for now in places
@@ -162,9 +166,12 @@ class PetriNet(object):
 
         def __repr__(self):
             if self.label is None:
-                return str(self.name)
+                return "("+str(self.name)+", None)"
             else:
-                return str(self.label)
+                return "("+str(self.name)+", '"+str(self.label)+"')"
+
+        def __str__(self):
+            return self.__repr__()
 
         def __eq__(self, other):
             # keep the ID for now in transitions
@@ -219,17 +226,12 @@ class PetriNet(object):
             return self.__properties
 
         def __repr__(self):
-            if type(self.source) is PetriNet.Transition:
-                if self.source.label:
-                    return "(t)" + str(self.source.label) + "->" + "(p)" + str(self.target.name)
-                else:
-                    return "(t)" + str(self.source.name) + "->" + "(p)" + str(self.target.name)
-            if type(self.target) is PetriNet.Transition:
-                if self.target.label:
-                    return "(p)" + str(self.source.name) + "->" + "(t)" + str(self.target.label)
-                else:
-                    return "(p)" + str(self.source.name) + "->" + "(t)" + str(self.target.name)
+            source_rep = repr(self.source)
+            target_rep = repr(self.target)
+            return source_rep+"->"+target_rep
 
+        def __str__(self):
+            return self.__repr__()
 
         def __hash__(self):
             return id(self)
@@ -309,6 +311,31 @@ class PetriNet(object):
         for arc in self.arcs:
             add_arc_from_to(memodict[id(arc.source)], memodict[id(arc.target)], this_copy, weight=arc.weight)
         return this_copy
+
+    def __repr__(self):
+        ret = ["places: ["]
+        places_rep = []
+        for place in self.places:
+            places_rep.append(repr(place))
+        places_rep.sort()
+        ret.append(" " + ", ".join(places_rep) + " ")
+        ret.append("]\ntransitions: [")
+        trans_rep = []
+        for trans in self.transitions:
+            trans_rep.append(repr(trans))
+        trans_rep.sort()
+        ret.append(" " + ", ".join(trans_rep) + " ")
+        ret.append("]\narcs: [")
+        arcs_rep = []
+        for arc in self.arcs:
+            arcs_rep.append(repr(arc))
+        arcs_rep.sort()
+        ret.append(" " + ", ".join(arcs_rep) + " ")
+        ret.append("]")
+        return "".join(ret)
+
+    def __str__(self):
+        return self.__repr__()
 
     name = property(__get_name, __set_name)
     places = property(__get_places)
