@@ -107,13 +107,25 @@ def apply(parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> obj
     if not "infrequent" in parameters:
         parameters["infrequent"] = 0.5
     if not "no_models" in parameters:
-        parameters["no_models"] = 10
+        parameters["no_models"] = 1
     if not "unfold" in parameters:
         parameters["unfold"] = 10
     if not "max_repeat" in parameters:
         parameters["max_repeat"] = 10
 
-    return GeneratedTree(parameters).generate()
+    no_models = parameters["no_models"]
+
+    if no_models == 1:
+        return GeneratedTree(parameters).generate()
+    else:
+        # if the generation of an higher number of models is required,
+        # proceed to the generation of these and return a list of
+        # process trees.
+        ret = []
+        for i in range(no_models):
+            ret.append(GeneratedTree(parameters).generate())
+        return ret
+
 
 def assign_operator(operator):
     if operator == "choice":
