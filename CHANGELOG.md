@@ -40,6 +40,8 @@
     * fix for visualizing multiple tokens in the initial marking in the same place
 * a06cc1c8
     * fix for the correct use of the triangular distribution on generating process trees
+* 51181d6c
+    * fix support for generating multiple process trees in one go    
 
 
 ### Removed
