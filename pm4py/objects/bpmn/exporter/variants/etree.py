@@ -94,15 +94,15 @@ def get_xml_string(bpmn_graph, parameters=None):
             task = ET.SubElement(process, node.type, {"id": node.get_id(), "name": node.get_name()})
         elif isinstance(node, BPMN.ExclusiveGateway):
             task = ET.SubElement(process, "exclusiveGateway",
-                                 {"id": node.get_id(), "gatewayDirection": "unspecified",
+                                 {"id": node.get_id(), "gatewayDirection": node.get_gatewayDirection(),
                                   "name": ""})
         elif isinstance(node, BPMN.ParallelGateway):
             task = ET.SubElement(process, "parallelGateway",
-                                 {"id": node.get_id(), "gatewayDirection": "unspecified",
+                                 {"id": node.get_id(), "gatewayDirection": node.get_gatewayDirection(),
                                   "name": ""})
         elif isinstance(node, BPMN.InclusiveGateway):
             task = ET.SubElement(process, "inclusiveGateway",
-                                 {"id": node.get_id(), "gatewayDirection": "unspecified",
+                                 {"id": node.get_id(), "gatewayDirection": node.get_gatewayDirection(),
                                   "name": ""})
         else:
             raise Exception("Unexpected node type.")
