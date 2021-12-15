@@ -77,7 +77,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
             dct[k] = v
         for obj in ev[constants.OCEL_OMAP_KEY]:
             relations.append({event_id: ev_id, event_activity: ev[constants.DEFAULT_EVENT_ACTIVITY],
-                              event_timestamp: ev[constants.DEFAULT_EVENT_TIMESTAMP], object_id: obj,
+                              event_timestamp: parser.apply(ev[constants.DEFAULT_EVENT_TIMESTAMP]), object_id: obj,
                               object_type: types_dict[obj]})
         events.append(dct)
 
