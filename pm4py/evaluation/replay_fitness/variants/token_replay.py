@@ -34,10 +34,11 @@ def evaluate(aligned_traces, parameters=None):
     total_c = sum([x["consumed_tokens"] for x in aligned_traces])
     total_r = sum([x["remaining_tokens"] for x in aligned_traces])
     total_p = sum([x["produced_tokens"] for x in aligned_traces])
-    if no_traces > 0 and total_c > 0 and total_p > 0:
+    if no_traces > 0:
         perc_fit_traces = float(100.0 * fit_traces) / float(no_traces)
         average_fitness = float(sum_of_fitness) / float(no_traces)
-        log_fitness = 0.5 * (1 - total_m / total_c) + 0.5 * (1 - total_r / total_p)
+        if total_c > 0 and total_p > 0:
+            log_fitness = 0.5 * (1 - total_m / total_c) + 0.5 * (1 - total_r / total_p)
     return {"perc_fit_traces": perc_fit_traces, "average_trace_fitness": average_fitness, "log_fitness": log_fitness,
             "percentage_of_fitting_traces": perc_fit_traces }
 
@@ -71,9 +72,10 @@ def apply(log, petri_net, initial_marking, final_marking, parameters=None):
     token_replay_variant = exec_utils.get_param_value(Parameters.TOKEN_REPLAY_VARIANT, parameters,
                                                       executor.Variants.TOKEN_REPLAY)
     cleaning_token_flood = exec_utils.get_param_value(Parameters.CLEANING_TOKEN_FLOOD, parameters, False)
+    remaining_in_fitness = exec_utils.get_param_value(token_replay.Parameters.CONSIDER_REMAINING_IN_FITNESS, parameters, True)
 
     parameters_tr = {token_replay.Parameters.ACTIVITY_KEY: activity_key,
-                     token_replay.Parameters.CONSIDER_REMAINING_IN_FITNESS: True,
+                     token_replay.Parameters.CONSIDER_REMAINING_IN_FITNESS: remaining_in_fitness,
                      token_replay.Parameters.CLEANING_TOKEN_FLOOD: cleaning_token_flood}
 
     aligned_traces = executor.apply(log, petri_net, initial_marking, final_marking, variant=token_replay_variant,
