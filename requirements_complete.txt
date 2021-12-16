@@ -1,6 +1,7 @@
 backcall
 colorama
 cycler
+cvxopt
 decorator
 deprecation
 fonttools
