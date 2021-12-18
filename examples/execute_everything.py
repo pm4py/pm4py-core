@@ -4,6 +4,12 @@ import sys
 import traceback
 
 
+def merging_case_relations():
+    from examples import merging_case_relations
+    print("\n\nmerging_case_relations")
+    merging_case_relations.execute_script()
+
+
 def activity_position():
     from examples import activity_position
     print("\n\nactivity_position")
@@ -519,6 +525,7 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(merging_case_relations)
     execute_script(activity_position)
     execute_script(link_analysis_vbfa)
     execute_script(ocel_streaming)
