@@ -1,5 +1,14 @@
 # PM4Py Changelog
 
+## PM4Py 2.2.17.1 (2021.12.18)
+
+### Fixed
+* 2eb36ce5
+  * Bug fix in OCEL importing (timestamp parsing)
+* 512c071e
+  * Resolved security issue in data Petri nets' PNML parsing
+
+
 ## PM4Py 2.2.17 (2021.12.14)
 
 ### Added
