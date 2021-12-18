@@ -32,6 +32,7 @@ class Parameters(Enum):
     STOP_IMMEDIATELY_UNFIT = "stop_immediately_unfit"
     TRY_TO_REACH_FINAL_MARKING_THROUGH_HIDDEN = "try_to_reach_final_marking_through_hidden"
     CONSIDER_REMAINING_IN_FITNESS = "consider_remaining_in_fitness"
+    CONSIDER_ACTIVITIES_NOT_IN_MODEL_IN_FITNESS = "consider_activities_not_in_model_in_fitness"
     ENABLE_PLTR_FITNESS = "enable_pltr_fitness"
     SHOW_PROGRESS_BAR = "show_progress_bar"
 
@@ -358,7 +359,7 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
                 marking_to_activity_caching=None, is_reduction=False,
                 thread_maximum_ex_time=TechnicalParameters.MAX_DEF_THR_EX_TIME.value,
                 enable_postfix_cache=False, enable_marktoact_cache=False, cleaning_token_flood=False,
-                s_components=None, trace_occurrences=1):
+                s_components=None, trace_occurrences=1, consider_activities_not_in_model_in_fitness=False):
     """
     Apply the token replaying algorithm to a trace
 
@@ -668,6 +669,9 @@ def apply_trace(trace, net, initial_marking, final_marking, trans_map, enable_pl
     else:
         is_fit = (missing == 0)
 
+    if consider_activities_not_in_model_in_fitness and notexisting_activities_in_model:
+        is_fit = False
+
     # separate global counts from local statistics in the case these are not enabled by the options
     for pl in final_marking:
         consumed += final_marking[pl]
@@ -733,7 +737,7 @@ class ApplyTraceTokenReplay:
                  walk_through_hidden_trans=True, post_fix_caching=None,
                  marking_to_activity_caching=None, is_reduction=False,
                  thread_maximum_ex_time=TechnicalParameters.MAX_DEF_THR_EX_TIME.value,
-                 cleaning_token_flood=False, s_components=None, trace_occurrences=1):
+                 cleaning_token_flood=False, s_components=None, trace_occurrences=1, consider_activities_not_in_model_in_fitness=False):
         """
         Constructor
 
@@ -793,6 +797,7 @@ class ApplyTraceTokenReplay:
         self.notexisting_activities_in_model = notexisting_activities_in_model
         self.places_shortest_path_by_hidden = places_shortest_path_by_hidden
         self.consider_remaining_in_fitness = consider_remaining_in_fitness
+        self.consider_activities_not_in_model_in_fitness = consider_activities_not_in_model_in_fitness
         self.activity_key = activity_key
         self.try_to_reach_final_marking_through_hidden = reach_mark_through_hidden
         self.stop_immediately_when_unfit = stop_immediately_when_unfit
@@ -841,7 +846,8 @@ class ApplyTraceTokenReplay:
                         enable_marktoact_cache=self.enable_marktoact_cache,
                         cleaning_token_flood=self.cleaning_token_flood,
                         s_components=self.s_components,
-                        trace_occurrences=self.trace_occurrences)
+                        trace_occurrences=self.trace_occurrences,
+                        consider_activities_not_in_model_in_fitness=self.consider_activities_not_in_model_in_fitness)
         self.thread_is_alive = False
 
 
@@ -922,7 +928,8 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
               activity_key="concept:name", reach_mark_through_hidden=True, stop_immediately_unfit=False,
               walk_through_hidden_trans=True, places_shortest_path_by_hidden=None,
               variants=None, is_reduction=False, thread_maximum_ex_time=TechnicalParameters.MAX_DEF_THR_EX_TIME.value,
-              cleaning_token_flood=False, disable_variants=False, return_object_names=False, show_progress_bar=True):
+              cleaning_token_flood=False, disable_variants=False, return_object_names=False, show_progress_bar=True,
+              consider_activities_not_in_model_in_fitness=False):
     """
     Apply token-based replay to a log
 
@@ -1025,7 +1032,8 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
                                                              is_reduction=is_reduction,
                                                              thread_maximum_ex_time=thread_maximum_ex_time,
                                                              cleaning_token_flood=cleaning_token_flood,
-                                                             s_components=s_components, trace_occurrences=vc[i][1])
+                                                             s_components=s_components, trace_occurrences=vc[i][1],
+                                                             consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness)
                     threads[variant].run()
                     if progress is not None:
                         progress.update()
@@ -1120,6 +1128,7 @@ def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking:
                                                                 None)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
     variants = exec_utils.get_param_value(Parameters.VARIANTS, parameters, None)
+    consider_activities_not_in_model_in_fitness = exec_utils.get_param_value(Parameters.CONSIDER_ACTIVITIES_NOT_IN_MODEL_IN_FITNESS, parameters, False)
 
     show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
 
@@ -1131,7 +1140,8 @@ def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking:
                      places_shortest_path_by_hidden=places_shortest_path_by_hidden, activity_key=activity_key,
                      variants=variants, is_reduction=is_reduction, thread_maximum_ex_time=thread_maximum_ex_time,
                      cleaning_token_flood=cleaning_token_flood, disable_variants=disable_variants,
-                     return_object_names=return_names, show_progress_bar=show_progress_bar)
+                     return_object_names=return_names, show_progress_bar=show_progress_bar,
+                     consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness)
 
 
 def apply_variants_list(variants_list, net, initial_marking, final_marking, parameters=None):
