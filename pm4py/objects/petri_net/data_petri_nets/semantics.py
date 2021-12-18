@@ -17,6 +17,10 @@
 import copy
 from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.objects.petri_net.sem_interface import Semantics
+import re
+
+
+security_pattern = re.compile(r'[.]|\\x[0-9a-fA-F]+')
 
 
 class DataPetriNetSemantics(Semantics):
@@ -93,6 +97,23 @@ class DataPetriNetSemantics(Semantics):
         return enabled_transitions(pn, m, e)
 
 
+def check_guard_safety(guard):
+    """
+    Checks the security of a guard before evaluating that
+
+    Parameters
+    ----------------
+    guard
+        Guard
+
+    Returns
+    ----------------
+    safety
+        True if the guard is safe to execute, False otherwise
+    """
+    return not security_pattern.search(guard)
+
+
 def evaluate_guard(guard, read_variables, data):
     """
     Evaluates a data Petri net guard given the current data
@@ -111,11 +132,15 @@ def evaluate_guard(guard, read_variables, data):
     """
     guard = guard.replace("&&", " and ").replace("||", " or ").replace("true", "True").replace("false", "False")
     try:
+        dct = {}
         for k in read_variables:
-            exec(str(k)+"=None")
+            dct[k] = None
         for k, v in data.items():
-            exec(str(k)+"="+str(v))
-        return eval(guard)
+            dct[k] = v
+        if check_guard_safety(guard):
+            ret = eval(guard, dct)
+            return ret
+        return False
     except:
         # the guard could not be evaluated (for example, given missing data)
         return False

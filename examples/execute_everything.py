@@ -4,6 +4,30 @@ import sys
 import traceback
 
 
+def activity_position():
+    from examples import activity_position
+    print("\n\nactivity_position")
+    activity_position.execute_script()
+
+
+def link_analysis_vbfa():
+    from examples import link_analysis_vbfa
+    print("\n\nlink_analysis_vbfa")
+    link_analysis_vbfa.execute_script()
+
+
+def ocel_streaming():
+    from examples import ocel_streaming
+    print("\n\nocel_streaming")
+    ocel_streaming.execute_script()
+
+
+def petri_manual_generation():
+    from examples import petri_manual_generation
+    print("\n\npetri_manual_generation")
+    petri_manual_generation.execute_script()
+
+
 def timestamp_interleavings():
     from examples import timestamp_interleavings
     print("\n\ntimestamp_interleavings")
@@ -495,6 +519,10 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(activity_position)
+    execute_script(link_analysis_vbfa)
+    execute_script(ocel_streaming)
+    execute_script(petri_manual_generation)
     execute_script(timestamp_interleavings)
     execute_script(object_centric_petri_net_discovery)
     execute_script(trans_system_stochastic_view)
