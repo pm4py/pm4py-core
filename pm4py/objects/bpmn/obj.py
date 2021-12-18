@@ -131,6 +131,12 @@ class BPMN(object):
         def set_gatewayDirection(self, direction : str):
             self.__gatewayDirection = direction
 
+        def get_gatewayDirection(self):
+            return self.__gatewayDirection
+
+        def set_gatewayDirection(self, direction : str):
+            self.__gatewayDirection = direction
+
     class ExclusiveGateway(BPMNNode):
         def __init__(self, name="", gatewayDirection="Unspecified", in_arcs=None, out_arcs=None):
             BPMN.BPMNNode.__init__(self, name, in_arcs, out_arcs)
@@ -142,6 +148,12 @@ class BPMN(object):
         def set_gatewayDirection(self, direction : str):
             self.__gatewayDirection = direction
 
+        def get_gatewayDirection(self):
+            return self.__gatewayDirection
+
+        def set_gatewayDirection(self, direction : str):
+            self.__gatewayDirection = direction
+
     class InclusiveGateway(BPMNNode):
         def __init__(self, name="", gatewayDirection="Unspecified", in_arcs=None, out_arcs=None):
             BPMN.BPMNNode.__init__(self, name, in_arcs, out_arcs)
@@ -150,6 +162,12 @@ class BPMN(object):
         def get_gatewayDirection(self):
             return self.__gatewayDirection
         
+        def set_gatewayDirection(self, direction : str):
+            self.__gatewayDirection = direction
+
+        def get_gatewayDirection(self):
+            return self.__gatewayDirection
+
         def set_gatewayDirection(self, direction : str):
             self.__gatewayDirection = direction
 

@@ -48,7 +48,7 @@ def execute_script():
 
     pm4py.view_petri_net(net, im, fm, format="svg")
 
-    pm4py.write_pnml(net, im, fm, "receipt_one_variant.pnml")
+    #pm4py.write_pnml(net, im, fm, "receipt_one_variant.pnml")
 
 
 if __name__ == "__main__":
