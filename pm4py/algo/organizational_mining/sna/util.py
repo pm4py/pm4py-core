@@ -1,4 +1,57 @@
 from typing import List, Any, Dict
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters(Enum):
+    WEIGHT_THRESHOLD = "weight_threshold"
+
+
+def sna_result_to_nx_graph(sna_results: List[List[Any]], parameters=None):
+    """
+    Transforms the results of SNA to a NetworkX Graph / DiGraph object
+    (depending on the type of analysis).
+
+    Parameters
+    ------------------
+    sna_results
+        Result of a SNA operation
+    parameters
+        Parameters of the algorithm, including:
+        - Parameters.WEIGHT_THRESHOLD => the weight threshold (used to filter out edges)
+
+    Returns
+    -----------------
+    nx_graph
+        NetworkX Graph / DiGraph
+    """
+    if parameters is None:
+        parameters = {}
+
+    import networkx as nx
+    import numpy as np
+
+    weight_threshold = exec_utils.get_param_value(Parameters.WEIGHT_THRESHOLD, parameters, 0.0)
+    directed = sna_results[2]
+
+    rows, cols = np.where(sna_results[0] > weight_threshold)
+    edges = zip(rows.tolist(), cols.tolist())
+    if directed:
+        graph = nx.DiGraph()
+    else:
+        graph = nx.Graph()
+    labels = {}
+    nodes = []
+    for index, item in enumerate(sna_results[1]):
+        labels[index] = item
+        nodes.append(item)
+
+    edges = [(labels[e[0]], labels[e[1]]) for e in edges]
+
+    graph.add_nodes_from(nodes)
+    graph.add_edges_from(edges)
+
+    return graph
 
 
 def cluster_affinity_propagation(sna_results: List[List[Any]], parameters=None) -> Dict[str, List[str]]:
