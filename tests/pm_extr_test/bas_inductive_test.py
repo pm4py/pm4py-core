@@ -11,7 +11,7 @@ from pm4py.statistics.variants.log import get as variants_get
 
 LOGS_FOLDER = "../compressed_input_data"
 CLASSIFIER = "@@classifier"
-ENABLE_ALIGNMENTS = False
+ENABLE_ALIGNMENTS = True
 NOISE_THRESHOLD = 0.0
 
 for log_name in os.listdir(LOGS_FOLDER):
@@ -78,7 +78,7 @@ for log_name in os.listdir(LOGS_FOLDER):
             fitness_imf = pm4py.algo.conformance.footprints.util.evaluation.fp_fitness(fp_log, fp_tree_imf, fp_conf_imf)
 
             if ENABLE_ALIGNMENTS:
-                from pm4py.algo.conformance.tree_alignments.variants import search_graph_pt
+                from pm4py.algo.conformance.alignments.process_tree.variants import search_graph_pt
 
                 alignments_clean = search_graph_pt.apply(log, tree_im_clean, parameters={
                     search_graph_pt.Parameters.ACTIVITY_KEY: CLASSIFIER})
