@@ -35,6 +35,7 @@ class SGASearchState:
         self.leaves = leaves if leaves is not None else list()  # leaves that 'got you here'
         self.parent = parent  # parent search state
         self.children = children if children is not None else set()  # successor search states
+        self.path = []
 
     def __lt__(self, other):
         if self.costs < other.costs:
@@ -178,10 +179,12 @@ def align_variant(variant, tree_leaf_set, pt):
                         sync_path, new_state = pt_sem.shortest_path_to_close(leaf, new_state)
                         path.extend(sync_path)
                         leaves = _obtain_leaves_from_state_path(path, include_tau=True)
-                        open_set, closed_set = _add_new_state(
-                            SGASearchState(sga_state.costs + len(model_moves),
+                        new_state = SGASearchState(sga_state.costs + len(model_moves),
                                            sga_state.index + 1,
-                                           new_state, leaves=leaves, parent=sga_state), sga_state,
+                                           new_state, leaves=leaves, parent=sga_state)
+                        new_state.path = tuple(path)
+                        open_set, closed_set = _add_new_state(
+                            new_state, sga_state,
                             open_set,
                             closed_set)
                 if need_log_move:

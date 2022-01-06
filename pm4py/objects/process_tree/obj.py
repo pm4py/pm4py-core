@@ -70,6 +70,7 @@ class ProcessTree(object):
         self._parent = parent
         self._children = list() if children is None else children
         self._label = label
+        self._properties = {}
 
     def __hash__(self):
         if self.label is not None:
