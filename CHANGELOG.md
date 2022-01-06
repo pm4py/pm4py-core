@@ -1,13 +1,57 @@
 # PM4Py Changelog
 
+## PM4Py 2.218
+
+### Added
+* c15c8897
+    * add utility function to convert SNA results to NetworkX
+* 8b300dbb
+    * add several new statistics for OCEL logs
+* 8da0f41a
+    * add frequency-based visualization (using alignments) for process trees
+* 54261cbb
+    * add progress bar to token-based replay
+* 225dcad7
+    * add OCEL schema validators
+* da6a4787
+    * add reduction rules for R/I nets
+* fefcd453
+    * additional support for BPMN functionalities: exceptions and markings
+* 417274fd
+    * add support for feature extraction from OCEL logs
+* 5f5ff573
+    * add filter that checks relative occurrence of a specified attribute 
+
+### Changed
+* b82dd92e
+    * revised implementation of the business hours module, now supports input of work calendars (workalendar package)
+* 434e66af
+    *  allow arbitrary arc weights visualized (reported at https://github.com/pm4py/pm4py-core/issues/303)
+
+### Deprecated
+
+### Fixed
+* 76563e4b
+    * fix bug in process tree alignment that generates NoneTypeError when multiple leaves have the same label
+* 3b6800d0
+    * minor bugfix in process tree playout (reported at: https://github.com/pm4py/pm4py-core/issues/305)
+
+
+### Removed
+
+### Other
+
+
+
 ## PM4Py 2.2.17.1 (2021.12.18)
 
 ### Fixed
 * 2eb36ce5
-  * Bug fix in OCEL importing (timestamp parsing)
+    * Bug fix in OCEL importing (timestamp parsing)
 * 512c071e
-  * Resolved security issue in data Petri nets' PNML parsing
+    * Resolved security issue in data Petri nets' PNML parsing
 
+---
 
 ## PM4Py 2.2.17 (2021.12.14)
 
