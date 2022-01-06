@@ -28,8 +28,9 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     AGGREGATION_MEASURE = "aggregationMeasure"
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING = "worktiming"
+    WORKTIMING  = "worktiming"
     WEEKENDS = "weekends"
+    WORKCALENDAR = "workcalendar"
 
 
 DIFF_KEY = "@@diff"
@@ -68,6 +69,7 @@ def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Union[str, Paramete
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
     worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
     weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
@@ -80,7 +82,7 @@ def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Union[str, Paramete
     if business_hours:
         dataframe[DIFF_KEY] = dataframe.apply(
             lambda x: soj_time_business_hours_diff(x[start_timestamp_key], x[timestamp_key], worktiming,
-                                                   weekends), axis=1)
+                                                   weekends, workcalendar), axis=1)
     else:
         dataframe[DIFF_KEY] = (
             dataframe[timestamp_key] - dataframe[start_timestamp_key]

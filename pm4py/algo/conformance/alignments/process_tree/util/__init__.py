@@ -14,4 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.conformance.alignments.process_tree.util import search_graph_pt_replay_semantics
+from pm4py.algo.conformance.alignments.process_tree.util import search_graph_pt_replay_semantics, search_graph_pt_frequency_annotation

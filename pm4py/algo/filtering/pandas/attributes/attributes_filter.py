@@ -41,6 +41,7 @@ class Parameters(Enum):
     STREAM_FILTER_VALUE1 = "stream_filter_value1"
     STREAM_FILTER_KEY2 = "stream_filter_key2"
     STREAM_FILTER_VALUE2 = "stream_filter_value2"
+    KEEP_ONCE_PER_CASE = "keep_once_per_case"
 
 
 def apply_numeric_events(df: pd.DataFrame, int1: float, int2: float, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
@@ -349,3 +350,47 @@ def filter_df_keeping_spno_activities(df: pd.DataFrame, activity_key: str = "con
 
     ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
     return df
+
+
+def filter_df_relative_occurrence_event_attribute(df: pd.DataFrame, min_relative_stake: float, parameters: Optional[Dict[Any, Any]] = None) -> pd.DataFrame:
+    """
+    Filters the event log keeping only the events having an attribute value which occurs:
+    - in at least the specified (min_relative_stake) percentage of events, when Parameters.KEEP_ONCE_PER_CASE = False
+    - in at least the specified (min_relative_stake) percentage of cases, when Parameters.KEEP_ONCE_PER_CASE = True
+    
+    Parameters
+    -------------------
+    df
+        Pandas dataframe
+    min_relative_stake
+        Minimum percentage of cases (expressed as a number between 0 and 1) in which the attribute should occur.
+    parameters
+        Parameters of the algorithm, including:
+        - Parameters.ATTRIBUTE_KEY => the attribute to use (default: concept:name)
+        - Parameters.KEEP_ONCE_PER_CASE => decides the level of the filter to apply
+        (if the filter should be applied on the cases, set it to True).
+
+    Returns
+    ------------------
+    filtered_df
+        Filtered Pandas dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    attribute_key = exec_utils.get_param_value(PARAMETER_CONSTANT_ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    keep_once_per_case = exec_utils.get_param_value(Parameters.KEEP_ONCE_PER_CASE, parameters, True)
+
+    parameters_cp = copy(parameters)
+
+    activities_occurrences = get_attribute_values(df, attribute_key, parameters=parameters_cp)
+
+    if keep_once_per_case:
+        # filter on cases
+        filtered_attributes = set(x for x, y in activities_occurrences.items() if y >= min_relative_stake * df[case_id_key].nunique())
+    else:
+        # filter on events
+        filtered_attributes = set(x for x, y in activities_occurrences.items() if y >= min_relative_stake * len(df))
+
+    return apply_events(df, filtered_attributes, parameters=parameters)

@@ -81,7 +81,7 @@ def apply(bpmn_graph: BPMN, parameters: Optional[Dict[Any, Any]] = None) -> grap
             viz.node(n_id, label="X", shape="diamond", fontsize=font_size)
         elif isinstance(n, BPMN.InclusiveGateway):
             viz.node(n_id, label="O", shape="diamond", fontsize=font_size)
-        elif isinstance(n, BPMN.OtherEvent):
+        else:
             viz.node(n_id, label="", shape="circle", fontsize=font_size)
 
     for e in edges:
