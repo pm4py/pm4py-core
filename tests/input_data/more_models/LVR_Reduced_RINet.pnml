@@ -1,0 +1,1641 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="n6">
+        <name>
+          <text>n6</text>
+        </name>
+        <graphics>
+          <position x="171.25" y="146.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n8">
+        <name>
+          <text>n8</text>
+        </name>
+        <graphics>
+          <position x="1026.25" y="171.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n13">
+        <name>
+          <text>n13</text>
+        </name>
+        <graphics>
+          <position x="608.75" y="188.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n17">
+        <name>
+          <text>n17</text>
+        </name>
+        <graphics>
+          <position x="696.25" y="182.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n21">
+        <name>
+          <text>n21</text>
+        </name>
+        <graphics>
+          <position x="938.75" y="243.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n25">
+        <name>
+          <text>n25</text>
+        </name>
+        <graphics>
+          <position x="521.25" y="167.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n31">
+        <name>
+          <text>n31</text>
+        </name>
+        <graphics>
+          <position x="83.75" y="141.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n35">
+        <name>
+          <text>i</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+        <graphics>
+          <position x="6.25" y="171.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n1">
+        <name>
+          <text>n1</text>
+        </name>
+        <graphics>
+          <position x="346.25" y="247.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n4">
+        <name>
+          <text>n4</text>
+        </name>
+        <graphics>
+          <position x="773.75" y="247.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n5">
+        <name>
+          <text>n5</text>
+        </name>
+        <graphics>
+          <position x="608.75" y="271.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n15">
+        <name>
+          <text>n15</text>
+        </name>
+        <graphics>
+          <position x="696.25" y="266.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n16">
+        <name>
+          <text>n16</text>
+        </name>
+        <graphics>
+          <position x="696.25" y="212.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n20">
+        <name>
+          <text>n20</text>
+        </name>
+        <graphics>
+          <position x="1103.75" y="148.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n24">
+        <name>
+          <text>n24</text>
+        </name>
+        <graphics>
+          <position x="608.75" y="217.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n30">
+        <name>
+          <text>n30</text>
+        </name>
+        <graphics>
+          <position x="521.25" y="245.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n34">
+        <name>
+          <text>n34</text>
+        </name>
+        <graphics>
+          <position x="851.25" y="226.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n9">
+        <name>
+          <text>n9</text>
+        </name>
+        <graphics>
+          <position x="608.75" y="244.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n3">
+        <name>
+          <text>n3</text>
+        </name>
+        <graphics>
+          <position x="608.75" y="125.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n11">
+        <name>
+          <text>n11</text>
+        </name>
+        <graphics>
+          <position x="433.75" y="193.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n12">
+        <name>
+          <text>n12</text>
+        </name>
+        <graphics>
+          <position x="346.25" y="220.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n14">
+        <name>
+          <text>n14</text>
+        </name>
+        <graphics>
+          <position x="696.25" y="239.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n19">
+        <name>
+          <text>n19</text>
+        </name>
+        <graphics>
+          <position x="83.75" y="199.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n23">
+        <name>
+          <text>n23</text>
+        </name>
+        <graphics>
+          <position x="938.75" y="162.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n27">
+        <name>
+          <text>n27</text>
+        </name>
+        <graphics>
+          <position x="696.25" y="151.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n29">
+        <name>
+          <text>n29</text>
+        </name>
+        <graphics>
+          <position x="433.75" y="244.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n33">
+        <name>
+          <text>n33</text>
+        </name>
+        <graphics>
+          <position x="608.75" y="158.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n7">
+        <name>
+          <text>n7</text>
+        </name>
+        <graphics>
+          <position x="171.25" y="184.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n2">
+        <name>
+          <text>n2</text>
+        </name>
+        <graphics>
+          <position x="938.75" y="196.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n10">
+        <name>
+          <text>n10</text>
+        </name>
+        <graphics>
+          <position x="171.25" y="219.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n18">
+        <name>
+          <text>n18</text>
+        </name>
+        <graphics>
+          <position x="83.75" y="172.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n22">
+        <name>
+          <text>n22</text>
+        </name>
+        <graphics>
+          <position x="258.75" y="228.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n26">
+        <name>
+          <text>n26</text>
+        </name>
+        <graphics>
+          <position x="938.75" y="125.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n28">
+        <name>
+          <text>n28</text>
+        </name>
+        <graphics>
+          <position x="851.25" y="182.5"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n32">
+        <name>
+          <text>n32</text>
+        </name>
+        <graphics>
+          <position x="171.25" y="97.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <place id="n36">
+        <name>
+          <text>o</text>
+        </name>
+        <graphics>
+          <position x="1181.25" y="175.0"/>
+          <dimension x="12.5" y="12.5"/>
+        </graphics>
+      </place>
+      <transition id="n55">
+        <name>
+          <text>PR_[51]Einkommen - Leistung</text>
+        </name>
+        <graphics>
+          <position x="652.5" y="235.5"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n51">
+        <name>
+          <text>PR_[10]oertliche Zustaendigkeit</text>
+        </name>
+        <graphics>
+          <position x="390.0" y="246.0"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n47">
+        <name>
+          <text>VG_ANGELEGT</text>
+        </name>
+        <graphics>
+          <position x="302.5" y="232.0"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n39">
+        <name>
+          <text>DOXIS_Hilfeplan</text>
+        </name>
+        <graphics>
+          <position x="390.0" y="207.0"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n43">
+        <name>
+          <text>DOXIS_Widerspruch</text>
+        </name>
+        <graphics>
+          <position x="982.5" y="137.5"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n59">
+        <name>
+          <text>n59</text>
+        </name>
+        <graphics>
+          <position x="735.0" y="175.0"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="f99d5a7f-8fb0-4528-9e8a-d383b6bfdad4"/>
+      </transition>
+      <transition id="n63">
+        <name>
+          <text>n63</text>
+        </name>
+        <graphics>
+          <position x="127.5" y="143.0"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="b2c84832-b0f2-42a7-8a8f-0d1e346cf90f"/>
+      </transition>
+      <transition id="n67">
+        <name>
+          <text>n67</text>
+        </name>
+        <graphics>
+          <position x="895.0" y="249.5"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="d508672a-f8a2-4f5f-b1dc-71b32350dcfe"/>
+      </transition>
+      <transition id="n54">
+        <name>
+          <text>PR_[41]Vermoegen - Leistung</text>
+        </name>
+        <graphics>
+          <position x="652.5" y="270.5"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n38">
+        <name>
+          <text>DOXIS_Eingangsbestaetigung</text>
+        </name>
+        <graphics>
+          <position x="127.5" y="178.0"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n42">
+        <name>
+          <text>DOXIS_Bewilligung</text>
+        </name>
+        <graphics>
+          <position x="895.0" y="187.0"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n46">
+        <name>
+          <text>GV_ANGELEGT</text>
+        </name>
+        <graphics>
+          <position x="215.0" y="224.0"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n50">
+        <name>
+          <text>[AUS_ABL_FR]Ausgabesatz abgelehnt freigegeben</text>
+        </name>
+        <graphics>
+          <position x="982.5" y="172.5"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n58">
+        <name>
+          <text>n58</text>
+        </name>
+        <graphics>
+          <position x="735.0" y="205.0"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="940c2c37-271b-4297-97ec-bc2ef2db1f24"/>
+      </transition>
+      <transition id="n62">
+        <name>
+          <text>n62</text>
+        </name>
+        <graphics>
+          <position x="565.0" y="223.0"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="cd134c35-98a0-4351-a546-51e2093418ed"/>
+      </transition>
+      <transition id="n66">
+        <name>
+          <text>n66</text>
+        </name>
+        <graphics>
+          <position x="895.0" y="219.5"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="519fbd56-b38f-4568-a015-a5488af08c8a"/>
+      </transition>
+      <transition id="n72">
+        <name>
+          <text>n72</text>
+        </name>
+        <graphics>
+          <position x="45.0" y="171.5"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="0ccda867-93b8-4d27-9594-1c55cdc6308d"/>
+      </transition>
+      <transition id="n100">
+        <name>
+          <text>FREEZE</text>
+        </name>
+      </transition>
+      <transition id="n37">
+        <name>
+          <text>DOXIS_Bedarfsanzeige</text>
+        </name>
+        <graphics>
+          <position x="127.5" y="213.0"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n41">
+        <name>
+          <text>DOXIS_Ablehnung/Versagung</text>
+        </name>
+        <graphics>
+          <position x="652.5" y="130.5"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n45">
+        <name>
+          <text>DOXIS_Ablehnung/Versagung</text>
+        </name>
+        <graphics>
+          <position x="895.0" y="152.0"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n49">
+        <name>
+          <text>[AUS_SOLL]Ausgabesatz Sollstellung</text>
+        </name>
+        <graphics>
+          <position x="982.5" y="207.5"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n53">
+        <name>
+          <text>PR_[30]Wesentliche Behinderung</text>
+        </name>
+        <graphics>
+          <position x="652.5" y="200.5"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n57">
+        <name>
+          <text>n57</text>
+        </name>
+        <graphics>
+          <position x="565.0" y="178.0"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="12b6dec2-f0b6-4eb8-a949-8bbbd7ecbd33"/>
+      </transition>
+      <transition id="n61">
+        <name>
+          <text>n61</text>
+        </name>
+        <graphics>
+          <position x="565.0" y="253.0"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="351aee07-73a9-4145-8919-a8392a4127ed"/>
+      </transition>
+      <transition id="n65">
+        <name>
+          <text>n65</text>
+        </name>
+        <graphics>
+          <position x="215.0" y="75.5"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="391be164-1ad8-4447-b939-addd5ad53118"/>
+      </transition>
+      <transition id="n69">
+        <name>
+          <text>n69</text>
+        </name>
+        <graphics>
+          <position x="735.0" y="235.0"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="18ee25ac-b750-4f65-988f-852ce43eed84"/>
+      </transition>
+      <transition id="n71">
+        <name>
+          <text>n71</text>
+        </name>
+        <graphics>
+          <position x="1142.5" y="186.5"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="d3ba2dbf-6767-4796-a258-1fa7e22d2675"/>
+      </transition>
+      <transition id="n40">
+        <name>
+          <text>DOXIS_Protokoll HPK</text>
+        </name>
+        <graphics>
+          <position x="477.5" y="179.5"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n44">
+        <name>
+          <text>DOXIS_Abmeldung</text>
+        </name>
+        <graphics>
+          <position x="127.5" y="110.5"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n52">
+        <name>
+          <text>PR_[20]sachliche Zustaendigkeit</text>
+        </name>
+        <graphics>
+          <position x="477.5" y="259.0"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n48">
+        <name>
+          <text>[AUS_KALK]Kalkulationssatz</text>
+        </name>
+        <graphics>
+          <position x="565.0" y="145.5"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n56">
+        <name>
+          <text>PR_[70]Vorrangiger Kostentraeger</text>
+        </name>
+        <graphics>
+          <position x="652.5" y="165.5"/>
+          <dimension x="25.0" y="20.0"/>
+        </graphics>
+      </transition>
+      <transition id="n60">
+        <name>
+          <text>n60</text>
+        </name>
+        <graphics>
+          <position x="477.5" y="226.5"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="2276d0f0-69d1-412b-a761-0ee3bcbd89a6"/>
+      </transition>
+      <transition id="n64">
+        <name>
+          <text>n64</text>
+        </name>
+        <graphics>
+          <position x="215.0" y="105.5"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="48605240-582d-4fb5-8535-0d3a26e2eb1d"/>
+      </transition>
+      <transition id="n68">
+        <name>
+          <text>n68</text>
+        </name>
+        <graphics>
+          <position x="812.5" y="209.5"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="3163ec3b-5d39-4ea9-9795-8a0162e36880"/>
+      </transition>
+      <transition id="n70">
+        <name>
+          <text>n70</text>
+        </name>
+        <graphics>
+          <position x="1065.0" y="125.5"/>
+          <dimension x="15.0" y="15.0"/>
+        </graphics>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="c2a52399-d28c-4c8f-bdc4-645772358bd2"/>
+      </transition>
+      <arc id="140445944097280" source="n35" target="n100">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944047120" source="n64" target="n36">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944026640" source="n17" target="n69">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944028176" source="n15" target="n69">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944048656" source="n3" target="n68">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944063504" source="n1" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944065040" source="n27" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944079888" source="n34" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944081424" source="n26" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944096272" source="n27" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944095696" source="n3" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944046640" source="n28" target="n42">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944026160" source="n61" target="n5">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944027696" source="n71" target="n36">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944048176" source="n49" target="n8">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944063024" source="n13" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944064560" source="n11" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944079408" source="n15" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944080944" source="n7" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944095792" source="n11" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944095600" source="n9" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944049232" source="n30" target="n62">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944046160" source="n1" target="n51">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944025680" source="n41" target="n27">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944027216" source="n18" target="n38">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944028752" source="n47" target="n1">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944047696" source="n10" target="n46">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944064080" source="n24" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944065616" source="n22" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944078928" source="n25" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944080464" source="n19" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944080848" source="n33" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944095504" source="n34" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944048752" source="n67" target="n21">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944045680" source="n55" target="n14">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944047216" source="n11" target="n40">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944026736" source="n72" target="n31">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944028272" source="n40" target="n25">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944062064" source="n22" target="n47">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944063600" source="n4" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944065136" source="n29" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944078448" source="n6" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944079984" source="n9" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944080752" source="n29" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944097136" source="n32" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944062592" source="n4" target="n62">
+        <arctype>
+          <text>inhibitor</text>
+        </arctype>
+      </arc>
+      <arc id="140445944095408" source="n30" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944082384" source="n1" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944026256" source="n61" target="n13">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944027792" source="n27" target="n58">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944048272" source="n23" target="n50">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944046736" source="n32" target="n64">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944063120" source="n17" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944064656" source="n12" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944079504" source="n16" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944081040" source="n2" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944095888" source="n12" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944097040" source="n28" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944095312" source="n24" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944082288" source="n35" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944046256" source="n37" target="n10">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944025776" source="n12" target="n39">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944027312" source="n45" target="n23">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944028848" source="n31" target="n44">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944047792" source="n30" target="n61">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944049328" source="n70" target="n20">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445852639920" source="n4" target="n60">
+        <arctype>
+          <text>inhibitor</text>
+        </arctype>
+      </arc>
+      <arc id="140445944064176" source="n30" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944065712" source="n26" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944079024" source="n35" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944080560" source="n23" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944096944" source="n22" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944095216" source="n20" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944082192" source="n31" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944048848" source="n62" target="n33">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944045776" source="n7" target="n70">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944047312" source="n21" target="n71">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944026832" source="n61" target="n24">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944028368" source="n24" target="n53">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944062160" source="n72" target="n19">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944063696" source="n5" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944065232" source="n7" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944078544" source="n8" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944080080" source="n3" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944096848" source="n18" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944095120" source="n16" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944062688" source="n32" target="n58">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944082096" source="n25" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944048368" source="n19" target="n37">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944046832" source="n61" target="n9">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944026352" source="n2" target="n49">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944027888" source="n29" target="n52">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944063216" source="n21" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944064752" source="n14" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944079600" source="n20" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944080368" source="n14" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944081136" source="n10" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944095984" source="n14" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944095024" source="n15" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944082000" source="n21" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944080272" source="n12" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944096656" source="n2" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944025872" source="n43" target="n36">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944027408" source="n54" target="n15">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944028944" source="n60" target="n33">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944047888" source="n16" target="n69">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944046352" source="n69" target="n4">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944049424" source="n52" target="n30">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944064272" source="n34" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944065808" source="n28" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944079120" source="n1" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944080656" source="n27" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944094928" source="n5" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944081904" source="n17" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944096560" source="n7" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944047408" source="n59" target="n26">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944026928" source="n39" target="n11">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944028464" source="n42" target="n2">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944048944" source="n58" target="n36">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944045872" source="n57" target="n33">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944062256" source="n6" target="n70">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944063792" source="n15" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944065328" source="n2" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944078640" source="n13" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944080176" source="n11" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944094832" source="n4" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944081808" source="n13" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944096464" source="n33" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944046928" source="n44" target="n32">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944026448" source="n65" target="n26">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944027984" source="n27" target="n59">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944048464" source="n31" target="n63">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944063312" source="n25" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944064848" source="n19" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944079696" source="n24" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944081232" source="n18" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944096080" source="n19" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944081712" source="n8" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944096368" source="n29" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944046448" source="n9" target="n55">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944025968" source="n35" target="n72">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944027504" source="n25" target="n48">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944029040" source="n53" target="n16">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944047984" source="n38" target="n7">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944049520" source="n68" target="n28">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944062832" source="n6" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944064368" source="n9" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944065904" source="n32" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944079216" source="n4" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944081616" source="n6" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944047504" source="n26" target="n43">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944027024" source="n47" target="n12">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944025488" source="n51" target="n29">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944028560" source="n28" target="n45">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944049040" source="n63" target="n6">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944045968" source="n66" target="n26">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944062352" source="n4" target="n68">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944063888" source="n16" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944065424" source="n10" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944078736" source="n17" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944081520" source="n28" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944096752" source="n10" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944047024" source="n32" target="n65">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944026544" source="n25" target="n57">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944028080" source="n34" target="n67">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944048560" source="n5" target="n54">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944063408" source="n35" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944064944" source="n23" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944079792" source="n30" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944081328" source="n22" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944096176" source="n23" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944046544" source="n33" target="n41">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944026064" source="n29" target="n60">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944027600" source="n14" target="n69">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944029136" source="n68" target="n34">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944048080" source="n8" target="n70">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944049616" source="n13" target="n56">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944062928" source="n8" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944064464" source="n3" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944066000" source="n36" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944079312" source="n5" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944049136" source="n48" target="n3">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944046064" source="n20" target="n71">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944047600" source="n46" target="n22">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944025584" source="n56" target="n17">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944027120" source="n50" target="n8">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944028656" source="n34" target="n66">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944062448" source="n72" target="n18">
+        <arctype>
+          <text>normal</text>
+        </arctype>
+      </arc>
+      <arc id="140445944063984" source="n20" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944065520" source="n18" target="n41">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+      <arc id="140445944078832" source="n21" target="n44">
+        <arctype>
+          <text>reset</text>
+        </arctype>
+      </arc>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="n36">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>
