@@ -84,8 +84,8 @@ def close_vertex(tree: ProcessTree, state: ProcessTreeState) -> Tuple[Optional[
         state[(id(tree), tree)] = ProcessTree.OperatorState.CLOSED
         path.append((tree, ProcessTree.OperatorState.CLOSED))
         # if tree is a redo, then we will always need to execute the do part of the surrounding loop
-        if ptu.is_operator(tree.parent, Operator.LOOP) and tree == tree.parent.children[
-            1] and current_state == ProcessTree.OperatorState.OPEN:
+        if ptu.is_operator(tree.parent, Operator.LOOP) and id(tree) == id(tree.parent.children[
+            1]) and current_state == ProcessTree.OperatorState.OPEN:
             e_path, state = enable_vertex(tree.parent.children[0], state)
             path.extend(e_path)
     else:
@@ -105,15 +105,15 @@ def enable_vertex(tree: ProcessTree, state: ProcessTreeState) -> Tuple[Optional[
         state[(id(tree), tree)] = ProcessTree.OperatorState.ENABLED
         path.append((tree, ProcessTree.OperatorState.ENABLED))
         if ptu.is_operator(tree.parent, Operator.LOOP):
-            if tree == tree.parent.children[0]:
+            if id(tree) == id(tree.parent.children[0]):
                 e_path, state = transform_tree(tree.parent.children[1], ProcessTree.OperatorState.FUTURE, state)
                 path.extend(e_path)
-            if tree == tree.parent.children[1]:
+            if id(tree) == id(tree.parent.children[1]):
                 e_path, state = transform_tree(tree.parent.children[0], ProcessTree.OperatorState.FUTURE, state)
                 path.extend(e_path)
         if ptu.is_operator(tree.parent, Operator.XOR):
             for c in tree.parent.children:
-                if c != tree:
+                if id(c) != id(tree):
                     e_path, state = transform_tree(c, ProcessTree.OperatorState.CLOSED, state)
                     path.extend(e_path)
         for c in tree.children:
@@ -229,7 +229,7 @@ def shortest_path_to_enable(tree: ProcessTree, state: ProcessTreeState) -> Tuple
                 path.extend(e_path)
         if tree.parent.operator == Operator.SEQUENCE:
             for i, c in enumerate(tree.parent.children):
-                if c == tree:
+                if id(c) == id(tree):
                     if i > 0:
                         e_path, state = enable_vertex(tree, state)
                         path.extend(e_path)
@@ -238,7 +238,7 @@ def shortest_path_to_enable(tree: ProcessTree, state: ProcessTreeState) -> Tuple
                     e_path, state = shortest_path_to_close(c, state)
                     path.extend(e_path)
         elif tree.parent.operator == Operator.LOOP:
-            if tree == tree.parent.children[0]:
+            if id(tree) == id(tree.parent.children[0]):
                 if state[(id(tree.parent.children[1]), tree.parent.children[1])] not in {
                     ProcessTree.OperatorState.FUTURE,
                     ProcessTree.OperatorState.CLOSED}:
