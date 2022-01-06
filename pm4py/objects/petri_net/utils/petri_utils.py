@@ -4,7 +4,7 @@ from copy import copy, deepcopy
 
 from pm4py.objects.log.obj import Trace, Event
 from pm4py.objects.petri_net import properties
-from pm4py.objects.petri_net import semantics
+from pm4py.objects.petri_net import semantics, properties
 from pm4py.objects.petri_net.utils.networkx_graph import create_networkx_directed_graph
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import xes_constants as xes_util
@@ -27,17 +27,25 @@ def place_set_as_marking(places):
     return m
 
 
-def pre_set(elem):
+def get_arc_type(elem):
+    if properties.ARCTYPE in elem.properties:
+        return elem.properties[properties.ARCTYPE]
+    return None
+
+
+def pre_set(elem, arc_type=None):
     pre = set()
     for a in elem.in_arcs:
-        pre.add(a.source)
+        if get_arc_type(a) == arc_type:
+            pre.add(a.source)
     return pre
 
 
-def post_set(elem):
+def post_set(elem, arc_type=None):
     post = set()
     for a in elem.out_arcs:
-        post.add(a.target)
+        if get_arc_type(a) == arc_type:
+            post.add(a.target)
     return post
 
 
