@@ -88,21 +88,27 @@ def get_xml_string(bpmn_graph, parameters=None):
                                   "parallelMultiple": parallelMultiple})
         elif isinstance(node, BPMN.EndEvent):
             task = ET.SubElement(process, "endEvent", {"id": node.get_id(), "name": node.get_name()})
-        elif isinstance(node, BPMN.OtherEvent):
-            task = ET.SubElement(process, node.type, {"id": node.get_id(), "name": node.get_name()})
+        elif isinstance(node, BPMN.IntermediateCatchEvent):
+            task = ET.SubElement(process, "intermediateCatchEvent", {"id": node.get_id(), "name": node.get_name()})
+        elif isinstance(node, BPMN.IntermediateThrowEvent):
+            task = ET.SubElement(process, "intermediateThrowEvent", {"id": node.get_id(), "name": node.get_name()})
+        elif isinstance(node, BPMN.BoundaryEvent):
+            task = ET.SubElement(process, "boundaryEvent", {"id": node.get_id(), "name": node.get_name()})
         elif isinstance(node, BPMN.Task):
-            task = ET.SubElement(process, node.type, {"id": node.get_id(), "name": node.get_name()})
+            task = ET.SubElement(process, "task", {"id": node.get_id(), "name": node.get_name()})
+        elif isinstance(node, BPMN.SubProcess):
+            task = ET.SubElement(process, "subProcess", {"id": node.get_id(), "name": node.get_name()})
         elif isinstance(node, BPMN.ExclusiveGateway):
             task = ET.SubElement(process, "exclusiveGateway",
-                                 {"id": node.get_id(), "gatewayDirection": node.get_gatewayDirection(),
+                                 {"id": node.get_id(), "gatewayDirection": node.get_gateway_direction().value.lower(),
                                   "name": ""})
         elif isinstance(node, BPMN.ParallelGateway):
             task = ET.SubElement(process, "parallelGateway",
-                                 {"id": node.get_id(), "gatewayDirection": node.get_gatewayDirection(),
+                                 {"id": node.get_id(), "gatewayDirection": node.get_gateway_direction().value.lower(),
                                   "name": ""})
         elif isinstance(node, BPMN.InclusiveGateway):
             task = ET.SubElement(process, "inclusiveGateway",
-                                 {"id": node.get_id(), "gatewayDirection": node.get_gatewayDirection(),
+                                 {"id": node.get_id(), "gatewayDirection": node.get_gateway_direction().value.lower(),
                                   "name": ""})
         else:
             raise Exception("Unexpected node type.")
