@@ -14,8 +14,9 @@ class Parameters(Enum):
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING = "worktiming"
+    WORKTIMING  = "worktiming"
     WEEKENDS = "weekends"
+    WORKCALENDAR = "workcalendar"
 
 
 def apply(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> typing.TemporalProfile:
@@ -56,6 +57,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> typing.
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
     worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
     weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
@@ -79,7 +81,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> typing.
                         bh = BusinessHours(trace[i][timestamp_key].replace(tzinfo=None),
                                            trace[j][start_timestamp_key].replace(tzinfo=None),
                                            worktiming=worktiming,
-                                           weekends=weekends)
+                                           weekends=weekends, workcalendar=workcalendar)
                         diff_time_recordings[(act_i, act_j)].append(bh.getseconds())
                     else:
                         diff_time_recordings[(act_i, act_j)].append(time_j - time_i)

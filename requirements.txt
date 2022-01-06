@@ -16,3 +16,4 @@ scipy
 stringdist
 sympy
 tqdm
+workalendar
