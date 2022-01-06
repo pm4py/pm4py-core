@@ -38,7 +38,7 @@ def apply(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], An
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
 
-    grouped_df = df.groupby(case_id_key)[activity_key].agg(["count", "nunique"]).reset_index().to_dict("r")
+    grouped_df = df.groupby(case_id_key)[activity_key].agg(["count", "nunique"]).reset_index().to_dict("records")
     rework_cases = {}
     for el in grouped_df:
         rework_cases[el["case:concept:name"]] = {"number_activities": el["count"], "rework": el["count"] - el["nunique"]}
