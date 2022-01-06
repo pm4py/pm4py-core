@@ -16,7 +16,7 @@ from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_p
     discover_petri_net_inductive, discover_tree_inductive, discover_process_tree_inductive, discover_heuristics_net, \
     discover_dfg, discover_footprints, discover_eventually_follows_graph, discover_directly_follows_graph, discover_bpmn_inductive, \
     discover_performance_dfg, discover_ocdfg, discover_oc_petri_net
-from pm4py.filtering import filter_start_activities, filter_end_activities, filter_attribute_values, filter_variants, \
+from pm4py.filtering import filter_log_relative_occurrence_event_attribute, filter_start_activities, filter_end_activities, filter_attribute_values, filter_variants, \
     filter_variants_percentage, filter_directly_follows_relation, filter_time_range, filter_trace_attribute, \
     filter_eventually_follows_relation, filter_event_attribute_values, filter_trace_attribute_values, \
     filter_between, filter_case_size, filter_case_performance, filter_activities_rework, filter_paths_performance, \
