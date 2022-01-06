@@ -193,8 +193,6 @@ def get_playout_sequence(node, playout_dictio, min_trace_length, max_trace_lengt
     sequential_compositions = get_sequential_compositions_children(traces, min_trace_length, max_trace_length, mr, mar, max_limit_num_traces)
     for x in sequential_compositions:
         final_traces.add(tuple(flatten(x)))
-    for n in node.children:
-        del playout_dictio[n][TRACES]
     playout_dictio[node] = {TRACES: final_traces}
 
 
