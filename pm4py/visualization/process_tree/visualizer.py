@@ -16,7 +16,7 @@
 '''
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
-from pm4py.visualization.process_tree.variants import wo_decoration, symbolic
+from pm4py.visualization.process_tree.variants import wo_decoration, symbolic, frequency_annotation
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.visualization.common.gview import serialize, serialize_dot
@@ -28,6 +28,7 @@ import graphviz
 class Variants(Enum):
     WO_DECORATION = wo_decoration
     SYMBOLIC = symbolic
+    FREQUENCY_ANNOTATION = frequency_annotation
 
 
 DEFAULT_VARIANT = Variants.WO_DECORATION

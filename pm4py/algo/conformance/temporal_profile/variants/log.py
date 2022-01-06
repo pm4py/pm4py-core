@@ -31,8 +31,9 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     ZETA = "zeta"
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING = "worktiming"
+    WORKTIMING  = "worktiming"
     WEEKENDS = "weekends"
+    WORKCALENDAR = "workcalendar"
 
 
 def apply(log: EventLog, temporal_profile: typing.TemporalProfile,
@@ -82,6 +83,7 @@ def apply(log: EventLog, temporal_profile: typing.TemporalProfile,
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
     worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
     weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
@@ -106,7 +108,7 @@ def apply(log: EventLog, temporal_profile: typing.TemporalProfile,
                             bh = BusinessHours(trace[i][timestamp_key].replace(tzinfo=None),
                                                trace[j][start_timestamp_key].replace(tzinfo=None),
                                                worktiming=worktiming,
-                                               weekends=weekends)
+                                               weekends=weekends, workcalendar=workcalendar)
                             this_diff = bh.getseconds()
                         else:
                             this_diff = time_j - time_i

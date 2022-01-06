@@ -15,7 +15,6 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import tempfile
-import uuid
 from copy import deepcopy
 from enum import Enum
 
@@ -23,7 +22,7 @@ from graphviz import Graph
 
 from pm4py.objects.process_tree.utils import generic
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.process_tree.obj import ProcessTree
 import graphviz
 
@@ -54,48 +53,6 @@ def get_color(node, color_map):
     if node in color_map:
         return color_map[node]
     return "black"
-
-
-def repr_tree(tree, viz, current_node, rec_depth, color_map, parameters):
-    """
-    Represent a subtree on the GraphViz object
-
-    Parameters
-    -----------
-    tree
-        Current subtree
-    viz
-        GraphViz object
-    current_node
-        Father node of the current subtree
-    rec_depth
-        Reached recursion depth
-    color_map
-        Color map
-    parameters
-        Possible parameters of the algorithm.
-
-    Returns
-    -----------
-    gviz
-        (partial) GraphViz object
-    """
-    if tree.operator is None:
-        this_trans_id = str(uuid.uuid4())
-        if tree.label is None:
-            viz.node(this_trans_id, "tau", style='filled', fillcolor='black', shape='point', width="0.075")
-        else:
-            node_color = get_color(tree, color_map)
-            viz.node(this_trans_id, str(tree), color=node_color, fontcolor=node_color)
-        viz.edge(current_node, this_trans_id, dirType='none')
-    else:
-        op_node_identifier = str(uuid.uuid4())
-        node_color = get_color(tree, color_map)
-        viz.node(op_node_identifier, operators_mapping[str(tree.operator)], color=node_color, fontcolor=node_color)
-        viz.edge(current_node, op_node_identifier, dirType='none')
-        viz = repr_tree(tree, viz, op_node_identifier, rec_depth + 1, color_map, parameters)
-
-    return viz
 
 
 def repr_tree_2(tree, viz, color_map, parameters):

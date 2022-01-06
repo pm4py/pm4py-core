@@ -187,7 +187,7 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
         elif a in decorations and "color" in decorations[a]:
             viz.edge(str(id(a.source)), str(id(a.target)), color=decorations[a]["color"], fontsize=font_size, arrowhead=arrowhead)
         else:
-            if a.weight > 1:
+            if a.weight != 1:
                 viz.edge(str(id(a.source)), str(id(a.target)), fontsize=font_size, arrowhead=arrowhead, label=str(a.weight))
             else:
                 viz.edge(str(id(a.source)), str(id(a.target)), fontsize=font_size, arrowhead=arrowhead)

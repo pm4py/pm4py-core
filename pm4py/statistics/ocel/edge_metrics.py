@@ -17,7 +17,7 @@
 from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any, Tuple, Collection, Set, List
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants
 from pm4py.objects.ocel import constants as ocel_constants
 from pm4py.util.business_hours import BusinessHours
 
@@ -29,8 +29,9 @@ class Parameters(Enum):
     EVENT_ACTIVITY = ocel_constants.PARAM_EVENT_ACTIVITY
     EVENT_TIMESTAMP = ocel_constants.PARAM_EVENT_TIMESTAMP
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING = "worktiming"
+    WORKTIMING  = "worktiming"
     WEEKENDS = "weekends"
+    WORKCALENDAR = "workcalendar"
 
 
 def performance_calculation_ocel_aggregation(ocel: OCEL, aggregation: Dict[str, Dict[Tuple[str, str], Set[Any]]],
@@ -72,6 +73,7 @@ def performance_calculation_ocel_aggregation(ocel: OCEL, aggregation: Dict[str, 
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
     worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
     weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     ret = {}
 
@@ -84,7 +86,8 @@ def performance_calculation_ocel_aggregation(ocel: OCEL, aggregation: Dict[str, 
                     bh = BusinessHours(timestamps[el[0]],
                                        timestamps[el[1]],
                                        worktiming=worktiming,
-                                       weekends=weekends)
+                                       weekends=weekends,
+                                       workcalendar=workcalendar)
                     diff = bh.getseconds()
                 else:
                     diff = timestamps[el[1]].timestamp() - timestamps[el[0]].timestamp()

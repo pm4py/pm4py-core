@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "definitions": {
+    "AttributeBooleanType": {
+      "type": "boolean"
+    },
+    "AttributeDateType": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "AttributeFloatType": {
+      "type": "number"
+    },
+    "AttributeIntType": {
+      "type": "integer"
+    },
+    "AttributeStringType": {
+      "type": "string"
+    },
+    "ObjectMappingType": {
+      "type": "object"
+    },
+    "ValueMappingType": {
+      "type": "object"
+    },
+    "EventType": {
+      "patternProperties": {
+        "(.*?)": {
+          "type": "object",
+          "properties": {
+            "ocel:id": {
+              "$ref": "#/definitions/AttributeStringType"
+            },
+            "ocel:activity": {
+              "$ref": "#/definitions/AttributeStringType"
+            },
+            "ocel:timestamp": {
+              "$ref": "#/definitions/AttributeDateType"
+            },
+            "ocel:vmap": {
+              "items": {
+                "$ref": "#/definitions/ValueMappingType"
+              },
+              "type": "object"
+            },
+            "ocel:omap": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AttributeStringType"
+              }
+            }
+          },
+          "required": [
+            "ocel:activity",
+            "ocel:timestamp",
+            "ocel:omap",
+            "ocel:vmap"
+          ]
+        }
+      }
+    },
+    "ObjectType": {
+      "type": "object",
+      "patternProperties": {
+        "(.*?)": {
+          "type": "object",
+          "properties": {
+            "ocel:type": {
+              "$ref": "#/definitions/AttributeStringType"
+            },
+            "ocel:ovmap": {
+              "$ref": "#/definitions/ValueMappingType"
+            }
+          },
+          "required": [
+            "ocel:type",
+            "ocel:ovmap"
+          ]
+        }
+      }
+    }
+  },
+  "description": "Schema for the JSON-OCEL implementation",
+  "properties": {
+    "ocel:events": {
+      "$ref": "#/definitions/EventType"
+    },
+    "ocel:objects": {
+      "$ref": "#/definitions/ObjectType"
+    }
+  },
+  "type": "object"
+}

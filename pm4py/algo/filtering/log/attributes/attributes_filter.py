@@ -46,6 +46,7 @@ class Parameters(Enum):
     STREAM_FILTER_VALUE1 = "stream_filter_value1"
     STREAM_FILTER_KEY2 = "stream_filter_key2"
     STREAM_FILTER_VALUE2 = "stream_filter_value2"
+    KEEP_ONCE_PER_CASE = "keep_once_per_case"
 
 
 def apply_numeric(log: EventLog, int1: float, int2: float, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
@@ -371,6 +372,49 @@ def filter_log_by_attributes_threshold(log, attributes, variants, vc, threshold,
                 new_trace.attributes[attr] = trace.attributes[attr]
             filtered_log.append(new_trace)
     return filtered_log
+
+
+def filter_log_relative_occurrence_event_attribute(log: EventLog, min_relative_stake: float, parameters: Optional[Dict[Any, Any]] = None) -> EventLog:
+    """
+    Filters the event log keeping only the events having an attribute value which occurs:
+    - in at least the specified (min_relative_stake) percentage of events, when Parameters.KEEP_ONCE_PER_CASE = False
+    - in at least the specified (min_relative_stake) percentage of cases, when Parameters.KEEP_ONCE_PER_CASE = True
+
+    Parameters
+    -------------------
+    log
+        Event log
+    min_relative_stake
+        Minimum percentage of cases (expressed as a number between 0 and 1) in which the attribute should occur.
+    parameters
+        Parameters of the algorithm, including:
+        - Parameters.ATTRIBUTE_KEY => the attribute to use (default: concept:name)
+        - Parameters.KEEP_ONCE_PER_CASE => decides the level of the filter to apply
+        (if the filter should be applied on the cases, set it to True).
+
+    Returns
+    ------------------
+    filtered_log
+        Filtered event log
+    """
+    if parameters is None:
+        parameters = {}
+
+    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    keep_once_per_case = exec_utils.get_param_value(Parameters.KEEP_ONCE_PER_CASE, parameters, True)
+
+    parameters_cp = copy(parameters)
+
+    activities_occurrences = get_attribute_values(log, attribute_key, parameters=parameters_cp)
+
+    if keep_once_per_case:
+        # filter on cases
+        filtered_attributes = set(x for x, y in activities_occurrences.items() if y >= min_relative_stake * len(log))
+    else:
+        # filter on events
+        filtered_attributes = set(x for x, y in activities_occurrences.items() if y >= min_relative_stake * sum(len(x) for x in log))
+
+    return apply_events(log, filtered_attributes, parameters=parameters)
 
 
 @deprecation.deprecated("2.2.11", "3.0.0", details="Removed")

@@ -34,8 +34,9 @@ class Parameters(Enum):
     EDGE_COLUMN = "edge_column"
     INCLUDE_PERFORMANCE = "include_performance"
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING = "worktiming"
+    WORKTIMING  = "worktiming"
     WEEKENDS = "weekends"
+    WORKCALENDAR = "workcalendar"
     TIMESTAMP_DIFF_COLUMN = "timestamp_diff_column"
     EDGE_REFERENCE = "edge_reference"
 
@@ -84,6 +85,7 @@ Dict[Tuple[str, str], Dict[str, Any]]:
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
     worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
     weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     edges = {}
 
@@ -91,7 +93,7 @@ Dict[Tuple[str, str], Dict[str, Any]]:
         merged_df[timestamp_diff_column] = merged_df.apply(
             lambda x: soj_time_business_hours_diff(x[timestamp_column + "_out"], x[timestamp_column + "_in"],
                                                    worktiming,
-                                                   weekends), axis=1)
+                                                   weekends, workcalendar), axis=1)
 
     else:
         merged_df[timestamp_diff_column] = (

@@ -31,8 +31,9 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     AGGREGATION_MEASURE = "aggregationMeasure"
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING = "worktiming"
+    WORKTIMING  = "worktiming"
     WEEKENDS = "weekends"
+    WORKCALENDAR = "workcalendar"
 
 
 def apply(log: Union[EventLog, EventStream], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[Tuple[str, str], float]:
@@ -77,13 +78,14 @@ def performance(log: Union[EventLog, EventStream], parameters: Optional[Dict[Uni
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
     worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
     weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     if business_hours:
         dfgs0 = map((lambda t: [
             ((t[i - 1][activity_key], t[i][activity_key]),
              max(0, BusinessHours(t[i - 1][timestamp_key].replace(tzinfo=None),
                                   t[i][start_timestamp_key].replace(tzinfo=None), worktiming=worktiming,
-                                  weekends=weekends).getseconds()))
+                                  weekends=weekends, workcalendar=workcalendar).getseconds()))
             for i in range(1, len(t))]), log)
     else:
         dfgs0 = map((lambda t: [

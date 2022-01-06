@@ -483,6 +483,9 @@ def dataframe_to_activity_case_table(df: pd.DataFrame, parameters: Optional[Dict
     if parameters is None:
         parameters = {}
 
+    # make sure we start from a dataframe object
+    df = log_converter.apply(df, variant=log_converter.Variants.TO_DATA_FRAME, parameters=parameters)
+
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     case_id_prefix = exec_utils.get_param_value(Parameters.CASE_PREFIX, parameters, constants.CASE_ATTRIBUTE_PREFIX)
 
