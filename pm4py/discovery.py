@@ -14,6 +14,7 @@ from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties, xes_constants, general_checks_classical_event_log
 from pm4py.objects.ocel.obj import OCEL
+from pm4py.util import constants
 
 
 def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
@@ -65,7 +66,7 @@ def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame]) -> Tuple
     return discover_dfg(log)
 
 
-def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7]) -> Tuple[dict, dict, dict]:
+def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7], workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR) -> Tuple[dict, dict, dict]:
     """
     Discovers a performance directly-follows graph from an event log
 
@@ -99,7 +100,7 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours:
         timestamp_key = properties[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in properties else xes_constants.DEFAULT_TIMESTAMP_KEY
         case_id_key = properties[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in properties else constants.CASE_CONCEPT_NAME
         dfg = get_dfg_graph(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_glue=case_id_key, measure="performance", perf_aggregation_key="all",
-                            business_hours=business_hours, worktiming=worktiming, weekends=weekends)
+                            business_hours=business_hours, worktiming=worktiming, weekends=weekends, workcalendar=workcalendar)
         from pm4py.statistics.start_activities.pandas import get as start_activities_module
         from pm4py.statistics.end_activities.pandas import get as end_activities_module
         start_activities = start_activities_module.get_start_activities(log, parameters=properties)

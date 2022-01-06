@@ -26,8 +26,9 @@ class Parameters(Enum):
     MAX_RET_CASES = "max_ret_cases"
 
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING = "worktiming"
+    WORKTIMING  = "worktiming"
     WEEKENDS = "weekends"
+    WORKCALENDAR = "workcalendar"
 
 
 def get_variant_statistics(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[
@@ -142,6 +143,7 @@ def get_cases_description(df: pd.DataFrame, parameters: Optional[Dict[Union[str,
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
     worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
     weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
     # grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
@@ -160,7 +162,7 @@ def get_cases_description(df: pd.DataFrame, parameters: Optional[Dict[Union[str,
     if business_hours:
         stacked_df['caseDuration'] = stacked_df.apply(
             lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], worktiming,
-                                                   weekends), axis=1)
+                                                   weekends, workcalendar), axis=1)
     else:
         stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
         stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
@@ -241,6 +243,7 @@ def get_variants_df_with_case_duration(df, parameters=None):
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
     worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
     weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     grouped_df = df[[case_id_glue, timestamp_key, activity_key]].groupby(df[case_id_glue])
 
@@ -266,7 +269,7 @@ def get_variants_df_with_case_duration(df, parameters=None):
     if business_hours:
         stacked_df['caseDuration'] = stacked_df.apply(
             lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], worktiming,
-                                                   weekends), axis=1)
+                                                   weekends, workcalendar), axis=1)
     else:
         stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
         stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')

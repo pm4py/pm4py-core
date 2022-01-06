@@ -1,9 +1,12 @@
 import datetime
 from typing import List
+from copy import copy
+from pm4py.util import constants
 
 
 def soj_time_business_hours_diff(st: datetime.datetime, et: datetime.datetime, worktiming: List[int],
-                                 weekends: List[int]) -> float:
+                                 weekends: List[int],
+                                 workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR) -> float:
     """
     Calculates the difference between the provided timestamps based on the business hours
 
@@ -28,127 +31,54 @@ def soj_time_business_hours_diff(st: datetime.datetime, et: datetime.datetime, w
     """
     bh = BusinessHours(st.replace(tzinfo=None), et.replace(tzinfo=None),
                        worktiming=worktiming,
-                       weekends=weekends)
+                       weekends=weekends, workcalendar=workcalendar)
     return bh.getseconds()
 
 
 class BusinessHours:
 
-    def __init__(self, datetime1, datetime2, worktiming=[7, 17],
-                 weekends=[6, 7]):
-        self.weekends = weekends
-        self.worktiming = worktiming
+    def __init__(self, datetime1, datetime2, **kwargs):
         self.datetime1 = datetime1
         self.datetime2 = datetime2
-        self.day_hours = (self.worktiming[1] - self.worktiming[0])
-        self.day_minutes = self.day_hours * 60  # minutes in a work day
+        self.weekends = kwargs["weekends"] if "weekends" in kwargs else [6, 7]
+        # supports either specification of uninterrupted work timing,
+        # or with breaks
+        self.worktiming = kwargs["worktiming"] if "worktiming" in kwargs else [7, 17]
+        # workalendar calendar (it permits to query if a given day
+        # is a working day in a given culture)
+        self.workcalendar = kwargs[
+            "workcalendar"] if "workcalendar" in kwargs else constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR
 
-    def getdays(self):
-        return int(self.getminutes() / self.day_minutes)
-
-    def gethours(self):
-        return int(self.getminutes() / 60)
+        if type(self.worktiming[0]) is int:
+            self.worktiming = [self.worktiming]
 
     def getseconds(self):
-        return self.getminutes() * 60
+        current_date = copy(self.datetime1)
+        timedelta_1d = datetime.timedelta(days=1.0)
 
-    def getminutes(self):
-        """
-        Return the difference in minutes.
-        """
-        # Set initial default variables
-        dt_start = self.datetime1  # datetime of start
-        dt_end = self.datetime2  # datetime of end
-        worktime_in_seconds = 0
+        summ = 0
 
-        if dt_start.date() == dt_end.date():
-            # starts and ends on same workday
-            full_days = 0
-            if self.is_weekend(dt_start):
-                return 0
-            else:
-                if dt_start.hour < self.worktiming[0]:
-                    # set start time to opening hour
-                    dt_start = datetime.datetime(
-                        year=dt_start.year,
-                        month=dt_start.month,
-                        day=dt_start.day,
-                        hour=self.worktiming[0],
-                        minute=0)
-                if dt_start.hour >= self.worktiming[1] or \
-                        dt_end.hour < self.worktiming[0]:
-                    return 0
-                if dt_end.hour >= self.worktiming[1]:
-                    dt_end = datetime.datetime(
-                        year=dt_end.year,
-                        month=dt_end.month,
-                        day=dt_end.day,
-                        hour=self.worktiming[1],
-                        minute=0)
-                worktime_in_seconds = (dt_end - dt_start).total_seconds()
-        elif (dt_end - dt_start).days < 0:
-            # ends before start
-            return 0
-        else:
-            # start and ends on different days
-            current_day = dt_start  # marker for counting workdays
-            while not current_day.date() == dt_end.date():
-                if not self.is_weekend(current_day):
-                    if current_day == dt_start:
-                        # increment hours of first day
-                        if current_day.hour < self.worktiming[0]:
-                            # starts before the work day
-                            worktime_in_seconds += self.day_minutes * 60  # add 1 full work day
-                        elif current_day.hour >= self.worktiming[1]:
-                            pass  # no time on first day
-                        else:
-                            # starts during the working day
-                            if self.worktiming[1] < 24:
-                                # if we have a target that is below 24:00:00 (the next day)
-                                # we can use the existing code
-                                dt_currentday_close = datetime.datetime(
-                                    year=dt_start.year,
-                                    month=dt_start.month,
-                                    day=dt_start.day,
-                                    hour=self.worktiming[1],
-                                    minute=0)
-                            else:
-                                # otherwise, make the stop date as 23:59:59
-                                dt_currentday_close = datetime.datetime(
-                                    year=dt_start.year,
-                                    month=dt_start.month,
-                                    day=dt_start.day,
-                                    hour=23,
-                                    minute=59, second=59)
-                            worktime_in_seconds += (dt_currentday_close
-                                                    - dt_start).total_seconds()
-                    else:
-                        # increment one full day
-                        worktime_in_seconds += self.day_minutes * 60
-                current_day += datetime.timedelta(days=1)  # next day
-            # Time on the last day
-            if not self.is_weekend(dt_end):
-                if dt_end.hour >= self.worktiming[1]:  # finish after close
-                    # Add a full day
-                    worktime_in_seconds += self.day_minutes * 60
-                elif dt_end.hour < self.worktiming[0]:  # close before opening
-                    pass  # no time added
-                else:
-                    # Add time since opening
-                    dt_end_open = datetime.datetime(
-                        year=dt_end.year,
-                        month=dt_end.month,
-                        day=dt_end.day,
-                        hour=self.worktiming[0],
-                        minute=0)
-                    worktime_in_seconds += (dt_end - dt_end_open).total_seconds()
-        return int(worktime_in_seconds / 60)
+        for wt in self.worktiming:
+            dt1 = datetime.datetime(year=current_date.year, month=current_date.month, day=current_date.day,
+                                    hour=int(wt[0]), minute=int((wt[0] - int(wt[0])) * 60))
+            dt2 = datetime.datetime(year=current_date.year, month=current_date.month, day=current_date.day,
+                                    hour=int(wt[1]), minute=int((wt[1] - int(wt[1])) * 60))
 
-    def is_weekend(self, datetime):
-        """
-        Returns True if datetime lands on a weekend.
-        """
-        for weekend in self.weekends:
-            if datetime.isoweekday() == weekend:
-                return True
-        return False
+            while dt1 <= self.datetime2:
+                if dt2 > self.datetime2:
+                    dt2 = self.datetime2
+
+                if self.__is_working_day(dt1):
+                    diff = dt2.timestamp() - max(dt1, self.datetime1).timestamp()
+                    if diff > 0:
+                        summ += diff
+
+                dt1 = dt1 + timedelta_1d
+                dt2 = dt2 + timedelta_1d
+
+        return summ
+
+    def __is_working_day(self, dt):
+        if self.workcalendar is None:
+            return dt.isoweekday() not in self.weekends
+        return self.workcalendar.is_working_day(dt)

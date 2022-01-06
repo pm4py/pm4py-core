@@ -44,3 +44,4 @@ tomli==2.0.0
 tqdm==4.62.3
 traitlets==5.1.1
 wcwidth==0.2.5
+workalendar==16.2.0
