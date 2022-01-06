@@ -68,7 +68,7 @@ class ClassicSemantics(Semantics):
         return enabled_transitions(pn, m)
 
 
-# 29/08/2021: the following methods have been incapsulated in the ClassicSemantics class.
+# 29/08/2021: the following methods have been encapsulated in the ClassicSemantics class.
 # the long term idea is to remove them. However, first we need to adapt the existing code to the new
 # structure. Moreover, for performance reason, it is better to leave the code here, without having
 # to instantiate a ClassicSemantics object.
