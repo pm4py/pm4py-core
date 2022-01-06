@@ -73,7 +73,7 @@ class OCEL(object):
         ret.append("\n")
         ret.append("Activities occurrences: " + str(self.events[self.event_activity].value_counts().to_dict()))
         ret.append("\n")
-        ret.append("Object types occurrences: " + str(self.objects[self.object_type_column].value_counts().to_dict()))
+        ret.append("Object types occurrences (number of objects): " + str(self.objects[self.object_type_column].value_counts().to_dict()))
         ret.append("\n")
         ret.append(
             "Please use <THIS>.get_extended_table() to get a dataframe representation of the events related to the objects.")
