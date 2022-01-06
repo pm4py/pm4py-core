@@ -14,8 +14,9 @@ class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING = "worktiming"
+    WORKTIMING  = "worktiming"
     WEEKENDS = "weekends"
+    WORKCALENDAR = "workcalendar"
 
 
 def filter_on_ncases(df: pd.DataFrame, case_id_glue: str = constants.CASE_CONCEPT_NAME, max_no_cases: int = 1000):

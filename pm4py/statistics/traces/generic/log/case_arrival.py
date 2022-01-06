@@ -14,8 +14,9 @@ class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING = "worktiming"
+    WORKTIMING  = "worktiming"
     WEEKENDS = "weekends"
+    WORKCALENDAR = "workcalendar"
 
 
 def get_case_arrival_avg(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> float:
@@ -40,6 +41,7 @@ def get_case_arrival_avg(log: EventLog, parameters: Optional[Dict[Union[str, Par
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
     worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
     weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
 
@@ -50,7 +52,7 @@ def get_case_arrival_avg(log: EventLog, parameters: Optional[Dict[Union[str, Par
     for i in range(len(case_start_time)-1):
         if business_hours:
             bh = BusinessHours(case_start_time[i].replace(tzinfo=None), case_start_time[i+1].replace(tzinfo=None), worktiming=worktiming,
-                               weekends=weekends)
+                               weekends=weekends, workcalendar=workcalendar)
             case_diff_start_time.append(bh.getseconds())
         else:
             case_diff_start_time.append((case_start_time[i+1]-case_start_time[i]).total_seconds())
@@ -83,6 +85,7 @@ def get_case_dispersion_avg(log: EventLog, parameters: Optional[Dict[Union[str, 
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
     worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
     weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
 
@@ -93,7 +96,7 @@ def get_case_dispersion_avg(log: EventLog, parameters: Optional[Dict[Union[str, 
     for i in range(len(case_end_time)-1):
         if business_hours:
             bh = BusinessHours(case_end_time[i].replace(tzinfo=None), case_end_time[i+1].replace(tzinfo=None), worktiming=worktiming,
-                               weekends=weekends)
+                               weekends=weekends, workcalendar=workcalendar)
             case_diff_end_time.append(bh.getseconds())
         else:
             case_diff_end_time.append((case_end_time[i+1]-case_end_time[i]).total_seconds())

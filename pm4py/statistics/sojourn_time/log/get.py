@@ -14,8 +14,9 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     AGGREGATION_MEASURE = "aggregationMeasure"
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING = "worktiming"
+    WORKTIMING  = "worktiming"
     WEEKENDS = "weekends"
+    WORKCALENDAR = "workcalendar"
 
 
 DIFF_KEY = "@@diff"
@@ -54,6 +55,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
     worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
     weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     log = log_converter.apply(log, parameters=parameters)
 
@@ -76,7 +78,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
             if business_hours:
                 bh = BusinessHours(event[start_timestamp_key].replace(tzinfo=None), event[timestamp_key].replace(tzinfo=None),
                                    worktiming=worktiming,
-                                   weekends=weekends)
+                                   weekends=weekends, workcalendar=workcalendar)
                 durations_dict[activity].append(bh.getseconds())
             else:
                 start_time = event[start_timestamp_key].timestamp()
