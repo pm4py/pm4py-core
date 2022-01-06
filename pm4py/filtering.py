@@ -6,11 +6,48 @@ import pandas as pd
 
 from pm4py.meta import VERSION as PM4PY_CURRENT_VERSION
 from pm4py.objects.log.obj import EventLog
-from pm4py.util import constants
+from pm4py.util import constants, xes_constants
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties, general_checks_classical_event_log
 from pm4py.objects.ocel.obj import OCEL
 import datetime
+
+
+def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataFrame], min_relative_stake: float, attribute_key : str = xes_constants.DEFAULT_NAME_KEY, level="cases") -> Union[EventLog, pd.DataFrame]:
+    """
+    Filters the event log keeping only the events having an attribute value which occurs:
+    - in at least the specified (min_relative_stake) percentage of events, when level="events"
+    - in at least the specified (min_relative_stake) percentage of cases, when level="cases"
+
+    Parameters
+    -------------------
+    log
+        Event log / Pandas dataframe
+    min_relative_stake
+        Minimum percentage of cases (expressed as a number between 0 and 1) in which the attribute should occur.
+    attribute_key
+        The attribute to filter
+    level
+        The level of the filter (if level="events", then events / if level="cases", then cases)
+
+    Returns
+    ------------------
+    filtered_log
+        Filtered event log
+    """
+    general_checks_classical_event_log(log)
+    parameters = get_properties(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.algo.filtering.pandas.attributes import attributes_filter
+        parameters[attributes_filter.Parameters.ATTRIBUTE_KEY] = attribute_key
+        parameters[attributes_filter.Parameters.KEEP_ONCE_PER_CASE] = True if level == "cases" else False
+        return attributes_filter.filter_df_relative_occurrence_event_attribute(log, min_relative_stake, parameters=parameters)
+    else:
+        from pm4py.algo.filtering.log.attributes import attributes_filter
+        parameters[attributes_filter.Parameters.ATTRIBUTE_KEY] = attribute_key
+        parameters[attributes_filter.Parameters.KEEP_ONCE_PER_CASE] = True if level == "cases" else False
+        return attributes_filter.filter_log_relative_occurrence_event_attribute(log, min_relative_stake, parameters=parameters)
 
 
 def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: Union[Set[str], List[str]], retain: bool = True) -> \
