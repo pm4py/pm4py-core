@@ -65,8 +65,8 @@ def apply(net, im, fm, parameters=None):
     for arc in net.arcs:
         bpmn_graph.add_flow(BPMN.Flow(exiting_dictio[arc.source], entering_dictio[arc.target]))
 
-    start_node = BPMN.StartEvent()
-    end_node = BPMN.EndEvent()
+    start_node = BPMN.StartEvent(name="start", isInterrupting=True)
+    end_node = BPMN.EndEvent(name="end")
     bpmn_graph.add_node(start_node)
     bpmn_graph.add_node(end_node)
     for place in im:
