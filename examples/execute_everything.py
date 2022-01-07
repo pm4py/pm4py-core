@@ -4,6 +4,36 @@ import sys
 import traceback
 
 
+def feature_extraction_ocel():
+    from examples import feature_extraction_ocel
+    print("\n\nfeature_extraction_ocel")
+    feature_extraction_ocel.execute_script()
+
+
+def ocel_validation():
+    from examples import ocel_validation
+    print("\n\nocel_validation")
+    ocel_validation.execute_script()
+
+
+def process_tree_frequency_annotation():
+    from examples import process_tree_frequency_annotation
+    print("\n\nprocess_tree_frequency_annotation")
+    process_tree_frequency_annotation.execute_script()
+
+
+def tree_manual_generation():
+    from examples import tree_manual_generation
+    print("\n\ntree_manual_generation")
+    tree_manual_generation.execute_script()
+
+
+def workalendar_example():
+    from examples import workalendar_example
+    print("\n\nworkalendar_example")
+    workalendar_example.execute_script()
+
+
 def merging_case_relations():
     from examples import merging_case_relations
     print("\n\nmerging_case_relations")
@@ -525,6 +555,11 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(feature_extraction_ocel)
+    execute_script(ocel_validation)
+    execute_script(process_tree_frequency_annotation)
+    execute_script(tree_manual_generation)
+    execute_script(workalendar_example)
     execute_script(merging_case_relations)
     execute_script(activity_position)
     execute_script(link_analysis_vbfa)
