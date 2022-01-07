@@ -244,4 +244,7 @@ def apply(tree, parameters=None):
     for node in bpmn.get_nodes():
         node.set_process(bpmn.get_process_id())
 
+    for edge in bpmn.get_flows():
+        edge.set_process(bpmn.get_process_id())
+
     return bpmn
