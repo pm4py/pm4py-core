@@ -68,8 +68,8 @@ def add_xor_gateway(bpmn, counts):
     split_name = "xor_" + str(counts.num_xor_gateways) + "_split"
     join_name = "xor_" + str(counts.num_xor_gateways) + "_join"
 
-    split = BPMN.ExclusiveGateway(name=split_name)
-    join = BPMN.ExclusiveGateway(name=join_name)
+    split = BPMN.ExclusiveGateway(name=split_name, gateway_direction=BPMN.Gateway.Direction.DIVERGING)
+    join = BPMN.ExclusiveGateway(name=join_name, gateway_direction=BPMN.Gateway.Direction.CONVERGING)
     bpmn.add_node(split)
     bpmn.add_node(join)
 
@@ -82,8 +82,8 @@ def add_parallel_gateway(bpmn, counts):
     split_name = "parallel_" + str(counts.num_para_gateways) + "_split"
     join_name = "parallel_" + str(counts.num_para_gateways) + "_join"
 
-    split = BPMN.ParallelGateway(name=split_name)
-    join = BPMN.ParallelGateway(name=join_name)
+    split = BPMN.ParallelGateway(name=split_name, gateway_direction=BPMN.Gateway.Direction.DIVERGING)
+    join = BPMN.ParallelGateway(name=join_name, gateway_direction=BPMN.Gateway.Direction.CONVERGING)
     bpmn.add_node(split)
     bpmn.add_node(join)
     return bpmn, split, join, counts
@@ -95,8 +95,8 @@ def add_inclusive_gateway(bpmn, counts):
     split_name = "parallel_" + str(counts.num_para_gateways) + "_split"
     join_name = "parallel_" + str(counts.num_para_gateways) + "_join"
 
-    split = BPMN.InclusiveGateway(name=split_name)
-    join = BPMN.InclusiveGateway(name=join_name)
+    split = BPMN.InclusiveGateway(name=split_name, gateway_direction=BPMN.Gateway.Direction.DIVERGING)
+    join = BPMN.InclusiveGateway(name=join_name, gateway_direction=BPMN.Gateway.Direction.CONVERGING)
     bpmn.add_node(split)
     bpmn.add_node(join)
     return bpmn, split, join, counts
