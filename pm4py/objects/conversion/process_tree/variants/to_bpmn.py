@@ -235,10 +235,13 @@ def apply(tree, parameters=None):
     counts = Counts()
     bpmn = BPMN()
     start_event = BPMN.StartEvent(name="start", isInterrupting=True)
-    end_event = BPMN.EndEvent(name="end")
+    end_event = BPMN.NormalEndEvent(name="end")
     bpmn.add_node(start_event)
     bpmn.add_node(end_event)
     bpmn, counts, _, _ = recursively_add_tree(tree, tree, bpmn, start_event, end_event, counts, 0)
     bpmn = delete_tau_transitions(bpmn, counts)
+
+    for node in bpmn.get_nodes():
+        node.set_process(bpmn.get_process_id())
 
     return bpmn
