@@ -26,7 +26,7 @@ libraries are added/removed.
 | matplotlib-inline | https://pypi.org/project/matplotlib-inline | BSD 3-Clause | 0.1.3 |
 | mpmath | https://pypi.org/project/mpmath | BSD License (BSD) | 1.2.1 |
 | networkx | https://pypi.org/project/networkx | BSD License | 2.6.3 |
-| numpy | https://pypi.org/project/numpy | BSD License (BSD) | 1.22.0 |
+| numpy | https://pypi.org/project/numpy | BSD License (BSD) | 1.21.5 |
 | packaging | https://pypi.org/project/packaging | Apache Software License, BSD License (BSD-2-Clause or Apache-2.0) | 21.3 |
 | pandas | https://pypi.org/project/pandas | BSD License (BSD-3-Clause) | 1.3.5 |
 | parso | https://pypi.org/project/parso | MIT License (MIT) | 0.8.3 |
@@ -39,7 +39,6 @@ libraries are added/removed.
 | python-dateutil | https://pypi.org/project/python-dateutil | Apache Software License, BSD License (Dual License) | 2.8.2 |
 | pytz | https://pypi.org/project/pytz | MIT License (MIT) | 2021.3 |
 | pyvis | https://pypi.org/project/pyvis | BSD | 0.1.9 |
-| scikit-learn | https://pypi.org/project/scikit-learn | OSI Approved (new BSD) | 1.0.2 |
 | scipy | https://pypi.org/project/scipy | BSD License (BSD) | 1.7.3 |
 | setuptools | https://pypi.org/project/setuptools | MIT License | 60.2.0 |
 | setuptools-scm | https://pypi.org/project/setuptools-scm | MIT License (MIT) | 6.3.2 |
