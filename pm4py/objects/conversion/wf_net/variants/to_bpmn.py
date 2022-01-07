@@ -79,4 +79,7 @@ def apply(net, im, fm, parameters=None):
     for node in bpmn_graph.get_nodes():
         node.set_process(bpmn_graph.get_process_id())
 
+    for edge in bpmn_graph.get_flows():
+        edge.set_process(bpmn_graph.get_process_id())
+
     return bpmn_graph
