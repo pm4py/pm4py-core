@@ -23,7 +23,7 @@ class Parameters(Enum):
 
 
 # maps the operators to the ProM strings
-operators_mapping = {"->": "seq", "X": "xor", "+": "and", "*": "xor loop", "O": "or"}
+operators_mapping = {"->": "seq", "X": "xor", "+": "and", "*": "xor loop", "O": "or", "<>": "interleaving"}
 
 # root node parameter
 ROOT_NODE_PARAMETER = "@@root_node"
