@@ -2,7 +2,7 @@ from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any, List
 from enum import Enum
 from pm4py.util import exec_utils
-from pm4py.algo.transformation.ocel.features.objects import object_lifecycle_length, object_lifecycle_duration, object_degree_centrality, object_general_descendants_graph, object_general_interaction_graph, object_general_inheritance_graph, object_cobirth_graph, object_codeath_graph, object_lifecycle_activities, object_str_attributes, object_num_attributes, objects_interaction_graph_ot, object_work_in_progress, related_events_features, related_activities_features
+from pm4py.algo.transformation.ocel.features.objects import object_lifecycle_length, object_lifecycle_duration, object_degree_centrality, object_general_descendants_graph, object_general_interaction_graph, object_general_inheritance_graph, object_cobirth_graph, object_codeath_graph, object_lifecycle_activities, object_str_attributes, object_num_attributes, objects_interaction_graph_ot, object_work_in_progress, related_events_features, related_activities_features, obj_con_in_graph_features
 
 
 class Parameters(Enum):
@@ -22,6 +22,7 @@ class Parameters(Enum):
     ENABLE_OBJECT_WORK_IN_PROGRESS = "enable_object_work_in_progress"
     ENABLE_RELATED_EVENTS_FEATURES = "enable_related_events_features"
     ENABLE_RELATED_ACTIVITIES_FEATURES = "enable_related_activities_features"
+    ENABLE_OBJ_CON_IN_GRAPH_FEATURES = "enable_obj_con_in_graph_features"
     FILTER_PER_TYPE = "filter_per_type"
 
 
@@ -57,6 +58,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
                                                         given object.
         - Parameters.ENABLE_RELATED_ACTIVITIES_FEATURES => enables the extraction of features for the last occurrence
                                                         of an activity in the events related to the object.
+        - Parameters.ENABLE_OBJ_CON_IN_GRAPH_FEATURES => enables the extraction of features from the neighboring
+                                                        objects.
 
     Returns
     ------------------
@@ -84,6 +87,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     enable_work_in_progress = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_WORK_IN_PROGRESS, parameters, enable_all)
     enable_related_events_features = exec_utils.get_param_value(Parameters.ENABLE_RELATED_EVENTS_FEATURES, parameters, False)
     enable_related_activities_features = exec_utils.get_param_value(Parameters.ENABLE_RELATED_ACTIVITIES_FEATURES, parameters, False)
+    enable_obj_con_in_graph_features = exec_utils.get_param_value(Parameters.ENABLE_OBJ_CON_IN_GRAPH_FEATURES, parameters, False)
 
     filter_per_type = exec_utils.get_param_value(Parameters.FILTER_PER_TYPE, parameters, None)
 
@@ -178,6 +182,12 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
 
     if enable_related_activities_features:
         data, feature_names = related_activities_features.apply(ocel, parameters=parameters)
+        feature_namess = feature_namess + feature_names
+        for i in range(len(data)):
+            datas[i] = datas[i] + data[i]
+
+    if enable_obj_con_in_graph_features:
+        data, feature_names = obj_con_in_graph_features.apply(ocel, parameters=parameters)
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
