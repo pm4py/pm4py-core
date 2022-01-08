@@ -1,5 +1,5 @@
 from pm4py.objects.ocel.obj import OCEL
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.algo.transformation.ocel.features.events import event_activity, event_num_rel_objs, event_num_rel_objs_type, event_timestamp, event_str_attributes, event_num_attributes, event_start_ot, event_end_ot
@@ -115,3 +115,40 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
             datas[i] = datas[i] + data[i]
 
     return datas, feature_namess
+
+
+def transform_features_to_dict_dict(ocel: OCEL, data: List[List[float]], feature_names: List[str], parameters=None):
+    """
+    Transforms event-based features expressed in the conventional way to a dictionary
+    where the key is the event ID, the second key is the feature name and the value is the feature value.
+
+    Parameters
+    -----------------
+    ocel
+        Object-centric event log
+    data
+        Values of the features
+    feature_names
+        Names of the features
+
+    Returns
+    -----------------
+    dict_dict
+        Dictionary associating an ID to a dictionary of features
+    """
+    if parameters is None:
+        parameters = {}
+
+    events = list(ocel.events[ocel.event_id_column])
+    ret = {}
+    i = 0
+    while i < len(data):
+        dct = {}
+        j = 0
+        while j < len(feature_names):
+            dct[feature_names[j]] = data[i][j]
+            j = j + 1
+        ret[events[i]] = dct
+        i = i + 1
+
+    return ret

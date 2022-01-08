@@ -1,5 +1,5 @@
 from pm4py.objects.ocel.obj import OCEL
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.algo.transformation.ocel.features.objects import object_lifecycle_length, object_lifecycle_duration, object_degree_centrality, object_general_descendants_graph, object_general_interaction_graph, object_general_inheritance_graph, object_cobirth_graph, object_codeath_graph, object_lifecycle_activities, object_str_attributes, object_num_attributes, objects_interaction_graph_ot, object_work_in_progress
@@ -169,3 +169,40 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
         datas = [datas[i] for i in idxs]
 
     return datas, feature_namess
+
+
+def transform_features_to_dict_dict(ocel: OCEL, data: List[List[float]], feature_names: List[str], parameters=None):
+    """
+    Transforms object-based features expressed in the conventional way to a dictionary
+    where the key is the object ID, the second key is the feature name and the value is the feature value.
+
+    Parameters
+    -----------------
+    ocel
+        Object-centric event log
+    data
+        Values of the features
+    feature_names
+        Names of the features
+
+    Returns
+    -----------------
+    dict_dict
+        Dictionary associating an ID to a dictionary of features
+    """
+    if parameters is None:
+        parameters = {}
+
+    objects = list(ocel.objects[ocel.object_id_column])
+    ret = {}
+    i = 0
+    while i < len(data):
+        dct = {}
+        j = 0
+        while j < len(feature_names):
+            dct[feature_names[j]] = data[i][j]
+            j = j + 1
+        ret[objects[i]] = dct
+        i = i + 1
+
+    return ret
