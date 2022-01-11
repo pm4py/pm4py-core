@@ -1,15 +1,16 @@
 import shutil
 from enum import Enum
 
+import pydotplus
 from pm4py.util import exec_utils, vis_utils
-from pm4py.visualization.heuristics_net.variants import pydotplus
+from pm4py.visualization.heuristics_net.variants import pydotplus_vis
 import tempfile
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from typing import Optional, Dict, Any, Union, Tuple
 
 
 class Variants(Enum):
-    PYDOTPLUS = pydotplus
+    PYDOTPLUS = pydotplus_vis
 
 
 DEFAULT_VARIANT = Variants.PYDOTPLUS
@@ -36,6 +37,29 @@ def apply(heu_net: HeuristicsNet, parameters: Optional[Dict[Any, Any]] = None, v
         Representation of the Heuristics Net
     """
     return exec_utils.get_variant(variant).apply(heu_net, parameters=parameters)
+
+
+def get_graph(heu_net: HeuristicsNet, parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT) -> pydotplus.graphviz.Dot:
+    """
+    Gets a representation of an Heuristics Net
+
+    Parameters
+    -------------
+    heu_net
+        Heuristics net
+    parameters
+        Possible parameters of the algorithm, including:
+            - Parameters.FORMAT
+    variant
+        Variant of the algorithm to use:
+             - Variants.PYDOTPLUS
+
+    Returns
+    ------------
+    graph
+        Pydotplus graph
+    """
+    return exec_utils.get_variant(variant).get_graph(heu_net, parameters=parameters)
 
 
 def view(figure):
