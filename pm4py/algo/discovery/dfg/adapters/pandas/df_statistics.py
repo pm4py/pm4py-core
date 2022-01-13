@@ -6,7 +6,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
                   start_timestamp_key=None, timestamp_key="time:timestamp", perf_aggregation_key="mean",
                   sort_caseid_required=True,
                   sort_timestamp_along_case_id=True, keep_once_per_case=False, window=1,
-                  business_hours=False, worktiming=None, weekends=None, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR):
+                  business_hours=False, worktiming=None, weekends=None, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, target_activity_key=None):
     """
     Get DFG graph from Pandas dataframe
 
@@ -42,6 +42,11 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     """
     import pandas as pd
 
+    # added support to specify an activity key for the target event which is different
+    # from the activity key of the source event.
+    if target_activity_key is None:
+        target_activity_key = activity_key
+
     # if not differently specified, set the start timestamp key to the timestamp key
     # to avoid retro-compatibility problems
     if start_timestamp_key is None:
@@ -58,9 +63,9 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     # to increase the speed of the approaches reduce dataframe to case, activity (and possibly complete timestamp)
     # columns
     if measure == "frequency":
-        df_reduced = df[[case_id_glue, activity_key]]
+        df_reduced = df[{case_id_glue, activity_key, target_activity_key}]
     else:
-        df_reduced = df[[case_id_glue, activity_key, start_timestamp_key, timestamp_key]]
+        df_reduced = df[{case_id_glue, activity_key, start_timestamp_key, timestamp_key, target_activity_key}]
     # shift the dataframe by 1, in order to couple successive rows
     df_reduced_shifted = df_reduced.shift(-window)
     # change column names to shifted dataframe
@@ -72,10 +77,10 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     df_successive_rows = df_successive_rows[df_successive_rows[case_id_glue] == df_successive_rows[case_id_glue + '_2']]
     if keep_once_per_case:
         df_successive_rows = df_successive_rows.groupby(
-            [case_id_glue, activity_key, activity_key + "_2"]).first().reset_index()
+            [case_id_glue, activity_key, target_activity_key + "_2"]).first().reset_index()
 
     all_columns = set(df_successive_rows.columns)
-    all_columns = list(all_columns - set([activity_key, activity_key + '_2']))
+    all_columns = list(all_columns - set([activity_key, target_activity_key + '_2']))
 
     if measure == "performance" or measure == "both":
         # in the arc performance calculation, make sure to consider positive or null values
@@ -94,10 +99,10 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
                     df_successive_rows[start_timestamp_key + '_2'] - df_successive_rows[timestamp_key]).astype(
                 'timedelta64[s]')
         # groups couple of attributes (directly follows relation, we can measure the frequency and the performance)
-        directly_follows_grouping = df_successive_rows.groupby([activity_key, activity_key + '_2'])[
+        directly_follows_grouping = df_successive_rows.groupby([activity_key, target_activity_key + '_2'])[
             constants.DEFAULT_FLOW_TIME]
     else:
-        directly_follows_grouping = df_successive_rows.groupby([activity_key, activity_key + '_2'])
+        directly_follows_grouping = df_successive_rows.groupby([activity_key, target_activity_key + '_2'])
         if all_columns:
             directly_follows_grouping = directly_follows_grouping[all_columns[0]]
 
