@@ -161,7 +161,7 @@ class ProcessTree(object):
         elif self.label is not None:
             return self.label
         else:
-            return '*tau*'
+            return 'tau'
 
     def __str__(self):
         """
