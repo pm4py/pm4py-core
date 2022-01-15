@@ -1,6 +1,39 @@
 # PM4Py Changelog
 
-## PM4Py 2.218
+## PM4Py 2.2.19
+
+### Added
+
+* eea18398
+  * Possibility to return the Pydotplus graph inner object in the Heuristics Net visualization.
+* 52ddbf75
+  * Support for different attribute keys for the source / target events in the DFG discovery and paths filtering on Pandas dataframes.
+* 29bd86a6
+  * Possibility to specify different shifts for the different working days of the week, inside the business hour module.
+* f1e124a4
+  * Possibility to move an attribute at the event level in an OCEL to the object type level.
+
+### Changed
+
+* 74ce9b95
+  * Setting all the arcs of the Petri net visible when there is at least an arc with weight != 1, for coherence reasons. 
+* 21832737
+  * Inferring the activity frequency from the DFG in a more generic way with regards to the type of the inputs.
+* 87fe5afd
+  * Changed tau printing in process tree to string representation, from *tau* to tau, for coherency with the parse_process_tree operator.
+* effce8d8
+  * Changed BPMN namespace in BPMN exporting to ensure compatibility with BPMN modelers.
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+## PM4Py 2.2.18
 
 ### Added
 * c15c8897
