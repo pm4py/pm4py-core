@@ -1,1 +1,1 @@
-from pm4py.objects.ocel.util import attributes_names, extended_table, flattening, related_objects, related_events, filtering_utils, log_ocel, sampling, convergence_divergence_diagnostics, events_per_type_per_activity, objects_per_type_per_activity, events_per_object_type
+from pm4py.objects.ocel.util import attributes_names, extended_table, flattening, related_objects, related_events, filtering_utils, log_ocel, sampling, convergence_divergence_diagnostics, events_per_type_per_activity, objects_per_type_per_activity, events_per_object_type, ev_att_to_obj_type
