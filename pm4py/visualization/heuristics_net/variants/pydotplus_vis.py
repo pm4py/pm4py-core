@@ -99,7 +99,7 @@ def transform_to_hex_2(color):
     return "#" + left0 + right0 + left1 + right1 + left1 + right1
 
 
-def apply(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> str:
+def get_graph(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pydotplus.graphviz.Dot:
     """
     Gets a representation of an Heuristics Net
 
@@ -113,13 +113,11 @@ def apply(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Parameter
 
     Returns
     ------------
-    gviz
-        Representation of the Heuristics Net
+    graph
+        Pydotplus graph
     """
     if parameters is None:
         parameters = {}
-
-    image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
 
     graph = pydotplus.Dot(strict=True)
     graph.obj_dict['attributes']['bgcolor'] = 'transparent'
@@ -256,7 +254,35 @@ def apply(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Parameter
                                        fontcolor=heu_net.default_edges_color[index])
                 graph.add_edge(e)
 
+    return graph
+
+
+def apply(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> str:
+    """
+    Gets a representation of an Heuristics Net
+
+    Parameters
+    -------------
+    heu_net
+        Heuristics net
+    parameters
+        Possible parameters of the algorithm, including:
+            - Parameters.FORMAT
+
+    Returns
+    ------------
+    gviz
+        Representation of the Heuristics Net
+    """
+    if parameters is None:
+        parameters = {}
+
+    image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
+
+    graph = get_graph(heu_net, parameters=parameters)
+
     file_name = tempfile.NamedTemporaryFile(suffix='.' + image_format)
     file_name.close()
+
     graph.write(file_name.name, format=image_format)
     return file_name
