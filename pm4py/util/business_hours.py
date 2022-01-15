@@ -52,29 +52,36 @@ class BusinessHours:
         if type(self.worktiming[0]) is int:
             self.worktiming = [self.worktiming]
 
+        if type(self.worktiming) is not dict:
+            self.worktiming = {i: self.worktiming for i in range(0, 7)}
+
     def getseconds(self):
         current_date = copy(self.datetime1)
-        timedelta_1d = datetime.timedelta(days=1.0)
 
         summ = 0
 
-        for wt in self.worktiming:
-            dt1 = datetime.datetime(year=current_date.year, month=current_date.month, day=current_date.day,
-                                    hour=int(wt[0]), minute=int((wt[0] - int(wt[0])) * 60))
-            dt2 = datetime.datetime(year=current_date.year, month=current_date.month, day=current_date.day,
-                                    hour=int(wt[1]), minute=int((wt[1] - int(wt[1])) * 60))
+        for dayweek in self.worktiming:
+            for wt in self.worktiming[dayweek]:
+                timedelta_nd = datetime.timedelta(days=1.0)
 
-            while dt1 <= self.datetime2:
-                if dt2 > self.datetime2:
-                    dt2 = self.datetime2
+                dt1 = datetime.datetime(year=current_date.year, month=current_date.month, day=current_date.day,
+                                        hour=int(wt[0]), minute=int((wt[0] - int(wt[0])) * 60))
+                dt2 = datetime.datetime(year=current_date.year, month=current_date.month, day=current_date.day,
+                                        hour=int(wt[1]), minute=int((wt[1] - int(wt[1])) * 60))
 
-                if self.__is_working_day(dt1):
-                    diff = dt2.timestamp() - max(dt1, self.datetime1).timestamp()
-                    if diff > 0:
-                        summ += diff
+                while dt1 <= self.datetime2:
+                    if dt2 > self.datetime2:
+                        dt2 = self.datetime2
 
-                dt1 = dt1 + timedelta_1d
-                dt2 = dt2 + timedelta_1d
+                    if dt1.weekday() == dayweek:
+                        timedelta_nd = datetime.timedelta(days=7.0)
+                        if self.__is_working_day(dt1):
+                                diff = dt2.timestamp() - max(dt1, self.datetime1).timestamp()
+                                if diff > 0:
+                                    summ += diff
+
+                    dt1 = dt1 + timedelta_nd
+                    dt2 = dt2 + timedelta_nd
 
         return summ
 
