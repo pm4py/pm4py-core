@@ -49,7 +49,7 @@ class BusinessHours:
         self.workcalendar = kwargs[
             "workcalendar"] if "workcalendar" in kwargs else constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR
 
-        if type(self.worktiming[0]) is int:
+        if type(self.worktiming[0]) is int or type(self.worktiming[0]) is float:
             self.worktiming = [self.worktiming]
 
         if type(self.worktiming) is not dict:
