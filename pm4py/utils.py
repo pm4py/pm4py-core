@@ -3,7 +3,6 @@ from typing import Optional, Tuple, Any, Collection, Union, List
 
 import pandas as pd
 
-import pm4py
 from pm4py.objects.log.obj import EventLog, EventStream, Trace, Event
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.ocel.obj import OCEL
@@ -114,6 +113,8 @@ def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = c
     rebased_log_obj
         Rebased log object
     """
+    import pm4py
+
     if isinstance(log_obj, pd.DataFrame):
         return format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
                                 start_timestamp_key=start_timestamp_key)
