@@ -59,11 +59,16 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
         if xes_constants.DEFAULT_TIMESTAMP_KEY in df.columns:
             del df[xes_constants.DEFAULT_TIMESTAMP_KEY]
         df[xes_constants.DEFAULT_TIMESTAMP_KEY] = df[timestamp_key]
-    df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype(str)
     # makes sure that the timestamps column are of timestamp type
     df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=timest_format)
+    # drop NaN(s) in the main columns (case ID, activity, timestamp) to ensure functioning of the
+    # algorithms
+    df = df.dropna(subset={constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_NAME_KEY,
+                           xes_constants.DEFAULT_TIMESTAMP_KEY}, how="any")
+    # make sure the case ID column is of string type
+    df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype("string")
     # make sure the activity column is of string type
-    df[xes_constants.DEFAULT_NAME_KEY] = df[xes_constants.DEFAULT_NAME_KEY].astype(str)
+    df[xes_constants.DEFAULT_NAME_KEY] = df[xes_constants.DEFAULT_NAME_KEY].astype("string")
     # set an index column
     df = pandas_utils.insert_index(df, INDEX_COLUMN)
     # sorts the dataframe
