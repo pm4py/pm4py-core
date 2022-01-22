@@ -1,6 +1,6 @@
 import re
 
-from pm4py.objects.petri_net import semantics
+from pm4py.objects import petri_net
 from pm4py.objects.petri_net.utils import align_utils
 from pm4py.objects.transition_system import obj as ts
 from pm4py.objects.transition_system import utils
@@ -11,6 +11,7 @@ import time
 
 class Parameters(Enum):
     MAX_ELAB_TIME = "max_elab_time"
+    PETRI_SEMANTICS = "petri_semantics"
 
 
 def staterep(name):
@@ -48,6 +49,7 @@ def marking_flow_petri(net, im, return_eventually_enabled=False, parameters=None
 
     # set a maximum execution time of 1 day (it can be changed by providing the parameter)
     max_exec_time = exec_utils.get_param_value(Parameters.MAX_ELAB_TIME, parameters, 86400)
+    semantics = exec_utils.get_param_value(Parameters.PETRI_SEMANTICS, parameters, petri_net.semantics.ClassicSemantics())
 
     start_time = time.time()
 
@@ -66,7 +68,7 @@ def marking_flow_petri(net, im, return_eventually_enabled=False, parameters=None
             eventually_enabled[m] = align_utils.get_visible_transitions_eventually_enabled_by_marking(net, m)
         outgoing_transitions[m] = {}
         for t in enabled_transitions:
-            nm = semantics.weak_execute(t, m)
+            nm = semantics.weak_execute(t, net, m)
             outgoing_transitions[m][t] = nm
             if nm not in incoming_transitions:
                 incoming_transitions[nm] = set()
