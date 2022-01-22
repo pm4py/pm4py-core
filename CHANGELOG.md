@@ -12,6 +12,8 @@
   * Possibility to specify different shifts for the different working days of the week, inside the business hour module.
 * f1e124a4
   * Possibility to move an attribute at the event level in an OCEL to the object type level.
+* 0da4c3f6
+  * Custom semantics for Petri net to reachability graph conversion.
 
 ### Changed
 
@@ -27,6 +29,9 @@
 ### Deprecated
 
 ### Fixed
+
+* 0ad488b1
+  * Fixed problem in PTAndLogGenerator: silent transitions were added in some context also when the parameter "silent" was provided to 0.
 
 ### Removed
 
