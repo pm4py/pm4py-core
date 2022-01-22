@@ -556,6 +556,10 @@ def __builds_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr
         title = "Distribution of the Events over the Days of a Week";
         x_axis = "Day of the Week";
         y_axis = "Number of Events"
+    elif distr_type == "weeks":
+        title = "Distribution of the Events over the Weeks of a Year";
+        x_axis = "Week of the Year";
+        y_axis = "Number of Events"
     else:
         raise Exception("unsupported distribution specified.")
 
@@ -585,6 +589,7 @@ def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_typ
         - years => Gets the distribution of the events among the years of the event log
         - hours => Gets the distribution of the events among the hours of a day (from 0 to 23)
         - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday)
+        - weeks => Gets the distribution of the events among the weeks of a year (from 0 to 52)
     format
         Format of the visualization (default: png)
     """
