@@ -404,6 +404,69 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
                 filtered_log.append(trace)
         return filtered_log
 
+def filter_eventually_follows_relation_resource(log: Union[EventLog, pd.DataFrame], relations: List[Tuple[str,str]], retain: bool = True) -> \
+        Union[EventLog, pd.DataFrame]:
+    """
+    Retain traces that contain any of the specified 'eventually follows' relations.
+    For example, if relations == [('a','b'),('a','c')] and log [<a,b,c>,<a,c,b>,<a,d,b>]
+    the resulting log will contain traces describing [<a,b,c>,<a,c,b>,<a,d,b>].
+
+    Parameters
+    ---------------
+    log
+        Log object
+    relations
+        List of activity name pairs, which are allowed/forbidden paths
+    retain
+        Parameter that says whether the paths
+        should be kept/removed
+
+    Returns
+    ----------------
+    filtered_log
+        Filtered log object
+    """
+    general_checks_classical_event_log(log)
+    parameters = get_properties(log)
+    if check_is_pandas_dataframe(log):
+        from pm4py.algo.filtering.pandas.ltl import ltl_checker
+        parameters[ltl_checker.Parameters.POSITIVE] = retain
+        if retain:
+            cases = set()
+        else:
+            cases = set(log[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY])
+        for path in relations:
+            filt_log = ltl_checker.eventually_follows(log, path,
+                                                      parameters=parameters)
+            this_traces = set(filt_log[constants.CASE_CONCEPT_NAME])
+            if retain:
+                cases = cases.union(this_traces)
+            else:
+                cases = cases.intersection(this_traces)
+        return log[log[constants.CASE_CONCEPT_NAME].isin(cases)]
+    else:
+        from pm4py.objects.log.obj import EventLog
+        from pm4py.algo.filtering.log.ltl import ltl_checker
+        parameters[ltl_checker.Parameters.POSITIVE] = retain
+        if retain:
+            cases = set()
+        else:
+            cases = set(id(trace) for trace in log)
+        for path in relations:
+            filt_log = ltl_checker.eventually_follows(log, path,
+                                                      parameters=parameters)
+            this_traces = set(id(trace) for trace in filt_log)
+            if retain:
+                cases = cases.union(this_traces)
+            else:
+                cases = cases.intersection(this_traces)
+        filtered_log = EventLog(attributes=log.attributes, extensions=log.extensions, omni_present=log.omni_present,
+                                classifiers=log.classifiers, properties=log.properties)
+        for trace in log:
+            if id(trace) in cases:
+                filtered_log.append(trace)
+        return filtered_log    
+    
 
 def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mode="events") -> Union[
     EventLog, pd.DataFrame]:
