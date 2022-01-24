@@ -304,7 +304,9 @@ def eventually_follows(log: EventLog, attribute_values: List[str], parameters: O
     if parameters is None:
         parameters = {}
 
-    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    # attribute_key changed from activity_key to resource_key without changing parameter name
+    #attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
+    attribute_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, DEFAULT_RESOURCE_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
 
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
