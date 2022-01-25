@@ -39,7 +39,8 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     df
         Dataframe
     """
-    general_checks_classical_event_log(df)
+    if type(df) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.objects.log.util import dataframe_utils
     if case_id not in df.columns:
         raise Exception(case_id + " column (case ID) is not in the dataframe!")
@@ -220,7 +221,8 @@ def get_properties(log):
     prop_dict
         Dictionary containing the properties of the log object
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from copy import copy
     parameters = copy(log.properties) if hasattr(log, 'properties') else copy(log.attrs) if hasattr(log,
                                                                                                     'attrs') else {}
@@ -248,7 +250,8 @@ def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASS
     log
         The same event log (methods acts inplace)
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if type(classifier) is list:
         pass
     elif type(classifier) is str:
@@ -346,7 +349,8 @@ List[List[str]]:
         ['register request', 'examine casually', 'check ticket', 'decide', 'reinitiate request', 'check ticket', 'examine casually', 'decide', 'reinitiate request', 'examine casually', 'check ticket', 'decide', 'reject request'],
         ['register request', 'check ticket', 'examine thoroughly', 'decide', 'reject request']]
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     output = []
     if pandas_utils.check_is_pandas_dataframe(log):
         pandas_utils.check_pandas_dataframe_columns(log)
@@ -358,21 +362,6 @@ List[List[str]]:
         for trace in log:
             output.append([x[attribute_key] if attribute_key is not None else None for x in trace])
     return output
-
-
-def general_checks_classical_event_log(log):
-    """
-    Method to checks the consistency of the provided classical event log.
-    Throws an error if some problems occur.
-
-    Parameters
-    -----------------
-    log
-        Event log
-    """
-    if type(log) is OCEL:
-        raise Exception("the method cannot be applied on object-centric event logs!")
-    return True
 
 
 def sample_cases(log: Union[EventLog, pd.DataFrame], num_cases: int) -> Union[EventLog, pd.DataFrame]:

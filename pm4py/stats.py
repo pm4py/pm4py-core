@@ -5,9 +5,9 @@ from collections import Counter
 import pandas as pd
 
 from pm4py.objects.ocel.obj import OCEL
-from pm4py.objects.log.obj import EventLog, Trace
+from pm4py.objects.log.obj import EventLog, Trace, EventStream
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns, insert_ev_in_tr_index
-from pm4py.utils import get_properties, general_checks_classical_event_log
+from pm4py.utils import get_properties
 from pm4py.util import xes_constants, constants
 from copy import copy
 import deprecation
@@ -27,7 +27,8 @@ def get_start_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
     start_activities
         Dictionary of start activities along with their count
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.start_activities.pandas import get
@@ -51,7 +52,8 @@ def get_end_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
     end_activities
         Dictionary of end activities along with their count
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.end_activities.pandas import get
@@ -80,7 +82,8 @@ def get_event_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
     attributes_list
         List of attributes contained in the log
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         return list(log.columns)
@@ -103,7 +106,8 @@ def get_trace_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
     trace_attributes_list
         List of attributes at the trace level
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.util import constants
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -137,7 +141,8 @@ def get_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
     attribute_values
         Dictionary of values along with their count
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     parameters["keep_once_per_case"] = count_once_per_case
     if check_is_pandas_dataframe(log):
@@ -165,7 +170,8 @@ def get_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
     attribute_values
         Dictionary of values along with their count
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.attributes.pandas import get
@@ -189,7 +195,8 @@ def get_variants(log: Union[EventLog, pd.DataFrame]) -> Dict[str, List[Trace]]:
     variants
         Dictionary of variants along with their count
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     import pm4py
     if pm4py.util.variants_util.VARIANT_SPECIFICATION == pm4py.util.variants_util.VariantsSpecifications.STRING:
         import warnings
@@ -220,7 +227,8 @@ def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame]) -> Dict[Tuple[str
     variants
         Dictionary of variants along with their count
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     import pm4py
     # the behavior of PM4Py is changed to allow this to work
     pm4py.util.variants_util.VARIANT_SPECIFICATION = pm4py.util.variants_util.VariantsSpecifications.LIST
@@ -248,7 +256,8 @@ def get_minimum_self_distances(log: EventLog) -> Dict[str, int]:
     -------
         dict mapping an activity to its self-distance, if it exists, otherwise it is not part of the dict.
     '''
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.algo.discovery.minimum_self_distance import algorithm as msd_algo
     return msd_algo.apply(log, parameters=get_properties(log))
 
@@ -272,7 +281,8 @@ def get_minimum_self_distance_witnesses(log: EventLog) -> Dict[str, Set[str]]:
         Dictionary mapping each activity to a set of witnesses.
 
         '''
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.algo.discovery.minimum_self_distance import algorithm as msd_algo
     from pm4py.algo.discovery.minimum_self_distance import utils as msdw_algo
     return msdw_algo.derive_msd_witnesses(log, msd_algo.apply(log, parameters=get_properties(log)), parameters=get_properties(log))
@@ -292,7 +302,8 @@ def get_case_arrival_average(log: Union[EventLog, pd.DataFrame]) -> float:
     case_arrival_average
         Average difference between the start times of two consecutive cases
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.traces.generic.pandas import case_arrival
@@ -320,7 +331,8 @@ def get_rework_cases_per_activity(log: Union[EventLog, pd.DataFrame]) -> Dict[st
         Dictionary associating to each of the aforementioned activities the number of cases for which the rework
         occurred.
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.rework.pandas import get as rework_get
@@ -345,7 +357,8 @@ def get_case_overlap(log: Union[EventLog, pd.DataFrame]) -> List[int]:
         List that for each case (identified by its index in the log) tells how many other cases
         are concurrently open.
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.overlap.cases.pandas import get as cases_overlap
@@ -380,7 +393,8 @@ def get_cycle_time(log: Union[EventLog, pd.DataFrame]) -> float:
     cycle_time
         Cycle time (calculated with the aforementioned formula).
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.traces.cycle_time.pandas import get as cycle_time
@@ -410,7 +424,8 @@ def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: b
     durations
         Case durations (as list)
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     properties = copy(get_properties(log))
     properties["business_hours"] = business_hours
     properties["worktiming"] = worktiming
@@ -447,7 +462,8 @@ def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business
     duration
         Duration of the given case
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     properties = copy(get_properties(log))
     properties["business_hours"] = business_hours
     properties["worktiming"] = worktiming
@@ -483,7 +499,8 @@ def get_activity_position_summary(log: Union[EventLog, pd.DataFrame], activity: 
     pos_dict_summary
         Summary of the positions of the activity in the trace (e.g. {1: 1000, 2: 500})
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     properties = get_properties(log)
     activity_key = properties[
         constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in properties else xes_constants.DEFAULT_NAME_KEY

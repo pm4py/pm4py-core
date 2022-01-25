@@ -7,11 +7,11 @@ import pandas as pd
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
-from pm4py.objects.log.obj import EventLog
+from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
-from pm4py.utils import get_properties, general_checks_classical_event_log
+from pm4py.utils import get_properties
 
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = None,
@@ -163,7 +163,8 @@ def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_p
         Destination path
     """
     if log is not None:
-        general_checks_classical_event_log(log)
+        if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     dfg_parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
@@ -295,7 +296,8 @@ def __dotted_attribute_selection(log, attributes):
     attributes
         List of attributes
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if attributes is None:
         from pm4py.util import xes_constants
         from pm4py.objects.log.util import sorting
@@ -328,7 +330,8 @@ def view_dotted_chart(log, format: str = "png", attributes=None):
         of the form [x-axis attribute, y-axis attribute, color attribute], e.g., ["concept:name", "org:resource", "concept:name"])
 
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     log, attributes = __dotted_attribute_selection(log, attributes)
     from pm4py.visualization.dotted_chart import visualizer as dotted_chart_visualizer
     gviz = dotted_chart_visualizer.apply(log, attributes, parameters={"format": format})
@@ -348,7 +351,8 @@ def save_vis_dotted_chart(log, file_path: str, attributes=None):
     attributes
         Attributes that should be used to construct the dotted chart (for example, ["concept:name", "org:resource"])
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     format = os.path.splitext(file_path)[1][1:]
     log, attributes = __dotted_attribute_selection(log, attributes)
     from pm4py.visualization.dotted_chart import visualizer as dotted_chart_visualizer
@@ -397,7 +401,8 @@ def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "
     format
         Format of the visualization (png, svg, ...)
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.traces.generic.pandas import case_statistics
@@ -422,7 +427,8 @@ def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: 
     file_path
         Destination path
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.traces.generic.pandas import case_statistics
@@ -448,7 +454,8 @@ def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str =
     format
         Format of the visualization (png, svg, ...)
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.attributes.pandas import get as attributes_get
@@ -473,7 +480,8 @@ def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path
     file_path
         Destination path
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.attributes.pandas import get as attributes_get
@@ -499,7 +507,8 @@ def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: Li
     format
         Format of the visualization (png, svg ...)
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
     perf_spectrum = performance_spectrum.apply(log, activities, parameters=get_properties(log))
     from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
@@ -521,7 +530,8 @@ def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities
     file_path
         Destination path (including the extension)
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
     perf_spectrum = performance_spectrum.apply(log, activities, parameters=get_properties(log))
     from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
@@ -535,7 +545,8 @@ def __builds_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr
     """
     Internal method to build the events distribution graph
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if distr_type == "days_month":
         title = "Distribution of the Events over the Days of a Month";
         x_axis = "Day of month";
@@ -593,7 +604,8 @@ def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_typ
     format
         Format of the visualization (default: png)
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, distr_type)
     parameters = copy(get_properties(log))
     parameters["title"] = title;
@@ -624,7 +636,8 @@ def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_
         - hours => Gets the distribution of the events among the hours of a day (from 0 to 23)
         - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday)
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     format = os.path.splitext(file_path)[1][1:]
     title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, distr_type)
     parameters = copy(get_properties(log))
