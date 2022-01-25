@@ -72,7 +72,8 @@ def solve_marking_equation(petri_net: PetriNet, initial_marking: Marking,
         for t in petri_net.transitions:
             cost_function[t] = 1
 
-    me = marking_equation.build(petri_net, initial_marking, final_marking, parameters={'costs': cost_function})
+    me = marking_equation.build(
+        petri_net, initial_marking, final_marking, parameters={'costs': cost_function})
     return marking_equation.get_h_value(me)
 
 
@@ -108,7 +109,8 @@ def solve_extended_marking_equation(trace: Trace, sync_net: PetriNet, sync_im: M
     parameters = {}
     if split_points is not None:
         parameters[extended_marking_equation.Variants.CLASSIC.value.Parameters.SPLIT_IDX] = split_points
-    me = extended_marking_equation.build(trace, sync_net, sync_im, sync_fm, parameters=parameters)
+    me = extended_marking_equation.build(
+        trace, sync_net, sync_im, sync_fm, parameters=parameters)
     return extended_marking_equation.get_h_value(me)
 
 
@@ -168,3 +170,22 @@ def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame]) -> Union[Eve
         from pm4py.objects.log.util import artificial
         return artificial.insert_artificial_start_end(log, parameters=properties)
 
+
+def check_is_workflow_net(net: PetriNet) -> bool:
+    """
+    Checks if the input Petri net satisfies the WF-net conditions:
+    1. unique source place
+    2. unique sink place
+    3. every node is on a path from the source to the sink
+
+    Parameters
+    ------------------
+    net
+        PetriNet
+
+    Returns
+    ------------------
+    True iff the input net is a WF-net.
+    """
+    from pm4py.algo.analysis.workflow_net import algorithm
+    return algorithm.apply(net)
