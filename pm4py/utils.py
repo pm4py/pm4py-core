@@ -55,7 +55,8 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     df
         Dataframe
     """
-    general_checks_classical_event_log(df)
+    if type(df) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.objects.log.util import dataframe_utils
     if case_id not in df.columns:
         raise Exception(case_id + " column (case ID) is not in the dataframe!")
@@ -66,20 +67,25 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     if case_id != constants.CASE_CONCEPT_NAME:
         if constants.CASE_CONCEPT_NAME in df.columns:
             del df[constants.CASE_CONCEPT_NAME]
-        df = df.rename(columns={case_id: constants.CASE_CONCEPT_NAME})
+        df[constants.CASE_CONCEPT_NAME] = df[case_id]
     if activity_key != xes_constants.DEFAULT_NAME_KEY:
         if xes_constants.DEFAULT_NAME_KEY in df.columns:
             del df[xes_constants.DEFAULT_NAME_KEY]
-        df = df.rename(columns={activity_key: xes_constants.DEFAULT_NAME_KEY})
+        df[xes_constants.DEFAULT_NAME_KEY] = df[activity_key]
     if timestamp_key != xes_constants.DEFAULT_TIMESTAMP_KEY:
         if xes_constants.DEFAULT_TIMESTAMP_KEY in df.columns:
             del df[xes_constants.DEFAULT_TIMESTAMP_KEY]
-        df = df.rename(columns={timestamp_key: xes_constants.DEFAULT_TIMESTAMP_KEY})
-    df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype(str)
+        df[xes_constants.DEFAULT_TIMESTAMP_KEY] = df[timestamp_key]
     # makes sure that the timestamps column are of timestamp type
     df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=timest_format)
+    # drop NaN(s) in the main columns (case ID, activity, timestamp) to ensure functioning of the
+    # algorithms
+    df = df.dropna(subset={constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_NAME_KEY,
+                           xes_constants.DEFAULT_TIMESTAMP_KEY}, how="any")
+    # make sure the case ID column is of string type
+    df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype("string")
     # make sure the activity column is of string type
-    df[xes_constants.DEFAULT_NAME_KEY] = df[xes_constants.DEFAULT_NAME_KEY].astype(str)
+    df[xes_constants.DEFAULT_NAME_KEY] = df[xes_constants.DEFAULT_NAME_KEY].astype("string")
     # set an index column
     df = pandas_utils.insert_index(df, INDEX_COLUMN)
     # sorts the dataframe
@@ -102,6 +108,48 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     # logging.warning(
     #    "please convert the dataframe for advanced process mining applications. log = pm4py.convert_to_event_log(df)")
     return df
+
+
+def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = constants.CASE_CONCEPT_NAME,
+                     activity_key: str = xes_constants.DEFAULT_NAME_KEY,
+                     timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
+                     start_timestamp_key: str = xes_constants.DEFAULT_START_TIMESTAMP_KEY):
+    """
+    Re-base the log object, changing the case ID, activity and timestamp attributes.
+
+    Parameters
+    -----------------
+    log_obj
+        Log object
+    case_id
+        Case identifier
+    activity_key
+        Activity
+    timestamp_key
+        Timestamp
+    start_timestamp_key
+        Start timestamp
+
+    Returns
+    -----------------
+    rebased_log_obj
+        Rebased log object
+    """
+    import pm4py
+
+    if isinstance(log_obj, pd.DataFrame):
+        return format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
+                                start_timestamp_key=start_timestamp_key)
+    elif isinstance(log_obj, EventLog):
+        log_obj = pm4py.convert_to_dataframe(log_obj)
+        log_obj = format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
+                                   start_timestamp_key=start_timestamp_key)
+        return pm4py.convert_to_event_log(log_obj)
+    elif isinstance(log_obj, EventStream):
+        log_obj = pm4py.convert_to_dataframe(log_obj)
+        log_obj = format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
+                                   start_timestamp_key=start_timestamp_key)
+        return pm4py.convert_to_event_stream(log_obj)
 
 
 def parse_process_tree(tree_string: str) -> ProcessTree:
@@ -231,7 +279,8 @@ def get_properties(log):
     prop_dict
         Dictionary containing the properties of the log object
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: return {}
+
     from copy import copy
     parameters = copy(log.properties) if hasattr(log, 'properties') else copy(log.attrs) if hasattr(log,
                                                                                                     'attrs') else {}
@@ -259,7 +308,8 @@ def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASS
     log
         The same event log (methods acts inplace)
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if type(classifier) is list:
         pass
     elif type(classifier) is str:
@@ -357,7 +407,8 @@ List[List[str]]:
         ['register request', 'examine casually', 'check ticket', 'decide', 'reinitiate request', 'check ticket', 'examine casually', 'decide', 'reinitiate request', 'examine casually', 'check ticket', 'decide', 'reject request'],
         ['register request', 'check ticket', 'examine thoroughly', 'decide', 'reject request']]
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     output = []
     if pandas_utils.check_is_pandas_dataframe(log):
         pandas_utils.check_pandas_dataframe_columns(log)
@@ -369,21 +420,6 @@ List[List[str]]:
         for trace in log:
             output.append([x[attribute_key] if attribute_key is not None else None for x in trace])
     return output
-
-
-def general_checks_classical_event_log(log):
-    """
-    Method to checks the consistency of the provided classical event log.
-    Throws an error if some problems occur.
-
-    Parameters
-    -----------------
-    log
-        Event log
-    """
-    if type(log) is OCEL:
-        raise Exception("the method cannot be applied on object-centric event logs!")
-    return True
 
 
 def sample_cases(log: Union[EventLog, pd.DataFrame], num_cases: int) -> Union[EventLog, pd.DataFrame]:

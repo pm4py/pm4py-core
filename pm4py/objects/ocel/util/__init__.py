@@ -14,4 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.ocel.util import attributes_names, extended_table, flattening, related_objects, related_events, filtering_utils, log_ocel, sampling, convergence_divergence_diagnostics, events_per_type_per_activity, objects_per_type_per_activity, events_per_object_type
+from pm4py.objects.ocel.util import attributes_names, extended_table, flattening, related_objects, related_events, filtering_utils, log_ocel, sampling, convergence_divergence_diagnostics, events_per_type_per_activity, objects_per_type_per_activity, events_per_object_type, ev_att_to_obj_type

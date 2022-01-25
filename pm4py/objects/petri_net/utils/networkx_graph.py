@@ -81,6 +81,28 @@ def create_networkx_directed_graph(net, weight=None):
     inv_dictionary
         Correspondence between NetworkX nodes and Petri net entities
     """
+    # forward to new function
+    G, d, id = create_networkx_directed_graph_ret_dict_both_ways(net,weight)
+    return G,id
+
+def create_networkx_directed_graph_ret_dict_both_ways(net, weight=None):
+    """
+    Create a NetworkX directed graph from a Petri net
+
+    Parameters
+    --------------
+    net
+        Petri net
+
+    Returns
+    --------------
+    graph
+        NetworkX digraph
+    dictionary
+        dict mapping Petri net nodes to NetworkX nodes
+    inv_dictionary
+        dict mapping NetworkX nodes to Petri net nodes
+    """
     import networkx as nx
 
     graph = nx.DiGraph()
@@ -105,4 +127,4 @@ def create_networkx_directed_graph(net, weight=None):
                 graph.edges[source, target]["weight"] = weight[inv_dictionary[source]]
             else:
                 graph.edges[source, target]["weight"] = weight[inv_dictionary[target]]
-    return graph, inv_dictionary
+    return graph, dictionary, inv_dictionary
