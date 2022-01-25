@@ -1,6 +1,63 @@
 # PM4Py Changelog
 
-## PM4Py 2.218
+## PM4Py 2.2.19
+
+### Added
+* eea18398
+  * possibility to return the Pydotplus graph inner object in the Heuristics Net visualization.
+* 52ddbf75
+  * support for different attribute keys for the source / target events in the DFG discovery and paths filtering on Pandas dataframes.
+* 29bd86a6
+  * possibility to specify different shifts for the different working days of the week, inside the business hour module.
+* f1e124a4
+  * possibility to move an attribute at the event level in an OCEL to the object type level.
+* 0da4c3f6
+  * custom semantics for Petri net to reachability graph conversion.
+* c7c7ed5f185b492f7b6206b04f037a119b80541b
+  * add "week of the year" option in get_events_distribution method
+* 5b5c04874e449bda60463ade6e2cf1a8218e6908
+  * add prefix/suffix filter for pandas data frames
+* 877701fa0e348a5bd58eb84ed984b60292db9f55
+  * add additional features (useful for instance-spanning constraints) in trace-based feature extraction
+* 7359807b60aa3b1ece798d1ef0cdd6a19fac9f6b
+  * add rebase functionality to pm4py (changing the default activity/case identifier)
+* 84742ce331dec418841d99fafb24a82c48c21e7f
+  * add support for interleaved operator
+* d7e232a987e4a0c15e28b9cf2ae6c15ce324031f
+  * added various additional interaction feature extraction methods for OCEL
+* 9caf5597d59ff9eb70879ba42dbfccd9785009af
+  * add new thirdparty dependency structure in third_party folder
+
+### Changed
+* 74ce9b95
+  * setting all the arcs of the Petri net visible when there is at least an arc with weight != 1, for coherence reasons. 
+* 21832737
+  * inferring the activity frequency from the DFG in a more generic way with regards to the type of the inputs.
+* 87fe5afd
+  * changed tau printing in process tree to string representation, from *tau* to tau, for coherency with the parse_process_tree operator.
+* effce8d8
+  * changed BPMN namespace in BPMN exporting to ensure compatibility with BPMN modelers.
+* 2200a0f5d6d23a1f797199cb834b37e07d8d396e
+  * add pn to nx converter that returns two dicts for node mappings (pn->nx and nx->pn)
+* f9ad1a400846dbdb01f48714df0a3119069a05ea
+  * ```pm4py.format_dataframe(df)``` no longer replaces columns, rather, it copies the data into fresh columns
+
+### Deprecated
+
+### Fixed
+* 0ad488b1
+  * Fixed problem in PTAndLogGenerator: silent transitions were added in some context also when the parameter "silent" was provided to 0.
+
+### Removed
+* d07a90873be85d95b15e562aabc6ab1f93b6b109
+  * removed ```pm4py.general_checks_classical_event_log()```
+* 034abb0d7a442572f8bd52109ac6ed5cba109d0c
+  * remove dependency on ciso8601
+
+### Other
+
+
+## PM4Py 2.2.18
 
 ### Added
 * c15c8897

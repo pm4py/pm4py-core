@@ -104,6 +104,6 @@ class OCEL(object):
     def __copy__(self):
         return OCEL(self.events, self.objects, self.relations, copy(self.globals), copy(self.parameters))
 
-    def __deepcopy__(self):
+    def __deepcopy__(self, memo):
         return OCEL(self.events.copy(), self.objects.copy(), self.relations.copy(), deepcopy(self.globals),
                     deepcopy(self.parameters))

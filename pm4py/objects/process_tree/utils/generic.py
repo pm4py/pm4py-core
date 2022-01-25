@@ -239,6 +239,9 @@ def parse_recursive(string_rep, depth_cache, depth):
     elif string_rep.startswith(pt_op.Operator.SEQUENCE.value):
         operator = pt_op.Operator.SEQUENCE
         string_rep = string_rep[len(pt_op.Operator.SEQUENCE.value):]
+    elif string_rep.startswith(pt_op.Operator.INTERLEAVING.value):
+        operator = pt_op.Operator.INTERLEAVING
+        string_rep = string_rep[len(pt_op.Operator.INTERLEAVING.value):]
     if operator is not None:
         parent = None if depth == 0 else depth_cache[depth - 1]
         node = pt.ProcessTree(operator=operator, parent=parent)

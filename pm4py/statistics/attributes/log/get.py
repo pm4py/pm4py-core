@@ -110,6 +110,9 @@ def get_events_distribution(log: EventLog, distr_type: str = "days_month", param
     elif distr_type == "days_week":
         values = Counter(x.weekday() for x in timestamp_values)
         all_values = Counter({i: 0 for i in range(0, 7)})
+    elif distr_type == "weeks":
+        values = Counter(x.isocalendar().week for x in timestamp_values)
+        all_values = Counter({i: 0 for i in range(0, 53)})
 
     # make sure that all the possible values appear
     for v in all_values:

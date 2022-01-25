@@ -84,8 +84,8 @@ def add_xor_gateway(bpmn, counts):
     split_name = "xor_" + str(counts.num_xor_gateways) + "_split"
     join_name = "xor_" + str(counts.num_xor_gateways) + "_join"
 
-    split = BPMN.ExclusiveGateway(name=split_name)
-    join = BPMN.ExclusiveGateway(name=join_name)
+    split = BPMN.ExclusiveGateway(name=split_name, gateway_direction=BPMN.Gateway.Direction.DIVERGING)
+    join = BPMN.ExclusiveGateway(name=join_name, gateway_direction=BPMN.Gateway.Direction.CONVERGING)
     bpmn.add_node(split)
     bpmn.add_node(join)
 
@@ -98,8 +98,8 @@ def add_parallel_gateway(bpmn, counts):
     split_name = "parallel_" + str(counts.num_para_gateways) + "_split"
     join_name = "parallel_" + str(counts.num_para_gateways) + "_join"
 
-    split = BPMN.ParallelGateway(name=split_name)
-    join = BPMN.ParallelGateway(name=join_name)
+    split = BPMN.ParallelGateway(name=split_name, gateway_direction=BPMN.Gateway.Direction.DIVERGING)
+    join = BPMN.ParallelGateway(name=join_name, gateway_direction=BPMN.Gateway.Direction.CONVERGING)
     bpmn.add_node(split)
     bpmn.add_node(join)
     return bpmn, split, join, counts
@@ -111,8 +111,8 @@ def add_inclusive_gateway(bpmn, counts):
     split_name = "parallel_" + str(counts.num_para_gateways) + "_split"
     join_name = "parallel_" + str(counts.num_para_gateways) + "_join"
 
-    split = BPMN.InclusiveGateway(name=split_name)
-    join = BPMN.InclusiveGateway(name=join_name)
+    split = BPMN.InclusiveGateway(name=split_name, gateway_direction=BPMN.Gateway.Direction.DIVERGING)
+    join = BPMN.InclusiveGateway(name=join_name, gateway_direction=BPMN.Gateway.Direction.CONVERGING)
     bpmn.add_node(split)
     bpmn.add_node(join)
     return bpmn, split, join, counts
@@ -251,10 +251,16 @@ def apply(tree, parameters=None):
     counts = Counts()
     bpmn = BPMN()
     start_event = BPMN.StartEvent(name="start", isInterrupting=True)
-    end_event = BPMN.EndEvent(name="end")
+    end_event = BPMN.NormalEndEvent(name="end")
     bpmn.add_node(start_event)
     bpmn.add_node(end_event)
     bpmn, counts, _, _ = recursively_add_tree(tree, tree, bpmn, start_event, end_event, counts, 0)
     bpmn = delete_tau_transitions(bpmn, counts)
+
+    for node in bpmn.get_nodes():
+        node.set_process(bpmn.get_process_id())
+
+    for edge in bpmn.get_flows():
+        edge.set_process(bpmn.get_process_id())
 
     return bpmn

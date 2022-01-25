@@ -248,7 +248,11 @@ class GeneratedTree(object):
         mapped_operator = op_map[operator]
         order = random.randrange(0, 2)
         chosen_leaf = random.choice(leaves)
-        label1 = chosen_leaf.label if chosen_leaf.label is not None else self.get_next_activity()
+        added_count = 0
+        label1 = chosen_leaf.label
+        if chosen_leaf.label is None:
+            added_count = added_count + 1
+            label1 = self.get_next_activity()
         label2 = None
         if chosen_leaf.parent is None:
             self.tree = obj.ProcessTree(operator=mapped_operator)
@@ -259,7 +263,7 @@ class GeneratedTree(object):
             chosen_leaf = obj.ProcessTree(operator=mapped_operator, parent=parent)
             parent.children.append(chosen_leaf)
         r = random.random()
-        if self.total_activities - len(visible_leaves) > 1 and not r < self.parameters["silent"]:
+        if self.total_activities - len(visible_leaves) > added_count and not r < self.parameters["silent"]:
             label2 = self.get_next_activity()
         node1 = obj.ProcessTree(label=label1, parent=chosen_leaf)
         node2 = obj.ProcessTree(label=label2, parent=chosen_leaf)

@@ -36,7 +36,7 @@ class Parameters(Enum):
 
 
 # maps the operators to the ProM strings
-operators_mapping = {"->": "seq", "X": "xor", "+": "and", "*": "xor loop", "O": "or"}
+operators_mapping = {"->": "seq", "X": "xor", "+": "and", "*": "xor loop", "O": "or", "<>": "interleaving"}
 
 
 def get_color(node, color_map):
