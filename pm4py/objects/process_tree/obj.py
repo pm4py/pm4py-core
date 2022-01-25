@@ -28,13 +28,8 @@ class Operator(Enum):
     LOOP = '*'
     # or operator
     OR = 'O'
-
-    '''
-    SEQUENCE = u'\u2192'
-    XOR = u'\u00d7'
-    PARALLEL = u'\u002b'
-    LOOP = u'\u27f2'
-    '''
+    # interleaving operator
+    INTERLEAVING = "<>"
 
     def __str__(self):
         """
@@ -107,6 +102,8 @@ class ProcessTree(object):
                 h = h * 29
             elif self.operator == Operator.LOOP:
                 h = h * 37
+            elif self.operator == Operator.INTERLEAVING:
+                h = h * 41
             return h % 268435456
 
     def _set_operator(self, operator):
@@ -177,7 +174,7 @@ class ProcessTree(object):
         elif self.label is not None:
             return self.label
         else:
-            return '*tau*'
+            return 'tau'
 
     def __str__(self):
         """

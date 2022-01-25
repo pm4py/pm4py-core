@@ -295,16 +295,15 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
         if log is not None:
             activities_count = attr_get.get_attribute_values(log, activity_key, parameters=parameters)
         else:
-            # 11/09/2021: if we have the specification of the start activities,
-            # we can compute the activities count without the log in a smarter way.
-            if type(start_activities) is dict and start_activities:
-                activities_count = {key: 0 for key in set(activities).union(set(start_activities))}
+            # the frequency of an activity in the log is at least the number of occurrences of
+            # incoming arcs in the DFG.
+            # if the frequency of the start activities nodes is also provided, use also that.
+            activities_count = {key: 0 for key in activities}
+            for el in dfg:
+                activities_count[el[1]] += dfg[el]
+            if isinstance(start_activities, dict):
                 for act in start_activities:
                     activities_count[act] += start_activities[act]
-                for el in dfg:
-                    activities_count[el[1]] += dfg[el]
-            else:
-                activities_count = {key: 1 for key in activities}
 
     if soj_time is None:
         if log is not None:

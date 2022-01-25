@@ -70,6 +70,7 @@ def get_events_distribution(df: pd.DataFrame, distr_type: str = "days_month", pa
         - years => Gets the distribution of the events among the years of the event log
         - hours => Gets the distribution of the events among the hours of a day (from 0 to 23)
         - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday)
+        - weeks => Distribution of the events among the weeks of a year (from 0 to 52)
     parameters
         Parameters of the algorithm, including:
         - Parameters.TIMESTAMP_KEY
@@ -108,6 +109,10 @@ def get_events_distribution(df: pd.DataFrame, distr_type: str = "days_month", pa
         serie = df[timestamp_key].dt.dayofweek
         values = Counter(serie.value_counts().to_dict())
         all_values = Counter({i: 0 for i in range(0, 7)})
+    elif distr_type == "weeks":
+        serie = df[timestamp_key].dt.isocalendar().week
+        values = Counter(serie.value_counts().to_dict())
+        all_values = Counter({i: 0 for i in range(0, 53)})
 
     # make sure that all the possible values appear
     for v in all_values:

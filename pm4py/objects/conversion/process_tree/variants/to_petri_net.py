@@ -439,6 +439,44 @@ def recursively_add_tree(parent_tree, tree, net, initial_entity_subtree, final_e
                                                                    new_final_trans,
                                                                    counts,
                                                                    rec_depth + 1)
+
+    elif tree.operator == Operator.INTERLEAVING:
+        new_initial_trans = get_new_hidden_trans(counts, type_trans="tauSplit")
+        net.transitions.add(new_initial_trans)
+        add_arc_from_to(initial_place, new_initial_trans, net)
+        new_final_trans = get_new_hidden_trans(counts, type_trans="tauJoin")
+        net.transitions.add(new_final_trans)
+        add_arc_from_to(new_final_trans, final_place, net)
+
+        control_place = get_new_place(counts)
+        net.places.add(control_place)
+
+        add_arc_from_to(new_initial_trans, control_place, net)
+        add_arc_from_to(control_place, new_final_trans, net)
+
+        for subtree in tree_childs:
+            placeI = get_new_place(counts)
+            net.places.add(placeI)
+            iTrans = get_new_hidden_trans(counts, type_trans="iTrans")
+            net.transitions.add(iTrans)
+            placeF = get_new_place(counts)
+            net.places.add(placeF)
+            fTrans = get_new_hidden_trans(counts, type_trans="fTrans")
+            net.transitions.add(fTrans)
+
+            add_arc_from_to(new_initial_trans, placeI, net)
+            add_arc_from_to(placeI, iTrans, net)
+            add_arc_from_to(fTrans, placeF, net)
+            add_arc_from_to(placeF, new_final_trans, net)
+
+            add_arc_from_to(control_place, iTrans, net)
+            add_arc_from_to(fTrans, control_place, net)
+
+            net, counts, intermediate_place = recursively_add_tree(tree, subtree, net, iTrans,
+                                                                   fTrans,
+                                                                   counts,
+                                                                   rec_depth + 1)
+
     elif tree.operator == Operator.SEQUENCE:
         intermediate_place = initial_place
         for i in range(len(tree_childs)):

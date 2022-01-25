@@ -21,10 +21,10 @@ import deprecation
 import pandas as pd
 
 from pm4py.meta import VERSION as PM4PY_CURRENT_VERSION
-from pm4py.objects.log.obj import EventLog
+from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.util import constants, xes_constants
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
-from pm4py.utils import get_properties, general_checks_classical_event_log
+from pm4py.utils import get_properties
 from pm4py.objects.ocel.obj import OCEL
 import datetime
 
@@ -51,7 +51,8 @@ def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataF
     filtered_log
         Filtered event log
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -86,7 +87,8 @@ Union[EventLog, pd.DataFrame]:
     filtered_log
         Filtered log object
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -121,7 +123,8 @@ def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union
     filtered_log
         Filtered log object
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -167,7 +170,8 @@ def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
     filtered_log
         Filtered log object
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = attribute_key
     if check_is_pandas_dataframe(log):
@@ -219,7 +223,8 @@ def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
     filtered_log
         Filtered event log
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = attribute_key
     if check_is_pandas_dataframe(log):
@@ -253,7 +258,8 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str
     filtered_log
         Filtered log object
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.util import variants_util
     parameters = get_properties(log)
     if variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.STRING:
@@ -291,7 +297,8 @@ def filter_variants_percentage(log: Union[EventLog, pd.DataFrame], threshold: fl
     filtered_log
         Filtered log object
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         raise Exception(
             "filtering variants percentage on Pandas dataframe is currently not available! please convert the dataframe to event log with the method: log =  pm4py.convert_to_event_log(df)")
@@ -303,7 +310,8 @@ def filter_variants_percentage(log: Union[EventLog, pd.DataFrame], threshold: fl
 @deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.4.0', current_version=PM4PY_CURRENT_VERSION,
                         details='Use filter_directly_follows_relation')
 def filter_paths(log, allowed_paths, retain=True):
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     return filter_directly_follows_relation(log, allowed_paths, retain)
 
 
@@ -329,7 +337,8 @@ def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relatio
     filtered_log
         Filtered log object
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     if check_is_pandas_dataframe(log):
         from pm4py.algo.filtering.pandas.paths import paths_filter
@@ -363,7 +372,8 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
     filtered_log
         Filtered log object
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     if check_is_pandas_dataframe(log):
         from pm4py.algo.filtering.pandas.ltl import ltl_checker
@@ -429,7 +439,8 @@ def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mo
     filtered_log
         Filtered log
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
         if mode == "events":
@@ -490,7 +501,8 @@ def filter_between(log: Union[EventLog, pd.DataFrame], act1: str, act2: str) -> 
     filtered_log
         Log containing all the subcases
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -520,7 +532,8 @@ def filter_case_size(log: Union[EventLog, pd.DataFrame], min_size: int, max_size
     filtered_log
         Log with cases having the desidered number of events.
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -552,7 +565,8 @@ def filter_case_performance(log: Union[EventLog, pd.DataFrame], min_performance:
     filtered_log
         Log with cases having a duration in the specified range
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -581,7 +595,8 @@ def filter_activities_rework(log: Union[EventLog, pd.DataFrame], activity: str, 
     filtered_log
         Log with cases having at least min_occurrences occurrences of the given activity
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     parameters["min_occurrences"] = min_occurrences
     if check_is_pandas_dataframe(log):
@@ -617,7 +632,8 @@ def filter_paths_performance(log: Union[EventLog, pd.DataFrame], path: Tuple[str
     filtered_log
         Filtered log with the desidered behavior
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     parameters["positive"] = keep
     parameters["min_performance"] = min_performance
@@ -650,7 +666,8 @@ def filter_variants_top_k(log: Union[EventLog, pd.DataFrame], k: int) -> Union[E
     filtered_log
         Filtered log
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -682,7 +699,8 @@ def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], m
     filtered_log
         Filtered log
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     parameters = get_properties(log)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
