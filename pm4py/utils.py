@@ -221,7 +221,7 @@ def get_properties(log):
     prop_dict
         Dictionary containing the properties of the log object
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: return {}
 
     from copy import copy
     parameters = copy(log.properties) if hasattr(log, 'properties') else copy(log.attrs) if hasattr(log,
