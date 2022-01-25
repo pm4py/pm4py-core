@@ -164,6 +164,11 @@ def execute_enabled(enabled, open, closed, execution_sequence=None):
                 if x in closed:
                     closed.remove(x)
             map(lambda c: execution_sequence.append((c, pt_st.State.ENABLED)), some_children)
+        elif vertex.operator is pt_opt.Operator.INTERLEAVING:
+            random.shuffle(vertex.children)
+            c = vertex.children[0]
+            enabled.add(c)
+            execution_sequence.append((c, pt_st.State.ENABLED))
     else:
         close(vertex, enabled, open, closed, execution_sequence)
     return execution_sequence
@@ -215,7 +220,7 @@ def process_closed(closed_node, enabled, open, closed, execution_sequence):
             close(vertex, enabled, open, closed, execution_sequence)
         else:
             enable = None
-            if vertex.operator is pt_opt.Operator.SEQUENCE:
+            if vertex.operator is pt_opt.Operator.SEQUENCE or vertex.operator is pt_opt.Operator.INTERLEAVING:
                 enable = vertex.children[vertex.children.index(closed_node) + 1]
             elif vertex.operator is pt_opt.Operator.LOOP:
                 enable = vertex.children[random.randint(1, 2)] if vertex.children.index(closed_node) == 0 else \
@@ -246,7 +251,7 @@ def should_close(vertex, closed, child):
     """
     if vertex.children is None:
         return True
-    elif vertex.operator is pt_opt.Operator.LOOP or vertex.operator is pt_opt.Operator.SEQUENCE:
+    elif vertex.operator is pt_opt.Operator.LOOP or vertex.operator is pt_opt.Operator.SEQUENCE or vertex.operator is pt_opt.Operator.INTERLEAVING:
         return vertex.children.index(child) == len(vertex.children) - 1
     elif vertex.operator is pt_opt.Operator.XOR:
         return True

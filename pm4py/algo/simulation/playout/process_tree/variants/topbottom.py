@@ -123,6 +123,12 @@ def get_ex_seq(tree):
         for child in tree.children:
             ret = ret + get_ex_seq(child)
         return ret
+    elif tree.operator is Operator.INTERLEAVING:
+        random.shuffle(tree.children)
+        ret = []
+        for child in tree.children:
+            ret = ret + get_ex_seq(child)
+        return ret
     elif tree.operator is Operator.LOOP:
         ret = []
         cont = True
