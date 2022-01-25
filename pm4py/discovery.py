@@ -28,7 +28,7 @@ from pm4py.objects.log.obj import EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
-from pm4py.utils import get_properties, xes_constants, general_checks_classical_event_log
+from pm4py.utils import get_properties, xes_constants
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants
 
@@ -51,7 +51,8 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
     end_activities
         End activities
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.util import constants
@@ -78,7 +79,8 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
 
 
 def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     return discover_dfg(log)
 
 
@@ -106,7 +108,8 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours:
     end_activities
         End activities
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.util import constants
@@ -154,7 +157,8 @@ def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame]) -> Tuple[PetriN
     final_marking
         Final marking
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC, parameters=get_properties(log))
 
@@ -177,7 +181,8 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame]) -> Tuple[P
     final_marking
         Final marking
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS, parameters=get_properties(log))
 
@@ -203,7 +208,8 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_thres
     final_marking
         Final marking
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     pt = discover_process_tree_inductive(log, noise_threshold)
     from pm4py.convert import convert_to_petri_net
     return convert_to_petri_net(pt)
@@ -235,7 +241,8 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
     final_marking
         Final marking
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     heu_parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
     parameters = get_properties(log)
@@ -262,7 +269,8 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
     process_tree
         Process tree object
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.algo.discovery.inductive import algorithm as inductive_miner
     parameters = get_properties(log)
     parameters[inductive_miner.Variants.IM_CLEAN.value.Parameters.NOISE_THRESHOLD] = noise_threshold
@@ -288,7 +296,8 @@ def discover_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
     process_tree
         Process tree object
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     return discover_process_tree_inductive(log, noise_threshold)
 
 
@@ -314,7 +323,8 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
     heu_net
         Heuristics net
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     heu_parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
     parameters = get_properties(log)
@@ -340,7 +350,8 @@ def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream]) -
         -------
             dict mapping an activity to its self-distance, if it exists, otherwise it is not part of the dict.
         '''
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.algo.discovery.minimum_self_distance import algorithm as msd
     return msd.apply(log, parameters=get_properties(log))
 
@@ -373,7 +384,8 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame]) -> Dic
     eventually_follows_graph
         Dictionary of tuples of activities that eventually follows each other; along with the number of occurrences
     """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.eventually_follows.pandas import get
@@ -399,7 +411,8 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
         bpmn_diagram
             BPMN diagram
         """
-    general_checks_classical_event_log(log)
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     pt = discover_process_tree_inductive(log, noise_threshold)
     from pm4py.convert import convert_to_bpmn
     return convert_to_bpmn(pt)

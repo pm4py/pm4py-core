@@ -174,6 +174,15 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
 
     # add arcs, in order by their source and target objects names, to avoid undeterminism in the visualization
     arcs_sort_list = sorted(list(net.arcs), key=lambda x: (x.source.name, x.target.name))
+
+    # check if there is an arc with weight different than 1.
+    # in that case, all the arcs in the visualization should have the arc weight visible
+    arc_weight_visible = False
+    for arc in arcs_sort_list:
+        if arc.weight != 1:
+            arc_weight_visible = True
+            break
+
     for a in arcs_sort_list:
         arrowhead = "normal"
         if petri_properties.ARCTYPE in a.properties:
@@ -187,7 +196,7 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
         elif a in decorations and "color" in decorations[a]:
             viz.edge(str(id(a.source)), str(id(a.target)), color=decorations[a]["color"], fontsize=font_size, arrowhead=arrowhead)
         else:
-            if a.weight != 1:
+            if arc_weight_visible:
                 viz.edge(str(id(a.source)), str(id(a.target)), fontsize=font_size, arrowhead=arrowhead, label=str(a.weight))
             else:
                 viz.edge(str(id(a.source)), str(id(a.target)), fontsize=font_size, arrowhead=arrowhead)

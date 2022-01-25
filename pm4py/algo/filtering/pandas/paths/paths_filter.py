@@ -36,6 +36,7 @@ class Parameters(Enum):
     CASE_ID_KEY = PARAMETER_CONSTANT_CASEID_KEY
     ATTRIBUTE_KEY = PARAMETER_CONSTANT_ATTRIBUTE_KEY
     TIMESTAMP_KEY = PARAMETER_CONSTANT_TIMESTAMP_KEY
+    TARGET_ATTRIBUTE_KEY = "target_attribute_key"
     DECREASING_FACTOR = "decreasingFactor"
     POSITIVE = "positive"
     MIN_PERFORMANCE = "min_performance"
@@ -68,15 +69,17 @@ def apply(df: pd.DataFrame, paths: List[Tuple[str, str]], parameters: Optional[D
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+    target_attribute_key = exec_utils.get_param_value(Parameters.TARGET_ATTRIBUTE_KEY, parameters, attribute_key)
+
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
     paths = [path[0] + DEFAULT_VARIANT_SEP + path[1] for path in paths]
     df = df.sort_values([case_id_glue, timestamp_key])
-    filt_df = df[[case_id_glue, attribute_key]]
+    filt_df = df[{case_id_glue, attribute_key, target_attribute_key}]
     filt_dif_shifted = filt_df.shift(-1)
     filt_dif_shifted.columns = [str(col) + '_2' for col in filt_dif_shifted.columns]
     stacked_df = pd.concat([filt_df, filt_dif_shifted], axis=1)
     stacked_df = stacked_df[stacked_df[case_id_glue] == stacked_df[case_id_glue + '_2']]
-    stacked_df["@@path"] = stacked_df[attribute_key] + DEFAULT_VARIANT_SEP + stacked_df[attribute_key + "_2"]
+    stacked_df["@@path"] = stacked_df[attribute_key] + DEFAULT_VARIANT_SEP + stacked_df[target_attribute_key + "_2"]
     stacked_df = stacked_df[stacked_df["@@path"].isin(paths)]
     i1 = df.set_index(case_id_glue).index
     i2 = stacked_df.set_index(case_id_glue).index
