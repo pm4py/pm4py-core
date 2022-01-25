@@ -21,7 +21,7 @@ PM4Py can be installed on Python 3.7.x / 3.8.x / 3.9.x by doing:
 *pip install -U pm4py*
 
 ## Release Notes
-To track the incremental updates, we offer a *CHANGE_LOG* file.
+To track the incremental updates, we offer a *CHANGELOG* file.
 
 ## Third Party Dependencies
 As scientific library in the Python ecosystem, we rely on external libraries to offer our features.
