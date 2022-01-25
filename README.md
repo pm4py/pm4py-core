@@ -25,4 +25,5 @@ To track the incremental updates, we offer a *RELEASE_NOTES* file.
 
 ## Third Party Dependencies
 As scientific library in the Python ecosystem, we rely on external libraries to offer our features.
-Please check the *README.THIRD_PARTY.md* file in order to know the dependencies and their license.
+In the */third_party* folder, we list all the licenses of our direct dependencies.
+Please check the */third_party/LICENSES_TRANSITIVE* file to get a full list of all transitive dependencies and the corresponding license.
