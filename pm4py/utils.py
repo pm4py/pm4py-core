@@ -94,6 +94,48 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     return df
 
 
+def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = constants.CASE_CONCEPT_NAME,
+                     activity_key: str = xes_constants.DEFAULT_NAME_KEY,
+                     timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
+                     start_timestamp_key: str = xes_constants.DEFAULT_START_TIMESTAMP_KEY):
+    """
+    Re-base the log object, changing the case ID, activity and timestamp attributes.
+
+    Parameters
+    -----------------
+    log_obj
+        Log object
+    case_id
+        Case identifier
+    activity_key
+        Activity
+    timestamp_key
+        Timestamp
+    start_timestamp_key
+        Start timestamp
+
+    Returns
+    -----------------
+    rebased_log_obj
+        Rebased log object
+    """
+    import pm4py
+
+    if isinstance(log_obj, pd.DataFrame):
+        return format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
+                                start_timestamp_key=start_timestamp_key)
+    elif isinstance(log_obj, EventLog):
+        log_obj = pm4py.convert_to_dataframe(log_obj)
+        log_obj = format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
+                                   start_timestamp_key=start_timestamp_key)
+        return pm4py.convert_to_event_log(log_obj)
+    elif isinstance(log_obj, EventStream):
+        log_obj = pm4py.convert_to_dataframe(log_obj)
+        log_obj = format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
+                                   start_timestamp_key=start_timestamp_key)
+        return pm4py.convert_to_event_stream(log_obj)
+
+
 def parse_process_tree(tree_string: str) -> ProcessTree:
     """
     Parse a process tree from a string
