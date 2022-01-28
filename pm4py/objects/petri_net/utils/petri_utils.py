@@ -16,6 +16,8 @@
 '''
 import random
 import time
+
+from typing import Optional, Set
 from copy import copy, deepcopy
 
 from pm4py.objects.log.obj import Trace, Event
@@ -27,7 +29,7 @@ from pm4py.util import xes_constants as xes_util
 import deprecation
 
 
-def is_sub_marking(sub_marking, marking):
+def is_sub_marking(sub_marking: Marking, marking: Marking) -> bool:
     for p in sub_marking:
         if p not in marking:
             return False
@@ -36,7 +38,7 @@ def is_sub_marking(sub_marking, marking):
     return True
 
 
-def place_set_as_marking(places):
+def place_set_as_marking(places) -> Marking:
     m = Marking()
     for p in places:
         m[p] = 1
@@ -49,7 +51,7 @@ def get_arc_type(elem):
     return None
 
 
-def pre_set(elem, arc_type=None):
+def pre_set(elem, arc_type=None) -> Set:
     pre = set()
     for a in elem.in_arcs:
         if get_arc_type(a) == arc_type:
@@ -57,7 +59,7 @@ def pre_set(elem, arc_type=None):
     return pre
 
 
-def post_set(elem, arc_type=None):
+def post_set(elem, arc_type=None) -> Set:
     post = set()
     for a in elem.out_arcs:
         if get_arc_type(a) == arc_type:
@@ -65,7 +67,7 @@ def post_set(elem, arc_type=None):
     return post
 
 
-def remove_transition(net, trans):
+def remove_transition(net: PetriNet, trans: PetriNet.Transition) -> PetriNet:
     """
     Remove a transition from a Petri net
 
@@ -96,7 +98,7 @@ def remove_transition(net, trans):
     return net
 
 
-def add_place(net, name=None):
+def add_place(net: PetriNet, name=None) -> PetriNet.Place:
     name = name if name is not None else 'p_' + str(len(net.places)) + '_' + str(time.time()) + str(
         random.randint(0, 10000))
     p = PetriNet.Place(name=name)
@@ -104,7 +106,7 @@ def add_place(net, name=None):
     return p
 
 
-def add_transition(net, name=None, label=None):
+def add_transition(net: PetriNet, name=None, label=None) -> PetriNet.Transition:
     name = name if name is not None else 't_' + str(len(net.transitions)) + '_' + str(time.time()) + str(
         random.randint(0, 10000))
     t = PetriNet.Transition(name=name, label=label)
@@ -112,7 +114,7 @@ def add_transition(net, name=None, label=None):
     return t
 
 
-def merge(trgt=None, nets=None):
+def merge(trgt: Optional[PetriNet]=None, nets=None) -> PetriNet:
     trgt = trgt if trgt is not None else PetriNet()
     nets = nets if nets is not None else list()
     for net in nets:
@@ -122,7 +124,7 @@ def merge(trgt=None, nets=None):
     return trgt
 
 
-def remove_place(net, place):
+def remove_place(net: PetriNet, place: PetriNet.Place) -> PetriNet:
     """
     Remove a place from a Petri net
 
@@ -153,7 +155,7 @@ def remove_place(net, place):
     return net
 
 
-def add_arc_from_to(fr, to, net, weight=1):
+def add_arc_from_to(fr, to, net: PetriNet, weight=1) -> PetriNet.Arc:
     """
     Adds an arc from a specific element to another element in some net. Assumes from and to are in the net!
 
@@ -297,7 +299,7 @@ def acyclic_net_variants(net, initial_marking, final_marking, activity_key=xes_u
     return trace_variants
 
 
-def get_transition_by_name(net, transition_name):
+def get_transition_by_name(net: PetriNet, transition_name) -> Optional[PetriNet.Transition]:
     """
     Get a transition by its name
 
@@ -375,7 +377,7 @@ def get_cycles_petri_net_transitions(net):
     return cycles_trans
 
 
-def decorate_places_preset_trans(net):
+def decorate_places_preset_trans(net: PetriNet):
     """
     Decorate places with information useful for the replay
 
@@ -392,7 +394,7 @@ def decorate_places_preset_trans(net):
             place.ass_trans.add(trans)
 
 
-def decorate_transitions_prepostset(net):
+def decorate_transitions_prepostset(net: PetriNet):
     """
     Decorate transitions with sub and addition markings
 
@@ -504,7 +506,7 @@ def get_places_shortest_path(net, place_to_populate, current_place, places_short
     return places_shortest_path
 
 
-def get_places_shortest_path_by_hidden(net, max_rec_depth):
+def get_places_shortest_path_by_hidden(net: PetriNet, max_rec_depth):
     """
     Get shortest path between places lead by hidden transitions
 
@@ -548,7 +550,7 @@ def invert_spaths_dictionary(spaths):
     return inv_spaths
 
 
-def remove_unconnected_components(net):
+def remove_unconnected_components(net: PetriNet) -> PetriNet:
     """
     Remove unconnected components from a Petri net
 
@@ -648,7 +650,7 @@ def get_s_components_from_petri(net, im, fm, rec_depth=0, curr_s_comp=None, visi
     return list_s_components
 
 
-def remove_arc(net, arc):
+def remove_arc(net: PetriNet, arc: PetriNet.Arc) -> PetriNet:
     """
     Removes an arc from a Petri net
 
