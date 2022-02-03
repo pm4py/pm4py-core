@@ -163,10 +163,10 @@ def parse_element(bpmn_graph, counts, curr_el, parents, incoming_dict, outgoing_
         nodes_dict[id] = node
     elif tag.endswith("incoming"): # incoming flow of a node
         if node is not None:
-            incoming_dict[curr_el.text.strip()] = node
+            incoming_dict[curr_el.text.strip()] = (node, process)
     elif tag.endswith("outgoing"): # outgoing flow of a node
         if node is not None:
-            outgoing_dict[curr_el.text.strip()] = node
+            outgoing_dict[curr_el.text.strip()] = (node, process)
     elif tag.endswith("sequenceflow"): # normal sequence flow between two nodes
         seq_flow_id = curr_el.get("id")
         source_ref = curr_el.get("sourceRef")
