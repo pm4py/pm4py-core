@@ -2,12 +2,13 @@ from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any, List
 from enum import Enum
 from pm4py.util import exec_utils
-from pm4py.algo.transformation.ocel.features.objects import object_lifecycle_length, object_lifecycle_duration, object_degree_centrality, object_general_descendants_graph, object_general_interaction_graph, object_general_inheritance_graph, object_cobirth_graph, object_codeath_graph, object_lifecycle_activities, object_str_attributes, object_num_attributes, objects_interaction_graph_ot, object_work_in_progress, related_events_features, related_activities_features, obj_con_in_graph_features
+from pm4py.algo.transformation.ocel.features.objects import object_lifecycle_length, object_lifecycle_duration, object_degree_centrality, object_general_descendants_graph, object_general_interaction_graph, object_general_inheritance_graph, object_cobirth_graph, object_codeath_graph, object_lifecycle_activities, object_str_attributes, object_num_attributes, objects_interaction_graph_ot, object_work_in_progress, related_events_features, related_activities_features, obj_con_in_graph_features, object_lifecycle_unq_act
 
 
 class Parameters(Enum):
     ENABLE_ALL = "enable_all"
     ENABLE_OBJECT_LIFECYCLE_LENGTH = "enable_object_lifecycle_length"
+    ENABLE_OBJECT_LIFECYCLE_UNQ_ACT = "enable_object_lifecycle_unq_act"
     ENABLE_OBJECT_LIFECYCLE_DURATION = "enable_object_lifecycle_duration"
     ENABLE_OBJECT_DEGREE_CENTRALITY = "enable_object_degree_centrality"
     ENABLE_OBJECT_GENERAL_INTERACTION_GRAPH = "enable_object_general_interaction_graph"
@@ -39,6 +40,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
         - Parameters.ENABLE_ALL => enable the extraction of all the belowmentioned features
         - Parameters.ENABLE_OBJECT_LIFECYCLE_LENGTH => enables the object lifecycle length feature
         - Parameters.ENABLE_OBJECT_LIFECYCLE_DURATION => enables the object lifecycle duration feature
+        - Parameters.ENABLE_OBJECT_LIFECYCLE_UNQ_ACT => enables the object lifecycle unique activities feature
         - Parameters.ENABLE_OBJECT_DEGREE_CENTRALITY => enables the object degree centrality feature
         - Parameters.ENABLE_OBJECT_GENERAL_INTERACTION_GRAPH => enables the object general interaction graph feature
         - Parameters.ENABLE_OBJECT_GENERAL_DESCENDANTS_GRAPH => enables the object general descendants graph feature
@@ -85,6 +87,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     enable_object_num_attributes = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_NUM_ATTRIBUTES, parameters, enable_all)
     enable_object_interaction_graph_ot = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_INTERACTION_GRAPH_OT, parameters, enable_all)
     enable_work_in_progress = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_WORK_IN_PROGRESS, parameters, enable_all)
+    enable_object_lifecycle_unq_act = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_LIFECYCLE_UNQ_ACT, parameters, enable_all)
     enable_related_events_features = exec_utils.get_param_value(Parameters.ENABLE_RELATED_EVENTS_FEATURES, parameters, False)
     enable_related_activities_features = exec_utils.get_param_value(Parameters.ENABLE_RELATED_ACTIVITIES_FEATURES, parameters, False)
     enable_obj_con_in_graph_features = exec_utils.get_param_value(Parameters.ENABLE_OBJ_CON_IN_GRAPH_FEATURES, parameters, False)
@@ -170,6 +173,12 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
 
     if enable_work_in_progress:
         data, feature_names = object_work_in_progress.apply(ocel, parameters=parameters)
+        feature_namess = feature_namess + feature_names
+        for i in range(len(data)):
+            datas[i] = datas[i] + data[i]
+
+    if enable_object_lifecycle_unq_act:
+        data, feature_names = object_lifecycle_unq_act.apply(ocel, parameters=parameters)
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
