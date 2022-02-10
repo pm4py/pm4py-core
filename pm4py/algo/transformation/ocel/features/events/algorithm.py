@@ -2,7 +2,7 @@ from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any, List
 from enum import Enum
 from pm4py.util import exec_utils
-from pm4py.algo.transformation.ocel.features.events import event_activity, event_num_rel_objs, event_num_rel_objs_type, event_timestamp, event_str_attributes, event_num_attributes, event_start_ot, event_end_ot, related_objects_features
+from pm4py.algo.transformation.ocel.features.events import event_activity, event_num_rel_objs, event_num_rel_objs_type, event_timestamp, event_str_attributes, event_num_attributes, event_start_ot, event_end_ot, related_objects_features, new_interactions
 
 
 class Parameters(Enum):
@@ -15,6 +15,7 @@ class Parameters(Enum):
     ENABLE_EVENT_NUM_ATTRIBUTES = "enable_event_num_attributes"
     ENABLE_EVENT_START_OT = "enable_event_start_ot"
     ENABLE_EVENT_END_OT = "enable_event_end_ot"
+    ENABLE_NEW_INTERACTIONS = "enable_new_interactions"
     ENABLE_RELATED_OBJECTS_FEATURES = "enable_related_objects_features"
 
 
@@ -41,6 +42,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
                                                 lifecycle of some objects of a type.
         - Parameters.ENABLE_EVENT_END_OT => calculates some features which establish if the event completes the
                                                 lifecycle of some objects of a type.
+        - Parameters.ENABLE_NEW_INTERACTIONS => number of new interactions between the related objects which
+                                        appears in a given event.
         - Parameters.ENABLE_RELATED_OBJECTS_FEATURES => associates to the event some features calculated on the
                                                 related objects.
 
@@ -63,6 +66,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     enable_event_num_attributes = exec_utils.get_param_value(Parameters.ENABLE_EVENT_NUM_ATTRIBUTES, parameters, enable_all)
     enable_event_start_ot = exec_utils.get_param_value(Parameters.ENABLE_EVENT_START_OT, parameters, enable_all)
     enable_event_end_ot = exec_utils.get_param_value(Parameters.ENABLE_EVENT_END_OT, parameters, enable_all)
+    enable_new_interactions = exec_utils.get_param_value(Parameters.ENABLE_NEW_INTERACTIONS, parameters, enable_all)
+
     enable_related_objects_features = exec_utils.get_param_value(Parameters.ENABLE_RELATED_OBJECTS_FEATURES, parameters, False)
 
     ordered_events = list(ocel.events[ocel.event_id_column])
@@ -114,6 +119,12 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
 
     if enable_event_end_ot:
         data, feature_names = event_end_ot.apply(ocel, parameters=parameters)
+        feature_namess = feature_namess + feature_names
+        for i in range(len(data)):
+            datas[i] = datas[i] + data[i]
+
+    if enable_new_interactions:
+        data, feature_names = new_interactions.apply(ocel, parameters=parameters)
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
