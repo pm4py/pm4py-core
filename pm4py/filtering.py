@@ -711,6 +711,96 @@ def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], m
         return variants_filter.filter_variants_by_coverage_percentage(log, min_coverage_percentage, parameters=parameters)
 
 
+def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first"):
+    """
+    Filters the log, keeping the prefixes to a given activity. E.g., for a log with traces:
+
+    A,B,C,D
+    A,B,Z,A,B,C,D
+    A,B,C,D,C,E,C,F
+
+    The prefixes to "C" are respectively:
+
+    A,B
+    A,B,Z,A,B
+    A,B
+
+    Parameters
+    ------------------
+    log
+        Event log / Pandas dataframe
+    activity
+        Target activity of the filter
+    strict
+        Applies the filter strictly (cuts the occurrences of the selected activity).
+    first_or_last
+        Decides if the first or last occurrence of an activity should be selected as baseline for the filter.
+
+    Returns
+    ------------------
+    filtered_log
+        Filtered log / dataframe
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
+    parameters = get_properties(log)
+    parameters["strict"] = strict
+    parameters["first_or_last"] = first_or_last
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.algo.filtering.pandas.prefixes import prefix_filter
+        return prefix_filter.apply(log, activity, parameters=parameters)
+    else:
+        from pm4py.algo.filtering.log.prefixes import prefix_filter
+        return prefix_filter.apply(log, activity, parameters=parameters)
+
+
+def filter_suffixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first"):
+    """
+    Filters the log, keeping the suffixes from a given activity. E.g., for a log with traces:
+
+    A,B,C,D
+    A,B,Z,A,B,C,D
+    A,B,C,D,C,E,C,F
+
+    The suffixes from "C" are respectively:
+
+    D
+    D
+    D,C,E,C,F
+
+    Parameters
+    ------------------
+    log
+        Event log / Pandas dataframe
+    activity
+        Target activity of the filter
+    strict
+        Applies the filter strictly (cuts the occurrences of the selected activity).
+    first_or_last
+        Decides if the first or last occurrence of an activity should be selected as baseline for the filter.
+
+    Returns
+    ------------------
+    filtered_log
+        Filtered log / dataframe
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
+    parameters = get_properties(log)
+    parameters["strict"] = strict
+    parameters["first_or_last"] = first_or_last
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        from pm4py.algo.filtering.pandas.suffixes import suffix_filter
+        return suffix_filter.apply(log, activity, parameters=parameters)
+    else:
+        from pm4py.algo.filtering.log.suffixes import suffix_filter
+        return suffix_filter.apply(log, activity, parameters=parameters)
+
+
 def filter_ocel_event_attribute(ocel: OCEL, attribute_key: str, attribute_values: Collection[Any], positive: bool = True) -> OCEL:
     """
     Filters the object-centric event log on the provided event attributes values

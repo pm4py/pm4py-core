@@ -1,5 +1,27 @@
 # PM4Py Changelog
 
+## PM4Py 2.2.19.1
+
+### Added
+* a193603e
+  * Event-Object Feature Extraction on OCEL
+* 8da05972
+  * Prefixes and Suffixes filters for Event Logs + Exposition in Simplified Interface
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* cbf848ef
+  * Bug fix BPMN importer
+* ff0dfc4b
+  * Closed security issue within dependencies
+
+### Removed
+
+### Other
+
 ## PM4Py 2.2.19
 
 ### Added
