@@ -1,8 +1,6 @@
 import warnings
 from typing import List, Dict, Any, Union
 
-import deprecation
-
 from pm4py.objects.log.obj import EventLog, Trace, Event, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from collections import Counter
@@ -10,37 +8,6 @@ from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import xes_constants
 from pm4py.utils import get_properties
 import pandas as pd
-
-
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
-            details='conformance_tbr is deprecated, use conformance_diagnostics_token_based_replay')
-def conformance_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
-                    final_marking: Marking) -> List[Dict[str, Any]]:
-    warnings.warn('conformance_tbr is deprecated, use conformance_token_based_replay', DeprecationWarning)
-    """
-    Apply token-based replay for conformance checking analysis.
-
-
-    Parameters
-    --------------
-    log
-        Event log
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-
-    Returns
-    --------------
-    replay_results
-        A list of replay results for each trace of the log
-    """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
-    from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
-    return token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=get_properties(log))
 
 
 def conformance_diagnostics_token_based_replay(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
@@ -122,37 +89,6 @@ def conformance_diagnostics_alignments(log: EventLog, *args, multi_processing: b
         return alignments.apply(log, net, im, fm, parameters=get_properties(log))
 
 
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
-            details='conformance_alignments is deprecated, use conformance_diagnostics_alignments')
-def conformance_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
-                           final_marking: Marking) -> List[Dict[str, Any]]:
-    warnings.warn('conformance_alignments is deprecated, use conformance_diagnostics_alignments', DeprecationWarning)
-    """
-    Apply the alignments algorithm between a log and a Petri net
-    The methods return the full alignment diagnostics.
-
-    Parameters
-    -------------
-    log
-        Event log
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-
-    Returns
-    -------------
-    aligned_traces
-        A list of alignments for each trace of the log
-    """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
-    from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
-    return alignments.apply(log, petri_net, initial_marking, final_marking, parameters=get_properties(log))
-
-
 def fitness_token_based_replay(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking) -> \
         Dict[
             str, float]:
@@ -176,38 +112,6 @@ def fitness_token_based_replay(log: EventLog, petri_net: PetriNet, initial_marki
     ---------------
     fitness_dictionary
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
-    """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
-    from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
-    return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
-                                variant=replay_fitness.Variants.TOKEN_BASED, parameters=get_properties(log))
-
-
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
-            details='evaluate_fitness_tbr is deprecated, use fitness_token_based_replay')
-def evaluate_fitness_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking) -> Dict[
-    str, float]:
-    warnings.warn('evaluate_fitness_tbr is deprecated, use fitness_token_based_replay', DeprecationWarning)
-    """
-    Calculates the fitness using token-based replay.
-
-
-    Parameters
-    ---------------
-    log
-        Event log
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-
-    Returns
-    ---------------
-    fitness_dictionary
-        Fitness dictionary (from TBR)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
@@ -248,72 +152,10 @@ def fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Mark
                                 variant=replay_fitness.Variants.ALIGNMENT_BASED, parameters=parameters)
 
 
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
-            details='evaluate_fitness_alignments is deprecated, use fitness_alignments')
-def evaluate_fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking) -> \
-        Dict[str, float]:
-    warnings.warn('evaluate_fitness_alignments is deprecated, use fitness_alignments', DeprecationWarning)
-    """
-    Calculates the fitness using alignments
-
-    Parameters
-    --------------
-    log
-        Event log
-    petri_net
-        Petri net object
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-
-    Returns
-    ---------------
-    fitness_dictionary
-        Fitness dictionary (from alignments)
-    """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
-    from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
-    return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
-                                variant=replay_fitness.Variants.ALIGNMENT_BASED, parameters=get_properties(log))
-
-
 def precision_token_based_replay(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
                                  final_marking: Marking) -> float:
     """
     Calculates the precision precision using token-based replay
-
-    Parameters
-    --------------
-    log
-        Event log
-    petri_net
-        Petri net object
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-
-    Returns
-    --------------
-    precision
-        float representing the precision value
-    """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
-    from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
-    return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
-                                     variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN, parameters=get_properties(log))
-
-
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
-            details='evaluate_precision_tbr is deprecated, use precision_token_based_replay')
-def evaluate_precision_tbr(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
-                           final_marking: Marking) -> float:
-    warnings.warn('evaluate_precision_tbr is deprecated, use precision_token_based_replay', DeprecationWarning)
-    """
-    Calculates the precision using token-based replay
 
     Parameters
     --------------
@@ -369,37 +211,6 @@ def precision_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Ma
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE,
                                      parameters=parameters)
-
-
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
-            details='evaluate_precision_alignments is deprecated, use precision_alignments')
-def evaluate_precision_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
-                                  final_marking: Marking) -> float:
-    warnings.warn('evaluate_precision_alignments is deprecated, use precision_alignments', DeprecationWarning)
-    """
-    Calculates the precision using alignments
-
-    Parameters
-    --------------
-    log
-        Event log
-    petri_net
-        Petri net object
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-
-    Returns
-    --------------
-    precision
-        float representing the precision value
-    """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
-    from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
-    return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
-                                     variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE, parameters=get_properties(log))
 
 
 def __convert_to_fp(*args) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
