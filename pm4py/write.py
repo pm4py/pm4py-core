@@ -1,7 +1,5 @@
 import warnings
 
-import deprecation
-
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.ocel.obj import OCEL
@@ -54,55 +52,7 @@ def write_pnml(petri_net: PetriNet, initial_marking: Marking, final_marking: Mar
     petri_exporter.apply(petri_net, initial_marking, file_path, final_marking=final_marking)
 
 
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
-                        details='write_petri_net is deprecated, please use write_pnml')
-def write_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, file_path: str) -> None:
-    warnings.warn('write_petri_net is deprecated, please use write_pnml', DeprecationWarning)
-    """
-    Exports a (composite) Petri net object
-
-    Parameters
-    ------------
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    file_path
-        Destination path
-
-    Returns
-    ------------
-    void
-    """
-    from pm4py.objects.petri_net.exporter import exporter as petri_exporter
-    petri_exporter.apply(petri_net, initial_marking, file_path, final_marking=final_marking)
-
-
 def write_ptml(tree: ProcessTree, file_path: str) -> None:
-    """
-    Exports a process tree
-
-    Parameters
-    ------------
-    tree
-        Process tree
-    file_path
-        Destination path
-
-    Returns
-    ------------
-    void
-    """
-    from pm4py.objects.process_tree.exporter import exporter as tree_exporter
-    tree_exporter.apply(tree, file_path)
-
-
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
-                        details='write_process_tree is deprecated, please use write_ptml')
-def write_process_tree(tree: ProcessTree, file_path: str) -> None:
-    warnings.warn('write_process_tree is deprecated, please use write_ptml', DeprecationWarning)
     """
     Exports a process tree
 

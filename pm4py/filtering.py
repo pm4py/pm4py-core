@@ -1,7 +1,6 @@
 import warnings
 from typing import List, Union, Set, List, Tuple, Collection, Any, Dict
 
-import deprecation
 import pandas as pd
 
 from pm4py.meta import VERSION as PM4PY_CURRENT_VERSION
@@ -123,13 +122,6 @@ def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union
                                            parameters=parameters)
 
 
-@deprecation.deprecated(deprecated_in='2.1.4', removed_in='2.4.0', current_version=PM4PY_CURRENT_VERSION,
-                        details='Filtering method will be removed due to fuzzy naming.\
-                        Use: filter_event_attribute_values')
-def filter_attribute_values(log, attribute_key, values, level="case", retain=True):
-    return filter_event_attribute_values(log, attribute_key, values, level=level, retain=retain)
-
-
 def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values:  Union[Set[str], List[str]],
                                   level: str = "case", retain: bool = True) -> Union[EventLog, pd.DataFrame]:
     """
@@ -177,13 +169,6 @@ def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
         elif level == "case":
             parameters[attributes_filter.Parameters.POSITIVE] = retain
             return attributes_filter.apply(log, values, parameters=parameters)
-
-
-@deprecation.deprecated(deprecated_in='2.1.4', removed_in='2.4.0', current_version=PM4PY_CURRENT_VERSION,
-                        details='Filtering method will be removed due to fuzzy naming.\
-                        Use: filter_event_attribute_values')
-def filter_trace_attribute(log, attribute_key, values, retain=True):
-    return filter_trace_attribute_values(log, attribute_key, values, retain=retain)
 
 
 def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values:  Union[Set[str], List[str]],
@@ -259,44 +244,6 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str
         parameters[variants_filter.Parameters.POSITIVE] = retain
         return variants_filter.apply(log, variants,
                                      parameters=parameters)
-
-
-@deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.4.0', current_version=PM4PY_CURRENT_VERSION,
-                        details='Filtering method will be removed due to fuzzy interpretation of the threshold.\
-                        Will be replaced with two new functions filter_variants_top_k and filter_variants_relative_frequency')
-def filter_variants_percentage(log: Union[EventLog, pd.DataFrame], threshold: float = 0.8) -> Union[
-    EventLog, pd.DataFrame]:
-    """
-    Filter a log on the percentage of variants
-
-    Parameters
-    ---------------
-    log
-        Event log
-    threshold
-        Percentage (scale 0.1) of admitted variants
-
-    Returns
-    --------------
-    filtered_log
-        Filtered log object
-    """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
-    if check_is_pandas_dataframe(log):
-        raise Exception(
-            "filtering variants percentage on Pandas dataframe is currently not available! please convert the dataframe to event log with the method: log =  pm4py.convert_to_event_log(df)")
-    else:
-        from pm4py.algo.filtering.log.variants import variants_filter
-        return variants_filter.filter_log_variants_percentage(log, percentage=threshold, parameters=get_properties(log))
-
-
-@deprecation.deprecated(deprecated_in='2.1.3.1', removed_in='2.4.0', current_version=PM4PY_CURRENT_VERSION,
-                        details='Use filter_directly_follows_relation')
-def filter_paths(log, allowed_paths, retain=True):
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
-    return filter_directly_follows_relation(log, allowed_paths, retain)
 
 
 def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relations: List[str], retain: bool = True) -> \

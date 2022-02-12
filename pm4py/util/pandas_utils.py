@@ -3,7 +3,6 @@ import pkgutil
 import pandas as pd
 
 from pm4py.util import constants, xes_constants
-import deprecation
 import numpy as np
 
 
@@ -117,46 +116,6 @@ def insert_feature_activity_position_in_trace(df: pd.DataFrame, case_id: str = c
         df[prefix + act] = df[prefix + act].fillna(df[constants.DEFAULT_INDEX_IN_TRACE_KEY])
         df[prefix + act] = df[prefix + act].replace(-1, np.nan)
     return df
-
-
-@deprecation.deprecated('2.2.8', '3.0.0', details="use check_is_pandas_dataframe instead")
-def check_is_dataframe(log):
-    """
-    Checks if a log object is a dataframe
-
-    Parameters
-    -------------
-    log
-        Log object
-
-    Returns
-    -------------
-    boolean
-        Is dataframe?
-    """
-    if pkgutil.find_loader("pandas"):
-        import pandas as pd
-        return type(log) is pd.DataFrame
-    return False
-
-
-@deprecation.deprecated('2.2.8', '3.0.0', details="use check_pandas_dataframe_columns instead")
-def check_dataframe_columns(df):
-    """
-    Checks if the dataframe contains all the required columns.
-    If not, raise an exception
-
-    Parameters
-    --------------
-    df
-        Pandas dataframe
-    """
-    if len(set(df.columns).intersection(
-            set([constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_NAME_KEY,
-                 xes_constants.DEFAULT_TIMESTAMP_KEY]))) < 3:
-        raise Exception(
-            "please format your dataframe accordingly! df = pm4py.format_dataframe(df, case_id='<name of the case ID column>', activity_key='<name of the activity column>', timestamp_key='<name of the timestamp column>')")
-
 
 
 def check_is_pandas_dataframe(log):
