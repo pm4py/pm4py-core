@@ -7,7 +7,6 @@ import numpy as np
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.util import constants
-import deprecation
 from typing import Optional, Dict, Any, Union, Tuple, List, Set
 from pm4py.objects.log.obj import EventLog
 
@@ -210,21 +209,6 @@ def get_events(log: EventLog, case_id: str, parameters: Optional[Dict[Union[str,
     for event in indexed_log[case_id]:
         list_eve.append(dict(event))
     return list_eve
-
-
-@deprecation.deprecated('2.2.11', '3.0.0', details="please use get_all_case_durations instead")
-def get_all_casedurations(log, parameters=None):
-    return get_all_case_durations(log, parameters=parameters)
-
-
-@deprecation.deprecated('2.2.11', '3.0.0', details="please use get_first_quartile_case_duration instead")
-def get_first_quartile_caseduration(log, parameters=None):
-    return get_first_quartile_case_duration(log, parameters=parameters)
-
-
-@deprecation.deprecated('2.2.11', '3.0.0', details="please use get_median_case_duration instead")
-def get_median_caseduration(log, parameters=None):
-    return get_median_case_duration(log, parameters=parameters)
 
 
 def get_all_case_durations(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[float]:

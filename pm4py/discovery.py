@@ -1,7 +1,6 @@
 import warnings
 from typing import Tuple, Union, List, Dict, Any
 
-import deprecation
 import pandas as pd
 from pandas import DataFrame
 
@@ -259,30 +258,6 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
     parameters = get_properties(log)
     parameters[inductive_miner.Variants.IM_CLEAN.value.Parameters.NOISE_THRESHOLD] = noise_threshold
     return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM_CLEAN, parameters=parameters)
-
-
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
-                        details='discover_tree_inductive is deprecated, use discover_process_tree_inductive')
-def discover_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0) -> ProcessTree:
-    warnings.warn('discover_tree_inductive is deprecated, use discover_process_tree_inductive', DeprecationWarning)
-    """
-    Discovers a process tree using the IMDFc algorithm
-
-    Parameters
-    --------------
-    log
-        Event log
-    noise_threshold
-        Noise threshold (default: 0.0)
-
-    Returns
-    --------------
-    process_tree
-        Process tree object
-    """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
-    return discover_process_tree_inductive(log, noise_threshold)
 
 
 def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5,

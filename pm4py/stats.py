@@ -10,7 +10,6 @@ from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_data
 from pm4py.utils import get_properties
 from pm4py.util import xes_constants, constants
 from copy import copy
-import deprecation
 
 
 def get_start_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
@@ -63,11 +62,6 @@ def get_end_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
         return get.get_end_activities(log, parameters=get_properties(log))
 
 
-@deprecation.deprecated('2.2.10', '3.0.0', details="please use get_event_attributes instead")
-def get_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
-    return get_event_attributes(log)
-
-
 def get_event_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
     """
     Returns the attributes at the event level of the log
@@ -115,11 +109,6 @@ def get_trace_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
     else:
         from pm4py.statistics.attributes.log import get
         return list(get.get_all_trace_attributes_from_log(log))
-
-
-@deprecation.deprecated('2.2.10', '3.0.0', details="please use get_event_attribute_values instead")
-def get_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str, count_once_per_case=False) -> Dict[str, int]:
-    return get_event_attribute_values(log, attribute, count_once_per_case=count_once_per_case)
 
 
 def get_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str, count_once_per_case=False) -> Dict[str, int]:

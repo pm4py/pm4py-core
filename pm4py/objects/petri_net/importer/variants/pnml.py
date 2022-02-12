@@ -2,7 +2,6 @@ import os
 import tempfile
 import time
 
-import deprecation
 from lxml import etree, objectify
 
 from pm4py.meta import VERSION
@@ -12,38 +11,6 @@ from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.objects.random_variables.random_variable import RandomVariable
 from pm4py.util import constants
-
-
-@deprecation.deprecated(deprecated_in="2.1.1", removed_in="3.0",
-                        current_version=VERSION,
-                        details="Use the entrypoint import_from_string method")
-def import_petri_from_string(petri_string, parameters=None):
-    """
-    Import a Petri net from a string
-
-    Parameters
-    ----------
-    petri_string
-        Petri net expressed as PNML string
-    parameters
-        Other parameters of the algorithm
-    """
-    if parameters is None:
-        parameters = {}
-
-    fp = tempfile.NamedTemporaryFile(suffix='.pnml')
-    fp.close()
-
-    if type(petri_string) is bytes:
-        with open(fp.name, 'wb') as f:
-            f.write(petri_string)
-    else:
-        with open(fp.name, 'w') as f:
-            f.write(petri_string)
-
-    net, initial_marking, this_final_marking = import_net(fp.name, parameters=parameters)
-    os.remove(fp.name)
-    return net, initial_marking, this_final_marking
 
 
 def import_net(input_file_path, parameters=None):
