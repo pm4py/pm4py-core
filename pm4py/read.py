@@ -1,8 +1,6 @@
 import warnings
 from typing import Tuple
 
-import deprecation
-
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.ocel.obj import OCEL
@@ -54,55 +52,7 @@ def read_pnml(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
     return net, im, fm
 
 
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
-                        details='read_petri_net is deprecated, use read_pnml instead')
-def read_petri_net(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
-    warnings.warn('read_petri_net is deprecated, use read_pnml instead', DeprecationWarning)
-    """
-    Reads a Petri net from the .PNML format
-
-    Parameters
-    ----------------
-    file_path
-        File path
-
-    Returns
-    ----------------
-    petri_net
-        Petri net object
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    """
-    from pm4py.objects.petri_net.importer import importer as pnml_importer
-    net, im, fm = pnml_importer.apply(file_path)
-    return net, im, fm
-
-
 def read_ptml(file_path: str) -> ProcessTree:
-    """
-    Reads a process tree from a .ptml file
-
-    Parameters
-    ---------------
-    file_path
-        File path
-
-    Returns
-    ----------------
-    tree
-        Process tree
-    """
-    from pm4py.objects.process_tree.importer import importer as tree_importer
-    tree = tree_importer.apply(file_path)
-    return tree
-
-
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
-                        details='read_process_tree is deprecated, use read_ptml instead')
-def read_process_tree(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
-    warnings.warn('read_process_tree is deprecated, use read_ptml instead', DeprecationWarning)
     """
     Reads a process tree from a .ptml file
 
