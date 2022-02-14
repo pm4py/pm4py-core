@@ -11,7 +11,7 @@ from pm4py.objects.log.obj import EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
-from pm4py.utils import get_properties, xes_constants
+from pm4py.utils import get_properties, xes_constants, __event_log_deprecation_warning
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants
 
@@ -35,6 +35,7 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
         End activities
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -92,6 +93,7 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours:
         End activities
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -141,6 +143,7 @@ def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame]) -> Tuple[PetriN
         Final marking
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC, parameters=get_properties(log))
@@ -165,6 +168,7 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame]) -> Tuple[P
         Final marking
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS, parameters=get_properties(log))
@@ -192,6 +196,7 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_thres
         Final marking
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     pt = discover_process_tree_inductive(log, noise_threshold)
     from pm4py.convert import convert_to_petri_net
@@ -225,6 +230,7 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
         Final marking
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     heu_parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
@@ -253,6 +259,7 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
         Process tree object
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.discovery.inductive import algorithm as inductive_miner
     parameters = get_properties(log)
@@ -283,6 +290,7 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
         Heuristics net
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     heu_parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
@@ -310,6 +318,7 @@ def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream]) -
             dict mapping an activity to its self-distance, if it exists, otherwise it is not part of the dict.
         '''
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.discovery.minimum_self_distance import algorithm as msd
     return msd.apply(log, parameters=get_properties(log))
@@ -344,6 +353,7 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame]) -> Dic
         Dictionary of tuples of activities that eventually follows each other; along with the number of occurrences
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -371,6 +381,7 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
             BPMN diagram
         """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     pt = discover_process_tree_inductive(log, noise_threshold)
     from pm4py.convert import convert_to_bpmn

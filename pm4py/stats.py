@@ -7,7 +7,7 @@ import pandas as pd
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.log.obj import EventLog, Trace, EventStream
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns, insert_ev_in_tr_index
-from pm4py.utils import get_properties
+from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.util import xes_constants, constants
 from copy import copy
 from pm4py.objects.log.pandas_log_wrapper import PandasLogWrapper
@@ -28,6 +28,7 @@ def get_start_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
         Dictionary of start activities along with their count
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -53,6 +54,7 @@ def get_end_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
         Dictionary of end activities along with their count
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -78,6 +80,7 @@ def get_event_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
         List of attributes contained in the log
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -102,6 +105,7 @@ def get_trace_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
         List of attributes at the trace level
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.util import constants
     if check_is_pandas_dataframe(log):
@@ -132,6 +136,7 @@ def get_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
         Dictionary of values along with their count
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream, PandasLogWrapper]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     parameters = get_properties(log)
     parameters["keep_once_per_case"] = count_once_per_case
@@ -161,6 +166,7 @@ def get_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
         Dictionary of values along with their count
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -186,6 +192,7 @@ def get_variants(log: Union[EventLog, pd.DataFrame]) -> Dict[str, List[Trace]]:
         Dictionary of variants along with their count
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     import pm4py
     if pm4py.util.variants_util.VARIANT_SPECIFICATION == pm4py.util.variants_util.VariantsSpecifications.STRING:
@@ -218,6 +225,7 @@ def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame]) -> Dict[Tuple[str
         Dictionary of variants along with their count
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     import pm4py
     # the behavior of PM4Py is changed to allow this to work
@@ -247,6 +255,7 @@ def get_minimum_self_distances(log: Union[EventLog, pd.DataFrame]) -> Dict[str, 
         dict mapping an activity to its self-distance, if it exists, otherwise it is not part of the dict.
     '''
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.discovery.minimum_self_distance import algorithm as msd_algo
     return msd_algo.apply(log, parameters=get_properties(log))
@@ -272,6 +281,7 @@ def get_minimum_self_distance_witnesses(log: Union[EventLog, pd.DataFrame]) -> D
 
         '''
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.discovery.minimum_self_distance import algorithm as msd_algo
     from pm4py.algo.discovery.minimum_self_distance import utils as msdw_algo
@@ -293,6 +303,7 @@ def get_case_arrival_average(log: Union[EventLog, pd.DataFrame]) -> float:
         Average difference between the start times of two consecutive cases
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -322,6 +333,7 @@ def get_rework_cases_per_activity(log: Union[EventLog, pd.DataFrame]) -> Dict[st
         occurred.
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -348,6 +360,7 @@ def get_case_overlap(log: Union[EventLog, pd.DataFrame]) -> List[int]:
         are concurrently open.
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -384,6 +397,7 @@ def get_cycle_time(log: Union[EventLog, pd.DataFrame]) -> float:
         Cycle time (calculated with the aforementioned formula).
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -415,6 +429,7 @@ def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: b
         Case durations (as list)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     properties = copy(get_properties(log))
     properties["business_hours"] = business_hours
@@ -453,6 +468,7 @@ def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business
         Duration of the given case
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     properties = copy(get_properties(log))
     properties["business_hours"] = business_hours
@@ -490,6 +506,7 @@ def get_activity_position_summary(log: Union[EventLog, pd.DataFrame], activity: 
         Summary of the positions of the activity in the trace (e.g. {1: 1000, 2: 500})
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     properties = get_properties(log)
     activity_key = properties[

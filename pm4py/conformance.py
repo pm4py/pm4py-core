@@ -6,7 +6,7 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from collections import Counter
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import xes_constants
-from pm4py.utils import get_properties
+from pm4py.utils import get_properties, __event_log_deprecation_warning
 import pandas as pd
 
 
@@ -33,6 +33,7 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
         A list of replay results for each trace of the log (in the same order as the traces in the event log)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
     return token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=get_properties(log))
@@ -58,6 +59,7 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
         A list of alignments for each trace of the log (in the same order as the traces in the event log)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if len(args) == 3:
         if type(args[0]) is PetriNet:
@@ -114,6 +116,7 @@ def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: Pe
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
@@ -144,6 +147,7 @@ def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, 
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
     parameters = get_properties(log)
@@ -174,6 +178,7 @@ def precision_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: 
         float representing the precision value
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
@@ -204,6 +209,7 @@ def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet
         float representing the precision value
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
     parameters = get_properties(log)
@@ -331,6 +337,8 @@ def __check_is_fit_process_tree(trace, tree, activity_key=xes_constants.DEFAULT_
     is_fit
         Boolean value (True if the trace fits; False if the trace does not)
     """
+    __event_log_deprecation_warning(trace)
+
     from pm4py.discovery import discover_footprints
     log = EventLog()
     log.append(trace)
@@ -377,6 +385,8 @@ def __check_is_fit_petri_net(trace, net, im, fm, activity_key=xes_constants.DEFA
     is_fit
         Boolean value (True if the trace fits; False if the trace does not)
     """
+    __event_log_deprecation_warning(trace)
+
     # avoid checking footprints on Petri net (they are too slow)
     activities_model = set(trans.label for trans in net.transitions if trans.label is not None)
     activities_trace = set([x[activity_key] for x in trace])
