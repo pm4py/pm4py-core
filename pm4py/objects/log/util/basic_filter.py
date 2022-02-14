@@ -46,7 +46,7 @@ def filter_log_events_attr(log, values, parameters=None):
     else:
         stream = EventStream(list(filter(lambda x: x[attribute_key] not in values, stream)))
 
-    filtered_log = log_converter.apply(stream)
+    filtered_log = log_converter.apply(stream, variant=log_converter.Variants.TO_EVENT_LOG)
 
     return filtered_log
 

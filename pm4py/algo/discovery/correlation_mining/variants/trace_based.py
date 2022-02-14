@@ -152,7 +152,7 @@ def preprocess_log(log, activities=None, activities_counter=None, parameters=Non
         # keep only the two columns before conversion
         log = log[list(set([activity_key, timestamp_key, start_timestamp_key, caseid_key]))]
 
-    log = converter.apply(log, parameters=parameters)
+    log = converter.apply(log, variant=converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     traces_list = []
     for trace in log:

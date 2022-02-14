@@ -10,6 +10,7 @@ from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_data
 from pm4py.utils import get_properties
 from pm4py.util import xes_constants, constants
 from copy import copy
+from pm4py.objects.log.pandas_log_wrapper import PandasLogWrapper
 
 
 def get_start_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
@@ -130,7 +131,7 @@ def get_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
     attribute_values
         Dictionary of values along with their count
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    if type(log) not in [pd.DataFrame, EventLog, EventStream, PandasLogWrapper]: raise Exception("the method can be applied only to a traditional event log!")
 
     parameters = get_properties(log)
     parameters["keep_once_per_case"] = count_once_per_case
@@ -230,7 +231,7 @@ def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame]) -> Dict[Tuple[str
         return get.get_variants(log, parameters=get_properties(log))
 
 
-def get_minimum_self_distances(log: EventLog) -> Dict[str, int]:
+def get_minimum_self_distances(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
     '''
     This algorithm computes the minimum self-distance for each activity observed in an event log.
     The self distance of a in <a> is infinity, of a in <a,a> is 0, in <a,b,a> is 1, etc.
@@ -251,7 +252,7 @@ def get_minimum_self_distances(log: EventLog) -> Dict[str, int]:
     return msd_algo.apply(log, parameters=get_properties(log))
 
 
-def get_minimum_self_distance_witnesses(log: EventLog) -> Dict[str, Set[str]]:
+def get_minimum_self_distance_witnesses(log: Union[EventLog, pd.DataFrame]) -> Dict[str, Set[str]]:
     '''
         This function derives the minimum self distance witnesses.
         The self distance of a in <a> is infinity, of a in <a,a> is 0, in <a,b,a> is 1, etc.

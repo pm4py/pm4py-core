@@ -32,7 +32,7 @@ class InductiveMinerTest(unittest.TestCase):
         else:
             df = pd.read_csv(log_name)
             df = dataframe_utils.convert_timestamp_columns_in_df(df)
-            log = log_conversion.apply(df)
+            log = log_conversion.apply(df, variant=log_conversion.Variants.TO_EVENT_LOG)
         net, marking, final_marking = inductive_miner.apply(log, variant=variant)
 
         return log, net, marking, final_marking
