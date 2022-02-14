@@ -7,7 +7,7 @@ class VariantsSpecifications(Enum):
     LIST = "list"
 
 
-VARIANT_SPECIFICATION = VariantsSpecifications.STRING
+VARIANT_SPECIFICATION = VariantsSpecifications.LIST
 
 
 class Parameters(Enum):
