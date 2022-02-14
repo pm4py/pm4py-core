@@ -55,6 +55,8 @@ def apply_numeric(log: EventLog, int1: float, int2: float, parameters: Optional[
     if parameters is None:
         parameters = {}
 
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
     case_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, xes.DEFAULT_TRACEID_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
@@ -129,6 +131,8 @@ def apply_numeric_events(log: EventLog, int1: float, int2: float, parameters: Op
     if parameters is None:
         parameters = {}
 
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
 
     conversion_parameters = copy(parameters)
@@ -143,7 +147,7 @@ def apply_numeric_events(log: EventLog, int1: float, int2: float, parameters: Op
             list(filter(lambda x: attribute_key in x and (x[attribute_key] < int1 or x[attribute_key] > int2), stream)),
             attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
             omni_present=log.omni_present, properties=log.properties)
-    filtered_log = log_converter.apply(stream, parameters=conversion_parameters)
+    filtered_log = log_converter.apply(stream, variant=log_converter.Variants.TO_EVENT_LOG, parameters=conversion_parameters)
 
     return filtered_log
 
@@ -171,6 +175,8 @@ def apply_events(log: EventLog, values: List[str], parameters: Optional[Dict[Uni
     if parameters is None:
         parameters = {}
 
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
@@ -187,7 +193,7 @@ def apply_events(log: EventLog, values: List[str], parameters: Optional[Dict[Uni
                              extensions=log.extensions, classifiers=log.classifiers,
                              omni_present=log.omni_present, properties=log.properties)
 
-    filtered_log = log_converter.apply(stream, parameters=conversion_parameters)
+    filtered_log = log_converter.apply(stream, variant=log_converter.Variants.TO_EVENT_LOG, parameters=conversion_parameters)
 
     return filtered_log
 
@@ -215,6 +221,8 @@ def apply(log: EventLog, values: List[str], parameters: Optional[Dict[Union[str,
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
@@ -265,6 +273,8 @@ def apply_trace_attribute(log: EventLog, values: List[str], parameters: Optional
     if parameters is None:
         parameters = {}
 
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
@@ -301,6 +311,9 @@ def filter_log_on_max_no_activities(log: EventLog, max_no_activities : int = 25,
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     activity_key = parameters[
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
     parameters[PARAMETER_CONSTANT_ATTRIBUTE_KEY] = activity_key
@@ -382,6 +395,8 @@ def filter_log_relative_occurrence_event_attribute(log: EventLog, min_relative_s
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, xes.DEFAULT_NAME_KEY)
     keep_once_per_case = exec_utils.get_param_value(Parameters.KEEP_ONCE_PER_CASE, parameters, True)

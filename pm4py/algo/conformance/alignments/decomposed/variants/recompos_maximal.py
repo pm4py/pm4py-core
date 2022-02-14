@@ -19,6 +19,7 @@ from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import typing
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -125,6 +126,8 @@ def apply(log: EventLog, net: PetriNet, im: Marking, fm: Marking, parameters: Op
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     best_worst_cost = get_best_worst_cost(net, im, fm, parameters=parameters)
     parameters[Parameters.BEST_WORST_COST] = best_worst_cost

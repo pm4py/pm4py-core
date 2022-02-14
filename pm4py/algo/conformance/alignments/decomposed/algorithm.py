@@ -5,6 +5,7 @@ from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import typing
+import pandas as pd
 
 
 class Variants(Enum):
@@ -14,7 +15,7 @@ class Variants(Enum):
 VERSIONS = {Variants.RECOMPOS_MAXIMAL}
 
 
-def apply(log: EventLog, net: PetriNet, im: Marking, fm: Marking, variant=Variants.RECOMPOS_MAXIMAL, parameters: Optional[Dict[Any, Any]] = None) -> typing.ListAlignments:
+def apply(log: Union[EventLog, pd.DataFrame], net: PetriNet, im: Marking, fm: Marking, variant=Variants.RECOMPOS_MAXIMAL, parameters: Optional[Dict[Any, Any]] = None) -> typing.ListAlignments:
     """
     Apply the recomposition alignment approach
     to a log and a Petri net performing decomposition
