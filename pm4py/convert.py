@@ -7,7 +7,7 @@ from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
-from pm4py.utils import get_properties
+from pm4py.utils import get_properties, __event_log_deprecation_warning
 
 
 def convert_to_event_log(obj: Union[pd.DataFrame, EventStream]) -> EventLog:
@@ -28,6 +28,9 @@ def convert_to_event_log(obj: Union[pd.DataFrame, EventStream]) -> EventLog:
 
     from pm4py.objects.conversion.log import converter
     log = converter.apply(obj, variant=converter.Variants.TO_EVENT_LOG, parameters=get_properties(obj))
+
+    __event_log_deprecation_warning(log)
+
     return log
 
 
@@ -49,6 +52,9 @@ def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame]) -> EventStream:
 
     from pm4py.objects.conversion.log import converter
     stream = converter.apply(obj, variant=converter.Variants.TO_EVENT_STREAM, parameters=get_properties(obj))
+
+    __event_log_deprecation_warning(stream)
+
     return stream
 
 
