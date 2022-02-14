@@ -9,6 +9,8 @@ from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util import typing
+from pm4py.objects.conversion.log import converter as log_converter
+import pandas as pd
 
 
 class Variants(Enum):
@@ -20,7 +22,7 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.SEARCH_GRAPH_PT
 
 
-def apply(obj: Union[EventLog, Trace], pt: ProcessTree, variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> Union[typing.AlignmentResult, typing.ListAlignments]:
+def apply(obj: Union[EventLog, Trace, pd.DataFrame], pt: ProcessTree, variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> Union[typing.AlignmentResult, typing.ListAlignments]:
     """
     Align an event log or a trace with a process tree
 
@@ -42,5 +44,7 @@ def apply(obj: Union[EventLog, Trace], pt: ProcessTree, variant=DEFAULT_VARIANT,
     """
     if parameters is None:
         parameters = {}
+
+    obj = log_converter.apply(obj, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     return exec_utils.get_variant(variant).apply(obj, pt, parameters=parameters)

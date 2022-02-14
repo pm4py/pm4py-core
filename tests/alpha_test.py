@@ -27,7 +27,7 @@ class AlphaMinerTest(unittest.TestCase):
         else:
             df = pd.read_csv(log_name)
             df = dataframe_utils.convert_timestamp_columns_in_df(df)
-            log = log_conversion.apply(df)
+            log = log_conversion.apply(df, variant=log_conversion.Variants.TO_EVENT_LOG)
         net, marking, fmarking = alpha_alg.apply(log)
 
         return log, net, marking, fmarking

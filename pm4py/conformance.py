@@ -10,7 +10,7 @@ from pm4py.utils import get_properties
 import pandas as pd
 
 
-def conformance_diagnostics_token_based_replay(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
+def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking,
                                                final_marking: Marking) -> List[Dict[str, Any]]:
     """
     Apply token-based replay for conformance checking analysis.
@@ -38,7 +38,7 @@ def conformance_diagnostics_token_based_replay(log: EventLog, petri_net: PetriNe
     return token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=get_properties(log))
 
 
-def conformance_diagnostics_alignments(log: EventLog, *args, multi_processing: bool = False) -> List[Dict[str, Any]]:
+def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args, multi_processing: bool = False) -> List[Dict[str, Any]]:
     """
     Apply the alignments algorithm between a log and a process model.
     The methods return the full alignment diagnostics.
@@ -89,7 +89,7 @@ def conformance_diagnostics_alignments(log: EventLog, *args, multi_processing: b
         return alignments.apply(log, net, im, fm, parameters=get_properties(log))
 
 
-def fitness_token_based_replay(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking) -> \
+def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking) -> \
         Dict[
             str, float]:
     """
@@ -120,7 +120,7 @@ def fitness_token_based_replay(log: EventLog, petri_net: PetriNet, initial_marki
                                 variant=replay_fitness.Variants.TOKEN_BASED, parameters=get_properties(log))
 
 
-def fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, multi_processing: bool = False) -> \
+def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, multi_processing: bool = False) -> \
         Dict[str, float]:
     """
     Calculates the fitness using alignments
@@ -152,7 +152,7 @@ def fitness_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Mark
                                 variant=replay_fitness.Variants.ALIGNMENT_BASED, parameters=parameters)
 
 
-def precision_token_based_replay(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
+def precision_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking,
                                  final_marking: Marking) -> float:
     """
     Calculates the precision precision using token-based replay
@@ -180,7 +180,7 @@ def precision_token_based_replay(log: EventLog, petri_net: PetriNet, initial_mar
                                      variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN, parameters=get_properties(log))
 
 
-def precision_alignments(log: EventLog, petri_net: PetriNet, initial_marking: Marking,
+def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking,
                          final_marking: Marking, multi_processing: bool = False) -> float:
     """
     Calculates the precision of the model w.r.t. the event log using alignments
