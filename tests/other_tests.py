@@ -125,7 +125,7 @@ class OtherPartsTests(unittest.TestCase):
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df)
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        log = converter.apply(df)
+        log = converter.apply(df, variant=converter.Variants.TO_EVENT_LOG)
         tree = inductive_miner.apply_tree(log)
         from pm4py.algo.discovery.footprints import algorithm as footprints_discovery
         fp_df = footprints_discovery.apply(df)

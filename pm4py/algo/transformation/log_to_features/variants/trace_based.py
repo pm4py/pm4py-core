@@ -1168,7 +1168,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
         enable_max_concurrent_events = exec_utils.get_param_value(Parameters.ENABLE_MAX_CONCURRENT_EVENTS, parameters, enable_all)
         enable_max_concurrent_events_per_activity = exec_utils.get_param_value(Parameters.ENABLE_MAX_CONCURRENT_EVENTS_PER_ACTIVITY, parameters, enable_all)
 
-        log = converter.apply(log, parameters=parameters)
+        log = converter.apply(log, variant=converter.Variants.TO_EVENT_LOG, parameters=parameters)
         if at_least_one_provided:
             datas, features_namess = get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr,
                                       str_evsucc_attr=str_evsucc_attr, feature_names=feature_names)

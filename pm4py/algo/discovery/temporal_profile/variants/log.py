@@ -52,7 +52,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> typing.
     if parameters is None:
         parameters = {}
 
-    log = log_converter.apply(log, parameters=parameters)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
     worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])

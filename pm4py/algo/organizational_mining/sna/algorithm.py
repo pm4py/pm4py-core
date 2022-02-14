@@ -65,7 +65,7 @@ def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Union[st
 
     if variant in [Variants.HANDOVER_LOG, Variants.WORKING_TOGETHER_LOG, Variants.JOINTACTIVITIES_LOG,
                    Variants.SUBCONTRACTING_LOG]:
-        log = log_conversion.apply(log, parameters=parameters)
+        log = log_conversion.apply(log, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters)
     sna = exec_utils.get_variant(variant).apply(log, parameters=parameters)
     abs_max = np.max(np.abs(sna[0]))
     if enable_metric_normalization and abs_max > 0:

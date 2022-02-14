@@ -3,6 +3,7 @@ from pm4py.util import constants, xes_constants, exec_utils
 from pm4py.objects.log.obj import EventLog
 from collections import Counter
 from typing import Optional, Dict, Any
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -40,6 +41,8 @@ def apply(log: EventLog, activity: str, parameters: Optional[Dict[Any, Any]] = N
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     min_occurrences = exec_utils.get_param_value(Parameters.MIN_OCCURRENCES, parameters, 2)

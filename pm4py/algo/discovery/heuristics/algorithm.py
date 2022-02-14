@@ -62,7 +62,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
         if isinstance(log, pandas.core.frame.DataFrame):
             return exec_utils.get_variant(variant).apply_pandas(log, parameters=parameters)
 
-    return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters=parameters),
+    return exec_utils.get_variant(variant).apply(log_conversion.apply(log, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters),
                                                  parameters=parameters)
 
 
@@ -147,7 +147,7 @@ def apply_heu(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optio
     fm
         Final marking
     """
-    return exec_utils.get_variant(variant).apply_heu(log_conversion.apply(log, parameters=parameters), parameters=parameters)
+    return exec_utils.get_variant(variant).apply_heu(log_conversion.apply(log, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters), parameters=parameters)
 
 
 def apply_heu_dfg(dfg: Dict[Tuple[str, str], int], activities=None, activities_occurrences=None, start_activities=None, end_activities=None,

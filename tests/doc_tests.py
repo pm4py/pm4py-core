@@ -75,7 +75,7 @@ class DocTests(unittest.TestCase):
         from pm4py.objects.conversion.log import converter as log_converter
 
         log_csv = pd.read_csv(os.path.join("input_data", "running-example.csv"), sep=',')
-        event_log = log_converter.apply(log_csv)
+        event_log = log_converter.apply(log_csv, variant=log_converter.Variants.TO_EVENT_LOG)
 
     def test_4(self):
         import pandas as pd

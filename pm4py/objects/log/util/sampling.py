@@ -2,6 +2,7 @@ import random
 from copy import copy
 
 from pm4py.objects.log.obj import EventStream, EventLog
+from pm4py.objects.log.pandas_log_wrapper import PandasLogWrapper
 
 
 def sample_stream(event_log, no_events=100):
@@ -20,7 +21,7 @@ def sample_stream(event_log, no_events=100):
     newLog
         Filtered log
     """
-    new_log = EventStream(attributes=event_log.attributes, extensions=event_log.extensions, globals=event_log._omni,
+    new_log = EventStream(attributes=event_log.attributes, extensions=event_log.extensions, globals=event_log.omni_present,
                           classifiers=event_log.classifiers)
     new_log._list = random.sample(event_log, min(no_events, len(event_log)))
     return new_log
@@ -42,7 +43,7 @@ def sample_log(log, no_traces=100):
     newLog
         Filtered log
     """
-    new_log = EventLog(attributes=log.attributes, extensions=log.extensions, globals=log._omni,
+    new_log = EventLog(attributes=log.attributes, extensions=log.extensions, globals=log.omni_present,
                        classifiers=log.classifiers, properties=log.properties)
     new_log._list = random.sample(log, min(no_traces, len(log)))
     return new_log
@@ -65,7 +66,7 @@ def sample(log, n=100):
         Filtered log
     """
 
-    if type(log) is EventLog:
+    if type(log) is EventLog or type(log) is PandasLogWrapper:
         return sample_log(log, no_traces=n)
 
     return sample_stream(log, no_events=n)
