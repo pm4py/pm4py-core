@@ -1,5 +1,26 @@
 # PM4Py Changelog
 
+## PM4Py 2.2.19.2
+
+### Added
+
+
+### Changed
+* f5575aa8
+  * Cleaning unused parameters in PTAndLogGenerator
+
+### Deprecated
+
+### Fixed
+* 150184d3
+  * Small bug fixes BPMN importer
+* 7221385a
+  * Issue in DFG visualization when the provided start/end activities are not in the graph
+
+### Removed
+
+### Other
+
 ## PM4Py 2.2.19.1
 
 ### Added
