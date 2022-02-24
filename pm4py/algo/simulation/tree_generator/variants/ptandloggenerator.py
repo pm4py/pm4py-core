@@ -47,11 +47,7 @@ class Parameters(Enum):
     MAX = "max"
     SILENT = "silent"
     DUPLICATE = "duplicate"
-    LT_DEPENDENCY = "lt_dependency"
-    INFREQUENT = "infrequent"
     NO_MODELS = "no_models"
-    UNFOLD = "unfold"
-    MAX_REPEAT = "max_repeat"
 
 
 def apply(parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> obj.ProcessTree:
@@ -73,13 +69,7 @@ def apply(parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> obj
         - Parameters.OR: probability to add an or operator to tree
         - Parameters.SILENT: probability to add silent activity to a choice or loop operator
         - Parameters.DUPLICATE: probability to duplicate an activity label
-        - Parameters.LT_DEPENDENCY: probability to add a random dependency to the tree
-        - Parameters.INFREQUENT: probability to make a choice have infrequent paths
         - Parameters.NO_MODELS: number of trees to generate from model population
-        - Parameters.UNFOLD: whether or not to unfold loops in order to include choices underneath in dependencies: 0=False, 1=True
-            if lt_dependency <= 0: this should always be 0 (False)
-            if lt_dependency > 0: this can be 1 or 0 (True or False)
-        - Parameters.MAX_REPEAT: maximum number of repetitions of a loop (only used when unfolding is True)
     """
     if parameters is None:
         parameters = {}
@@ -104,16 +94,8 @@ def apply(parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> obj
         parameters["silent"] = 0.2
     if not "duplicate" in parameters:
         parameters["duplicate"] = 0
-    if not "lt_depencency" in parameters:
-        parameters["lt_depencency"] = 0.0
-    if not "infrequent" in parameters:
-        parameters["infrequent"] = 0.5
     if not "no_models" in parameters:
         parameters["no_models"] = 1
-    if not "unfold" in parameters:
-        parameters["unfold"] = 10
-    if not "max_repeat" in parameters:
-        parameters["max_repeat"] = 10
 
     no_models = parameters["no_models"]
 
