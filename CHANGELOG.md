@@ -8,6 +8,8 @@
 ### Changed
 * f5575aa8
   * Cleaning unused parameters in PTAndLogGenerator
+* 65137038
+  * Changed WOFLAN linear problem solving to default interface
 
 ### Deprecated
 
