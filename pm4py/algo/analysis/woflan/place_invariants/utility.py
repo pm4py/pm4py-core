@@ -1,4 +1,6 @@
 import numpy as np
+from copy import copy
+from pm4py.util.lp import solver
 
 
 def removearray(L, arr):
@@ -27,8 +29,6 @@ def transform_basis(basis, style=None):
     At the moment, 'uniform' (all weights have value 0 or 1), and 'weighted' (all weights are >=0) are supported
     :return: List of p-invariants that fits the style
     """
-    import pulp
-
     if style==None:
         style='weighted'
 
@@ -57,7 +57,8 @@ def transform_basis(basis, style=None):
         for vector in to_modify:
             removearray(modified_base, vector)
             set_B = range(0, len(modified_base))
-            prob = pulp.LpProblem("linear_combination", pulp.LpMinimize)
+            # start of the problem
+            """prob = pulp.LpProblem("linear_combination", pulp.LpMinimize)
             X = pulp.LpVariable.dicts("x", set_B, cat='Integer')
             y = pulp.LpVariable("y", cat='Integer', lowBound=1)
             # add objective
@@ -71,18 +72,83 @@ def transform_basis(basis, style=None):
             elif style=='weighted':
                 for i in range(len(vector)):
                     prob += pulp.lpSum(X[j]*modified_base[j][i] for j in range(len(modified_base)))+y*vector[i] >= 0
-            prob.solve()
+            prob.solve()"""
+            # problem is solved
+
+            c = [1]*len(set_B) + [0] * (len(vector) + 1)
+            zeros = [0] * (len(set_B) + len(vector) + 1)
+            Aub = []
+            bub = []
+            Aeq = []
+            beq = []
+            first_constraint = copy(zeros)
+            first_constraint[len(set_B)] = -1
+            Aub.append(first_constraint)
+            bub.append(-1)
+            for i in range(len(vector)):
+                this_row = copy(zeros)
+                this_row[len(set_B)] = list(vector[i])[0]
+                for j in range(len(modified_base)):
+                    if type(modified_base[j][i]) is np.float64:
+                        this_row[j] = float(modified_base[j][i])
+                    else:
+                        this_row[j] = list(modified_base[j][i])[0]
+
+                    if style == "uniform":
+                        this_row[len(set_B) + 1 + i] = -1
+                        Aeq.append(this_row)
+                        beq.append(0)
+                    elif style == "weighted":
+                        Aub.append([-x for x in this_row])
+                        bub.append(0)
+            for i in range(len(vector)):
+                last_constraint_1 = copy(zeros)
+                last_constraint_1[len(set_B) + 1 + i] = 1
+                Aub.append(last_constraint_1)
+                bub.append(1)
+                last_constraint_2 = copy(zeros)
+                last_constraint_2[len(set_B) + 1 + i] = -1
+                Aub.append(last_constraint_2)
+                bub.append(0)
+
+            Aeq = np.asmatrix(Aeq).astype(np.float64)
+            beq = np.asmatrix(beq).transpose().astype(np.float64)
+            Aub = np.asmatrix(Aub).astype(np.float64)
+            bub = np.asmatrix(bub).transpose().astype(np.float64)
+
+            if Aeq.shape[1] == 0:
+                Aeq = np.zeros((1, len(c))).astype(np.float64)
+                beq = np.zeros(1).transpose().astype(np.float64)
+
+            if Aub.shape[1] == 0:
+                Aub = np.zeros((1, len(c))).astype(np.float64)
+                bub = np.zeros(1).transpose().astype(np.float64)
+
+            if "cvxopt" in solver.DEFAULT_LP_SOLVER_VARIANT:
+                from cvxopt import matrix
+                c = matrix([x * 1.0 for x in c])
+                Aeq = matrix(Aeq)
+                beq = matrix(beq)
+                Aub = matrix(Aub)
+                bub = matrix(bub)
+
+            sol = solver.apply(c, Aub, bub, Aeq, beq, variant=solver.DEFAULT_LP_SOLVER_VARIANT)
+            points = solver.get_points_from_sol(sol, variant=solver.DEFAULT_LP_SOLVER_VARIANT)
+
             new_vector = np.zeros(len(vector))
-            if style=='weighted':
+
+            if style == "weighted":
                 for i in range(len(new_vector)):
-                    new_vector[i] = y.varValue * vector[i]
+                    new_vector[i] = points[len(set_B)] * vector[i]
                     for j in range(len(modified_base)):
-                        new_vector[i] = new_vector[i] + modified_base[j][i] * X[j].varValue
-            elif style=='uniform':
+                        new_vector[i] = new_vector[i] + modified_base[j][i] * points[j]
+            elif style == "uniform":
                 for i in range(len(new_vector)):
-                    new_vector[i] = z[i].varValue
+                    new_vector[i] = points[len(set_B) + 1 + i]
             modified_base.append(new_vector)
+
     return modified_base
+
 
 def compute_uncovered_places(invariants, net):
     """
