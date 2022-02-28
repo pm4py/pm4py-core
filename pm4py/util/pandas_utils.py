@@ -40,7 +40,7 @@ def to_dict_index(df):
     return df.to_dict('index')
 
 
-def insert_index(df, column_name=constants.DEFAULT_INDEX_KEY):
+def insert_index(df, column_name=constants.DEFAULT_INDEX_KEY, copy_dataframe=True):
     """
     Inserts the dataframe index in the specified column
 
@@ -50,14 +50,43 @@ def insert_index(df, column_name=constants.DEFAULT_INDEX_KEY):
         Dataframe
     column_name
         Name of the column that should host the index
+    copy_dataframe
+        Establishes if the original dataframe should be copied before inserting the column
 
     Returns
     --------------
     df
         Dataframe with index
     """
-    df = df.copy()
+    if copy_dataframe:
+        df = df.copy()
     df[column_name] = df.index
+    return df
+
+
+def insert_case_index(df, column_name=constants.DEFAULT_CASE_INDEX_KEY, case_id=constants.CASE_CONCEPT_NAME, copy_dataframe=True):
+    """
+    Inserts the case number in the dataframe
+
+    Parameters
+    ---------------
+    df
+        Dataframe
+    column_name
+        Name of the column that should host the case index
+    case_id
+        Case identifier
+    copy_dataframe
+        Establishes if the original dataframe should be copied before inserting the column
+
+    Returns
+    ---------------
+    df
+        Dataframe with case index
+    """
+    if copy_dataframe:
+        df = df.copy()
+    df[column_name] = df.groupby(case_id).ngroup()
     return df
 
 
