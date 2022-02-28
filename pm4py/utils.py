@@ -255,7 +255,7 @@ def deserialize(ser_obj: Tuple[str, bytes]) -> Any:
         return dfg_importer.deserialize(ser_obj[1])
 
 
-def get_properties(log, activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs):
+def get_properties(log, activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, resource_key: Optional[str] = None, group_key: Optional[str] = None, **kwargs):
     """
     Gets the properties from a log object
 
@@ -269,6 +269,10 @@ def get_properties(log, activity_key: Optional[str] = None, timestamp_key: Optio
         (if provided) attribute to be used for the timestamp
     case_id_key
         (if provided) attribute to be used as case identifier
+    resource_key
+        (if provided) attribute to be used as resource
+    group_key
+        (if provided) attribute to be used as group identifier
 
     Returns
     -----------------
@@ -291,6 +295,12 @@ def get_properties(log, activity_key: Optional[str] = None, timestamp_key: Optio
 
     if case_id_key is not None:
         parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] = case_id_key
+
+    if resource_key is not None:
+        parameters[constants.PARAMETER_CONSTANT_RESOURCE_KEY] = resource_key
+
+    if group_key is not None:
+        parameters[constants.PARAMETER_CONSTANT_GROUP_KEY] = group_key
 
     for k, v in kwargs.items():
         parameters[k] = v
