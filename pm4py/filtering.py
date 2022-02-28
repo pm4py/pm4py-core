@@ -1,5 +1,5 @@
 import warnings
-from typing import List, Union, Set, List, Tuple, Collection, Any, Dict
+from typing import List, Union, Set, List, Tuple, Collection, Any, Dict, Optional
 
 import pandas as pd
 
@@ -12,7 +12,7 @@ from pm4py.objects.ocel.obj import OCEL
 import datetime
 
 
-def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataFrame], min_relative_stake: float, attribute_key : str = xes_constants.DEFAULT_NAME_KEY, level="cases") -> Union[EventLog, pd.DataFrame]:
+def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataFrame], min_relative_stake: float, attribute_key : str = xes_constants.DEFAULT_NAME_KEY, level="cases", timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs) -> Union[EventLog, pd.DataFrame]:
     """
     Filters the event log keeping only the events having an attribute value which occurs:
     - in at least the specified (min_relative_stake) percentage of events, when level="events"
@@ -28,6 +28,10 @@ def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataF
         The attribute to filter
     level
         The level of the filter (if level="events", then events / if level="cases", then cases)
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     ------------------
@@ -37,7 +41,7 @@ def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataF
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
@@ -51,7 +55,7 @@ def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataF
         return attributes_filter.filter_log_relative_occurrence_event_attribute(log, min_relative_stake, parameters=parameters)
 
 
-def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: Union[Set[str], List[str]], retain: bool = True) -> \
+def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: Union[Set[str], List[str]], retain: bool = True, activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs) -> \
 Union[EventLog, pd.DataFrame]:
     """
     Filter cases having a start activity in the provided list
@@ -64,7 +68,12 @@ Union[EventLog, pd.DataFrame]:
         List start activities
     retain
         if True, we retain the traces containing the given activities, if false, we drop the traces
-
+    activity_key
+        (if provided) attribute to be used for the activity
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     --------------
@@ -74,7 +83,7 @@ Union[EventLog, pd.DataFrame]:
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
@@ -88,7 +97,7 @@ Union[EventLog, pd.DataFrame]:
                                              parameters=parameters)
 
 
-def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union[Set[str], List[str]], retain: bool = True) -> Union[
+def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union[Set[str], List[str]], retain: bool = True, activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs) -> Union[
     EventLog, pd.DataFrame]:
     """
     Filter cases having an end activity in the provided list
@@ -101,7 +110,12 @@ def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union
         List of admitted end activities
     retain
         if True, we retain the traces containing the given activities, if false, we drop the traces
-
+    activity_key
+        (if provided) attribute to be used for the activity
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     ---------------
@@ -111,7 +125,7 @@ def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
@@ -126,7 +140,7 @@ def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union
 
 
 def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values:  Union[Set[str], List[str]],
-                                  level: str = "case", retain: bool = True) -> Union[EventLog, pd.DataFrame]:
+                                  level: str = "case", retain: bool = True, case_id_key: Optional[str] = None, **kwargs) -> Union[EventLog, pd.DataFrame]:
     """
     Filter a log object on the values of some event attribute
 
@@ -143,6 +157,8 @@ def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
         'event' filter the events eventually trimming the cases)
     retain
         Specified if the values should be kept or removed
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     --------------
@@ -152,7 +168,7 @@ def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, case_id_key=case_id_key, **kwargs)
     parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = attribute_key
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -176,7 +192,7 @@ def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
 
 
 def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values:  Union[Set[str], List[str]],
-                                  retain: bool = True) -> Union[EventLog, pd.DataFrame]:
+                                  retain: bool = True, case_id_key: Optional[str] = None, **kwargs) -> Union[EventLog, pd.DataFrame]:
     """
     Filter a log on the values of a trace attribute
 
@@ -190,6 +206,8 @@ def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
         Values to filter (list of)
     retain
         Boolean value (keep/discard matching traces)
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     --------------
@@ -199,7 +217,7 @@ def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, case_id_key=case_id_key, **kwargs)
     parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = attribute_key
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -213,7 +231,7 @@ def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
         return attributes_filter.apply_trace_attribute(log, values, parameters=parameters)
 
 
-def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str], List[str]], retain: bool = True) -> Union[
+def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str], List[str]], retain: bool = True, activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs) -> Union[
     EventLog, pd.DataFrame]:
     """
     Filter a log on a specified set of variants
@@ -226,6 +244,12 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str
         collection of variants to filter; A variant should be specified as a list of activity names, e.g., ['a','b','c']
     retain
         boolean; if True all traces conforming to the specified variants are retained; if False, all those traces are removed
+    activity_key
+        (if provided) attribute to be used for the activity
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     --------------
@@ -236,7 +260,7 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str
     __event_log_deprecation_warning(log)
 
     from pm4py.util import variants_util
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     if variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.STRING:
         variants = [constants.DEFAULT_VARIANT_SEP.join(v) for v in variants]
     if check_is_pandas_dataframe(log):
@@ -252,7 +276,7 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str
                                      parameters=parameters)
 
 
-def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relations: List[str], retain: bool = True) -> \
+def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relations: List[str], retain: bool = True, activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs) -> \
         Union[EventLog, pd.DataFrame]:
     """
     Retain traces that contain any of the specified 'directly follows' relations.
@@ -268,6 +292,12 @@ def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relatio
     retain
         Parameter that says whether the paths
         should be kept/removed
+    activity_key
+        (if provided) attribute to be used for the activity
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     ----------------
@@ -277,7 +307,7 @@ def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relatio
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     if check_is_pandas_dataframe(log):
         from pm4py.algo.filtering.pandas.paths import paths_filter
         parameters[paths_filter.Parameters.POSITIVE] = retain
@@ -288,7 +318,7 @@ def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relatio
         return paths_filter.apply(log, relations, parameters=parameters)
 
 
-def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relations: List[str], retain: bool = True) -> \
+def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relations: List[str], retain: bool = True, activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs) -> \
         Union[EventLog, pd.DataFrame]:
     """
     Retain traces that contain any of the specified 'eventually follows' relations.
@@ -304,6 +334,12 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
     retain
         Parameter that says whether the paths
         should be kept/removed
+    activity_key
+        (if provided) attribute to be used for the activity
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     ----------------
@@ -313,7 +349,7 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     if check_is_pandas_dataframe(log):
         from pm4py.algo.filtering.pandas.ltl import ltl_checker
         parameters[ltl_checker.Parameters.POSITIVE] = retain
@@ -354,7 +390,7 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
         return filtered_log
 
 
-def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mode="events") -> Union[
+def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mode="events", timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs) -> Union[
     EventLog, pd.DataFrame]:
     """
     Filter a log on a time interval
@@ -372,6 +408,10 @@ def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mo
         events: any event that fits the time frame is retained
         traces_contained: any trace completely contained in the timeframe is retained
         traces_intersecting: any trace intersecting with the time-frame is retained.
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     ----------------
@@ -381,31 +421,32 @@ def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mo
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
+    properties = get_properties(log, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     if check_is_pandas_dataframe(log):
         from pm4py.algo.filtering.pandas.timestamp import timestamp_filter
         if mode == "events":
-            return timestamp_filter.apply_events(log, dt1, dt2, parameters=get_properties(log))
+            return timestamp_filter.apply_events(log, dt1, dt2, parameters=properties)
         elif mode == "traces_contained":
-            return timestamp_filter.filter_traces_contained(log, dt1, dt2, parameters=get_properties(log))
+            return timestamp_filter.filter_traces_contained(log, dt1, dt2, parameters=properties)
         elif mode == "traces_intersecting":
-            return timestamp_filter.filter_traces_intersecting(log, dt1, dt2, parameters=get_properties(log))
+            return timestamp_filter.filter_traces_intersecting(log, dt1, dt2, parameters=properties)
         else:
             warnings.warn('mode provided: ' + mode + ' is not recognized; original log returned!')
             return log
     else:
         from pm4py.algo.filtering.log.timestamp import timestamp_filter
         if mode == "events":
-            return timestamp_filter.apply_events(log, dt1, dt2, parameters=get_properties(log))
+            return timestamp_filter.apply_events(log, dt1, dt2, parameters=properties)
         elif mode == "traces_contained":
-            return timestamp_filter.filter_traces_contained(log, dt1, dt2, parameters=get_properties(log))
+            return timestamp_filter.filter_traces_contained(log, dt1, dt2, parameters=properties)
         elif mode == "traces_intersecting":
-            return timestamp_filter.filter_traces_intersecting(log, dt1, dt2, parameters=get_properties(log))
+            return timestamp_filter.filter_traces_intersecting(log, dt1, dt2, parameters=properties)
         else:
             warnings.warn('mode provided: ' + mode + ' is not recognized; original log returned!')
             return log
 
 
-def filter_between(log: Union[EventLog, pd.DataFrame], act1: str, act2: str) -> Union[EventLog, pd.DataFrame]:
+def filter_between(log: Union[EventLog, pd.DataFrame], act1: str, act2: str, activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs) -> Union[EventLog, pd.DataFrame]:
     """
     Finds all the sub-cases leading from an event with activity "act1" to an event with activity "act2" in the log,
     and returns a log containing only them.
@@ -435,6 +476,12 @@ def filter_between(log: Union[EventLog, pd.DataFrame], act1: str, act2: str) -> 
         Source activity
     act2
         Target activity
+    activity_key
+        (if provided) attribute to be used for the activity
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     -----------------
@@ -444,7 +491,7 @@ def filter_between(log: Union[EventLog, pd.DataFrame], act1: str, act2: str) -> 
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.between import between_filter
@@ -454,7 +501,7 @@ def filter_between(log: Union[EventLog, pd.DataFrame], act1: str, act2: str) -> 
         return between_filter.apply(log, act1, act2, parameters=parameters)
 
 
-def filter_case_size(log: Union[EventLog, pd.DataFrame], min_size: int, max_size: int) -> Union[EventLog, pd.DataFrame]:
+def filter_case_size(log: Union[EventLog, pd.DataFrame], min_size: int, max_size: int, case_id_key: Optional[str] = None, **kwargs) -> Union[EventLog, pd.DataFrame]:
     """
     Filters the event log, keeping the cases having a length (number of events) included between min_size
     and max_size
@@ -467,6 +514,8 @@ def filter_case_size(log: Union[EventLog, pd.DataFrame], min_size: int, max_size
         Minimum allowed number of events
     max_size
         Maximum allowed number of events
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     ----------------
@@ -476,7 +525,7 @@ def filter_case_size(log: Union[EventLog, pd.DataFrame], min_size: int, max_size
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, case_id_key=case_id_key, **kwargs)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.cases import case_filter
@@ -488,7 +537,7 @@ def filter_case_size(log: Union[EventLog, pd.DataFrame], min_size: int, max_size
         return case_filter.filter_on_case_size(log, min_size, max_size)
 
 
-def filter_case_performance(log: Union[EventLog, pd.DataFrame], min_performance: float, max_performance: float) -> Union[EventLog, pd.DataFrame]:
+def filter_case_performance(log: Union[EventLog, pd.DataFrame], min_performance: float, max_performance: float, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs) -> Union[EventLog, pd.DataFrame]:
     """
     Filters the event log, keeping the cases having a duration (the timestamp of the last event minus the timestamp
     of the first event) included between min_performance and max_performance
@@ -501,6 +550,10 @@ def filter_case_performance(log: Union[EventLog, pd.DataFrame], min_performance:
         Minimum allowed case duration
     max_performance
         Maximum allowed case duration
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     ----------------
@@ -510,7 +563,7 @@ def filter_case_performance(log: Union[EventLog, pd.DataFrame], min_performance:
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.cases import case_filter
@@ -520,7 +573,7 @@ def filter_case_performance(log: Union[EventLog, pd.DataFrame], min_performance:
         return case_filter.filter_case_performance(log, min_performance, max_performance, parameters=parameters)
 
 
-def filter_activities_rework(log: Union[EventLog, pd.DataFrame], activity: str, min_occurrences: int = 2) -> Union[EventLog, pd.DataFrame]:
+def filter_activities_rework(log: Union[EventLog, pd.DataFrame], activity: str, min_occurrences: int = 2, activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs) -> Union[EventLog, pd.DataFrame]:
     """
     Filters the event log, keeping the cases where the specified activity occurs at least min_occurrences times.
 
@@ -532,6 +585,12 @@ def filter_activities_rework(log: Union[EventLog, pd.DataFrame], activity: str, 
         Activity
     min_occurrences
         Minimum desidered number of occurrences
+    activity_key
+        (if provided) attribute to be used for the activity
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     -----------------
@@ -541,7 +600,7 @@ def filter_activities_rework(log: Union[EventLog, pd.DataFrame], activity: str, 
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     parameters["min_occurrences"] = min_occurrences
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -552,7 +611,7 @@ def filter_activities_rework(log: Union[EventLog, pd.DataFrame], activity: str, 
         return rework_filter.apply(log, activity, parameters=parameters)
 
 
-def filter_paths_performance(log: Union[EventLog, pd.DataFrame], path: Tuple[str, str], min_performance: float, max_performance: float, keep=True) -> Union[EventLog, pd.DataFrame]:
+def filter_paths_performance(log: Union[EventLog, pd.DataFrame], path: Tuple[str, str], min_performance: float, max_performance: float, keep=True, activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs) -> Union[EventLog, pd.DataFrame]:
     """
     Filters the event log, either:
     - (keep=True) keeping the cases having the specified path (tuple of 2 activities) with a duration included between min_performance and max_performance
@@ -570,6 +629,12 @@ def filter_paths_performance(log: Union[EventLog, pd.DataFrame], path: Tuple[str
         Maximum allowed performance (of the path)
     keep
         Keep/discard the cases having the specified path with a duration included between min_performance and max_performance
+    activity_key
+        (if provided) attribute to be used for the activity
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     ----------------
@@ -579,7 +644,7 @@ def filter_paths_performance(log: Union[EventLog, pd.DataFrame], path: Tuple[str
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     parameters["positive"] = keep
     parameters["min_performance"] = min_performance
     parameters["max_performance"] = max_performance
@@ -593,7 +658,7 @@ def filter_paths_performance(log: Union[EventLog, pd.DataFrame], path: Tuple[str
         return paths_filter.apply_performance(log, path, parameters=parameters)
 
 
-def filter_variants_top_k(log: Union[EventLog, pd.DataFrame], k: int) -> Union[EventLog, pd.DataFrame]:
+def filter_variants_top_k(log: Union[EventLog, pd.DataFrame], k: int, activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs) -> Union[EventLog, pd.DataFrame]:
     """
     Keeps the top-k variants of the log
 
@@ -603,8 +668,12 @@ def filter_variants_top_k(log: Union[EventLog, pd.DataFrame], k: int) -> Union[E
         Event log
     k
         Number of variants that should be kept
-    parameters
-        Parameters
+    activity_key
+        (if provided) attribute to be used for the activity
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     -------------
@@ -614,7 +683,7 @@ def filter_variants_top_k(log: Union[EventLog, pd.DataFrame], k: int) -> Union[E
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.variants import variants_filter
@@ -624,7 +693,7 @@ def filter_variants_top_k(log: Union[EventLog, pd.DataFrame], k: int) -> Union[E
         return variants_filter.filter_variants_top_k(log, k, parameters=parameters)
 
 
-def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], min_coverage_percentage: float) -> Union[EventLog, pd.DataFrame]:
+def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], min_coverage_percentage: float, activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs) -> Union[EventLog, pd.DataFrame]:
     """
     Filters the variants of the log by a coverage percentage
     (e.g., if min_coverage_percentage=0.4, and we have a log with 1000 cases,
@@ -639,6 +708,12 @@ def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], m
         Minimum allowed percentage of coverage
     parameters
         Parameters
+    activity_key
+        (if provided) attribute to be used for the activity
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     ---------------
@@ -648,7 +723,7 @@ def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], m
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.variants import variants_filter
@@ -658,7 +733,7 @@ def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], m
         return variants_filter.filter_variants_by_coverage_percentage(log, min_coverage_percentage, parameters=parameters)
 
 
-def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first"):
+def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first", activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs):
     """
     Filters the log, keeping the prefixes to a given activity. E.g., for a log with traces:
 
@@ -682,6 +757,12 @@ def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
         Applies the filter strictly (cuts the occurrences of the selected activity).
     first_or_last
         Decides if the first or last occurrence of an activity should be selected as baseline for the filter.
+    activity_key
+        (if provided) attribute to be used for the activity
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     ------------------
@@ -691,7 +772,7 @@ def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     parameters["strict"] = strict
     parameters["first_or_last"] = first_or_last
 
@@ -704,7 +785,7 @@ def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
         return prefix_filter.apply(log, activity, parameters=parameters)
 
 
-def filter_suffixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first"):
+def filter_suffixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first", activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, **kwargs):
     """
     Filters the log, keeping the suffixes from a given activity. E.g., for a log with traces:
 
@@ -728,6 +809,12 @@ def filter_suffixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
         Applies the filter strictly (cuts the occurrences of the selected activity).
     first_or_last
         Decides if the first or last occurrence of an activity should be selected as baseline for the filter.
+    activity_key
+        (if provided) attribute to be used for the activity
+    timestamp_key
+        (if provided) attribute to be used for the timestamp
+    case_id_key
+        (if provided) attribute to be used as case identifier
 
     Returns
     ------------------
@@ -737,7 +824,7 @@ def filter_suffixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, **kwargs)
     parameters["strict"] = strict
     parameters["first_or_last"] = first_or_last
 
