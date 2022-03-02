@@ -47,7 +47,3 @@ from pm4py.ml import split_train_test, get_prefixes_from_log
 from pm4py.ocel import ocel_get_object_types, ocel_get_attribute_names, ocel_flattening, ocel_object_type_activities, ocel_objects_ot_count
 
 time.clock = time.process_time
-
-# this package is available only for Python >= 3.5
-if sys.version_info >= (3, 5):
-    from pm4py import streaming
