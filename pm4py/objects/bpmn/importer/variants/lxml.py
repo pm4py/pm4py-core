@@ -179,23 +179,17 @@ def parse_element(bpmn_graph, counts, curr_el, parents, incoming_dict, outgoing_
         nodes_dict[id] = node
     elif tag.endswith("incoming"): # incoming flow of a node
         if node is not None:
-            incoming_dict[curr_el.text.strip()] = (node, process)
+            incoming_dict[curr_el.text.strip()] = (node, process, tag)
     elif tag.endswith("outgoing"): # outgoing flow of a node
         if node is not None:
-            outgoing_dict[curr_el.text.strip()] = (node, process)
+            outgoing_dict[curr_el.text.strip()] = (node, process, tag)
     elif tag.endswith("sequenceflow"): # normal sequence flow between two nodes
         seq_flow_id = curr_el.get("id")
         source_ref = curr_el.get("sourceRef")
         target_ref = curr_el.get("targetRef")
-        # fix 28/04/2021: do not assume anymore to read the nodes before the edges
-        incoming_dict[seq_flow_id] = (target_ref, process)
-        outgoing_dict[seq_flow_id] = (source_ref, process)
-    #elif tag.endswith("messageflow"): # TODO: implement different treatment of message flows
-    #    seq_flow_id = curr_el.get("id")
-    #    source_ref = curr_el.get("sourceRef")
-    #    target_ref = curr_el.get("targetRef")
-    #    incoming_dict[seq_flow_id] = target_ref
-    #    outgoing_dict[seq_flow_id] = source_ref
+        if source_ref is not None and target_ref is not None:
+            incoming_dict[seq_flow_id] = (target_ref, process, tag)
+            outgoing_dict[seq_flow_id] = (source_ref, process, tag)
     elif tag.endswith("waypoint"): # contains information of x, y values of an edge
         if flow is not None:
             x = float(curr_el.get("x"))
@@ -223,17 +217,18 @@ def parse_element(bpmn_graph, counts, curr_el, parents, incoming_dict, outgoing_
         # bpmn_graph.set_process_id(process)
         for seq_flow_id in incoming_dict:
             if incoming_dict[seq_flow_id][0] in nodes_dict:
-                incoming_dict[(seq_flow_id)] = (nodes_dict[incoming_dict[seq_flow_id][0]], incoming_dict[seq_flow_id][1])
+                incoming_dict[seq_flow_id] = (nodes_dict[incoming_dict[seq_flow_id][0]], incoming_dict[seq_flow_id][1], incoming_dict[seq_flow_id][2])
         for seq_flow_id in outgoing_dict:
             if outgoing_dict[seq_flow_id][0] in nodes_dict:
-                outgoing_dict[seq_flow_id] = (nodes_dict[outgoing_dict[seq_flow_id][0]], incoming_dict[seq_flow_id][1])
+                outgoing_dict[seq_flow_id] = (nodes_dict[outgoing_dict[seq_flow_id][0]], outgoing_dict[seq_flow_id][1], outgoing_dict[seq_flow_id][2])
         for flow_id in flow_info:
             if flow_id in outgoing_dict and flow_id in incoming_dict:
-                flow = BPMN.SequenceFlow(outgoing_dict[flow_id][0], incoming_dict[flow_id][0], id=flow_id, name="", process=outgoing_dict[flow_id][1])
-                bpmn_graph.add_flow(flow)
-                flow.del_waypoints()
-                for waypoint in flow_info[flow_id]:
-                    flow.add_waypoint(waypoint)
+                if isinstance(outgoing_dict[flow_id][0], BPMN.BPMNNode) and isinstance(incoming_dict[flow_id][0], BPMN.BPMNNode):
+                    flow = BPMN.SequenceFlow(outgoing_dict[flow_id][0], incoming_dict[flow_id][0], id=flow_id, name="", process=outgoing_dict[flow_id][1])
+                    bpmn_graph.add_flow(flow)
+                    flow.del_waypoints()
+                    for waypoint in flow_info[flow_id]:
+                        flow.add_waypoint(waypoint)
         for node_id in nodes_bounds:
             if node_id in nodes_dict:
                 bounds = nodes_bounds[node_id]

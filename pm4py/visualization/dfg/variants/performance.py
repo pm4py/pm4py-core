@@ -341,7 +341,7 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
             # the frequency of an activity in the log is at least the number of occurrences of
             # incoming arcs in the DFG.
             # if the frequency of the start activities nodes is also provided, use also that.
-            activities_count = {key: 0 for key in activities}
+            activities_count = Counter({key: 0 for key in activities})
             for el in dfg:
                 activities_count[el[1]] += dfg[el]
             if isinstance(start_activities, dict):
