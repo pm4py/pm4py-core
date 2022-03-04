@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-VERSION = '2.2.19.1'
+VERSION = '2.2.19.2'
 
 __name__ = 'pm4py'
 __version__ = VERSION

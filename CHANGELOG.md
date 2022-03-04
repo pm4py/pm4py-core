@@ -1,6 +1,28 @@
-# PM4Py Changelog
+## pm4py 2.2.19.2
 
-## PM4Py 2.2.19.1
+### Added
+
+### Changed
+* f5575aa8
+  * Cleaning unused parameters in PTAndLogGenerator
+* 65137038
+  * Changed WOFLAN linear problem solving to default interface
+
+### Deprecated
+
+### Fixed
+* 150184d3
+  * Small bug fixes BPMN importer
+* 7221385a
+  * Issue in DFG visualization when the provided start/end activities are not in the graph
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.19.1 (2022.02.11)
 
 ### Added
 * a193603e
@@ -22,7 +44,9 @@
 
 ### Other
 
-## PM4Py 2.2.19
+---
+
+## pm4py 2.2.19 (2022.01.25)
 
 ### Added
 * eea18398
@@ -78,8 +102,9 @@
 
 ### Other
 
+---
 
-## PM4Py 2.2.18
+## pm4py 2.2.18 (2022.01.06)
 
 ### Added
 * c15c8897
@@ -122,7 +147,7 @@
 
 
 
-## PM4Py 2.2.17.1 (2021.12.18)
+## pm4py 2.2.17.1 (2021.12.18)
 
 ### Fixed
 * 2eb36ce5
@@ -132,7 +157,7 @@
 
 ---
 
-## PM4Py 2.2.17 (2021.12.14)
+## pm4py 2.2.17 (2021.12.14)
 
 ### Added
 * 9b795123
@@ -195,7 +220,7 @@
 ---
 
 
-## PM4Py 2.2.16 (2021.11.16)
+## pm4py 2.2.16 (2021.11.16)
 
 ### Added
 
@@ -235,7 +260,7 @@
 
 ---
 
-## PM4Py 2.2.15 (2021.10.15)
+## pm4py 2.2.15 (2021.10.15)
 
 ### Fixed
 
@@ -292,7 +317,7 @@
 
 ---
 
-## PM4Py 2.2.14 (2021.10.01)
+## pm4py 2.2.14 (2021.10.01)
 
 ### Fixed
 
@@ -334,7 +359,7 @@
 
 ---
 
-## PM4Py 2.2.13.1 (2021.09.21)
+## pm4py 2.2.13.1 (2021.09.21)
 
 ### Fixed
 
@@ -371,7 +396,7 @@
 
 ---
 
-## PM4Py 2.2.13 (2021.09.03)
+## pm4py 2.2.13 (2021.09.03)
 
 ### Fixed
 
@@ -404,7 +429,7 @@
 
 ---
 
-## PM4Py 2.2.12 (2021.08.19)
+## pm4py 2.2.12 (2021.08.19)
 
 ### Fixed
 
@@ -444,7 +469,7 @@
 
 ---
 
-## PM4Py 2.2.11 (2021.08.06)
+## pm4py 2.2.11 (2021.08.06)
 
 ### Fixed
 
@@ -487,7 +512,7 @@
 
 ---
 
-## PM4Py 2.2.10.2 (2021.07.26)
+## pm4py 2.2.10.2 (2021.07.26)
 
 ### Fixed
 
@@ -756,12 +781,12 @@
 * c1c1ffc8
     * minor optimizations to state-equation based alignment computation
 * c95d45c9
-    * large (internal) refactoring of PM4Py object files and algorithms
+    * large (internal) refactoring of pm4py object files and algorithms
 
 ### Added
 
 * d14d3d27
-    * added resource profiles to PM4Py taken from Pika, Anastasiia, et al. "Mining resource profiles from event logs."
+    * added resource profiles to pm4py taken from Pika, Anastasiia, et al. "Mining resource profiles from event logs."
       ACM Transactions on Management Information Systems (TMIS) 8.1 (2017): 1-30.
 * ab56d899
     * organizational mining according to https://arxiv.org/abs/2011.12445; contains several organizational group-based
@@ -1173,7 +1198,7 @@
 ### Added
 
 * 97cc315c
-    * add (de)serialization functionality for PM4Py objects
+    * add (de)serialization functionality for pm4py objects
 
 ### Other
 
@@ -1318,7 +1343,7 @@
 
 * 81579e19e
     * relaxing the importing of some dependencies (pandas, pulp, graphviz, intervaltree)
-      to make a basic set of functionalities of PM4Py work even without those dependencies
+      to make a basic set of functionalities of pm4py work even without those dependencies
 * ed45eafc
     * fixing circular dependencies issues and added partial compatibility with Python 3.4
 
@@ -1580,7 +1605,7 @@ a6fde4ccfdf0465d8919d3c72d4400bce8d4ab0e
 * cba7a2e574aa15709d0a2dda35f8a27da9200f42
     * [beta release] simplified 'pythonic' method invocation (see ```examples/simplified_interface.py```)
 * ade44e6d78551c454b477f36cbe3248a5d4e6c8b
-    * added the 'correlation miner' to PM4Py (https://is.tm.tue.nl/staff/rdijkman/papers/Pourmirza2017.pdf)
+    * added the 'correlation miner' to pm4py (https://is.tm.tue.nl/staff/rdijkman/papers/Pourmirza2017.pdf)
 * 9564b54a7111916c7bc3d6f1e4c56f3829978efe
     * add visualization of conformance checking results on process tree
 * 988258a2c655d17201c5b1a7120d19ab5954dbe3
@@ -1910,7 +1935,7 @@ a6fde4ccfdf0465d8919d3c72d4400bce8d4ab0e
 * 471f414820c7b3f919aa97ccdc684d40cf132b3c
     * dependency problem with ORTools and PyArrow
 * 157fadffd3b953c105e67f4909547f097d77ea0a
-    * reduce inernal (cyclic) dependencies within PM4Py
+    * reduce inernal (cyclic) dependencies within pm4py
 * f38b6089b7eb6a4518a9c33e9775120874352657; af1328e2dad82f0a059e00942167a29cb918c85f;
   e8e1ab443f2dedb2cd348f35bc49eed412d66e1d
     * hash and equals function of process trees
