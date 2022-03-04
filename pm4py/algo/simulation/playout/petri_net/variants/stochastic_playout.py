@@ -3,13 +3,11 @@ from copy import copy
 from enum import Enum
 from typing import Optional, Dict, Any, Union
 
-from pm4py.algo.simulation.montecarlo.utils import replay
 from pm4py.objects import petri_net
 from pm4py.objects.log import obj as log_instance
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.petri_net.utils import final_marking as final_marking_discovery
-from pm4py.objects.stochastic_petri import utils as stochastic_utils
 from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants
@@ -60,6 +58,9 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
     semantics
         Semantics of the Petri net to be used (default: petri_net.semantics.ClassicSemantics())
     """
+    from pm4py.algo.simulation.montecarlo.utils import replay
+    from pm4py.objects.stochastic_petri import utils as stochastic_utils
+
     if final_marking is None:
         # infer the final marking from the net
         final_marking = final_marking_discovery.discover_final_marking(net)
