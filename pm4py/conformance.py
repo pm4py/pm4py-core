@@ -487,6 +487,6 @@ def check_is_fitting(*args, activity_key=xes_constants.DEFAULT_NAME_KEY):
             trace.append(Event({activity_key: act}))
 
     if isinstance(model, ProcessTree):
-        return __check_is_fit_process_tree(trace, model, activity_key=activity_key)
+        return __check_is_fit_process_tree(trace, model)
     elif isinstance(model, tuple) and isinstance(model[0], PetriNet):
         return __check_is_fit_petri_net(trace, model[0], model[1], model[2], activity_key=activity_key)
