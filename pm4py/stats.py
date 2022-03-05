@@ -171,7 +171,7 @@ def get_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
         return get.get_trace_attribute_values(log, attribute)
 
 
-def get_variants(log: Union[EventLog, pd.DataFrame]) -> Dict[str, List[Trace]]:
+def get_variants(log: Union[EventLog, pd.DataFrame]) -> Dict[Tuple[str], List[Trace]]:
     """
     Gets the variants from the log
 
@@ -185,21 +185,7 @@ def get_variants(log: Union[EventLog, pd.DataFrame]) -> Dict[str, List[Trace]]:
     variants
         Dictionary of variants along with their count
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
-    import pm4py
-    if pm4py.util.variants_util.VARIANT_SPECIFICATION == pm4py.util.variants_util.VariantsSpecifications.STRING:
-        import warnings
-        warnings.warn('pm4py.get_variants is deprecated. Please use pm4py.get_variants_as_tuples instead.')
-    if pm4py.util.variants_util.VARIANT_SPECIFICATION == pm4py.util.variants_util.VariantsSpecifications.LIST:
-        raise Exception('Please use pm4py.get_variants_as_tuples')
-    if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
-        from pm4py.statistics.variants.pandas import get
-        return get.get_variants_count(log, parameters=get_properties(log))
-    else:
-        from pm4py.statistics.variants.log import get
-        return get.get_variants(log, parameters=get_properties(log))
+    return get_variants_as_tuples(log)
 
 
 def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame]) -> Dict[Tuple[str], List[Trace]]:
@@ -219,9 +205,6 @@ def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame]) -> Dict[Tuple[str
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
-    import pm4py
-    # the behavior of PM4Py is changed to allow this to work
-    pm4py.util.variants_util.VARIANT_SPECIFICATION = pm4py.util.variants_util.VariantsSpecifications.LIST
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.variants.pandas import get

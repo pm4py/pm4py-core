@@ -19,10 +19,7 @@ def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Union[st
     log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
     root = Trie()
     variants = get_variants.get_variants(log, parameters=parameters)
-    if variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.STRING:
-        variants = list(map(lambda v: v.split(constants.DEFAULT_VARIANT_SEP), variants))
-    else:
-        variants = list(variants)
+    variants = list(variants)
 
     for variant in variants:
         trie = root
