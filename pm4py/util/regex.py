@@ -1,5 +1,9 @@
 import re
 
+import warnings
+
+warnings.warn("The regex package will be removed in a future release.")
+
 
 def get_new_char(label, shared_obj):
     """
