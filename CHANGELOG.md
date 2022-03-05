@@ -1,3 +1,20 @@
+## pm4py 2.2.20
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 1bcadff3acacfda2463cf9325f873004e15ed915
+  * Bug fix / efficiency change on the format_dataframe utility function.
+
+### Removed
+
+### Other
+
+
 ## pm4py 2.2.19.2
 
 ### Added
