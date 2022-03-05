@@ -12,7 +12,7 @@ from pm4py.objects.ocel.obj import OCEL
 import datetime
 
 
-def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataFrame], min_relative_stake: float, attribute_key : str = xes_constants.DEFAULT_NAME_KEY, level="cases", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Union[EventLog, pd.DataFrame]:
+def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataFrame], min_relative_stake: float, attribute_key : str = xes_constants.DEFAULT_NAME_KEY, level="cases", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Filters the event log keeping only the events having an attribute value which occurs:
     - in at least the specified (min_relative_stake) percentage of events, when level="events"
@@ -55,7 +55,7 @@ def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataF
         return attributes_filter.filter_log_relative_occurrence_event_attribute(log, min_relative_stake, parameters=parameters)
 
 
-def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: Union[Set[str], List[str]], retain: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> \
+def filter_start_activities(log: Union[EventLog, pd.DataFrame], activities: Union[Set[str], List[str]], retain: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> \
 Union[EventLog, pd.DataFrame]:
     """
     Filter cases having a start activity in the provided list
@@ -97,7 +97,7 @@ Union[EventLog, pd.DataFrame]:
                                              parameters=parameters)
 
 
-def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union[Set[str], List[str]], retain: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Union[
+def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union[Set[str], List[str]], retain: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[
     EventLog, pd.DataFrame]:
     """
     Filter cases having an end activity in the provided list
@@ -140,7 +140,7 @@ def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union
 
 
 def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values:  Union[Set[str], List[str]],
-                                  level: str = "case", retain: bool = True, case_id_key: Optional[str] = None) -> Union[EventLog, pd.DataFrame]:
+                                  level: str = "case", retain: bool = True, case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Filter a log object on the values of some event attribute
 
@@ -192,7 +192,7 @@ def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
 
 
 def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_key: str, values:  Union[Set[str], List[str]],
-                                  retain: bool = True, case_id_key: Optional[str] = None) -> Union[EventLog, pd.DataFrame]:
+                                  retain: bool = True, case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Filter a log on the values of a trace attribute
 
@@ -231,7 +231,7 @@ def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
         return attributes_filter.apply_trace_attribute(log, values, parameters=parameters)
 
 
-def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str], List[str]], retain: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Union[
+def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str], List[str]], retain: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[
     EventLog, pd.DataFrame]:
     """
     Filter a log on a specified set of variants
@@ -276,7 +276,7 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str
                                      parameters=parameters)
 
 
-def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relations: List[str], retain: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> \
+def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relations: List[str], retain: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> \
         Union[EventLog, pd.DataFrame]:
     """
     Retain traces that contain any of the specified 'directly follows' relations.
@@ -318,7 +318,7 @@ def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relatio
         return paths_filter.apply(log, relations, parameters=parameters)
 
 
-def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relations: List[str], retain: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> \
+def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relations: List[str], retain: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> \
         Union[EventLog, pd.DataFrame]:
     """
     Retain traces that contain any of the specified 'eventually follows' relations.
@@ -390,7 +390,7 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
         return filtered_log
 
 
-def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mode="events", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Union[
+def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mode="events", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[
     EventLog, pd.DataFrame]:
     """
     Filter a log on a time interval
@@ -446,7 +446,7 @@ def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mo
             return log
 
 
-def filter_between(log: Union[EventLog, pd.DataFrame], act1: str, act2: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Union[EventLog, pd.DataFrame]:
+def filter_between(log: Union[EventLog, pd.DataFrame], act1: str, act2: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Finds all the sub-cases leading from an event with activity "act1" to an event with activity "act2" in the log,
     and returns a log containing only them.
@@ -501,7 +501,7 @@ def filter_between(log: Union[EventLog, pd.DataFrame], act1: str, act2: str, act
         return between_filter.apply(log, act1, act2, parameters=parameters)
 
 
-def filter_case_size(log: Union[EventLog, pd.DataFrame], min_size: int, max_size: int, case_id_key: Optional[str] = None) -> Union[EventLog, pd.DataFrame]:
+def filter_case_size(log: Union[EventLog, pd.DataFrame], min_size: int, max_size: int, case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Filters the event log, keeping the cases having a length (number of events) included between min_size
     and max_size
@@ -537,7 +537,7 @@ def filter_case_size(log: Union[EventLog, pd.DataFrame], min_size: int, max_size
         return case_filter.filter_on_case_size(log, min_size, max_size)
 
 
-def filter_case_performance(log: Union[EventLog, pd.DataFrame], min_performance: float, max_performance: float, timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Union[EventLog, pd.DataFrame]:
+def filter_case_performance(log: Union[EventLog, pd.DataFrame], min_performance: float, max_performance: float, timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Filters the event log, keeping the cases having a duration (the timestamp of the last event minus the timestamp
     of the first event) included between min_performance and max_performance
@@ -573,7 +573,7 @@ def filter_case_performance(log: Union[EventLog, pd.DataFrame], min_performance:
         return case_filter.filter_case_performance(log, min_performance, max_performance, parameters=parameters)
 
 
-def filter_activities_rework(log: Union[EventLog, pd.DataFrame], activity: str, min_occurrences: int = 2, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Union[EventLog, pd.DataFrame]:
+def filter_activities_rework(log: Union[EventLog, pd.DataFrame], activity: str, min_occurrences: int = 2, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Filters the event log, keeping the cases where the specified activity occurs at least min_occurrences times.
 
@@ -611,7 +611,7 @@ def filter_activities_rework(log: Union[EventLog, pd.DataFrame], activity: str, 
         return rework_filter.apply(log, activity, parameters=parameters)
 
 
-def filter_paths_performance(log: Union[EventLog, pd.DataFrame], path: Tuple[str, str], min_performance: float, max_performance: float, keep=True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Union[EventLog, pd.DataFrame]:
+def filter_paths_performance(log: Union[EventLog, pd.DataFrame], path: Tuple[str, str], min_performance: float, max_performance: float, keep=True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Filters the event log, either:
     - (keep=True) keeping the cases having the specified path (tuple of 2 activities) with a duration included between min_performance and max_performance
@@ -658,7 +658,7 @@ def filter_paths_performance(log: Union[EventLog, pd.DataFrame], path: Tuple[str
         return paths_filter.apply_performance(log, path, parameters=parameters)
 
 
-def filter_variants_top_k(log: Union[EventLog, pd.DataFrame], k: int, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Union[EventLog, pd.DataFrame]:
+def filter_variants_top_k(log: Union[EventLog, pd.DataFrame], k: int, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Keeps the top-k variants of the log
 
@@ -693,7 +693,7 @@ def filter_variants_top_k(log: Union[EventLog, pd.DataFrame], k: int, activity_k
         return variants_filter.filter_variants_top_k(log, k, parameters=parameters)
 
 
-def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], min_coverage_percentage: float, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Union[EventLog, pd.DataFrame]:
+def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], min_coverage_percentage: float, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Filters the variants of the log by a coverage percentage
     (e.g., if min_coverage_percentage=0.4, and we have a log with 1000 cases,
@@ -733,7 +733,7 @@ def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], m
         return variants_filter.filter_variants_by_coverage_percentage(log, min_coverage_percentage, parameters=parameters)
 
 
-def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None):
+def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
     """
     Filters the log, keeping the prefixes to a given activity. E.g., for a log with traces:
 
@@ -785,7 +785,7 @@ def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
         return prefix_filter.apply(log, activity, parameters=parameters)
 
 
-def filter_suffixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None):
+def filter_suffixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
     """
     Filters the log, keeping the suffixes from a given activity. E.g., for a log with traces:
 

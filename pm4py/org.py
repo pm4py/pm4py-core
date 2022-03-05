@@ -9,7 +9,7 @@ from pm4py.util import constants, xes_constants
 from typing import Dict, Tuple, Any
 
 
-def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0, resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None):
+def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0, resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
     """
     Calculates the handover of work network of the event log.
     The handover of work network is essentially the DFG of the event log, however, using the
@@ -47,7 +47,7 @@ def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0
         return sna.apply(log, variant=sna.Variants.HANDOVER_LOG, parameters=parameters)
 
 
-def discover_working_together_network(log: Union[EventLog, pd.DataFrame], resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None):
+def discover_working_together_network(log: Union[EventLog, pd.DataFrame], resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
     """
     Calculates the working together network of the process.
     Two nodes resources are connected in the graph if the resources collaborate on an instance of the process.
@@ -81,7 +81,7 @@ def discover_working_together_network(log: Union[EventLog, pd.DataFrame], resour
         return sna.apply(log, variant=sna.Variants.WORKING_TOGETHER_LOG, parameters=properties)
 
 
-def discover_activity_based_resource_similarity(log: Union[EventLog, pd.DataFrame], resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None):
+def discover_activity_based_resource_similarity(log: Union[EventLog, pd.DataFrame], resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
     """
     Calculates similarity between the resources in the event log, based on their activity profiles.
 
@@ -114,7 +114,7 @@ def discover_activity_based_resource_similarity(log: Union[EventLog, pd.DataFram
         return sna.apply(log, variant=sna.Variants.JOINTACTIVITIES_LOG, parameters=properties)
 
 
-def discover_subcontracting_network(log: Union[EventLog, pd.DataFrame], n=2, resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None):
+def discover_subcontracting_network(log: Union[EventLog, pd.DataFrame], n=2, resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
     """
     Calculates the subcontracting network of the process.
 
@@ -143,7 +143,7 @@ def discover_subcontracting_network(log: Union[EventLog, pd.DataFrame], n=2, res
         return sna.apply(log, variant=sna.Variants.SUBCONTRACTING_LOG, parameters=parameters)
 
 
-def discover_organizational_roles(log: Union[EventLog, pd.DataFrame], resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None):
+def discover_organizational_roles(log: Union[EventLog, pd.DataFrame], resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
     """
     Mines the organizational roles
 
