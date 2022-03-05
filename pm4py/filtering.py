@@ -231,8 +231,6 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str
 
     from pm4py.util import variants_util
     parameters = get_properties(log)
-    if variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.STRING:
-        variants = [constants.DEFAULT_VARIANT_SEP.join(v) for v in variants]
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.algo.filtering.pandas.variants import variants_filter
