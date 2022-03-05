@@ -255,7 +255,7 @@ def deserialize(ser_obj: Tuple[str, bytes]) -> Any:
         return dfg_importer.deserialize(ser_obj[1])
 
 
-def get_properties(log, activity_key: Optional[str] = None, timestamp_key: Optional[str] = None, case_id_key: Optional[str] = None, resource_key: Optional[str] = None, group_key: Optional[str] = None, **kwargs):
+def get_properties(log, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None, resource_key: str = "org:resource", group_key: Optional[str] = None, **kwargs):
     """
     Gets the properties from a log object
 
@@ -264,11 +264,11 @@ def get_properties(log, activity_key: Optional[str] = None, timestamp_key: Optio
     log
         Log object
     activity_key
-        (if provided) attribute to be used for the activity
+        attribute to be used for the activity
     timestamp_key
-        (if provided) attribute to be used for the timestamp
+        attribute to be used for the timestamp
     case_id_key
-        (if provided) attribute to be used as case identifier
+        attribute to be used as case identifier
     resource_key
         (if provided) attribute to be used as resource
     group_key

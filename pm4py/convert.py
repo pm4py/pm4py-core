@@ -10,7 +10,7 @@ from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 
 
-def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: Optional[str] = None, **kwargs) -> EventLog:
+def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: Optional[str] = None) -> EventLog:
     """
     Converts a log object to an event log
 
@@ -19,7 +19,7 @@ def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: Opt
     obj
         Log object
     case_id_key
-        (if provided) attribute to be used as case identifier
+        attribute to be used as case identifier
 
     Returns
     -------------
@@ -29,14 +29,14 @@ def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: Opt
     if type(obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     from pm4py.objects.conversion.log import converter
-    log = converter.apply(obj, variant=converter.Variants.TO_EVENT_LOG, parameters=get_properties(obj, case_id_key=case_id_key, **kwargs))
+    log = converter.apply(obj, variant=converter.Variants.TO_EVENT_LOG, parameters=get_properties(obj, case_id_key=case_id_key))
 
     __event_log_deprecation_warning(log)
 
     return log
 
 
-def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: Optional[str] = None, **kwargs) -> EventStream:
+def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: Optional[str] = None) -> EventStream:
     """
     Converts a log object to an event stream
 
@@ -45,7 +45,7 @@ def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: Opt
     obj
         Log object
     case_id_key
-        (if provided) attribute to be used as case identifier
+        attribute to be used as case identifier
 
     Returns
     --------------
@@ -55,7 +55,7 @@ def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: Opt
     if type(obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     from pm4py.objects.conversion.log import converter
-    stream = converter.apply(obj, variant=converter.Variants.TO_EVENT_STREAM, parameters=get_properties(obj, case_id_key=case_id_key, **kwargs))
+    stream = converter.apply(obj, variant=converter.Variants.TO_EVENT_STREAM, parameters=get_properties(obj, case_id_key=case_id_key))
 
     __event_log_deprecation_warning(stream)
 
