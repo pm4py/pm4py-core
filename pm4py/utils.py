@@ -8,6 +8,7 @@ from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants, xes_constants, pandas_utils
 
+
 INDEX_COLUMN = "@@index"
 
 
@@ -71,11 +72,11 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     # make sure the activity column is of string type
     df[xes_constants.DEFAULT_NAME_KEY] = df[xes_constants.DEFAULT_NAME_KEY].astype("string")
     # set an index column
-    df = pandas_utils.insert_index(df, INDEX_COLUMN)
+    df = pandas_utils.insert_index(df, INDEX_COLUMN, copy_dataframe=False)
     # sorts the dataframe
     df = df.sort_values([constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_TIMESTAMP_KEY, INDEX_COLUMN])
     # re-set the index column
-    df = pandas_utils.insert_index(df, INDEX_COLUMN)
+    df = pandas_utils.insert_index(df, INDEX_COLUMN, copy_dataframe=False)
     # sets the properties
     if not hasattr(df, 'attrs'):
         # legacy (Python 3.6) support
