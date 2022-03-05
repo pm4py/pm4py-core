@@ -13,7 +13,7 @@ from copy import copy
 from pm4py.objects.log.pandas_log_wrapper import PandasLogWrapper
 
 
-def get_start_activities(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Dict[str, int]:
+def get_start_activities(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, int]:
     """
     Returns the start activities from a log object
 
@@ -47,7 +47,7 @@ def get_start_activities(log: Union[EventLog, pd.DataFrame], activity_key: str =
         return get.get_start_activities(log, parameters=properties)
 
 
-def get_end_activities(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Dict[str, int]:
+def get_end_activities(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, int]:
     """
     Returns the end activities of a log
 
@@ -132,7 +132,7 @@ def get_trace_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
         return list(get.get_all_trace_attributes_from_log(log))
 
 
-def get_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str, count_once_per_case=False, case_id_key: Optional[str] = None) -> Dict[str, int]:
+def get_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str, count_once_per_case=False, case_id_key: str = "case:concept:name") -> Dict[str, int]:
     """
     Returns the values for a specified attribute
 
@@ -167,7 +167,7 @@ def get_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
         return get.get_attribute_values(log, attribute, parameters=parameters)
 
 
-def get_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str, case_id_key: Optional[str] = None) -> Dict[str, int]:
+def get_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: str, case_id_key: str = "case:concept:name") -> Dict[str, int]:
     """
     Returns the values for a specified trace attribute
 
@@ -199,7 +199,7 @@ def get_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
         return get.get_trace_attribute_values(log, attribute, parameters=parameters)
 
 
-def get_variants(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Dict[str, List[Trace]]:
+def get_variants(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, List[Trace]]:
     """
     Gets the variants from the log
 
@@ -240,7 +240,7 @@ def get_variants(log: Union[EventLog, pd.DataFrame], activity_key: str = "concep
         return get.get_variants(log, parameters=properties)
 
 
-def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Dict[Tuple[str], List[Trace]]:
+def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[Tuple[str], List[Trace]]:
     """
     Gets the variants from the log
     (where the keys are tuples and not strings)
@@ -278,7 +278,7 @@ def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame], activity_key: str
         return get.get_variants(log, parameters=properties)
 
 
-def get_minimum_self_distances(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Dict[str, int]:
+def get_minimum_self_distances(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, int]:
     '''
     This algorithm computes the minimum self-distance for each activity observed in an event log.
     The self distance of a in <a> is infinity, of a in <a,a> is 0, in <a,b,a> is 1, etc.
@@ -308,7 +308,7 @@ def get_minimum_self_distances(log: Union[EventLog, pd.DataFrame], activity_key:
     return msd_algo.apply(log, parameters=properties)
 
 
-def get_minimum_self_distance_witnesses(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Dict[str, Set[str]]:
+def get_minimum_self_distance_witnesses(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, Set[str]]:
     '''
         This function derives the minimum self distance witnesses.
         The self distance of a in <a> is infinity, of a in <a,a> is 0, in <a,b,a> is 1, etc.
@@ -341,7 +341,7 @@ def get_minimum_self_distance_witnesses(log: Union[EventLog, pd.DataFrame], acti
     return msdw_algo.derive_msd_witnesses(log, msd_algo.apply(log, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)))
 
 
-def get_case_arrival_average(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> float:
+def get_case_arrival_average(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> float:
     """
     Gets the average difference between the start times of two consecutive cases
 
@@ -375,7 +375,7 @@ def get_case_arrival_average(log: Union[EventLog, pd.DataFrame], activity_key: s
         return case_arrival.get_case_arrival_avg(log, parameters=properties)
 
 
-def get_rework_cases_per_activity(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Dict[str, int]:
+def get_rework_cases_per_activity(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, int]:
     """
     Find out for which activities of the log the rework (more than one occurrence in the trace for the activity)
     occurs.
@@ -413,7 +413,7 @@ def get_rework_cases_per_activity(log: Union[EventLog, pd.DataFrame], activity_k
         return rework_get.apply(log, parameters=properties)
 
 
-def get_case_overlap(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> List[int]:
+def get_case_overlap(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[int]:
     """
     Associates to each case in the log the number of cases concurrently open
 
@@ -448,7 +448,7 @@ def get_case_overlap(log: Union[EventLog, pd.DataFrame], activity_key: str = "co
         return cases_overlap.apply(log, parameters=properties)
 
 
-def get_cycle_time(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> float:
+def get_cycle_time(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> float:
     """
     Calculates the cycle time of the event log.
 
@@ -493,7 +493,7 @@ def get_cycle_time(log: Union[EventLog, pd.DataFrame], activity_key: str = "conc
         return cycle_time.apply(log, parameters=properties)
 
 
-def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> List[float]:
+def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[float]:
     """
     Gets the durations of the cases in the event log
 
@@ -536,7 +536,7 @@ def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: b
         return case_statistics.get_all_case_durations(log, parameters=properties)
 
 
-def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> float:
+def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> float:
     """
     Gets the duration of a specific case
 
@@ -582,7 +582,7 @@ def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business
         return cd[case_id]["caseDuration"]
 
 
-def get_activity_position_summary(log: Union[EventLog, pd.DataFrame], activity: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Dict[int, int]:
+def get_activity_position_summary(log: Union[EventLog, pd.DataFrame], activity: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[int, int]:
     """
     Given an event log, returns a dictionary which summarize the positions
     of the activities in the different cases of the event log.

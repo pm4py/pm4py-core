@@ -10,7 +10,7 @@ from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 
 
-def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: Optional[str] = None) -> EventLog:
+def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: str = "case:concept:name") -> EventLog:
     """
     Converts a log object to an event log
 
@@ -36,7 +36,7 @@ def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: Opt
     return log
 
 
-def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: Optional[str] = None) -> EventStream:
+def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: str = "case:concept:name") -> EventStream:
     """
     Converts a log object to an event stream
 

@@ -16,7 +16,7 @@ from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants
 
 
-def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Tuple[dict, dict, dict]:
+def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     """
     Discovers a DFG from a log
 
@@ -69,13 +69,13 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concep
     return dfg, start_activities, end_activities
 
 
-def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Tuple[dict, dict, dict]:
+def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     return discover_dfg(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
 
-def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7], workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Tuple[dict, dict, dict]:
+def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7], workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     """
     Discovers a performance directly-follows graph from an event log
 
@@ -138,7 +138,7 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours:
     return dfg, start_activities, end_activities
 
 
-def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Tuple[PetriNet, Marking, Marking]:
+def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the Alpha Miner
 
@@ -169,7 +169,7 @@ def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame], activity_key: s
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
 
 
-def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Tuple[PetriNet, Marking, Marking]:
+def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the Alpha+ algorithm
 
@@ -200,7 +200,7 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_k
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
 
 
-def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Tuple[
+def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[
     PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the IMDFc algorithm
@@ -237,7 +237,7 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_thres
 
 def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5,
                                   and_threshold: float = 0.65,
-                                  loop_two_threshold: float = 0.5, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Tuple[PetriNet, Marking, Marking]:
+                                  loop_two_threshold: float = 0.5, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[PetriNet, Marking, Marking]:
     """
     Discover a Petri net using the Heuristics Miner
 
@@ -280,7 +280,7 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
     return heuristics_miner.apply(log, variant=heuristics_miner.Variants.CLASSIC, parameters=parameters)
 
 
-def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> ProcessTree:
+def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> ProcessTree:
     """
     Discovers a process tree using the IM algorithm
 
@@ -313,7 +313,7 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
 
 def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5,
                             and_threshold: float = 0.65,
-                            loop_two_threshold: float = 0.5, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> HeuristicsNet:
+                            loop_two_threshold: float = 0.5, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> HeuristicsNet:
     """
     Discovers an heuristics net
 
@@ -351,7 +351,7 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
     return heuristics_miner.apply_heu(log, variant=heuristics_miner.Variants.CLASSIC, parameters=parameters)
 
 
-def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Dict[str, int]:
+def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, int]:
     '''
         This algorithm computes the minimum self-distance for each activity observed in an event log.
         The self distance of a in <a> is infinity, of a in <a,a> is 0, in <a,b,a> is 1, etc.
@@ -394,7 +394,7 @@ def discover_footprints(*args: Union[EventLog, Tuple[PetriNet, Marking, Marking]
     return fp_discovery.apply(*args)
 
 
-def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> Dict[Tuple[str, str], int]:
+def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[Tuple[str, str], int]:
     """
     Gets the eventually follows graph from a log object
 
@@ -428,7 +428,7 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame], activi
         return get.apply(log, parameters=properties)
 
 
-def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> BPMN:
+def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> BPMN:
     """
         Discovers a BPMN using the Inductive Miner algorithm
 
