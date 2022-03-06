@@ -43,7 +43,7 @@ def from_traditional_log(log: EventLog, parameters: Optional[Dict[Any, Any]] = N
     if parameters is None:
         parameters = {}
 
-    log = log_converter.apply(log, parameters=parameters)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     target_object_type = exec_utils.get_param_value(Parameters.TARGET_OBJECT_TYPE, parameters, "OTYPE")
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)

@@ -21,7 +21,7 @@ class CsvImportExportTest(unittest.TestCase):
         event_log = sorting.sort_timestamp(event_log)
         event_log = sampling.sample(event_log)
         event_log = index_attribute.insert_event_index_as_event_attribute(event_log)
-        log = log_conversion.apply(event_log)
+        log = log_conversion.apply(event_log, variant=log_conversion.Variants.TO_EVENT_LOG)
         log = sorting.sort_timestamp(log)
         log = sampling.sample(log)
         log = index_attribute.insert_trace_index_as_event_attribute(log)
@@ -41,7 +41,7 @@ class CsvImportExportTest(unittest.TestCase):
         event_log = sorting.sort_timestamp(event_log)
         event_log = sampling.sample(event_log)
         event_log = index_attribute.insert_event_index_as_event_attribute(event_log)
-        log = log_conversion.apply(event_log)
+        log = log_conversion.apply(event_log, variant=log_conversion.Variants.TO_EVENT_LOG)
         log = sorting.sort_timestamp(log)
         log = sampling.sample(log)
         log = index_attribute.insert_trace_index_as_event_attribute(log)
@@ -52,7 +52,7 @@ class CsvImportExportTest(unittest.TestCase):
         df = dataframe_utils.convert_timestamp_columns_in_df(df)
         event_log_imported_after_export = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
         log_imported_after_export = log_conversion.apply(
-            event_log_imported_after_export)
+            event_log_imported_after_export, variant=log_conversion.Variants.TO_EVENT_LOG)
         self.assertEqual(len(log), len(log_imported_after_export))
         os.remove(os.path.join(OUTPUT_DATA_DIR, "running-example-exported.csv"))
 

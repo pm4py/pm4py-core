@@ -7,6 +7,7 @@ from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util import constants
 from pm4py.util import exec_utils, variants_util
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -37,6 +38,7 @@ def get_language(log: EventLog, parameters: Optional[Dict[Union[str, Parameters]
         Dictionary containing the stochastic language of the log
         (variant associated to a number between 0 and 1; the sum is 1)
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
     vars = get_variants(log, parameters=parameters)
     vars = {variants_util.get_activities_from_variant(x): len(y) for x, y in vars.items()}
 
@@ -65,6 +67,7 @@ def get_variants(log: EventLog, parameters: Optional[Dict[Union[str, Parameters]
     variant
         Dictionary with variant as the key and the list of traces as the value
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     variants_trace_idx = get_variants_from_log_trace_idx(log, parameters=parameters)
 
@@ -95,6 +98,8 @@ def get_variants_along_with_case_durations(log: EventLog,
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
 
@@ -135,6 +140,8 @@ def get_variants_from_log_trace_idx(log, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     variants = {}
     for trace_idx, trace in enumerate(log):
@@ -184,6 +191,8 @@ def convert_variants_trace_idx_to_trace_obj(log, variants_trace_idx):
     variants
         Variants associated to a list of belonging traces
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     variants = {}
 
     for key in variants_trace_idx:

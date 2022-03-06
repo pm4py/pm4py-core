@@ -1,17 +1,18 @@
 from enum import Enum
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Union
 
 from pm4py.algo.conformance.alignments.edit_distance.variants import edit_distance
 from pm4py.objects.log.obj import EventLog
 from pm4py.util import exec_utils
 from pm4py.util import typing
+import pandas as pd
 
 
 class Variants(Enum):
     EDIT_DISTANCE = edit_distance
 
 
-def apply(log1: EventLog, log2: EventLog, variant=Variants.EDIT_DISTANCE,
+def apply(log1: Union[EventLog, pd.DataFrame], log2: Union[EventLog, pd.DataFrame], variant=Variants.EDIT_DISTANCE,
           parameters: Optional[Dict[Any, Any]] = None) -> typing.ListAlignments:
     """
     Aligns each trace of the first log against the second log

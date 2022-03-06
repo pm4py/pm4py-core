@@ -4,6 +4,8 @@ from enum import Enum
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
+import pandas as pd
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Variants(Enum):
@@ -15,7 +17,7 @@ DEFAULT_VARIANT = Variants.PETRI_SEMAPH_FIFO
 VERSIONS = {Variants.PETRI_SEMAPH_FIFO}
 
 
-def apply(log: EventLog, net: PetriNet, im: Marking, fm: Marking, variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> Tuple[EventLog, Dict[str, Any]]:
+def apply(log: Union[EventLog, pd.DataFrame], net: PetriNet, im: Marking, fm: Marking, variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> Tuple[EventLog, Dict[str, Any]]:
     """
     Performs a Monte Carlo simulation of an accepting Petri net without duplicate transitions and where the preset is always
     distinct from the postset
@@ -64,4 +66,5 @@ def apply(log: EventLog, net: PetriNet, im: Marking, fm: Marking, variant=DEFAUL
             Outputs.OUTPUT_CASE_ARRIVAL_RATIO => Case arrival ratio that was specified in the simulation
             Outputs.OUTPUT_TOTAL_CASES_TIME => Total time occupied by cases of the simulated log
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
     return exec_utils.get_variant(variant).apply(log, net, im, fm, parameters=parameters)

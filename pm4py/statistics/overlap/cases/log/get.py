@@ -33,7 +33,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
     if parameters is None:
         parameters = {}
 
-    log = converter.apply(log, parameters=parameters)
+    log = converter.apply(log, variant=converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
