@@ -35,13 +35,13 @@ def apply(log: Union[EventLog, EventStream], activity: str, parameters: Optional
     if parameters is None:
         parameters = {}
 
-    log = log_converter.apply(log, parameters=parameters)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     first_or_last = exec_utils.get_param_value(Parameters.FIRST_OR_LAST, parameters, "first")
     strict = exec_utils.get_param_value(Parameters.STRICT, parameters, True)
 
-    filtered_log = EventLog(attributes=log.attributes, extensions=log.extensions, globals=log._omni,
+    filtered_log = EventLog(attributes=log.attributes, extensions=log.extensions, globals=log.omni_present,
                        classifiers=log.classifiers, properties=log.properties)
 
     for trace in log:

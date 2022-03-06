@@ -30,7 +30,7 @@ def get_tangible_reachability_from_log_net_im_fm(log, net, im, fm, parameters=No
         parameters = {}
 
     from pm4py.algo.simulation.montecarlo.utils import replay
-    stochastic_info = replay.get_map_from_log_and_net(log_converter.apply(log, parameters=parameters), net, im, fm,
+    stochastic_info = replay.get_map_from_log_and_net(log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters), net, im, fm,
                                                       parameters=parameters)
 
     reachability_graph, tangible_reachability_graph = get_tangible_reachability_from_net_im_sinfo(net, im,

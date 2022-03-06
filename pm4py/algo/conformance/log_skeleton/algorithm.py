@@ -16,7 +16,7 @@ CLASSIC = Variants.CLASSIC
 DEFAULT_VARIANT = Variants.CLASSIC
 
 
-def apply(obj: Union[EventLog, Trace], model: Dict[str, Any], variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> List[Set[Any]]:
+def apply(obj: Union[EventLog, Trace, pd.DataFrame], model: Dict[str, Any], variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> List[Set[Any]]:
     """
     Apply log-skeleton based conformance checking given an event log/trace
     and a log-skeleton model
@@ -46,10 +46,10 @@ def apply(obj: Union[EventLog, Trace], model: Dict[str, Any], variant=DEFAULT_VA
         parameters = {}
 
     if type(obj) is Trace:
-        return exec_utils.get_variant(variant).apply_trace(log_conversion.apply(obj, parameters=parameters), model,
+        return exec_utils.get_variant(variant).apply_trace(log_conversion.apply(obj, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters), model,
                                                            parameters=parameters)
     else:
-        return exec_utils.get_variant(variant).apply_log(log_conversion.apply(obj, parameters=parameters), model,
+        return exec_utils.get_variant(variant).apply_log(log_conversion.apply(obj, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters), model,
                                                          parameters=parameters)
 
 

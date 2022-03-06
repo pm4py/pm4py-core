@@ -1,5 +1,7 @@
 from pm4py.objects.log.obj import EventLog, Trace, EventStream
 from pm4py.util import xes_constants as xes
+from pm4py.objects.conversion.log import converter as log_converter
+from pm4py.objects.log.pandas_log_wrapper import PandasLogWrapper
 
 
 def sort_timestamp_trace(trace, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=False):
@@ -68,6 +70,8 @@ def sort_timestamp_log(event_log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, rever
     log
         Sorted log
     """
+    event_log = log_converter.apply(event_log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     new_log = EventLog(attributes=event_log.attributes, extensions=event_log.extensions,
                        omni_present=event_log.omni_present, classifiers=event_log.classifiers,
                        properties=event_log.properties)
@@ -97,7 +101,7 @@ def sort_timestamp(log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=Fa
     log
         Sorted Trace/Event log
     """
-    if type(log) is EventLog:
+    if type(log) is EventLog or type(log) is PandasLogWrapper:
         return sort_timestamp_log(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
     return sort_timestamp_stream(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
 
@@ -120,6 +124,8 @@ def sort_lambda_log(event_log, sort_function, reverse=False):
     new_log
         Sorted log
     """
+    event_log = log_converter.apply(event_log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     traces = sorted(event_log._list, key=sort_function, reverse=reverse)
     new_log = EventLog(traces, attributes=event_log.attributes, extensions=event_log.extensions,
                        omni_present=event_log.omni_present, classifiers=event_log.classifiers,
@@ -172,6 +178,6 @@ def sort_lambda(log, sort_function, reverse=False):
     log
         Sorted log
     """
-    if type(log) is EventLog:
+    if type(log) is EventLog or type(log) is PandasLogWrapper:
         return sort_lambda_log(log, sort_function, reverse=reverse)
     return sort_lambda_stream(log, sort_function, reverse=reverse)
