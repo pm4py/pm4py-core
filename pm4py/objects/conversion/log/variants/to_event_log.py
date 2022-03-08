@@ -21,6 +21,9 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
 
+    from pm4py.utils import __event_log_deprecation_warning
+    __event_log_deprecation_warning(log)
+
     if type(log) is log_instance.Trace:
         return log
 
