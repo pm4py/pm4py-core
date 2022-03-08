@@ -4,6 +4,7 @@ from typing import Callable, Any, Union
 from pm4py.objects.log import obj as log_inst
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.utils import __event_log_deprecation_warning
 
 
 def filter_log(f: Callable[[Any], bool], log: log_inst.EventLog) -> Union[log_inst.EventLog, log_inst.EventStream]:
@@ -23,7 +24,7 @@ def filter_log(f: Callable[[Any], bool], log: log_inst.EventLog) -> Union[log_in
         filtered event log if object provided is correct; original log if not correct
 
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if isinstance(log, log_inst.EventLog):
         return log_inst.EventLog(list(filter(f, log)), attributes=log.attributes, classifiers=log.classifiers,
@@ -52,6 +53,8 @@ def filter_trace(f: Callable[[Any], bool], trace: log_inst.Trace) -> log_inst.Tr
     trace
         filtered trace if object provided is correct; original log if not correct
     """
+    __event_log_deprecation_warning(trace)
+
     if isinstance(trace, log_inst.Trace):
         return log_inst.Trace(list(filter(f, trace)), attributes=trace.attributes)
     else:
@@ -75,7 +78,7 @@ def sort_log(log: log_inst.EventLog, key, reverse: bool = False) -> Union[log_in
     -------
         sorted event log if object provided is correct; original log if not correct
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if isinstance(log, log_inst.EventLog):
         return log_inst.EventLog(sorted(log, key=key, reverse=reverse), attributes=log.attributes,
@@ -105,6 +108,8 @@ def sort_trace(trace: log_inst.Trace, key, reverse: bool = False) -> log_inst.Tr
     -------
         sorted trace if object provided is correct; original log if not correct
     """
+    __event_log_deprecation_warning(trace)
+
     if isinstance(trace, log_inst.Trace):
         return log_inst.Trace(sorted(trace, key=key, reverse=reverse))
     else:

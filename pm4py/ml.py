@@ -2,6 +2,7 @@ from typing import Union, Tuple
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.util import constants
+from pm4py.utils import __event_log_deprecation_warning
 import random
 
 
@@ -25,6 +26,7 @@ def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float
         Test event log
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if type(log) is pd.DataFrame:
         cases = set(log[constants.CASE_CONCEPT_NAME].unique())
@@ -63,6 +65,7 @@ def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int) -> Un
         - if a trace has greater length, it is cut
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if type(log) is pd.DataFrame:
         from pm4py.util import pandas_utils
