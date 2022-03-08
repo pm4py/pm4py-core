@@ -8,6 +8,9 @@ def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
 
+    from pm4py.utils import __event_log_deprecation_warning
+    __event_log_deprecation_warning(log)
+    
     if type(log) is pd.DataFrame:
         return pandas_log_wrapper.PandasLogWrapper(log, parameters=parameters)
     elif type(log) in [pandas_log_wrapper.PandasLogWrapper, Trace]:

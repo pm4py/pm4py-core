@@ -1,4 +1,5 @@
 import datetime
+import warnings
 from typing import Optional, Tuple, Any, Collection, Union, List
 
 import pandas as pd
@@ -122,6 +123,8 @@ def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = c
         Rebased log object
     """
     import pm4py
+
+    __event_log_deprecation_warning(log_obj)
 
     if isinstance(log_obj, pd.DataFrame):
         return format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
@@ -252,7 +255,7 @@ def deserialize(ser_obj: Tuple[str, bytes]) -> Any:
         return dfg_importer.deserialize(ser_obj[1])
 
 
-def get_properties(log):
+def get_properties(log, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource", group_key: Optional[str] = None, **kwargs):
     """
     Gets the properties from a log object
 
@@ -260,17 +263,48 @@ def get_properties(log):
     -----------------
     log
         Log object
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
+    resource_key
+        (if provided) attribute to be used as resource
+    group_key
+        (if provided) attribute to be used as group identifier
 
     Returns
     -----------------
     prop_dict
         Dictionary containing the properties of the log object
     """
+    __event_log_deprecation_warning(log)
+
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: return {}
 
     from copy import copy
     parameters = copy(log.properties) if hasattr(log, 'properties') else copy(log.attrs) if hasattr(log,
                                                                                                     'attrs') else {}
+
+    if activity_key is not None:
+        parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = activity_key
+
+    if timestamp_key is not None:
+        parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = timestamp_key
+
+    if case_id_key is not None:
+        parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] = case_id_key
+
+    if resource_key is not None:
+        parameters[constants.PARAMETER_CONSTANT_RESOURCE_KEY] = resource_key
+
+    if group_key is not None:
+        parameters[constants.PARAMETER_CONSTANT_GROUP_KEY] = group_key
+
+    for k, v in kwargs.items():
+        parameters[k] = v
+
     return parameters
 
 
@@ -296,6 +330,7 @@ def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASS
         The same event log (methods acts inplace)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     if type(classifier) is list:
         pass
@@ -395,6 +430,7 @@ List[List[str]]:
         ['register request', 'check ticket', 'examine thoroughly', 'decide', 'reject request']]
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     output = []
     if pandas_utils.check_is_pandas_dataframe(log):
@@ -425,6 +461,7 @@ def sample_cases(log: Union[EventLog, pd.DataFrame], num_cases: int) -> Union[Ev
     sampled_log
         Sampled event log (containing the specified amount of cases)
     """
+    __event_log_deprecation_warning(log)
     if isinstance(log, EventLog):
         from pm4py.objects.log.util import sampling
         return sampling.sample(log, num_cases)
@@ -449,6 +486,7 @@ def sample_events(log: Union[EventStream, OCEL], num_events: int) -> Union[Event
     sampled_log
         Sampled event stream / OCEL / Pandas dataframes (containing the specified amount of events)
     """
+    __event_log_deprecation_warning(log)
     if isinstance(log, EventStream):
         from pm4py.objects.log.util import sampling
         return sampling.sample_stream(log, num_events)
@@ -457,3 +495,16 @@ def sample_events(log: Union[EventStream, OCEL], num_events: int) -> Union[Event
         return sampling.sample_ocel_events(log, parameters={"num_entities": num_events})
     elif isinstance(log, pd.DataFrame):
         return log.sample(n=num_events)
+
+
+def __event_log_deprecation_warning(log):
+    if constants.SHOW_EVENT_LOG_DEPRECATION and not hasattr(log, "deprecation_warning_shown"):
+        if isinstance(log, EventLog) or isinstance(log, Trace):
+            warnings.warn("the EventLog class has been deprecated and will be removed in a future release.")
+            log.deprecation_warning_shown = True
+        elif isinstance(log, Trace):
+            warnings.warn("the Trace class has been deprecated and will be removed in a future release.")
+            log.deprecation_warning_shown = True
+        elif isinstance(log, EventStream):
+            warnings.warn("the EventStream class has been deprecated and will be removed in a future release.")
+            log.deprecation_warning_shown = True
