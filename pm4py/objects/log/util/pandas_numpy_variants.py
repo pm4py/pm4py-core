@@ -58,9 +58,6 @@ def apply(dataframe: pd.DataFrame, parameters=None):
         acts = tuple(activities[si:ei])
         variants[acts] += 1
 
-    if variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.STRING:
-        variants = {constants.DEFAULT_VARIANT_SEP.join(x): y for x, y in variants.items()}
-    else:
-        variants = {x: y for x, y in variants.items()}
+    variants = {x: y for x, y in variants.items()}
 
     return variants
