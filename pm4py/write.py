@@ -5,6 +5,7 @@ from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.utils import __event_log_deprecation_warning
 import pandas as pd
 from typing import Union
 
@@ -25,6 +26,7 @@ def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str) -> None:
     void
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.objects.log.exporter.xes import exporter as xes_exporter
     xes_exporter.apply(log, file_path)

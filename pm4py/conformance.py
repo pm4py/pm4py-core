@@ -1,17 +1,17 @@
 import warnings
-from typing import List, Dict, Any, Union
+from typing import List, Dict, Any, Union, Optional
 
 from pm4py.objects.log.obj import EventLog, Trace, Event, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from collections import Counter
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import xes_constants
-from pm4py.utils import get_properties
+from pm4py.utils import get_properties, __event_log_deprecation_warning
 import pandas as pd
 
 
 def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking,
-                                               final_marking: Marking) -> List[Dict[str, Any]]:
+                                               final_marking: Marking, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[Dict[str, Any]]:
     """
     Apply token-based replay for conformance checking analysis.
     The methods return the full token-based-replay diagnostics.
@@ -26,6 +26,12 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
         Initial marking
     final_marking
         Final marking
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     --------------
@@ -33,12 +39,15 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
         A list of replay results for each trace of the log (in the same order as the traces in the event log)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
-    return token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=get_properties(log))
+    return token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=properties)
 
 
-def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args, multi_processing: bool = False) -> List[Dict[str, Any]]:
+def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args, multi_processing: bool = False, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[Dict[str, Any]]:
     """
     Apply the alignments algorithm between a log and a process model.
     The methods return the full alignment diagnostics.
@@ -51,6 +60,12 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
         Specification of the process model
     multi_processing
         Boolean value that enables the multiprocessing (default: False)
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     -------------
@@ -58,38 +73,41 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
         A list of alignments for each trace of the log (in the same order as the traces in the event log)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     if len(args) == 3:
         if type(args[0]) is PetriNet:
             # Petri net alignments
             from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
             if multi_processing:
-                return alignments.apply_multiprocessing(log, args[0], args[1], args[2], parameters=get_properties(log))
+                return alignments.apply_multiprocessing(log, args[0], args[1], args[2], parameters=properties)
             else:
-                return alignments.apply(log, args[0], args[1], args[2], parameters=get_properties(log))
+                return alignments.apply(log, args[0], args[1], args[2], parameters=properties)
         elif type(args[0]) is dict or type(args[0]) is Counter:
             # DFG alignments
             from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
-            return dfg_alignment.apply(log, args[0], args[1], args[2], parameters=get_properties(log))
+            return dfg_alignment.apply(log, args[0], args[1], args[2], parameters=properties)
     elif len(args) == 1:
         if type(args[0]) is ProcessTree:
             # process tree alignments
             from pm4py.algo.conformance.alignments.process_tree.variants import search_graph_pt
             if multi_processing:
-                return search_graph_pt.apply_multiprocessing(log, args[0], parameters=get_properties(log))
+                return search_graph_pt.apply_multiprocessing(log, args[0], parameters=properties)
             else:
-                return search_graph_pt.apply(log, args[0], parameters=get_properties(log))
+                return search_graph_pt.apply(log, args[0], parameters=properties)
     # try to convert to Petri net
     import pm4py
     from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
     net, im, fm = pm4py.convert_to_petri_net(*args)
     if multi_processing:
-        return alignments.apply_multiprocessing(log, net, im, fm, parameters=get_properties(log))
+        return alignments.apply_multiprocessing(log, net, im, fm, parameters=properties)
     else:
-        return alignments.apply(log, net, im, fm, parameters=get_properties(log))
+        return alignments.apply(log, net, im, fm, parameters=properties)
 
 
-def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking) -> \
+def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> \
         Dict[
             str, float]:
     """
@@ -107,6 +125,12 @@ def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: Pe
         Initial marking
     final_marking
         Final marking
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     ---------------
@@ -114,13 +138,16 @@ def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: Pe
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
-                                variant=replay_fitness.Variants.TOKEN_BASED, parameters=get_properties(log))
+                                variant=replay_fitness.Variants.TOKEN_BASED, parameters=properties)
 
 
-def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, multi_processing: bool = False) -> \
+def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, multi_processing: bool = False, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> \
         Dict[str, float]:
     """
     Calculates the fitness using alignments
@@ -137,6 +164,12 @@ def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, 
         Final marking
     multi_processing
         Boolean value that enables the multiprocessing (default: False)
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     ---------------
@@ -144,16 +177,17 @@ def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, 
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters["multiprocessing"] = multi_processing
     return replay_fitness.apply(log, petri_net, initial_marking, final_marking,
                                 variant=replay_fitness.Variants.ALIGNMENT_BASED, parameters=parameters)
 
 
 def precision_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking,
-                                 final_marking: Marking) -> float:
+                                 final_marking: Marking, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> float:
     """
     Calculates the precision precision using token-based replay
 
@@ -167,6 +201,12 @@ def precision_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: 
         Initial marking
     final_marking
         Final marking
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     --------------
@@ -174,14 +214,17 @@ def precision_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: 
         float representing the precision value
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
-                                     variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN, parameters=get_properties(log))
+                                     variant=precision_evaluator.Variants.ETCONFORMANCE_TOKEN, parameters=properties)
 
 
 def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking,
-                         final_marking: Marking, multi_processing: bool = False) -> float:
+                         final_marking: Marking, multi_processing: bool = False, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> float:
     """
     Calculates the precision of the model w.r.t. the event log using alignments
 
@@ -197,6 +240,12 @@ def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet
         Final marking
     multi_processing
         Boolean value that enables the multiprocessing (default: False)
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     --------------
@@ -204,9 +253,10 @@ def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet
         float representing the precision value
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.evaluation.precision import algorithm as precision_evaluator
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters["multiprocessing"] = multi_processing
     return precision_evaluator.apply(log, petri_net, initial_marking, final_marking,
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE,
@@ -313,7 +363,7 @@ def precision_footprints(*args) -> float:
     return evaluation.fp_precision(fp1, fp2)
 
 
-def __check_is_fit_process_tree(trace, tree, activity_key=xes_constants.DEFAULT_NAME_KEY):
+def __check_is_fit_process_tree(trace, tree):
     """
     Check if a trace object is fit against a process tree model
 
@@ -323,14 +373,14 @@ def __check_is_fit_process_tree(trace, tree, activity_key=xes_constants.DEFAULT_
         Trace
     tree
         Process tree
-    activity_key
-        Activity key (optional)
 
     Returns
     -----------------
     is_fit
         Boolean value (True if the trace fits; False if the trace does not)
     """
+    __event_log_deprecation_warning(trace)
+
     from pm4py.discovery import discover_footprints
     log = EventLog()
     log.append(trace)
@@ -377,6 +427,8 @@ def __check_is_fit_petri_net(trace, net, im, fm, activity_key=xes_constants.DEFA
     is_fit
         Boolean value (True if the trace fits; False if the trace does not)
     """
+    __event_log_deprecation_warning(trace)
+
     # avoid checking footprints on Petri net (they are too slow)
     activities_model = set(trans.label for trans in net.transitions if trans.label is not None)
     activities_trace = set([x[activity_key] for x in trace])
@@ -435,6 +487,6 @@ def check_is_fitting(*args, activity_key=xes_constants.DEFAULT_NAME_KEY):
             trace.append(Event({activity_key: act}))
 
     if isinstance(model, ProcessTree):
-        return __check_is_fit_process_tree(trace, model, activity_key=activity_key)
+        return __check_is_fit_process_tree(trace, model)
     elif isinstance(model, tuple) and isinstance(model[0], PetriNet):
         return __check_is_fit_petri_net(trace, model[0], model[1], model[2], activity_key=activity_key)

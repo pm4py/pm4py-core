@@ -1,5 +1,5 @@
 import warnings
-from typing import Tuple, Union, List, Dict, Any
+from typing import Tuple, Union, List, Dict, Any, Optional
 
 import pandas as pd
 from pandas import DataFrame
@@ -11,12 +11,12 @@ from pm4py.objects.log.obj import EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
-from pm4py.utils import get_properties, xes_constants
+from pm4py.utils import get_properties, xes_constants, __event_log_deprecation_warning
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants
 
 
-def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
+def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     """
     Discovers a DFG from a log
 
@@ -24,6 +24,12 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
     --------------
     log
         Event log
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     --------------
@@ -35,11 +41,13 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
         End activities
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.util import constants
-        properties = get_properties(log)
+
         from pm4py.algo.discovery.dfg.adapters.pandas.df_statistics import get_dfg_graph
         activity_key = properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in properties else xes_constants.DEFAULT_NAME_KEY
         timestamp_key = properties[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in properties else xes_constants.DEFAULT_TIMESTAMP_KEY
@@ -53,21 +61,21 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
         end_activities = end_activities_module.get_end_activities(log, parameters=properties)
     else:
         from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
-        dfg = dfg_discovery.apply(log, parameters=get_properties(log))
+        dfg = dfg_discovery.apply(log, parameters=properties)
         from pm4py.statistics.start_activities.log import get as start_activities_module
         from pm4py.statistics.end_activities.log import get as end_activities_module
-        start_activities = start_activities_module.get_start_activities(log, parameters=get_properties(log))
-        end_activities = end_activities_module.get_end_activities(log, parameters=get_properties(log))
+        start_activities = start_activities_module.get_start_activities(log, parameters=properties)
+        end_activities = end_activities_module.get_end_activities(log, parameters=properties)
     return dfg, start_activities, end_activities
 
 
-def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame]) -> Tuple[dict, dict, dict]:
+def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
-    return discover_dfg(log)
+    return discover_dfg(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
 
-def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7], workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR) -> Tuple[dict, dict, dict]:
+def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7], workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     """
     Discovers a performance directly-follows graph from an event log
 
@@ -81,6 +89,12 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours:
         (If the business hours are enabled) The hour range in which the resources of the log are working (default: 7 to 17)
     weekends
         (If the business hours are enabled) The weekends days (default: Saturday (6), Sunday (7))
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     ---------------
@@ -92,11 +106,14 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours:
         End activities
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.util import constants
-        properties = get_properties(log)
+
         from pm4py.algo.discovery.dfg.adapters.pandas.df_statistics import get_dfg_graph
         activity_key = properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in properties else xes_constants.DEFAULT_NAME_KEY
         timestamp_key = properties[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in properties else xes_constants.DEFAULT_TIMESTAMP_KEY
@@ -109,7 +126,6 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours:
         end_activities = end_activities_module.get_end_activities(log, parameters=properties)
     else:
         from pm4py.algo.discovery.dfg.variants import performance as dfg_discovery
-        properties = get_properties(log)
         properties[dfg_discovery.Parameters.AGGREGATION_MEASURE] = "all"
         properties[dfg_discovery.Parameters.BUSINESS_HOURS] = business_hours
         properties[dfg_discovery.Parameters.WORKTIMING] = worktiming
@@ -122,7 +138,7 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours:
     return dfg, start_activities, end_activities
 
 
-def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame]) -> Tuple[PetriNet, Marking, Marking]:
+def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the Alpha Miner
 
@@ -130,6 +146,12 @@ def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame]) -> Tuple[PetriN
     --------------
     log
         Event log
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     --------------
@@ -141,12 +163,13 @@ def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame]) -> Tuple[PetriN
         Final marking
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
-    return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC, parameters=get_properties(log))
+    return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
 
 
-def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame]) -> Tuple[PetriNet, Marking, Marking]:
+def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the Alpha+ algorithm
 
@@ -154,6 +177,12 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame]) -> Tuple[P
     --------------
     log
         Event log
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     --------------
@@ -165,12 +194,13 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame]) -> Tuple[P
         Final marking
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
-    return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS, parameters=get_properties(log))
+    return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
 
 
-def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0) -> Tuple[
+def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[
     PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the IMDFc algorithm
@@ -181,6 +211,12 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_thres
         Event log
     noise_threshold
         Noise threshold (default: 0.0)
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     --------------
@@ -192,15 +228,16 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_thres
         Final marking
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
-    pt = discover_process_tree_inductive(log, noise_threshold)
+    pt = discover_process_tree_inductive(log, noise_threshold, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     from pm4py.convert import convert_to_petri_net
     return convert_to_petri_net(pt)
 
 
 def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5,
                                   and_threshold: float = 0.65,
-                                  loop_two_threshold: float = 0.5) -> Tuple[PetriNet, Marking, Marking]:
+                                  loop_two_threshold: float = 0.5, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[PetriNet, Marking, Marking]:
     """
     Discover a Petri net using the Heuristics Miner
 
@@ -214,6 +251,12 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
         AND threshold (default: 0.65)
     loop_two_threshold
         Loop two threshold (default: 0.5)
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     --------------
@@ -225,10 +268,11 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
         Final marking
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     heu_parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters[heu_parameters.DEPENDENCY_THRESH] = dependency_threshold
     parameters[heu_parameters.AND_MEASURE_THRESH] = and_threshold
     parameters[heu_parameters.LOOP_LENGTH_TWO_THRESH] = loop_two_threshold
@@ -236,7 +280,7 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
     return heuristics_miner.apply(log, variant=heuristics_miner.Variants.CLASSIC, parameters=parameters)
 
 
-def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0) -> ProcessTree:
+def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> ProcessTree:
     """
     Discovers a process tree using the IM algorithm
 
@@ -246,6 +290,12 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
         Event log
     noise_threshold
         Noise threshold (default: 0.0)
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     --------------
@@ -253,16 +303,17 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
         Process tree object
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters[inductive_miner.Variants.IM_CLEAN.value.Parameters.NOISE_THRESHOLD] = noise_threshold
     return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM_CLEAN, parameters=parameters)
 
 
 def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5,
                             and_threshold: float = 0.65,
-                            loop_two_threshold: float = 0.5) -> HeuristicsNet:
+                            loop_two_threshold: float = 0.5, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> HeuristicsNet:
     """
     Discovers an heuristics net
 
@@ -276,6 +327,12 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
         AND threshold (default: 0.65)
     loop_two_threshold
         Loop two threshold (default: 0.5)
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     --------------
@@ -283,17 +340,18 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
         Heuristics net
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
     heu_parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
-    parameters = get_properties(log)
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters[heu_parameters.DEPENDENCY_THRESH] = dependency_threshold
     parameters[heu_parameters.AND_MEASURE_THRESH] = and_threshold
     parameters[heu_parameters.LOOP_LENGTH_TWO_THRESH] = loop_two_threshold
     return heuristics_miner.apply_heu(log, variant=heuristics_miner.Variants.CLASSIC, parameters=parameters)
 
 
-def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream]) -> Dict[str, int]:
+def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, int]:
     '''
         This algorithm computes the minimum self-distance for each activity observed in an event log.
         The self distance of a in <a> is infinity, of a in <a,a> is 0, in <a,b,a> is 1, etc.
@@ -304,15 +362,22 @@ def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream]) -
         ----------
         log
             event log (either pandas.DataFrame, EventLog or EventStream)
+        activity_key
+            attribute to be used for the activity
+        timestamp_key
+            attribute to be used for the timestamp
+        case_id_key
+            attribute to be used as case identifier
 
         Returns
         -------
             dict mapping an activity to its self-distance, if it exists, otherwise it is not part of the dict.
         '''
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
     from pm4py.algo.discovery.minimum_self_distance import algorithm as msd
-    return msd.apply(log, parameters=get_properties(log))
+    return msd.apply(log, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
 
 
 def discover_footprints(*args: Union[EventLog, Tuple[PetriNet, Marking, Marking], ProcessTree]) -> Union[
@@ -329,7 +394,7 @@ def discover_footprints(*args: Union[EventLog, Tuple[PetriNet, Marking, Marking]
     return fp_discovery.apply(*args)
 
 
-def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame]) -> Dict[Tuple[str, str], int]:
+def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[Tuple[str, str], int]:
     """
     Gets the eventually follows graph from a log object
 
@@ -337,6 +402,12 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame]) -> Dic
     ---------------
     log
         Log object
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     ---------------
@@ -344,17 +415,20 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame]) -> Dic
         Dictionary of tuples of activities that eventually follows each other; along with the number of occurrences
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.eventually_follows.pandas import get
-        return get.apply(log, parameters=get_properties(log))
+        return get.apply(log, parameters=properties)
     else:
         from pm4py.statistics.eventually_follows.log import get
-        return get.apply(log, parameters=get_properties(log))
+        return get.apply(log, parameters=properties)
 
 
-def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0) -> BPMN:
+def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> BPMN:
     """
         Discovers a BPMN using the Inductive Miner algorithm
 
@@ -364,6 +438,12 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
             Event log
         noise_threshold
             Noise threshold (default: 0.0)
+        activity_key
+            attribute to be used for the activity
+        timestamp_key
+            attribute to be used for the timestamp
+        case_id_key
+            attribute to be used as case identifier
 
         Returns
         --------------
@@ -371,8 +451,9 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
             BPMN diagram
         """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
 
-    pt = discover_process_tree_inductive(log, noise_threshold)
+    pt = discover_process_tree_inductive(log, noise_threshold, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     from pm4py.convert import convert_to_bpmn
     return convert_to_bpmn(pt)
 
