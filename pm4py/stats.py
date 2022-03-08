@@ -219,25 +219,7 @@ def get_variants(log: Union[EventLog, pd.DataFrame], activity_key: str = "concep
     variants
         Dictionary of variants along with their count
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-    __event_log_deprecation_warning(log)
-
-    import pm4py
-    if pm4py.util.variants_util.VARIANT_SPECIFICATION == pm4py.util.variants_util.VariantsSpecifications.STRING:
-        import warnings
-        warnings.warn('pm4py.get_variants is deprecated. Please use pm4py.get_variants_as_tuples instead.')
-    if pm4py.util.variants_util.VARIANT_SPECIFICATION == pm4py.util.variants_util.VariantsSpecifications.LIST:
-        raise Exception('Please use pm4py.get_variants_as_tuples')
-
-    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-
-    if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
-        from pm4py.statistics.variants.pandas import get
-        return get.get_variants_count(log, parameters=properties)
-    else:
-        from pm4py.statistics.variants.log import get
-        return get.get_variants(log, parameters=properties)
+    return get_variants_as_tuples(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
 
 def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[Tuple[str], List[Trace]]:
@@ -266,9 +248,6 @@ def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame], activity_key: str
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
-    import pm4py
-    # the behavior of PM4Py is changed to allow this to work
-    pm4py.util.variants_util.VARIANT_SPECIFICATION = pm4py.util.variants_util.VariantsSpecifications.LIST
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.variants.pandas import get
