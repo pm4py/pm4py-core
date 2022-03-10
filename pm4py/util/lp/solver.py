@@ -14,7 +14,6 @@ SCIPY = "scipy"
 # not available in the latest version of PM4Py
 CVXOPT_SOLVER_CUSTOM_ALIGN = "cvxopt_solver_custom_align"
 CVXOPT_SOLVER_CUSTOM_ALIGN_ILP = "cvxopt_solver_custom_align_ilp"
-ORTOOLS_SOLVER = "ortools_solver"
 
 # max allowed heuristics value (27/10/2019, due to the numerical instability of some of our solvers)
 MAX_ALLOWED_HEURISTICS = 10**15
@@ -44,16 +43,6 @@ if pkgutil.find_loader("scipy"):
 
     DEFAULT_LP_SOLVER_VARIANT = SCIPY
 
-if pkgutil.find_loader("ortools"):
-    # in the case ortools is installed, it works
-    from pm4py.util.lp.variants import ortools_solver
-
-    VERSIONS_APPLY[ORTOOLS_SOLVER] = ortools_solver.apply
-    VERSIONS_GET_PRIM_OBJ[ORTOOLS_SOLVER] = ortools_solver.get_prim_obj_from_sol
-    VERSIONS_GET_POINTS_FROM_SOL[ORTOOLS_SOLVER] = ortools_solver.get_points_from_sol
-
-    DEFAULT_LP_SOLVER_VARIANT = ORTOOLS_SOLVER
-
 
 def apply(c, Aub, bub, Aeq, beq, parameters=None, variant=DEFAULT_LP_SOLVER_VARIANT):
     """
@@ -74,7 +63,7 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None, variant=DEFAULT_LP_SOLVER_VARI
     parameters
         Possible parameters of the algorithm
     variant
-        Variant of the algorithm, possible values: pulp, ortools
+        Variant of the algorithm, possible values: pulp, scipy
 
     Returns
     -------------
@@ -95,7 +84,7 @@ def get_prim_obj_from_sol(sol, parameters=None, variant=DEFAULT_LP_SOLVER_VARIAN
     parameters
         Possible parameters of the algorithm
     variant
-        Variant of the algorithm, possible values: pulp, ortools
+        Variant of the algorithm, possible values: pulp, scipy
 
     Returns
     -------------
@@ -116,7 +105,7 @@ def get_points_from_sol(sol, parameters=None, variant=DEFAULT_LP_SOLVER_VARIANT)
     parameters
         Possible parameters of the algorithm
     variant
-        Variant of the algorithm, possible values: pulp, ortools
+        Variant of the algorithm, possible values: pulp, scipy
 
     Returns
     -------------
