@@ -1,4 +1,4 @@
-## pm4py 2.2.20
+## pm4py 2.2.19.3
 
 ### Added
 
@@ -11,6 +11,8 @@
   * Bug fix / efficiency change on the format_dataframe utility function.
 
 ### Removed
+* 639aeb64bf5febf5f5719622d6d90c4a3c5cd8be
+  * Removed ORTOOLS as available linear solver.
 
 ### Other
 
