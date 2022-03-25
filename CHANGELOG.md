@@ -9,6 +9,10 @@
 ### Fixed
 * 1bcadff3acacfda2463cf9325f873004e15ed915
   * Bug fix / efficiency change on the format_dataframe utility function.
+* d8797f574d605ad1591c66a96c1f54346c856878
+  * Fixed missing import in DFG performance visualization.
+* f4f5a0eee8218be5c575fe8b42ab59e335979d53
+  * Fixed hardcoded parameter in feature extraction interface
 
 ### Removed
 * 639aeb64bf5febf5f5719622d6d90c4a3c5cd8be
