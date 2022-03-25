@@ -1,3 +1,6 @@
+__doc__ = """
+"""
+
 from typing import List, Optional, Tuple, Dict, Union
 
 from pm4py.objects.log.obj import Trace, EventLog

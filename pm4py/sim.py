@@ -1,3 +1,6 @@
+__doc__ = """
+"""
+
 from collections import Counter
 from typing import Union, Tuple
 
