@@ -3,25 +3,28 @@ import time
 
 from pm4py import util, objects, statistics, algo, visualization
 from pm4py.analysis import check_soundness, solve_marking_equation, solve_extended_marking_equation, \
-    construct_synchronous_product_net, insert_artificial_start_end
+    construct_synchronous_product_net, insert_artificial_start_end, check_is_workflow_net, maximal_decomposition
 from pm4py.conformance import conformance_diagnostics_token_based_replay, conformance_diagnostics_alignments, \
     fitness_token_based_replay, \
     fitness_alignments, precision_token_based_replay, \
     precision_alignments, conformance_diagnostics_footprints, \
-    fitness_footprints, precision_footprints, check_is_fitting
+    fitness_footprints, precision_footprints, check_is_fitting, conformance_temporal_profile, \
+    conformance_log_skeleton
 from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
-    convert_to_petri_net, convert_to_process_tree
+    convert_to_petri_net, convert_to_process_tree, convert_to_reachability_graph
 from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_plus, discover_petri_net_heuristics, \
     discover_petri_net_inductive, discover_process_tree_inductive, discover_heuristics_net, \
     discover_dfg, discover_footprints, discover_eventually_follows_graph, discover_directly_follows_graph, discover_bpmn_inductive, \
-    discover_performance_dfg, discover_ocdfg, discover_oc_petri_net
+    discover_performance_dfg, discover_transition_system, discover_prefix_tree, \
+    discover_temporal_profile, discover_log_skeleton, discover_batches, derive_minimum_self_distance
 from pm4py.filtering import filter_log_relative_occurrence_event_attribute, filter_start_activities, filter_end_activities, filter_variants, \
     filter_directly_follows_relation, filter_time_range, \
     filter_eventually_follows_relation, filter_event_attribute_values, filter_trace_attribute_values, \
     filter_between, filter_case_size, filter_case_performance, filter_activities_rework, filter_paths_performance, \
     filter_variants_by_coverage_percentage, filter_variants_top_k, filter_ocel_event_attribute, filter_ocel_object_attribute, \
     filter_ocel_object_types_allowed_activities, filter_ocel_object_per_type_count, filter_ocel_start_events_per_object_type, \
-    filter_ocel_end_events_per_object_type, filter_ocel_events_timestamp, filter_prefixes, filter_suffixes
+    filter_ocel_end_events_per_object_type, filter_ocel_events_timestamp, filter_prefixes, filter_suffixes, \
+    filter_four_eyes_principle, filter_activity_done_different_resources
 from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
 from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
     __maintainer__, __maintainer_email__
@@ -40,10 +43,12 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
     view_ocdfg, save_vis_ocdfg, view_heuristics_net, save_vis_heuristics_net, view_bpmn, save_vis_bpmn, view_sna, save_vis_sna,\
     view_dotted_chart, save_vis_dotted_chart, view_performance_spectrum, save_vis_performance_spectrum, view_case_duration_graph, view_events_per_time_graph, save_vis_case_duration_graph, \
     save_vis_events_per_time_graph, view_events_distribution_graph, save_vis_events_distribution_graph, view_performance_dfg, save_vis_performance_dfg, \
-    view_ocpn, save_vis_ocpn, view_network_analysis, save_vis_network_analysis
+    view_ocpn, save_vis_ocpn, view_network_analysis, save_vis_network_analysis, view_transition_system, save_vis_transition_system, \
+    view_prefix_tree, save_vis_prefix_tree
 from pm4py.write import write_xes, write_dfg, write_bpmn, write_pnml, write_ptml, write_ocel
 from pm4py.org import discover_handover_of_work_network, discover_activity_based_resource_similarity, discover_subcontracting_network, discover_working_together_network, discover_organizational_roles, discover_network_analysis
-from pm4py.ml import split_train_test, get_prefixes_from_log
-from pm4py.ocel import ocel_get_object_types, ocel_get_attribute_names, ocel_flattening, ocel_object_type_activities, ocel_objects_ot_count
+from pm4py.ml import split_train_test, get_prefixes_from_log, extract_features_dataframe, enhance_net_with_decision_rules
+from pm4py.ocel import ocel_get_object_types, ocel_get_attribute_names, ocel_flattening, ocel_object_type_activities, ocel_objects_ot_count, \
+                        discover_ocdfg, discover_oc_petri_net
 
 time.clock = time.process_time

@@ -4,13 +4,13 @@ from collections import Counter
 
 import pandas as pd
 
-from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.log.obj import EventLog, Trace, EventStream
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns, insert_ev_in_tr_index
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.util import xes_constants, constants
 from copy import copy
 from pm4py.objects.log.pandas_log_wrapper import PandasLogWrapper
+import deprecation
 
 
 def get_start_activities(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, int]:
@@ -33,6 +33,8 @@ def get_start_activities(log: Union[EventLog, pd.DataFrame], activity_key: str =
     start_activities
         Dictionary of start activities along with their count
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -67,6 +69,8 @@ def get_end_activities(log: Union[EventLog, pd.DataFrame], activity_key: str = "
     end_activities
         Dictionary of end activities along with their count
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -95,6 +99,8 @@ def get_event_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
     attributes_list
         List of attributes contained in the log
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -120,6 +126,8 @@ def get_trace_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
     trace_attributes_list
         List of attributes at the trace level
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -153,6 +161,8 @@ def get_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
     attribute_values
         Dictionary of values along with their count
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream, PandasLogWrapper]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -185,6 +195,8 @@ def get_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
     attribute_values
         Dictionary of values along with their count
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -243,6 +255,8 @@ def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame], activity_key: str
     variants
         Dictionary of variants along with their count
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -278,6 +292,8 @@ def get_minimum_self_distances(log: Union[EventLog, pd.DataFrame], activity_key:
     -------
         dict mapping an activity to its self-distance, if it exists, otherwise it is not part of the dict.
     '''
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -312,6 +328,8 @@ def get_minimum_self_distance_witnesses(log: Union[EventLog, pd.DataFrame], acti
         Dictionary mapping each activity to a set of witnesses.
 
         '''
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -340,6 +358,8 @@ def get_case_arrival_average(log: Union[EventLog, pd.DataFrame], activity_key: s
     case_arrival_average
         Average difference between the start times of two consecutive cases
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -378,6 +398,8 @@ def get_rework_cases_per_activity(log: Union[EventLog, pd.DataFrame], activity_k
         Dictionary associating to each of the aforementioned activities the number of cases for which the rework
         occurred.
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -392,6 +414,7 @@ def get_rework_cases_per_activity(log: Union[EventLog, pd.DataFrame], activity_k
         return rework_get.apply(log, parameters=properties)
 
 
+@deprecation.deprecated("2.3.0", "3.0.0", details="the get_case_overlap function will be removed in a future release.")
 def get_case_overlap(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[int]:
     """
     Associates to each case in the log the number of cases concurrently open
@@ -413,6 +436,8 @@ def get_case_overlap(log: Union[EventLog, pd.DataFrame], activity_key: str = "co
         List that for each case (identified by its index in the log) tells how many other cases
         are concurrently open.
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -458,6 +483,8 @@ def get_cycle_time(log: Union[EventLog, pd.DataFrame], activity_key: str = "conc
     cycle_time
         Cycle time (calculated with the aforementioned formula).
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -498,6 +525,8 @@ def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: b
     durations
         Case durations (as list)
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -515,7 +544,7 @@ def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: b
         return case_statistics.get_all_case_durations(log, parameters=properties)
 
 
-def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> float:
+def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> float:
     """
     Gets the duration of a specific case
 
@@ -543,6 +572,8 @@ def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business
     duration
         Duration of the given case
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -587,6 +618,8 @@ def get_activity_position_summary(log: Union[EventLog, pd.DataFrame], activity: 
     pos_dict_summary
         Summary of the positions of the activity in the trace (e.g. {1: 1000, 2: 500})
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 

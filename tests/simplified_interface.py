@@ -298,6 +298,544 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         log = pm4py.read_xes("input_data/running-example.xes")
         pm4py.discover_eventually_follows_graph(log)
 
+    def test_write_pnml(self):
+        net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
+        pm4py.write_pnml(net, im, fm, "test_output_data/running-example.pnml")
+        os.remove("test_output_data/running-example.pnml")
+
+    def test_write_ptml(self):
+        process_tree = pm4py.read_ptml("input_data/running-example.ptml")
+        pm4py.write_ptml(process_tree, "test_output_data/running-example.ptml")
+        os.remove("test_output_data/running-example.ptml")
+
+    def test_write_dfg(self):
+        dfg, sa, ea = pm4py.read_dfg("input_data/running-example.dfg")
+        pm4py.write_dfg(dfg, sa, ea, "test_output_data/running-example.dfg")
+        os.remove("test_output_data/running-example.dfg")
+
+    def test_write_bpmn(self):
+        bpmn_graph = pm4py.read_bpmn("input_data/running-example.bpmn")
+        pm4py.write_bpmn(bpmn_graph, "test_output_data/running-example.bpmn")
+        os.remove("test_output_data/running-example.bpmn")
+
+    def test_rebase(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        dataframe = pm4py.rebase(dataframe, activity_key="org:resource")
+
+    def test_parse_process_tree(self):
+        tree = pm4py.parse_process_tree("-> ( 'a', X ( 'b', 'c' ), tau )")
+
+    def test_parse_log_string(self):
+        elog = pm4py.parse_event_log_string(["A,B,C", "A,B,D"])
+
+    def test_project_eattr(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        lst = pm4py.project_on_event_attribute(log, "org:resource")
+
+    def test_sample_cases_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.sample_cases(log, 2)
+
+    def test_sample_cases_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.sample_cases(dataframe, 2)
+
+    def test_sample_events_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.sample_events(log, 2)
+
+    def test_sample_events_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.sample_events(dataframe, 2)
+
+    def test_check_soundness(self):
+        net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
+        self.assertTrue(pm4py.check_soundness(net, im, fm))
+
+    def test_check_wfnet(self):
+        net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
+        self.assertTrue(pm4py.check_is_workflow_net(net))
+
+    def test_artificial_start_end_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.insert_artificial_start_end(log)
+
+    def test_artificial_start_end_dataframe(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.insert_artificial_start_end(dataframe)
+
+    def test_hof_filter_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_log(log, lambda x: len(x) > 5)
+
+    def test_hof_filter_trace(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_trace(log[0], lambda x: x["concept:name"] == "decide")
+
+    def test_hof_sort_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.sort_log(log, key=lambda x: x.attributes["concept:name"])
+
+    def test_hof_sort_trace(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.sort_trace(log[0], key=lambda x: x["concept:name"])
+
+    def test_split_train_test_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.split_train_test(log, train_percentage=0.6)
+
+    def test_split_train_test_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.split_train_test(dataframe, train_percentage=0.6)
+
+    def test_get_prefixes_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.get_prefixes_from_log(log, 3)
+
+    def test_get_prefixes_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.get_prefixes_from_log(dataframe, 3)
+
+    def test_convert_reachab(self):
+        net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
+        ts = pm4py.convert_to_reachability_graph(net, im, fm)
+
+    def test_hw_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.discover_handover_of_work_network(log)
+
+    def test_hw_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.discover_handover_of_work_network(dataframe)
+
+    def test_wt_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.discover_working_together_network(log)
+
+    def test_wt_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.discover_working_together_network(dataframe)
+
+    def test_act_based_res_sim_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.discover_activity_based_resource_similarity(log)
+
+    def test_act_based_res_sim_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.discover_activity_based_resource_similarity(dataframe)
+
+    def test_subcontracting_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.discover_subcontracting_network(log)
+
+    def test_subcontracting_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.discover_subcontracting_network(dataframe)
+
+    def test_roles_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.discover_organizational_roles(log)
+
+    def test_roles_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.discover_organizational_roles(dataframe)
+
+    def test_network_analysis_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.discover_network_analysis(log, "case:concept:name", "case:concept:name", "org:resource", "org:resource", "concept:name")
+
+    def test_network_analysis_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.discover_network_analysis(dataframe, "case:concept:name", "case:concept:name", "org:resource", "org:resource", "concept:name")
+
+    def test_discover_batches_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.discover_batches(log)
+
+    def test_discover_batches_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.discover_batches(dataframe)
+
+    def test_log_skeleton_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        model = pm4py.discover_log_skeleton(log)
+        pm4py.conformance_log_skeleton(log, model)
+
+    def test_log_skeleton_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        model = pm4py.discover_log_skeleton(dataframe)
+        pm4py.conformance_log_skeleton(dataframe, model)
+
+    def test_temporal_profile_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        model = pm4py.discover_temporal_profile(log)
+        pm4py.conformance_temporal_profile(log, model)
+
+    def test_temporal_profile_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        model = pm4py.discover_temporal_profile(dataframe)
+        pm4py.conformance_temporal_profile(dataframe, model)
+
+    def test_ocel_get_obj_types(self):
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.csv")
+        pm4py.ocel_get_object_types(ocel)
+
+    def test_ocel_get_attr_names(self):
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.csv")
+        pm4py.ocel_get_attribute_names(ocel)
+
+    def test_ocel_flattening(self):
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.csv")
+        pm4py.ocel_flattening(ocel, "order")
+
+    def test_stats_var_tuples_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.get_variants_as_tuples(log)
+
+    def test_stats_var_tuples_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.get_variants_as_tuples(dataframe)
+
+    def test_stats_cycle_time_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.get_cycle_time(log)
+
+    def test_stats_cycle_time_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.get_cycle_time(dataframe)
+
+    def test_stats_case_durations_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.get_all_case_durations(log)
+
+    def test_stats_case_durations_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.get_all_case_durations(dataframe)
+
+    def test_stats_case_duration_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.get_case_duration(log, "1")
+
+    def test_stats_case_duration_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.get_case_duration(dataframe, "1")
+
+    def test_stats_act_pos_summary_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.get_activity_position_summary(log, "check ticket")
+
+    def test_stats_act_pos_summary_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.get_activity_position_summary(dataframe, "check ticket")
+
+    def test_filter_act_done_diff_res_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_activity_done_different_resources(log, "check ticket")
+
+    def test_filter_act_done_diff_res_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_activity_done_different_resources(dataframe, "check ticket")
+
+    def test_filter_four_eyes_principle_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_four_eyes_principle(log, "register request", "check ticket")
+
+    def test_filter_four_eyes_principle_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_four_eyes_principle(dataframe, "register request", "check ticket")
+
+    def test_filter_rel_occ_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_log_relative_occurrence_event_attribute(log, 0.8, level="cases")
+
+    def test_filter_rel_occ_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_log_relative_occurrence_event_attribute(dataframe, 0.8, level="cases")
+
+    def test_filter_start_activities_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_start_activities(log, ["register request"])
+
+    def test_filter_start_activities_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_start_activities(dataframe, ["register request"])
+
+    def test_filter_end_activities_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_end_activities(log, ["pay compensation"])
+
+    def test_filter_end_activities_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_end_activities(dataframe, ["pay compensation"])
+
+    def test_filter_eve_attr_values_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_event_attribute_values(log, "concept:name", ["register request", "pay compensation", "reject request"])
+
+    def test_filter_eve_attr_values_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_event_attribute_values(dataframe, "concept:name", ["register request", "pay compensation", "reject request"])
+
+    def test_filter_trace_attr_values_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_trace_attribute_values(log, "creator", ["Fluxicon"])
+
+    def test_filter_trace_attr_values_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_trace_attribute_values(dataframe, "case:creator", ["Fluxicon"])
+
+    def test_filter_variant_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_variants(log, [('register request', 'examine casually', 'check ticket', 'decide', 'reinitiate request', 'examine thoroughly', 'check ticket', 'decide', 'pay compensation')])
+
+    def test_filter_variant_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_variants(dataframe, [('register request', 'examine casually', 'check ticket', 'decide', 'reinitiate request', 'examine thoroughly', 'check ticket', 'decide', 'pay compensation')])
+
+    def test_filter_dfg_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_directly_follows_relation(log, [("register request", "check ticket")])
+
+    def test_filter_dfg_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_directly_follows_relation(dataframe, [("register request", "check ticket")])
+
+    def test_filter_efg_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_eventually_follows_relation(log, [("register request", "check ticket")])
+
+    def test_filter_efg_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_eventually_follows_relation(dataframe, [("register request", "check ticket")])
+
+    def test_filter_time_range_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_time_range(log, "2009-01-01 01:00:00", "2011-01-01 01:00:00")
+
+    def test_filter_time_range_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_time_range(dataframe, "2009-01-01 01:00:00", "2011-01-01 01:00:00")
+
+    def test_filter_between_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_between(log, "check ticket", "decide")
+
+    def test_filter_between_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_between(dataframe, "check ticket", "decide")
+
+    def test_filter_case_size_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_case_size(log, 10, 20)
+
+    def test_filter_case_size_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_case_size(dataframe, 10, 20)
+
+    def test_filter_case_performance_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_case_performance(log, 86400, 8640000)
+
+    def test_filter_case_performance_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_case_performance(dataframe, 86400, 8640000)
+
+    def test_filter_activities_rework_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_activities_rework(log, "check ticket")
+
+    def test_filter_act_rework_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_activities_rework(dataframe, "check ticket")
+
+    def test_filter_paths_perf_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_paths_performance(log, ("register request", "check ticket"), 86400, 864000)
+
+    def test_filter_paths_perf_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_paths_performance(dataframe, ("register request", "check ticket"), 86400, 864000)
+
+    def test_filter_vars_top_k_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_variants_top_k(log, 1)
+
+    def test_filter_vars_top_k_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_variants_top_k(dataframe, 1)
+
+    def test_filter_vars_coverage(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_variants_by_coverage_percentage(log, 0.1)
+
+    def test_filter_vars_coverage(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_variants_by_coverage_percentage(dataframe, 0.1)
+
+    def test_filter_prefixes_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_prefixes(log, "check ticket")
+
+    def test_filter_prefixes_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_prefixes(dataframe, "check ticket")
+
+    def test_filter_suffixes_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.filter_suffixes(log, "check ticket")
+
+    def test_filter_suffixes_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.filter_suffixes(dataframe, "check ticket")
+
+    def test_discover_perf_dfg_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.discover_performance_dfg(log)
+
+    def test_discover_perf_dfg_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.discover_performance_dfg(dataframe)
+
+    def test_discover_footprints_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.discover_footprints(log)
+
+    def test_discover_footprints_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.discover_footprints(dataframe)
+
+    def test_discover_ts_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.discover_transition_system(log)
+
+    def test_discover_ts_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.discover_transition_system(dataframe)
+
+    def test_discover_pref_tree_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.discover_prefix_tree(log)
+
+    def test_discover_pref_tree_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.discover_prefix_tree(dataframe)
+
+    def test_discover_ocpn(self):
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.csv")
+        pm4py.discover_oc_petri_net(ocel)
+
+    def test_conformance_alignments_pn_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        net, im, fm = pm4py.discover_petri_net_inductive(log)
+        pm4py.conformance_diagnostics_alignments(log, net, im, fm)
+
+    def test_conformance_alignments_pn_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe)
+        pm4py.conformance_diagnostics_alignments(dataframe, net, im, fm)
+
+    def test_conformance_diagnostics_fp_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        tree = pm4py.discover_process_tree_inductive(log)
+        pm4py.conformance_diagnostics_footprints(log, tree)
+
+    def test_conformance_diagnostics_fp_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        tree = pm4py.discover_process_tree_inductive(dataframe)
+        pm4py.conformance_diagnostics_footprints(dataframe, tree)
+
+    def test_fitness_fp_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        tree = pm4py.discover_process_tree_inductive(log)
+        pm4py.fitness_footprints(log, tree)
+
+    def test_fitness_fp_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        tree = pm4py.discover_process_tree_inductive(dataframe)
+        pm4py.fitness_footprints(dataframe, tree)
+
+    def test_precision_fp_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        tree = pm4py.discover_process_tree_inductive(log)
+        pm4py.precision_footprints(log, tree)
+
+    def test_precision_fp_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        tree = pm4py.discover_process_tree_inductive(dataframe)
+        pm4py.precision_footprints(dataframe, tree)
+
+    def test_maximal_decomposition(self):
+        net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
+        pm4py.maximal_decomposition(net, im, fm)
+
+    def test_fea_ext_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.extract_features_dataframe(log)
+
+    def test_fea_ext_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        pm4py.extract_features_dataframe(dataframe)
+
+    def test_disc_data_pn_log(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
+        pm4py.enhance_net_with_decision_rules(log, net, im, fm)
+
+    def test_disc_data_pn_df(self):
+        dataframe = pd.read_csv("input_data/running-example.csv")
+        dataframe = pm4py.format_dataframe(dataframe)
+        net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
+        pm4py.enhance_net_with_decision_rules(dataframe, net, im, fm)
+
 
 if __name__ == "__main__":
     unittest.main()
