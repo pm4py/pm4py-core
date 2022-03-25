@@ -17,6 +17,7 @@ from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.util import typing
 import graphviz
 from pm4py.objects.log.obj import EventLog
+from collections import Counter
 
 
 class Parameters(Enum):

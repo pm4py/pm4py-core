@@ -9,7 +9,6 @@ from pm4py.objects.petri_net.utils import final_marking
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.objects.petri_net import properties as petri_properties
-from pm4py.objects.random_variables.random_variable import RandomVariable
 from pm4py.util import constants
 
 
@@ -210,6 +209,8 @@ def import_net_from_xml_object(root, parameters=None):
                                     priority = int(value)
                                 elif key == "weight":
                                     weight = float(value)
+
+                            from pm4py.objects.random_variables.random_variable import RandomVariable
 
                             random_variable = RandomVariable()
                             random_variable.read_from_string(distribution_type, distribution_parameters)

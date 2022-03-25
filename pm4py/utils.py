@@ -8,6 +8,7 @@ from pm4py.objects.log.obj import EventLog, EventStream, Trace, Event
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants, xes_constants, pandas_utils
+import deprecation
 
 
 INDEX_COLUMN = "@@index"
@@ -122,6 +123,8 @@ def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = c
     rebased_log_obj
         Rebased log object
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     import pm4py
 
     __event_log_deprecation_warning(log_obj)
@@ -157,6 +160,7 @@ def parse_process_tree(tree_string: str) -> ProcessTree:
     tree
         Process tree
     """
+    # Unit test: YES
     from pm4py.objects.process_tree.utils.generic import parse
     return parse(tree_string)
 
@@ -182,6 +186,7 @@ def serialize(*args) -> Tuple[str, bytes]:
         Serialized object (a tuple consisting of a string denoting the type of the object, and a bytes string
         representing the serialization)
     """
+    # Unit test: YES
     from pm4py.objects.log.obj import EventLog
     from pm4py.objects.petri_net.obj import PetriNet
     from pm4py.objects.process_tree.obj import ProcessTree
@@ -232,6 +237,7 @@ def deserialize(ser_obj: Tuple[str, bytes]) -> Any:
         - a BPMN object
         - a DFG, including the dictionary of the directly-follows relations, the start activities and the end activities
     """
+    # Unit test: YES
     if ser_obj[0] == constants.AvailableSerializations.EVENT_LOG.value:
         from pm4py.objects.log.importer.xes import importer as xes_importer
         return xes_importer.deserialize(ser_obj[1])
@@ -308,6 +314,8 @@ def get_properties(log, activity_key: str = "concept:name", timestamp_key: str =
     return parameters
 
 
+@deprecation.deprecated("2.3.0", "3.0.0", details="this method will be removed in a future release."
+                                                  "Please use the method-specific arguments.")
 def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASSIFIER_ATTRIBUTE):
     """
     Methods to set the specified classifier on an existing event log
@@ -385,6 +393,8 @@ def parse_event_log_string(traces: Collection[str], sep: str = ",",
     log
         Event log
     """
+    # Variant that is Pandas native: NO
+    # Unit test: YES
     log = EventLog()
     this_timest = 10000000
     for index, trace in enumerate(traces):
@@ -429,6 +439,8 @@ List[List[str]]:
         ['register request', 'examine casually', 'check ticket', 'decide', 'reinitiate request', 'check ticket', 'examine casually', 'decide', 'reinitiate request', 'examine casually', 'check ticket', 'decide', 'reject request'],
         ['register request', 'check ticket', 'examine thoroughly', 'decide', 'reject request']]
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -461,6 +473,8 @@ def sample_cases(log: Union[EventLog, pd.DataFrame], num_cases: int) -> Union[Ev
     sampled_log
         Sampled event log (containing the specified amount of cases)
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     __event_log_deprecation_warning(log)
     if isinstance(log, EventLog):
         from pm4py.objects.log.util import sampling
@@ -486,6 +500,8 @@ def sample_events(log: Union[EventStream, OCEL], num_events: int) -> Union[Event
     sampled_log
         Sampled event stream / OCEL / Pandas dataframes (containing the specified amount of events)
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     __event_log_deprecation_warning(log)
     if isinstance(log, EventStream):
         from pm4py.objects.log.util import sampling

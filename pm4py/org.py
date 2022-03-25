@@ -34,6 +34,8 @@ def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0
     metric_values
         Values of the metric
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -68,6 +70,8 @@ def discover_working_together_network(log: Union[EventLog, pd.DataFrame], resour
     metric_values
         Values of the metric
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -101,6 +105,8 @@ def discover_activity_based_resource_similarity(log: Union[EventLog, pd.DataFram
     metric_values
         Values of the metric
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -130,6 +136,8 @@ def discover_subcontracting_network(log: Union[EventLog, pd.DataFrame], n=2, res
     metric_values
         Values of the metric
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -167,6 +175,8 @@ def discover_organizational_roles(log: Union[EventLog, pd.DataFrame], resource_k
         - The second element of the sublist is a dictionary containing the resources of the role
         and the number of times they executed activities belonging to the role.
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -220,6 +230,8 @@ def discover_network_analysis(log: Union[pd.DataFrame, EventLog, EventStream], o
     network_analysis
         Edges of the network analysis (first key: edge; second key: type; value: number of occurrences)
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
