@@ -1,9 +1,12 @@
 from typing import Union, Tuple
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import constants
 from pm4py.utils import __event_log_deprecation_warning
 import random
+from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
+from copy import copy
 
 
 def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float = 0.8) -> Union[
@@ -25,10 +28,13 @@ def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float
     test_log
         Test event log
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    if type(log) is pd.DataFrame:
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         cases = set(log[constants.CASE_CONCEPT_NAME].unique())
         train_cases = set()
         test_cases = set()
@@ -64,13 +70,94 @@ def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int) -> Un
         - if a trace has lower or identical length, it is included as-is
         - if a trace has greater length, it is cut
     """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    if type(log) is pd.DataFrame:
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.util import pandas_utils
         log = pandas_utils.insert_ev_in_tr_index(log)
         return log[log[constants.DEFAULT_INDEX_IN_TRACE_KEY] <= (length-1)]
     else:
         from pm4py.objects.log.util import get_prefixes
         return get_prefixes.get_prefixes_from_log(log, length)
+
+
+def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=None, num_tr_attr=None, str_ev_attr=None, num_ev_attr=None, str_evsucc_attr=None, **kwargs) -> pd.DataFrame:
+    """
+    Extracts a dataframe containing the features of each case of the provided log object
+
+    Parameters
+    ----------------
+    log
+        Log object (event log / Pandas dataframe)
+    str_tr_attr
+        (if provided) string attributes at the case level which should be extracted as features
+    num_tr_attr
+        (if provided) numeric attributes at the case level which should be extracted as features
+    str_ev_attr
+        (if provided) string attributes at the event level which should be extracted as features (one-hot encoding)
+    num_ev_attr
+        (if provided) numeric attributes at the event level which should be extracted as features (last value per attribute in a case)
+
+    Returns
+    ---------------
+    fea_df
+        Feature dataframe
+    """
+    # Variant that is Pandas native: YES
+    # Unit test: YES
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    parameters = {}
+    if kwargs is not None:
+        parameters = kwargs
+
+    parameters["str_tr_attr"] = str_tr_attr
+    parameters["num_tr_attr"] = num_tr_attr
+    parameters["str_ev_attr"] = str_ev_attr
+    parameters["num_ev_attr"] = num_ev_attr
+    parameters["str_evsucc_attr"] = str_evsucc_attr
+
+    from pm4py.algo.transformation.log_to_features import algorithm as log_to_features
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+
+    data, feature_names = log_to_features.apply(log, parameters=parameters)
+
+    return pd.DataFrame(data, columns=feature_names)
+
+
+def enhance_net_with_decision_rules(log: Union[EventLog, pd.DataFrame], net: PetriNet, im: Marking, fm: Marking):
+    """
+    Obtain a data Petri net from an event log and a Petri net,
+    which contains decision rules at every split-point of the Petri net automatically discovered from the log.
+
+    Parameters
+    ----------------
+    log
+        Log object
+    net
+        Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+
+    Returns
+    ----------------
+    data_net
+        Data Petri net
+    im
+        Initial marking
+    fm
+        Final marking
+    """
+    # Variant that is Pandas native: NO
+    # Unit test: YES
+    from pm4py.algo.decision_mining import algorithm as decision_mining
+    return decision_mining.create_data_petri_nets_with_decisions(log, net, im, fm)

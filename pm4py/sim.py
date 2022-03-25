@@ -24,6 +24,7 @@ def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, Proc
     log
         Simulated event log
     """
+    # Unit test: YES
     if len(args) == 3:
         from pm4py.objects.petri_net.obj import PetriNet
         if type(args[0]) is PetriNet:
@@ -54,5 +55,6 @@ def generate_process_tree(**kwargs) -> ProcessTree:
     model
         process tree
     """
+    # Unit test: YES
     from pm4py.algo.simulation.tree_generator import algorithm
     return algorithm.apply(**kwargs)
