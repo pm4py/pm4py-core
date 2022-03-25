@@ -12,6 +12,9 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties, __event_log_deprecation_warning
+from pm4py.objects.transition_system.obj import TransitionSystem
+from pm4py.objects.trie.obj import Trie
+import deprecation
 
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = None,
@@ -135,6 +138,10 @@ def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: st
     format
         Format of the output picture (default: png)
     """
+    # Variant that is Pandas native: NO
+    if log is not None:
+        if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     dfg_parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
     parameters = get_properties(log)
@@ -162,6 +169,7 @@ def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_p
     file_path
         Destination path
     """
+    # Variant that is Pandas native: NO
     if log is not None:
         if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
@@ -310,6 +318,7 @@ def __dotted_attribute_selection(log: Union[EventLog, pd.DataFrame], attributes)
     return log, attributes
 
 
+@deprecation.deprecated("2.3.0", "3.0.0", details="the dotted chart visualization will be removed in a future release.")
 def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", attributes=None):
     """
     Displays the dotted chart
@@ -330,6 +339,7 @@ def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", a
         of the form [x-axis attribute, y-axis attribute, color attribute], e.g., ["concept:name", "org:resource", "concept:name"])
 
     """
+    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     log, attributes = __dotted_attribute_selection(log, attributes)
@@ -338,6 +348,7 @@ def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", a
     dotted_chart_visualizer.view(gviz)
 
 
+@deprecation.deprecated("2.3.0", "3.0.0", details="the dotted chart visualization will be removed in a future release.")
 def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, attributes=None):
     """
     Saves the visualization of the dotted chart
@@ -351,6 +362,7 @@ def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, at
     attributes
         Attributes that should be used to construct the dotted chart (for example, ["concept:name", "org:resource"])
     """
+    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     format = os.path.splitext(file_path)[1][1:]
@@ -401,6 +413,7 @@ def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "
     format
         Format of the visualization (png, svg, ...)
     """
+    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
@@ -427,6 +440,7 @@ def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: 
     file_path
         Destination path
     """
+    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
@@ -454,6 +468,7 @@ def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str =
     format
         Format of the visualization (png, svg, ...)
     """
+    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
@@ -480,6 +495,7 @@ def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path
     file_path
         Destination path
     """
+    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
@@ -496,6 +512,7 @@ def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path
     graphs_visualizer.save(graph_vis, file_path)
 
 
+@deprecation.deprecated("2.3.0", "3.0.0", details="the performance spectrum visualization will be removed in a future release.")
 def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], format: str = "png"):
     """
     Displays the performance spectrum
@@ -507,6 +524,7 @@ def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: Li
     format
         Format of the visualization (png, svg ...)
     """
+    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
@@ -517,6 +535,7 @@ def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: Li
     perf_spectrum_visualizer.view(gviz)
 
 
+@deprecation.deprecated("2.3.0", "3.0.0", details="the performance spectrum visualization will be removed in a future release.")
 def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], file_path: str):
     """
     Saves the visualization of the performance spectrum to a file
@@ -530,6 +549,7 @@ def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities
     file_path
         Destination path (including the extension)
     """
+    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
@@ -604,6 +624,7 @@ def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_typ
     format
         Format of the visualization (default: png)
     """
+    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, distr_type)
@@ -636,6 +657,7 @@ def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_
         - hours => Gets the distribution of the events among the hours of a day (from 0 to 23)
         - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday)
     """
+    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     format = os.path.splitext(file_path)[1][1:]
@@ -827,3 +849,69 @@ def save_vis_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, 
     variant = network_analysis_visualizer.Variants.PERFORMANCE if variant == "performance" else network_analysis_visualizer.Variants.FREQUENCY
     gviz = network_analysis_visualizer.apply(network_analysis, variant=variant, parameters={"format": format, "activity_threshold": activity_threshold, "edge_threshold": edge_threshold})
     network_analysis_visualizer.save(gviz, file_path)
+
+
+def view_transition_system(transition_system: TransitionSystem, format: str = "png"):
+    """
+    Views a transition system
+
+    Parameters
+    ----------------
+    transition_system
+        Transition system
+    format
+        Format of the visualization (png, svg, ...)
+    """
+    from pm4py.visualization.transition_system import visualizer as ts_visualizer
+    gviz = ts_visualizer.apply(transition_system, parameters={"format": format})
+    ts_visualizer.view(gviz)
+
+
+def save_vis_transition_system(transition_system: TransitionSystem, file_path: str):
+    """
+    Persists the visualization of a transition system
+
+    Parameters
+    ------------------
+    transition_system
+        Transition system
+    file_path
+        Destination path
+    """
+    format = os.path.splitext(file_path)[1][1:]
+    from pm4py.visualization.transition_system import visualizer as ts_visualizer
+    gviz = ts_visualizer.apply(transition_system, parameters={"format": format})
+    ts_visualizer.save(gviz, file_path)
+
+
+def view_prefix_tree(trie: Trie, format: str = "png"):
+    """
+    Views a prefix tree
+
+    Parameters
+    ----------------
+    prefix_tree
+        Prefix tree
+    format
+        Format of the visualization (png, svg, ...)
+    """
+    from pm4py.visualization.trie import visualizer as trie_visualizer
+    gviz = trie_visualizer.apply(trie, parameters={"format": format})
+    trie_visualizer.view(gviz)
+
+
+def save_vis_prefix_tree(trie: Trie, file_path: str):
+    """
+    Persists the visualization of a prefix tree
+
+    Parameters
+    ------------------
+    prefix_tree
+        Prefix tree
+    file_path
+        Destination path
+    """
+    format = os.path.splitext(file_path)[1][1:]
+    from pm4py.visualization.trie import visualizer as trie_visualizer
+    gviz = trie_visualizer.apply(trie, parameters={"format": format})
+    trie_visualizer.save(gviz, file_path)
