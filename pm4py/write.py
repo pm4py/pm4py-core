@@ -1,3 +1,6 @@
+__doc__ = """
+"""
+
 import warnings
 
 from pm4py.objects.bpmn.obj import BPMN

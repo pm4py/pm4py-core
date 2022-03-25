@@ -1,3 +1,6 @@
+__doc__ = """
+"""
+
 from typing import Union, Tuple
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream
