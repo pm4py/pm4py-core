@@ -27,6 +27,7 @@ from pm4py.util import exec_utils
 from pm4py.statistics.sojourn_time.log import get as soj_time_get
 from pm4py.util import constants
 from enum import Enum
+from collections import Counter
 
 from typing import Optional, Dict, Any, Tuple
 from pm4py.objects.log.obj import EventLog
