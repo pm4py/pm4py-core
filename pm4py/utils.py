@@ -372,11 +372,11 @@ def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASS
 def parse_event_log_string(traces: Collection[str], sep: str = ",",
                            activity_key: str = xes_constants.DEFAULT_NAME_KEY,
                            timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
-                           case_id_key: str = xes_constants.DEFAULT_TRACEID_KEY) -> EventLog:
+                           case_id_key: str = constants.CASE_CONCEPT_NAME) -> pd.DataFrame:
     """
     Parse a collection of traces expressed as strings
     (e.g., ["A,B,C,D", "A,C,B,D", "A,D"])
-    to an event log
+    to a log object (Pandas dataframe)
 
     Parameters
     ------------------
@@ -393,23 +393,25 @@ def parse_event_log_string(traces: Collection[str], sep: str = ",",
 
     Returns
     -----------------
-    log
-        Event log
+    df
+        Pandas dataframe
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
-    log = EventLog()
+    cases = []
+    activitiess = []
+    timestamps = []
     this_timest = 10000000
+
     for index, trace in enumerate(traces):
         activities = trace.split(sep)
-        trace = Trace()
-        trace.attributes[case_id_key] = str(index)
         for act in activities:
-            event = Event({activity_key: act, timestamp_key: datetime.datetime.fromtimestamp(this_timest)})
-            trace.append(event)
+            cases.append(str(index))
+            activitiess.append(act)
+            timestamps.append(datetime.datetime.fromtimestamp(this_timest))
             this_timest = this_timest + 1
-        log.append(trace)
-    return log
+
+    return pd.DataFrame({case_id_key: cases, activity_key: activitiess, timestamp_key: timestamps})
 
 
 def project_on_event_attribute(log: Union[EventLog, pd.DataFrame], attribute_key=xes_constants.DEFAULT_NAME_KEY) -> \

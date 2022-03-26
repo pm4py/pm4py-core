@@ -38,7 +38,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], variant=DEFAULT_VARIA
     model
         Log skeleton model
     """
-    return exec_utils.get_variant(variant).apply(log_conversion.apply(log, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters), parameters=parameters)
+    return exec_utils.get_variant(variant).apply(log, parameters=parameters)
 
 
 def apply_from_variants_list(var_list: List[Tuple[str, int]], variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
