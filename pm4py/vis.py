@@ -125,8 +125,7 @@ def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: 
     dfg_visualizer.save(gviz, file_path)
 
 
-def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = "png",
-             log: Optional[EventLog] = None):
+def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = "png"):
     """
     Views a (composite) DFG
 
@@ -141,23 +140,18 @@ def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: st
     format
         Format of the output picture (default: png)
     """
-    # Variant that is Pandas native: NO
-    if log is not None:
-        if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     dfg_parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
-    parameters = get_properties(log)
+    parameters = {}
     parameters[dfg_parameters.FORMAT] = format
     parameters[dfg_parameters.START_ACTIVITIES] = start_activities
     parameters[dfg_parameters.END_ACTIVITIES] = end_activities
-    gviz = dfg_visualizer.apply(dfg, log=log, variant=dfg_visualizer.Variants.FREQUENCY,
+    gviz = dfg_visualizer.apply(dfg, variant=dfg_visualizer.Variants.FREQUENCY,
                                 parameters=parameters)
     dfg_visualizer.view(gviz)
 
 
-def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str,
-                 log: Optional[EventLog] = None):
+def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str):
     """
     Saves a DFG visualization to a file
 
@@ -172,18 +166,14 @@ def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_p
     file_path
         Destination path
     """
-    # Variant that is Pandas native: NO
-    if log is not None:
-        if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     dfg_parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
-    parameters = get_properties(log)
+    parameters = {}
     parameters[dfg_parameters.FORMAT] = format
     parameters[dfg_parameters.START_ACTIVITIES] = start_activities
     parameters[dfg_parameters.END_ACTIVITIES] = end_activities
-    gviz = dfg_visualizer.apply(dfg, log=log, variant=dfg_visualizer.Variants.FREQUENCY,
+    gviz = dfg_visualizer.apply(dfg, variant=dfg_visualizer.Variants.FREQUENCY,
                                 parameters=parameters)
     dfg_visualizer.save(gviz, file_path)
 

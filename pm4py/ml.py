@@ -133,34 +133,3 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
     data, feature_names = log_to_features.apply(log, parameters=parameters)
 
     return pd.DataFrame(data, columns=feature_names)
-
-
-def enhance_net_with_decision_rules(log: Union[EventLog, pd.DataFrame], net: PetriNet, im: Marking, fm: Marking):
-    """
-    Obtain a data Petri net from an event log and a Petri net,
-    which contains decision rules at every split-point of the Petri net automatically discovered from the log.
-
-    Parameters
-    ----------------
-    log
-        Log object
-    net
-        Petri net
-    im
-        Initial marking
-    fm
-        Final marking
-
-    Returns
-    ----------------
-    data_net
-        Data Petri net
-    im
-        Initial marking
-    fm
-        Final marking
-    """
-    # Variant that is Pandas native: NO
-    # Unit test: YES
-    from pm4py.algo.decision_mining import algorithm as decision_mining
-    return decision_mining.create_data_petri_nets_with_decisions(log, net, im, fm)
