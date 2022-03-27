@@ -1,5 +1,37 @@
 __doc__ = """
 Conformance checking is a techniques to compare a process model with an event log of the same process. The goal is to check if the event log conforms to the model, and, vice versa.
+
+* Procedural models
+    * Conformance Checking diagnostics
+        * `Token-Based Replay (TBR)`_
+        * `Alignments`_
+        * `Footprints`_
+    * Evaluation
+        * Fitness
+            * `Fitness TBR`_
+            * `Fitness Alignments`_
+            * `Fitness Footprints`_
+        * Precision
+            * `Precision TBR`_
+            * `Precision Alignments`_
+            * `Precision Footprints`_
+* Declarative models
+    * `Conformance diagnostics using the Log Skeleton`_
+* Time-infused models
+    * `Conformance checking using the Temporal Profile`_
+
+.. _Token-Based Replay (TBR): pm4py.html#pm4py.conformance.conformance_diagnostics_token_based_replay
+.. _Alignments: pm4py.html#pm4py.conformance.conformance_diagnostics_alignments
+.. _Footprints: pm4py.html#pm4py.conformance.conformance_diagnostics_footprints
+.. _Fitness TBR: pm4py.html#pm4py.conformance.fitness_token_based_replay
+.. _Fitness Alignments: pm4py.html#pm4py.conformance.fitness_alignments
+.. _Fitness Footprints: pm4py.html#pm4py.conformance.fitness_footprints
+.. _Precision TBR: pm4py.html#pm4py.conformance.precision_token_based_replay
+.. _Precision Alignments: pm4py.html#pm4py.conformance.precision_alignments
+.. _Precision Footprints: pm4py.html#pm4py.conformance.precision_footprints
+.. _Conformance diagnostics using the Log Skeleton: pm4py.html#pm4py.conformance.conformance_log_skeleton
+.. _Conformance checking using the Temporal Profile: pm4py.html#pm4py.conformance.conformance_temporal_profile
+
 """
 
 import warnings
