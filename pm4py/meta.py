@@ -30,6 +30,8 @@ Process Mining for Python (PM4Py)
     Possibility to transform an event log to a matrix of features in order to apply mainstream machine learning methods/libraries.
 * `Simulation`_
     We offer different simulation algorithms, that starting from a model, are able to produce an output that follows the model and the different rules that have been provided by the user.
+* `Object-Centric Process Mining`_
+    Object-centric process mining is a novel branch which drops the assumption that an event is associated to a single case. In this way, an event can be related to different objects of different object types.
 
 .. _Importing Log Files: pm4py.html#module-pm4py.read
 .. _Exporting Log Files: pm4py.html#module-pm4py.write
@@ -40,5 +42,6 @@ Process Mining for Python (PM4Py)
 .. _Filtering: pm4py.html#module-pm4py.filtering
 .. _Machine Learning: pm4py.html#module-pm4py.ml
 .. _Simulation: pm4py.html#module-pm4py.sim
+.. _Object-Centric Process Mining: pm4py.html#module-pm4py.ocel
 
 """
