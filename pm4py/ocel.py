@@ -1,4 +1,35 @@
 __doc__ = """
+Traditional event logs, used by mainstream process mining techniques, require the events to be related to a case. A case is a set of events for a particular purpose. A case notion is a criteria to assign a case to the events.
+
+However, in real processes this leads to two problems:
+
+* If we consider the Order-to-Cash process, an order could be related to many different deliveries. If we consider the delivery as case notion, the same event of Create Order needs to be replicated in different cases (all the deliveries involving the order). This is called the convergence problem.
+* If we consider the Order-to-Cash process, an order could contain different order items, each one with a different lifecycle. If we consider the order as case notion, several instances of the activities for the single items may be contained in the case, and this make the frequency/performance annotation of the process problematic. This is called the divergence problem.
+
+Object-centric event logs relax the assumption that an event is related to exactly one case. Indeed, an event can be related to different objects of different object types.
+
+Essentially, we can describe the different components of an object-centric event log as:
+
+* Events, having an identifier, an activity, a timestamp, a list of related objects and a dictionary of other attributes.
+* Objects, having an identifier, a type and a dictionary of other attributes.
+* Attribute names, e.g., the possible keys for the attributes of the event/object attribute map.
+* Object types, e.g., the possible types for the objects.
+
+In PM4Py, we offer object-centric process mining features:
+
+* `Importing OCELs`_
+* `Exporting OCELs`_
+* Process Discovery
+    * `OC-DFG`_
+    * `Object-centric Petri nets`_
+* `Flattening`_
+
+.. _Importing OCELs: pm4py.html#pm4py.read.read_ocel
+.. _Exporting OCELs: pm4py.html#pm4py.write.write_ocel
+.. _OC-DFG: pm4py.html#pm4py.ocel.discover_ocdfg
+.. _Object-centric Petri nets: pm4py.html#pm4py.ocel.discover_oc_petri_net
+.. _Flattening: pm4py.html#pm4py.ocel.ocel_flattening
+
 """
 
 from typing import List, Dict, Collection, Any, Optional
