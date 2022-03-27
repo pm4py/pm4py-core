@@ -1,4 +1,25 @@
 __doc__ = """
+Cross-conversions are available between the different event log formats, and the different types of process models
+offered in PM4Py.
+
+* Conversion between event log formats
+    * `Converting to (XES) event log`_
+    * `Converting to Pandas dataframe`_
+    * `Converting to event stream`_
+* Conversion between process models
+    * `Converting to Petri net`_
+    * `Converting to BPMN`_
+    * `Converting to Process Tree`_
+    * `Converting to Reachability Graph`_
+
+.. _Converting to (XES) event log: pm4py.html#pm4py.convert.convert_to_event_log
+.. _Converting to Pandas dataframe: pm4py.html#pm4py.convert.convert_to_dataframe
+.. _Converting to event stream: pm4py.html#pm4py.convert.convert_to_event_stream
+.. _Converting to Petri net: pm4py.html#pm4py.convert.convert_to_petri_net
+.. _Converting to BPMN: pm4py.html#pm4py.convert.convert_to_bpmn
+.. _Converting to Process Tree: pm4py.html#pm4py.convert.convert_to_process_tree
+.. _Converting to Reachability Graph: pm4py.html#pm4py.convert.convert_to_reachability_graph
+
 """
 
 from typing import Union, Tuple, Optional
