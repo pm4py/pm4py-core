@@ -1,5 +1,34 @@
 __doc__ = """
 Process Discovery algorithms want to find a suitable process model that describes the order of events/activities that are executed during a process execution.
+
+* Traditional process models
+    * Procedural
+        * Discovering Petri nets
+            * `Alpha Miner`_
+            * `Inductive Miner`_
+            * `Heuristics Miner`_
+        * `BPMN discovery using the Inductive Miner`_
+        * `Process tree discovery using the Inductive Miner`_
+        * `Transition system`_
+        * `Prefix tree`_
+    * Declarative
+        * `Log skeleton`_
+    * Time-infused
+        * `Temporal profile`_
+* Object-centric process models
+    * `OC-DFG discovery`_
+    * `OC-PN discovery`_
+
+.. _Alpha Miner: pm4py.html#pm4py.discovery.discover_petri_net_alpha
+.. _Inductive Miner: pm4py.html#pm4py.discovery.discover_petri_net_inductive
+.. _Heuristics Miner: pm4py.html#pm4py.discovery.discover_petri_net_heuristics
+.. _BPMN discovery using the Inductive Miner: pm4py.html#pm4py.discovery.discover_bpmn_inductive
+.. _Process tree discovery using the Inductive Miner: pm4py.html#pm4py.discovery.discover_process_tree_inductive
+.. _Transition system: pm4py.html#pm4py.discovery.discover_transition_system
+.. _Prefix tree: pm4py.html#pm4py.discovery.discover_prefix_tree
+.. _Log skeleton: pm4py.html#pm4py.discovery.discover_log_skeleton
+.. _OC-DFG discovery: pm4py.html#pm4py.discovery.discover_ocdfg
+.. _OC-PN discovery: pm4py.html#pm4py.discovery.discover_oc_petri_net
 """
 
 import warnings
