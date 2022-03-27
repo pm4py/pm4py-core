@@ -20,12 +20,14 @@ Process Mining for Python (PM4Py)
     * `Conversions`_
 * `Process Discovery`_
     Process Discovery algorithms want to find a suitable process model that describes the order of events/activities that are executed during a process execution.
+* `Visualization`_
+    We offer a set of visualizations for process models and statistics.
 * `Conformance Checking`_
     Conformance checking is a techniques to compare a process model with an event log of the same process. The goal is to check if the event log conforms to the model, and, vice versa.
 * `Statistics`_
     In this section, different statistics that could be computed on top of event logs are explained.
 * `Filtering`_
-    * Filtering is the restriction of the event log to a subset of the behavior.
+    Filtering is the restriction of the event log to a subset of the behavior.
 * `Machine Learning`_
     Possibility to transform an event log to a matrix of features in order to apply mainstream machine learning methods/libraries.
 * `Simulation`_
@@ -37,6 +39,7 @@ Process Mining for Python (PM4Py)
 .. _Exporting Log Files: pm4py.html#module-pm4py.write
 .. _Conversions: pm4py.html#module-pm4py.convert
 .. _Process Discovery: pm4py.html#module-pm4py.discovery
+.. _Visualization: pm4py.html#module-pm4py.vis
 .. _Conformance Checking: pm4py.html#module-pm4py.conformance
 .. _Statistics: pm4py.html#module-pm4py.stats
 .. _Filtering: pm4py.html#module-pm4py.filtering
