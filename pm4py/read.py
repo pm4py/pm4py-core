@@ -46,7 +46,16 @@ INDEX_COLUMN = "@@index"
 
 def read_xes(file_path: str, variant: str = "iterparse", **kwargs) -> EventLog:
     """
-    Reads an event log in the XES standard
+    Reads an event log in the XES standard.
+
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       log = pm4py.read_xes("tests/input_data/running-example.xes")
+       pm4py.write_xes("example.xes")
 
     Parameters
     ---------------
@@ -75,6 +84,15 @@ def read_pnml(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
     """
     Reads a Petri net from the .PNML format
 
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       net, im, fm = pm4py.read_pnml("tests/input_data/running-example.pnml")
+       pm4py.write_pnml(net, im, fm, "example.pnml")
+
     Parameters
     ----------------
     file_path
@@ -99,6 +117,15 @@ def read_ptml(file_path: str) -> ProcessTree:
     """
     Reads a process tree from a .ptml file
 
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       process_tree = pm4py.read_ptml("tests/input_data/running-example.ptml")
+       pm4py.write_ptml(process_tree, "example.ptml")
+
     Parameters
     ---------------
     file_path
@@ -118,6 +145,15 @@ def read_ptml(file_path: str) -> ProcessTree:
 def read_dfg(file_path: str) -> Tuple[dict, dict, dict]:
     """
     Reads a DFG from a .dfg file
+
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       frequency_dfg = pm4py.read_dfg("tests/input_data/running-example.dfg")
+       pm4py.write_dfg(frequency_dfg, "example.dfg")
 
     Parameters
     ------------------
@@ -143,6 +179,15 @@ def read_bpmn(file_path: str) -> BPMN:
     """
     Reads a BPMN from a .bpmn file
 
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       bpmn_graph = pm4py.read_bpmn("tests/input_data/running-example.bpmn")
+       pm4py.write_bpmn(bpmn_graph, "example.bpmn")
+
     Parameters
     ---------------
     file_path
@@ -164,6 +209,16 @@ def read_ocel(file_path: str, objects_path: str = None) -> OCEL:
     Reads an object-centric event log from a file
     (to get an explanation of what an object-centric event log is,
     you can refer to http://www.ocel-standard.org/).
+
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       ocel = pm4py.read_ocel("tests/input_data/ocel/example_log.jsonocel")
+       pm4py.write_ocel(ocel, "example.ocel")
+
 
     Parameters
     ----------------

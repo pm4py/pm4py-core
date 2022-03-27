@@ -45,7 +45,16 @@ from typing import Union
 
 def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str) -> None:
     """
-    Exports a XES log
+    Exports a XES log.
+
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       log = pm4py.read_xes("tests/input_data/running-example.xes")
+       pm4py.write_xes("example.xes")
 
     Parameters
     --------------
@@ -68,7 +77,16 @@ def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str) -> None:
 
 def write_pnml(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, file_path: str) -> None:
     """
-    Exports a (composite) Petri net object
+    Exports a (composite) Petri net object.
+
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       net, im, fm = pm4py.read_pnml("tests/input_data/running-example.pnml")
+       pm4py.write_pnml(net, im, fm, "example.pnml")
 
     Parameters
     ------------
@@ -94,6 +112,15 @@ def write_ptml(tree: ProcessTree, file_path: str) -> None:
     """
     Exports a process tree
 
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       process_tree = pm4py.read_ptml("tests/input_data/running-example.ptml")
+       pm4py.write_ptml(process_tree, "example.ptml")
+
     Parameters
     ------------
     tree
@@ -113,6 +140,15 @@ def write_ptml(tree: ProcessTree, file_path: str) -> None:
 def write_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str):
     """
     Exports a DFG
+
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       frequency_dfg = pm4py.read_dfg("tests/input_data/running-example.dfg")
+       pm4py.write_dfg(frequency_dfg, "example.dfg")
 
     Parameters
     -------------
@@ -140,6 +176,15 @@ def write_bpmn(bpmn_graph: BPMN, file_path: str, enable_layout: bool = True):
     """
     Writes a BPMN to a file
 
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       bpmn_graph = pm4py.read_bpmn("tests/input_data/running-example.bpmn")
+       pm4py.write_bpmn(bpmn_graph, "example.bpmn")
+
     Parameters
     ---------------
     bpmn_graph
@@ -162,6 +207,15 @@ def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     Stores the content of the object-centric event log to a file.
     Different formats are supported, including CSV (flat table), JSON-OCEL and XML-OCEL
     (described in the site http://www.ocel-standard.org/).
+
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       ocel = pm4py.read_ocel("tests/input_data/ocel/example_log.jsonocel")
+       pm4py.write_ocel(ocel, "example.ocel")
 
     Parameters
     -----------------
