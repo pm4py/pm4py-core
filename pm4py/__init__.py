@@ -1,5 +1,7 @@
 import time
 
+from pm4py import util, objects, statistics, algo, visualization
+from pm4py import analysis, conformance, convert, discovery, filtering, hof, ml, ocel, org, read, sim, stats, utils, vis, write
 from pm4py.read import read_xes, read_dfg, read_bpmn, read_pnml, read_ptml, read_ocel
 from pm4py.write import write_xes, write_dfg, write_bpmn, write_pnml, write_ptml, write_ocel
 from pm4py.utils import format_dataframe, parse_process_tree, serialize, deserialize, set_classifier, parse_event_log_string, project_on_event_attribute, \
@@ -45,7 +47,6 @@ from pm4py.sim import play_out, generate_process_tree
 from pm4py.ml import split_train_test, get_prefixes_from_log, extract_features_dataframe
 from pm4py.org import discover_handover_of_work_network, discover_activity_based_resource_similarity, discover_subcontracting_network, discover_working_together_network, discover_organizational_roles, discover_network_analysis
 from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
-from pm4py import util, objects, statistics, algo, visualization
 from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
     __maintainer__, __maintainer_email__
 
