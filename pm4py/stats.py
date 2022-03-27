@@ -1,5 +1,36 @@
 __doc__ = """
 In this section, different statistics that could be computed on top of event logs are explained.
+
+* Endpoints
+    * `Start activities`_
+    * `End activities`_
+* Attributes
+    * `Event attributes`_
+    * `Case attributes`_
+    * `Values for the event attributes`_
+    * `Values for the case attributes`_
+* `Variants`_
+* Throughput Times
+    * `All cases`_
+    * `Specific case`_
+* `Cycle Time`_
+* Activity-specific statistics
+    * `Activities rework`_
+    * `Activities position summary`_
+
+.. _Start activities: pm4py.html#pm4py.stats.get_start_activities
+.. _End activities: pm4py.html#pm4py.stats.get_end_activities
+.. _Event attributes: pm4py.html#pm4py.stats.get_event_attributes
+.. _Case attributes: pm4py.html#pm4py.stats.get_trace_attributes
+.. _Values for the event attributes: pm4py.html#pm4py.stats.get_event_attribute_values
+.. _Values for the case attributes: pm4py.html#pm4py.stats.get_trace_attribute_values
+.. _Variants: pm4py.html#pm4py.stats.get_variants_as_tuples
+.. _All cases: pm4py.html#pm4py.stats.get_all_case_durations
+.. _Specific case: pm4py.html#pm4py.stats.get_case_duration
+.. _Cycle Time: pm4py.html#pm4py.stats.get_cycle_time
+.. _Activities rework: pm4py.html#pm4py.stats.get_variants_as_tuples
+.. _Activities position summary: pm4py.html#pm4py.stats.get_activity_position_summary
+
 """
 
 from typing import Dict, Union, List, Tuple, Collection
