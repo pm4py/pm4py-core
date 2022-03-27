@@ -1,5 +1,14 @@
 __doc__ = """
-Possibility to transform an event log to a matrix of features in order to apply mainstream machine learning methods/libraries.
+PM4Py offers some features useful for the application of machine learning techniques.
+
+* `Feature extraction from an event log`_
+* `Split a log into training/test log`_
+* `Get fixed-length prefixes from an event log`_
+
+.. _Feature extraction from an event log: pm4py.html#pm4py.ml.extract_features_dataframe
+.. _Split a log into training/test log: pm4py.html#pm4py.ml.split_train_test
+.. _Get fixed-length prefixes from an event log: pm4py.html#pm4py.ml.get_prefixes_from_log
+
 """
 
 from typing import Union, Tuple
