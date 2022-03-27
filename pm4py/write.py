@@ -5,6 +5,17 @@ and different kinds of process models.
 * Exporting traditional event logs
     * `Exporting to XES`_
     * Exporting to CSV
+        Use the conversion to dataframe to convert from any log format to dataframe,
+        then use Pandas to write the event log in the CSV format. Example:
+        
+        .. code-block:: python3
+        
+           import pm4py
+           
+           event_log = pm4py.read_xes("tests/input_data/running-example.xes")
+           dataframe = pm4py.convert_to_dataframe(event_log)
+           dataframe.to_csv("example.csv", index=False)
+
 * `Exporting object-centric event logs`_
 * Exporting process models
     * `Exporting Petri nets to PNML`_
