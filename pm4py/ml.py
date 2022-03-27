@@ -1,4 +1,5 @@
 __doc__ = """
+Possibility to transform an event log to a matrix of features in order to apply mainstream machine learning methods/libraries.
 """
 
 from typing import Union, Tuple

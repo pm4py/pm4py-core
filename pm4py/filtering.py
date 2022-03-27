@@ -1,4 +1,6 @@
 __doc__ = """
+Filtering is the restriction of the event log to a subset of the behavior.
+
 * Filtering Traditional Event Logs
     * Endpoint Filters
         * `Filter on Start Activities`_

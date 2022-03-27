@@ -1,4 +1,5 @@
 __doc__ = """
+In this section, different statistics that could be computed on top of event logs are explained.
 """
 
 from typing import Dict, Union, List, Tuple, Collection
