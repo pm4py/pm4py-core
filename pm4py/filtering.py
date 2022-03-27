@@ -1,4 +1,46 @@
 __doc__ = """
+* Filtering Traditional Event Logs
+    * Endpoint Filters
+        * `Filter on Start Activities`_
+        * `Filter on End Activities`_
+    * `Timeframe Filter`_
+    * `Case Performance Filter`_
+    * Attributes Filter
+        * `Event Attributes Filter`_
+        * `Case Attributes Filter`_
+    * Variants Filter
+        * `Manual Variants Specification`_
+        * `Top K Variants`_
+        * `Coverage Percentage`_
+    * LTL Checking
+        * `Four Eyes Principle`_
+        * `Activity done by different Resources`_
+* Filtering Object-Centric Event Logs
+    * `OCEL Filter on Event Attributes`_
+    * `OCEL Filter on Object Attributes`_
+    * `OCEL Filter on Allowed Activities per Object Type`_
+    * `OCEL Filter on Number of Objects per Type`_
+    * `OCEL Filter on Start Events per Object Type`_
+    * `OCEL Filter on End Events per Object Type`_
+
+.. _Filter on Start Activities: pm4py.html#pm4py.filtering.filter_start_activities
+.. _Filter on End Activities: pm4py.html#pm4py.filtering.filter_end_activities
+.. _Timeframe Filter: pm4py.html#pm4py.filtering.filter_time_range
+.. _Case Performance Filter: pm4py.html#pm4py.filtering.filter_case_performance
+.. _Event Attributes Filter: pm4py.html#pm4py.filtering.filter_event_attribute_values
+.. _Case Attributes Filter: pm4py.html#pm4py.filtering.filter_trace_attribute_values
+.. _Manual Variants Specification: pm4py.html#pm4py.filtering.filter_variants
+.. _Top K Variants: pm4py.html#pm4py.filtering.filter_variants_top_k
+.. _Coverage Percentage: pm4py.html#pm4py.filtering.filter_variants_by_coverage_percentage
+.. _OCEL Filter on Event Attributes: pm4py.html#pm4py.filtering.filter_ocel_event_attribute
+.. _OCEL Filter on Object Attributes: pm4py.html#pm4py.filtering.filter_ocel_object_attribute
+.. _OCEL Filter on Allowed Activities per Object Type: pm4py.html#pm4py.filtering.filter_ocel_object_types_allowed_activities
+.. _OCEL Filter on Number of Objects per Type: pm4py.html#pm4py.filtering.filter_ocel_object_per_type_count
+.. _OCEL Filter on Start Events per Object Type: pm4py.html#pm4py.filtering.filter_ocel_start_events_per_object_type
+.. _OCEL Filter on End Events per Object Type: pm4py.html#pm4py.filtering.filter_ocel_end_events_per_object_type
+.. _Four Eyes Principle: pm4py.html#pm4py.filtering.filter_four_eyes_principle
+.. _Activity done by different Resources: pm4py.html#pm4py.filtering.filter_activity_done_different_resources
+
 """
 
 import warnings
