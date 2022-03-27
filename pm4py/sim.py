@@ -1,4 +1,5 @@
 __doc__ = """
+We offer different simulation algorithms, that starting from a model, are able to produce an output that follows the model and the different rules that have been provided by the user.
 """
 
 from collections import Counter

@@ -1,4 +1,5 @@
 __doc__ = """
+Conformance checking is a techniques to compare a process model with an event log of the same process. The goal is to check if the event log conforms to the model, and, vice versa.
 """
 
 import warnings

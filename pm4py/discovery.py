@@ -1,4 +1,5 @@
 __doc__ = """
+Process Discovery algorithms want to find a suitable process model that describes the order of events/activities that are executed during a process execution.
 """
 
 import warnings
