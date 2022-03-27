@@ -5,6 +5,16 @@ and different kinds of process models.
 * Importing traditional event logs
     * `Importing from XES`_
     * Importing from CSV
+        Import the dataframe using Pandas, and then use the `method to assign a proper column mapping`_. Example:
+        
+        .. code-block:: python3
+        
+           import pandas as pd
+           import pm4py
+        
+           dataframe = pm4py.read_csv("tests/input_data/running-example.csv")
+           dataframe = pm4py.format_dataframe(dataframe, case_id_column='case:concept:name', activity_column='concept:name', timestamp_column='time:timestamp')
+        
 * `Importing object-centric event logs`_
 * Importing process models
     * `Importing Petri nets from PNML`_
@@ -18,6 +28,8 @@ and different kinds of process models.
 .. _Importing BPMN diagrams from BPMN 2.0: pm4py.html#pm4py.read.read_bpmn
 .. _Importing process trees from PTML: pm4py.html#pm4py.read.read_ptml
 .. _Importing directly-follows graphs: pm4py.html#pm4py.read.read_dfg
+.. _Importing directly-follows graphs: pm4py.html#pm4py.read.read_dfg
+.. _method to assign a proper column mapping: pm4py.html#pm4py.utils.format_dataframe
 """
 
 import warnings
