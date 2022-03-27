@@ -1,5 +1,12 @@
 __doc__ = """
 We offer different simulation algorithms, that starting from a model, are able to produce an output that follows the model and the different rules that have been provided by the user.
+
+* `Playout of a process model`_
+* `Generation of a process model (process tree)`_
+
+.. _Playout of a process model: pm4py.html#pm4py.sim.play_out
+.. _Generation of a process model (process tree): pm4py.html#pm4py.sim.generate_process_tree
+
 """
 
 from collections import Counter
