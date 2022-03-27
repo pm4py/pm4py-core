@@ -39,6 +39,17 @@ def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: str
     """
     Converts a log object to an event log
 
+    Example:
+
+    .. code-block:: python3
+
+       import pandas as pd
+       import pm4py
+
+       dataframe = pm4py.read_csv("tests/input_data/running-example.csv")
+       dataframe = pm4py.format_dataframe(dataframe, case_id_column='case:concept:name', activity_column='concept:name', timestamp_column='time:timestamp')
+       log = pm4py.convert_to_event_log(dataframe)
+
     Parameters
     -------------
     obj
@@ -66,6 +77,15 @@ def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: str
     """
     Converts a log object to an event stream
 
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       log = pm4py.read_xes("tests/input_data/running-example.xes")
+       event_stream = pm4py.convert_to_event_stream(log)
+
     Parameters
     --------------
     obj
@@ -92,6 +112,15 @@ def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: str
 def convert_to_dataframe(obj: Union[EventStream, EventLog]) -> pd.DataFrame:
     """
     Converts a log object to a dataframe
+
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       log = pm4py.read_xes("tests/input_data/running-example.xes")
+       
 
     Parameters
     --------------
