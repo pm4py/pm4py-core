@@ -120,7 +120,8 @@ def convert_to_dataframe(obj: Union[EventStream, EventLog]) -> pd.DataFrame:
        import pm4py
 
        log = pm4py.read_xes("tests/input_data/running-example.xes")
-       
+       dataframe = pm4py.convert_to_dataframe(log)
+
 
     Parameters
     --------------
@@ -143,6 +144,16 @@ def convert_to_dataframe(obj: Union[EventStream, EventLog]) -> pd.DataFrame:
 def convert_to_bpmn(*args: Union[Tuple[PetriNet, Marking, Marking], ProcessTree]) -> BPMN:
     """
     Converts an object to a BPMN diagram
+
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       # import a Petri net from a file
+       net, im, fm = pm4py.read_pnml("tests/input_data/running-example.pnml")
+       bpmn_graph = pm4py.convert_to_bpmn(net, im, fm)
 
     Parameters
     --------------
@@ -181,6 +192,16 @@ def convert_to_bpmn(*args: Union[Tuple[PetriNet, Marking, Marking], ProcessTree]
 def convert_to_petri_net(*args: Union[BPMN, ProcessTree, HeuristicsNet, dict]) -> Tuple[PetriNet, Marking, Marking]:
     """
     Converts an object to an (accepting) Petri net
+
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       # imports a process tree from a PTML file
+       process_tree = pm4py.read_ptml("tests/input_data/running-example.ptml")
+       net, im, fm = pm4py.convert_to_petri_net(process_tree)
 
     Parameters
     --------------
@@ -221,7 +242,18 @@ def convert_to_petri_net(*args: Union[BPMN, ProcessTree, HeuristicsNet, dict]) -
 
 def convert_to_process_tree(*args: Union[Tuple[PetriNet, Marking, Marking], BPMN]) -> ProcessTree:
     """
-    Converts an object to a process tree
+    Converts an object to a process tree.
+
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       # imports a BPMN file
+       bpmn_graph = pm4py.read_bpmn("tests/input_data/running-example.bpmn")
+       # converts the BPMN to a process tree (through intermediate conversion to a Petri net)
+       process_tree = pm4py.convert_to_process_tree(bpmn_graph)
 
     Parameters
     --------------
@@ -256,6 +288,17 @@ def convert_to_process_tree(*args: Union[Tuple[PetriNet, Marking, Marking], BPMN
 def convert_to_reachability_graph(*args: Union[Tuple[PetriNet, Marking, Marking], BPMN, ProcessTree]) -> TransitionSystem:
     """
     Converts an object to a reachability graph (transition system)
+
+    Example:
+
+    .. code-block:: python3
+
+       import pm4py
+
+       # reads a Petri net from a file
+       net, im, fm = pm4py.read_pnml("tests/input_data/running-example.pnml")
+       # converts it to reachability graph
+       reach_graph = pm4py.convert_to_reachability_graph(net, im, fm)
 
     Parameters
     --------------
