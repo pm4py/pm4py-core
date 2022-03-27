@@ -1,4 +1,23 @@
 __doc__ = """
+We offer the possibility to import event logs (from XES or CSV files), object-centric event logs (from OCEL),
+and different kinds of process models.
+
+* Importing traditional event logs
+    * `Importing from XES`_
+    * Importing from CSV
+* `Importing object-centric event logs`_
+* Importing process models
+    * `Importing Petri nets from PNML`_
+    * `Importing BPMN diagrams from BPMN 2.0`_
+    * `Importing process trees from PTML`_
+    * `Importing directly-follows graphs`_
+
+.. _Importing from XES: pm4py.html#pm4py.read.read_xes
+.. _Importing object-centric event logs: pm4py.html#pm4py.read.read_ocel
+.. _Importing Petri nets from PNML: pm4py.html#pm4py.read.read_pnml
+.. _Importing BPMN diagrams from BPMN 2.0: pm4py.html#pm4py.read.read_bpmn
+.. _Importing process trees from PTML: pm4py.html#pm4py.read.read_ptml
+.. _Importing directly-follows graphs: pm4py.html#pm4py.read.read_dfg
 """
 
 import warnings
