@@ -1,4 +1,23 @@
 __doc__ = """
+We offer the possibility to export event logs (in XES or CSV files), object-centric event logs (in OCEL),
+and different kinds of process models.
+
+* Exporting traditional event logs
+    * `Exporting to XES`_
+    * Exporting to CSV
+* `Exporting object-centric event logs`_
+* Exporting process models
+    * `Exporting Petri nets to PNML`_
+    * `Exporting BPMN diagrams to BPMN 2.0`_
+    * `Exporting process trees to PTML`_
+    * `Exporting directly-follows graphs`_
+
+.. _Exporting to XES: pm4py.html#pm4py.write.write_xes
+.. _Exporting object-centric event logs: pm4py.html#pm4py.write.write_ocel
+.. _Exporting Petri nets to PNML: pm4py.html#pm4py.write.write_pnml
+.. _Exporting BPMN diagrams to BPMN 2.0: pm4py.html#pm4py.write.write_bpmn
+.. _Exporting process trees to PTML: pm4py.html#pm4py.write.write_ptml
+.. _Exporting directly-follows graphs: pm4py.html#pm4py.write.write_dfg
 """
 
 import warnings
