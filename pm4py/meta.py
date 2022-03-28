@@ -7,7 +7,11 @@ __maintainer__ = 'Fraunhofer Institute for Applied Technology'
 __maintainer_email__ = "pm4py@fit.fraunhofer.de"
 
 __doc__ = """
-Process Mining for Python (PM4Py)
+Process Mining for Python (``pm4py``)
+
+The ``pm4py`` library is the most extensive open-source process mining library for ``python``.
+In this API reference, all relevant functions of the library are listed.
+
 
 * Importing / Exporting Log Files
     With PM4Py, the possibility to import/export event logs using the XES format is provided.
