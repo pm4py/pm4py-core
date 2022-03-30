@@ -13,6 +13,10 @@
   * Fixed missing import in DFG performance visualization.
 * f4f5a0eee8218be5c575fe8b42ab59e335979d53
   * Fixed hardcoded parameter in feature extraction interface
+* e61fb3f7a763a89cfb221b3c37c1b140620f5df9
+  * Fixed performance DFG visualization when all values are provided
+* fb9c152afdf6b91c3b26efa09d8233e99c55b907
+  * Fixed progress bar behavior in TBR-based ET-Conformance
 
 ### Removed
 * 639aeb64bf5febf5f5719622d6d90c4a3c5cd8be
