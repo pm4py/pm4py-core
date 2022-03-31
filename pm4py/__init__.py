@@ -58,7 +58,7 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
     view_dotted_chart, save_vis_dotted_chart, view_performance_spectrum, save_vis_performance_spectrum, view_case_duration_graph, view_events_per_time_graph, save_vis_case_duration_graph, \
     save_vis_events_per_time_graph, view_events_distribution_graph, save_vis_events_distribution_graph, view_performance_dfg, save_vis_performance_dfg, \
     view_ocpn, save_vis_ocpn, view_network_analysis, save_vis_network_analysis
-from pm4py.write import write_xes, write_petri_net, write_process_tree, write_dfg, write_bpmn, write_pnml, write_ptml, write_ocel
+from pm4py.write import write_xes, write_petri_net, write_process_tree, write_dfg, write_performance_dfg, write_bpmn, write_pnml, write_ptml, write_ocel
 from pm4py.org import discover_handover_of_work_network, discover_activity_based_resource_similarity, discover_subcontracting_network, discover_working_together_network, discover_organizational_roles, discover_network_analysis
 from pm4py.ml import split_train_test, get_prefixes_from_log
 from pm4py.ocel import ocel_get_object_types, ocel_get_attribute_names, ocel_flattening, ocel_object_type_activities, ocel_objects_ot_count

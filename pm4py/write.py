@@ -161,6 +161,32 @@ def write_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path
                        parameters={dfg_exporter.Variants.CLASSIC.value.Parameters.START_ACTIVITIES: start_activities,
                                    dfg_exporter.Variants.CLASSIC.value.Parameters.END_ACTIVITIES: end_activities})
 
+def write_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str, aggregation_measure="mean"):
+    """
+    Exports a performance DFG
+
+    Parameters
+    -------------
+    dfg
+        DFG
+    start_activities
+        Start activities
+    end_activities
+        End activities
+    file_path
+        Destination path
+    aggregation_measure
+        Aggregation measure (default: mean): mean, median, min, max, sum, stdev
+
+    Returns
+    ------------
+    void
+    """
+    from pm4py.objects.dfg.exporter import exporter as dfg_exporter
+    dfg_exporter.apply(dfg, file_path, variant = dfg_exporter.Variants.PERFORMANCE,
+                       parameters={dfg_exporter.Variants.PERFORMANCE.value.Parameters.START_ACTIVITIES: start_activities,
+                                   dfg_exporter.Variants.PERFORMANCE.value.Parameters.END_ACTIVITIES: end_activities,
+                                   dfg_exporter.Variants.PERFORMANCE.value.Parameters.AGGREGATION_MEASURE: aggregation_measure})
 
 def write_bpmn(bpmn_graph: BPMN, file_path: str, enable_layout: bool = True):
     """

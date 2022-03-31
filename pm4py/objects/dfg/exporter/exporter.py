@@ -16,12 +16,13 @@
 '''
 from enum import Enum
 
-from pm4py.objects.dfg.exporter.variants import classic
+from pm4py.objects.dfg.exporter.variants import classic, performance
 from pm4py.util import exec_utils
 
 
 class Variants(Enum):
     CLASSIC = classic
+    PERFORMANCE = performance
 
 
 DEFAULT_VARIANT = Variants.CLASSIC
