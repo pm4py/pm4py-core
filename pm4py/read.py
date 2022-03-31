@@ -1,6 +1,37 @@
 __doc__ = """
-We offer the possibility to import event logs (from XES or CSV files), object-centric event logs (from OCEL),
-and different kinds of process models.
+``pm4py`` supports reading various different file formats:
+
+* ``.bpmn`` files; File format specifying process models in the *BPMN* process modeling formalism
+
+    
+
+* ``.dfg`` files; File format specifying *directly follows graphs* (also referred to as *process maps*)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        dfg = pm4py.read_dfg('<path_to_dfg_file>')
+
+* ``.xes`` files; General interchange format for event data.
+    
+    .. code-block:: python3
+        
+        import pm4py
+
+        df = pm4py.read_xes('<path_to_xes_file>')
+        
+* ``.ocel`` files; Novel data format (under development) for multi-dimensional event data.
+
+Both file formats are internally converted to ``pandas dataframes`` (`docs <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html>`_), which are the default data structure used by all algorithms implemented in ``pm4py``.
+
+Additional file formats that are supported are:
+
+
+
+* ``.pnml`` files; File format specifying *Petri net* models
+* ``.ptml`` files; File format specifying *Process Tree* models
+
 
 * Importing traditional event logs
     * `Importing from XES`_
@@ -45,7 +76,15 @@ INDEX_COLUMN = "@@index"
 
 
 def read_xes(file_path: str, variant: str = "iterparse", **kwargs) -> EventLog:
-    """
+    """This is a module documentation
+
+    Use this module like this:
+
+    .. code-block:: python
+
+    res = aFunction(something, goes, in)
+    print(res.avalue)
+
     Reads an event log in the XES standard.
 
     Example:
@@ -146,28 +185,15 @@ def read_dfg(file_path: str) -> Tuple[dict, dict, dict]:
     """
     Reads a DFG from a .dfg file
 
-    Example:
+    :rtype: Tuple[dict, dict, dict]
+    :param file_path: file path of the dfg model
+    
 
     .. code-block:: python3
 
        import pm4py
 
-       frequency_dfg = pm4py.read_dfg("tests/input_data/running-example.dfg")
-       pm4py.write_dfg(frequency_dfg, "example.dfg")
-
-    Parameters
-    ------------------
-    file_path
-        File path
-
-    Returns
-    ------------------
-    dfg
-        DFG
-    start_activities
-        Start activities
-    end_activities
-        End activities
+       dfg = pm4py.read_dfg("<path_to_dfg_file>")
     """
     # Unit test: YES
     from pm4py.objects.dfg.importer import importer as dfg_importer
@@ -177,26 +203,16 @@ def read_dfg(file_path: str) -> Tuple[dict, dict, dict]:
 
 def read_bpmn(file_path: str) -> BPMN:
     """
-    Reads a BPMN from a .bpmn file
+    Reads a BPMN model from a .bpmn file
 
-    Example:
+    :param file_path: file path of the bpmn model
 
     .. code-block:: python3
 
-       import pm4py
+        import pm4py
 
-       bpmn_graph = pm4py.read_bpmn("tests/input_data/running-example.bpmn")
-       pm4py.write_bpmn(bpmn_graph, "example.bpmn")
+        bpmn = pm4py.read_bpmn('<path_to_bpmn_file>')
 
-    Parameters
-    ---------------
-    file_path
-        File path
-
-    Returns
-    ---------------
-    bpmn_graph
-        BPMN graph
     """
     # Unit test: YES
     from pm4py.objects.bpmn.importer import importer as bpmn_importer

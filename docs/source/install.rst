@@ -1,5 +1,5 @@
 Installation
-=====
+============
 
 pip
 ---
@@ -18,7 +18,7 @@ The ``bin\`` folder of the GraphViz directory needs to be added manually to the 
 In order to do so, please follow `this instruction <https://stackoverflow.com/questions/44272416/how-to-add-a-folder-to-path-environment-variable-in-windows-10-with-screensho>`_.
 
 Docker
------
+------
 To install pm4py via Docker, use:
 
 .. code-block:: console

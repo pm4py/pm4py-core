@@ -39,6 +39,7 @@ release = '2.2.19.3'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx_autodoc_annotation',
     'sphinx.ext.viewcode',
     'sphinx.ext.autosummary',
 ]
