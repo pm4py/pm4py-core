@@ -8,6 +8,7 @@ from pm4py.util import constants
 from enum import Enum
 from collections import Counter
 from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -70,6 +71,8 @@ def get_events_distribution(log: EventLog, distr_type: str = "days_month", param
     if parameters is None:
         parameters = {}
 
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
 
     timestamp_values = []
@@ -127,6 +130,8 @@ def get_all_trace_attributes_from_log(log: EventLog) -> Set[str]:
     all_attributes
         All trace attributes from the log
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     all_attributes = set()
     for trace in log:
         all_attributes = all_attributes.union(set(trace.attributes.keys()))
@@ -149,6 +154,8 @@ def get_all_event_attributes_from_log(log: EventLog) -> Set[str]:
     all_attributes
         All trace attributes from the log
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     all_attributes = set()
     for trace in log:
         for event in trace:
@@ -176,6 +183,8 @@ def get_attribute_values(log: EventLog, attribute_key: str, parameters: Optional
     attributes
         Dictionary of attributes associated with their count
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     if parameters is None:
         parameters = {}
 
@@ -217,6 +226,8 @@ def get_trace_attribute_values(log: EventLog, attribute_key: str, parameters: Op
     if parameters is None:
         parameters = {}
 
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     attributes = {}
 
     for trace in log:
@@ -252,6 +263,7 @@ def get_kde_numeric_attribute(log, attribute, parameters=None):
     y
         Y-axis values to represent
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     if type(log) is EventLog:
         event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
@@ -286,6 +298,7 @@ def get_kde_numeric_attribute_json(log, attribute, parameters=None):
     y
         Y-axis values to represent
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     if type(log) is EventLog:
         event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
@@ -319,6 +332,7 @@ def get_kde_date_attribute(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters=None
     y
         Y-axis values to represent
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     if type(log) is EventLog:
         event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
@@ -353,6 +367,7 @@ def get_kde_date_attribute_json(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters
     y
         Y-axis values to represent
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     if type(log) is EventLog:
         event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})

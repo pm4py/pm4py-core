@@ -12,6 +12,7 @@ import deprecation
 
 from typing import Optional, Dict, Any, Union, Tuple, List
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -40,6 +41,9 @@ def apply(log: EventLog, admitted_end_activities: List[str], parameters: Optiona
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     attribute_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 

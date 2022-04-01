@@ -8,6 +8,7 @@ from pm4py.objects.petri_net.utils import align_utils
 from pm4py.util import exec_utils
 from pm4py.util import string_distance
 from pm4py.util import typing
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -34,6 +35,9 @@ def apply(log1: EventLog, log2: EventLog, parameters: Optional[Dict[Union[str, P
     """
     if parameters is None:
         parameters = {}
+
+    log1 = log_converter.apply(log1, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+    log2 = log_converter.apply(log2, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     anti_alignment = exec_utils.get_param_value(Parameters.PERFORM_ANTI_ALIGNMENT, parameters, False)
 

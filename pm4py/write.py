@@ -8,9 +8,10 @@ from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 import pandas as pd
+from typing import Union
 
 
-def write_xes(log: EventLog, file_path: str) -> None:
+def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str) -> None:
     """
     Exports a XES log
 

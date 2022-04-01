@@ -143,7 +143,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
     num_ev_attr = exec_utils.get_param_value(Parameters.NUM_EVENT_ATTRIBUTES, parameters, None)
     feature_names = exec_utils.get_param_value(Parameters.FEATURE_NAMES, parameters, None)
 
-    log = converter.apply(log, parameters=parameters)
+    log = converter.apply(log, variant=converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     if feature_names is None:
         feature_names = extract_all_ev_features_names_from_log(log, str_ev_attr, num_ev_attr, parameters=parameters)

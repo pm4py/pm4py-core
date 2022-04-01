@@ -15,6 +15,7 @@ from pm4py.statistics.variants.log import get as variants_module
 from pm4py.util import constants, xes_constants
 from pm4py.util import exec_utils
 from pm4py.visualization.decisiontree.util import dt_to_string
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -71,7 +72,7 @@ def create_data_petri_nets_with_decisions(log: EventLog, net: PetriNet, initial_
     return net, initial_marking, final_marking
 
 
-def get_decision_tree(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking: Marking,
+def get_decision_tree(log: Union[EventLog, pd.DataFrame], net: PetriNet, initial_marking: Marking, final_marking: Marking,
                       decision_point=None, attributes=None,
                       parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Any:
     """
@@ -110,7 +111,7 @@ def get_decision_tree(log: EventLog, net: PetriNet, initial_marking: Marking, fi
 
     if parameters is None:
         parameters = {}
-    log = log_converter.apply(log, parameters=parameters)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
     X, y, targets = apply(log, net, initial_marking, final_marking, decision_point=decision_point,
                           attributes=attributes, parameters=parameters)
     dt = tree.DecisionTreeClassifier()
@@ -118,7 +119,7 @@ def get_decision_tree(log: EventLog, net: PetriNet, initial_marking: Marking, fi
     return dt, list(X.columns.values.tolist()), targets
 
 
-def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking: Marking, decision_point=None,
+def apply(log: Union[EventLog, pd.DataFrame], net: PetriNet, initial_marking: Marking, final_marking: Marking, decision_point=None,
           attributes=None, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Any:
     """
     Gets the essential information (features, target class and names of the target class)
@@ -160,7 +161,7 @@ def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking:
 
     labels = exec_utils.get_param_value(Parameters.LABELS, parameters, True)
 
-    log = log_converter.apply(log, parameters=parameters)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     if decision_point is None:
         decision_points_names = get_decision_points(net, labels=labels, parameters=parameters)
@@ -241,7 +242,7 @@ def get_decisions_table(log0, net, initial_marking, final_marking, attributes=No
     labels = exec_utils.get_param_value(Parameters.LABELS, parameters, True)
 
     log = deepcopy(log0)
-    log = log_converter.apply(log, parameters=parameters)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     if pre_decision_points != None:
         if not isinstance(pre_decision_points, list):

@@ -124,18 +124,6 @@ def discovery_data_petri_net():
     discovery_data_petri_net.execute_script()
 
 
-def pandas_iterable():
-    from examples import pandas_iterable
-    print("\n\npandas_iterable")
-    pandas_iterable.execute_script()
-
-
-def pandas_iterable_to_trace_stream():
-    from examples import pandas_iterable_to_trace_stream
-    print("\n\npandas_iterable_to_trace_stream")
-    pandas_iterable_to_trace_stream.execute_script()
-
-
 def performance_dfg_simulation():
     from examples import performance_dfg_simulation
     print("\n\nperformance_dfg_simulation")
@@ -575,8 +563,6 @@ if __name__ == "__main__":
     execute_script(extended_marking_equation)
     execute_script(features_locally_linear_embedding)
     execute_script(discovery_data_petri_net)
-    execute_script(pandas_iterable)
-    execute_script(pandas_iterable_to_trace_stream)
     execute_script(data_petri_nets)
     execute_script(inhibitor_reset_arcs)
     execute_script(dotted_chart)

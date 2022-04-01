@@ -76,7 +76,7 @@ def apply(log: EventLog, parameters: Optional[Dict[str, Any]] = None) -> Tuple[L
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
         log = log[[case_id_key, activity_key, timestamp_key]]
 
-    log = log_converter.apply(log, parameters=parameters)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
     log = sorting.sort_timestamp(log, timestamp_key)
 
     x = [trace[0][timestamp_key] for trace in log]
