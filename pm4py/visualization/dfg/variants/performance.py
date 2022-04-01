@@ -17,6 +17,7 @@ from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.util import typing
 import graphviz
 from pm4py.objects.log.obj import EventLog
+from collections import Counter
 
 
 class Parameters(Enum):
@@ -271,6 +272,19 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
 
+    # if all the aggregation measures are provided for a given key,
+    # then pick one of the values for the representation
+    dfg0 = dfg
+    dfg = {}
+    for key in dfg0:
+        try:
+            if aggregation_measure in dfg0[key]:
+                dfg[key] = dfg0[key][aggregation_measure]
+            else:
+                dfg[key] = dfg0[key]
+        except:
+            dfg[key] = dfg0[key]
+    
     if activities_count is None:
         if log is not None:
             activities_count = attr_get.get_attribute_values(log, activity_key, parameters=parameters)
@@ -290,19 +304,6 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
             soj_time = soj_time_get.apply(log, parameters=parameters)
         else:
             soj_time = {key: 0 for key in activities}
-
-    # if all the aggregation measures are provided for a given key,
-    # then pick one of the values for the representation
-    dfg0 = dfg
-    dfg = {}
-    for key in dfg0:
-        try:
-            if aggregation_measure in dfg0[key]:
-                dfg[key] = dfg0[key][aggregation_measure]
-            else:
-                dfg[key] = dfg0[key]
-        except:
-            dfg[key] = dfg0[key]
 
     return graphviz_visualization(activities_count, dfg, image_format=image_format, measure="performance",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
