@@ -825,17 +825,6 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         dataframe = pm4py.format_dataframe(dataframe)
         pm4py.extract_features_dataframe(dataframe)
 
-    def test_disc_data_pn_log(self):
-        log = pm4py.read_xes("input_data/running-example.xes")
-        net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
-        pm4py.enhance_net_with_decision_rules(log, net, im, fm)
-
-    def test_disc_data_pn_df(self):
-        dataframe = pd.read_csv("input_data/running-example.csv")
-        dataframe = pm4py.format_dataframe(dataframe)
-        net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
-        pm4py.enhance_net_with_decision_rules(dataframe, net, im, fm)
-
 
 if __name__ == "__main__":
     unittest.main()

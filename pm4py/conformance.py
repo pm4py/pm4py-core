@@ -42,7 +42,7 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
     replay_results
         A list of replay results for each trace of the log (in the same order as the traces in the event log)
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -78,7 +78,7 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
     aligned_traces
         A list of alignments for each trace of the log (in the same order as the traces in the event log)
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -122,7 +122,6 @@ def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: Pe
     Calculates the fitness using token-based replay.
     The fitness is calculated on a log-based level.
 
-
     Parameters
     ---------------
     log
@@ -145,7 +144,7 @@ def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: Pe
     fitness_dictionary
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -186,7 +185,7 @@ def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, 
     fitness_dictionary
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -225,7 +224,7 @@ def precision_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: 
     precision
         float representing the precision value
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -266,7 +265,7 @@ def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet
     precision
         float representing the precision value
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -613,7 +612,7 @@ def conformance_log_skeleton(log: Union[EventLog, pd.DataFrame], log_skeleton: D
     log_skel_conf_res
         List containing, for every case of the log, all the constraints that were violated by such case.
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)

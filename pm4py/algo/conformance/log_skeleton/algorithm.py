@@ -46,11 +46,9 @@ def apply(obj: Union[EventLog, Trace, pd.DataFrame], model: Dict[str, Any], vari
         parameters = {}
 
     if type(obj) is Trace:
-        return exec_utils.get_variant(variant).apply_trace(log_conversion.apply(obj, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters), model,
-                                                           parameters=parameters)
+        return exec_utils.get_variant(variant).apply_trace(obj, model, parameters=parameters)
     else:
-        return exec_utils.get_variant(variant).apply_log(log_conversion.apply(obj, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters), model,
-                                                         parameters=parameters)
+        return exec_utils.get_variant(variant).apply_log(obj, model, parameters=parameters)
 
 
 def apply_from_variants_list(var_list: List[List[str]], model: Dict[str, Any], variant=DEFAULT_VARIANT, parameters: Optional[Dict[Any, Any]] = None) -> List[Set[Any]]:

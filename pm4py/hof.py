@@ -29,7 +29,7 @@ def filter_log(f: Callable[[Any], bool], log: log_inst.EventLog) -> Union[log_in
         filtered event log if object provided is correct; original log if not correct
 
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: NO DEPRECATED
     # Unit test: YES
     __event_log_deprecation_warning(log)
 
@@ -60,7 +60,7 @@ def filter_trace(f: Callable[[Any], bool], trace: log_inst.Trace) -> log_inst.Tr
     trace
         filtered trace if object provided is correct; original log if not correct
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: NO DEPRECATED
     # Unit test: YES
     __event_log_deprecation_warning(trace)
 
@@ -88,7 +88,7 @@ def sort_log(log: log_inst.EventLog, key, reverse: bool = False) -> Union[log_in
     -------
         sorted event log if object provided is correct; original log if not correct
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: NO DEPRECATED
     # Unit test: YES
     __event_log_deprecation_warning(log)
 
@@ -121,7 +121,7 @@ def sort_trace(trace: log_inst.Trace, key, reverse: bool = False) -> log_inst.Tr
     -------
         sorted trace if object provided is correct; original log if not correct
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: NO DEPRECATED
     # Unit test: YES
     __event_log_deprecation_warning(trace)
 
