@@ -206,7 +206,7 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_k
     final_marking
         Final marking
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: NO DEPRECATED
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -284,19 +284,23 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
     final_marking
         Final marking
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
-    heu_parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
+    from pm4py.algo.discovery.heuristics.variants import classic as heuristics_miner
+    heu_parameters = heuristics_miner.Parameters
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters[heu_parameters.DEPENDENCY_THRESH] = dependency_threshold
     parameters[heu_parameters.AND_MEASURE_THRESH] = and_threshold
     parameters[heu_parameters.LOOP_LENGTH_TWO_THRESH] = loop_two_threshold
 
-    return heuristics_miner.apply(log, variant=heuristics_miner.Variants.CLASSIC, parameters=parameters)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        return heuristics_miner.apply_pandas(log, parameters=parameters)
+    else:
+        return heuristics_miner.apply(log, parameters=parameters)
 
 
 def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> ProcessTree:
@@ -360,18 +364,23 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
     heu_net
         Heuristics net
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
-    heu_parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
+    from pm4py.algo.discovery.heuristics.variants import classic as heuristics_miner
+    heu_parameters = heuristics_miner.Parameters
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters[heu_parameters.DEPENDENCY_THRESH] = dependency_threshold
     parameters[heu_parameters.AND_MEASURE_THRESH] = and_threshold
     parameters[heu_parameters.LOOP_LENGTH_TWO_THRESH] = loop_two_threshold
-    return heuristics_miner.apply_heu(log, variant=heuristics_miner.Variants.CLASSIC, parameters=parameters)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+        return heuristics_miner.apply_heu_pandas(log, parameters=parameters)
+    else:
+        return heuristics_miner.apply_heu(log, parameters=parameters)
 
 
 def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, int]:
@@ -516,7 +525,7 @@ def discover_transition_system(log: Union[EventLog, pd.DataFrame], direction: st
     transition_system
         Transition system
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -550,7 +559,7 @@ def discover_prefix_tree(log: Union[EventLog, pd.DataFrame], activity_key: str =
     prefix_tree
         Prefix tree
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -647,7 +656,7 @@ def discover_log_skeleton(log: Union[EventLog, pd.DataFrame], noise_threshold: f
         Log skeleton object, expressed as dictionaries of the six constraints (never_together, always_before ...)
         along with the discovered rules.
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)

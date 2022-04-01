@@ -6,7 +6,7 @@ from pm4py.objects.log.obj import EventLog
 from pm4py.objects.log.util import xes
 from pm4py.util import exec_utils
 from pm4py.util import variants_util
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY, CASE_CONCEPT_NAME
 from typing import Optional, Dict, Any, Union, Tuple, List
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
@@ -230,7 +230,7 @@ def activ_freq(logs_traces, all_activs, len_log, noise_threshold=0):
     return ret
 
 
-def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Any]:
+def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, Any]:
     """
     Discover a log skeleton from an event log
 
@@ -254,8 +254,13 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
     noise_threshold = exec_utils.get_param_value(Parameters.NOISE_THRESHOLD, parameters, 0.0)
 
-    logs_traces = Counter([tuple(y[activity_key] for y in x) for x in log])
-    all_activs = Counter(list(y[activity_key] for x in log for y in x))
+    if type(log) is EventLog:
+        logs_traces = Counter([tuple(y[activity_key] for y in x) for x in log])
+        all_activs = Counter(list(y[activity_key] for x in log for y in x))
+    elif type(log) is pd.DataFrame:
+        case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+        all_activs = log[activity_key].value_counts().to_dict()
+        logs_traces = Counter(list(log.groupby(case_id_key)[activity_key].apply(tuple)))
 
     ret = {}
     ret[Outputs.EQUIVALENCE.value] = equivalence(logs_traces, all_activs, noise_threshold=noise_threshold)
