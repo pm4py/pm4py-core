@@ -1,70 +1,5 @@
-__doc__ = """
-``pm4py`` supports reading various different file formats:
-
-* ``.bpmn`` files; File format specifying process models in the *BPMN* process modeling formalism
-
-    
-
-* ``.dfg`` files; File format specifying *directly follows graphs* (also referred to as *process maps*)
-
-    .. code-block:: python3
-
-        import pm4py
-
-        dfg = pm4py.read_dfg('<path_to_dfg_file>')
-
-* ``.xes`` files; General interchange format for event data.
-    
-    .. code-block:: python3
-        
-        import pm4py
-
-        df = pm4py.read_xes('<path_to_xes_file>')
-        
-* ``.ocel`` files; Novel data format (under development) for multi-dimensional event data.
-
-Both file formats are internally converted to ``pandas dataframes`` (`docs <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html>`_), which are the default data structure used by all algorithms implemented in ``pm4py``.
-
-Additional file formats that are supported are:
-
-
-
-* ``.pnml`` files; File format specifying *Petri net* models
-* ``.ptml`` files; File format specifying *Process Tree* models
-
-
-* Importing traditional event logs
-    * `Importing from XES`_
-    * Importing from CSV
-        Import the dataframe using Pandas, and then use the `method to assign a proper column mapping`_. Example:
-        
-        .. code-block:: python3
-        
-           import pandas as pd
-           import pm4py
-        
-           dataframe = pm4py.read_csv("tests/input_data/running-example.csv")
-           dataframe = pm4py.format_dataframe(dataframe, case_id_column='case:concept:name', activity_column='concept:name', timestamp_column='time:timestamp')
-        
-* `Importing object-centric event logs`_
-* Importing process models
-    * `Importing Petri nets from PNML`_
-    * `Importing BPMN diagrams from BPMN 2.0`_
-    * `Importing process trees from PTML`_
-    * `Importing directly-follows graphs`_
-
-.. _Importing from XES: pm4py.html#pm4py.read.read_xes
-.. _Importing object-centric event logs: pm4py.html#pm4py.read.read_ocel
-.. _Importing Petri nets from PNML: pm4py.html#pm4py.read.read_pnml
-.. _Importing BPMN diagrams from BPMN 2.0: pm4py.html#pm4py.read.read_bpmn
-.. _Importing process trees from PTML: pm4py.html#pm4py.read.read_ptml
-.. _Importing directly-follows graphs: pm4py.html#pm4py.read.read_dfg
-.. _Importing directly-follows graphs: pm4py.html#pm4py.read.read_dfg
-.. _method to assign a proper column mapping: pm4py.html#pm4py.utils.format_dataframe
-"""
-
 import warnings
-from typing import Tuple
+from typing import Tuple, Dict
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.log.obj import EventLog
@@ -181,11 +116,16 @@ def read_ptml(file_path: str) -> ProcessTree:
     return tree
 
 
-def read_dfg(file_path: str) -> Tuple[dict, dict, dict]:
+def read_dfg(file_path: str) -> Tuple[Dict[Tuple[str,str],int], Dict[str,int], Dict[str,int]]:
     """
-    Reads a DFG from a .dfg file
+    Reads a DFG from a .dfg file.
+    The DFG object returned is a triple with the following objects:
+    
+    1. DFG Object, encoded as a ``Dict[Tuple[str,str],int]``, s.t. ``DFG[('a','b')]=k`` implies that activity ``'a'`` is directly followed by activity ``'b'`` a total of ``k`` times in the log
+    #. Start activity dictionary, encoded as a ``Dict[str,int]``, s.t., ``S['a']=k`` implies that activity ``'a'`` is starting ``k`` traces in the event log
+    #. End activity dictionary, encoded as a ``Dict[str,int]``, s.t., ``E['z']=k`` implies that activity ``'z'`` is ending ``k`` traces in the event log.
 
-    :rtype: Tuple[dict, dict, dict]
+    :rtype: ``Tuple[Dict[Tuple[str,str],int], Dict[str,int], Dict[str,int]]``
     :param file_path: file path of the dfg model
     
 
