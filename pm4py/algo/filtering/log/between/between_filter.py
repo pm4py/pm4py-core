@@ -19,6 +19,7 @@ from typing import Optional, Dict, Any, Union
 
 from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -49,6 +50,8 @@ def apply(log: EventLog, act1: str, act2: str, parameters: Optional[Dict[Union[s
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
 

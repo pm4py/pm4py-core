@@ -68,7 +68,7 @@ def get_groups_from_log(log_obj: Union[pd.DataFrame, EventLog], parameters: Opti
                 groups[el[1]] = {}
             groups[el[1]][el[0]] = group_res[el]
     else:
-        log_obj = log_converter.apply(log_obj, parameters=parameters)
+        log_obj = log_converter.apply(log_obj, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
         for trace in log_obj:
             for event in trace:
                 if activity_key in event and resource_key in event and group_key in event:
@@ -130,7 +130,7 @@ def get_res_act_from_log(log_obj: Union[pd.DataFrame, EventLog], parameters: Opt
             res_act[el[1]][el[0]] = aggr[el]
             act_res[el[0]][el[1]] = aggr[el]
     else:
-        log_obj = log_converter.apply(log_obj, parameters=parameters)
+        log_obj = log_converter.apply(log_obj, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
         for trace in log_obj:
             for event in trace:
                 if activity_key in event and resource_key in event and group_key in event:

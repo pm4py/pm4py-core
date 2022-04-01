@@ -47,7 +47,7 @@ def apply(log: Union[EventLog, EventStream], parameters: Optional[Dict[Union[str
     if parameters is None:
         parameters = {}
 
-    log = log_converter.apply(log)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     ret = Counter()

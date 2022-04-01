@@ -72,7 +72,7 @@ def apply(log: Union[EventLog, EventStream], dfg: Dict[Tuple[str, str], int],
         parameters = {}
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
 
-    log = log_converter.apply(log, parameters=parameters)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     precision = 1.0
     sum_ee = 0

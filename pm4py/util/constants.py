@@ -43,6 +43,7 @@ TRANS_NAME_TAG = "trans_name_tag"
 
 DEFAULT_VARIANT_SEP = ","
 DEFAULT_INDEX_KEY = "@@index"
+DEFAULT_CASE_INDEX_KEY = "@@case_index"
 DEFAULT_INDEX_IN_TRACE_KEY = "@@index_in_trace"
 DEFAULT_EVENT_INDEX_KEY = "@@event_index"
 DEFAULT_FLOW_TIME = "@@flow_time"

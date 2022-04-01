@@ -56,6 +56,7 @@ class Parameters(Enum):
     ENABLE_FIRST_LAST_ACTIVITY_INDEX = "enable_first_last_activity_index"
     ENABLE_MAX_CONCURRENT_EVENTS = "enable_max_concurrent_events"
     ENABLE_MAX_CONCURRENT_EVENTS_PER_ACTIVITY = "enable_max_concurrent_events_per_activity"
+    CASE_ATTRIBUTE_PREFIX = constants.CASE_ATTRIBUTE_PREFIX
 
 
 def max_concurrent_events(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Tuple[Any, List[str]]:
@@ -1156,8 +1157,10 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
         num_ev_attr = []
 
     if type(log) is pd.DataFrame:
+        case_attribute_prefix = exec_utils.get_param_value(Parameters.CASE_ATTRIBUTE_PREFIX, parameters, "case:")
+
         if str_tr_attr or num_tr_attr or str_ev_attr or num_ev_attr:
-            columns = list(set(["case:" + x for x in str_tr_attr]).union(set(["case:" + x for x in num_tr_attr])).union(
+            columns = list(set([case_attribute_prefix + x for x in str_tr_attr]).union(set([case_attribute_prefix + x for x in num_tr_attr])).union(
                 set(str_ev_attr)).union(set(num_ev_attr)))
             fea_df = dataframe_utils.get_features_df(log, columns, parameters=parameters)
             feature_names = list(fea_df.columns)
@@ -1184,7 +1187,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
         enable_max_concurrent_events = exec_utils.get_param_value(Parameters.ENABLE_MAX_CONCURRENT_EVENTS, parameters, enable_all)
         enable_max_concurrent_events_per_activity = exec_utils.get_param_value(Parameters.ENABLE_MAX_CONCURRENT_EVENTS_PER_ACTIVITY, parameters, enable_all)
 
-        log = converter.apply(log, parameters=parameters)
+        log = converter.apply(log, variant=converter.Variants.TO_EVENT_LOG, parameters=parameters)
         if at_least_one_provided:
             datas, features_namess = get_representation(log, str_tr_attr, str_ev_attr, num_tr_attr, num_ev_attr,
                                       str_evsucc_attr=str_evsucc_attr, feature_names=feature_names)

@@ -31,6 +31,7 @@ from collections import Counter
 
 from typing import Optional, Dict, Any, Tuple
 from pm4py.objects.log.obj import EventLog
+from collections import Counter
 
 
 class Parameters(Enum):
@@ -348,6 +349,19 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
         except:
             dfg[key] = dfg0[key]
 
+    # if all the aggregation measures are provided for a given key,
+    # then pick one of the values for the representation
+    dfg0 = dfg
+    dfg = {}
+    for key in dfg0:
+        try:
+            if aggregation_measure in dfg0[key]:
+                dfg[key] = dfg0[key][aggregation_measure]
+            else:
+                dfg[key] = dfg0[key]
+        except:
+            dfg[key] = dfg0[key]
+    
     if activities_count is None:
         if log is not None:
             activities_count = attr_get.get_attribute_values(log, activity_key, parameters=parameters)

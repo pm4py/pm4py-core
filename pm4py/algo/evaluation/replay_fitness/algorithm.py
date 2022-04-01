@@ -41,7 +41,7 @@ TOKEN_BASED = Variants.TOKEN_BASED
 VERSIONS = {ALIGNMENT_BASED, TOKEN_BASED}
 
 
-def apply(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None, variant=None) -> Dict[str, Any]:
+def apply(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None, variant=None) -> Dict[str, Any]:
     """
     Apply fitness evaluation starting from an event log and a marked Petri net,
     by using one of the replay techniques provided by PM4Py

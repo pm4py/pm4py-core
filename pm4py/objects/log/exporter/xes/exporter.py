@@ -46,7 +46,7 @@ def apply(log, output_file_path, variant=DEFAULT_VARIANT, parameters=None):
             Parameters.COMPRESS -> Indicates that the XES file must be compressed
     """
     parameters = dict() if parameters is None else parameters
-    return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters=parameters), output_file_path,
+    return exec_utils.get_variant(variant).apply(log_conversion.apply(log, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters), output_file_path,
                                                  parameters=parameters)
 
 
@@ -70,7 +70,7 @@ def serialize(log, variant=DEFAULT_VARIANT, parameters=None):
     """
     parameters = dict() if parameters is None else parameters
 
-    log_string = exec_utils.get_variant(variant).export_log_as_string(log_conversion.apply(log, parameters=parameters),
+    log_string = exec_utils.get_variant(variant).export_log_as_string(log_conversion.apply(log, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters),
                                                                       parameters=parameters)
 
     return log_string

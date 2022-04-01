@@ -26,6 +26,7 @@ from pm4py.objects.petri_net.utils import align_utils
 from pm4py.objects.log.obj import EventLog, Trace
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.util import typing
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -88,10 +89,10 @@ def apply(obj: Union[EventLog, Trace], dfg: Dict[Tuple[str, str], int], sa: Dict
     ali
         Result of the alignment
     """
-    if isinstance(obj, EventLog):
-        return apply_log(obj, dfg, sa, ea, parameters=parameters)
-    elif isinstance(obj, Trace):
+    if isinstance(obj, Trace):
         return apply_trace(obj, dfg, sa, ea, parameters=parameters)
+    else:
+        return apply_log(obj, dfg, sa, ea, parameters=parameters)
 
 
 def apply_log(log, dfg, sa, ea, parameters=None):
@@ -127,6 +128,8 @@ def apply_log(log, dfg, sa, ea, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     aligned_traces = []

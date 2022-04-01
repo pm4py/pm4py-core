@@ -18,9 +18,11 @@ from pm4py.statistics.attributes.log.get import get_attribute_values, get_all_ev
 from pm4py.objects.log.util import sampling
 from typing import Optional, Dict, Any, Union, Tuple, List, Set
 from pm4py.objects.log.obj import EventLog
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 DEFAULT_MAX_CASES_FOR_ATTR_SELECTION = 50
+
 
 def select_attributes_from_log_for_tree(log: EventLog, max_cases_for_attr_selection=DEFAULT_MAX_CASES_FOR_ATTR_SELECTION,
                                         max_diff_occ=DEFAULT_MAX_CASES_FOR_ATTR_SELECTION / 4):
@@ -40,6 +42,8 @@ def select_attributes_from_log_for_tree(log: EventLog, max_cases_for_attr_select
     ------------
 
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     if len(log) > max_cases_for_attr_selection:
         filtered_log = sampling.sample(log, max_cases_for_attr_selection)
     else:
@@ -98,6 +102,8 @@ def check_trace_attributes_presence(log: EventLog, attributes_set: Union[Set[str
     filtered_set
         Filtered set of attributes
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     keys = list(attributes_set)
     for attr in keys:
         if not verify_if_trace_attribute_is_in_each_trace(log, attr):
@@ -121,6 +127,8 @@ def check_event_attributes_presence(log: EventLog, attributes_set: Union[Set[str
     filtered_set
         Filtered set of attributes
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     keys = list(attributes_set)
     for attr in keys:
         if not verify_if_event_attribute_is_in_each_trace(log, attr):
@@ -144,6 +152,8 @@ def verify_if_event_attribute_is_in_each_trace(log: EventLog, attribute: str) ->
     boolean
         Boolean value that is aiming to check if the event attribute is in each trace
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     for trace in log:
         present = False
         for event in trace:
@@ -171,6 +181,8 @@ def verify_if_trace_attribute_is_in_each_trace(log: EventLog, attribute: str) ->
     boolean
         Boolean value that is aiming to check if the trace attribute is in each trace
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     for trace in log:
         if attribute not in trace.attributes:
             return False

@@ -33,6 +33,7 @@ from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util import typing
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -363,6 +364,8 @@ def apply(obj: Union[EventLog, Trace], pt: ProcessTree, parameters: Optional[Dic
     """
     if parameters is None:
         parameters = {}
+
+    obj = log_converter.apply(obj, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     leaves = frozenset(pt_util.get_leaves_as_tuples(pt))
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)

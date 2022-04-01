@@ -16,6 +16,7 @@
 '''
 from pm4py.objects.log.obj import EventLog, Trace, EventStream
 from pm4py.util import xes_constants as xes
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 def sort_timestamp_trace(trace, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=False):
@@ -84,6 +85,8 @@ def sort_timestamp_log(event_log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, rever
     log
         Sorted log
     """
+    event_log = log_converter.apply(event_log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     new_log = EventLog(attributes=event_log.attributes, extensions=event_log.extensions,
                        omni_present=event_log.omni_present, classifiers=event_log.classifiers,
                        properties=event_log.properties)
@@ -136,6 +139,8 @@ def sort_lambda_log(event_log, sort_function, reverse=False):
     new_log
         Sorted log
     """
+    event_log = log_converter.apply(event_log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     traces = sorted(event_log._list, key=sort_function, reverse=reverse)
     new_log = EventLog(traces, attributes=event_log.attributes, extensions=event_log.extensions,
                        omni_present=event_log.omni_present, classifiers=event_log.classifiers,
