@@ -304,6 +304,8 @@ def eventually_follows(log: EventLog, attribute_values: List[str], parameters: O
     if parameters is None:
         parameters = {}
 
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
 
@@ -395,8 +397,7 @@ def A_next_B_next_C(log: EventLog, A: str, B: str, C: str, parameters: Optional[
     if parameters is None:
         parameters = {}
 
-    if not isinstance(log, EventLog):
-        log = log_converter.apply(log, variant=log_converter.TO_EVENT_LOG, parameters=parameters)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
@@ -453,8 +454,7 @@ def four_eyes_principle(log: EventLog, A: str, B: str, parameters: Optional[Dict
     if parameters is None:
         parameters = {}
 
-    if not isinstance(log, EventLog):
-        log = log_converter.apply(log, variant=log_converter.TO_EVENT_LOG, parameters=parameters)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
     resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, DEFAULT_RESOURCE_KEY)
@@ -503,8 +503,7 @@ def attr_value_different_persons(log: EventLog, A: str, parameters: Optional[Dic
     if parameters is None:
         parameters = {}
 
-    if not isinstance(log, EventLog):
-        log = log_converter.apply(log, variant=log_converter.TO_EVENT_LOG, parameters=parameters)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
     resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, DEFAULT_RESOURCE_KEY)

@@ -27,6 +27,7 @@ import deprecation
 
 from typing import Optional, Dict, Any, Union, Tuple, List
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -53,6 +54,9 @@ def apply(log: EventLog, admitted_variants: List[List[str]], parameters: Optiona
 
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
     variants = get_variants(log, parameters=parameters)
     log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
@@ -84,6 +88,8 @@ def filter_variants_top_k(log, k, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     variants = get_variants(log, parameters=parameters)
     variant_count = get_variants_sorted_by_count(variants)
@@ -117,6 +123,8 @@ def filter_variants_by_coverage_percentage(log, min_coverage_percentage, paramet
     if parameters is None:
         parameters = {}
 
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     variants = get_variants(log, parameters=parameters)
     variants = {x: len(y) for x, y in variants.items()}
     allowed_variants = [x for x, y in variants.items() if y >= min_coverage_percentage * len(log)]
@@ -145,6 +153,8 @@ def filter_log_variants_percentage(log, percentage=0.8, parameters=None):
     if parameters is None:
         parameters = {}
 
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     variants = get_variants(log, parameters=parameters)
 
     return filter_variants_variants_percentage(log, variants, variants_percentage=percentage)
@@ -168,6 +178,8 @@ def filter_variants_variants_percentage(log, variants, variants_percentage=0.0):
     filtered_log
         Filtered log
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     filtered_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
                             omni_present=log.omni_present, properties=log.properties)
     no_of_traces = len(log)

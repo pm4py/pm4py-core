@@ -84,9 +84,7 @@ def apply_tree(event_log: Union[pd.DataFrame, EventLog, EventStream],
                parameters: Optional[Dict[Union[Parameters, str], Any]] = None) -> ProcessTree:
     if parameters is None:
         parameters = {}
-    event_log = log_converter.apply(event_log, parameters=parameters)
-    if type(event_log) is not EventLog:
-        raise ValueError('input argument log should be of type pandas.DataFrame, Event Log or Event Stream')
+    event_log = log_converter.apply(event_log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
     act_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY.value, parameters,
                                          xes_constants.DEFAULT_NAME_KEY)
 

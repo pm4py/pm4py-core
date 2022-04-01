@@ -91,7 +91,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], list_activities: List
         if variant is None:
             variant = Variants.LOG
 
-        points = exec_utils.get_variant(variant).apply(log_conversion.apply(log), list_activities, sample_size,
+        points = exec_utils.get_variant(variant).apply(log_conversion.apply(log, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters), list_activities, sample_size,
                                                             parameters)
 
     ps = {Outputs.LIST_ACTIVITIES.value: list_activities, Outputs.POINTS.value: points}

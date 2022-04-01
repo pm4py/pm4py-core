@@ -22,6 +22,7 @@ from pm4py.util import exec_utils
 
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -50,6 +51,9 @@ def filter_on_case_performance(log: EventLog, inf_perf: float, sup_perf: float, 
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
     filtered_log = EventLog([trace for trace in log if satisfy_perf(trace, inf_perf, sup_perf, timestamp_key)])
     return filtered_log
@@ -71,6 +75,8 @@ def filter_on_ncases(log: EventLog, max_no_cases: int = 1000) -> EventLog:
     filtered_log
         Filtered log
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     filtered_log = EventLog(log[:min(len(log), max_no_cases)])
     return filtered_log
 
@@ -93,6 +99,8 @@ def filter_on_case_size(log: EventLog, min_case_size: int = 2, max_case_size=Non
     filtered_log
         Filtered log
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     if max_case_size is not None:
         filtered_log = EventLog([trace for trace in log if min_case_size <= len(trace) <= max_case_size])
     else:

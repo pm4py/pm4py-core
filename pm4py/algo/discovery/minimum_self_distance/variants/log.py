@@ -20,6 +20,7 @@ from typing import Union, Dict, Optional, Any
 from pandas import DataFrame
 
 import pm4py
+from pm4py.objects.conversion.log import converter
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.util import constants, exec_utils, xes_constants
 
@@ -47,7 +48,7 @@ def apply(log: Union[DataFrame, EventLog, EventStream], parameters: Optional[Dic
     -------
         dict mapping an activity to its self-distance, if it exists, otherwise it is not part of the dict.
     '''
-    log = pm4py.convert_to_event_log(log)
+    log = converter.apply(log, variant=converter.Variants.TO_EVENT_LOG, parameters=parameters)
     act_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters,
                                          xes_constants.DEFAULT_NAME_KEY)
     alphabet = pm4py.get_event_attribute_values(log, act_key)

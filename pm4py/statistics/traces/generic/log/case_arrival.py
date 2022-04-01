@@ -21,6 +21,7 @@ from pm4py.util import exec_utils, constants
 from enum import Enum
 from typing import Optional, Dict, Any, Union, Tuple, List, Set
 from pm4py.objects.log.obj import EventLog
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -54,6 +55,9 @@ def get_case_arrival_avg(log: EventLog, parameters: Optional[Dict[Union[str, Par
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
     worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
     weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
@@ -98,6 +102,9 @@ def get_case_dispersion_avg(log: EventLog, parameters: Optional[Dict[Union[str, 
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
     worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
     weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])

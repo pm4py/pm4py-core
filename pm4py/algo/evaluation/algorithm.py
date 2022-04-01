@@ -39,7 +39,7 @@ class Parameters(Enum):
     PARAM_GENERALIZATION_WEIGHT = 'generalization_weight'
 
 
-def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, float]:
+def apply(log: Union[EventLog, pd.DataFrame], net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, float]:
     """
     Calculates all metrics based on token-based replay and returns a unified dictionary
 

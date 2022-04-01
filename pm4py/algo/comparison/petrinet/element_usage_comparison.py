@@ -24,6 +24,8 @@ import math
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.conversion.log import converter as log_converter
+import pandas as pd
 
 
 def give_color_to_direction_dynamic(dir):
@@ -74,7 +76,7 @@ def give_color_to_direction_static(dir):
             return col[1]
 
 
-def compare_element_usage_two_logs(net: PetriNet, im: Marking, fm: Marking, log1: EventLog, log2: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> Dict[Any, Any]:
+def compare_element_usage_two_logs(net: PetriNet, im: Marking, fm: Marking, log1: Union[EventLog, pd.DataFrame], log2: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None) -> Dict[Any, Any]:
     """
     Returns some statistics (also visual) about the comparison of the usage
     of the elements in two logs given an accepting Petri net
@@ -101,6 +103,9 @@ def compare_element_usage_two_logs(net: PetriNet, im: Marking, fm: Marking, log1
     """
     if parameters is None:
         parameters = {}
+
+    log1 = log_converter.apply(log1, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+    log2 = log_converter.apply(log2, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     tr_parameters = copy(parameters)
     tr_parameters[tr_algorithm.Variants.TOKEN_REPLAY.value.Parameters.ENABLE_PLTR_FITNESS] = True

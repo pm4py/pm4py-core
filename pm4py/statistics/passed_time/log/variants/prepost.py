@@ -17,6 +17,7 @@
 from pm4py.algo.discovery.dfg.variants import native, performance
 from typing import Optional, Dict, Any, Union, Tuple, List, Set
 from pm4py.objects.log.obj import EventLog
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 def apply(log: EventLog, activity: str, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
@@ -42,6 +43,8 @@ def apply(log: EventLog, activity: str, parameters: Optional[Dict[Any, Any]] = N
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     dfg_frequency = native.native(log, parameters=parameters)
     dfg_performance = performance.performance(log, parameters=parameters)

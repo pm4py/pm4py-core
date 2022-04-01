@@ -86,6 +86,8 @@ def filter_on_trace_attribute(log: EventLog, dt1: Union[str, datetime.datetime],
     if parameters is None:
         parameters = {}
 
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     trace_attribute = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
@@ -144,6 +146,9 @@ def filter_traces_contained(log: EventLog, dt1: Union[str, datetime.datetime], d
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
@@ -209,6 +214,9 @@ def filter_traces_intersecting(log: EventLog, dt1: Union[str, datetime.datetime]
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     timestamp_key = parameters[
         PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
     dt1 = get_dt_from_string(dt1)
@@ -250,7 +258,7 @@ def apply_events(log: EventLog, dt1: Union[str, datetime.datetime], dt2: Union[s
     filtered_stream = EventStream([x for x in stream if dt1 <= x[timestamp_key].replace(tzinfo=None) <= dt2],
                                   attributes=log.attributes, extensions=log.extensions, omni_present=log.omni_present,
                                   classifiers=log.classifiers, properties=log.properties)
-    filtered_log = log_converter.apply(filtered_stream)
+    filtered_log = log_converter.apply(filtered_stream, variant=log_converter.Variants.TO_EVENT_LOG)
 
     return filtered_log
 
@@ -289,6 +297,8 @@ def filter_traces_attribute_in_timeframe(log: EventLog, attribute: str, attribut
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
     dt1 = get_dt_from_string(dt1)

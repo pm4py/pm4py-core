@@ -20,6 +20,7 @@ from pm4py.util import constants
 from enum import Enum
 from typing import Optional, Dict, Any, Union, Tuple, List, Set
 from pm4py.objects.log.obj import EventLog
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -52,6 +53,8 @@ def get_end_activities(log: EventLog, parameters: Optional[Dict[Union[str, Param
     if parameters is None:
         parameters = {}
     attribute_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     end_activities = {}
 

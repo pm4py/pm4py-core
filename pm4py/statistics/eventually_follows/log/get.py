@@ -34,7 +34,7 @@ def apply(interval_log: EventLog, parameters: Optional[Dict[Union[str, Parameter
     if parameters is None:
         parameters = {}
 
-    interval_log = converter.apply(interval_log, parameters=parameters)
+    interval_log = converter.apply(interval_log, variant=converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,

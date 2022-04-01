@@ -36,6 +36,10 @@ class Parameters(Enum):
 def apply(log, parameters=None):
     if parameters is None:
         parameters = {}
+
+    if type(log) is log_instance.Trace:
+        return log
+
     enable_deepcopy = exec_utils.get_param_value(Parameters.DEEP_COPY, parameters, False)
     glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, pmconstants.CASE_CONCEPT_NAME)
     case_pref = exec_utils.get_param_value(Parameters.CASE_ATTRIBUTE_PREFIX, parameters,
@@ -48,6 +52,7 @@ def apply(log, parameters=None):
     if isinstance(log, log_instance.EventStream) and (not isinstance(log, log_instance.EventLog)):
         return __transform_event_stream_to_event_log(log, case_glue=glue, include_case_attributes=True,
                                                      case_attribute_prefix=case_pref, enable_deepcopy=enable_deepcopy)
+
     return log
 
 

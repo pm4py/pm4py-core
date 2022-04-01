@@ -54,7 +54,7 @@ def apply(log: EventLog, value: Any, parameters: Optional[Dict[Union[str, Parame
     if parameters is None:
         parameters = {}
 
-    log = converter.apply(log, parameters=parameters)
+    log = converter.apply(log, variant=converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     min_rep = exec_utils.get_param_value(Parameters.MIN_REP, parameters, 2)

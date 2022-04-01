@@ -287,7 +287,7 @@ def export_log_tree(log, parameters=None):
     """
     # If the log is in log_instance.EventStream, then transform it into log_instance.EventLog format
     if type(log) is log_instance.EventStream:
-        log = log_converter.apply(log)
+        log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
     root = etree.Element(xes_util.TAG_LOG)
     root.set(xes_util.TAG_VERSION, xes_util.VALUE_XES_VERSION)
     root.set(xes_util.TAG_FEATURES, xes_util.VALUE_XES_FEATURES)

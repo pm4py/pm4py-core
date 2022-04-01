@@ -24,6 +24,7 @@ from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants, xes_constants, pandas_utils
 
+
 INDEX_COLUMN = "@@index"
 
 
@@ -87,11 +88,11 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     # make sure the activity column is of string type
     df[xes_constants.DEFAULT_NAME_KEY] = df[xes_constants.DEFAULT_NAME_KEY].astype("string")
     # set an index column
-    df = pandas_utils.insert_index(df, INDEX_COLUMN)
+    df = pandas_utils.insert_index(df, INDEX_COLUMN, copy_dataframe=False)
     # sorts the dataframe
     df = df.sort_values([constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_TIMESTAMP_KEY, INDEX_COLUMN])
     # re-set the index column
-    df = pandas_utils.insert_index(df, INDEX_COLUMN)
+    df = pandas_utils.insert_index(df, INDEX_COLUMN, copy_dataframe=False)
     # sets the properties
     if not hasattr(df, 'attrs'):
         # legacy (Python 3.6) support
@@ -105,8 +106,6 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     df.attrs[constants.PARAMETER_CONSTANT_TRANSITION_KEY] = xes_constants.DEFAULT_TRANSITION_KEY
     df.attrs[constants.PARAMETER_CONSTANT_RESOURCE_KEY] = xes_constants.DEFAULT_RESOURCE_KEY
     df.attrs[constants.PARAMETER_CONSTANT_CASEID_KEY] = constants.CASE_CONCEPT_NAME
-    # logging.warning(
-    #    "please convert the dataframe for advanced process mining applications. log = pm4py.convert_to_event_log(df)")
     return df
 
 
@@ -144,7 +143,8 @@ def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = c
         log_obj = pm4py.convert_to_dataframe(log_obj)
         log_obj = format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
                                    start_timestamp_key=start_timestamp_key)
-        return pm4py.convert_to_event_log(log_obj)
+        from pm4py.objects.conversion.log import converter
+        return converter.apply(log_obj, variant=converter.Variants.TO_EVENT_LOG)
     elif isinstance(log_obj, EventStream):
         log_obj = pm4py.convert_to_dataframe(log_obj)
         log_obj = format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
