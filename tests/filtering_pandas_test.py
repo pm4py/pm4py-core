@@ -27,7 +27,7 @@ class DataframePrefilteringTest(unittest.TestCase):
         dataframe = case_filter.filter_on_ncases(dataframe, case_id_glue="case:concept:name")
         dataframe = dataframe.sort_values('time:timestamp')
         event_log = log_conv_fact.apply(dataframe, variant=log_conv_fact.TO_EVENT_STREAM)
-        log = log_conv_fact.apply(event_log)
+        log = log_conv_fact.apply(event_log, variant=log_conv_fact.Variants.TO_EVENT_LOG)
         del log
 
     def test_filtering_variants(self):

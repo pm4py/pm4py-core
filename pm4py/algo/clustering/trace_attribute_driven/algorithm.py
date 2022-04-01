@@ -76,7 +76,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], trace_attribute: str,
     if parameters is None:
         parameters = {}
 
-    log = log_converter.apply(log, parameters=parameters)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     percent = 1
     alpha = 0.5

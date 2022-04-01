@@ -282,7 +282,7 @@ def save_vis_heuristics_net(heu_net: HeuristicsNet, file_path: str):
     hn_visualizer.save(gviz, file_path)
 
 
-def __dotted_attribute_selection(log, attributes):
+def __dotted_attribute_selection(log: Union[EventLog, pd.DataFrame], attributes):
     """
     Default attribute selection for the dotted chart
 
@@ -301,8 +301,8 @@ def __dotted_attribute_selection(log, attributes):
     if attributes is None:
         from pm4py.util import xes_constants
         from pm4py.objects.log.util import sorting
-        from pm4py.convert import convert_to_event_log
-        log = convert_to_event_log(log)
+        from pm4py.objects.conversion.log import converter
+        log = converter.apply(log, variant=converter.Variants.TO_EVENT_LOG)
         log = sorting.sort_timestamp(log, xes_constants.DEFAULT_TIMESTAMP_KEY)
         for index, trace in enumerate(log):
             trace.attributes["@@index"] = index
@@ -310,7 +310,7 @@ def __dotted_attribute_selection(log, attributes):
     return log, attributes
 
 
-def view_dotted_chart(log, format: str = "png", attributes=None):
+def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", attributes=None):
     """
     Displays the dotted chart
 
@@ -338,7 +338,7 @@ def view_dotted_chart(log, format: str = "png", attributes=None):
     dotted_chart_visualizer.view(gviz)
 
 
-def save_vis_dotted_chart(log, file_path: str, attributes=None):
+def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, attributes=None):
     """
     Saves the visualization of the dotted chart
 

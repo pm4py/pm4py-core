@@ -11,6 +11,7 @@ import sys
 
 from typing import Optional, Dict, Any, Union, Tuple, List
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -44,6 +45,9 @@ def apply(log: EventLog, paths: List[Tuple[str, str]], parameters: Optional[Dict
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, xes.DEFAULT_NAME_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
     filtered_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
@@ -86,6 +90,9 @@ def apply_performance(log: EventLog, provided_path: Tuple[str, str], parameters:
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, xes.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
     min_performance = exec_utils.get_param_value(Parameters.MIN_PERFORMANCE, parameters, 0)
@@ -123,6 +130,8 @@ def get_paths_from_log(log, attribute_key="concept:name"):
     paths
         Dictionary of paths associated with their count
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     paths = {}
     for trace in log:
         for i in range(0, len(trace) - 1):
@@ -204,6 +213,8 @@ def filter_log_by_paths(log, paths, variants, vc, threshold, attribute_key="conc
     filtered_log
         Filtered log
     """
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+
     filtered_log = EventLog(list(), attributes=log.attributes, extensions=log.extensions, classifiers=log.classifiers,
                             omni_present=log.omni_present, properties=log.properties)
     fvft = variants[vc[0][0]][0]

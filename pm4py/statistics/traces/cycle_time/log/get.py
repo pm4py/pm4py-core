@@ -50,7 +50,7 @@ def apply(log_or_trace: Union[Trace, EventLog], parameters: Optional[Dict[Union[
         log = EventLog()
         log.append(log_or_trace)
     else:
-        log = converter.apply(log_or_trace)
+        log = converter.apply(log_or_trace, variant=converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     events = [(x[start_timestamp_key].timestamp(), x[timestamp_key].timestamp()) for trace in log for x in trace]
 
