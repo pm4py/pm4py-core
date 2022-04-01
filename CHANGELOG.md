@@ -1,8 +1,10 @@
-## pm4py 2.2.19.3
+## pm4py 2.2.20
 
 ### Added
 
 ### Changed
+* 762fa3ec987705f12a42decb13862323f600e3c9
+  * apply explicit conversions to event log throughout pm4py code base 
 
 ### Deprecated
 
