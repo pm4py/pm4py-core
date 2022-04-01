@@ -70,6 +70,7 @@ def apply(log: EventLog, net: PetriNet, marking: Marking, final_marking: Marking
                                                       executor.Variants.TOKEN_REPLAY)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, log_lib.util.xes.DEFAULT_NAME_KEY)
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
 
     # default value for precision, when no activated transitions (not even by looking at the initial marking) are found
     precision = 1.0
@@ -77,6 +78,7 @@ def apply(log: EventLog, net: PetriNet, marking: Marking, final_marking: Marking
     sum_at = 0
 
     parameters_tr = {
+        token_replay.Parameters.SHOW_PROGRESS_BAR: show_progress_bar,
         token_replay.Parameters.CONSIDER_REMAINING_IN_FITNESS: False,
         token_replay.Parameters.TRY_TO_REACH_FINAL_MARKING_THROUGH_HIDDEN: False,
         token_replay.Parameters.STOP_IMMEDIATELY_UNFIT: True,
