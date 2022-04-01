@@ -54,8 +54,9 @@ Process Discovery (:mod:`pm4py.discovery`)
 .. autosummary::
    :toctree: generated
 
+   pm4py.discovery
    pm4py.read
    pm4py.read.read_bpmn
    pm4py.read.read_dfg
    pm4py.write
-   pm4py.discovery
+   
