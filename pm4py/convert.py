@@ -33,6 +33,7 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.objects.transition_system.obj import TransitionSystem
+from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 
 
 def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: str = "case:concept:name") -> EventLog:
@@ -64,6 +65,9 @@ def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: str
     """
     # Unit test: YES
     if type(obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
+    if check_is_pandas_dataframe(obj):
+        check_pandas_dataframe_columns(obj)
 
     from pm4py.objects.conversion.log import converter
     log = converter.apply(obj, variant=converter.Variants.TO_EVENT_LOG, parameters=get_properties(obj, case_id_key=case_id_key))
@@ -101,6 +105,9 @@ def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: str
     # Unit test: YES
     if type(obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
+    if check_is_pandas_dataframe(obj):
+        check_pandas_dataframe_columns(obj)
+
     from pm4py.objects.conversion.log import converter
     stream = converter.apply(obj, variant=converter.Variants.TO_EVENT_STREAM, parameters=get_properties(obj, case_id_key=case_id_key))
 
@@ -135,6 +142,9 @@ def convert_to_dataframe(obj: Union[EventStream, EventLog]) -> pd.DataFrame:
     """
     # Unit test: YES
     if type(obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
+    if check_is_pandas_dataframe(obj):
+        check_pandas_dataframe_columns(obj)
 
     from pm4py.objects.conversion.log import converter
     df = converter.apply(obj, variant=converter.Variants.TO_DATA_FRAME, parameters=get_properties(obj))

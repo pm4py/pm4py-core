@@ -46,8 +46,6 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], net: PetriNet, markin
     if parameters is None:
         parameters = {}
 
-    log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
-
     # execute the following part of code when the variant is not specified by the user
     if variant is None:
         if not (check_easy_soundness_net_in_fin_marking(

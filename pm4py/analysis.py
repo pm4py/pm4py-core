@@ -9,8 +9,10 @@ from pm4py.utils import get_properties
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 
 import pandas as pd
+import deprecation
 
 
+@deprecation.deprecated("2.3.0", "3.0.0", details="this method will be removed in a future release.")
 def construct_synchronous_product_net(trace: Trace, petri_net: PetriNet, initial_marking: Marking,
                                       final_marking: Marking) -> Tuple[PetriNet, Marking, Marking]:
     """
@@ -36,7 +38,7 @@ def construct_synchronous_product_net(trace: Trace, petri_net: PetriNet, initial
     sync_fm
         Final marking of the sync net
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: NO DEPRECATED
     # Unit test: YES
     from pm4py.objects.petri_net.utils.petri_utils import construct_trace_net
     from pm4py.objects.petri_net.utils.synchronous_product import construct
@@ -83,6 +85,7 @@ def solve_marking_equation(petri_net: PetriNet, initial_marking: Marking,
     return marking_equation.get_h_value(me)
 
 
+@deprecation.deprecated("2.3.0", "3.0.0", details="this method will be removed in a future release.")
 def solve_extended_marking_equation(trace: Trace, sync_net: PetriNet, sync_im: Marking,
                                     sync_fm: Marking, split_points: Optional[List[int]] = None) -> float:
     """
@@ -111,7 +114,7 @@ def solve_extended_marking_equation(trace: Trace, sync_net: PetriNet, sync_im: M
     h_value
         Heuristics value calculated resolving the marking equation
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: NO DEPRECATED
     # Unit test: YES
     from pm4py.algo.analysis.extended_marking_equation import algorithm as extended_marking_equation
     parameters = {}
@@ -156,7 +159,7 @@ def check_soundness(petri_net: PetriNet, initial_marking: Marking,
     return woflan.apply(petri_net, initial_marking, final_marking)
 
 
-def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame]) -> Union[EventLog, pd.DataFrame]:
+def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Inserts the artificial start/end activities in an event log / Pandas dataframe
 
@@ -164,6 +167,12 @@ def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame]) -> Union[Eve
     ------------------
     log
         Event log / Pandas dataframe
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     ------------------
@@ -172,9 +181,9 @@ def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame]) -> Union[Eve
     """
     # Unit test: YES
     # Variant that is Pandas native: YES
-    properties = get_properties(log)
+    properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
         from pm4py.objects.log.util import dataframe_utils
         return dataframe_utils.insert_artificial_start_end(log, parameters=properties)
     else:

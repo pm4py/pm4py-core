@@ -1,8 +1,27 @@
-## pm4py 2.2.19.3
+## pm4py 2.2.20.1
 
 ### Added
 
 ### Changed
+* 344fb7258df17ce0d4ffe7425b678943f6f2ff11
+  * Minor refactoring to management of inhibitor / reset arcs (importing)
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+## pm4py 2.2.20
+
+### Added
+
+### Changed
+* 762fa3ec987705f12a42decb13862323f600e3c9
+  * apply explicit conversions to event log throughout pm4py code base 
 
 ### Deprecated
 
@@ -13,6 +32,10 @@
   * Fixed missing import in DFG performance visualization.
 * f4f5a0eee8218be5c575fe8b42ab59e335979d53
   * Fixed hardcoded parameter in feature extraction interface
+* e61fb3f7a763a89cfb221b3c37c1b140620f5df9
+  * Fixed performance DFG visualization when all values are provided
+* fb9c152afdf6b91c3b26efa09d8233e99c55b907
+  * Fixed progress bar behavior in TBR-based ET-Conformance
 
 ### Removed
 * 639aeb64bf5febf5f5719622d6d90c4a3c5cd8be
