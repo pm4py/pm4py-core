@@ -198,8 +198,7 @@ def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: 
     dfg_visualizer.save(gviz, file_path)
 
 
-def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = "png",
-             log: Optional[EventLog] = None):
+def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = "png"):
     """
     Views a (composite) DFG
 
@@ -214,23 +213,18 @@ def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: st
     format
         Format of the output picture (default: png)
     """
-    # Variant that is Pandas native: NO
-    if log is not None:
-        if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     dfg_parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
-    parameters = get_properties(log)
+    parameters = {}
     parameters[dfg_parameters.FORMAT] = format
     parameters[dfg_parameters.START_ACTIVITIES] = start_activities
     parameters[dfg_parameters.END_ACTIVITIES] = end_activities
-    gviz = dfg_visualizer.apply(dfg, log=log, variant=dfg_visualizer.Variants.FREQUENCY,
+    gviz = dfg_visualizer.apply(dfg, variant=dfg_visualizer.Variants.FREQUENCY,
                                 parameters=parameters)
     dfg_visualizer.view(gviz)
 
 
-def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str,
-                 log: Optional[EventLog] = None):
+def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str):
     """
     Saves a DFG visualization to a file
 
@@ -245,18 +239,14 @@ def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_p
     file_path
         Destination path
     """
-    # Variant that is Pandas native: NO
-    if log is not None:
-        if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     dfg_parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
-    parameters = get_properties(log)
+    parameters = {}
     parameters[dfg_parameters.FORMAT] = format
     parameters[dfg_parameters.START_ACTIVITIES] = start_activities
     parameters[dfg_parameters.END_ACTIVITIES] = end_activities
-    gviz = dfg_visualizer.apply(dfg, log=log, variant=dfg_visualizer.Variants.FREQUENCY,
+    gviz = dfg_visualizer.apply(dfg, variant=dfg_visualizer.Variants.FREQUENCY,
                                 parameters=parameters)
     dfg_visualizer.save(gviz, file_path)
 
@@ -382,6 +372,9 @@ def __dotted_attribute_selection(log: Union[EventLog, pd.DataFrame], attributes)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+
     if attributes is None:
         from pm4py.util import xes_constants
         from pm4py.objects.log.util import sorting
@@ -418,6 +411,9 @@ def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", a
     # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+
     log, attributes = __dotted_attribute_selection(log, attributes)
     from pm4py.visualization.dotted_chart import visualizer as dotted_chart_visualizer
     gviz = dotted_chart_visualizer.apply(log, attributes, parameters={"format": format})
@@ -440,6 +436,9 @@ def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, at
     """
     # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
 
     format = os.path.splitext(file_path)[1][1:]
     log, attributes = __dotted_attribute_selection(log, attributes)
@@ -589,7 +588,7 @@ def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path
 
 
 @deprecation.deprecated("2.3.0", "3.0.0", details="the performance spectrum visualization will be removed in a future release.")
-def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], format: str = "png"):
+def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], format: str = "png", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
     """
     Displays the performance spectrum
 
@@ -599,12 +598,23 @@ def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: Li
         Performance spectrum
     format
         Format of the visualization (png, svg ...)
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
     """
     # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+
+    properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+
     from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
-    perf_spectrum = performance_spectrum.apply(log, activities, parameters=get_properties(log))
+    perf_spectrum = performance_spectrum.apply(log, activities, parameters=properties)
     from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
     from pm4py.visualization.performance_spectrum.variants import neato
     gviz = perf_spectrum_visualizer.apply(perf_spectrum, parameters={neato.Parameters.FORMAT.value: format})
@@ -612,7 +622,7 @@ def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: Li
 
 
 @deprecation.deprecated("2.3.0", "3.0.0", details="the performance spectrum visualization will be removed in a future release.")
-def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], file_path: str):
+def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], file_path: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
     """
     Saves the visualization of the performance spectrum to a file
 
@@ -624,12 +634,23 @@ def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities
         List of activities (in order) that is used to build the performance spectrum
     file_path
         Destination path (including the extension)
+    activity_key
+        attribute to be used for the activity
+    timestamp_key
+        attribute to be used for the timestamp
+    case_id_key
+        attribute to be used as case identifier
     """
     # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+
+    properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+
     from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
-    perf_spectrum = performance_spectrum.apply(log, activities, parameters=get_properties(log))
+    perf_spectrum = performance_spectrum.apply(log, activities, parameters=properties)
     from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
     from pm4py.visualization.performance_spectrum.variants import neato
     format = os.path.splitext(file_path)[1][1:]

@@ -167,7 +167,7 @@ def check_is_pandas_dataframe(log):
     return False
 
 
-def check_pandas_dataframe_columns(df):
+def check_pandas_dataframe_columns(df, activity_key=None, case_id_key=None, timestamp_key=None):
     """
     Checks if the dataframe contains all the required columns.
     If not, raise an exception
@@ -177,6 +177,39 @@ def check_pandas_dataframe_columns(df):
     df
         Pandas dataframe
     """
+    if len(df.columns) < 3:
+        raise Exception("the dataframe should (at least) contain a column for the case identifier, a column for the activity and a column for the timestamp.")
+
+    str_columns = {x for x in df.columns if "str" in str(df[x].dtype).lower() or "obj" in str(df[x].dtype).lower()}
+    timest_columns = {x for x in df.columns if "date" in str(df[x].dtype).lower() or "time" in str(df[x].dtype).lower()}
+
+    if len(str_columns) < 2:
+        raise Exception("the dataframe should (at least) contain a column of type string for the case identifier and a column of type string for the activity.")
+
+    if len(timest_columns) < 1:
+        raise Exception("the dataframe should (at least) contain a column of type date")
+
+    if case_id_key is not None:
+        if case_id_key not in str_columns:
+            raise Exception("the case ID column should be of type string.")
+
+        if df[case_id_key].isnull().values.any():
+            raise Exception("the case ID column should not contain any empty value.")
+
+    if activity_key is not None:
+        if activity_key not in str_columns:
+            raise Exception("the activity column should be of type string.")
+
+        if df[activity_key].isnull().values.any():
+            raise Exception("the activity column should not contain any empty value.")
+
+    if timestamp_key is not None:
+        if timestamp_key not in timest_columns:
+            raise Exception("the timestamp column should be of time datetime. Use the function pandas.to_datetime")
+
+        if df[timestamp_key].isnull().values.any():
+            raise Exception("the timestamp column should not contain any empty value.")
+
     if len(set(df.columns).intersection(
             set([constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_NAME_KEY,
                  xes_constants.DEFAULT_TIMESTAMP_KEY]))) < 3:

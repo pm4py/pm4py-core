@@ -65,7 +65,7 @@ def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float
         return split_train_test.split(log, train_percentage=train_percentage)
 
 
-def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int) -> Union[EventLog, pd.DataFrame]:
+def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int, case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Gets the prefixes of a log of a given length
 
@@ -75,6 +75,8 @@ def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int) -> Un
         Event log / Pandas dataframe
     length
         Length
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     ----------------
@@ -89,9 +91,9 @@ def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int) -> Un
     __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, case_id_key=case_id_key)
         from pm4py.util import pandas_utils
-        log = pandas_utils.insert_ev_in_tr_index(log)
+        log = pandas_utils.insert_ev_in_tr_index(log, case_id=case_id_key)
         return log[log[constants.DEFAULT_INDEX_IN_TRACE_KEY] <= (length-1)]
     else:
         from pm4py.objects.log.util import get_prefixes
@@ -143,34 +145,3 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
     data, feature_names = log_to_features.apply(log, parameters=parameters)
 
     return pd.DataFrame(data, columns=feature_names)
-
-
-def enhance_net_with_decision_rules(log: Union[EventLog, pd.DataFrame], net: PetriNet, im: Marking, fm: Marking):
-    """
-    Obtain a data Petri net from an event log and a Petri net,
-    which contains decision rules at every split-point of the Petri net automatically discovered from the log.
-
-    Parameters
-    ----------------
-    log
-        Log object
-    net
-        Petri net
-    im
-        Initial marking
-    fm
-        Final marking
-
-    Returns
-    ----------------
-    data_net
-        Data Petri net
-    im
-        Initial marking
-    fm
-        Final marking
-    """
-    # Variant that is Pandas native: NO
-    # Unit test: YES
-    from pm4py.algo.decision_mining import algorithm as decision_mining
-    return decision_mining.create_data_petri_nets_with_decisions(log, net, im, fm)

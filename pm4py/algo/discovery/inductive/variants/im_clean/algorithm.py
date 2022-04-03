@@ -68,15 +68,24 @@ def apply_tree(event_log: Union[pd.DataFrame, EventLog, EventStream],
                parameters: Optional[Dict[Union[Parameters, str], Any]] = None) -> ProcessTree:
     if parameters is None:
         parameters = {}
-    event_log = log_converter.apply(event_log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
     act_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY.value, parameters,
                                          xes_constants.DEFAULT_NAME_KEY)
 
     threshold = exec_utils.get_param_value(Parameters.NOISE_THRESHOLD, parameters, 0.0)
 
-    if threshold == 0.0:
-        # keep one trace per variant; more performant
-        event_log = filtering_utils.keep_one_trace_per_variant(event_log, parameters=parameters)
+    if type(event_log) is pd.DataFrame:
+        if threshold == 0.0:
+            # keep one trace per variant; more performant
+            from pm4py.objects.conversion.log.variants import df_to_event_log_1v
+            event_log = df_to_event_log_1v.apply(event_log)
+        else:
+            from pm4py.objects.conversion.log.variants import df_to_event_log_nv
+            event_log = df_to_event_log_nv.apply(event_log)
+    else:
+        event_log = log_converter.apply(event_log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+        if threshold == 0.0:
+            # keep one trace per variant; more performant
+            event_log = filtering_utils.keep_one_trace_per_variant(event_log, parameters=parameters)
 
     tree = __inductive_miner(event_log, discover_dfg.apply(event_log, parameters=parameters),
                              threshold, None,

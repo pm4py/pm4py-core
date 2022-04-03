@@ -8,11 +8,11 @@ executing==0.8.3
 fonttools==4.31.2
 graphviz==0.19.1
 intervaltree==3.1.0
-ipython==8.1.1
+ipython==8.2.0
 jedi==0.18.1
-jinja2==3.1.0
+jinja2==3.1.1
 jsonpickle==2.1.0
-kiwisolver==1.4.0
+kiwisolver==1.4.2
 lxml==4.8.0
 MarkupSafe==2.1.1
 matplotlib==3.5.1
@@ -34,7 +34,7 @@ python-dateutil==2.8.2
 pytz==2022.1
 pyvis==0.1.9
 scipy==1.8.0
-setuptools==61.0.0
+setuptools==61.3.0
 six==1.16.0
 sortedcontainers==2.4.0
 stack-data==0.2.0

@@ -82,13 +82,10 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concep
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.util import constants
 
         from pm4py.algo.discovery.dfg.adapters.pandas.df_statistics import get_dfg_graph
-        activity_key = properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in properties else xes_constants.DEFAULT_NAME_KEY
-        timestamp_key = properties[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in properties else xes_constants.DEFAULT_TIMESTAMP_KEY
-        case_id_key = properties[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in properties else constants.CASE_CONCEPT_NAME
         dfg = get_dfg_graph(log, activity_key=activity_key,
                             timestamp_key=timestamp_key,
                             case_id_glue=case_id_key)
@@ -151,13 +148,10 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours:
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.util import constants
 
         from pm4py.algo.discovery.dfg.adapters.pandas.df_statistics import get_dfg_graph
-        activity_key = properties[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in properties else xes_constants.DEFAULT_NAME_KEY
-        timestamp_key = properties[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] if constants.PARAMETER_CONSTANT_TIMESTAMP_KEY in properties else xes_constants.DEFAULT_TIMESTAMP_KEY
-        case_id_key = properties[constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in properties else constants.CASE_CONCEPT_NAME
         dfg = get_dfg_graph(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_glue=case_id_key, measure="performance", perf_aggregation_key="all",
                             business_hours=business_hours, worktiming=worktiming, weekends=weekends, workcalendar=workcalendar)
         from pm4py.statistics.start_activities.pandas import get as start_activities_module
@@ -207,6 +201,9 @@ def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame], activity_key: s
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
 
@@ -236,10 +233,13 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_k
     final_marking
         Final marking
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: NO DEPRECATED
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
@@ -276,6 +276,9 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_thres
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     pt = discover_process_tree_inductive(log, noise_threshold, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     from pm4py.convert import convert_to_petri_net
@@ -314,19 +317,23 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
     final_marking
         Final marking
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
-    heu_parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
+    from pm4py.algo.discovery.heuristics.variants import classic as heuristics_miner
+    heu_parameters = heuristics_miner.Parameters
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters[heu_parameters.DEPENDENCY_THRESH] = dependency_threshold
     parameters[heu_parameters.AND_MEASURE_THRESH] = and_threshold
     parameters[heu_parameters.LOOP_LENGTH_TWO_THRESH] = loop_two_threshold
 
-    return heuristics_miner.apply(log, variant=heuristics_miner.Variants.CLASSIC, parameters=parameters)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+        return heuristics_miner.apply_pandas(log, parameters=parameters)
+    else:
+        return heuristics_miner.apply(log, parameters=parameters)
 
 
 def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> ProcessTree:
@@ -355,6 +362,9 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     from pm4py.algo.discovery.inductive import algorithm as inductive_miner
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -390,18 +400,23 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
     heu_net
         Heuristics net
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    from pm4py.algo.discovery.heuristics import algorithm as heuristics_miner
-    heu_parameters = heuristics_miner.Variants.CLASSIC.value.Parameters
+    from pm4py.algo.discovery.heuristics.variants import classic as heuristics_miner
+    heu_parameters = heuristics_miner.Parameters
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters[heu_parameters.DEPENDENCY_THRESH] = dependency_threshold
     parameters[heu_parameters.AND_MEASURE_THRESH] = and_threshold
     parameters[heu_parameters.LOOP_LENGTH_TWO_THRESH] = loop_two_threshold
-    return heuristics_miner.apply_heu(log, variant=heuristics_miner.Variants.CLASSIC, parameters=parameters)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+        return heuristics_miner.apply_heu_pandas(log, parameters=parameters)
+    else:
+        return heuristics_miner.apply_heu(log, parameters=parameters)
 
 
 def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, int]:
@@ -429,6 +444,9 @@ def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream], a
     # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     from pm4py.algo.discovery.minimum_self_distance import algorithm as msd
     return msd.apply(log, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
@@ -478,7 +496,7 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame], activi
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.statistics.eventually_follows.pandas import get
         return get.apply(log, parameters=properties)
     else:
@@ -513,6 +531,9 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
     pt = discover_process_tree_inductive(log, noise_threshold, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     from pm4py.convert import convert_to_bpmn
     return convert_to_bpmn(pt)
@@ -546,10 +567,13 @@ def discover_transition_system(log: Union[EventLog, pd.DataFrame], direction: st
     transition_system
         Transition system
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     properties["direction"] = direction
@@ -580,10 +604,13 @@ def discover_prefix_tree(log: Union[EventLog, pd.DataFrame], activity_key: str =
     prefix_tree
         Prefix tree
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
@@ -627,6 +654,9 @@ def discover_temporal_profile(log: Union[EventLog, pd.DataFrame], activity_key: 
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
@@ -677,10 +707,13 @@ def discover_log_skeleton(log: Union[EventLog, pd.DataFrame], noise_threshold: f
         Log skeleton object, expressed as dictionaries of the six constraints (never_together, always_before ...)
         along with the discovered rules.
     """
-    # Variant that is Pandas native: NO
+    # Variant that is Pandas native: YES
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     properties["noise_threshold"] = noise_threshold
@@ -735,6 +768,9 @@ def discover_batches(log: Union[EventLog, pd.DataFrame], merge_distance: int = 1
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     properties["merge_distance"] = merge_distance

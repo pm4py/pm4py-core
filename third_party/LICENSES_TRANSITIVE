@@ -16,11 +16,11 @@ libraries are added/removed.
 | fonttools | https://pypi.org/project/fonttools | MIT License (MIT) | 4.31.2 |
 | graphviz | https://pypi.org/project/graphviz | MIT License (MIT) | 0.19.1 |
 | intervaltree | https://pypi.org/project/intervaltree | Apache Software License (Apache License, Version 2.0) | 3.1.0 |
-| ipython | https://pypi.org/project/ipython | BSD License (BSD) | 8.1.1 |
+| ipython | https://pypi.org/project/ipython | BSD License (BSD) | 8.2.0 |
 | jedi | https://pypi.org/project/jedi | MIT License (MIT) | 0.18.1 |
-| jinja2 | https://pypi.org/project/jinja2 | BSD License (BSD-3-Clause) | 3.1.0 |
+| jinja2 | https://pypi.org/project/jinja2 | BSD License (BSD-3-Clause) | 3.1.1 |
 | jsonpickle | https://pypi.org/project/jsonpickle | BSD License | 2.1.0 |
-| kiwisolver | https://pypi.org/project/kiwisolver | BSD License (BSD) | 1.4.0 |
+| kiwisolver | https://pypi.org/project/kiwisolver | BSD License | 1.4.2 |
 | lxml | https://pypi.org/project/lxml | BSD License (BSD) | 4.8.0 |
 | MarkupSafe | https://pypi.org/project/MarkupSafe | BSD License (BSD-3-Clause) | 2.1.1 |
 | matplotlib | https://pypi.org/project/matplotlib | Python Software Foundation License (PSF) | 3.5.1 |
@@ -42,7 +42,7 @@ libraries are added/removed.
 | pytz | https://pypi.org/project/pytz | MIT License (MIT) | 2022.1 |
 | pyvis | https://pypi.org/project/pyvis | BSD | 0.1.9 |
 | scipy | https://pypi.org/project/scipy | BSD License (BSD) | 1.8.0 |
-| setuptools | https://pypi.org/project/setuptools | MIT License | 61.0.0 |
+| setuptools | https://pypi.org/project/setuptools | MIT License | 61.3.0 |
 | six | https://pypi.org/project/six | MIT License (MIT) | 1.16.0 |
 | sortedcontainers | https://pypi.org/project/sortedcontainers | Apache Software License (Apache 2.0) | 2.4.0 |
 | stack-data | https://pypi.org/project/stack-data | MIT License (MIT) | 0.2.0 |

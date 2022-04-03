@@ -6,6 +6,7 @@ from pm4py.objects.petri_net.utils.petri_utils import decorate_places_preset_tra
 from pm4py.objects.petri_net.utils import align_utils as utils
 from pm4py.objects.petri_net.utils.incidence_matrix import construct
 from pm4py.util import constants
+import pandas as pd
 
 
 def __search(sync_net, ini, fin, stop, cost_function, skip):
@@ -86,7 +87,7 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
     return ret_markings
 
 
-def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
+def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY, case_id_key=constants.CASE_CONCEPT_NAME):
     """
     Get log prefixes
 
@@ -99,15 +100,21 @@ def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY):
     """
     prefixes = {}
     prefix_count = Counter()
-    for trace in log:
+
+    if type(log) is pd.DataFrame:
+        traces = list(log.groupby(case_id_key)[activity_key].apply(tuple))
+    else:
+        traces = [tuple(x[activity_key] for x in trace) for trace in log]
+
+    for trace in traces:
         for i in range(1, len(trace)):
-            red_trace = trace[0:i]
-            prefix = constants.DEFAULT_VARIANT_SEP.join([x[activity_key] for x in red_trace])
-            next_activity = trace[i][activity_key]
+            prefix = constants.DEFAULT_VARIANT_SEP.join(trace[0:i])
+            next_activity = trace[i]
             if prefix not in prefixes:
                 prefixes[prefix] = set()
             prefixes[prefix].add(next_activity)
             prefix_count[prefix] += 1
+
     return prefixes, prefix_count
 
 
