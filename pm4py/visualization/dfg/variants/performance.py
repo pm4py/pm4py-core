@@ -303,7 +303,7 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
         if log is not None:
             soj_time = soj_time_get.apply(log, parameters=parameters)
         else:
-            soj_time = {key: 0 for key in activities}
+            soj_time = {key: -1 for key in activities}
 
     return graphviz_visualization(activities_count, dfg, image_format=image_format, measure="performance",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
