@@ -1,3 +1,20 @@
+## pm4py 2.2.20.1
+
+### Added
+
+### Changed
+* 344fb7258df17ce0d4ffe7425b678943f6f2ff11
+  * Minor refactoring to management of inhibitor / reset arcs (importing)
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
 ## pm4py 2.2.20
 
 ### Added
