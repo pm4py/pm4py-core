@@ -44,7 +44,7 @@ def get_start_activities(log: Union[EventLog, pd.DataFrame], activity_key: str =
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.statistics.start_activities.pandas import get
         return get.get_start_activities(log, parameters=properties)
     else:
@@ -80,7 +80,7 @@ def get_end_activities(log: Union[EventLog, pd.DataFrame], activity_key: str = "
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.statistics.end_activities.pandas import get
         return get.get_end_activities(log, parameters=properties)
     else:
@@ -136,7 +136,7 @@ def get_trace_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
 
     from pm4py.util import constants
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         return [x for x in list(log.columns) if x.startswith(constants.CASE_ATTRIBUTE_PREFIX)]
     else:
         from pm4py.statistics.attributes.log import get
@@ -172,7 +172,7 @@ def get_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
     parameters = get_properties(log, case_id_key=case_id_key)
     parameters["keep_once_per_case"] = count_once_per_case
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, case_id_key=case_id_key)
         from pm4py.statistics.attributes.pandas import get
         return get.get_attribute_values(log, attribute, parameters=parameters)
     else:
@@ -206,7 +206,7 @@ def get_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
     parameters = get_properties(log, case_id_key=case_id_key)
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, case_id_key=case_id_key)
         from pm4py.statistics.attributes.pandas import get
         return get.get_attribute_values(log, attribute, parameters=parameters)
     else:
@@ -266,7 +266,7 @@ def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame], activity_key: str
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.statistics.variants.pandas import get
         return get.get_variants_count(log, parameters=properties)
     else:
@@ -299,6 +299,9 @@ def get_minimum_self_distances(log: Union[EventLog, pd.DataFrame], activity_key:
     # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
@@ -336,6 +339,9 @@ def get_minimum_self_distance_witnesses(log: Union[EventLog, pd.DataFrame], acti
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
     from pm4py.algo.discovery.minimum_self_distance import algorithm as msd_algo
     from pm4py.algo.discovery.minimum_self_distance import utils as msdw_algo
     return msdw_algo.derive_msd_witnesses(log, msd_algo.apply(log, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)))
@@ -369,7 +375,7 @@ def get_case_arrival_average(log: Union[EventLog, pd.DataFrame], activity_key: s
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.statistics.traces.generic.pandas import case_arrival
         return case_arrival.get_case_arrival_avg(log, parameters=properties)
     else:
@@ -409,7 +415,7 @@ def get_rework_cases_per_activity(log: Union[EventLog, pd.DataFrame], activity_k
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.statistics.rework.pandas import get as rework_get
         return rework_get.apply(log, parameters=properties)
     else:
@@ -447,7 +453,7 @@ def get_case_overlap(log: Union[EventLog, pd.DataFrame], activity_key: str = "co
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.statistics.overlap.cases.pandas import get as cases_overlap
         return cases_overlap.apply(log, parameters=properties)
     else:
@@ -494,7 +500,7 @@ def get_cycle_time(log: Union[EventLog, pd.DataFrame], activity_key: str = "conc
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.statistics.traces.cycle_time.pandas import get as cycle_time
         return cycle_time.apply(log, parameters=properties)
     else:
@@ -538,7 +544,7 @@ def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: b
     properties["worktiming"] = worktiming
     properties["weekends"] = weekends
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.statistics.traces.generic.pandas import case_statistics
         cd = case_statistics.get_cases_description(log, parameters=properties)
         return sorted([x["caseDuration"] for x in cd.values()])
@@ -585,7 +591,7 @@ def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business
     properties["worktiming"] = worktiming
     properties["weekends"] = weekends
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.statistics.traces.generic.pandas import case_statistics
         cd = case_statistics.get_cases_description(log, parameters=properties)
         return cd[case_id]["caseDuration"]
@@ -626,13 +632,8 @@ def get_activity_position_summary(log: Union[EventLog, pd.DataFrame], activity: 
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    activity_key = properties[
-        constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if constants.PARAMETER_CONSTANT_ACTIVITY_KEY in properties else xes_constants.DEFAULT_NAME_KEY
-    case_id_key = properties[
-        constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in properties else constants.CASE_CONCEPT_NAME
-
     if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         log = insert_ev_in_tr_index(log, case_id_key, "@@index_in_trace")
         ret = log[log[activity_key] == activity]["@@index_in_trace"].value_counts().to_dict()
         return ret
