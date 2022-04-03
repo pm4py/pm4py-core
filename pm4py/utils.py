@@ -11,6 +11,7 @@ from pm4py.objects.log.obj import EventLog, EventStream, Trace, Event
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants, xes_constants, pandas_utils
+from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 import deprecation
 
 
@@ -131,6 +132,9 @@ def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = c
     import pm4py
 
     __event_log_deprecation_warning(log_obj)
+
+    if check_is_pandas_dataframe(log_obj):
+        check_pandas_dataframe_columns(log_obj)
 
     if isinstance(log_obj, pd.DataFrame):
         return format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
@@ -450,8 +454,8 @@ List[List[str]]:
     __event_log_deprecation_warning(log)
 
     output = []
-    if pandas_utils.check_is_pandas_dataframe(log):
-        pandas_utils.check_pandas_dataframe_columns(log)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
         from pm4py.streaming.conversion import from_pandas
         it = from_pandas.apply(log, parameters={from_pandas.Parameters.ACTIVITY_KEY: attribute_key})
         for trace in it:
@@ -462,7 +466,7 @@ List[List[str]]:
     return output
 
 
-def sample_cases(log: Union[EventLog, pd.DataFrame], num_cases: int) -> Union[EventLog, pd.DataFrame]:
+def sample_cases(log: Union[EventLog, pd.DataFrame], num_cases: int, case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     (Random) Sample a given number of cases from the event log.
 
@@ -472,6 +476,8 @@ def sample_cases(log: Union[EventLog, pd.DataFrame], num_cases: int) -> Union[Ev
         Event log / Pandas dataframe
     num_cases
         Number of cases to sample
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     ---------------
@@ -481,12 +487,19 @@ def sample_cases(log: Union[EventLog, pd.DataFrame], num_cases: int) -> Union[Ev
     # Variant that is Pandas native: YES
     # Unit test: YES
     __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, case_id_key=case_id_key)
+
+    properties = get_properties(log, case_id_key=case_id_key)
+
     if isinstance(log, EventLog):
         from pm4py.objects.log.util import sampling
         return sampling.sample(log, num_cases)
     elif isinstance(log, pd.DataFrame):
         from pm4py.objects.log.util import dataframe_utils
-        return dataframe_utils.sample_dataframe(log, parameters={"max_no_cases": num_cases})
+        properties["max_no_cases"] = num_cases
+        return dataframe_utils.sample_dataframe(log, parameters=properties)
 
 
 def sample_events(log: Union[EventStream, OCEL], num_events: int) -> Union[EventStream, OCEL]:
@@ -508,6 +521,10 @@ def sample_events(log: Union[EventStream, OCEL], num_events: int) -> Union[Event
     # Variant that is Pandas native: YES
     # Unit test: YES
     __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
+
     if isinstance(log, EventStream):
         from pm4py.objects.log.util import sampling
         return sampling.sample_stream(log, num_events)

@@ -55,7 +55,7 @@ def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float
         return split_train_test.split(log, train_percentage=train_percentage)
 
 
-def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int) -> Union[EventLog, pd.DataFrame]:
+def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int, case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Gets the prefixes of a log of a given length
 
@@ -65,6 +65,8 @@ def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int) -> Un
         Event log / Pandas dataframe
     length
         Length
+    case_id_key
+        attribute to be used as case identifier
 
     Returns
     ----------------
@@ -79,9 +81,9 @@ def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int) -> Un
     __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, case_id_key=case_id_key)
         from pm4py.util import pandas_utils
-        log = pandas_utils.insert_ev_in_tr_index(log)
+        log = pandas_utils.insert_ev_in_tr_index(log, case_id=case_id_key)
         return log[log[constants.DEFAULT_INDEX_IN_TRACE_KEY] <= (length-1)]
     else:
         from pm4py.objects.log.util import get_prefixes
