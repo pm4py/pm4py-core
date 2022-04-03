@@ -48,7 +48,7 @@ def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataF
 
     parameters = get_properties(log, timestamp_key=timestamp_key, case_id_key=case_id_key)
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
         parameters[attributes_filter.Parameters.ATTRIBUTE_KEY] = attribute_key
         parameters[attributes_filter.Parameters.KEEP_ONCE_PER_CASE] = True if level == "cases" else False
@@ -92,7 +92,7 @@ Union[EventLog, pd.DataFrame]:
 
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
         parameters[start_activities_filter.Parameters.POSITIVE] = retain
         return start_activities_filter.apply(log, activities,
@@ -136,7 +136,7 @@ def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union
 
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
         parameters[end_activities_filter.Parameters.POSITIVE] = retain
         return end_activities_filter.apply(log, activities,
@@ -182,7 +182,7 @@ def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
     parameters = get_properties(log, case_id_key=case_id_key)
     parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = attribute_key
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
         if level == "event":
             parameters[attributes_filter.Parameters.POSITIVE] = retain
@@ -233,7 +233,7 @@ def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
     parameters = get_properties(log, case_id_key=case_id_key)
     parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = attribute_key
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
         parameters[attributes_filter.Parameters.POSITIVE] = retain
         return attributes_filter.apply(log, values,
@@ -277,7 +277,7 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str
     from pm4py.util import variants_util
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.variants import variants_filter
         parameters[variants_filter.Parameters.POSITIVE] = retain
         return variants_filter.apply(log, variants,
@@ -513,7 +513,7 @@ def filter_between(log: Union[EventLog, pd.DataFrame], act1: str, act2: str, act
 
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.between import between_filter
         return between_filter.apply(log, act1, act2, parameters=parameters)
     else:
@@ -549,7 +549,7 @@ def filter_case_size(log: Union[EventLog, pd.DataFrame], min_size: int, max_size
 
     parameters = get_properties(log, case_id_key=case_id_key)
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.cases import case_filter
         case_id = parameters[
             constants.PARAMETER_CONSTANT_CASEID_KEY] if constants.PARAMETER_CONSTANT_CASEID_KEY in parameters else constants.CASE_CONCEPT_NAME
@@ -589,7 +589,7 @@ def filter_case_performance(log: Union[EventLog, pd.DataFrame], min_performance:
 
     parameters = get_properties(log, timestamp_key=timestamp_key, case_id_key=case_id_key)
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.cases import case_filter
         return case_filter.filter_case_performance(log, min_performance, max_performance, parameters=parameters)
     else:
@@ -629,7 +629,7 @@ def filter_activities_rework(log: Union[EventLog, pd.DataFrame], activity: str, 
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters["min_occurrences"] = min_occurrences
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.rework import rework_filter
         return rework_filter.apply(log, activity, parameters=parameters)
     else:
@@ -678,7 +678,7 @@ def filter_paths_performance(log: Union[EventLog, pd.DataFrame], path: Tuple[str
     parameters["max_performance"] = max_performance
     path = tuple(path)
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.paths import paths_filter
         return paths_filter.apply_performance(log, path, parameters=parameters)
     else:
@@ -715,7 +715,7 @@ def filter_variants_top_k(log: Union[EventLog, pd.DataFrame], k: int, activity_k
 
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.variants import variants_filter
         return variants_filter.filter_variants_top_k(log, k, parameters=parameters)
     else:
@@ -757,7 +757,7 @@ def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], m
 
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.variants import variants_filter
         return variants_filter.filter_variants_by_coverage_percentage(log, min_coverage_percentage, parameters=parameters)
     else:
@@ -811,7 +811,7 @@ def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
     parameters["first_or_last"] = first_or_last
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.prefixes import prefix_filter
         return prefix_filter.apply(log, activity, parameters=parameters)
     else:
@@ -865,7 +865,7 @@ def filter_suffixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
     parameters["first_or_last"] = first_or_last
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.suffixes import suffix_filter
         return suffix_filter.apply(log, activity, parameters=parameters)
     else:
@@ -1089,7 +1089,7 @@ def filter_four_eyes_principle(log: Union[EventLog, pd.DataFrame], activity1: st
     properties["positive"] = True
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
         from pm4py.algo.filtering.pandas.ltl import ltl_checker
         return ltl_checker.four_eyes_principle(log, activity1, activity2, parameters=properties)
@@ -1128,7 +1128,7 @@ def filter_activity_done_different_resources(log: Union[EventLog, pd.DataFrame],
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
         from pm4py.algo.filtering.pandas.ltl import ltl_checker
         return ltl_checker.attr_value_different_persons(log, activity, parameters=properties)
