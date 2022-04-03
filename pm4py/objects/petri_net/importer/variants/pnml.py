@@ -284,6 +284,7 @@ def import_net_from_xml_object(root, parameters=None):
                 arc_source = child.get("source")
                 arc_target = child.get("target")
                 arc_weight = 1
+                arc_type = None
                 arc_properties = {}
 
                 for arc_child in child:
@@ -294,14 +295,14 @@ def import_net_from_xml_object(root, parameters=None):
                     elif arc_child.tag.endswith(petri_properties.ARCTYPE):
                         for text_element in arc_child:
                             if text_element.tag.endswith("text"):
-                                arc_properties[petri_properties.ARCTYPE] = text_element.text
+                                arc_type = text_element.text
 
                 if arc_source in places_dict and arc_target in trans_dict:
-                    a = add_arc_from_to(places_dict[arc_source], trans_dict[arc_target], net, weight=arc_weight)
+                    a = add_arc_from_to(places_dict[arc_source], trans_dict[arc_target], net, weight=arc_weight, type=arc_type)
                     for prop in arc_properties:
                         a.properties[prop] = arc_properties[prop]
                 elif arc_target in places_dict and arc_source in trans_dict:
-                    a = add_arc_from_to(trans_dict[arc_source], places_dict[arc_target], net, weight=arc_weight)
+                    a = add_arc_from_to(trans_dict[arc_source], places_dict[arc_target], net, weight=arc_weight, type=arc_type)
                     for prop in arc_properties:
                         a.properties[prop] = arc_properties[prop]
 
