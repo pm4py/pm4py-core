@@ -9,6 +9,8 @@
 ### Deprecated
 
 ### Fixed
+* ad2cba1d8f9487dbb03ec418643b329b30e80ee0
+  * Minor fixes to the retrieval of the parameters in several parts of the code
 
 ### Removed
 

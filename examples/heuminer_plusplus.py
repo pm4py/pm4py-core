@@ -7,7 +7,8 @@ import pandas as pd
 
 def execute_script():
     df = pd.read_csv("../tests/input_data/interval_event_log.csv")
-    df = pm4py.format_dataframe(df)
+    df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True)
+    df["start_timestamp"] = pd.to_datetime(df["start_timestamp"], utc=True)
     log = pm4py.read_xes("../tests/input_data/interval_event_log.xes")
     heu_net = plusplus.apply_heu(log, parameters={"heu_net_decoration": "performance"})
     heu_net_2 = plusplus.apply_heu_pandas(df, parameters={"heu_net_decoration": "performance"})

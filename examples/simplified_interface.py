@@ -11,9 +11,7 @@ def execute_script():
 
     # reads a CSV into a dataframe
     df = pd.read_csv("../tests/input_data/running-example.csv")
-    # formats the dataframe with the mandatory columns for process mining purposes
-    df = pm4py.format_dataframe(df, case_id="case:concept:name", activity_key="concept:name",
-                                timestamp_key="time:timestamp")
+    df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True)
     # converts the dataframe to an event log
     log2 = pm4py.convert_to_event_log(df)
 

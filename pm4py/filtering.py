@@ -90,7 +90,7 @@ def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataF
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    parameters = get_properties(log, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    parameters = get_properties(log, timestamp_key=timestamp_key, case_id_key=case_id_key, activity_key=attribute_key)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
@@ -416,16 +416,16 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
         if retain:
             cases = set()
         else:
-            cases = set(log[constants.CASE_CONCEPT_NAME])
+            cases = set(log[case_id_key])
         for path in relations:
             filt_log = ltl_checker.eventually_follows(log, path,
                                                       parameters=parameters)
-            this_traces = set(filt_log[constants.CASE_CONCEPT_NAME])
+            this_traces = set(filt_log[case_id_key])
             if retain:
                 cases = cases.union(this_traces)
             else:
                 cases = cases.intersection(this_traces)
-        return log[log[constants.CASE_CONCEPT_NAME].isin(cases)]
+        return log[log[case_id_key].isin(cases)]
     else:
         from pm4py.objects.log.obj import EventLog
         from pm4py.algo.filtering.log.ltl import ltl_checker
@@ -1100,7 +1100,7 @@ def filter_ocel_events_timestamp(ocel: OCEL, min_timest: Union[datetime.datetime
     return event_attributes.apply_timestamp(ocel, min_timest, max_timest, parameters={"pm4py:param:timestamp_key": timestamp_key})
 
 
-def filter_four_eyes_principle(log: Union[EventLog, pd.DataFrame], activity1: str, activity2: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
+def filter_four_eyes_principle(log: Union[EventLog, pd.DataFrame], activity1: str, activity2: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource"):
     """
     Filter the cases of the log which violates the four eyes principle on the provided activities.
 
@@ -1118,6 +1118,8 @@ def filter_four_eyes_principle(log: Union[EventLog, pd.DataFrame], activity1: st
         attribute to be used for the timestamp
     case_id_key
         attribute to be used as case identifier
+    resource_key
+        attribute to be used as resource
 
     Returns
     -----------------
@@ -1129,7 +1131,7 @@ def filter_four_eyes_principle(log: Union[EventLog, pd.DataFrame], activity1: st
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, resource_key=resource_key)
     properties["positive"] = True
 
     if check_is_pandas_dataframe(log):
@@ -1142,7 +1144,7 @@ def filter_four_eyes_principle(log: Union[EventLog, pd.DataFrame], activity1: st
         return ltl_checker.four_eyes_principle(log, activity1, activity2, parameters=properties)
 
 
-def filter_activity_done_different_resources(log: Union[EventLog, pd.DataFrame], activity: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
+def filter_activity_done_different_resources(log: Union[EventLog, pd.DataFrame], activity: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource"):
     """
     Filters the cases where an activity is repeated by different resources
 
@@ -1158,6 +1160,8 @@ def filter_activity_done_different_resources(log: Union[EventLog, pd.DataFrame],
         attribute to be used for the timestamp
     case_id_key
         attribute to be used as case identifier
+    resource_key
+        attribute to be used as resource
 
     Returns
     ----------------
@@ -1169,7 +1173,7 @@ def filter_activity_done_different_resources(log: Union[EventLog, pd.DataFrame],
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
-    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, resource_key=resource_key)
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
