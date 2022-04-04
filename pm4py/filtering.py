@@ -376,7 +376,6 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
                 cases = cases.intersection(this_traces)
         return log[log[constants.CASE_CONCEPT_NAME].isin(cases)]
     else:
-        from pm4py.objects.log.obj import EventLog
         from pm4py.algo.filtering.log.ltl import ltl_checker
         parameters[ltl_checker.Parameters.POSITIVE] = retain
         if retain:
