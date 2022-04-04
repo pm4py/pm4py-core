@@ -77,10 +77,10 @@ def apply_tree(event_log: Union[pd.DataFrame, EventLog, EventStream],
         if threshold == 0.0:
             # keep one trace per variant; more performant
             from pm4py.objects.conversion.log.variants import df_to_event_log_1v
-            event_log = df_to_event_log_1v.apply(event_log)
+            event_log = df_to_event_log_1v.apply(event_log, parameters=parameters)
         else:
             from pm4py.objects.conversion.log.variants import df_to_event_log_nv
-            event_log = df_to_event_log_nv.apply(event_log)
+            event_log = df_to_event_log_nv.apply(event_log, parameters=parameters)
     else:
         event_log = log_converter.apply(event_log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
         if threshold == 0.0:
