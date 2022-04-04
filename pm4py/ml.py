@@ -9,10 +9,11 @@ from pm4py.util import constants
 from pm4py.utils import __event_log_deprecation_warning
 import random
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
+from pm4py.utils import get_properties
 from copy import copy
 
 
-def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float = 0.8) -> Union[
+def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float = 0.8, case_id_key="case:concept:name") -> Union[
     Tuple[EventLog, EventLog], Tuple[pd.DataFrame, pd.DataFrame]]:
     """
     Split an event log in a training log and a test log (for machine learning purposes)
@@ -23,6 +24,8 @@ def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float
         Event log / Pandas dataframe
     train_percentage
         Fraction of traces to be included in the training log (from 0.0 to 1.0)
+    case_id_key
+        Attribute to be used as case identifier
 
     Returns
     --------------
@@ -38,7 +41,7 @@ def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
-        cases = set(log[constants.CASE_CONCEPT_NAME].unique())
+        cases = set(log[case_id_key].unique())
         train_cases = set()
         test_cases = set()
         for c in cases:
@@ -47,8 +50,8 @@ def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float
                 train_cases.add(c)
             else:
                 test_cases.add(c)
-        train_df = log[log[constants.CASE_CONCEPT_NAME].isin(train_cases)]
-        test_df = log[log[constants.CASE_CONCEPT_NAME].isin(test_cases)]
+        train_df = log[log[case_id_key].isin(train_cases)]
+        test_df = log[log[case_id_key].isin(test_cases)]
         return train_df, test_df
     else:
         from pm4py.objects.log.util import split_train_test
@@ -90,7 +93,7 @@ def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int, case_
         return get_prefixes.get_prefixes_from_log(log, length)
 
 
-def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=None, num_tr_attr=None, str_ev_attr=None, num_ev_attr=None, str_evsucc_attr=None, **kwargs) -> pd.DataFrame:
+def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=None, num_tr_attr=None, str_ev_attr=None, num_ev_attr=None, str_evsucc_attr=None, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name", resource_key="org:resource", **kwargs) -> pd.DataFrame:
     """
     Extracts a dataframe containing the features of each case of the provided log object
 
@@ -106,6 +109,14 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
         (if provided) string attributes at the event level which should be extracted as features (one-hot encoding)
     num_ev_attr
         (if provided) numeric attributes at the event level which should be extracted as features (last value per attribute in a case)
+    activity_key
+        The attribute to be used as activity
+    timestamp_key
+        The attribute to be used as timestamp
+    case_id_key
+        The attribute to be used as case identifier
+    resource_key
+        The attribute to be used as resource
 
     Returns
     ---------------
@@ -121,6 +132,10 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
     if kwargs is not None:
         parameters = kwargs
 
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    for prop in properties:
+        parameters[prop] = properties[prop]
+
     parameters["str_tr_attr"] = str_tr_attr
     parameters["num_tr_attr"] = num_tr_attr
     parameters["str_ev_attr"] = str_ev_attr
@@ -130,7 +145,7 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
     from pm4py.algo.transformation.log_to_features import algorithm as log_to_features
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
 
     data, feature_names = log_to_features.apply(log, parameters=parameters)
 

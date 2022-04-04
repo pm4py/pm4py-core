@@ -246,6 +246,7 @@ def discover_network_analysis(log: Union[pd.DataFrame, EventLog, EventStream], o
         check_pandas_dataframe_columns(log)
 
     from pm4py.algo.organizational_mining.network_analysis.variants import dataframe
+
     parameters = {}
     parameters[dataframe.Parameters.OUT_COLUMN] = out_column
     parameters[dataframe.Parameters.IN_COLUMN] = in_column
