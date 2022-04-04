@@ -302,6 +302,7 @@ def get_properties(log, activity_key: str = "concept:name", timestamp_key: str =
 
     if activity_key is not None:
         parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = activity_key
+        parameters[constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = activity_key
 
     if timestamp_key is not None:
         parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = timestamp_key

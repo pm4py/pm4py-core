@@ -59,4 +59,4 @@ def flatten(ocel: OCEL, ot: str, parameters: Optional[Dict[Any, Any]] = None) ->
 
     from pm4py.utils import format_dataframe
 
-    return format_dataframe(events)
+    return events

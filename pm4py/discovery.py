@@ -722,7 +722,7 @@ def discover_log_skeleton(log: Union[EventLog, pd.DataFrame], noise_threshold: f
     return log_skeleton_discovery.apply(log, parameters=properties)
 
 
-def discover_batches(log: Union[EventLog, pd.DataFrame], merge_distance: int = 15 * 60, min_batch_size: int = 2, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[
+def discover_batches(log: Union[EventLog, pd.DataFrame], merge_distance: int = 15 * 60, min_batch_size: int = 2, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource") -> List[
     Tuple[Tuple[str, str], int, Dict[str, Any]]]:
     """
     Discover batches from the provided log object
@@ -752,6 +752,8 @@ def discover_batches(log: Union[EventLog, pd.DataFrame], merge_distance: int = 1
         attribute to be used for the timestamp
     case_id_key
         attribute to be used as case identifier
+    resource_key
+        attribute to be used as resource
 
     Returns
     ------------------
@@ -772,7 +774,7 @@ def discover_batches(log: Union[EventLog, pd.DataFrame], merge_distance: int = 1
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
-    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, resource_key=resource_key)
     properties["merge_distance"] = merge_distance
     properties["min_batch_size"] = min_batch_size
 

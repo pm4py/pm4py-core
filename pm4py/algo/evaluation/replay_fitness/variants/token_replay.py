@@ -14,6 +14,7 @@ from pm4py.util import typing
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     ATTRIBUTE_KEY = constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     TOKEN_REPLAY_VARIANT = "token_replay_variant"
     CLEANING_TOKEN_FLOOD = "cleaning_token_flood"
     MULTIPROCESSING = "multiprocessing"
@@ -87,11 +88,13 @@ def apply(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_ma
                                                       executor.Variants.TOKEN_REPLAY)
     cleaning_token_flood = exec_utils.get_param_value(Parameters.CLEANING_TOKEN_FLOOD, parameters, False)
     show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
 
     parameters_tr = {token_replay.Parameters.ACTIVITY_KEY: activity_key,
                      token_replay.Parameters.CONSIDER_REMAINING_IN_FITNESS: True,
                      token_replay.Parameters.CLEANING_TOKEN_FLOOD: cleaning_token_flood,
-                     token_replay.Parameters.SHOW_PROGRESS_BAR: show_progress_bar}
+                     token_replay.Parameters.SHOW_PROGRESS_BAR: show_progress_bar,
+                     token_replay.Parameters.CASE_ID_KEY: case_id_key}
 
     aligned_traces = executor.apply(log, petri_net, initial_marking, final_marking, variant=token_replay_variant,
                                     parameters=parameters_tr)

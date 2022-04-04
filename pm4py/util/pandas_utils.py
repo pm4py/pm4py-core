@@ -210,8 +210,8 @@ def check_pandas_dataframe_columns(df, activity_key=None, case_id_key=None, time
         if df[timestamp_key].isnull().values.any():
             raise Exception("the timestamp column should not contain any empty value.")
 
-    if len(set(df.columns).intersection(
+    """if len(set(df.columns).intersection(
             set([constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_NAME_KEY,
                  xes_constants.DEFAULT_TIMESTAMP_KEY]))) < 3:
         raise Exception(
-            "please format your dataframe accordingly! df = pm4py.format_dataframe(df, case_id='<name of the case ID column>', activity_key='<name of the activity column>', timestamp_key='<name of the timestamp column>')")
+            "please format your dataframe accordingly! df = pm4py.format_dataframe(df, case_id='<name of the case ID column>', activity_key='<name of the activity column>', timestamp_key='<name of the timestamp column>')")"""

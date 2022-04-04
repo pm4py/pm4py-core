@@ -992,7 +992,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
 
     for i in range(len(vc)):
         variant = vc[i][0]
-        considered_case = variants_util.variant_to_trace(variant)
+        considered_case = variants_util.variant_to_trace(variant, parameters={constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key})
 
         threads[variant] = ApplyTraceTokenReplay(considered_case, net, initial_marking, final_marking,
                                                  trans_map, enable_pltr_fitness, place_fitness_per_trace,
