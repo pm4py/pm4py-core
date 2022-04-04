@@ -46,10 +46,10 @@ def apply(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], An
     if parameters is None:
         parameters = {}
 
-    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
-                                                     xes_constants.DEFAULT_TIMESTAMP_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
+                                                     timestamp_key)
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
 
     events = [(x[start_timestamp_key].timestamp(), x[timestamp_key].timestamp()) for x in
