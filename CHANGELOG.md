@@ -11,6 +11,8 @@
 ### Fixed
 * ad2cba1d8f9487dbb03ec418643b329b30e80ee0
   * Minor fixes to the retrieval of the parameters in several parts of the code
+* 65e1f1b0bbd0747fe81eb049780874608a395d6e
+  * Fixed bug in eventually follows filter (simplified interface)
 
 ### Removed
 
