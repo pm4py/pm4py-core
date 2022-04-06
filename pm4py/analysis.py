@@ -38,8 +38,6 @@ def construct_synchronous_product_net(trace: Trace, petri_net: PetriNet, initial
     sync_fm
         Final marking of the sync net
     """
-    # Variant that is Pandas native: NO DEPRECATED
-    # Unit test: YES
     from pm4py.objects.petri_net.utils.petri_utils import construct_trace_net
     from pm4py.objects.petri_net.utils.synchronous_product import construct
     from pm4py.objects.petri_net.utils.align_utils import SKIP
@@ -72,7 +70,6 @@ def solve_marking_equation(petri_net: PetriNet, initial_marking: Marking,
     h_value
         Heuristics value calculated resolving the marking equation
     """
-    # Unit test: YES
     from pm4py.algo.analysis.marking_equation import algorithm as marking_equation
 
     if cost_function is None:
@@ -114,8 +111,6 @@ def solve_extended_marking_equation(trace: Trace, sync_net: PetriNet, sync_im: M
     h_value
         Heuristics value calculated resolving the marking equation
     """
-    # Variant that is Pandas native: NO DEPRECATED
-    # Unit test: YES
     from pm4py.algo.analysis.extended_marking_equation import algorithm as extended_marking_equation
     parameters = {}
     if split_points is not None:
@@ -154,7 +149,6 @@ def check_soundness(petri_net: PetriNet, initial_marking: Marking,
     boolean
         Soundness
     """
-    # Unit test: YES
     from pm4py.algo.analysis.woflan import algorithm as woflan
     return woflan.apply(petri_net, initial_marking, final_marking)
 
@@ -179,8 +173,6 @@ def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame], activity_key
     log
         Event log / Pandas dataframe with artificial start / end activities
     """
-    # Unit test: YES
-    # Variant that is Pandas native: YES
     properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
@@ -207,7 +199,6 @@ def check_is_workflow_net(net: PetriNet) -> bool:
     ------------------
     True iff the input net is a WF-net.
     """
-    # Unit test: YES
     from pm4py.algo.analysis.workflow_net import algorithm
     return algorithm.apply(net)
 
@@ -231,6 +222,5 @@ def maximal_decomposition(net: PetriNet, im: Marking, fm: Marking) -> List[Tuple
         List of accepting Petri nets (Petri net + initial marking + final marking),
         which are the maximal decomposition of the provided accepting Petri net.
     """
-    # Unit test: YES
     from pm4py.objects.petri_net.utils.decomposition import decompose
     return decompose(net, im, fm)

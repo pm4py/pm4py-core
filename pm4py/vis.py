@@ -335,7 +335,6 @@ def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", a
         of the form [x-axis attribute, y-axis attribute, color attribute], e.g., ["concept:name", "org:resource", "concept:name"])
 
     """
-    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
@@ -361,7 +360,6 @@ def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, at
     attributes
         Attributes that should be used to construct the dotted chart (for example, ["concept:name", "org:resource"])
     """
-    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
@@ -404,7 +402,7 @@ def save_vis_sna(sna_metric, file_path: str):
     sna_visualizer.save(gviz, file_path)
 
 
-def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "png"):
+def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "png", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
     """
     Visualizes the case duration graph
 
@@ -414,24 +412,29 @@ def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "
         Log object
     format
         Format of the visualization (png, svg, ...)
+    activity_key
+        attribute to be used as activity
+    case_id_key
+        attribute to be used as case identifier
+    timestamp_key
+        attribute to be used as timestamp
     """
-    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
         from pm4py.statistics.traces.generic.pandas import case_statistics
-        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log))
+        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     else:
         from pm4py.statistics.traces.generic.log import case_statistics
-        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log))
+        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
                                         parameters={"format": format})
     graphs_visualizer.view(graph_vis)
 
 
-def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: str):
+def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: str, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
     """
     Saves the case duration graph in the specified path
 
@@ -441,17 +444,22 @@ def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: 
         Log object
     file_path
         Destination path
+    activity_key
+        attribute to be used as activity
+    case_id_key
+        attribute to be used as case identifier
+    timestamp_key
+        attribute to be used as timestamp
     """
-    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
         from pm4py.statistics.traces.generic.pandas import case_statistics
-        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log))
+        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     else:
         from pm4py.statistics.traces.generic.log import case_statistics
-        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log))
+        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
@@ -459,7 +467,7 @@ def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: 
     graphs_visualizer.save(graph_vis, file_path)
 
 
-def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str = "png"):
+def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str = "png", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
     """
     Visualizes the events per time graph
 
@@ -469,24 +477,29 @@ def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str =
         Log object
     format
         Format of the visualization (png, svg, ...)
+    activity_key
+        attribute to be used as activity
+    case_id_key
+        attribute to be used as case identifier
+    timestamp_key
+        attribute to be used as timestamp
     """
-    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
         from pm4py.statistics.attributes.pandas import get as attributes_get
-        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log))
+        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     else:
         from pm4py.statistics.attributes.log import get as attributes_get
-        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log))
+        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.DATES,
                                         parameters={"format": format})
     graphs_visualizer.view(graph_vis)
 
 
-def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path: str):
+def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path: str, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
     """
     Saves the events per time graph in the specified path
 
@@ -496,17 +509,22 @@ def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path
         Log object
     file_path
         Destination path
+    activity_key
+        attribute to be used as activity
+    case_id_key
+        attribute to be used as case identifier
+    timestamp_key
+        attribute to be used as timestamp
     """
-    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
         from pm4py.statistics.attributes.pandas import get as attributes_get
-        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log))
+        graph = attributes_get.get_kde_date_attribute(log, attribute=timestamp_key, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     else:
         from pm4py.statistics.attributes.log import get as attributes_get
-        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log))
+        graph = attributes_get.get_kde_date_attribute(log, attribute=timestamp_key, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.DATES,
@@ -531,8 +549,13 @@ def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: Li
         attribute to be used for the timestamp
     case_id_key
         attribute to be used as case identifier
+    activity_key
+        attribute to be used as activity
+    case_id_key
+        attribute to be used as case identifier
+    timestamp_key
+        attribute to be used as timestamp
     """
-    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
@@ -568,7 +591,6 @@ def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities
     case_id_key
         attribute to be used as case identifier
     """
-    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
@@ -585,7 +607,7 @@ def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities
     perf_spectrum_visualizer.save(gviz, file_path)
 
 
-def __builds_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_type: str = "days_week"):
+def __builds_events_distribution_graph(log: Union[EventLog, pd.DataFrame], parameters, distr_type: str = "days_week"):
     """
     Internal method to build the events distribution graph
     """
@@ -621,15 +643,15 @@ def __builds_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.attributes.pandas import get as attributes_get
-        x, y = attributes_get.get_events_distribution(log, distr_type=distr_type, parameters=get_properties(log))
+        x, y = attributes_get.get_events_distribution(log, distr_type=distr_type, parameters=parameters)
     else:
         from pm4py.statistics.attributes.log import get as attributes_get
-        x, y = attributes_get.get_events_distribution(log, distr_type=distr_type, parameters=get_properties(log))
+        x, y = attributes_get.get_events_distribution(log, distr_type=distr_type, parameters=parameters)
 
     return title, x_axis, y_axis, x, y
 
 
-def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_type: str = "days_week", format="png"):
+def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_type: str = "days_week", format="png", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
     """
     Shows the distribution of the events in the specified dimension
 
@@ -647,12 +669,20 @@ def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_typ
         - weeks => Gets the distribution of the events among the weeks of a year (from 0 to 52)
     format
         Format of the visualization (default: png)
+    activity_key
+        attribute to be used as activity
+    case_id_key
+        attribute to be used as case identifier
+    timestamp_key
+        attribute to be used as timestamp
     """
-    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
-    title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, distr_type)
-    parameters = copy(get_properties(log))
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+
+    parameters = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+    title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, parameters, distr_type)
     parameters["title"] = title;
     parameters["x_axis"] = x_axis;
     parameters["y_axis"] = y_axis;
@@ -663,7 +693,7 @@ def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_typ
 
 
 def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_path: str,
-                                       distr_type: str = "days_week"):
+                                       distr_type: str = "days_week", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
     """
     Saves the distribution of the events in a picture file
 
@@ -680,13 +710,21 @@ def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_
         - years => Gets the distribution of the events among the years of the event log
         - hours => Gets the distribution of the events among the hours of a day (from 0 to 23)
         - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday)
+    activity_key
+        attribute to be used as activity
+    case_id_key
+        attribute to be used as case identifier
+    timestamp_key
+        attribute to be used as timestamp
     """
-    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+
     format = os.path.splitext(file_path)[1][1:]
-    title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, distr_type)
-    parameters = copy(get_properties(log))
+    parameters = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+    title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, parameters, distr_type)
     parameters["title"] = title;
     parameters["x_axis"] = x_axis;
     parameters["y_axis"] = y_axis;
