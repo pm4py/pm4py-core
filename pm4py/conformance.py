@@ -43,8 +43,6 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
     replay_results
         A list of replay results for each trace of the log (in the same order as the traces in the event log)
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -82,8 +80,6 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
     aligned_traces
         A list of alignments for each trace of the log (in the same order as the traces in the event log)
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -151,8 +147,6 @@ def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: Pe
     fitness_dictionary
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -195,8 +189,6 @@ def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, 
     fitness_dictionary
         dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -237,8 +229,6 @@ def precision_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: 
     precision
         float representing the precision value
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -281,8 +271,6 @@ def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet
     precision
         float representing the precision value
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -296,7 +284,7 @@ def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE,
                                      parameters=parameters)
 
-
+@deprecation.deprecated("2.3.0", "3.0.0", "conformance checking using footprints will not be exposed in a future release")
 def __convert_to_fp(*args) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
     """
     Internal method to convert the provided event log / process model argument
@@ -325,6 +313,7 @@ def __convert_to_fp(*args) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
     return fp
 
 
+@deprecation.deprecated("2.3.0", "3.0.0", "conformance checking using footprints will not be exposed in a future release")
 def conformance_diagnostics_footprints(*args) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
     """
     Provide conformance checking diagnostics using footprints
@@ -341,8 +330,6 @@ def conformance_diagnostics_footprints(*args) -> Union[List[Dict[str, Any]], Dic
     fps
         Footprints of the event log / process model
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     fp1 = __convert_to_fp(args[0])
     fp2 = __convert_to_fp(args[1:])
     from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
@@ -352,6 +339,7 @@ def conformance_diagnostics_footprints(*args) -> Union[List[Dict[str, Any]], Dic
         return footprints_conformance.apply(fp1, fp2, variant=footprints_conformance.Variants.LOG_EXTENSIVE)
 
 
+@deprecation.deprecated("2.3.0", "3.0.0", "conformance checking using footprints will not be exposed in a future release")
 def fitness_footprints(*args) -> Dict[str, float]:
     """
     Calculates fitness using footprints
@@ -370,8 +358,6 @@ def fitness_footprints(*args) -> Dict[str, float]:
         - perc_fit_traces => percentage of fit traces (over the log)
         - log_fitness => the fitness value over the log
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     fp_conf = conformance_diagnostics_footprints(*args)
     fp1 = __convert_to_fp(args[0])
     fp2 = __convert_to_fp(args[1:])
@@ -379,6 +365,7 @@ def fitness_footprints(*args) -> Dict[str, float]:
     return evaluation.fp_fitness(fp1, fp2, fp_conf)
 
 
+@deprecation.deprecated("2.3.0", "3.0.0", "conformance checking using footprints will not be exposed in a future release")
 def precision_footprints(*args) -> float:
     """
     Calculates precision using footprints
@@ -395,8 +382,6 @@ def precision_footprints(*args) -> float:
     precision
         The precision of the process model (as a number between 0 and 1)
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     fp1 = __convert_to_fp(args[0])
     fp2 = __convert_to_fp(args[1:])
     from pm4py.algo.conformance.footprints.util import evaluation
@@ -420,7 +405,6 @@ def __check_is_fit_process_tree(trace, tree):
     is_fit
         Boolean value (True if the trace fits; False if the trace does not)
     """
-    # Variant that is Pandas native: NO DEPRECATED
     __event_log_deprecation_warning(trace)
 
     from pm4py.discovery import discover_footprints
@@ -470,7 +454,6 @@ def __check_is_fit_petri_net(trace, net, im, fm, activity_key=xes_constants.DEFA
     is_fit
         Boolean value (True if the trace fits; False if the trace does not)
     """
-    # Variant that is Pandas native: NO DEPRECATED
     __event_log_deprecation_warning(trace)
 
     # avoid checking footprints on Petri net (they are too slow)
@@ -513,7 +496,6 @@ def check_is_fitting(*args, activity_key=xes_constants.DEFAULT_NAME_KEY):
     is_fit
         Boolean value (True if the trace fits; False if the trace does not)
     """
-    # Variant that is Pandas native: NO DEPRECATED
     from pm4py.util import variants_util
     from pm4py.convert import convert_to_process_tree, convert_to_petri_net
 
@@ -576,8 +558,6 @@ def conformance_temporal_profile(log: Union[EventLog, pd.DataFrame], temporal_pr
         is specified, and zeta is set to 1, then the aforementioned case would be deviating
         (considering the couple of activities ('A', 'B')), because 2 years > 1.5 months + 0.5 months.
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -634,8 +614,6 @@ def conformance_log_skeleton(log: Union[EventLog, pd.DataFrame], log_skeleton: D
     log_skel_conf_res
         List containing, for every case of the log, all the constraints that were violated by such case.
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
