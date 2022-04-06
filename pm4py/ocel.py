@@ -54,7 +54,6 @@ def ocel_get_object_types(ocel: OCEL) -> List[str]:
     object_types_list
         List of object types contained in the event log (e.g., ["order", "item", "delivery"])
     """
-    # Unit test: YES
     return list(ocel.objects[ocel.object_type_column].unique())
 
 
@@ -73,7 +72,6 @@ def ocel_get_attribute_names(ocel: OCEL) -> List[str]:
     attributes_list
         List of attributes at the event and object level (e.g. ["cost", "amount", "name"])
     """
-    # Unit test: YES
     from pm4py.objects.ocel.util import attributes_names
     return attributes_names.get_attribute_names(ocel)
 
@@ -96,7 +94,6 @@ def ocel_flattening(ocel: OCEL, object_type: str) -> pd.DataFrame:
     dataframe
         Flattened log in the form of a Pandas dataframe
     """
-    # Unit test: YES
     from pm4py.objects.ocel.util import flattening
     return flattening.flatten(ocel, object_type)
 
@@ -115,7 +112,6 @@ def ocel_object_type_activities(ocel: OCEL) ->  Dict[str, Collection[str]]:
     dict
         A dictionary having as key the object types and as values the activities performed for that object type
     """
-    # Unit test: YES
     from pm4py.statistics.ocel import ot_activities
 
     return ot_activities.get_object_type_activities(ocel)
@@ -140,7 +136,6 @@ def ocel_objects_ot_count(ocel: OCEL) -> Dict[str, Dict[str, int]]:
     dict_ot
         Dictionary associating to each event identifier a dictionary with the number of related objects
     """
-    # Unit test: YES
     from pm4py.statistics.ocel import objects_ot_count
 
     return objects_ot_count.get_objects_ot_count(ocel)
@@ -170,7 +165,6 @@ def discover_ocdfg(ocel: OCEL, business_hours=False, worktiming=[7, 17], weekend
     ocdfg
         Object-centric directly-follows graph
     """
-    # Unit test: YES
     parameters = {}
     parameters["business_hours"] = business_hours
     parameters["worktiming"] = worktiming
@@ -195,6 +189,5 @@ def discover_oc_petri_net(ocel: OCEL) -> Dict[str, Any]:
     ocpn
         Object-centric Petri net
     """
-    # Unit test: YES
     from pm4py.algo.discovery.ocel.ocpn import algorithm as ocpn_discovery
     return ocpn_discovery.apply(ocel)

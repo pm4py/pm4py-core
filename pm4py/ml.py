@@ -44,8 +44,6 @@ def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float
     test_log
         Test event log
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -88,8 +86,6 @@ def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int, case_
         - if a trace has lower or identical length, it is included as-is
         - if a trace has greater length, it is cut
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -133,8 +129,6 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
     fea_df
         Feature dataframe
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 

@@ -19,6 +19,7 @@ INDEX_COLUMN = "@@index"
 CASE_INDEX_COLUMN = "@@case_index"
 
 
+@deprecation.deprecated("2.3.0", "3.0.0", details="the format_dataframe function does not need application anymore.")
 def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAME,
                      activity_key: str = xes_constants.DEFAULT_NAME_KEY,
                      timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
@@ -127,8 +128,6 @@ def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = c
     rebased_log_obj
         Rebased log object
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     import pm4py
 
     __event_log_deprecation_warning(log_obj)
@@ -167,7 +166,6 @@ def parse_process_tree(tree_string: str) -> ProcessTree:
     tree
         Process tree
     """
-    # Unit test: YES
     from pm4py.objects.process_tree.utils.generic import parse
     return parse(tree_string)
 
@@ -193,7 +191,6 @@ def serialize(*args) -> Tuple[str, bytes]:
         Serialized object (a tuple consisting of a string denoting the type of the object, and a bytes string
         representing the serialization)
     """
-    # Unit test: YES
     from pm4py.objects.log.obj import EventLog
     from pm4py.objects.petri_net.obj import PetriNet
     from pm4py.objects.process_tree.obj import ProcessTree
@@ -244,7 +241,6 @@ def deserialize(ser_obj: Tuple[str, bytes]) -> Any:
         - a BPMN object
         - a DFG, including the dictionary of the directly-follows relations, the start activities and the end activities
     """
-    # Unit test: YES
     if ser_obj[0] == constants.AvailableSerializations.EVENT_LOG.value:
         from pm4py.objects.log.importer.xes import importer as xes_importer
         return xes_importer.deserialize(ser_obj[1])
@@ -401,8 +397,6 @@ def parse_event_log_string(traces: Collection[str], sep: str = ",",
     df
         Pandas dataframe
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     cases = []
     activitiess = []
     timestamps = []
@@ -449,8 +443,6 @@ List[List[str]]:
         ['register request', 'examine casually', 'check ticket', 'decide', 'reinitiate request', 'check ticket', 'examine casually', 'decide', 'reinitiate request', 'examine casually', 'check ticket', 'decide', 'reject request'],
         ['register request', 'check ticket', 'examine thoroughly', 'decide', 'reject request']]
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -485,8 +477,6 @@ def sample_cases(log: Union[EventLog, pd.DataFrame], num_cases: int, case_id_key
     sampled_log
         Sampled event log (containing the specified amount of cases)
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
@@ -519,8 +509,6 @@ def sample_events(log: Union[EventStream, OCEL], num_events: int) -> Union[Event
     sampled_log
         Sampled event stream / OCEL / Pandas dataframes (containing the specified amount of events)
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):

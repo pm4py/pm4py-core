@@ -13,6 +13,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
     def test_csv(self):
         df = pd.read_csv("input_data/running-example.csv")
         df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True)
+        df["case:concept:name"] = df["case:concept:name"].astype("string")
 
         log2 = pm4py.convert_to_event_log(df)
         stream1 = pm4py.convert_to_event_stream(log2)
@@ -952,6 +953,30 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         net, im, fm = pm4py.discover_petri_net_inductive(dataframe, case_id_key="CaseID", activity_key="Activity",
                                                          timestamp_key="Timestamp")
         pm4py.precision_alignments(dataframe, net, im, fm, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
+
+    def test_vis_case_duration_df(self):
+        dataframe = pd.read_csv("input_data/running-example-transformed.csv")
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["CaseID"] = dataframe["CaseID"].astype("string")
+        target = os.path.join("test_output_data", "case_duration.svg")
+        pm4py.save_vis_case_duration_graph(dataframe, target, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
+        os.remove(target)
+
+    def test_vis_ev_time_graph_df(self):
+        dataframe = pd.read_csv("input_data/running-example-transformed.csv")
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["CaseID"] = dataframe["CaseID"].astype("string")
+        target = os.path.join("test_output_data", "ev_graph_graph.svg")
+        pm4py.save_vis_events_per_time_graph(dataframe, target, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
+        os.remove(target)
+
+    def test_vis_ev_distr_graph_df(self):
+        dataframe = pd.read_csv("input_data/running-example-transformed.csv")
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["CaseID"] = dataframe["CaseID"].astype("string")
+        target = os.path.join("test_output_data", "ev_distr_graph.svg")
+        pm4py.save_vis_events_distribution_graph(dataframe, target, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
+        os.remove(target)
 
 
 if __name__ == "__main__":
