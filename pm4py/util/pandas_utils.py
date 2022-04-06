@@ -190,6 +190,9 @@ def check_pandas_dataframe_columns(df, activity_key=None, case_id_key=None, time
         raise Exception("the dataframe should (at least) contain a column of type date")
 
     if case_id_key is not None:
+        if case_id_key not in df.columns:
+            raise Exception("the specified case ID column is not contained in the dataframe. Available columns: "+str(sorted(list(df.columns))))
+
         if case_id_key not in str_columns:
             raise Exception("the case ID column should be of type string.")
 
@@ -197,6 +200,9 @@ def check_pandas_dataframe_columns(df, activity_key=None, case_id_key=None, time
             raise Exception("the case ID column should not contain any empty value.")
 
     if activity_key is not None:
+        if activity_key not in df.columns:
+            raise Exception("the specified activity column is not contained in the dataframe. Available columns: "+str(sorted(list(df.columns))))
+
         if activity_key not in str_columns:
             raise Exception("the activity column should be of type string.")
 
@@ -204,6 +210,9 @@ def check_pandas_dataframe_columns(df, activity_key=None, case_id_key=None, time
             raise Exception("the activity column should not contain any empty value.")
 
     if timestamp_key is not None:
+        if timestamp_key not in df.columns:
+            raise Exception("the specified timestamp column is not contained in the dataframe. Available columns: "+str(sorted(list(df.columns))))
+
         if timestamp_key not in timest_columns:
             raise Exception("the timestamp column should be of time datetime. Use the function pandas.to_datetime")
 
