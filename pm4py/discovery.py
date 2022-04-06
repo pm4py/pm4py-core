@@ -45,8 +45,6 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concep
     end_activities
         End activities
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -74,7 +72,6 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concep
 
 
 def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
-    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     return discover_dfg(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -110,8 +107,6 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours:
     end_activities
         End activities
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -166,8 +161,6 @@ def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame], activity_key: s
     final_marking
         Final marking
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -203,8 +196,6 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_k
     final_marking
         Final marking
     """
-    # Variant that is Pandas native: NO DEPRECATED
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -242,8 +233,6 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_thres
     final_marking
         Final marking
     """
-    # Variant that is Pandas native: NO
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -287,8 +276,6 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
     final_marking
         Final marking
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -328,8 +315,6 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
     process_tree
         Process tree object
     """
-    # Variant that is Pandas native: NO
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -370,8 +355,6 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
     heu_net
         Heuristics net
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -411,7 +394,6 @@ def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream], a
         -------
             dict mapping an activity to its self-distance, if it exists, otherwise it is not part of the dict.
         '''
-    # Variant that is Pandas native: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -432,8 +414,6 @@ def discover_footprints(*args: Union[EventLog, Tuple[PetriNet, Marking, Marking]
     args
         Event log / process model
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     from pm4py.algo.discovery.footprints import algorithm as fp_discovery
     return fp_discovery.apply(*args)
 
@@ -458,8 +438,6 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame], activi
     eventually_follows_graph
         Dictionary of tuples of activities that eventually follows each other; along with the number of occurrences
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -496,8 +474,6 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
         bpmn_diagram
             BPMN diagram
         """
-    # Variant that is Pandas native: NO
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -537,8 +513,6 @@ def discover_transition_system(log: Union[EventLog, pd.DataFrame], direction: st
     transition_system
         Transition system
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -574,8 +548,6 @@ def discover_prefix_tree(log: Union[EventLog, pd.DataFrame], activity_key: str =
     prefix_tree
         Prefix tree
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -620,8 +592,6 @@ def discover_temporal_profile(log: Union[EventLog, pd.DataFrame], activity_key: 
         The returned dictionary will contain:
         {('A', 'B'): (1.5 months, 0.5 months), ('A', 'C'): (5 months, 0), ('A', 'D'): (2 months, 0)}
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -677,8 +647,6 @@ def discover_log_skeleton(log: Union[EventLog, pd.DataFrame], noise_threshold: f
         Log skeleton object, expressed as dictionaries of the six constraints (never_together, always_before ...)
         along with the discovered rules.
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -736,8 +704,6 @@ def discover_batches(log: Union[EventLog, pd.DataFrame], merge_distance: int = 1
             # The complete timestamp of the batch
             # The list of events that are executed in the batch
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 

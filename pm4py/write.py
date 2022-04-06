@@ -28,7 +28,6 @@ def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str) -> None:
     -------------
     void
     """
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -55,7 +54,6 @@ def write_pnml(petri_net: PetriNet, initial_marking: Marking, final_marking: Mar
     ------------
     void
     """
-    # Unit test: YES
     from pm4py.objects.petri_net.exporter import exporter as petri_exporter
     petri_exporter.apply(petri_net, initial_marking, file_path, final_marking=final_marking)
 
@@ -75,7 +73,6 @@ def write_ptml(tree: ProcessTree, file_path: str) -> None:
     ------------
     void
     """
-    # Unit test: YES
     from pm4py.objects.process_tree.exporter import exporter as tree_exporter
     tree_exporter.apply(tree, file_path)
 
@@ -99,7 +96,6 @@ def write_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path
     ------------
     void
     """
-    # Unit test: YES
     from pm4py.objects.dfg.exporter import exporter as dfg_exporter
     dfg_exporter.apply(dfg, file_path,
                        parameters={dfg_exporter.Variants.CLASSIC.value.Parameters.START_ACTIVITIES: start_activities,
@@ -119,7 +115,6 @@ def write_bpmn(bpmn_graph: BPMN, file_path: str, enable_layout: bool = True):
     enable_layout
         Enables the automatic layouting of the BPMN diagram (default: True)
     """
-    # Unit test: YES
     if enable_layout:
         from pm4py.objects.bpmn.layout import layouter
         bpmn_graph = layouter.apply(bpmn_graph)
@@ -142,7 +137,6 @@ def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     objects_path
         (Optional, only used in CSV exporter) Path where the objects dataframe should be stored
     """
-    # Unit test: YES
     if file_path.lower().endswith("csv"):
         from pm4py.objects.ocel.exporter.csv import exporter as csv_exporter
         return csv_exporter.apply(ocel, file_path, objects_path=objects_path)
