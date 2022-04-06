@@ -12,6 +12,8 @@ def execute_script():
     # reads a CSV into a dataframe
     df = pd.read_csv("../tests/input_data/running-example.csv")
     df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True)
+    df["case:concept:name"] = df["case:concept:name"].astype("string")
+
     # converts the dataframe to an event log
     log2 = pm4py.convert_to_event_log(df)
 
@@ -74,64 +76,64 @@ def execute_script():
     print("precision_align", precision_align)
 
     print("log start activities = ", pm4py.get_start_activities(log2))
-    print("df start activities = ", pm4py.get_start_activities(df2))
+    print("df start activities = ", pm4py.get_start_activities(df2, case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp"))
     print("log end activities = ", pm4py.get_end_activities(log2))
-    print("df end activities = ", pm4py.get_end_activities(df2))
+    print("df end activities = ", pm4py.get_end_activities(df2, case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp"))
     print("log attributes = ", pm4py.get_event_attributes(log2))
     print("df attributes = ", pm4py.get_event_attributes(df2))
     print("log org:resource values = ", pm4py.get_event_attribute_values(log2, "org:resource"))
-    print("df org:resource values = ", pm4py.get_event_attribute_values(df2, "org:resource"))
+    print("df org:resource values = ", pm4py.get_event_attribute_values(df2, "org:resource", case_id_key="case:concept:name"))
 
     print("start_activities len(filt_log) = ", len(pm4py.filter_start_activities(log2, ["register request"])))
-    print("start_activities len(filt_df) = ", len(pm4py.filter_start_activities(df2, ["register request"])))
+    print("start_activities len(filt_df) = ", len(pm4py.filter_start_activities(df2, ["register request"], case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp")))
     print("end_activities len(filt_log) = ", len(pm4py.filter_end_activities(log2, ["pay compensation"])))
-    print("end_activities len(filt_df) = ", len(pm4py.filter_end_activities(df2, ["pay compensation"])))
+    print("end_activities len(filt_df) = ", len(pm4py.filter_end_activities(df2, ["pay compensation"], case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp")))
     print("attributes org:resource len(filt_log) (cases) cases = ",
           len(pm4py.filter_event_attribute_values(log2, "org:resource", ["Ellen"], level="case")))
     print("attributes org:resource len(filt_log) (cases)  events = ",
           len(pm4py.filter_event_attribute_values(log2, "org:resource", ["Ellen"], level="event")))
     print("attributes org:resource len(filt_df) (events) cases = ",
-          len(pm4py.filter_event_attribute_values(df2, "org:resource", ["Ellen"], level="case")))
+          len(pm4py.filter_event_attribute_values(df2, "org:resource", ["Ellen"], level="case", case_id_key="case:concept:name")))
     print("attributes org:resource len(filt_df) (events) events = ",
-          len(pm4py.filter_event_attribute_values(df2, "org:resource", ["Ellen"], level="event")))
+          len(pm4py.filter_event_attribute_values(df2, "org:resource", ["Ellen"], level="event", case_id_key="case:concept:name")))
     print("attributes org:resource len(filt_df) (events) events notpositive = ",
           len(pm4py.filter_event_attribute_values(df2, "org:resource", ["Ellen"], level="event", retain=False)))
 
-    print("rework df = ", pm4py.get_rework_cases_per_activity(df2))
+    print("rework df = ", pm4py.get_rework_cases_per_activity(df2, case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp"))
     print("rework log = ", pm4py.get_rework_cases_per_activity(log2))
-    print("cases overlap df = ", pm4py.get_case_overlap(df2))
+    print("cases overlap df = ", pm4py.get_case_overlap(df2, case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp"))
     print("cases overlap log = ", pm4py.get_case_overlap(log2))
-    print("cycle time df = ", pm4py.get_cycle_time(df2))
+    print("cycle time df = ", pm4py.get_cycle_time(df2, case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp"))
     print("cycle time log = ", pm4py.get_cycle_time(log2))
-    pm4py.view_events_distribution_graph(df2, format="svg")
+    pm4py.view_events_distribution_graph(df2, case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp", format="svg")
     pm4py.view_events_distribution_graph(log2, format="svg")
 
     print("variants log = ", pm4py.get_variants_as_tuples(log2))
-    print("variants df = ", pm4py.get_variants_as_tuples(df2))
+    print("variants df = ", pm4py.get_variants_as_tuples(df2, case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp"))
     print("variants filter log = ",
           len(pm4py.filter_variants(log2, [
               ("register request", "examine thoroughly", "check ticket", "decide", "reject request")])))
     print("variants filter df = ",
           len(pm4py.filter_variants(df2, [
-              ("register request", "examine thoroughly", "check ticket", "decide", "reject request")])))
+              ("register request", "examine thoroughly", "check ticket", "decide", "reject request")], case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp")))
 
     print("paths filter log len = ",
           len(pm4py.filter_directly_follows_relation(log2, [("register request", "examine casually")])))
     print("paths filter dataframe len = ",
-          len(pm4py.filter_directly_follows_relation(df2, [("register request", "examine casually")])))
+          len(pm4py.filter_directly_follows_relation(df2, [("register request", "examine casually")], case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp")))
 
     print("timeframe filter log events len = ",
           len(pm4py.filter_time_range(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="events")))
     print("timeframe filter log traces_contained len = ",
-          len(pm4py.filter_time_range(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_contained")))
+          len(pm4py.filter_time_range(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_contained", case_id_key="case:concept:name", timestamp_key="time:timestamp")))
     print("timeframe filter log traces_intersecting len = ",
           len(pm4py.filter_time_range(log2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_intersecting")))
     print("timeframe filter df events len = ",
-          len(pm4py.filter_time_range(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="events")))
+          len(pm4py.filter_time_range(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="events", case_id_key="case:concept:name", timestamp_key="time:timestamp")))
     print("timeframe filter df traces_contained len = ",
-          len(pm4py.filter_time_range(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_contained")))
+          len(pm4py.filter_time_range(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_contained", case_id_key="case:concept:name", timestamp_key="time:timestamp")))
     print("timeframe filter df traces_intersecting len = ",
-          len(pm4py.filter_time_range(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_intersecting")))
+          len(pm4py.filter_time_range(df2, "2011-01-01 00:00:00", "2011-02-01 00:00:00", mode="traces_intersecting", case_id_key="case:concept:name", timestamp_key="time:timestamp")))
 
     # remove the temporary files
     os.remove("ru1.xes")
@@ -153,17 +155,17 @@ def execute_script():
     os.remove("ps.png")
 
     wt_log = pm4py.discover_working_together_network(log2)
-    wt_df = pm4py.discover_working_together_network(df2)
+    wt_df = pm4py.discover_working_together_network(df2, case_id_key="case:concept:name", resource_key="org:resource", timestamp_key="time:timestamp")
     print("log working together", wt_log)
     print("df working together", wt_df)
     print("log subcontracting", pm4py.discover_subcontracting_network(log2))
-    print("df subcontracting", pm4py.discover_subcontracting_network(df2))
+    print("df subcontracting", pm4py.discover_subcontracting_network(df2, case_id_key="case:concept:name", resource_key="org:resource", timestamp_key="time:timestamp"))
     print("log working together", pm4py.discover_working_together_network(log2))
-    print("df working together", pm4py.discover_working_together_network(df2))
+    print("df working together", pm4py.discover_working_together_network(df2, case_id_key="case:concept:name", resource_key="org:resource", timestamp_key="time:timestamp"))
     print("log similar activities", pm4py.discover_activity_based_resource_similarity(log2))
-    print("df similar activities", pm4py.discover_activity_based_resource_similarity(df2))
+    print("df similar activities", pm4py.discover_activity_based_resource_similarity(df2, case_id_key="case:concept:name", resource_key="org:resource", timestamp_key="time:timestamp", activity_key="concept:name"))
     print("log org roles", pm4py.discover_organizational_roles(log2))
-    print("df org roles", pm4py.discover_organizational_roles(df2))
+    print("df org roles", pm4py.discover_organizational_roles(df2, case_id_key="case:concept:name", resource_key="org:resource", timestamp_key="time:timestamp", activity_key="concept:name"))
     pm4py.view_sna(wt_log)
 
     pm4py.save_vis_sna(wt_df, "ru_wt_df.png")

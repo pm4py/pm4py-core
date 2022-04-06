@@ -85,8 +85,6 @@ def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataF
     filtered_log
         Filtered event log
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -129,8 +127,6 @@ Union[EventLog, pd.DataFrame]:
     filtered_log
         Filtered log object
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -173,8 +169,6 @@ def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union
     filtered_log
         Filtered log object
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -218,8 +212,6 @@ def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
     filtered_log
         Filtered log object
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -269,8 +261,6 @@ def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
     filtered_log
         Filtered event log
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -313,8 +303,6 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str
     filtered_log
         Filtered log object
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -361,8 +349,6 @@ def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relatio
     filtered_log
         Filtered log object
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -405,8 +391,6 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
     filtered_log
         Filtered log object
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     __event_log_deprecation_warning(log)
 
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -477,8 +461,6 @@ def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mo
     filtered_log
         Filtered log
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -549,8 +531,6 @@ def filter_between(log: Union[EventLog, pd.DataFrame], act1: str, act2: str, act
     filtered_log
         Log containing all the subcases
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -585,8 +565,6 @@ def filter_case_size(log: Union[EventLog, pd.DataFrame], min_size: int, max_size
     filtered_log
         Log with cases having the desidered number of events.
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -625,8 +603,6 @@ def filter_case_performance(log: Union[EventLog, pd.DataFrame], min_performance:
     filtered_log
         Log with cases having a duration in the specified range
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -664,8 +640,6 @@ def filter_activities_rework(log: Union[EventLog, pd.DataFrame], activity: str, 
     filtered_log
         Log with cases having at least min_occurrences occurrences of the given activity
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -710,8 +684,6 @@ def filter_paths_performance(log: Union[EventLog, pd.DataFrame], path: Tuple[str
     filtered_log
         Filtered log with the desidered behavior
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -751,8 +723,6 @@ def filter_variants_top_k(log: Union[EventLog, pd.DataFrame], k: int, activity_k
     filtered_log
         Filtered log
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -793,8 +763,6 @@ def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], m
     filtered_log
         Filtered log
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -844,8 +812,6 @@ def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
     filtered_log
         Filtered log / dataframe
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -898,8 +864,6 @@ def filter_suffixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
     filtered_log
         Filtered log / dataframe
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -936,7 +900,6 @@ def filter_ocel_event_attribute(ocel: OCEL, attribute_key: str, attribute_values
     filtered_ocel
         Filtered object-centric event log
     """
-    # Unit test: YES
     from pm4py.algo.filtering.ocel import event_attributes
 
     return event_attributes.apply(ocel, attribute_values, parameters={event_attributes.Parameters.ATTRIBUTE_KEY: attribute_key, event_attributes.Parameters.POSITIVE: positive})
@@ -962,7 +925,6 @@ def filter_ocel_object_attribute(ocel: OCEL, attribute_key: str, attribute_value
     filtered_ocel
         Filtered object-centric event log
     """
-    # Unit test: YES
     from pm4py.algo.filtering.ocel import object_attributes
 
     return object_attributes.apply(ocel, attribute_values, parameters={object_attributes.Parameters.ATTRIBUTE_KEY: attribute_key, object_attributes.Parameters.POSITIVE: positive})
@@ -992,7 +954,6 @@ def filter_ocel_object_types_allowed_activities(ocel: OCEL, correspondence_dict:
     filtered_ocel
         Filtered object-centric event log
     """
-    # Unit test: YES
     from pm4py.algo.filtering.ocel import activity_type_matching
 
     return activity_type_matching.apply(ocel, correspondence_dict)
@@ -1024,7 +985,6 @@ def filter_ocel_object_per_type_count(ocel: OCEL, min_num_obj_type: Dict[str, in
     filtered_event_log
         Filtered object-centric event log
     """
-    # Unit test: YES
     from pm4py.algo.filtering.ocel import objects_ot_count
 
     return objects_ot_count.apply(ocel, min_num_obj_type)
@@ -1047,7 +1007,6 @@ def filter_ocel_start_events_per_object_type(ocel: OCEL, object_type: str) -> OC
     filtered_ocel
         Filtered object-centric event log
     """
-    # Unit test: YES
     from pm4py.algo.filtering.ocel import ot_endpoints
     return ot_endpoints.filter_start_events_per_object_type(ocel, object_type)
 
@@ -1069,7 +1028,6 @@ def filter_ocel_end_events_per_object_type(ocel: OCEL, object_type: str) -> OCEL
     filtered_ocel
         Filtered object-centric event log
     """
-    # Unit test: YES
     from pm4py.algo.filtering.ocel import ot_endpoints
     return ot_endpoints.filter_end_events_per_object_type(ocel, object_type)
 
@@ -1094,7 +1052,6 @@ def filter_ocel_events_timestamp(ocel: OCEL, min_timest: Union[datetime.datetime
     filtered_ocel
         Filtered object-centric event log
     """
-    # Unit test: YES
     from pm4py.algo.filtering.ocel import event_attributes
     return event_attributes.apply_timestamp(ocel, min_timest, max_timest, parameters={"pm4py:param:timestamp_key": timestamp_key})
 
@@ -1125,8 +1082,6 @@ def filter_four_eyes_principle(log: Union[EventLog, pd.DataFrame], activity1: st
     log_violations
         Log of cases which violate the four eyes principle.
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -1167,8 +1122,6 @@ def filter_activity_done_different_resources(log: Union[EventLog, pd.DataFrame],
     log_violations
         Log containing the cases where the given activity is repeated by different resources.
     """
-    # Variant that is Pandas native: YES
-    # Unit test: YES
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
