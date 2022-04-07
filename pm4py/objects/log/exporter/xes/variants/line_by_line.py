@@ -22,7 +22,10 @@ __TYPE_CORRESPONDENCE = {
     "datetime": xes_util.TAG_DATE,
     "Timestamp": xes_util.TAG_DATE,
     "bool": xes_util.TAG_BOOLEAN,
-    "dict": xes_util.TAG_LIST
+    "dict": xes_util.TAG_LIST,
+    "numpy.int64": xes_util.TAG_INT,
+    "numpy.float64": xes_util.TAG_FLOAT,
+    "numpy.datetime64": xes_util.TAG_DATE
 }
 # if a type is not found in the previous list, then default to string
 __DEFAULT_TYPE = xes_util.TAG_STRING
