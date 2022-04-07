@@ -13,6 +13,8 @@
   * Minor fixes to the retrieval of the parameters in several parts of the code
 * 65e1f1b0bbd0747fe81eb049780874608a395d6e
   * Fixed bug in eventually follows filter (simplified interface)
+* 60cd060edeeaa17c8b5bdaba7bb1035fc385d514
+  * Fixed XES exporting when attribute value type is a Numpy type (numpy.int64, numpy.float64, numpy.datetime64)
 
 ### Removed
 
