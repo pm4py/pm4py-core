@@ -148,7 +148,7 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None)
     """
     for col in df.columns:
         if timest_columns is None or col in timest_columns:
-            if df[col].dtype == 'object':
+            if "obj" in str(df[col].dtype) or "str" in str(df[col].dtype):
                 try:
                     if timest_format is None:
                         # makes operations faster if non-ISO8601 but anyhow regular dates are provided
@@ -236,7 +236,7 @@ def automatic_feature_selection_df(df, parameters=None):
             if "float" in y or "int" in y:
                 # (as in the classic log version) retain always float/int attributes
                 other_attributes_to_retain.add(x)
-            elif "object" in y:
+            elif "obj" in y or "str" in y:
                 # (as in the classic log version) keep string attributes if they have enough variability, but not too much
                 # (that would be hard to explain)
                 unique_val_count = df[x].nunique()
@@ -335,7 +335,7 @@ def get_features_df(df: pd.DataFrame, list_columns: List[str],
 
     fea_df = pd.DataFrame({case_id_key: sorted(list(df[case_id_key].unique()))})
     for col in list_columns:
-        if "object" in str(df[col].dtype):
+        if "obj" in str(df[col].dtype) or "str" in str(df[col].dtype):
             fea_df = select_string_column(df, fea_df, col, case_id_key=case_id_key)
         elif "float" in str(df[col].dtype) or "int" in str(df[col].dtype):
             fea_df = select_number_column(df, fea_df, col, case_id_key=case_id_key)
