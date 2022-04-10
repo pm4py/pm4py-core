@@ -36,11 +36,9 @@ def execute_script():
     add_arc_from_to(p2, trans_C, net)
     add_arc_from_to(trans_C, sink, net)
     add_arc_from_to(trans_inhibitor, p_inhibitor, net)
-    inhibitor_arc = add_arc_from_to(p_inhibitor, trans_B, net)
-    inhibitor_arc.properties["arctype"] = "inhibitor"
+    inhibitor_arc = add_arc_from_to(p_inhibitor, trans_B, net, type="inhibitor")
     add_arc_from_to(trans_free, p_reset, net)
-    reset_arc = add_arc_from_to(p_reset, trans_C, net)
-    reset_arc.properties["arctype"] = "reset"
+    reset_arc = add_arc_from_to(p_reset, trans_C, net, type="reset")
     im = Marking({source: 1})
     fm = Marking({sink: 1})
     pm4py.view_petri_net(net, im, fm, format="svg")

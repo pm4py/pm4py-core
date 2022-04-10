@@ -155,7 +155,7 @@ def remove_place(net: PetriNet, place: PetriNet.Place) -> PetriNet:
     return net
 
 
-def add_arc_from_to(fr, to, net: PetriNet, weight=1) -> PetriNet.Arc:
+def add_arc_from_to(fr, to, net: PetriNet, weight=1, type=None) -> PetriNet.Arc:
     """
     Adds an arc from a specific element to another element in some net. Assumes from and to are in the net!
 
@@ -171,6 +171,8 @@ def add_arc_from_to(fr, to, net: PetriNet, weight=1) -> PetriNet.Arc:
     None
     """
     a = PetriNet.Arc(fr, to, weight)
+    if type is not None:
+        a.properties[properties.ARCTYPE] = type
     net.arcs.add(a)
     fr.out_arcs.add(a)
     to.in_arcs.add(a)
