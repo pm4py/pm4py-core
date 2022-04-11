@@ -4,12 +4,13 @@ This page gives an overview of all public ``pm4py`` objects, functions and metho
 
 Input (:mod:`pm4py.read`)
 ---------------------------------
-``pm4py`` supports importing two different event data formats:
+``pm4py`` supports importing two different *event data* formats:
 
 * ``.xes`` files; General interchange format for event data.
 * ``.ocel`` files; Novel data format (under development) for multi-dimensional event data.
 
-Both file formats are internally converted to ``pandas dataframes`` (`docs <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html>`_), which are the default data structure used by all algorithms implemented in ``pm4py``.
+In case an event log is stored as a ``.csv`` file, ``pandas`` can be used to directly import the event log as a ``data frame`` (`docs <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html>`_).
+Both file formats are internally converted to ``pandas dataframes``, which are the default data structure used by all algorithms implemented in ``pm4py``.
 
 Additional file formats that are supported are:
 
