@@ -1,34 +1,5 @@
 __doc__ = """
-We offer the possibility to export event logs (in XES or CSV files), object-centric event logs (in OCEL),
-and different kinds of process models.
-
-* Exporting traditional event logs
-    * `Exporting to XES`_
-    * Exporting to CSV
-        Use the conversion to dataframe to convert from any log format to dataframe,
-        then use Pandas to write the event log in the CSV format. Example:
-        
-        .. code-block:: python3
-        
-           import pm4py
-           
-           event_log = pm4py.read_xes("tests/input_data/running-example.xes")
-           dataframe = pm4py.convert_to_dataframe(event_log)
-           dataframe.to_csv("example.csv", index=False)
-
-* `Exporting object-centric event logs`_
-* Exporting process models
-    * `Exporting Petri nets to PNML`_
-    * `Exporting BPMN diagrams to BPMN 2.0`_
-    * `Exporting process trees to PTML`_
-    * `Exporting directly-follows graphs`_
-
-.. _Exporting to XES: pm4py.html#pm4py.write.write_xes
-.. _Exporting object-centric event logs: pm4py.html#pm4py.write.write_ocel
-.. _Exporting Petri nets to PNML: pm4py.html#pm4py.write.write_pnml
-.. _Exporting BPMN diagrams to BPMN 2.0: pm4py.html#pm4py.write.write_bpmn
-.. _Exporting process trees to PTML: pm4py.html#pm4py.write.write_ptml
-.. _Exporting directly-follows graphs: pm4py.html#pm4py.write.write_dfg
+The ``pm4py.write`` module contains all funcationality related to reading files/objects from disk.
 """
 
 import warnings
@@ -43,29 +14,18 @@ import pandas as pd
 from typing import Union
 
 
-def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str) -> None:
+def write_xes(log: pd.DataFrame, file_path: str) -> None:
     """
-    Exports a XES log.
+    Writes an event log to disk in the XES format (see `xes-standard <https://xes-standard.org/>`_)
 
-    Example:
-
+    :param log: log object (``pandas.DataFrame``) that needs to be written to disk
+    :param file_path: target file path of the event log (``.xes`` file) on disk
+        
     .. code-block:: python3
 
-       import pm4py
+        import pm4py
 
-       log = pm4py.read_xes("tests/input_data/running-example.xes")
-       pm4py.write_xes("example.xes")
-
-    Parameters
-    --------------
-    log
-        Event log
-    file_path
-        Destination path
-
-    Returns
-    -------------
-    void
+        pm4py.write_xes(log, '<path_to_export_to>')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
