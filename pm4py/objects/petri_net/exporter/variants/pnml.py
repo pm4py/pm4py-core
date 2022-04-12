@@ -3,7 +3,7 @@ import uuid
 from lxml import etree
 
 from pm4py.objects.petri_net.obj import Marking
-from pm4py.objects.petri_net.obj import PetriNet
+from pm4py.objects.petri_net.obj import PetriNet, PetriNetWithResetArcs, PetriNetWithInhibitorArcs
 from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.util import constants
 
@@ -152,10 +152,20 @@ def export_petri_tree(petrinet, marking, final_marking=None, export_prom5=False,
             arc_weight = etree.SubElement(inscription, "text")
             arc_weight.text = str(arc.weight)
 
-        for prop_key in arc.properties:
-            element = etree.SubElement(arc_el, prop_key)
+        if isinstance(arc, PetriNetWithResetArcs.ResetArc):
+            element = etree.SubElement(arc_el, petri_properties.ARCTYPE)
             element_text = etree.SubElement(element, "text")
-            element_text.text = str(arc.properties[prop_key])
+            element_text.text = petri_properties.RESET_ARC
+        elif isinstance(arc, PetriNetWithInhibitorArcs.InhibitorArc):
+            element = etree.SubElement(arc_el, petri_properties.ARCTYPE)
+            element_text = etree.SubElement(element, "text")
+            element_text.text = petri_properties.INHIBITOR_ARC
+
+        for prop_key in arc.properties:
+            if prop_key != petri_properties.ARCTYPE:
+                element = etree.SubElement(arc_el, prop_key)
+                element_text = etree.SubElement(element, "text")
+                element_text.text = str(arc.properties[prop_key])
 
     if len(final_marking) > 0:
         finalmarkings = etree.SubElement(net, "finalmarkings")
