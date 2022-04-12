@@ -11,6 +11,10 @@ from pandas import DataFrame
 
 INDEX_COLUMN = "@@index"
 
+__doc__ = """
+The ``pm4py.read`` module contains all funcationality related to reading files/objects from disk
+"""
+
 
 def read_xes(file_path: str, variant: str = "iterparse", **kwargs) -> DataFrame:
     """
