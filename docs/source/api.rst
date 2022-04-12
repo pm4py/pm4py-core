@@ -6,13 +6,13 @@ Input (:mod:`pm4py.read`)
 ---------------------------------
 ``pm4py`` supports importing two different *event data* formats:
 
-* ``.xes`` files; General interchange format for event data.
+* ``.xes`` files (`xes-standard <https://xes-standard.org/>`_); General interchange format for event data.
 * ``.ocel`` files; Novel data format (under development) for multi-dimensional event data.
 
 In case an event log is stored as a ``.csv`` file, ``pandas`` can be used to directly import the event log as a ``data frame`` (`docs <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html>`_).
-Both file formats are internally converted to ``pandas dataframes``, which are the default data structure used by all algorithms implemented in ``pm4py``.
+``.xes`` files are internally converted to a ``pandas dataframe``, which is the default data structure used by all algorithms implemented in ``pm4py``.
 
-Additional file formats that are supported are:
+Additional file formats that are currently supported by pm4py are:
 
 * ``.bpmn`` files; File format specifying process models in the *BPMN* process modeling formalism
 * ``.dfg`` files; File format specifying *directly follows graphs* (also referred to as *process maps*)
@@ -59,5 +59,9 @@ Process Discovery (:mod:`pm4py.discovery`)
    pm4py.read
    pm4py.read.read_bpmn
    pm4py.read.read_dfg
+   pm4py.read.read_ocel
+   pm4py.read.read_pnml
+   pm4py.read.read_ptml
+   pm4py.read.read_xes
    pm4py.write
    
