@@ -66,6 +66,8 @@ def read_attribute_key_value(tag, content, date_parser, values_dict, set_attribu
             value = int(content[3])
         elif tag.startswith("float"):
             value = float(content[3])
+        elif tag.startswith("boolean"):
+            value = True if content[3] == "true" else False
         else:
             value = content[3]
 
