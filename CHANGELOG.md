@@ -9,6 +9,8 @@
 ### Fixed
 * 882aa20b20ec593e0a7d01e027a6f1afa8d44f84
   * Fixed XES line-by-line importer for booleans attributes
+* f6542cd12413f073eb51173804f68502e3026f46
+  * Fixes XES line-by-line deserialization
 
 ### Removed
 
