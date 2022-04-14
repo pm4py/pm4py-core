@@ -131,7 +131,6 @@ def import_log_from_file_object(F, encoding, file_size=sys.maxsize, parameters=N
                             curr_els_attrs.append(dct)
                         continue
                     elif tag == "log":
-                        log = EventLog()
                         curr_els_attrs.append(log.attributes)
                         continue
                     elif tag == "list":
