@@ -47,7 +47,7 @@ def import_log_from_file_object(F, encoding, file_size=sys.maxsize, parameters=N
     cont = F.read(nb)
     curr_els_attrs = []
     fk_dict = {}
-    log = None
+    log = EventLog()
     trace = None
     while cont:
         lst = deque(rex.split(cont.decode("utf-8")))
@@ -152,12 +152,12 @@ def import_log_from_file_object(F, encoding, file_size=sys.maxsize, parameters=N
                         log.append(trace)
                         continue
                     elif el == "log":
-                        log = EventLog()
                         curr_els_attrs.append(log.attributes)
                         continue
                     elif el == "values":
                         curr_els_attrs.append(curr_els_attrs[-1])
         cont = F.read(nb)
+    return log
 
 
 def import_log(filename, parameters=None):
