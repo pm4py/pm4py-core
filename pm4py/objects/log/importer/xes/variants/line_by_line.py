@@ -265,7 +265,7 @@ def import_from_string(log_string, parameters=None):
 
     if type(log_string) is str:
         log_string = log_string.encode(constants.DEFAULT_ENCODING)
-    
+
     b = BytesIO(log_string)
 
     if decompress_serialization:
