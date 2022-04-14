@@ -1,3 +1,20 @@
+## pm4py 2.2.20.2
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 882aa20b20ec593e0a7d01e027a6f1afa8d44f84
+  * Fixed XES line-by-line importer for booleans attributes
+
+### Removed
+
+### Other
+
+
 ## pm4py 2.2.20.1
 
 ### Added
@@ -14,7 +31,7 @@
 * 65e1f1b0bbd0747fe81eb049780874608a395d6e
   * Fixed bug in eventually follows filter (simplified interface)
 * 60cd060edeeaa17c8b5bdaba7bb1035fc385d514
-  * Fixed XES exporting when attribute value type is a Numpy type (numpy.int64, numpy.float64, numpy.datetime64
+  * Fixed XES exporting when attribute value type is a Numpy type (numpy.int64, numpy.float64, numpy.datetime64)
 * cd5e55e712697a28cbfe0182e96556531b520667
   * Bug fix feature selection and extraction on Pandas dataframes
 
