@@ -11,6 +11,8 @@
   * Fixed XES line-by-line importer for booleans attributes
 * f6542cd12413f073eb51173804f68502e3026f46
   * Fixes XES line-by-line deserialization
+* 363580b757c027ff583d33dcff83e00b3be97659
+  * Fixed issues with Pandas dataframe's index usage in the library
 
 ### Removed
 
