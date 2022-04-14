@@ -12,6 +12,10 @@ class AlgorithmTest(unittest.TestCase):
                                  variant=xes_importer.Variants.ITERPARSE)
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"),
                                  variant=xes_importer.Variants.LINE_BY_LINE)
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"),
+                                 variant=xes_importer.Variants.ITERPARSE_MEM_COMPRESSED)
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"),
+                                 variant=xes_importer.Variants.CHUNK_REGEX)
 
     def test_hiearch_clustering(self):
         from pm4py.algo.clustering.trace_attribute_driven import algorithm as clust_algorithm
