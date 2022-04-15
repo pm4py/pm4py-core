@@ -39,7 +39,7 @@ def read_xes(file_path: str, variant: str = "iterparse", **kwargs) -> EventLog:
     return log
 
 
-def read_pnml(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
+def read_pnml(file_path: str, auto_guess_final_marking: bool = False) -> Tuple[PetriNet, Marking, Marking]:
     """
     Reads a Petri net from the .PNML format
 
@@ -47,6 +47,9 @@ def read_pnml(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
     ----------------
     file_path
         File path
+    auto_guess_final_marking
+        Enables the automatic guess of the final marking, if not explicitly provided
+        in the .pnml file
 
     Returns
     ----------------
@@ -58,7 +61,7 @@ def read_pnml(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
         Final marking
     """
     from pm4py.objects.petri_net.importer import importer as pnml_importer
-    net, im, fm = pnml_importer.apply(file_path)
+    net, im, fm = pnml_importer.apply(file_path, parameters={"auto_guess_final_marking": auto_guess_final_marking})
     return net, im, fm
 
 
