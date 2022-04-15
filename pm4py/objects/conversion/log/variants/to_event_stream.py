@@ -17,6 +17,7 @@ class Parameters(Enum):
     CASE_ATTRIBUTE_PREFIX = "case_attribute_prefix"
     INCLUDE_CASE_ATTRIBUTES = "include_case_attributes"
     COMPRESS = "compress"
+    EXTENSIONS = "extensions"
 
 
 def __postprocess_stream(list_events):
@@ -120,13 +121,14 @@ def apply(log, parameters=None):
     enable_deepcopy = exec_utils.get_param_value(Parameters.DEEP_COPY, parameters, True)
     include_case_attributes = exec_utils.get_param_value(Parameters.INCLUDE_CASE_ATTRIBUTES, parameters, True)
     compress = exec_utils.get_param_value(Parameters.COMPRESS, parameters, False)
+    extensions = exec_utils.get_param_value(Parameters.EXTENSIONS, parameters, None)
 
     if pkgutil.find_loader("pandas"):
         import pandas
         if isinstance(log, pandas.DataFrame):
-            return __transform_dataframe_to_event_stream(log, stream_post_processing=stream_post_processing, compress=compress)
+            return __transform_dataframe_to_event_stream(log, stream_post_processing=stream_post_processing, compress=compress, extensions=extensions)
         elif isinstance(log, PandasLogWrapper):
-            return __transform_dataframe_to_event_stream(log.dataframe, stream_post_processing=stream_post_processing, compress=compress)
+            return __transform_dataframe_to_event_stream(log.dataframe, stream_post_processing=stream_post_processing, compress=compress, extensions=extensions)
 
     if isinstance(log, EventLog):
         return __transform_event_log_to_event_stream(log, include_case_attributes=include_case_attributes,
@@ -145,7 +147,7 @@ def __detect_extensions(df):
     return extensions
 
 
-def __transform_dataframe_to_event_stream(dataframe, stream_post_processing=False, compress=True):
+def __transform_dataframe_to_event_stream(dataframe, stream_post_processing=False, compress=True, extensions=None):
     """
     Transforms a dataframe to an event stream
 
@@ -157,13 +159,16 @@ def __transform_dataframe_to_event_stream(dataframe, stream_post_processing=Fals
         Boolean value that enables the post processing to remove NaN / NaT values
     compress
         Compresses the stream in order to reduce the memory utilization after the conversion
+    extensions
+        Provided extensions (to be included in the log)
 
     Returns
     ------------------
     stream
         Event stream
     """
-    extensions = __detect_extensions(dataframe)
+    if extensions is None:
+        extensions = __detect_extensions(dataframe)
     list_events = pandas_utils.to_dict_records(dataframe)
     if stream_post_processing:
         list_events = __postprocess_stream(list_events)
@@ -185,7 +190,7 @@ def __transform_dataframe_to_event_stream(dataframe, stream_post_processing=Fals
     return stream
 
 
-def __transform_dataframe_to_event_stream_new(dataframe, stream_post_processing=False, compress=False):
+def __transform_dataframe_to_event_stream_new(dataframe, stream_post_processing=False, compress=False, extensions=None):
     """
     Transforms a dataframe to an event stream
 
@@ -197,13 +202,16 @@ def __transform_dataframe_to_event_stream_new(dataframe, stream_post_processing=
         Boolean value that enables the post processing to remove NaN / NaT values
     compress
         Compresses the stream in order to reduce the memory utilization after the conversion
+    extensions
+        Provided extensions (to be included in the log)
 
     Returns
     ------------------
     stream
         Event stream
     """
-    extensions = __detect_extensions(dataframe)
+    if extensions is None:
+        extensions = __detect_extensions(dataframe)
     columns_names = list(dataframe.columns)
     columns_corr = []
     for c in columns_names:

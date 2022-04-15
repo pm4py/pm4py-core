@@ -11,10 +11,13 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.utils import __event_log_deprecation_warning
 import pandas as pd
-from typing import Union
+from typing import Union, Optional, Collection, Tuple
+from pm4py.util import constants
+from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
+from pm4py.objects.log.obj import XESExtension
 
 
-def write_xes(log: pd.DataFrame, file_path: str) -> None:
+def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str, case_id_key: str = "case:concept:name", extensions: Optional[Collection[XESExtension]] = None, **kwargs) -> None:
     """
     Writes an event log to disk in the XES format (see `xes-standard <https://xes-standard.org/>`_)
 
@@ -30,8 +33,17 @@ def write_xes(log: pd.DataFrame, file_path: str) -> None:
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, case_id_key=case_id_key)
+
+    parameters = {}
+    for k, v in kwargs.items():
+        parameters[k] = v
+    parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] = case_id_key
+    parameters["extensions"] = extensions
+
     from pm4py.objects.log.exporter.xes import exporter as xes_exporter
-    xes_exporter.apply(log, file_path)
+    xes_exporter.apply(log, file_path, parameters=parameters)
 
 
 def write_pnml(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, file_path: str) -> None:

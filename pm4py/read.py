@@ -41,7 +41,7 @@ def read_xes(file_path: str, variant: str = "iterparse", **kwargs) -> DataFrame:
     return log
 
 
-def read_pnml(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
+def read_pnml(file_path: str, auto_guess_final_marking: bool = False) -> Tuple[PetriNet, Marking, Marking]:
     """
     Reads a Petri net object from a .pnmml file.
     The Petri net object returned is a triple containing the following objects:
@@ -60,7 +60,7 @@ def read_pnml(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
         pn = pm4py.read_pnml("<path_to_pnml_file>")
     """
     from pm4py.objects.petri_net.importer import importer as pnml_importer
-    net, im, fm = pnml_importer.apply(file_path)
+    net, im, fm = pnml_importer.apply(file_path, parameters={"auto_guess_final_marking": auto_guess_final_marking})
     return net, im, fm
 
 
