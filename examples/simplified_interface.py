@@ -38,9 +38,9 @@ def execute_script():
     pm4py.write_ptml(tree_inductive, "ru_inductive.ptml")
 
     dfg, dfg_sa, dfg_ea = pm4py.read_dfg("ru_dfg.dfg")
-    petri_alpha, im_alpha, fm_alpha = pm4py.read_pnml("ru_alpha.pnml")
-    petri_inductive, im_inductive, fm_inductive = pm4py.read_pnml("ru_inductive.pnml")
-    petri_heuristics, im_heuristics, fm_heuristics = pm4py.read_pnml("ru_heuristics.pnml")
+    petri_alpha, im_alpha, fm_alpha = pm4py.read_pnml("ru_alpha.pnml", auto_guess_final_marking=True)
+    petri_inductive, im_inductive, fm_inductive = pm4py.read_pnml("ru_inductive.pnml", auto_guess_final_marking=True)
+    petri_heuristics, im_heuristics, fm_heuristics = pm4py.read_pnml("ru_heuristics.pnml", auto_guess_final_marking=True)
     tree_inductive = pm4py.read_ptml("ru_inductive.ptml")
 
     pm4py.save_vis_petri_net(petri_alpha, im_alpha, fm_alpha, "ru_alpha.png")

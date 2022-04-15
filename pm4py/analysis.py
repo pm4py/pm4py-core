@@ -224,3 +224,41 @@ def maximal_decomposition(net: PetriNet, im: Marking, fm: Marking) -> List[Tuple
     """
     from pm4py.objects.petri_net.utils.decomposition import decompose
     return decompose(net, im, fm)
+
+
+def generate_marking(net: PetriNet, place_or_dct_places: Union[str, PetriNet.Place, Dict[str, int], Dict[PetriNet.Place, int]]) -> Marking:
+    """
+    Generate a marking for a given Petri net
+
+    Parameters
+    ---------------
+    net
+        Petri net
+    place_or_dct_places
+        Place, or dictionary of places, to be used in the marking. Possible values:
+        - single Place object for the marking
+        - name of the place for the marking
+        - dictionary associating to each place its number of tokens
+        - dictionary associating to names of places a number of tokens
+
+    Returns
+    ----------------
+    marking
+        Marking object
+    """
+    dct_places = {x.name: x for x in net.places}
+    if isinstance(place_or_dct_places, PetriNet.Place):
+        # we specified a single Place object for the marking
+        return Marking({place_or_dct_places: 1})
+    elif isinstance(place_or_dct_places, str):
+        # we specified the name of a place for the marking
+        return Marking({dct_places[place_or_dct_places]: 1})
+    elif isinstance(place_or_dct_places, dict):
+        dct_keys = list(place_or_dct_places)
+        if dct_keys:
+            if isinstance(dct_keys[0], PetriNet.Place):
+                # we specified a dictionary associating to each place its number of tokens
+                return Marking(place_or_dct_places)
+            elif isinstance(dct_keys[0], str):
+                # we specified a dictionary associating to names of places a number of tokens
+                return Marking({dct_places[x]: y for x, y in place_or_dct_places.items()})
