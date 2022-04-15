@@ -66,6 +66,8 @@ def read_attribute_key_value(tag, content, date_parser, values_dict, set_attribu
             value = int(content[3])
         elif tag.startswith("float"):
             value = float(content[3])
+        elif tag.startswith("boolean"):
+            value = True if content[3] == "true" else False
         else:
             value = content[3]
 
@@ -260,6 +262,10 @@ def import_from_string(log_string, parameters=None):
     encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
 
     decompress_serialization = exec_utils.get_param_value(Parameters.DECOMPRESS_SERIALIZATION, parameters, False)
+
+    if type(log_string) is str:
+        log_string = log_string.encode(constants.DEFAULT_ENCODING)
+
     b = BytesIO(log_string)
 
     if decompress_serialization:
