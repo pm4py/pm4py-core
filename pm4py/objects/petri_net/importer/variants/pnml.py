@@ -9,7 +9,13 @@ from pm4py.objects.petri_net.utils import final_marking
 from pm4py.objects.petri_net.obj import PetriNet, Marking, PetriNetWithResetArcs, PetriNetWithInhibitorArcs, PetriNetWithInhibitorAndResetArcs
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.objects.petri_net import properties as petri_properties
-from pm4py.util import constants
+from pm4py.util import constants, exec_utils
+from enum import Enum
+import warnings
+
+
+class Parameters(Enum):
+    AUTO_GUESS_FINAL_MARKING = "auto_guess_final_marking"
 
 
 def import_net(input_file_path, parameters=None):
@@ -83,14 +89,17 @@ def import_net_from_xml_object(root, parameters=None):
     root
         Root object of the XML
     parameters
-        Other parameters of the algorithm
+        Other parameters of the algorithm:
+        - AUTO_GUESS_FINAL_MARKING: automatic guessing the final marking from the .pnml file
     """
     if parameters is None:
         parameters = {}
 
+    auto_guess_final_marking = exec_utils.get_param_value(Parameters.AUTO_GUESS_FINAL_MARKING, parameters, True)
+
     net = PetriNet('imported_' + str(time.time()))
     marking = Marking()
-    fmarking = Marking()
+    fmarking = None
 
     nett = None
     page = None
@@ -289,6 +298,7 @@ def import_net_from_xml_object(root, parameters=None):
                         a.properties[prop] = arc_properties[prop]
 
     if finalmarkings is not None:
+        fmarking = Marking()
         for child in finalmarkings:
             for child2 in child:
                 place_id = child2.get("idref")
@@ -308,8 +318,11 @@ def import_net_from_xml_object(root, parameters=None):
                     variable_name = child2.text
             net.properties[petri_properties.VARIABLES].append({"type": variable_type, "name": variable_name})
 
-    # generate the final marking in the case has not been found
-    if len(fmarking) == 0:
-        fmarking = final_marking.discover_final_marking(net)
+    if fmarking is None:
+        if auto_guess_final_marking:
+            # generate the final marking in the case has not been found
+            fmarking = final_marking.discover_final_marking(net)
+        else:
+            warnings.warn("the Petri net has been imported without a specified final marking. Please create it using the method pm4py.generate_marking")
 
     return net, marking, fmarking
