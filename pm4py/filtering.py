@@ -398,25 +398,13 @@ def filter_between(log: Union[EventLog, pd.DataFrame], act1: str, act2: str, act
     B C (from the third case)
     B E F C (from the third case)
 
-    Parameters
-    -----------------
-    log
-        Event log / Pandas dataframe
-    act1
-        Source activity
-    act2
-        Target activity
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    -----------------
-    filtered_log
-        Log containing all the subcases
+    :param log: event log / Pandas dataframe
+    :param act1: source activity
+    :param act2: target activity
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -436,21 +424,11 @@ def filter_case_size(log: Union[EventLog, pd.DataFrame], min_size: int, max_size
     Filters the event log, keeping the cases having a length (number of events) included between min_size
     and max_size
 
-    Parameters
-    -----------------
-    log
-        Event log / Pandas dataframe
-    min_size
-        Minimum allowed number of events
-    max_size
-        Maximum allowed number of events
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ----------------
-    filtered_log
-        Log with cases having the desidered number of events.
+    :param log: event log / Pandas dataframe
+    :param min_size: minimum allowed number of events
+    :param max_size: maximum allowed number of events
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -472,23 +450,12 @@ def filter_case_performance(log: Union[EventLog, pd.DataFrame], min_performance:
     Filters the event log, keeping the cases having a duration (the timestamp of the last event minus the timestamp
     of the first event) included between min_performance and max_performance
 
-    Parameters
-    ----------------
-    log
-        Event log / Pandas dataframe
-    min_performance
-        Minimum allowed case duration
-    max_performance
-        Maximum allowed case duration
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ----------------
-    filtered_log
-        Log with cases having a duration in the specified range
+    :param log: event log / Pandas dataframe
+    :param min_performance: minimum allowed case duration
+    :param max_performance: maximum allowed case duration
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -507,25 +474,13 @@ def filter_activities_rework(log: Union[EventLog, pd.DataFrame], activity: str, 
     """
     Filters the event log, keeping the cases where the specified activity occurs at least min_occurrences times.
 
-    Parameters
-    -----------------
-    log
-        Event log / Pandas dataframe
-    activity
-        Activity
-    min_occurrences
-        Minimum desidered number of occurrences
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    -----------------
-    filtered_log
-        Log with cases having at least min_occurrences occurrences of the given activity
+    :param log: event log / Pandas dataframe
+    :param activity: activity
+    :param min_occurrences: minimum desidered number of occurrences
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -547,29 +502,15 @@ def filter_paths_performance(log: Union[EventLog, pd.DataFrame], path: Tuple[str
     - (keep=True) keeping the cases having the specified path (tuple of 2 activities) with a duration included between min_performance and max_performance
     - (keep=False) discarding the cases having the specified path with a duration included between min_performance and max_performance
 
-    Parameters
-    ----------------
-    log
-        Event log
-    path
-        Tuple of two activities (source_activity, target_activity)
-    min_performance
-        Minimum allowed performance (of the path)
-    max_performance
-        Maximum allowed performance (of the path)
-    keep
-        Keep/discard the cases having the specified path with a duration included between min_performance and max_performance
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ----------------
-    filtered_log
-        Filtered log with the desidered behavior
+    :param log: event log / Pandas dataframe
+    :param path: tuple of two activities (source_activity, target_activity)
+    :param min_performance: minimum allowed performance (of the path)
+    :param max_performance: maximum allowed performance (of the path)
+    :param keep: keep/discard the cases having the specified path with a duration included between min_performance and max_performance
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -592,23 +533,12 @@ def filter_variants_top_k(log: Union[EventLog, pd.DataFrame], k: int, activity_k
     """
     Keeps the top-k variants of the log
 
-    Parameters
-    -------------
-    log
-        Event log
-    k
-        Number of variants that should be kept
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    -------------
-    filtered_log
-        Filtered log
+    :param log: event log / Pandas dataframe
+    :param k: number of variants that should be kept
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -630,25 +560,12 @@ def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], m
     of which 500 of the variant 1, 400 of the variant 2, and 100 of the variant 3,
     the filter keeps only the traces of variant 1 and variant 2).
 
-    Parameters
-    ---------------
-    log
-        Event log
-    min_coverage_percentage
-        Minimum allowed percentage of coverage
-    parameters
-        Parameters
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ---------------
-    filtered_log
-        Filtered log
+    :param log: event log / Pandas dataframe
+    :param min_coverage_percentage: minimum allowed percentage of coverage
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -663,7 +580,7 @@ def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], m
         return variants_filter.filter_variants_by_coverage_percentage(log, min_coverage_percentage, parameters=parameters)
 
 
-def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
+def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Filters the log, keeping the prefixes to a given activity. E.g., for a log with traces:
 
@@ -677,27 +594,14 @@ def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
     A,B,Z,A,B
     A,B
 
-    Parameters
-    ------------------
-    log
-        Event log / Pandas dataframe
-    activity
-        Target activity of the filter
-    strict
-        Applies the filter strictly (cuts the occurrences of the selected activity).
-    first_or_last
-        Decides if the first or last occurrence of an activity should be selected as baseline for the filter.
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ------------------
-    filtered_log
-        Filtered log / dataframe
+    :param log: event log / Pandas dataframe
+    :param activity: target activity of the filter
+    :param strict: applies the filter strictly (cuts the occurrences of the selected activity).
+    :param first_or_last: decides if the first or last occurrence of an activity should be selected as baseline for the filter.
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -715,7 +619,7 @@ def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
         return prefix_filter.apply(log, activity, parameters=parameters)
 
 
-def filter_suffixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
+def filter_suffixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Filters the log, keeping the suffixes from a given activity. E.g., for a log with traces:
 
@@ -729,27 +633,14 @@ def filter_suffixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
     D
     D,C,E,C,F
 
-    Parameters
-    ------------------
-    log
-        Event log / Pandas dataframe
-    activity
-        Target activity of the filter
-    strict
-        Applies the filter strictly (cuts the occurrences of the selected activity).
-    first_or_last
-        Decides if the first or last occurrence of an activity should be selected as baseline for the filter.
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ------------------
-    filtered_log
-        Filtered log / dataframe
+    :param log: event log / Pandas dataframe
+    :param activity: target activity of the filter
+    :param strict: applies the filter strictly (cuts the occurrences of the selected activity).
+    :param first_or_last: decides if the first or last occurrence of an activity should be selected as baseline for the filter.
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -771,21 +662,11 @@ def filter_ocel_event_attribute(ocel: OCEL, attribute_key: str, attribute_values
     """
     Filters the object-centric event log on the provided event attributes values
 
-    Parameters
-    ----------------
-    ocel
-        Object-centric event log
-    attribute_key
-        Attribute at the event level
-    attribute_values
-        Attribute values
-    positive
-        Decides if the values should be kept (positive=True) or removed (positive=False)
-
-    Returns
-    ----------------
-    filtered_ocel
-        Filtered object-centric event log
+    :param ocel: object-centric event log
+    :param attribute_key: attribute at the event level
+    :param attribute_values: collection of attribute values
+    :param positive: decides if the values should be kept (positive=True) or removed (positive=False)
+    :rtype: ``OCEL``
     """
     from pm4py.algo.filtering.ocel import event_attributes
 
@@ -796,21 +677,11 @@ def filter_ocel_object_attribute(ocel: OCEL, attribute_key: str, attribute_value
     """
     Filters the object-centric event log on the provided object attributes values
 
-    Parameters
-    ----------------
-    ocel
-        Object-centric event log
-    attribute_key
-        Attribute at the event level
-    attribute_values
-        Attribute values
-    positive
-        Decides if the values should be kept (positive=True) or removed (positive=False)
-
-    Returns
-    ----------------
-    filtered_ocel
-        Filtered object-centric event log
+    :param ocel: object-centric event log
+    :param attribute_key: attribute at the event level
+    :param attribute_values: collection of attribute values
+    :param positive: decides if the values should be kept (positive=True) or removed (positive=False)
+    :rtype: ``OCEL``
     """
     from pm4py.algo.filtering.ocel import object_attributes
 
@@ -822,24 +693,9 @@ def filter_ocel_object_types_allowed_activities(ocel: OCEL, correspondence_dict:
     Filters an object-centric event log keeping only the specified object types
     with the specified activity set (filters out the rest).
 
-    Parameters
-    ----------------
-    ocel
-        Object-centric event log
-    correspondence_dict
-        Dictionary containing, for every object type of interest, a
-        collection of allowed activities.  Example:
-
-        {"order": ["Create Order"], "element": ["Create Order", "Create Delivery"]}
-
-        Keeps only the object types "order" and "element".
-        For the "order" object type, only the activity "Create Order" is kept.
-        For the "element" object type, only the activities "Create Order" and "Create Delivery" are kept.
-
-    Returns
-    -----------------
-    filtered_ocel
-        Filtered object-centric event log
+    :param ocel: object-centric event log
+    :param correspondence_dict: dictionary containing, for every object type of interest, a collection of allowed activities. Example: {"order": ["Create Order"], "element": ["Create Order", "Create Delivery"]}
+    :rtype: ``OCEL``
     """
     from pm4py.algo.filtering.ocel import activity_type_matching
 
@@ -860,17 +716,9 @@ def filter_ocel_object_per_type_count(ocel: OCEL, min_num_obj_type: Dict[str, in
     1      e11     1981-01-01  Create Order          [i6, i5]            [o2]
     2      e14     1981-01-04  Create Order          [i8, i7]            [o3]
 
-    Parameters
-    ------------------
-    ocel
-        Object-centric event log
-    min_num_obj_type
-        Minimum number of objects per type
-
-    Returns
-    -----------------
-    filtered_event_log
-        Filtered object-centric event log
+    :param ocel: object-centric event log
+    :param min_num_obj_type: minimum number of objects per type
+    :rtype: ``OCEL``
     """
     from pm4py.algo.filtering.ocel import objects_ot_count
 
@@ -882,17 +730,9 @@ def filter_ocel_start_events_per_object_type(ocel: OCEL, object_type: str) -> OC
     Filters the events in which a new object for the given object type is spawn.
     (E.g. an event with activity "Create Order" might spawn new orders).
 
-    Parameters
-    ------------------
-    ocel
-        Object-centric event log
-    object_type
-        Object type to consider
-
-    Returns
-    ------------------
-    filtered_ocel
-        Filtered object-centric event log
+    :param ocel: object-centric event log
+    :param object_type: object type to consider
+    :rtype: ``OCEL``
     """
     from pm4py.algo.filtering.ocel import ot_endpoints
     return ot_endpoints.filter_start_events_per_object_type(ocel, object_type)
@@ -903,17 +743,9 @@ def filter_ocel_end_events_per_object_type(ocel: OCEL, object_type: str) -> OCEL
     Filters the events in which an object for the given object type terminates its lifecycle.
     (E.g. an event with activity "Pay Order" might terminate an order).
 
-    Parameters
-    ------------------
-    ocel
-        Object-centric event log
-    object_type
-        Object type to consider
-
-    Returns
-    ------------------
-    filtered_ocel
-        Filtered object-centric event log
+    :param ocel: object-centric event log
+    :param object_type: object type to consider
+    :rtype: ``OCEL``
     """
     from pm4py.algo.filtering.ocel import ot_endpoints
     return ot_endpoints.filter_end_events_per_object_type(ocel, object_type)
@@ -923,51 +755,28 @@ def filter_ocel_events_timestamp(ocel: OCEL, min_timest: Union[datetime.datetime
     """
     Filters the object-centric event log keeping events in the provided timestamp range
 
-    Parameters
-    -----------------
-    ocel
-        Object-centric event log
-    min_timest
-        Left extreme of the allowed timestamp interval (provided in the format: YYYY-mm-dd HH:MM:SS)
-    max_timest
-        Right extreme of the allowed timestamp interval (provided in the format: YYYY-mm-dd HH:MM:SS)
-    timestamp_key
-        The attribute to use as timestamp (default: ocel:timestamp)
-
-    Returns
-    -----------------
-    filtered_ocel
-        Filtered object-centric event log
+    :param ocel: object-centric event log
+    :param min_timest: left extreme of the allowed timestamp interval (provided in the format: YYYY-mm-dd HH:MM:SS)
+    :param max_timest: right extreme of the allowed timestamp interval (provided in the format: YYYY-mm-dd HH:MM:SS)
+    :param timestamp_key: the attribute to use as timestamp (default: ocel:timestamp)
+    :rtype: ``OCEL``
     """
     from pm4py.algo.filtering.ocel import event_attributes
     return event_attributes.apply_timestamp(ocel, min_timest, max_timest, parameters={"pm4py:param:timestamp_key": timestamp_key})
 
 
-def filter_four_eyes_principle(log: Union[EventLog, pd.DataFrame], activity1: str, activity2: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource"):
+def filter_four_eyes_principle(log: Union[EventLog, pd.DataFrame], activity1: str, activity2: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource") -> Union[EventLog, pd.DataFrame]:
     """
     Filter the cases of the log which violates the four eyes principle on the provided activities.
 
-    Parameters
-    -----------------
-    log
-        Event log
-    activity1
-        First activity
-    activity2
-        Second activity
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-    resource_key
-        attribute to be used as resource
-
-    Returns
-    -----------------
-    log_violations
-        Log of cases which violate the four eyes principle.
+    :param log: event log
+    :param activity1: first activity
+    :param activity2: second activity
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :param resource_key: attribute to be used as resource
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -985,29 +794,17 @@ def filter_four_eyes_principle(log: Union[EventLog, pd.DataFrame], activity1: st
         return ltl_checker.four_eyes_principle(log, activity1, activity2, parameters=properties)
 
 
-def filter_activity_done_different_resources(log: Union[EventLog, pd.DataFrame], activity: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource"):
+def filter_activity_done_different_resources(log: Union[EventLog, pd.DataFrame], activity: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource") -> Union[EventLog, pd.DataFrame]:
     """
-    Filters the cases where an activity is repeated by different resources
+    Filters the cases where an activity is repeated by different resources.
 
-    Parameters
-    ----------------
-    log
-        Event log
-    activity
-        Activity to consider
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-    resource_key
-        attribute to be used as resource
-
-    Returns
-    ----------------
-    log_violations
-        Log containing the cases where the given activity is repeated by different resources.
+    :param log: event log
+    :param activity: activity to consider
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :param resource_key: attribute to be used as resource
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
