@@ -26,23 +26,13 @@ from copy import copy
 def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float = 0.8, case_id_key="case:concept:name") -> Union[
     Tuple[EventLog, EventLog], Tuple[pd.DataFrame, pd.DataFrame]]:
     """
-    Split an event log in a training log and a test log (for machine learning purposes)
+    Split an event log in a training log and a test log (for machine learning purposes).
+    Returns the training and the test event log.
 
-    Parameters
-    --------------
-    log
-        Event log / Pandas dataframe
-    train_percentage
-        Fraction of traces to be included in the training log (from 0.0 to 1.0)
-    case_id_key
-        Attribute to be used as case identifier
-
-    Returns
-    --------------
-    training_log
-        Training event log
-    test_log
-        Test event log
+    :param log: event log / Pandas dataframe
+    :param train_percentage: fraction of traces to be included in the training log (from 0.0 to 1.0)
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[Tuple[EventLog, EventLog], Tuple[pd.DataFrame, pd.DataFrame]]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -68,23 +58,14 @@ def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float
 
 def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int, case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
-    Gets the prefixes of a log of a given length
+    Gets the prefixes of a log of a given length. The returned log object contain the prefixes:
+    - if a trace has lower or identical length, it is included as-is
+    - if a trace has greater length, it is cut
 
-    Parameters
-    ----------------
-    log
-        Event log / Pandas dataframe
-    length
-        Length
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ----------------
-    prefix_log
-        Log contain the prefixes:
-        - if a trace has lower or identical length, it is included as-is
-        - if a trace has greater length, it is cut
+    :param log: event log / Pandas dataframe
+    :param length: length
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -103,31 +84,16 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
     """
     Extracts a dataframe containing the features of each case of the provided log object
 
-    Parameters
-    ----------------
-    log
-        Log object (event log / Pandas dataframe)
-    str_tr_attr
-        (if provided) string attributes at the case level which should be extracted as features
-    num_tr_attr
-        (if provided) numeric attributes at the case level which should be extracted as features
-    str_ev_attr
-        (if provided) string attributes at the event level which should be extracted as features (one-hot encoding)
-    num_ev_attr
-        (if provided) numeric attributes at the event level which should be extracted as features (last value per attribute in a case)
-    activity_key
-        The attribute to be used as activity
-    timestamp_key
-        The attribute to be used as timestamp
-    case_id_key
-        The attribute to be used as case identifier
-    resource_key
-        The attribute to be used as resource
-
-    Returns
-    ---------------
-    fea_df
-        Feature dataframe
+    :param log: log object (event log / Pandas dataframe)
+    :param str_tr_attr: (if provided) string attributes at the case level which should be extracted as features
+    :param num_tr_attr: (if provided) numeric attributes at the case level which should be extracted as features
+    :param str_ev_attr: (if provided) string attributes at the event level which should be extracted as features (one-hot encoding)
+    :param num_ev_attr: (if provided) numeric attributes at the event level which should be extracted as features (last value per attribute in a case)
+    :param activity_key: the attribute to be used as activity
+    :param timestamp_key: the attribute to be used as timestamp
+    :param case_id_key: the attribute to be used as case identifier
+    :param resource_key: the attribute to be used as resource
+    :rtype: ``pd.DataFrame``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
