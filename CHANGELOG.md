@@ -13,6 +13,8 @@
   * Fixes XES line-by-line deserialization
 * 363580b757c027ff583d33dcff83e00b3be97659
   * Fixed issues with Pandas dataframe's index usage in the library
+* 58a763b4099b40c67f23a6eb45c621d1b9a9d324
+  * Fixed OCEL default constructor to set default columns in the dataframes
 
 ### Removed
 
