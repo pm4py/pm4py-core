@@ -54,27 +54,14 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
     Apply token-based replay for conformance checking analysis.
     The methods return the full token-based-replay diagnostics.
 
-    Parameters
-    --------------
-    log
-        Event log
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    replay_results
-        A list of replay results for each trace of the log (in the same order as the traces in the event log)
+    :param log: event log
+    :param petri_net: petri net
+    :param initial_marking: initial marking
+    :param final_marking: final marking
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``List[Dict[str, Any]]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -93,25 +80,13 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
     Apply the alignments algorithm between a log and a process model.
     The methods return the full alignment diagnostics.
 
-    Parameters
-    -------------
-    log
-        Event log
-    args
-        Specification of the process model
-    multi_processing
-        Boolean value that enables the multiprocessing (default: False)
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    -------------
-    aligned_traces
-        A list of alignments for each trace of the log (in the same order as the traces in the event log)
+    :param log: event log
+    :param args: specification of the process model
+    :param multi_processing: boolean value that enables the multiprocessing (default: False)
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``List[Dict[str, Any]]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -158,27 +133,14 @@ def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: Pe
     Calculates the fitness using token-based replay.
     The fitness is calculated on a log-based level.
 
-    Parameters
-    ---------------
-    log
-        Event log
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ---------------
-    fitness_dictionary
-        dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
+    :param log: event log
+    :param petri_net: petri net
+    :param initial_marking: initial marking
+    :param final_marking: final marking
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Dict[str, float]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -198,29 +160,15 @@ def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, 
     """
     Calculates the fitness using alignments
 
-    Parameters
-    --------------
-    log
-        Event log
-    petri_net
-        Petri net object
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    multi_processing
-        Boolean value that enables the multiprocessing (default: False)
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ---------------
-    fitness_dictionary
-        dictionary describing average fitness (key: average_trace_fitness) and the percentage of fitting traces (key: percentage_of_fitting_traces)
+    :param log: event log
+    :param petri_net: petri net
+    :param initial_marking: initial marking
+    :param final_marking: final marking
+    :param multi_processing: boolean value that enables the multiprocessing (default: False)
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Dict[str, float]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -240,27 +188,14 @@ def precision_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: 
     """
     Calculates the precision precision using token-based replay
 
-    Parameters
-    --------------
-    log
-        Event log
-    petri_net
-        Petri net object
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    precision
-        float representing the precision value
+    :param log: event log
+    :param petri_net: petri net
+    :param initial_marking: initial marking
+    :param final_marking: final marking
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``float``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -280,29 +215,15 @@ def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet
     """
     Calculates the precision of the model w.r.t. the event log using alignments
 
-    Parameters
-    --------------
-    log
-        Event log
-    petri_net
-        Petri net object
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    multi_processing
-        Boolean value that enables the multiprocessing (default: False)
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    precision
-        float representing the precision value
+    :param log: event log
+    :param petri_net: petri net
+    :param initial_marking: initial marking
+    :param final_marking: final marking
+    :param multi_processing: boolean value that enables the multiprocessing (default: False)
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``float``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -323,15 +244,8 @@ def __convert_to_fp(*args) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
     Internal method to convert the provided event log / process model argument
     to footprints (using footprints discovery)
 
-    Parameters
-    ----------------
-    args
-        Event log / process model
-
-    Returns
-    ---------------
-    fp
-        Footprints
+    :param args: event log / process model
+    :rtype: ``Union[List[Dict[str, Any]], Dict[str, Any]]``
     """
     import pm4py
     while type(args) is tuple:
@@ -351,17 +265,8 @@ def conformance_diagnostics_footprints(*args) -> Union[List[Dict[str, Any]], Dic
     """
     Provide conformance checking diagnostics using footprints
 
-    Parameters
-    ----------------
-    args
-        Provided argument:
-        - The first argument is supposed to be an event log (or the footprints discovered from the event log)
-        - The other arguments are supposed to be the process model (or the footprints discovered from the process model)
-
-    Returns
-    ----------------
-    fps
-        Footprints of the event log / process model
+    :param args: provided arguments (the first argument is supposed to be an event log (or the footprints discovered from the event log); the other arguments are supposed to be the process model (or the footprints discovered from the process model).
+    :rtype: ``Union[List[Dict[str, Any]], Dict[str, Any]]``
     """
     fp1 = __convert_to_fp(args[0])
     fp2 = __convert_to_fp(args[1:])
@@ -375,21 +280,12 @@ def conformance_diagnostics_footprints(*args) -> Union[List[Dict[str, Any]], Dic
 @deprecation.deprecated("2.3.0", "3.0.0", "conformance checking using footprints will not be exposed in a future release")
 def fitness_footprints(*args) -> Dict[str, float]:
     """
-    Calculates fitness using footprints
+    Calculates fitness using footprints. The output is a dictionary containing two keys:
+    - perc_fit_traces => percentage of fit traces (over the log)
+    - log_fitness => the fitness value over the log
 
-    Parameters
-    ----------------
-    args
-        Provided argument:
-        - The first argument is supposed to be an event log (or the footprints discovered from the event log)
-        - The other arguments are supposed to be the process model (or the footprints discovered from the process model)
-
-    Returns
-    ----------------
-    fitness_dict
-        A dictionary containing two keys:
-        - perc_fit_traces => percentage of fit traces (over the log)
-        - log_fitness => the fitness value over the log
+    :param args: provided arguments (the first argument is supposed to be an event log (or the footprints discovered from the event log); the other arguments are supposed to be the process model (or the footprints discovered from the process model).
+    :rtype: ``Dict[str, float]``
     """
     fp_conf = conformance_diagnostics_footprints(*args)
     fp1 = __convert_to_fp(args[0])
@@ -403,17 +299,8 @@ def precision_footprints(*args) -> float:
     """
     Calculates precision using footprints
 
-    Parameters
-    ----------------
-    args
-        Provided argument:
-        - The first argument is supposed to be an event log (or the footprints discovered from the event log)
-        - The other arguments are supposed to be the process model (or the footprints discovered from the process model)
-
-    Returns
-    ----------------
-    precision
-        The precision of the process model (as a number between 0 and 1)
+    :param args: provided arguments (the first argument is supposed to be an event log (or the footprints discovered from the event log); the other arguments are supposed to be the process model (or the footprints discovered from the process model).
+    :rtype: ``float``
     """
     fp1 = __convert_to_fp(args[0])
     fp2 = __convert_to_fp(args[1:])
@@ -422,21 +309,13 @@ def precision_footprints(*args) -> float:
 
 
 @deprecation.deprecated("2.3.0", "3.0.0", details="this method will be removed in a future release.")
-def __check_is_fit_process_tree(trace, tree):
+def __check_is_fit_process_tree(trace, tree) -> bool:
     """
     Check if a trace object is fit against a process tree model
 
-    Parameters
-    -----------------
-    trace
-        Trace
-    tree
-        Process tree
-
-    Returns
-    -----------------
-    is_fit
-        Boolean value (True if the trace fits; False if the trace does not)
+    :param trace: trace
+    :param tree: process tree
+    :rtype: ``bool``
     """
     __event_log_deprecation_warning(trace)
 
@@ -465,27 +344,16 @@ def __check_is_fit_process_tree(trace, tree):
 
 
 @deprecation.deprecated("2.3.0", "3.0.0", details="this method will be removed in a future release.")
-def __check_is_fit_petri_net(trace, net, im, fm, activity_key=xes_constants.DEFAULT_NAME_KEY):
+def __check_is_fit_petri_net(trace, net, im, fm, activity_key=xes_constants.DEFAULT_NAME_KEY) -> bool:
     """
     Checks if a trace object is fit against Petri net object
 
-    Parameters
-    ----------------
-    trace
-        Trace
-    net
-        Petri net
-    im
-        Initial marking
-    fm
-        Final marking
-    activity_key
-        Activity key (optional)
-
-    Returns
-    -----------------
-    is_fit
-        Boolean value (True if the trace fits; False if the trace does not)
+    :param trace: trace
+    :param net: petri net
+    :param im: initial marking
+    :param fm: final marking
+    :param activity_key: attribute to be used as activity
+    :rtype: ``bool``
     """
     __event_log_deprecation_warning(trace)
 
@@ -511,23 +379,12 @@ def __check_is_fit_petri_net(trace, net, im, fm, activity_key=xes_constants.DEFA
 
 
 @deprecation.deprecated("2.3.0", "3.0.0", details="this method will be removed in a future release.")
-def check_is_fitting(*args, activity_key=xes_constants.DEFAULT_NAME_KEY):
+def check_is_fitting(*args, activity_key=xes_constants.DEFAULT_NAME_KEY) -> bool:
     """
     Checks if a trace object is fit against a process model
 
-    Parameters
-    -----------------
-    trace
-        Trace object (trace / variant)
-    model
-        Model (process tree, Petri net, BPMN, ...)
-    activity_key
-        Activity key (optional)
-
-    Returns
-    -----------------
-    is_fit
-        Boolean value (True if the trace fits; False if the trace does not)
+    :param args: arguments (trace object; process model (process tree, petri net, BPMN))
+    :rtype: ``bool``
     """
     from pm4py.util import variants_util
     from pm4py.convert import convert_to_process_tree, convert_to_petri_net
@@ -557,39 +414,20 @@ def conformance_temporal_profile(log: Union[EventLog, pd.DataFrame], temporal_pr
     """
     Performs conformance checking on the provided log with the provided temporal profile.
     The result is a list of time-based deviations for every case.
+    E.g. if the log on top of which the conformance is applied is the following (1 case):
+    A (timestamp: 2000-01)    B (timestamp: 2002-01)
+    The difference between the timestamps of A and B is two years. If the temporal profile:
+    {('A', 'B'): (1.5 months, 0.5 months), ('A', 'C'): (5 months, 0), ('A', 'D'): (2 months, 0)}
+    is specified, and zeta is set to 1, then the aforementioned case would be deviating
+    (considering the couple of activities ('A', 'B')), because 2 years > 1.5 months + 0.5 months.
 
-    Parameters
-    -----------------
-    log
-        Log object
-    temporal_profile
-        Temporal profile. E.g., if the log has two cases:
-
-        A (timestamp: 1980-01)   B (timestamp: 1980-03)    C (timestamp: 1980-06)
-        A (timestamp: 1990-01)   B (timestamp: 1990-02)    D (timestamp: 1990-03)
-
-        The temporal profile will contain:
-        {('A', 'B'): (1.5 months, 0.5 months), ('A', 'C'): (5 months, 0), ('A', 'D'): (2 months, 0)}
-    zeta
-        Number of standard deviations allowed from the average. E.g. zeta=1 allows every timestamp between
-        AVERAGE-STDEV and AVERAGE+STDEV
-
-    Returns
-    ----------------
-    temp_conf_results
-        Results of conformance based on the temporal profile.
-        This is a list of deviations for every case.
-
-        E.g. if the log on top of which the conformance is applied is the following (1 case):
-
-        A (timestamp: 2000-01)    B (timestamp: 2002-01)
-
-        The difference between the timestamps of A and B is two years. If the temporal profile:
-
-        {('A', 'B'): (1.5 months, 0.5 months), ('A', 'C'): (5 months, 0), ('A', 'D'): (2 months, 0)}
-
-        is specified, and zeta is set to 1, then the aforementioned case would be deviating
-        (considering the couple of activities ('A', 'B')), because 2 years > 1.5 months + 0.5 months.
+    :param log: log object
+    :param temporal_profile: temporal profile. E.g., if the log has two cases: A (timestamp: 1980-01)   B (timestamp: 1980-03)    C (timestamp: 1980-06); A (timestamp: 1990-01)   B (timestamp: 1990-02)    D (timestamp: 1990-03); The temporal profile will contain: {('A', 'B'): (1.5 months, 0.5 months), ('A', 'C'): (5 months, 0), ('A', 'D'): (2 months, 0)}
+    :param zeta: number of standard deviations allowed from the average. E.g. zeta=1 allows every timestamp between AVERAGE-STDEV and AVERAGE+STDEV.
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``List[List[Tuple[float, float, float, float]]]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -611,41 +449,29 @@ def conformance_log_skeleton(log: Union[EventLog, pd.DataFrame], log_skeleton: D
     Reference paper:
     Verbeek, H. M. W., and R. Medeiros de Carvalho. "Log skeletons: A classification approach to process discovery." arXiv preprint arXiv:1806.08247 (2018).
 
-    Parameters
-    ------------------
-    log
-        Log object
-    log_skeleton
-        Log skeleton object, expressed as dictionaries of the six constraints (never_together, always_before ...)
-        along with the discovered rules.
+    A log skeleton is a declarative model which consists of six different constraints:
+    - "directly_follows": specifies for some activities some strict bounds on the activities directly-following. For example,
+                        'A should be directly followed by B' and 'B should be directly followed by C'.
+    - "always_before": specifies that some activities may be executed only if some other activities are executed somewhen before
+                        in the history of the case.
+                        For example, 'C should always be preceded by A'
+    - "always_after": specifies that some activities should always trigger the execution of some other activities
+                        in the future history of the case.
+                        For example, 'A should always be followed by C'
+    - "equivalence": specifies that a given couple of activities should happen with the same number of occurrences inside
+                        a case.
+                        For example, 'B and C should always happen the same number of times'.
+    - "never_together": specifies that a given couple of activities should never happen together in the history of the case.
+                        For example, 'there should be no case containing both C and D'.
+    - "activ_occurrences": specifies the allowed number of occurrences per activity:
+                        E.g. A is allowed to be executed 1 or 2 times, B is allowed to be executed 1 or 2 or 3 or 4 times.
 
-        A log skeleton is a declarative model which consists of six different constraints:
-        - "directly_follows": specifies for some activities some strict bounds on the activities directly-following. For example,
-                            'A should be directly followed by B' and 'B should be directly followed by C'.
-        - "always_before": specifies that some activities may be executed only if some other activities are executed somewhen before
-                            in the history of the case.
-                            For example, 'C should always be preceded by A'
-        - "always_after": specifies that some activities should always trigger the execution of some other activities
-                            in the future history of the case.
-                            For example, 'A should always be followed by C'
-        - "equivalence": specifies that a given couple of activities should happen with the same number of occurrences inside
-                            a case.
-                            For example, 'B and C should always happen the same number of times'.
-        - "never_together": specifies that a given couple of activities should never happen together in the history of the case.
-                            For example, 'there should be no case containing both C and D'.
-        - "activ_occurrences": specifies the allowed number of occurrences per activity:
-                            E.g. A is allowed to be executed 1 or 2 times, B is allowed to be executed 1 or 2 or 3 or 4 times.
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    -----------------
-    log_skel_conf_res
-        List containing, for every case of the log, all the constraints that were violated by such case.
+    :param log: log object
+    :param log_skeleton: log skeleton object, expressed as dictionaries of the six constraints (never_together, always_before ...) along with the discovered rules.
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``List[Set[Any]]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
