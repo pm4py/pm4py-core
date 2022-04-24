@@ -22,6 +22,7 @@ def read_xes(file_path: str, variant: str = "iterparse", **kwargs) -> DataFrame:
     Returns a table (``pandas.DataFrame``) view of the event log.
 
     :param file_path: file path of the event log (``.xes`` file) on disk
+    :rtype: ``DataFrame``
 
     .. code-block:: python3
 
@@ -69,7 +70,8 @@ def read_ptml(file_path: str) -> ProcessTree:
     Reads a process tree object from a .ptml file
 
     :param file_path: file path of the process tree object on disk
- 
+    :rtype: ``ProcessTree``
+
     .. code-block:: python3
 
         import pm4py
@@ -110,6 +112,7 @@ def read_bpmn(file_path: str) -> BPMN:
     Reads a BPMN model from a .bpmn file
 
     :param file_path: file path of the bpmn model
+    :rtype: ``BPMN``
 
     .. code-block:: python3
 
@@ -130,6 +133,7 @@ def read_ocel(file_path: str, objects_path: Optional[str] = None) -> OCEL:
 
     :param file_path: file path of the object-centric event log
     :param objects_path: [Optional] file path from which the objects dataframe should be read
+    :rtype: ``OCEL``
 
     .. code-block:: python3
 
