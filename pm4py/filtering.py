@@ -65,25 +65,13 @@ def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataF
     - in at least the specified (min_relative_stake) percentage of events, when level="events"
     - in at least the specified (min_relative_stake) percentage of cases, when level="cases"
 
-    Parameters
-    -------------------
-    log
-        Event log / Pandas dataframe
-    min_relative_stake
-        Minimum percentage of cases (expressed as a number between 0 and 1) in which the attribute should occur.
-    attribute_key
-        The attribute to filter
-    level
-        The level of the filter (if level="events", then events / if level="cases", then cases)
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ------------------
-    filtered_log
-        Filtered event log
+    :param log: event log / Pandas dataframe
+    :param min_relative_stake: minimum percentage of cases (expressed as a number between 0 and 1) in which the attribute should occur.
+    :param attribute_key: the attribute to filter
+    :param level: the level of the filter (if level="events", then events / if level="cases", then cases)
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -107,25 +95,13 @@ Union[EventLog, pd.DataFrame]:
     """
     Filter cases having a start activity in the provided list
 
-    Parameters
-    --------------
-    log
-        Log object
-    activities
-        List start activities
-    retain
-        if True, we retain the traces containing the given activities, if false, we drop the traces
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    filtered_log
-        Filtered log object
+    :param log: event log / Pandas dataframe
+    :param activities: collection of start activities
+    :param retain: if True, we retain the traces containing the given start activities, if false, we drop the traces
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -149,25 +125,13 @@ def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union
     """
     Filter cases having an end activity in the provided list
 
-    Parameters
-    ---------------
-    log
-        Log object
-    activities
-        List of admitted end activities
-    retain
-        if True, we retain the traces containing the given activities, if false, we drop the traces
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ---------------
-    filtered_log
-        Filtered log object
+    :param log: event log / Pandas dataframe
+    :param activities: collection of end activities
+    :param retain: if True, we retain the traces containing the given end activities, if false, we drop the traces
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -191,26 +155,13 @@ def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
     """
     Filter a log object on the values of some event attribute
 
-    Parameters
-    --------------
-    log
-        Log object
-    attribute_key
-        Attribute to filter
-    values
-        Admitted (or forbidden) values
-    level
-        Specifies how the filter should be applied ('case' filters the cases where at least one occurrence happens,
-        'event' filter the events eventually trimming the cases)
-    retain
-        Specified if the values should be kept or removed
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    filtered_log
-        Filtered log object
+    :param log: event log / Pandas dataframe
+    :param attribute_key: attribute to filter
+    :param values: admitted (or forbidden) values
+    :param level: specifies how the filter should be applied ('case' filters the cases where at least one occurrence happens, 'event' filter the events eventually trimming the cases)
+    :param retain: specifies if the values should be kept or removed
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -243,23 +194,12 @@ def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
     """
     Filter a log on the values of a trace attribute
 
-    Parameters
-    --------------
-    log
-        Event log
-    attribute_key
-        Attribute to filter
-    values
-        Values to filter (list of)
-    retain
-        Boolean value (keep/discard matching traces)
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    filtered_log
-        Filtered event log
+    :param log: event log / Pandas dataframe
+    :param attribute_key: attribute to filter
+    :param values: collection of values to filter
+    :param retain: boolean value (keep/discard matching traces)
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -283,25 +223,13 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str
     """
     Filter a log on a specified set of variants
 
-    Parameters
-    ---------------
-    log
-        Event log
-    variants
-        collection of variants to filter; A variant should be specified as a list of activity names, e.g., ['a','b','c']
-    retain
-        boolean; if True all traces conforming to the specified variants are retained; if False, all those traces are removed
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    filtered_log
-        Filtered log object
+    :param log: event log / Pandas dataframe
+    :param variants: collection of variants to filter; A variant should be specified as a list of activity names, e.g., ['a','b','c']
+    :param retain: boolean; if True all traces conforming to the specified variants are retained; if False, all those traces are removed
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -328,26 +256,13 @@ def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relatio
     For example, if relations == [('a','b'),('a','c')] and log [<a,b,c>,<a,c,b>,<a,d,b>]
     the resulting log will contain traces describing [<a,b,c>,<a,c,b>].
 
-    Parameters
-    ---------------
-    log
-        Log object
-    relations
-        List of activity name pairs, which are allowed/forbidden paths
-    retain
-        Parameter that says whether the paths
-        should be kept/removed
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ----------------
-    filtered_log
-        Filtered log object
+    :param log: event log / Pandas dataframe
+    :param relations: list of activity name pairs, which are allowed/forbidden paths
+    :param retain: parameter that says whether the paths should be kept/removed
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -370,26 +285,13 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
     For example, if relations == [('a','b'),('a','c')] and log [<a,b,c>,<a,c,b>,<a,d,b>]
     the resulting log will contain traces describing [<a,b,c>,<a,c,b>,<a,d,b>].
 
-    Parameters
-    ---------------
-    log
-        Log object
-    relations
-        List of activity name pairs, which are allowed/forbidden paths
-    retain
-        Parameter that says whether the paths
-        should be kept/removed
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ----------------
-    filtered_log
-        Filtered log object
+    :param log: event log / Pandas dataframe
+    :param relations: list of activity name pairs, which are allowed/forbidden paths
+    :param retain: parameter that says whether the paths should be kept/removed
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     __event_log_deprecation_warning(log)
 
@@ -438,28 +340,13 @@ def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mo
     """
     Filter a log on a time interval
 
-    Parameters
-    ----------------
-    log
-        Log object
-    dt1
-        Left extreme of the interval
-    dt2
-        Right extreme of the interval
-    mode
-        Modality of filtering (events, traces_contained, traces_intersecting)
-        events: any event that fits the time frame is retained
-        traces_contained: any trace completely contained in the timeframe is retained
-        traces_intersecting: any trace intersecting with the time-frame is retained.
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ----------------
-    filtered_log
-        Filtered log
+    :param log: event log / Pandas dataframe
+    :param dt1: left extreme of the interval
+    :param dt2: right extreme of the interval
+    :param mode: modality of filtering (events, traces_contained, traces_intersecting). events: any event that fits the time frame is retained; traces_contained: any trace completely contained in the timeframe is retained; traces_intersecting: any trace intersecting with the time-frame is retained.
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
