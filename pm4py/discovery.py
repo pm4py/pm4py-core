@@ -53,27 +53,13 @@ import deprecation
 
 def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     """
-    Discovers a DFG from a log
+    Discovers a DFG from a log.
 
-    Parameters
-    --------------
-    log
-        Event log
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    dfg
-        DFG
-    start_activities
-        Start activities
-    end_activities
-        End activities
+    :param log: event log / Pandas dataframe
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Tuple[dict, dict, dict]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -111,31 +97,14 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours:
     """
     Discovers a performance directly-follows graph from an event log
 
-    Parameters
-    ---------------
-    log
-        Event log
-    business_hours
-        Enables/disables the computation based on the business hours (default: False)
-    worktiming
-        (If the business hours are enabled) The hour range in which the resources of the log are working (default: 7 to 17)
-    weekends
-        (If the business hours are enabled) The weekends days (default: Saturday (6), Sunday (7))
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ---------------
-    performance_dfg
-        Performance DFG
-    start_activities
-        Start activities
-    end_activities
-        End activities
+    :param log: event log / Pandas dataframe
+    :param business_hours: enables/disables the computation based on the business hours (default: False)
+    :param worktiming: (if the business hours are enabled) the hour range in which the resources of the log are working (default: 7 to 17)
+    :param weekends: (if the business hours are enabled) the weekends days (default: Saturday (6), Sunday (7))
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Tuple[dict, dict, dict]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -171,25 +140,11 @@ def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame], activity_key: s
     """
     Discovers a Petri net using the Alpha Miner
 
-    Parameters
-    --------------
-    log
-        Event log
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
+    :param log: event log / Pandas dataframe
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Tuple[PetriNet, Marking, Marking]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -206,25 +161,11 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_k
     """
     Discovers a Petri net using the Alpha+ algorithm
 
-    Parameters
-    --------------
-    log
-        Event log
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
+    :param log: event log / Pandas dataframe
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Tuple[PetriNet, Marking, Marking]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -239,29 +180,14 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_k
 def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[
     PetriNet, Marking, Marking]:
     """
-    Discovers a Petri net using the IMDFc algorithm
+    Discovers a Petri net using the inductive miner algorithm
 
-    Parameters
-    --------------
-    log
-        Event log
-    noise_threshold
-        Noise threshold (default: 0.0)
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
+    :param log: event log / Pandas dataframe
+    :param noise_threshold: noise threshold (default: 0.0)
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Tuple[PetriNet, Marking, Marking]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -280,31 +206,14 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
     """
     Discover a Petri net using the Heuristics Miner
 
-    Parameters
-    ---------------
-    log
-        Event log
-    dependency_threshold
-        Dependency threshold (default: 0.5)
-    and_threshold
-        AND threshold (default: 0.65)
-    loop_two_threshold
-        Loop two threshold (default: 0.5)
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
+    :param log: event log / Pandas dataframe
+    :param dependency_threshold: dependency threshold (default: 0.5)
+    :param and_threshold: AND threshold (default: 0.65)
+    :param loop_two_threshold: loop two threshold (default: 0.5)
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Tuple[PetriNet, Marking, Marking]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -325,25 +234,14 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
 
 def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> ProcessTree:
     """
-    Discovers a process tree using the IM algorithm
+    Discovers a process tree using the inductive miner algorithm
 
-    Parameters
-    --------------
-    log
-        Event log
-    noise_threshold
-        Noise threshold (default: 0.0)
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    process_tree
-        Process tree object
+    :param log: event log / Pandas dataframe
+    :param noise_threshold: noise threshold (default: 0.0)
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``ProcessTree``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -363,27 +261,14 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
     """
     Discovers an heuristics net
 
-    Parameters
-    ---------------
-    log
-        Event log
-    dependency_threshold
-        Dependency threshold (default: 0.5)
-    and_threshold
-        AND threshold (default: 0.65)
-    loop_two_threshold
-        Loop two threshold (default: 0.5)
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    heu_net
-        Heuristics net
+    :param log: event log / Pandas dataframe
+    :param dependency_threshold: dependency threshold (default: 0.5)
+    :param and_threshold: AND threshold (default: 0.65)
+    :param loop_two_threshold: loop two threshold (default: 0.5)
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``HeuristicsNet``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -403,27 +288,17 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
 
 
 def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, int]:
-    '''
-        This algorithm computes the minimum self-distance for each activity observed in an event log.
-        The self distance of a in <a> is infinity, of a in <a,a> is 0, in <a,b,a> is 1, etc.
-        The activity key 'concept:name' is used.
+    """
+    This algorithm computes the minimum self-distance for each activity observed in an event log.
+    The self distance of a in <a> is infinity, of a in <a,a> is 0, in <a,b,a> is 1, etc.
+    The activity key 'concept:name' is used.
 
-
-        Parameters
-        ----------
-        log
-            event log (either pandas.DataFrame, EventLog or EventStream)
-        activity_key
-            attribute to be used for the activity
-        timestamp_key
-            attribute to be used for the timestamp
-        case_id_key
-            attribute to be used as case identifier
-
-        Returns
-        -------
-            dict mapping an activity to its self-distance, if it exists, otherwise it is not part of the dict.
-        '''
+    :param log: event log / Pandas dataframe
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Dict[str, int]``
+    """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -437,12 +312,10 @@ def derive_minimum_self_distance(log: Union[DataFrame, EventLog, EventStream], a
 def discover_footprints(*args: Union[EventLog, Tuple[PetriNet, Marking, Marking], ProcessTree]) -> Union[
     List[Dict[str, Any]], Dict[str, Any]]:
     """
-    Discovers the footprints out of the provided event log / pocess model
+    Discovers the footprints out of the provided event log / process model
 
-    Parameters
-    --------------
-    args
-        Event log / process model
+    :param args: event log / process model
+    :rtype: ``Union[List[Dict[str, Any]], Dict[str, Any]]``
     """
     from pm4py.algo.discovery.footprints import algorithm as fp_discovery
     return fp_discovery.apply(*args)
@@ -452,21 +325,11 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame], activi
     """
     Gets the eventually follows graph from a log object
 
-    Parameters
-    ---------------
-    log
-        Log object
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ---------------
-    eventually_follows_graph
-        Dictionary of tuples of activities that eventually follows each other; along with the number of occurrences
+    :param log: event log / Pandas dataframe
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Dict[Tuple[str, str], int]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -484,26 +347,15 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame], activi
 
 def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> BPMN:
     """
-        Discovers a BPMN using the Inductive Miner algorithm
+    Discovers a BPMN using the Inductive Miner algorithm
 
-        Parameters
-        --------------
-        log
-            Event log
-        noise_threshold
-            Noise threshold (default: 0.0)
-        activity_key
-            attribute to be used for the activity
-        timestamp_key
-            attribute to be used for the timestamp
-        case_id_key
-            attribute to be used as case identifier
-
-        Returns
-        --------------
-        bpmn_diagram
-            BPMN diagram
-        """
+    :param log: event log / Pandas dataframe
+    :param noise_threshold: noise threshold (default: 0.0)
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``BPMN``
+    """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
@@ -518,30 +370,16 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
 def discover_transition_system(log: Union[EventLog, pd.DataFrame], direction: str = "forward", window: int = 2, view: str = "sequence", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> TransitionSystem:
     """
     Discovers a transition system as described in the process mining book
-
     "Process Mining: Data Science in Action"
 
-    Parameters
-    -----------------
-    log
-        Event log
-    direction
-        Direction in which the transition system is built (forward, backward)
-    window
-        Window (2, 3, ...)
-    view
-        View to use in the construction of the states (sequence, set, multiset)
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    -----------------
-    transition_system
-        Transition system
+    :param log: event log / Pandas dataframe
+    :param direction: direction in which the transition system is built (forward, backward)
+    :param window: window (2, 3, ...)
+    :param view: view to use in the construction of the states (sequence, set, multiset)
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``TransitionSystem``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -562,21 +400,11 @@ def discover_prefix_tree(log: Union[EventLog, pd.DataFrame], activity_key: str =
     """
     Discovers a prefix tree from the provided log object.
 
-    Parameters
-    -----------------
-    log
-        Log object
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    -----------------
-    prefix_tree
-        Prefix tree
+    :param log: event log / Pandas dataframe
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Trie``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -597,30 +425,22 @@ def discover_temporal_profile(log: Union[EventLog, pd.DataFrame], activity_key: 
     Implements the approach described in:
     Stertz, Florian, Jürgen Mangler, and Stefanie Rinderle-Ma. "Temporal Conformance Checking at Runtime based on Time-infused Process Models." arXiv preprint arXiv:2008.07262 (2020).
 
-    Parameters
-    --------------
-    log
-        Event log
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
+    The output is a dictionary containing, for every couple of activities eventually following in at least a case of the log,
+    the average and the standard deviation of the difference of the timestamps.
 
-    Returns
-    -------------
-    dict_agg
-        Dictionary containing, for every couple of activities eventually following in at least a case of the log,
-        the average and the standard deviation of the difference of the timestamps.
+    E.g. if the log has two cases:
 
-        E.g. if the log has two cases:
+    A (timestamp: 1980-01)   B (timestamp: 1980-03)    C (timestamp: 1980-06)
+    A (timestamp: 1990-01)   B (timestamp: 1990-02)    D (timestamp: 1990-03)
 
-        A (timestamp: 1980-01)   B (timestamp: 1980-03)    C (timestamp: 1980-06)
-        A (timestamp: 1990-01)   B (timestamp: 1990-02)    D (timestamp: 1990-03)
+    The returned dictionary will contain:
+    {('A', 'B'): (1.5 months, 0.5 months), ('A', 'C'): (5 months, 0), ('A', 'D'): (2 months, 0)}
 
-        The returned dictionary will contain:
-        {('A', 'B'): (1.5 months, 0.5 months), ('A', 'C'): (5 months, 0), ('A', 'D'): (2 months, 0)}
+    :param log: event log / Pandas dataframe
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Dict[Tuple[str, str], Tuple[float, float]]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -658,24 +478,12 @@ def discover_log_skeleton(log: Union[EventLog, pd.DataFrame], noise_threshold: f
     Reference paper:
     Verbeek, H. M. W., and R. Medeiros de Carvalho. "Log skeletons: A classification approach to process discovery." arXiv preprint arXiv:1806.08247 (2018).
 
-    Parameters
-    ------------------
-    log
-        Event log
-    noise_threshold
-        Noise threshold, acting as described in the paper.
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    -----------------
-    log_skeleton
-        Log skeleton object, expressed as dictionaries of the six constraints (never_together, always_before ...)
-        along with the discovered rules.
+    :param log: event log / Pandas dataframe
+    :param noise_threshold: noise threshold, acting as described in the paper.
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Dict[str, Any]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -706,33 +514,22 @@ def discover_batches(log: Union[EventLog, pd.DataFrame], merge_distance: int = 1
     Martin, N., Swennen, M., Depaire, B., Jans, M., Caris, A., & Vanhoof, K. (2015, December). Batch Processing:
     Definition and Event Log Identification. In SIMPDA (pp. 137-140).
 
-    Parameters
-    ------------------
-    log
-        Log object
-    merge_distance
-         the maximum time distance between non-overlapping intervals in order for them to be considered belonging to the same batch (default: 15*60   15 minutes)
-    min_batch_size
-        the minimum number of events for a batch to be considered (default: 2)
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-    resource_key
-        attribute to be used as resource
-
-    Returns
-    ------------------
-    list_batches
-        A (sorted) list containing tuples. Each tuple contain:
+    The output is a (sorted) list containing tuples. Each tuple contain:
         - Index 0: the activity-resource for which at least one batch has been detected
         - Index 1: the number of batches for the given activity-resource
         - Index 2: a list containing all the batches. Each batch is described by:
             # The start timestamp of the batch
             # The complete timestamp of the batch
             # The list of events that are executed in the batch
+
+    :param log: event log / Pandas dataframe
+    :param merge_distance: the maximum time distance between non-overlapping intervals in order for them to be considered belonging to the same batch (default: 15*60   15 minutes)
+    :param min_batch_size: the minimum number of events for a batch to be considered (default: 2)
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :param resource_key: attribute to be used as resource
+    :rtype: ``List[Tuple[Tuple[str, str], int, Dict[str, Any]]]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
