@@ -51,17 +51,9 @@ def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: str
        dataframe = pm4py.format_dataframe(dataframe, case_id_column='case:concept:name', activity_column='concept:name', timestamp_column='time:timestamp')
        log = pm4py.convert_to_event_log(dataframe)
 
-    Parameters
-    -------------
-    obj
-        Log object
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    -------------
-    log
-        Event log object
+    :param obj: log object
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``EventLog``
     """
     if type(obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
@@ -89,17 +81,9 @@ def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: str
        log = pm4py.read_xes("tests/input_data/running-example.xes")
        event_stream = pm4py.convert_to_event_stream(log)
 
-    Parameters
-    --------------
-    obj
-        Log object
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    --------------
-    stream
-        Event stream object
+    :param obj: log object
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``EventStream``
     """
     if type(obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
@@ -127,16 +111,8 @@ def convert_to_dataframe(obj: Union[EventStream, EventLog]) -> pd.DataFrame:
        log = pm4py.read_xes("tests/input_data/running-example.xes")
        dataframe = pm4py.convert_to_dataframe(log)
 
-
-    Parameters
-    --------------
-    obj
-        Log object
-
-    Returns
-    --------------
-    df
-        Dataframe
+    :param obj: log object
+    :rtype: ``pd.DataFrame``
     """
     if type(obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
@@ -162,15 +138,8 @@ def convert_to_bpmn(*args: Union[Tuple[PetriNet, Marking, Marking], ProcessTree]
        net, im, fm = pm4py.read_pnml("tests/input_data/running-example.pnml")
        bpmn_graph = pm4py.convert_to_bpmn(net, im, fm)
 
-    Parameters
-    --------------
-    *args
-        Object (process tree)
-
-    Returns
-    --------------
-    bpmn_diagram
-        BPMN diagram
+    :param args: petri net (with initial and final marking) or process tree
+    :rtype: ``BPMN``
     """
     from pm4py.objects.process_tree.obj import ProcessTree
     from pm4py.objects.bpmn.obj import BPMN
@@ -209,19 +178,8 @@ def convert_to_petri_net(*args: Union[BPMN, ProcessTree, HeuristicsNet, dict]) -
        process_tree = pm4py.read_ptml("tests/input_data/running-example.ptml")
        net, im, fm = pm4py.convert_to_petri_net(process_tree)
 
-    Parameters
-    --------------
-    *args
-        Object (process tree, BPMN)
-
-    Returns
-    --------------
-    net
-        Petri net
-    im
-        Initial marking
-    fm
-        Final marking
+    :param args: process tree or BPMN
+    :rtype: ``Tuple[PetriNet, Marking, Marking]``
     """
     if isinstance(args[0], PetriNet):
         # the object is already a Petri net
@@ -260,15 +218,8 @@ def convert_to_process_tree(*args: Union[Tuple[PetriNet, Marking, Marking], BPMN
        # converts the BPMN to a process tree (through intermediate conversion to a Petri net)
        process_tree = pm4py.convert_to_process_tree(bpmn_graph)
 
-    Parameters
-    --------------
-    *args
-        Object (Petri net, BPMN)
-
-    Returns
-    --------------
-    tree
-        Process tree (when the model is block-structured)
+    :param args: petri net (along with initial and final marking) or BPMN
+    :rtype: ``ProcessTree``
     """
     from pm4py.objects.process_tree.obj import ProcessTree
     from pm4py.objects.petri_net.obj import PetriNet
@@ -304,15 +255,8 @@ def convert_to_reachability_graph(*args: Union[Tuple[PetriNet, Marking, Marking]
        # converts it to reachability graph
        reach_graph = pm4py.convert_to_reachability_graph(net, im, fm)
 
-    Parameters
-    --------------
-    *args
-        Object (Petri net, BPMN)
-
-    Returns
-    -------------
-    transition_system
-        Reachability graph
+    :param args: petri net (along with initial and final marking), process tree or BPMN
+    :rtype: ``TransitionSystem``
     """
     if isinstance(args[0], PetriNet):
         net, im, fm = args[0], args[1], args[2]
