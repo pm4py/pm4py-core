@@ -18,25 +18,12 @@ def construct_synchronous_product_net(trace: Trace, petri_net: PetriNet, initial
     """
     constructs the synchronous product net between a trace and a Petri net process model.
 
-    Parameters
-    ----------------
-    trace
-        Trace of an event log
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
+    :param trace: trace of an event log
+    :param petri_net: petri net
+    :param initial_marking: initial marking
+    :param final_marking: final marking
 
-    Returns
-    ----------------
-    sync_net
-        Synchronous product net
-    sync_im
-        Initial marking of the sync net
-    sync_fm
-        Final marking of the sync net
+    :rtype: ``Tuple[PetriNet, Marking, Marking]``
     """
     from pm4py.objects.petri_net.utils.petri_utils import construct_trace_net
     from pm4py.objects.petri_net.utils.synchronous_product import construct
@@ -54,21 +41,11 @@ def solve_marking_equation(petri_net: PetriNet, initial_marking: Marking,
     The marking equation is solved as an ILP problem.
     An optional transition-based cost function to minimize can be provided as well.
 
-    Parameters
-    ---------------
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    cost_function
-        optional cost function to use when solving the marking equation.
-
-    Returns
-    ----------------
-    h_value
-        Heuristics value calculated resolving the marking equation
+    :param petri_net: petri net
+    :param initial_marking: initial marking
+    :param final_marking: final marking
+    :param cost_function: optional cost function to use when solving the marking equation
+    :rtype: ``float``
     """
     from pm4py.algo.analysis.marking_equation import algorithm as marking_equation
 
@@ -92,24 +69,12 @@ def solve_extended_marking_equation(trace: Trace, sync_net: PetriNet, sync_im: M
     other move on model / move on log get cost equal to 10000), with an optimal provisioning of the split
     points
 
-    Parameters
-    ----------------
-    trace
-        Trace
-    sync_net
-        Synchronous product net
-    sync_im
-        Initial marking (of the sync net)
-    sync_fm
-        Final marking (of the sync net)
-    split_points
-        If specified, the indexes of the events of the trace to be used as split points.
-        If not specified, the split points are identified automatically
-
-    Returns
-    ----------------
-    h_value
-        Heuristics value calculated resolving the marking equation
+    :param trace: trace
+    :param sync_net: synchronous product net
+    :param sync_im: initial marking (of the sync net)
+    :param sync_fm: final marking (of the sync net)
+    :param split_points: if specified, the indexes of the events of the trace to be used as split points. If not specified, the split points are identified automatically.
+    :rtype: ``float``
     """
     from pm4py.algo.analysis.extended_marking_equation import algorithm as extended_marking_equation
     parameters = {}
@@ -134,20 +99,10 @@ def check_soundness(petri_net: PetriNet, initial_marking: Marking,
         - we are able to always reach the final marking
     For a formal definition of sound WF-net, consider: http://www.padsweb.rwth-aachen.de/wvdaalst/publications/p628.pdf
 
-
-    Parameters
-    ---------------
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-
-    Returns
-    --------------
-    boolean
-        Soundness
+    :param petri_net: petri net
+    :param initial_marking: initial marking
+    :param final_marking: final marking
+    :rtype: ``bool``
     """
     from pm4py.algo.analysis.woflan import algorithm as woflan
     return woflan.apply(petri_net, initial_marking, final_marking)
@@ -157,21 +112,11 @@ def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame], activity_key
     """
     Inserts the artificial start/end activities in an event log / Pandas dataframe
 
-    Parameters
-    ------------------
-    log
-        Event log / Pandas dataframe
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ------------------
-    log
-        Event log / Pandas dataframe with artificial start / end activities
+    :param log: event log / Pandas dataframe
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
     if check_is_pandas_dataframe(log):
@@ -190,14 +135,8 @@ def check_is_workflow_net(net: PetriNet) -> bool:
     2. unique sink place
     3. every node is on a path from the source to the sink
 
-    Parameters
-    ------------------
-    net
-        PetriNet
-
-    Returns
-    ------------------
-    True iff the input net is a WF-net.
+    :param net: petri net
+    :rtype: ``bool``
     """
     from pm4py.algo.analysis.workflow_net import algorithm
     return algorithm.apply(net)
@@ -207,20 +146,10 @@ def maximal_decomposition(net: PetriNet, im: Marking, fm: Marking) -> List[Tuple
     """
     Calculate the maximal decomposition of an accepting Petri net.
 
-    Parameters
-    ----------------
-    net
-        Petri net
-    im
-        Initial marking
-    fm
-        Final marking
-
-    Returns
-    ----------------
-    list_accepting_nets
-        List of accepting Petri nets (Petri net + initial marking + final marking),
-        which are the maximal decomposition of the provided accepting Petri net.
+    :param net: petri net
+    :param im: initial marking
+    :param fm: final marking
+    :rtype: ``List[Tuple[PetriNet, Marking, Marking]]``
     """
     from pm4py.objects.petri_net.utils.decomposition import decompose
     return decompose(net, im, fm)
@@ -230,21 +159,9 @@ def generate_marking(net: PetriNet, place_or_dct_places: Union[str, PetriNet.Pla
     """
     Generate a marking for a given Petri net
 
-    Parameters
-    ---------------
-    net
-        Petri net
-    place_or_dct_places
-        Place, or dictionary of places, to be used in the marking. Possible values:
-        - single Place object for the marking
-        - name of the place for the marking
-        - dictionary associating to each place its number of tokens
-        - dictionary associating to names of places a number of tokens
-
-    Returns
-    ----------------
-    marking
-        Marking object
+    :param net: petri net
+    :param place_or_dct_places: place, or dictionary of places, to be used in the marking. Possible values: single Place object for the marking; name of the place for the marking; dictionary associating to each place its number of tokens; dictionary associating to names of places a number of tokens.
+    :rtype: ``Marking``
     """
     dct_places = {x.name: x for x in net.places}
     if isinstance(place_or_dct_places, PetriNet.Place):
