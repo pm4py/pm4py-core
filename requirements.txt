@@ -1,5 +1,6 @@
 cvxopt
 deprecation
+fastparquet
 graphviz
 intervaltree
 jsonpickle
@@ -8,7 +9,9 @@ matplotlib
 networkx
 numpy>=1.19.5
 pandas>=1.1.5
+pyarrow
 pydotplus
+pyemd
 pytz
 pyvis
 scipy
