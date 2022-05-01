@@ -3,6 +3,8 @@
 ### Added
 
 ### Changed
+* d982c534aac373c347a083739b68fd3ac2b29e42
+  * Changed dimension of endpoints in BPMN models layouting
 
 ### Deprecated
 
