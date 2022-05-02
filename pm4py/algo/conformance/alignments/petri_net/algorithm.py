@@ -11,8 +11,6 @@ from enum import Enum
 import sys
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY, CASE_CONCEPT_NAME
 import pkgutil
-from concurrent.futures import ProcessPoolExecutor
-import multiprocessing
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
 from pm4py.objects.petri_net.obj import PetriNet, Marking
@@ -224,6 +222,8 @@ def apply_multiprocessing(log, petri_net, initial_marking, final_marking, parame
     if parameters is None:
         parameters = {}
 
+    import multiprocessing
+
     num_cores = exec_utils.get_param_value(Parameters.CORES, parameters, multiprocessing.cpu_count() - 2)
 
     best_worst_cost = __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters)
@@ -231,6 +231,8 @@ def apply_multiprocessing(log, petri_net, initial_marking, final_marking, parame
     parameters[Parameters.BEST_WORST_COST_INTERNAL] = best_worst_cost
 
     all_alignments = []
+
+    from concurrent.futures import ProcessPoolExecutor
     with ProcessPoolExecutor(max_workers=num_cores) as executor:
         futures = []
         for trace in one_tr_per_var:
