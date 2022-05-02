@@ -3,6 +3,10 @@
 ### Added
 
 ### Changed
+* d982c534aac373c347a083739b68fd3ac2b29e42
+  * Changed dimension of endpoints in BPMN models layouting
+* 7473a72877e29261780adf746d134b406a912dd7
+  * Interventions to increase PM4Py's compatibility across different platforms
 
 ### Deprecated
 
