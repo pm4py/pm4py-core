@@ -5,7 +5,8 @@
     ":disableRateLimiting", // force Renovate Bot to NOT artificially limit the total or hourly-created number of MRs
   ],
   "pip_requirements": { // Force Renovate's pip update detection to only look at requirements_stable.txt
-    "fileMatch": ["^requirements_stable.txt$"]
+    "fileMatch": ["^requirements_stable.txt$"],
+    "ignorePaths": ["^requirements.txt$"]
   },
   "assignees": ["sebastiaan.van.zelst"],
   "baseBranches": ["integration"], // don't use the repo's default branch but create MRs for these baseBranches
