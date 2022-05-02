@@ -9,8 +9,6 @@ from pm4py.objects.petri_net.utils.align_utils import get_visible_transitions_ev
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants
 import pkgutil
-from concurrent.futures import ProcessPoolExecutor
-import multiprocessing
 from enum import Enum
 from pm4py.util import constants
 from typing import Optional, Dict, Any, Union, Tuple
@@ -198,6 +196,7 @@ def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameter
     """
     if parameters is None:
         parameters = {}
+
     show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
     multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, False)
 
@@ -253,6 +252,9 @@ def __align_log_wo_multiprocessing_stop_marking(fake_log, net, marking, final_ma
 def __align_log_with_multiprocessing_stop_marking(fake_log, net, marking, final_marking, progress, parameters=None):
     if parameters is not None:
         parameters = {}
+
+    import multiprocessing
+    from concurrent.futures import ProcessPoolExecutor
 
     num_cores = exec_utils.get_param_value(Parameters.CORES, parameters, multiprocessing.cpu_count() - 2)
     align_intermediate_result = []
