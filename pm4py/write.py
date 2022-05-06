@@ -1,5 +1,5 @@
 __doc__ = """
-The ``pm4py.write`` module contains all funcationality related to reading files/objects from disk.
+The ``pm4py.write`` module contains all funcationality related to writing files/objects to disk.
 """
 
 import warnings
@@ -48,31 +48,18 @@ def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str, case_id_key: s
 
 def write_pnml(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, file_path: str) -> None:
     """
-    Exports a (composite) Petri net object.
+    Writes a Petri net object to disk in the ``.pnml`` format (see `pnml-standard <https://www.pnml.org/>`_)
 
-    Example:
+    :param petri_net: Petri net object that needs to be written to disk
+    :param initial_marking: initial marking of the Petri net
+    :param final_marking: final marking of the Petri net
+    :param file_path: target file path on disk of the ``.pnml`` file
 
     .. code-block:: python3
 
-       import pm4py
+        import pm4py
 
-       net, im, fm = pm4py.read_pnml("tests/input_data/running-example.pnml")
-       pm4py.write_pnml(net, im, fm, "example.pnml")
-
-    Parameters
-    ------------
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    file_path
-        Destination path
-
-    Returns
-    ------------
-    void
+        log = pm4py.write_pnml(pn, im, fm, '<path_to_export_to>')
     """
     from pm4py.objects.petri_net.exporter import exporter as petri_exporter
     petri_exporter.apply(petri_net, initial_marking, file_path, final_marking=final_marking)

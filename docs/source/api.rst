@@ -64,4 +64,6 @@ Process Discovery (:mod:`pm4py.discovery`)
    pm4py.read.read_ptml
    pm4py.read.read_xes
    pm4py.write
+   pm4py.write.write_pnml
+   pm4py.write.write_xes
    
