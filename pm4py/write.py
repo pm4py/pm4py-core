@@ -105,58 +105,37 @@ def write_dfg(dfg: Dict[Tuple[str,str],int], start_activities:  Dict[str,int], e
                                    dfg_exporter.Variants.CLASSIC.value.Parameters.END_ACTIVITIES: end_activities})
 
 
-def write_bpmn(bpmn_graph: BPMN, file_path: str, enable_layout: bool = True):
+def write_bpmn(model: BPMN, file_path: str, auto_layout: bool = True):
     """
-    Writes a BPMN to a file
+    Writes a BPMN model object to disk in the ``.bpmn`` format.
 
-    Example:
+    :param model: BPMN model to export
+    :param file_path: target file path on disk to write the BPMN object to
+    :param auto_layout: boolean indicating whether the model should get an auto layout (which is written to disk)
 
     .. code-block:: python3
 
-       import pm4py
+        import pm4py
 
-       bpmn_graph = pm4py.read_bpmn("tests/input_data/running-example.bpmn")
-       pm4py.write_bpmn(bpmn_graph, "example.bpmn")
-
-    Parameters
-    ---------------
-    bpmn_graph
-        BPMN
-    file_path
-        Destination path
-    enable_layout
-        Enables the automatic layouting of the BPMN diagram (default: True)
+        log = pm4py.write_bpmn(model, '<path_to_export_to>')
     """
-    if enable_layout:
+    if auto_layout:
         from pm4py.objects.bpmn.layout import layouter
-        bpmn_graph = layouter.apply(bpmn_graph)
+        model = layouter.apply(model)
     from pm4py.objects.bpmn.exporter import exporter
-    exporter.apply(bpmn_graph, file_path)
+    exporter.apply(model, file_path)
 
 
 def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     """
-    Stores the content of the object-centric event log to a file.
+    Writes an OCEL object to disk in the ``.bpmn`` format.
     Different formats are supported, including CSV (flat table), JSON-OCEL and XML-OCEL
     (described in the site http://www.ocel-standard.org/).
 
-    Example:
+    :param model: BPMN model to export
+    :param file_path: target file path on disk to write the BPMN object to
+    :param auto_layout: boolean indicating whether the model should get an auto layout (which is written to disk)
 
-    .. code-block:: python3
-
-       import pm4py
-
-       ocel = pm4py.read_ocel("tests/input_data/ocel/example_log.jsonocel")
-       pm4py.write_ocel(ocel, "example.ocel")
-
-    Parameters
-    -----------------
-    ocel
-        Object-centric event log
-    file_path
-        Path at which the object-centric event log should be stored
-    objects_path
-        (Optional, only used in CSV exporter) Path where the objects dataframe should be stored
     """
     if file_path.lower().endswith("csv"):
         from pm4py.objects.ocel.exporter.csv import exporter as csv_exporter
