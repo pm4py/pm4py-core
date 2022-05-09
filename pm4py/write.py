@@ -11,7 +11,7 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.utils import __event_log_deprecation_warning
 import pandas as pd
-from typing import Union, Optional, Collection, Tuple
+from typing import Union, Optional, Collection, Tuple, Dict
 from pm4py.util import constants
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.objects.log.obj import XESExtension
@@ -23,12 +23,14 @@ def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str, case_id_key: s
 
     :param log: log object (``pandas.DataFrame``) that needs to be written to disk
     :param file_path: target file path of the event log (``.xes`` file) on disk
+    :param case_id_key: column key that identifies the case identifier
+    :param extensions: extensions defined for the event log
         
     .. code-block:: python3
 
         import pm4py
 
-        pm4py.write_xes(log, '<path_to_export_to>')
+        pm4py.write_xes(log, '<path_to_export_to>', 'case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -67,59 +69,35 @@ def write_pnml(petri_net: PetriNet, initial_marking: Marking, final_marking: Mar
 
 def write_ptml(tree: ProcessTree, file_path: str) -> None:
     """
-    Exports a process tree
+    Writes a process tree object to disk in the ``.ptml`` format.
 
-    Example:
+    :param tree: ProcessTree object that needs to be written to disk
+    :param file_path: target file path on disk of the ``.ptml`` file
 
     .. code-block:: python3
 
-       import pm4py
+        import pm4py
 
-       process_tree = pm4py.read_ptml("tests/input_data/running-example.ptml")
-       pm4py.write_ptml(process_tree, "example.ptml")
-
-    Parameters
-    ------------
-    tree
-        Process tree
-    file_path
-        Destination path
-
-    Returns
-    ------------
-    void
+        log = pm4py.write_ptml(tree, '<path_to_export_to>')
     """
     from pm4py.objects.process_tree.exporter import exporter as tree_exporter
     tree_exporter.apply(tree, file_path)
 
 
-def write_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str):
+def write_dfg(dfg: Dict[Tuple[str,str],int], start_activities:  Dict[str,int], end_activities:  Dict[str,int], file_path: str):
     """
-    Exports a DFG
+    Writes a directly follows graph (DFG) object to disk in the ``.dfg`` format.
 
-    Example:
+    :param dfg: directly follows relation (multiset of activity-activity pairs)
+    :param start_activities: multiset tracking the number of occurrences of start activities
+    :param end_activities: mulltiset tracking the number of occurrences of end activities
+    :param file_path: target file path on disk to write the dfg object to
 
     .. code-block:: python3
 
-       import pm4py
+        import pm4py
 
-       frequency_dfg = pm4py.read_dfg("tests/input_data/running-example.dfg")
-       pm4py.write_dfg(frequency_dfg, "example.dfg")
-
-    Parameters
-    -------------
-    dfg
-        DFG
-    start_activities
-        Start activities
-    end_activities
-        End activities
-    file_path
-        Destination path
-
-    Returns
-    ------------
-    void
+        log = pm4py.write_dfg(dfg, sa, ea, '<path_to_export_to>')
     """
     from pm4py.objects.dfg.exporter import exporter as dfg_exporter
     dfg_exporter.apply(dfg, file_path,
