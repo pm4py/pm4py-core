@@ -33,7 +33,31 @@ Similarly to event data importing, ``pm4py`` supports export functionalities to:
 
 Process Discovery (:mod:`pm4py.discovery`)
 ------------------------------------------
-    Process Discovery algorithms discover a process model that describes the process execution, as stored in the event log.
+Process Discovery algorithms discover a process model that describes the process execution, as stored in the event log.
+``pm4py`` implements a variety of different process discovery algorithms.
+These different algorithms return different kinds of models, i.e., models with *imprecise execution semantics*, *procedural process models* and *declarative process models*.
+The following algorithms are implemented (categorized by output type).
+* Imprecise Execution semantics
+  * :meth:`pm4py.discovery.discover_dfg`; discovers a *directly follows graph*
+* Procedural Process Models
+  * Discovering Directly-Follows Graphs
+        
+        * `Performance DFG`_
+    * Discovering Petri nets
+        * `Alpha Miner`_
+        * `Inductive Miner`_
+        * `Heuristics Miner`_
+    * `BPMN discovery using the Inductive Miner`_
+    * `Process tree discovery using the Inductive Miner`_
+    * `Transition system`_
+    * `Prefix tree`_
+* Declarative
+    * `Log skeleton`_
+* Time-infused
+    * `Temporal profile`_
+"""
+
+
 * Visualization (:mod:`pm4py.vis`)
     We offer a set of visualizations for process models and statistics.
 * `Conformance Checking`_
@@ -56,6 +80,7 @@ Process Discovery (:mod:`pm4py.discovery`)
    :toctree: generated
 
    pm4py.discovery
+   pm4py.discovery.discover_dfg
    pm4py.read
    pm4py.read.read_bpmn
    pm4py.read.read_dfg
