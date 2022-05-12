@@ -66,6 +66,9 @@ Process Discovery (:mod:`pm4py.discovery`)
    pm4py.write
    pm4py.write.write_bpmn
    pm4py.write.write_dfg
+   pm4py.write.write_ocel_csv
+   pm4py.write.write_ocel_json
+   pm4py.write.write_ocel_xml
    pm4py.write.write_pnml
    pm4py.write.write_ptml
    pm4py.write.write_xes
