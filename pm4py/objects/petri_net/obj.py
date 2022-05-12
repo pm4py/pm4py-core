@@ -346,6 +346,6 @@ class ResetNet(PetriNet):
             PetriNet.Arc.__init__(self, source, target, weight=weight, properties=properties)
 
 
-class InhibitorResetNet(InhibitorNet, ResetNet):
+class ResetInhibitorNet(InhibitorNet, ResetNet):
     def __init__(self, name=None, places=None, transitions=None, arcs=None, properties=None):
         PetriNet.__init__(self, name=name, places=places, transitions=transitions, arcs=arcs, properties=properties)
