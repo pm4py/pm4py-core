@@ -50,7 +50,7 @@ def import_log_from_file_object(F, encoding, file_size=sys.maxsize, parameters=N
     log = EventLog()
     trace = None
     while cont:
-        lst = deque(rex.split(cont.decode("utf-8")))
+        lst = deque(rex.split(cont.decode(encoding)))
         while lst:
             el = lst.popleft()
             if len(el.rstrip()) > 0:
@@ -62,7 +62,7 @@ def import_log_from_file_object(F, encoding, file_size=sys.maxsize, parameters=N
                     # need to read more
                     cont = F.read(nb)
                     if cont:
-                        lst2 = rex.split(cont.decode("utf-8"))
+                        lst2 = rex.split(cont.decode(encoding))
                         el = el + lst2[0]
                         lst = deque(lst2[1:])
                     else:
