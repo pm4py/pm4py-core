@@ -1,31 +1,38 @@
-## pm4py 2.2.20.2
+# Changelog of pm4py
+
+## pm4py 2.2.21 (2022.05.12)
 
 ### Added
+* 65ff8ae3d9bca71f0cf7be507c9e0eba68b85c42
+  * add chunk-based xes importer (CHUNK_REGEX)
 
 ### Changed
 * d982c534aac373c347a083739b68fd3ac2b29e42
-  * Changed dimension of endpoints in BPMN models layouting
+  * changed dimension of endpoints in BPMN models layouting
 * 7473a72877e29261780adf746d134b406a912dd7
-  * Interventions to increase PM4Py's compatibility across different platforms
+  * interventions to increase PM4Py's compatibility across different platforms
 
 ### Deprecated
 
 ### Fixed
 * 882aa20b20ec593e0a7d01e027a6f1afa8d44f84
-  * Fixed XES line-by-line importer for booleans attributes
+  * fixed XES line-by-line importer for booleans attributes
 * f6542cd12413f073eb51173804f68502e3026f46
-  * Fixes XES line-by-line deserialization
+  * fixes XES line-by-line deserialization
 * 363580b757c027ff583d33dcff83e00b3be97659
-  * Fixed issues with Pandas dataframe's index usage in the library
+  * fixed issues with Pandas dataframe's index usage in the library
 * 58a763b4099b40c67f23a6eb45c621d1b9a9d324
-  * Fixed OCEL default constructor to set default columns in the dataframes
+  * fixed OCEL default constructor to set default columns in the dataframes
+* 8470f22047667d1d30415a08965af1015d66adbb
+  * fix division by zero error in alignment-based fitness (side case for empty trace/model combination) 
 
 ### Removed
 
 ### Other
 
+---
 
-## pm4py 2.2.20.1
+## pm4py 2.2.20.1 (2022.04.10)
 
 ### Added
 
@@ -49,8 +56,9 @@
 
 ### Other
 
+---
 
-## pm4py 2.2.20
+## pm4py 2.2.20 (2022.04.01)
 
 ### Added
 
@@ -78,8 +86,9 @@
 
 ### Other
 
+---
 
-## pm4py 2.2.19.2
+## pm4py 2.2.19.2 (2022.03.04)
 
 ### Added
 
