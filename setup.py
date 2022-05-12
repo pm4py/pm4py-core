@@ -22,7 +22,7 @@ setup(
     long_description=read_file('README.md'),
     author=meta['__author__'],
     author_email=meta['__author_email__'],
-    py_modules=[meta['__name__']],
+    py_modules=['pm4py'],
     include_package_data=True,
     packages=['pm4py', 'pm4py.algo', 'pm4py.algo.merging', 'pm4py.algo.merging.case_relations',
               'pm4py.algo.merging.case_relations.variants', 'pm4py.algo.analysis', 'pm4py.algo.analysis.woflan',

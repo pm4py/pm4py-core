@@ -1,8 +1,5 @@
-__doc__ = """
-"""
-
 import warnings
-from typing import Tuple
+from typing import Tuple, Dict, Optional
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.log.obj import EventLog
@@ -10,22 +7,28 @@ from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 
+from pandas import DataFrame
+
 INDEX_COLUMN = "@@index"
 
+__doc__ = """
+The ``pm4py.read`` module contains all funcationality related to reading files/objects from disk
+"""
 
-def read_xes(file_path: str, variant: str = "iterparse", **kwargs) -> EventLog:
+
+def read_xes(file_path: str, variant: str = "iterparse", **kwargs) -> DataFrame:
     """
-    Reads an event log in the XES standard
+    Reads an event log stored in XES format (see `xes-standard <https://xes-standard.org/>`_)
+    Returns a table (``pandas.DataFrame``) view of the event log.
 
-    Parameters
-    ---------------
-    file_path
-        File path
+    :param file_path: file path of the event log (``.xes`` file) on disk
+    :rtype: ``DataFrame``
 
-    Returns
-    ---------------
-    log
-        Event log
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("<path_to_xes_file>")
     """
     from pm4py.objects.log.importer.xes import importer as xes_importer
     v = xes_importer.Variants.ITERPARSE
@@ -41,24 +44,21 @@ def read_xes(file_path: str, variant: str = "iterparse", **kwargs) -> EventLog:
 
 def read_pnml(file_path: str, auto_guess_final_marking: bool = False) -> Tuple[PetriNet, Marking, Marking]:
     """
-    Reads a Petri net from the .PNML format
+    Reads a Petri net object from a .pnmml file.
+    The Petri net object returned is a triple containing the following objects:
+    
+    1. Petrinet Object, encoded as a ``PetriNet`` class
+    #. Initial Marking
+    #. Final Marking
 
-    Parameters
-    ----------------
-    file_path
-        File path
-    auto_guess_final_marking
-        Enables the automatic guess of the final marking, if not explicitly provided
-        in the .pnml file
+    :rtype: ``Tuple[PetriNet, Marking, Marking]``
+    :param file_path: file path of the Petri net model (``.pnml`` file) on disk
 
-    Returns
-    ----------------
-    petri_net
-        Petri net object
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
+    .. code-block:: python3
+
+        import pm4py
+
+        pn = pm4py.read_pnml("<path_to_pnml_file>")
     """
     from pm4py.objects.petri_net.importer import importer as pnml_importer
     net, im, fm = pnml_importer.apply(file_path, parameters={"auto_guess_final_marking": auto_guess_final_marking})
@@ -67,40 +67,40 @@ def read_pnml(file_path: str, auto_guess_final_marking: bool = False) -> Tuple[P
 
 def read_ptml(file_path: str) -> ProcessTree:
     """
-    Reads a process tree from a .ptml file
+    Reads a process tree object from a .ptml file
 
-    Parameters
-    ---------------
-    file_path
-        File path
+    :param file_path: file path of the process tree object on disk
+    :rtype: ``ProcessTree``
 
-    Returns
-    ----------------
-    tree
-        Process tree
+    .. code-block:: python3
+
+        import pm4py
+
+        process_tree = pm4py.read_ptml("<path_to_ptml_file>")
     """
     from pm4py.objects.process_tree.importer import importer as tree_importer
     tree = tree_importer.apply(file_path)
     return tree
 
 
-def read_dfg(file_path: str) -> Tuple[dict, dict, dict]:
+def read_dfg(file_path: str) -> Tuple[Dict[Tuple[str,str],int], Dict[str,int], Dict[str,int]]:
     """
-    Reads a DFG from a .dfg file
+    Reads a DFG object from a .dfg file.
+    The DFG object returned is a triple containing the following objects:
+    
+    1. DFG Object, encoded as a ``Dict[Tuple[str,str],int]``, s.t. ``DFG[('a','b')]=k`` implies that activity ``'a'`` is directly followed by activity ``'b'`` a total of ``k`` times in the log
+    #. Start activity dictionary, encoded as a ``Dict[str,int]``, s.t., ``S['a']=k`` implies that activity ``'a'`` is starting ``k`` traces in the event log
+    #. End activity dictionary, encoded as a ``Dict[str,int]``, s.t., ``E['z']=k`` implies that activity ``'z'`` is ending ``k`` traces in the event log.
 
-    Parameters
-    ------------------
-    file_path
-        File path
+    :rtype: ``Tuple[Dict[Tuple[str,str],int], Dict[str,int], Dict[str,int]]``
+    :param file_path: file path of the dfg model on disk
+    
 
-    Returns
-    ------------------
-    dfg
-        DFG
-    start_activities
-        Start activities
-    end_activities
-        End activities
+    .. code-block:: python3
+
+       import pm4py
+
+       dfg = pm4py.read_dfg("<path_to_dfg_file>")
     """
     from pm4py.objects.dfg.importer import importer as dfg_importer
     dfg, start_activities, end_activities = dfg_importer.apply(file_path)
@@ -109,40 +109,37 @@ def read_dfg(file_path: str) -> Tuple[dict, dict, dict]:
 
 def read_bpmn(file_path: str) -> BPMN:
     """
-    Reads a BPMN from a .bpmn file
+    Reads a BPMN model from a .bpmn file
 
-    Parameters
-    ---------------
-    file_path
-        File path
+    :param file_path: file path of the bpmn model
+    :rtype: ``BPMN``
 
-    Returns
-    ---------------
-    bpmn_graph
-        BPMN graph
+    .. code-block:: python3
+
+        import pm4py
+
+        bpmn = pm4py.read_bpmn('<path_to_bpmn_file>')
+
     """
     from pm4py.objects.bpmn.importer import importer as bpmn_importer
     bpmn_graph = bpmn_importer.apply(file_path)
     return bpmn_graph
 
 
-def read_ocel(file_path: str, objects_path: str = None) -> OCEL:
+def read_ocel(file_path: str, objects_path: Optional[str] = None) -> OCEL:
     """
-    Reads an object-centric event log from a file
-    (to get an explanation of what an object-centric event log is,
-    you can refer to http://www.ocel-standard.org/).
+    Reads an object-centric event log from a file (see: http://www.ocel-standard.org/).
+    The ``OCEL`` object returned by this 
 
-    Parameters
-    ----------------
-    file_path
-        Path from which the object-centric event log should be read.
-    objects_path
-        (Optional, only used in CSV exporter) Path from which the objects dataframe should be read.
+    :param file_path: file path of the object-centric event log
+    :param objects_path: [Optional] file path from which the objects dataframe should be read
+    :rtype: ``OCEL``
 
-    Returns
-    ----------------
-    ocel
-        Object-centric event log
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel("<path_to_ocel_file>")
     """
     if file_path.lower().endswith("csv"):
         from pm4py.objects.ocel.importer.csv import importer as csv_importer
