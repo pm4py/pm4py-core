@@ -40,6 +40,7 @@ if __name__ == "__main__":
     from tests.simplified_interface import SimplifiedInterfaceTest
     from tests.ocel_filtering_test import OcelFilteringTest
     from tests.ocel_discovery_test import OcelDiscoveryTest
+    from tests.simulation_test import SimulationTest
 
     ocel_filtering_test = OcelFilteringTest()
     ocel_discovery_test = OcelDiscoveryTest()
@@ -74,5 +75,6 @@ if __name__ == "__main__":
     woflan_test = WoflanTest()
     diagn_dataframe_test = DiagnDfConfChecking()
     simplified_test = SimplifiedInterfaceTest()
+    simulation_test = SimulationTest()
 
     unittest.main()
