@@ -16,18 +16,9 @@ def filter_log(f: Callable[[Any], bool], log: log_inst.EventLog) -> Union[log_in
     """
     Filters the log according to a given (lambda) function.
 
-    Parameters
-    ----------
-    f
-        function that specifies the filter criterion, may be a lambda
-    log
-        event log; either EventLog or EventStream Object
-
-    Returns
-    -------
-    log
-        filtered event log if object provided is correct; original log if not correct
-
+    :param f: function that specifies the filter criterion, may be a lambda
+    :param log: event log; either EventLog or EventStream Object
+    :rtype: ``Union[log_inst.EventLog, log_inst.EventStream]``
     """
     __event_log_deprecation_warning(log)
 
@@ -46,17 +37,9 @@ def filter_trace(f: Callable[[Any], bool], trace: log_inst.Trace) -> log_inst.Tr
     """
     Filters the trace according to a given (lambda) function.
 
-    Parameters
-    ----------
-    f
-        function that specifies the filter criterion, may be a lambda
-    trace
-        trace; PM4Py trace object
-
-    Returns
-    -------
-    trace
-        filtered trace if object provided is correct; original log if not correct
+    :param f: function that specifies the filter criterion, may be a lambda
+    :param trace: trace; PM4Py trace object
+    :rtype: ``log_inst.Trace``
     """
     __event_log_deprecation_warning(trace)
 
@@ -71,18 +54,10 @@ def sort_log(log: log_inst.EventLog, key, reverse: bool = False) -> Union[log_in
     """
     Sorts the event log according to a given key.
 
-    Parameters
-    ----------
-    log
-        event log object; either EventLog or EventStream
-    key
-        sorting key
-    reverse
-        indicates whether sorting should be reversed or not
-
-    Returns
-    -------
-        sorted event log if object provided is correct; original log if not correct
+    :param log: event log object; either EventLog or EventStream
+    :param key: sorting key
+    :param reverse: indicates whether sorting should be reversed or not
+    :rtype: ``Union[log_inst.EventLog, log_inst.EventStream]``
     """
     __event_log_deprecation_warning(log)
 
@@ -101,19 +76,12 @@ def sort_log(log: log_inst.EventLog, key, reverse: bool = False) -> Union[log_in
 @deprecation.deprecated("2.3.0", "3.0.0", details="the EventLog class will be removed in a future release.")
 def sort_trace(trace: log_inst.Trace, key, reverse: bool = False) -> log_inst.Trace:
     """
+    Sorts the events in a trace according to a given key.
 
-    Parameters
-    ----------
-    trace
-        input trace
-    key
-        sorting key
-    reverse
-        indicate whether sorting should be reversed (default False)
-
-    Returns
-    -------
-        sorted trace if object provided is correct; original log if not correct
+    :param trace: input trace
+    :param key: sorting key
+    :param reverse: indicates whether sorting should be reversed (default False)
+    :rtype: ``log_inst.Trace``
     """
     __event_log_deprecation_warning(trace)
 

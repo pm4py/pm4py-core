@@ -1,4 +1,12 @@
 __doc__ = """
+We offer different simulation algorithms, that starting from a model, are able to produce an output that follows the model and the different rules that have been provided by the user.
+
+* `Playout of a process model`_
+* `Generation of a process model (process tree)`_
+
+.. _Playout of a process model: pm4py.html#pm4py.sim.play_out
+.. _Generation of a process model (process tree): pm4py.html#pm4py.sim.generate_process_tree
+
 """
 
 from collections import Counter
@@ -15,17 +23,9 @@ def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, Proc
     i.e., gets a set of traces from the model.
     The function either takes a petri net, initial and final marking, or, a process tree as an input.
 
-    Parameters
-    ---------------
-    args
-        Model (Petri net, initial, final marking) or ProcessTree
-    kwargs
-        Parameters of the playout
-
-    Returns
-    --------------
-    log
-        Simulated event log
+    :param args: model (Petri net with initial and final marking, or process tree)
+    :param kwargs: dictionary containing the parameters of the playout
+    :rtype: ``EventLog``
     """
     if len(args) == 3:
         from pm4py.objects.petri_net.obj import PetriNet
@@ -47,15 +47,8 @@ def generate_process_tree(**kwargs) -> ProcessTree:
     """
     Generates a process tree
 
-    Parameters
-    -------------
-    kwargs
-        Parameters of the process tree generator algorithm
-
-    Returns
-    -------------
-    model
-        process tree
+    :param kwargs: dictionary containing the parameters of the process tree generator algorithm
+    :rtype: ``ProcessTree``
     """
     from pm4py.algo.simulation.tree_generator import algorithm
     return algorithm.apply(**kwargs)

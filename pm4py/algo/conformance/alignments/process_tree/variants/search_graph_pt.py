@@ -1,8 +1,6 @@
 import copy
 import heapq
-import multiprocessing
 import pkgutil
-from concurrent.futures import ProcessPoolExecutor
 from enum import Enum
 from typing import List, Any, Optional
 
@@ -290,6 +288,8 @@ def apply_multiprocessing(obj: Union[EventLog, Trace, pd.DataFrame], pt: Process
     if parameters is None:
         parameters = {}
 
+    import multiprocessing
+
     leaves = frozenset(pt_util.get_leaves_as_tuples(pt))
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     num_cores = exec_utils.get_param_value(Parameters.CORES, parameters, multiprocessing.cpu_count() - 2)
@@ -298,6 +298,8 @@ def apply_multiprocessing(obj: Union[EventLog, Trace, pd.DataFrame], pt: Process
         variant = tuple(x[activity_key] for x in obj)
         return align_variant(variant, leaves, pt)
     else:
+        from concurrent.futures import ProcessPoolExecutor
+
         with ProcessPoolExecutor(max_workers=num_cores) as executor:
             ret = []
             best_worst_cost = align_variant([], leaves, pt)["cost"]

@@ -19,23 +19,11 @@ def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0
     resource as a node of the graph, instead of the activity.
     As such, to use this, resource information should be present in the event log.
 
-    Parameters
-    ---------------
-    log
-        Event log or Pandas dataframe
-    beta
-        beta parameter for Handover metric
-	resource_key
-		attribute to be used for the resource
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ---------------
-    metric_values
-        Values of the metric
+    :param log: event log / Pandas dataframe
+    :param beta: beta parameter for Handover metric
+    :param resource_key: attribute to be used for the resource
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -55,21 +43,10 @@ def discover_working_together_network(log: Union[EventLog, pd.DataFrame], resour
     Calculates the working together network of the process.
     Two nodes resources are connected in the graph if the resources collaborate on an instance of the process.
 
-    Parameters
-    ---------------
-    log
-        Event log or Pandas dataframe
-	resource_key
-		attribute to be used for the resource
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ---------------
-    metric_values
-        Values of the metric
+    :param log: event log / Pandas dataframe
+    :param resource_key: attribute to be used for the resource
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -88,23 +65,11 @@ def discover_activity_based_resource_similarity(log: Union[EventLog, pd.DataFram
     """
     Calculates similarity between the resources in the event log, based on their activity profiles.
 
-    Parameters
-    ---------------
-    log
-        Event log or Pandas dataframe
-    activity_key
-        attribute to be used for the activity
-	resource_key
-		attribute to be used for the resource
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ---------------
-    metric_values
-        Values of the metric
+    :param log: event log / Pandas dataframe
+    :param activity_key: attribute to be used for the activity
+    :param resource_key: attribute to be used for the resource
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -123,17 +88,11 @@ def discover_subcontracting_network(log: Union[EventLog, pd.DataFrame], n=2, res
     """
     Calculates the subcontracting network of the process.
 
-    Parameters
-    ---------------
-    log
-        Event log or Pandas dataframe
-    n
-        n parameter for Subcontracting metric
-
-    Returns
-    ---------------
-    metric_values
-        Values of the metric
+    :param log: event log / Pandas dataframe
+    :param n: n parameter for Subcontracting metric
+    :param resource_key: attribute to be used for the resource
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -152,27 +111,11 @@ def discover_organizational_roles(log: Union[EventLog, pd.DataFrame], activity_k
     """
     Mines the organizational roles
 
-    Parameters
-    ---------------
-    log
-        Event log or Pandas dataframe
-    activity_key
-        attribute to be used for the activity
-	resource_key
-		attribute to be used for the resource
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-
-    Returns
-    ---------------
-    roles
-        Organizational roles. List where each role is a sublist with two elements:
-        - The first element of the sublist is the list of activities belonging to a role.
-        Each activity belongs to a single role
-        - The second element of the sublist is a dictionary containing the resources of the role
-        and the number of times they executed activities belonging to the role.
+    :param log: event log / Pandas dataframe
+    :param activity_key: attribute to be used for the activity
+    :param resource_key: attribute to be used for the resource
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -196,36 +139,17 @@ def discover_network_analysis(log: Union[pd.DataFrame, EventLog, EventStream], o
     Then, an aggregation is applied on the couple of events (NODE_COLUMN) to obtain the nodes that are connected.
     The edges between these nodes are aggregated based on some property of the *source* event (EDGE_COLUMN).
 
-    Parameters
-    ------------------
-    log
-        Event log / Pandas dataframe
-    out_column
-        The source column of the link (default: the case identifier; events of the same case are linked)
-    in_column
-        The target column of the link (default: the case identifier; events of the same case are linked)
-    node_column_source
-        The attribute to be used for the node definition of the source event (default: the resource of the log, org:resource)
-    node_column_target
-        The attribute to be used for the node definition of the target event (default: the resource of the log, org:resource)
-    edge_column
-        The attribute to be used for the edge definition (default: the activity of the log,
-            concept:name)
-    edge_reference
-        Decide if the edge attribute should be picked from the source event. Values:
-                - _out  =>  the source event
-                - _in   =>  the target event
-    performance
-        Boolean value that enables the performance calculation on the edges of the network analysis
-    sorting_column
-        The column that should be used to sort the log before performing the network analysis (default: time:timestamp)
-    timestamp_column
-        The column that should be used as timestamp for the performance-related analysis (default: time:timestamp)
-
-    Returns
-    ------------------
-    network_analysis
-        Edges of the network analysis (first key: edge; second key: type; value: number of occurrences)
+    :param log: event log / Pandas dataframe
+    :param out_column: the source column of the link (default: the case identifier; events of the same case are linked)
+    :param in_column: the target column of the link (default: the case identifier; events of the same case are linked)
+    :param node_column_source: the attribute to be used for the node definition of the source event (default: the resource of the log, org:resource)
+    :param node_column_target: the attribute to be used for the node definition of the target event (default: the resource of the log, org:resource)
+    :param edge_column: the attribute to be used for the edge definition (default: the activity of the log, concept:name)
+    :param edge_reference: decide if the edge attribute should be picked from the source event. Values: _out  =>  the source event ; _in   =>  the target event
+    :param performance: boolean value that enables the performance calculation on the edges of the network analysis
+    :param sorting_column: the column that should be used to sort the log before performing the network analysis (default: time:timestamp)
+    :param timestamp_column: the column that should be used as timestamp for the performance-related analysis (default: time:timestamp)
+    :rtype: ``Dict[Tuple[str, str], Dict[str, Any]]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
