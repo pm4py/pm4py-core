@@ -104,7 +104,7 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
                 return alignments.apply_multiprocessing(log, args[0], args[1], args[2], parameters=properties)
             else:
                 return alignments.apply(log, args[0], args[1], args[2], parameters=properties)
-        elif type(args[0]) is dict or type(args[0]) is Counter:
+        elif isinstance(args[0], dict):
             # DFG alignments
             from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
             return dfg_alignment.apply(log, args[0], args[1], args[2], parameters=properties)
@@ -254,7 +254,7 @@ def __convert_to_fp(*args) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
         else:
             fp = pm4py.discover_footprints(*args)
             return fp
-    if type(args) is list or type(args) is dict:
+    if isinstance(args, list) or isinstance(args, dict):
         return args
     fp = pm4py.discover_footprints(args)
     return fp
