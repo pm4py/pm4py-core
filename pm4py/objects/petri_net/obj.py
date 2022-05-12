@@ -328,7 +328,7 @@ class PetriNet(object):
     properties = property(__get_properties)
 
 
-class PetriNetWithInhibitorArcs(PetriNet):
+class InhibitorNet(PetriNet):
     def __init__(self, name=None, places=None, transitions=None, arcs=None, properties=None):
         PetriNet.__init__(self, name=name, places=places, transitions=transitions, arcs=arcs, properties=properties)
 
@@ -337,7 +337,7 @@ class PetriNetWithInhibitorArcs(PetriNet):
             PetriNet.Arc.__init__(self, source, target, weight=weight, properties=properties)
 
 
-class PetriNetWithResetArcs(PetriNet):
+class ResetNet(PetriNet):
     def __init__(self, name=None, places=None, transitions=None, arcs=None, properties=None):
         PetriNet.__init__(self, name=name, places=places, transitions=transitions, arcs=arcs, properties=properties)
 
@@ -346,6 +346,6 @@ class PetriNetWithResetArcs(PetriNet):
             PetriNet.Arc.__init__(self, source, target, weight=weight, properties=properties)
 
 
-class PetriNetWithInhibitorAndResetArcs(PetriNetWithInhibitorArcs, PetriNetWithResetArcs):
+class InhibitorResetNet(InhibitorNet, ResetNet):
     def __init__(self, name=None, places=None, transitions=None, arcs=None, properties=None):
         PetriNet.__init__(self, name=name, places=places, transitions=transitions, arcs=arcs, properties=properties)
