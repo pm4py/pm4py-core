@@ -1,8 +1,8 @@
 import copy
 from pm4py.objects.petri_net import properties
 from pm4py.objects.petri_net.sem_interface import Semantics
-from pm4py.objects.petri_net.obj import PetriNetWithResetArcs
-from pm4py.objects.petri_net.obj import PetriNetWithInhibitorArcs
+from pm4py.objects.petri_net.obj import ResetNet
+from pm4py.objects.petri_net.obj import InhibitorNet
 
 
 class InhibitorResetSemantics(Semantics):
@@ -79,10 +79,10 @@ def is_enabled(t, pn, m):
         return False
     else:
         for a in t.in_arcs:
-            if isinstance(a, PetriNetWithInhibitorArcs.InhibitorArc):
+            if isinstance(a, InhibitorNet.InhibitorArc):
                 if m[a.source] > 0:
                     return False
-            elif isinstance(a, PetriNetWithResetArcs.ResetArc):
+            elif isinstance(a, ResetNet.ResetArc):
                 pass
             elif m[a.source] < a.weight:
                 return False
@@ -95,10 +95,10 @@ def execute(t, pn, m):
 
     m_out = copy.copy(m)
     for a in t.in_arcs:
-        if isinstance(a, PetriNetWithResetArcs.ResetArc):
+        if isinstance(a, ResetNet.ResetArc):
             m_out[a.source] = 0
             del m_out[a.source]
-        elif isinstance(a, PetriNetWithInhibitorArcs.InhibitorArc):
+        elif isinstance(a, InhibitorNet.InhibitorArc):
             pass
         else:
             m_out[a.source] -= a.weight
@@ -114,10 +114,10 @@ def execute(t, pn, m):
 def weak_execute(t, m):
     m_out = copy.copy(m)
     for a in t.in_arcs:
-        if isinstance(a, PetriNetWithResetArcs.ResetArc):
+        if isinstance(a, ResetNet.ResetArc):
             m_out[a.source] = 0
             del m_out[a.source]
-        elif isinstance(a, PetriNetWithInhibitorArcs.InhibitorArc):
+        elif isinstance(a, InhibitorNet.InhibitorArc):
             pass
         else:
             m_out[a.source] -= a.weight

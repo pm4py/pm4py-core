@@ -3,7 +3,7 @@ import uuid
 from lxml import etree
 
 from pm4py.objects.petri_net.obj import Marking
-from pm4py.objects.petri_net.obj import PetriNet, PetriNetWithResetArcs, PetriNetWithInhibitorArcs
+from pm4py.objects.petri_net.obj import PetriNet, ResetNet, InhibitorNet
 from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.util import constants
 
@@ -152,11 +152,11 @@ def export_petri_tree(petrinet, marking, final_marking=None, export_prom5=False,
             arc_weight = etree.SubElement(inscription, "text")
             arc_weight.text = str(arc.weight)
 
-        if isinstance(arc, PetriNetWithResetArcs.ResetArc):
+        if isinstance(arc, ResetNet.ResetArc):
             element = etree.SubElement(arc_el, petri_properties.ARCTYPE)
             element_text = etree.SubElement(element, "text")
             element_text.text = petri_properties.RESET_ARC
-        elif isinstance(arc, PetriNetWithInhibitorArcs.InhibitorArc):
+        elif isinstance(arc, InhibitorNet.InhibitorArc):
             element = etree.SubElement(arc_el, petri_properties.ARCTYPE)
             element_text = etree.SubElement(element, "text")
             element_text.text = petri_properties.INHIBITOR_ARC

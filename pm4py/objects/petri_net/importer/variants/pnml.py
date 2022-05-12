@@ -6,7 +6,7 @@ from lxml import etree, objectify
 
 from pm4py.meta import VERSION
 from pm4py.objects.petri_net.utils import final_marking
-from pm4py.objects.petri_net.obj import PetriNet, Marking, PetriNetWithResetArcs, PetriNetWithInhibitorArcs, PetriNetWithInhibitorAndResetArcs
+from pm4py.objects.petri_net.obj import PetriNet, Marking, ResetNet, InhibitorNet, InhibitorResetNet
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.util import constants, exec_utils
@@ -275,20 +275,20 @@ def import_net_from_xml_object(root, parameters=None):
                                 arc_type = text_element.text
 
                 if arc_source in places_dict and arc_target in trans_dict:
-                    if arc_type == petri_properties.INHIBITOR_ARC and not isinstance(net, PetriNetWithInhibitorArcs):
-                        if isinstance(net, PetriNetWithResetArcs):
-                            net = PetriNetWithInhibitorAndResetArcs(name=net.name, places=net.places, transitions=net.transitions, arcs=net.arcs, properties=net.properties)
+                    if arc_type == petri_properties.INHIBITOR_ARC and not isinstance(net, InhibitorNet):
+                        if isinstance(net, ResetNet):
+                            net = InhibitorResetNet(name=net.name, places=net.places, transitions=net.transitions, arcs=net.arcs, properties=net.properties)
                         else:
-                            net = PetriNetWithInhibitorArcs(name=net.name, places=net.places, transitions=net.transitions, arcs=net.arcs, properties=net.properties)
-                    if arc_type == petri_properties.RESET_ARC and not isinstance(net, PetriNetWithResetArcs):
-                        if isinstance(net, PetriNetWithInhibitorArcs):
-                            net = PetriNetWithInhibitorAndResetArcs(name=net.name, places=net.places,
-                                                                    transitions=net.transitions, arcs=net.arcs,
-                                                                    properties=net.properties)
+                            net = InhibitorNet(name=net.name, places=net.places, transitions=net.transitions, arcs=net.arcs, properties=net.properties)
+                    if arc_type == petri_properties.RESET_ARC and not isinstance(net, ResetNet):
+                        if isinstance(net, InhibitorNet):
+                            net = InhibitorResetNet(name=net.name, places=net.places,
+                                                    transitions=net.transitions, arcs=net.arcs,
+                                                    properties=net.properties)
                         else:
-                            net = PetriNetWithResetArcs(name=net.name, places=net.places,
-                                                            transitions=net.transitions, arcs=net.arcs,
-                                                            properties=net.properties)
+                            net = ResetNet(name=net.name, places=net.places,
+                                           transitions=net.transitions, arcs=net.arcs,
+                                           properties=net.properties)
                     a = add_arc_from_to(places_dict[arc_source], trans_dict[arc_target], net, weight=arc_weight, type=arc_type)
                     for prop in arc_properties:
                         a.properties[prop] = arc_properties[prop]
