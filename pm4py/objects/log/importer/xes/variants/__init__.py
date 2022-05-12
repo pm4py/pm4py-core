@@ -14,4 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line, iterparse_mem_compressed
+from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line, iterparse_mem_compressed, chunk_regex

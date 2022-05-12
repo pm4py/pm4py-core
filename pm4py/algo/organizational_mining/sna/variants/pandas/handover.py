@@ -27,6 +27,7 @@ import pandas as pd
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     RESOURCE_KEY = constants.PARAMETER_CONSTANT_RESOURCE_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     BETA = "beta"
 
 
@@ -59,11 +60,13 @@ def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], A
 
     resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes.DEFAULT_RESOURCE_KEY)
     beta = exec_utils.get_param_value(Parameters.BETA, parameters, 0)
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
 
     parameters_variants = {case_statistics.Parameters.ACTIVITY_KEY: resource_key,
-                           case_statistics.Parameters.ATTRIBUTE_KEY: resource_key}
+                           case_statistics.Parameters.ATTRIBUTE_KEY: resource_key,
+                           case_statistics.Parameters.CASE_ID_KEY: case_id_key}
 
-    variants_occ = {x["variant"]: x["case:concept:name"] for x in
+    variants_occ = {x["variant"]: x[case_id_key] for x in
                     case_statistics.get_variant_statistics(log, parameters=parameters_variants)}
     variants_resources = list(variants_occ.keys())
     resources = [variants_util.get_activities_from_variant(y) for y in variants_resources]

@@ -1,4 +1,64 @@
-## pm4py 2.2.20
+# Changelog of pm4py
+
+## pm4py 2.2.21 (2022.05.12)
+
+### Added
+* 65ff8ae3d9bca71f0cf7be507c9e0eba68b85c42
+  * add chunk-based xes importer (CHUNK_REGEX)
+
+### Changed
+* d982c534aac373c347a083739b68fd3ac2b29e42
+  * changed dimension of endpoints in BPMN models layouting
+* 7473a72877e29261780adf746d134b406a912dd7
+  * interventions to increase PM4Py's compatibility across different platforms
+
+### Deprecated
+
+### Fixed
+* 882aa20b20ec593e0a7d01e027a6f1afa8d44f84
+  * fixed XES line-by-line importer for booleans attributes
+* f6542cd12413f073eb51173804f68502e3026f46
+  * fixes XES line-by-line deserialization
+* 363580b757c027ff583d33dcff83e00b3be97659
+  * fixed issues with Pandas dataframe's index usage in the library
+* 58a763b4099b40c67f23a6eb45c621d1b9a9d324
+  * fixed OCEL default constructor to set default columns in the dataframes
+* 8470f22047667d1d30415a08965af1015d66adbb
+  * fix division by zero error in alignment-based fitness (side case for empty trace/model combination) 
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.20.1 (2022.04.10)
+
+### Added
+
+### Changed
+* 344fb7258df17ce0d4ffe7425b678943f6f2ff11
+  * Minor refactoring to management of inhibitor / reset arcs (importing)
+
+### Deprecated
+
+### Fixed
+* ad2cba1d8f9487dbb03ec418643b329b30e80ee0
+  * Minor fixes to the retrieval of the parameters in several parts of the code
+* 65e1f1b0bbd0747fe81eb049780874608a395d6e
+  * Fixed bug in eventually follows filter (simplified interface)
+* 60cd060edeeaa17c8b5bdaba7bb1035fc385d514
+  * Fixed XES exporting when attribute value type is a Numpy type (numpy.int64, numpy.float64, numpy.datetime64)
+* cd5e55e712697a28cbfe0182e96556531b520667
+  * Bug fix feature selection and extraction on Pandas dataframes
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.20 (2022.04.01)
 
 ### Added
 
@@ -26,8 +86,9 @@
 
 ### Other
 
+---
 
-## pm4py 2.2.19.2
+## pm4py 2.2.19.2 (2022.03.04)
 
 ### Added
 

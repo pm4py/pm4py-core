@@ -124,6 +124,7 @@ def apply(bpmn_graph, parameters=None):
         points = node.split("points=\"")[1].split("\"")[0]
         nodes_pos[inv_nodes_dict[this_id]] = points
 
+    endpoints_wh = exec_utils.get_param_value(Parameters.TASK_WH, parameters, 30)
     task_wh = exec_utils.get_param_value(Parameters.TASK_WH, parameters, 60)
 
     # add node positions to BPMN nodes
@@ -134,12 +135,16 @@ def apply(bpmn_graph, parameters=None):
         pos_y = float(node_pos[1])
         n.set_x(pos_x)
         n.set_y(pos_y)
-        n.set_height(task_wh)
         if isinstance(n, BPMN.Task):
             this_width = min(round(2 * task_wh), round(2 * (len(n.get_name()) + 7) * task_wh / 22.0))
             n.set_width(this_width)
+            n.set_height(task_wh)
+        elif isinstance(n, BPMN.StartEvent) or isinstance(n, BPMN.EndEvent):
+            n.set_width(endpoints_wh)
+            n.set_height(endpoints_wh)
         else:
             n.set_width(task_wh)
+            n.set_height(task_wh)
 
     max_x = max(1, max(abs(node.get_x()) for node in nodes))
     max_y = max(1, max(abs(node.get_y()) for node in nodes))
