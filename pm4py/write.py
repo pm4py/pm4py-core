@@ -3,6 +3,7 @@ The ``pm4py.write`` module contains all funcationality related to writing files/
 """
 
 import warnings
+import deprecation
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.log.obj import EventLog, EventStream
@@ -125,7 +126,7 @@ def write_bpmn(model: BPMN, file_path: str, auto_layout: bool = True):
     from pm4py.objects.bpmn.exporter import exporter
     exporter.apply(model, file_path)
 
-
+@deprecation.deprecated("2.3.0", "3.0.0", "the write_ocel function is deprecated and replaced by write_ocel_csv, write_ocel_json and write_ocel_xml, respectively")
 def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     """
     Writes an OCEL object to disk in the ``.bpmn`` format.
@@ -146,3 +147,57 @@ def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     elif file_path.lower().endswith("xmlocel"):
         from pm4py.objects.ocel.exporter.xmlocel import exporter as xmlocel_exporter
         return xmlocel_exporter.apply(ocel, file_path)
+
+
+def write_ocel_csv(ocel: OCEL, file_path: str, objects_path: str):
+    """
+    Writes an OCEL object to disk in the ``.csv`` file format.
+    The OCEL object is exported into two separate files, i.e., one event table and one objects table.
+    Both file paths should be specified
+
+    :param ocel: OCEL object
+    :param file_path: target file path on disk to write the event table to
+    :param objects_path: target file path on disk to write the objects table to
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.write_ocel_csv(ocel, '<path_to_export_events_to>', '<path_to_export_objects_to>')
+    """
+    from pm4py.objects.ocel.exporter.csv import exporter as csv_exporter
+    return csv_exporter.apply(ocel, file_path, objects_path=objects_path)
+
+
+def write_ocel_json(ocel: OCEL, file_path: str):
+    """
+    Writes an OCEL object to disk in the ``.json`` file format (exported as ``.oceljson`` file).
+
+    :param ocel: OCEL object
+    :param file_path: target file path on disk to write the OCEL object to
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.write_ocel_json(ocel, '<path_to_export_to>')
+    """
+    from pm4py.objects.ocel.exporter.jsonocel import exporter as jsonocel_exporter
+    return jsonocel_exporter.apply(ocel, file_path)
+
+
+def write_ocel_xml(ocel: OCEL, file_path: str):
+    """
+    Writes an OCEL object to disk in the ``.xml`` file format (exported as ``.ocelxml`` file).
+
+    :param ocel: OCEL object
+    :param file_path: target file path on disk to write the OCEL object to
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.write_ocel_xml(ocel, '<path_to_export_to>')
+    """
+    from pm4py.objects.ocel.exporter.xmlocel import exporter as xmlocel_exporter
+    return xmlocel_exporter.apply(ocel, file_path)
