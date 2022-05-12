@@ -1,23 +1,23 @@
 import pm4py
-from pm4py.objects.petri_net.obj import InhibitorResetNet, Marking
+from pm4py.objects.petri_net.obj import ResetInhibitorNet, Marking
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.objects.petri_net.inhibitor_reset import semantics
 from copy import deepcopy
 
 
 def execute_script():
-    net = InhibitorResetNet("")
-    source = InhibitorResetNet.Place("source")
-    sink = InhibitorResetNet.Place("sink")
-    p1 = InhibitorResetNet.Place("p1")
-    p2 = InhibitorResetNet.Place("p2")
-    p_inhibitor = InhibitorResetNet.Place("p_inhibitor")
-    p_reset = InhibitorResetNet.Place("p_reset")
-    trans_A = InhibitorResetNet.Transition("A", "A")
-    trans_B = InhibitorResetNet.Transition("B", "B")
-    trans_C = InhibitorResetNet.Transition("C", "C")
-    trans_inhibitor = InhibitorResetNet.Transition("inhibitor", None)
-    trans_free = InhibitorResetNet.Transition("free", None)
+    net = ResetInhibitorNet("")
+    source = ResetInhibitorNet.Place("source")
+    sink = ResetInhibitorNet.Place("sink")
+    p1 = ResetInhibitorNet.Place("p1")
+    p2 = ResetInhibitorNet.Place("p2")
+    p_inhibitor = ResetInhibitorNet.Place("p_inhibitor")
+    p_reset = ResetInhibitorNet.Place("p_reset")
+    trans_A = ResetInhibitorNet.Transition("A", "A")
+    trans_B = ResetInhibitorNet.Transition("B", "B")
+    trans_C = ResetInhibitorNet.Transition("C", "C")
+    trans_inhibitor = ResetInhibitorNet.Transition("inhibitor", None)
+    trans_free = ResetInhibitorNet.Transition("free", None)
     net.places.add(source)
     net.places.add(sink)
     net.places.add(p1)
