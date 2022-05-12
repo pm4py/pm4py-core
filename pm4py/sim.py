@@ -32,7 +32,7 @@ def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, Proc
         if type(args[0]) is PetriNet:
             from pm4py.algo.simulation.playout.petri_net import algorithm
             return algorithm.apply(args[0], args[1], final_marking=args[2], **kwargs)
-        elif type(args[0]) is dict or type(args[0]) is Counter:
+        elif isinstance(args[0], dict):
             from pm4py.objects.dfg.utils import dfg_playout
             return dfg_playout.apply(args[0], args[1], args[2], **kwargs)
     elif len(args) == 1:
