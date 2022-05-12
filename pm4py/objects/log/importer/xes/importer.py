@@ -1,7 +1,7 @@
 import pkgutil
 from enum import Enum
 
-from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line, iterparse_mem_compressed, iterparse_20
+from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line, iterparse_mem_compressed, iterparse_20, chunk_regex
 
 
 class Variants(Enum):
@@ -9,12 +9,13 @@ class Variants(Enum):
     LINE_BY_LINE = line_by_line
     ITERPARSE_MEM_COMPRESSED = iterparse_mem_compressed
     ITERPARSE_20 = iterparse_20
+    CHUNK_REGEX = chunk_regex
 
 
 if pkgutil.find_loader("lxml"):
     DEFAULT_VARIANT = Variants.ITERPARSE
 else:
-    DEFAULT_VARIANT = Variants.LINE_BY_LINE
+    DEFAULT_VARIANT = Variants.CHUNK_REGEX
 
 
 def apply(path, parameters=None, variant=DEFAULT_VARIANT):
@@ -46,6 +47,8 @@ def apply(path, parameters=None, variant=DEFAULT_VARIANT):
         variant = Variants.LINE_BY_LINE
     elif variant == 'iterparse':
         variant = Variants.ITERPARSE
+    elif variant == 'chunk_regex':
+        variant = Variants.CHUNK_REGEX
 
     return variant.value.apply(path, parameters=parameters)
 
