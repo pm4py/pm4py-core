@@ -4,7 +4,16 @@ variables:
   REMOTE_REPO: git@gitlab.fit.fraunhofer.de:process-mining/pm4py-industry-partners/pm4py-core-proprietary.git
 
 stages:
+  - test
   - deploy
+
+
+# Dummy test job so that Renovate Bot sees "passing" pipelines and consequently does automatic merging
+dummy-test:
+  stage: test
+  script:
+    - echo "Execute tests, once they exist"
+
 
 # Pushes ONLY the release branch to the industry partners repository. For this to work these steps are necessary:
 # 1) In the TARGET repo, create a deploy key (with WRITE permissions), e.g. using the command
