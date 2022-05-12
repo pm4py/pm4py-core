@@ -3,6 +3,10 @@
 ### Added
 
 ### Changed
+* d982c534aac373c347a083739b68fd3ac2b29e42
+  * Changed dimension of endpoints in BPMN models layouting
+* 7473a72877e29261780adf746d134b406a912dd7
+  * Interventions to increase PM4Py's compatibility across different platforms
 
 ### Deprecated
 
@@ -13,6 +17,8 @@
   * Fixes XES line-by-line deserialization
 * 363580b757c027ff583d33dcff83e00b3be97659
   * Fixed issues with Pandas dataframe's index usage in the library
+* 58a763b4099b40c67f23a6eb45c621d1b9a9d324
+  * Fixed OCEL default constructor to set default columns in the dataframes
 
 ### Removed
 
