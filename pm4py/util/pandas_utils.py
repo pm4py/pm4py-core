@@ -77,6 +77,7 @@ def insert_index(df, column_name=constants.DEFAULT_INDEX_KEY, copy_dataframe=Tru
     """
     if copy_dataframe:
         df = df.copy()
+    df = df.reset_index(drop=True)
     df[column_name] = df.index
     return df
 

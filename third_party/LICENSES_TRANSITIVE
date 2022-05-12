@@ -13,41 +13,41 @@ libraries are added/removed.
 | decorator | https://pypi.org/project/decorator | BSD License (new BSD License) | 5.1.1 |
 | deprecation | https://pypi.org/project/deprecation | Apache Software License (Apache 2) | 2.1.0 |
 | executing | https://pypi.org/project/executing | MIT License (MIT) | 0.8.3 |
-| fonttools | https://pypi.org/project/fonttools | MIT License (MIT) | 4.31.2 |
-| graphviz | https://pypi.org/project/graphviz | MIT License (MIT) | 0.19.1 |
+| fonttools | https://pypi.org/project/fonttools | MIT License (MIT) | 4.32.0 |
+| graphviz | https://pypi.org/project/graphviz | MIT License (MIT) | 0.19.2 |
 | intervaltree | https://pypi.org/project/intervaltree | Apache Software License (Apache License, Version 2.0) | 3.1.0 |
 | ipython | https://pypi.org/project/ipython | BSD License (BSD) | 8.2.0 |
 | jedi | https://pypi.org/project/jedi | MIT License (MIT) | 0.18.1 |
 | jinja2 | https://pypi.org/project/jinja2 | BSD License (BSD-3-Clause) | 3.1.1 |
 | jsonpickle | https://pypi.org/project/jsonpickle | BSD License | 2.1.0 |
-| kiwisolver | https://pypi.org/project/kiwisolver | BSD License | 1.4.2 |
+| kiwisolver | https://pypi.org/project/kiwisolver | BSD License (========================= The Kiwi licensing terms ========================= Kiwi is licensed under the terms of the Modified BSD License (also known as New or Revised BSD), as follows: Copyright (c) 2013, Nucleic Development Team All rights reserved. Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. Neither the name of the Nucleic Development Team nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &#34;AS IS&#34; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. About Kiwi ---------- Chris Colbert began the Kiwi project in December 2013 in an effort to create a blisteringly fast UI constraint solver. Chris is still the project lead. The Nucleic Development Team is the set of all contributors to the Nucleic project and its subprojects. The core team that coordinates development on GitHub can be found here: http://github.com/nucleic. The current team consists of: * Chris Colbert Our Copyright Policy -------------------- Nucleic uses a shared copyright model. Each contributor maintains copyright over their contributions to Nucleic. But, it is important to note that these contributions are typically only changes to the repositories. Thus, the Nucleic source code, in its entirety is not the copyright of any single person or institution. Instead, it is the collective copyright of the entire Nucleic Development Team. If individual contributors want to maintain a record of what changes/contributions they have specific copyright on, they should indicate their copyright in the commit message of the change, when they commit the change to one of the Nucleic repositories. With this in mind, the following banner should be used in any source code file to indicate the copyright and license terms: #------------------------------------------------------------------------------ # Copyright (c) 2013, Nucleic Development Team. # # Distributed under the terms of the Modified BSD License. # # The full license is in the file LICENSE, distributed with this software. #------------------------------------------------------------------------------) | 1.4.2 |
 | lxml | https://pypi.org/project/lxml | BSD License (BSD) | 4.8.0 |
 | MarkupSafe | https://pypi.org/project/MarkupSafe | BSD License (BSD-3-Clause) | 2.1.1 |
 | matplotlib | https://pypi.org/project/matplotlib | Python Software Foundation License (PSF) | 3.5.1 |
 | matplotlib-inline | https://pypi.org/project/matplotlib-inline | BSD 3-Clause | 0.1.3 |
 | mpmath | https://pypi.org/project/mpmath | BSD License (BSD) | 1.2.1 |
-| networkx | https://pypi.org/project/networkx | BSD License | 2.7.1 |
+| networkx | https://pypi.org/project/networkx | BSD License | 2.8 |
 | numpy | https://pypi.org/project/numpy | BSD License (BSD) | 1.22.3 |
 | packaging | https://pypi.org/project/packaging | Apache Software License, BSD License (BSD-2-Clause or Apache-2.0) | 21.3 |
-| pandas | https://pypi.org/project/pandas | BSD License (BSD-3-Clause) | 1.4.1 |
+| pandas | https://pypi.org/project/pandas | BSD License (BSD-3-Clause) | 1.4.2 |
 | parso | https://pypi.org/project/parso | MIT License (MIT) | 0.8.3 |
 | pickleshare | https://pypi.org/project/pickleshare | MIT License (MIT) | 0.7.5 |
-| pillow | https://pypi.org/project/pillow | Historical Permission Notice and Disclaimer (HPND) (HPND) | 9.0.1 |
-| prompt-toolkit | https://pypi.org/project/prompt-toolkit | BSD License | 3.0.28 |
+| pillow | https://pypi.org/project/pillow | Historical Permission Notice and Disclaimer (HPND) (HPND) | 9.1.0 |
+| prompt-toolkit | https://pypi.org/project/prompt-toolkit | BSD License | 3.0.29 |
 | pure-eval | https://pypi.org/project/pure-eval | MIT License (MIT) | 0.2.2 |
 | pydotplus | https://pypi.org/project/pydotplus | MIT License (UNKNOWN) | 2.0.2 |
 | pygments | https://pypi.org/project/pygments | BSD License (BSD License) | 2.11.2 |
-| pyparsing | https://pypi.org/project/pyparsing | MIT License (MIT License) | 3.0.7 |
+| pyparsing | https://pypi.org/project/pyparsing | MIT License | 3.0.8 |
 | python-dateutil | https://pypi.org/project/python-dateutil | Apache Software License, BSD License (Dual License) | 2.8.2 |
 | pytz | https://pypi.org/project/pytz | MIT License (MIT) | 2022.1 |
 | pyvis | https://pypi.org/project/pyvis | BSD | 0.1.9 |
 | scipy | https://pypi.org/project/scipy | BSD License (BSD) | 1.8.0 |
-| setuptools | https://pypi.org/project/setuptools | MIT License | 61.3.0 |
+| setuptools | https://pypi.org/project/setuptools | MIT License | 62.0.0 |
 | six | https://pypi.org/project/six | MIT License (MIT) | 1.16.0 |
 | sortedcontainers | https://pypi.org/project/sortedcontainers | Apache Software License (Apache 2.0) | 2.4.0 |
 | stack-data | https://pypi.org/project/stack-data | MIT License (MIT) | 0.2.0 |
 | stringdist | https://pypi.org/project/stringdist | MIT License (MIT) | 1.0.9 |
 | sympy | https://pypi.org/project/sympy | BSD License (BSD) | 1.10.1 |
-| tqdm | https://pypi.org/project/tqdm | MIT License, Mozilla Public License 2.0 (MPL 2.0) (MPLv2.0, MIT Licences) | 4.63.1 |
+| tqdm | https://pypi.org/project/tqdm | MIT License, Mozilla Public License 2.0 (MPL 2.0) (MPLv2.0, MIT Licences) | 4.64.0 |
 | traitlets | https://pypi.org/project/traitlets | BSD License (BSD) | 5.1.1 |
 | wcwidth | https://pypi.org/project/wcwidth | MIT License (MIT) | 0.2.5 |
