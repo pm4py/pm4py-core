@@ -37,9 +37,12 @@ class Parameters(Enum):
     NO_TRACES = "noTraces"
     MAX_TRACE_LENGTH = "maxTraceLength"
     PETRI_SEMANTICS = "petri_semantics"
+    INITIAL_TIMESTAMP = "initial_timestamp"
+    INITIAL_CASE_ID = "initial_case_id"
 
 
 def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
+                  initial_timestamp=10000000, initial_case_id=0,
                   case_id_key=xes_constants.DEFAULT_TRACEID_KEY,
                   activity_key=xes_constants.DEFAULT_NAME_KEY, timestamp_key=xes_constants.DEFAULT_TIMESTAMP_KEY,
                   final_marking=None, return_visited_elements=False, semantics=petri_net.semantics.ClassicSemantics()):
@@ -56,6 +59,10 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
         Number of traces to generate
     max_trace_length
         Maximum number of events per trace (do break)
+    initial_timestamp
+        Increased timestamp from 1970 for the first event
+    initial_case_id
+        Case id of the first event
     case_id_key
         Trace attribute that is the case ID
     activity_key
@@ -68,7 +75,7 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
         Semantics of the Petri net to be used (default: petri_net.semantics.ClassicSemantics())
     """
     # assigns to each event an increased timestamp from 1970
-    curr_timestamp = 10000000
+    curr_timestamp = initial_timestamp
     all_visited_elements = []
 
     for i in range(no_traces):
@@ -104,7 +111,7 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
 
     for index, visited_elements in enumerate(all_visited_elements):
         trace = log_instance.Trace()
-        trace.attributes[case_id_key] = str(index)
+        trace.attributes[case_id_key] = str(index+initial_case_id)
         for element in visited_elements:
             if type(element) is PetriNet.Transition and element.label is not None:
                 event = log_instance.Event()
@@ -135,6 +142,8 @@ def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking = None
         Parameters of the algorithm:
             Parameters.NO_TRACES -> Number of traces of the log to generate
             Parameters.MAX_TRACE_LENGTH -> Maximum trace length
+            Parameters.INITIAL_TIMESTAMP -> The first event is set with INITIAL_TIMESTAMP increased from 1970
+            Parameters.INITIAL_CASE_ID -> Numeric case id for the first trace
             Parameters.PETRI_SEMANTICS -> Petri net semantics to be used (default: petri_nets.semantics.ClassicSemantics())
     """
     if parameters is None:
@@ -145,10 +154,15 @@ def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking = None
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     no_traces = exec_utils.get_param_value(Parameters.NO_TRACES, parameters, 1000)
     max_trace_length = exec_utils.get_param_value(Parameters.MAX_TRACE_LENGTH, parameters, 1000)
+    initial_timestamp = exec_utils.get_param_value(Parameters.INITIAL_TIMESTAMP, parameters, 10000000)
+    initial_case_id = exec_utils.get_param_value(Parameters.INITIAL_CASE_ID, parameters, 0)
     return_visited_elements = exec_utils.get_param_value(Parameters.RETURN_VISITED_ELEMENTS, parameters, False)
     semantics = exec_utils.get_param_value(Parameters.PETRI_SEMANTICS, parameters, petri_net.semantics.ClassicSemantics())
 
-    return apply_playout(net, initial_marking, max_trace_length=max_trace_length, no_traces=no_traces,
+    return apply_playout(net, initial_marking, max_trace_length=max_trace_length,
+                         initial_timestamp=initial_timestamp,
+                         initial_case_id=initial_case_id,
+                         no_traces=no_traces,
                          case_id_key=case_id_key, activity_key=activity_key, timestamp_key=timestamp_key,
                          final_marking=final_marking, return_visited_elements=return_visited_elements,
                          semantics=semantics)

@@ -19,7 +19,7 @@ pm4py.view_petri_net(pnet, initial_marking, final_marking, format="svg")
 ```
 
 ## Installation
-pm4py can be installed on Python 3.7.x / 3.8.x / 3.9.x by doing:
+pm4py can be installed on Python 3.7.x / 3.8.x / 3.9.x / 3.10.x by doing:
 ```bash
 pip install -U pm4py
 ```
