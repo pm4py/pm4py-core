@@ -1,0 +1,28 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base", // apply a sane default configuration (see https://docs.renovatebot.com/presets-config/)
+    ":disableRateLimiting", // force Renovate Bot to NOT artificially limit the total or hourly-created number of MRs
+  ],
+  "pip_requirements": { // Force Renovate's pip update detection to only look at requirements_stable.txt
+    "fileMatch": ["^requirements_stable.txt$"]
+  },
+  "ignorePaths": ["requirements.txt"],
+  "labels": [
+    "dependency"
+  ],
+  // Fix default branch rebasing - always rebase still-open temporary branches, whenever its source branch has changed
+  "rebaseWhen": "behind-base-branch",
+  // Handle pulled dependency updates
+  "rollbackPrs": true,
+  // Improve overview of open PRs (caused by Renovate Bot)
+  "dependencyDashboard": true,
+  "dependencyDashboardAutoclose": true,
+  "packageRules": [
+    {
+      "description": "Automatically merge minor and patch-level updates",
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "automerge": true
+    }
+  ]
+}
