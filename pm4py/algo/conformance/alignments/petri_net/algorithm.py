@@ -113,8 +113,9 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
 
     ltrace_bwc = trace_cost_function_sum + best_worst_cost
 
-    fitness = 1 - (ali['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST) / (
-                ltrace_bwc // align_utils.STD_MODEL_LOG_MOVE_COST) if ltrace_bwc > 0 else 0
+    fitness_num = ali['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST
+    fitness_den = ltrace_bwc // align_utils.STD_MODEL_LOG_MOVE_COST
+    fitness = 1 - fitness_num / fitness_den if fitness_den > 0 else 0
 
     # other possibility: avoid integer division but proceed to rounding.
     # could lead to small differences with respect to the adopted-since-now fitness
