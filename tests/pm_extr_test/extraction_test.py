@@ -163,7 +163,7 @@ if __name__ == "__main__":
 
             logPath = os.path.join(logFolder, logName)
             if "xes" in logExtension:
-                log = xes_importer.apply(logPath, variant=xes_importer.Variants.ITERPARSE)
+                log = xes_importer.apply(logPath, variant=xes_importer.Variants.CHUNK_REGEX)
 
             log, classifier_key = insert_classifier.search_act_class_attr(log, force_activity_transition_insertion=True)
 

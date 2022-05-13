@@ -91,7 +91,9 @@ The following algorithms are implemented (categorized by output type).
    pm4py.write
    pm4py.write.write_bpmn
    pm4py.write.write_dfg
-   pm4py.write.write_ocel
+   pm4py.write.write_ocel_csv
+   pm4py.write.write_ocel_json
+   pm4py.write.write_ocel_xml
    pm4py.write.write_pnml
    pm4py.write.write_ptml
    pm4py.write.write_xes
