@@ -1,5 +1,10 @@
 # Changelog of pm4py
 
+## pm4py 2.2.22 (2022.05.XX)
+
+### Added
+* add starts-with and ends-with filter
+
 ## pm4py 2.2.21 (2022.05.12)
 
 ### Added
