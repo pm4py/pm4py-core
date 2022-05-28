@@ -29,6 +29,7 @@ class Parameters(Enum):
     PARAM_ARTIFICIAL_START_ACTIVITY = constants.PARAM_ARTIFICIAL_START_ACTIVITY
     PARAM_ARTIFICIAL_END_ACTIVITY = constants.PARAM_ARTIFICIAL_END_ACTIVITY
     INDEX_KEY = "index_key"
+    CASE_INDEX_KEY = "case_index_key"
     USE_EXTREMES_TIMESTAMP = "use_extremes_timestamp"
 
 
@@ -53,10 +54,14 @@ def insert_partitioning(df, num_partitions, parameters=None):
     if parameters is None:
         parameters = {}
 
-    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    case_index_key = exec_utils.get_param_value(Parameters.CASE_INDEX_KEY, parameters, constants.DEFAULT_CASE_INDEX_KEY)
     partition_column = exec_utils.get_param_value(Parameters.PARTITION_COLUMN, parameters, "@@partitioning")
 
-    df[partition_column] = df[case_id_key].rank(method='dense', ascending=False).astype(int) % num_partitions
+    if case_index_key not in df.columns:
+        from pm4py.util import pandas_utils
+        df = pandas_utils.insert_case_index(df, case_index_key)
+
+    df[partition_column] = df[case_index_key] % num_partitions
 
     return df
 
