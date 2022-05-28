@@ -11,6 +11,12 @@
 	PMPY-1670 refactoring PNML importing: auto-detection of final marking shall be optional
 * 85cea58442348684440890612db8b5511491e0d2
 	PMPY-1671 refactoring XES exporting in the simplified interface
+* f60fd1ded3210adb91345be49343cd0dceaecc6d
+	PMPY-1703 refactoring usage of type() and isinstance() throughout the code
+* faabe5ee17ae6fb10e77637e614db5d764d66e93
+	PMPY-1655 introduced proper ResetNet, InhibitorNet, and ResetInhibitorNet classes
+* 070d0467bda22d81b4166c2b3646333a23897f81
+	PMPY-1705 different OCEL exporters methods are now available for different outputs, instead of having a single method accepting a path with an extension
 
 ### Deprecated
 
