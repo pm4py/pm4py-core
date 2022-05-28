@@ -13,6 +13,7 @@ class Parameters(Enum):
     FORMAT = "format"
     X_AXIS = "x_axis"
     Y_AXIS = "y_axis"
+    PYPLOT_FIGURE_KWARGS = "pylot_figure_kwargs"
 
 
 def apply_plot(x: List[float], y: List[float], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> str:
@@ -40,6 +41,7 @@ def apply_plot(x: List[float], y: List[float], parameters: Optional[Dict[Union[s
     format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     x_axis = exec_utils.get_param_value(Parameters.X_AXIS, parameters, "")
     y_axis = exec_utils.get_param_value(Parameters.Y_AXIS, parameters, "")
+    pyplot_figure_kwargs = exec_utils.get_param_value(Parameters.PYPLOT_FIGURE_KWARGS, parameters, {})
 
     filename = common.get_temp_file_name(format)
 
@@ -48,7 +50,7 @@ def apply_plot(x: List[float], y: List[float], parameters: Optional[Dict[Union[s
     from matplotlib import pyplot
 
     pyplot.clf()
-    fig = pyplot.figure()
+    fig = pyplot.figure(**pyplot_figure_kwargs)
     ax = fig.add_axes([0, 0, 1, 1])
     ax.bar(x, y)
     pyplot.xlabel(x_axis)
