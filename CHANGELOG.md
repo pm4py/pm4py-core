@@ -17,6 +17,8 @@
 ### Deprecated
 
 ### Fixed
+* f45883421423ca49139adf24490625ad2980fc92
+  * Fixing OCEL processing when an event has empty object map
 
 ### Removed
 
