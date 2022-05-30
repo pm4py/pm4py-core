@@ -20,6 +20,7 @@ class Parameters(Enum):
     OVERALL_LENGTH_X = "overall_length_x"
     N_DIV_DATES = "n_div_dates"
     PERC_PATHS = "perc_paths"
+    LAYOUT_EXT_MULTIPLIER = "layout_ext_multiplier"
 
 
 def give_color_to_line(dir: float) -> str:
@@ -81,6 +82,7 @@ def apply(perf_spectrum: Dict[str, Any], parameters: Optional[Dict[Union[str, Pa
     overall_length = exec_utils.get_param_value(Parameters.OVERALL_LENGTH_X, parameters, 10.0)
     n_div = exec_utils.get_param_value(Parameters.N_DIV_DATES, parameters, 2)
     perc_paths = exec_utils.get_param_value(Parameters.PERC_PATHS, parameters, 1.0)
+    layout_ext_multiplier = exec_utils.get_param_value(Parameters.LAYOUT_EXT_MULTIPLIER, parameters, 100)
 
     output_file_gv = tempfile.NamedTemporaryFile(suffix=".gv")
     output_file_gv.close()
@@ -107,7 +109,7 @@ def apply(perf_spectrum: Dict[str, Any], parameters: Optional[Dict[Union[str, Pa
             first_coord = (p - min_x) / (max_x - min_x) * overall_length
             second_coord = act_divider * (len(perf_spectrum["list_activities"]) - i - 1)
             lines.append(
-                "%s [label=\"\", pos=\"%.10f,%.10f!\", shape=none, width=\"0px\", height=\"0px\"];" % (p_id, first_coord, second_coord))
+                "%s [label=\"\", pos=\"%.10f,%.10f!\", shape=none, width=\"0px\", height=\"0px\"];" % (p_id, first_coord*layout_ext_multiplier, second_coord*layout_ext_multiplier))
             this_pts.append(p_id)
         for i in range(len(this_pts) - 1):
             diff = polyline[i + 1] - polyline[i]
@@ -118,9 +120,9 @@ def apply(perf_spectrum: Dict[str, Any], parameters: Optional[Dict[Union[str, Pa
         second_coord = act_divider * (len(perf_spectrum["list_activities"]) - i - 1)
         a_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
         lines.append("%s [label=\"%s\", pos=\"%.10f,%.10f!\", shape=none, width=\"0px\", height=\"0px\"];" % (
-        a_id, act, overall_length, second_coord))
+        a_id, act, overall_length*layout_ext_multiplier, second_coord*layout_ext_multiplier))
         s_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
-        lines.append("%s [label=\"\", pos=\"0,%.10f!\", shape=none, width=\"0px\", height=\"0px\"];" % (s_id, second_coord))
+        lines.append("%s [label=\"\", pos=\"0,%.10f!\", shape=none, width=\"0px\", height=\"0px\"];" % (s_id, second_coord*layout_ext_multiplier))
         lines.append("%s -- %s [ color=\"black\" ];" % (s_id, a_id))
         if i == len(perf_spectrum["list_activities"]) - 1:
             for j in range(n_div + 1):
@@ -129,7 +131,7 @@ def apply(perf_spectrum: Dict[str, Any], parameters: Optional[Dict[Union[str, Pa
                 dt = datetime.fromtimestamp(tst)
                 n_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
                 lines.append("%s [label=\"%s\", pos=\"%.10f,%.10f!\", shape=none, width=\"0px\", height=\"0px\"];" % (
-                n_id, str(dt), pos, second_coord - date_divider))
+                n_id, str(dt), pos*layout_ext_multiplier, (second_coord - date_divider)*layout_ext_multiplier))
 
     lines.append("}")
     lines = "\n".join(lines)
@@ -138,6 +140,6 @@ def apply(perf_spectrum: Dict[str, Any], parameters: Optional[Dict[Union[str, Pa
     F.write(lines)
     F.close()
 
-    os.system("neato -T" + format + " " + output_file_gv.name + " > " + output_file_img.name)
+    os.system("neato -n1 -T" + format + " " + output_file_gv.name + " > " + output_file_img.name)
 
     return output_file_img.name

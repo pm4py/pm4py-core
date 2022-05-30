@@ -10,6 +10,9 @@
   * added the possibility to provide additional parameters to Matplotlib's plots
 * 0489353a21ce7a4044d775ed505f476556d2b4e4
   * increased performance of the PM4Py's insert_partitioning method
+* ab196c5a2ee1430dfd7cef4943f7275aa5405873
+  * increased performance of dotted chart / performance spectrum representation
+    by disabling automatic layouting in neato.
 
 ### Deprecated
 
