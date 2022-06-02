@@ -24,6 +24,14 @@ def construct_synchronous_product_net(trace: Trace, petri_net: PetriNet, initial
     :param final_marking: final marking
 
     :rtype: ``Tuple[PetriNet, Marking, Marking]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('model.pnml')
+        log = pm4py.read_xes('log.xes')
+        sync_net, sync_im, sync_fm = pm4py.construct_synchronous_product_net(log[0], net, im, fm)
     """
     from pm4py.objects.petri_net.utils.petri_utils import construct_trace_net
     from pm4py.objects.petri_net.utils.synchronous_product import construct
@@ -46,6 +54,13 @@ def solve_marking_equation(petri_net: PetriNet, initial_marking: Marking,
     :param final_marking: final marking
     :param cost_function: optional cost function to use when solving the marking equation
     :rtype: ``float``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('model.pnml')
+        heuristic = pm4py.solve_marking_equation(net, im, fm)
     """
     from pm4py.algo.analysis.marking_equation import algorithm as marking_equation
 
@@ -75,6 +90,14 @@ def solve_extended_marking_equation(trace: Trace, sync_net: PetriNet, sync_im: M
     :param sync_fm: final marking (of the sync net)
     :param split_points: if specified, the indexes of the events of the trace to be used as split points. If not specified, the split points are identified automatically.
     :rtype: ``float``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('model.pnml')
+        log = pm4py.read_xes('log.xes')
+        ext_mark_eq_heu = pm4py.solve_extended_marking_equation(log[0], net, im, fm)
     """
     from pm4py.algo.analysis.extended_marking_equation import algorithm as extended_marking_equation
     parameters = {}
@@ -103,6 +126,13 @@ def check_soundness(petri_net: PetriNet, initial_marking: Marking,
     :param initial_marking: initial marking
     :param final_marking: final marking
     :rtype: ``bool``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('model.pnml')
+        is_sound = pm4py.check_soundness(net, im, fm)
     """
     from pm4py.algo.analysis.woflan import algorithm as woflan
     return woflan.apply(petri_net, initial_marking, final_marking)
@@ -117,6 +147,12 @@ def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame], activity_key
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        dataframe = pm4py.insert_artificial_start_end(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
     if check_is_pandas_dataframe(log):
@@ -137,6 +173,13 @@ def check_is_workflow_net(net: PetriNet) -> bool:
 
     :param net: petri net
     :rtype: ``bool``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('model.pnml')
+        is_wfnet = pm4py.check_is_workflow_net(net, im, fm)
     """
     from pm4py.algo.analysis.workflow_net import algorithm
     return algorithm.apply(net)
@@ -150,6 +193,16 @@ def maximal_decomposition(net: PetriNet, im: Marking, fm: Marking) -> List[Tuple
     :param im: initial marking
     :param fm: final marking
     :rtype: ``List[Tuple[PetriNet, Marking, Marking]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('model.pnml')
+        list_nets = pm4py.maximal_decomposition(net, im, fm)
+        for anet in list_nets:
+            subnet, subim, subfm = anet
+            pm4py.view_petri_net(subnet, subim, subfm, format='svg')
     """
     from pm4py.objects.petri_net.utils.decomposition import decompose
     return decompose(net, im, fm)
@@ -162,6 +215,13 @@ def generate_marking(net: PetriNet, place_or_dct_places: Union[str, PetriNet.Pla
     :param net: petri net
     :param place_or_dct_places: place, or dictionary of places, to be used in the marking. Possible values: single Place object for the marking; name of the place for the marking; dictionary associating to each place its number of tokens; dictionary associating to names of places a number of tokens.
     :rtype: ``Marking``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('model.pnml')
+        marking = pm4py.generate_marking(net, {'source': 2})
     """
     dct_places = {x.name: x for x in net.places}
     if isinstance(place_or_dct_places, PetriNet.Place):

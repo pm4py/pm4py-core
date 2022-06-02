@@ -31,7 +31,7 @@ def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str, case_id_key: s
 
         import pm4py
 
-        pm4py.write_xes(log, '<path_to_export_to>', 'case:concept:name')
+        pm4py.write_xes(log, '<path_to_export_to>', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -133,10 +133,15 @@ def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     Different formats are supported, including CSV (flat table), JSON-OCEL and XML-OCEL
     (described in the site http://www.ocel-standard.org/).
 
-    :param model: BPMN model to export
-    :param file_path: target file path on disk to write the BPMN object to
-    :param auto_layout: boolean indicating whether the model should get an auto layout (which is written to disk)
+    :param ocel: OCEL object to write to disk
+    :param file_path: target file path on disk to write the OCEL object to
+    :param objects_path: location of the objects table (only applicable in case of .csv exporting)
 
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.write_ocel(ocel, '<path_to_export_to>')
     """
     if file_path.lower().endswith("csv"):
         from pm4py.objects.ocel.exporter.csv import exporter as csv_exporter

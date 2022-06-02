@@ -28,25 +28,21 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     """
     Give the appropriate format on the dataframe, for process mining purposes
 
-    Parameters
-    --------------
-    df
-        Dataframe
-    case_id
-        Case identifier column
-    activity_key
-        Activity column
-    timestamp_key
-        Timestamp column
-    start_timestamp_key
-        Start timestamp column
-    timest_format
-        Timestamp format that is provided to Pandas
+    :param df: Dataframe
+    :param case_id: Case identifier column
+    :param activity_key: Activity column
+    :param timestamp_key: Timestamp column
+    :param start_timestamp_key: Start timestamp column
+    :param timest_format: Timestamp format that is provided to Pandas
+    :rtype: ``pd.DataFrame``
 
-    Returns
-    --------------
-    df
-        Dataframe
+    .. code-block:: python3
+
+        import pandas as pd
+        import pm4py
+
+        dataframe = pd.read_csv('event_log.csv')
+        dataframe = pm4py.format_dataframe(dataframe, case_id_key='case:concept:name', activity_key='concept:name', timestamp_key='time:timestamp', start_timestamp_key='start_timestamp', timest_format='%Y-%m-%d %H:%M:%S')
     """
     if type(df) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
@@ -106,27 +102,22 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
 def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = constants.CASE_CONCEPT_NAME,
                      activity_key: str = xes_constants.DEFAULT_NAME_KEY,
                      timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
-                     start_timestamp_key: str = xes_constants.DEFAULT_START_TIMESTAMP_KEY):
+                     start_timestamp_key: str = xes_constants.DEFAULT_START_TIMESTAMP_KEY) -> Union[EventLog, EventStream, pd.DataFrame]:
     """
     Re-base the log object, changing the case ID, activity and timestamp attributes.
 
-    Parameters
-    -----------------
-    log_obj
-        Log object
-    case_id
-        Case identifier
-    activity_key
-        Activity
-    timestamp_key
-        Timestamp
-    start_timestamp_key
-        Start timestamp
+    :param log_obj: Log object
+    :param case_id: Case identifier
+    :param activity_key: Activity
+    :param timestamp_key: Timestamp
+    :param start_timestamp_key: Start timestamp
+    :rtype: ``Union[EventLog, EventStream, pd.DataFrame]``
 
-    Returns
-    -----------------
-    rebased_log_obj
-        Rebased log object
+    .. code-block:: python3
+
+        import pm4py
+
+        rebased_dataframe = pm4py.rebase(dataframe, case_id='case:concept:name', activity_key='concept:name', timestamp_key='time:timestamp')
     """
     import pm4py
 
@@ -155,16 +146,14 @@ def parse_process_tree(tree_string: str) -> ProcessTree:
     """
     Parse a process tree from a string
 
-    Parameters
-    ----------------
-    tree_string
-        String representing a process tree (e.g. '-> ( 'A', O ( 'B', 'C' ), 'D' )')
-        Operators are '->': sequence, '+': parallel, 'X': xor choice, '*': binary loop, 'O' or choice
+    :param tree_string: String representing a process tree (e.g. '-> ( 'A', O ( 'B', 'C' ), 'D' )'). Operators are '->': sequence, '+': parallel, 'X': xor choice, '*': binary loop, 'O' or choice
+    :rtype: ``ProcessTree``
 
-    Returns
-    ----------------
-    tree
-        Process tree
+    .. code-block:: python3
+
+        import pm4py
+
+        process_tree = pm4py.parse_process_tree('-> ( 'A', O ( 'B', 'C' ), 'D' )')
     """
     from pm4py.objects.process_tree.utils.generic import parse
     return parse(tree_string)
@@ -174,22 +163,15 @@ def serialize(*args) -> Tuple[str, bytes]:
     """
     Serialize a PM4Py object into a bytes string
 
-    Parameters
-    -----------------
-    args
-        A PM4Py object, among:
-        - an EventLog object
-        - a Pandas dataframe object
-        - a (Petrinet, Marking, Marking) tuple
-        - a ProcessTree object
-        - a BPMN object
-        - a DFG, including the dictionary of the directly-follows relations, the start activities and the end activities
+    :param args: A PM4Py object, among: - an EventLog object - a Pandas dataframe object - a (Petrinet, Marking, Marking) tuple - a ProcessTree object - a BPMN object - a DFG, including the dictionary of the directly-follows relations, the start activities and the end activities
+    :rtype: ``Tuple[str, bytes]``
 
-    Returns
-    -----------------
-    ser
-        Serialized object (a tuple consisting of a string denoting the type of the object, and a bytes string
-        representing the serialization)
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe)
+        serialization = pm4py.serialize(net, im, fm)
     """
     from pm4py.objects.log.obj import EventLog
     from pm4py.objects.petri_net.obj import PetriNet
@@ -224,22 +206,16 @@ def deserialize(ser_obj: Tuple[str, bytes]) -> Any:
     """
     Deserialize a bytes string to a PM4Py object
 
-    Parameters
-    ----------------
-    ser
-        Serialized object (a tuple consisting of a string denoting the type of the object, and a bytes string
-        representing the serialization)
+    :param ser_obj: Serialized object (a tuple consisting of a string denoting the type of the object, and a bytes string representing the serialization)
+    :rtype: ``Any``
 
-    Returns
-    ----------------
-    obj
-         A PM4Py object, among:
-        - an EventLog object
-        - a Pandas dataframe object
-        - a (Petrinet, Marking, Marking) tuple
-        - a ProcessTree object
-        - a BPMN object
-        - a DFG, including the dictionary of the directly-follows relations, the start activities and the end activities
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe)
+        serialization = pm4py.serialize(net, im, fm)
+        net, im, fm = pm4py.deserialize(serialization)
     """
     if ser_obj[0] == constants.AvailableSerializations.EVENT_LOG.value:
         from pm4py.objects.log.importer.xes import importer as xes_importer
@@ -268,25 +244,13 @@ def get_properties(log, activity_key: str = "concept:name", timestamp_key: str =
     """
     Gets the properties from a log object
 
-    Parameters
-    -----------------
-    log
-        Log object
-    activity_key
-        attribute to be used for the activity
-    timestamp_key
-        attribute to be used for the timestamp
-    case_id_key
-        attribute to be used as case identifier
-    resource_key
-        (if provided) attribute to be used as resource
-    group_key
-        (if provided) attribute to be used as group identifier
-
-    Returns
-    -----------------
-    prop_dict
-        Dictionary containing the properties of the log object
+    :param log: Log object
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :param resource_key: (if provided) attribute to be used as resource
+    :param group_key: (if provided) attribute to be used as group identifier
+    :rtype: ``Dict``
     """
     __event_log_deprecation_warning(log)
 
@@ -324,22 +288,10 @@ def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASS
     """
     Methods to set the specified classifier on an existing event log
 
-    Parameters
-    ----------------
-    log
-        Log object
-    classifier
-        Classifier that should be set:
-        - A list of event attributes can be provided
-        - A single event attribute can be provided
-        - A classifier stored between the "classifiers" of the log object can be provided
-    classifier_attribute
-        The attribute of the event that should store the concatenation of the attribute values for the given classifier
-
-    Returns
-    ----------------
-    log
-        The same event log (methods acts inplace)
+    :param log: Log object
+    :param classifier: Classifier that should be set: - A list of event attributes can be provided - A single event attribute can be provided - A classifier stored between the "classifiers" of the log object can be provided
+    :param classifier_attribute: The attribute of the event that should store the concatenation of the attribute values for the given classifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -379,23 +331,18 @@ def parse_event_log_string(traces: Collection[str], sep: str = ",",
     (e.g., ["A,B,C,D", "A,C,B,D", "A,D"])
     to a log object (Pandas dataframe)
 
-    Parameters
-    ------------------
-    traces
-        Collection of traces expressed as strings
-    sep
-        Separator used to split the activities of a string trace
-    activity_key
-        The attribute that should be used as activity
-    timestamp_key
-        The attribute that should be used as timestamp
-    case_id_key
-        The attribute that should be used as case identifier
+    :param traces: Collection of traces expressed as strings
+    :param sep: Separator used to split the activities of a string trace
+    :param activity_key: The attribute that should be used as activity
+    :param timestamp_key: The attribute that should be used as timestamp
+    :param case_id_key: The attribute that should be used as case identifier
+    :rtype: ``pd.DataFrame``
 
-    Returns
-    -----------------
-    df
-        Pandas dataframe
+    .. code-block:: python3
+
+        import pm4py
+
+        dataframe = pm4py.parse_event_log_string(["A,B,C,D", "A,C,B,D", "A,D"])
     """
     cases = []
     activitiess = []
@@ -419,29 +366,26 @@ List[List[str]]:
     Project the event log on a specified event attribute. The result is a list, containing a list for each case:
     all the cases are transformed to list of values for the specified attribute.
 
-    Parameters
-    --------------------
-    log
-        Event log / Pandas dataframe
-    attribute_key
-        The attribute to be used
+    Example:
 
-    Returns
-    --------------------
-    projected_cases
-        Projection on the given attribute (a list containing, for each case, a list of its values for the
-        specified attribute).
+    pm4py.project_on_event_attribute(log, "concept:name")
 
-        Example:
+    [['register request', 'examine casually', 'check ticket', 'decide', 'reinitiate request', 'examine thoroughly', 'check ticket', 'decide', 'pay compensation'],
+    ['register request', 'check ticket', 'examine casually', 'decide', 'pay compensation'],
+    ['register request', 'examine thoroughly', 'check ticket', 'decide', 'reject request'],
+    ['register request', 'examine casually', 'check ticket', 'decide', 'pay compensation'],
+    ['register request', 'examine casually', 'check ticket', 'decide', 'reinitiate request', 'check ticket', 'examine casually', 'decide', 'reinitiate request', 'examine casually', 'check ticket', 'decide', 'reject request'],
+    ['register request', 'check ticket', 'examine thoroughly', 'decide', 'reject request']]
 
-        pm4py.project_on_event_attribute(log, "concept:name")
+    :param log: Event log / Pandas dataframe
+    :param attribute_key: The attribute to be used
+    :rtype: ``List[List[str]]``
 
-        [['register request', 'examine casually', 'check ticket', 'decide', 'reinitiate request', 'examine thoroughly', 'check ticket', 'decide', 'pay compensation'],
-        ['register request', 'check ticket', 'examine casually', 'decide', 'pay compensation'],
-        ['register request', 'examine thoroughly', 'check ticket', 'decide', 'reject request'],
-        ['register request', 'examine casually', 'check ticket', 'decide', 'pay compensation'],
-        ['register request', 'examine casually', 'check ticket', 'decide', 'reinitiate request', 'check ticket', 'examine casually', 'decide', 'reinitiate request', 'examine casually', 'check ticket', 'decide', 'reject request'],
-        ['register request', 'check ticket', 'examine thoroughly', 'decide', 'reject request']]
+    .. code-block:: python3
+
+        import pm4py
+
+        list_list_activities = pm4py.project_on_event_attribute(dataframe, 'concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -463,19 +407,16 @@ def sample_cases(log: Union[EventLog, pd.DataFrame], num_cases: int, case_id_key
     """
     (Random) Sample a given number of cases from the event log.
 
-    Parameters
-    ---------------
-    log
-        Event log / Pandas dataframe
-    num_cases
-        Number of cases to sample
-    case_id_key
-        attribute to be used as case identifier
+    :param log: Event log / Pandas dataframe
+    :param num_cases: Number of cases to sample
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
 
-    Returns
-    ---------------
-    sampled_log
-        Sampled event log (containing the specified amount of cases)
+    .. code-block:: python3
+
+        import pm4py
+
+        sampled_dataframe = pm4py.sample_cases(dataframe, 10, case_id_key='case:concept:name')
     """
     __event_log_deprecation_warning(log)
 
@@ -493,21 +434,20 @@ def sample_cases(log: Union[EventLog, pd.DataFrame], num_cases: int, case_id_key
         return dataframe_utils.sample_dataframe(log, parameters=properties)
 
 
-def sample_events(log: Union[EventStream, OCEL], num_events: int) -> Union[EventStream, OCEL]:
+def sample_events(log: Union[EventStream, OCEL], num_events: int) -> Union[EventStream, OCEL, pd.DataFrame]:
     """
     (Random) Sample a given number of events from the event log.
 
-    Parameters
-    ---------------
-    log
-        Event stream / OCEL / Pandas dataframes
-    num_events
-        Number of events to sample
+    :param log: Event stream / OCEL / Pandas dataframes
+    :param num_events: Number of events to sample
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventStream, OCEL, pd.DataFrame]``
 
-    Returns
-    ---------------
-    sampled_log
-        Sampled event stream / OCEL / Pandas dataframes (containing the specified amount of events)
+    .. code-block:: python3
+
+        import pm4py
+
+        sampled_dataframe = pm4py.sample_events(dataframe, 100)
     """
     __event_log_deprecation_warning(log)
 
