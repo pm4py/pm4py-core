@@ -1,4 +1,5 @@
 __doc__ = """
+The ``pm4py.org`` module contains the organizational analysis techniques offered in ``pm4py``
 """
 
 from typing import Union, Optional
@@ -24,6 +25,12 @@ def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0
     :param resource_key: attribute to be used for the resource
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+
+    .. code-block:: python3
+
+        import pm4py
+
+        metric = pm4py.discover_handover_of_work_network(dataframe, resource_key='org:resource', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -47,6 +54,12 @@ def discover_working_together_network(log: Union[EventLog, pd.DataFrame], resour
     :param resource_key: attribute to be used for the resource
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+
+    .. code-block:: python3
+
+        import pm4py
+
+        metric = pm4py.discover_working_together_network(dataframe, resource_key='org:resource', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -70,6 +83,12 @@ def discover_activity_based_resource_similarity(log: Union[EventLog, pd.DataFram
     :param resource_key: attribute to be used for the resource
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+
+    .. code-block:: python3
+
+        import pm4py
+
+        act_res_sim = pm4py.discover_activity_based_resource_similarity(dataframe, resource_key='org:resource', activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -93,6 +112,12 @@ def discover_subcontracting_network(log: Union[EventLog, pd.DataFrame], n=2, res
     :param resource_key: attribute to be used for the resource
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+
+    .. code-block:: python3
+
+        import pm4py
+
+        metric = pm4py.discover_subcontracting_network(dataframe, resource_key='org:resource', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -111,11 +136,22 @@ def discover_organizational_roles(log: Union[EventLog, pd.DataFrame], activity_k
     """
     Mines the organizational roles
 
+    A role is a set of activities in the log that are executed by a similar (multi)set of resources. Hence, it is a specific function into organization. Grouping the activities in roles can help:
+
+    Reference paper:
+    Burattin, Andrea, Alessandro Sperduti, and Marco Veluscek. “Business models enhancement through discovery of roles.” 2013 IEEE Symposium on Computational Intelligence and Data Mining (CIDM). IEEE, 2013.
+
     :param log: event log / Pandas dataframe
     :param activity_key: attribute to be used for the activity
     :param resource_key: attribute to be used for the resource
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+
+    .. code-block:: python3
+
+        import pm4py
+
+        roles = pm4py.discover_organizational_roles(dataframe, resource_key='org:resource', activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -133,6 +169,21 @@ def discover_organizational_roles(log: Union[EventLog, pd.DataFrame], activity_k
 def discover_network_analysis(log: Union[pd.DataFrame, EventLog, EventStream], out_column: str, in_column: str, node_column_source: str, node_column_target: str, edge_column: str, edge_reference: str = "_out", performance: bool = False, sorting_column: str = xes_constants.DEFAULT_TIMESTAMP_KEY, timestamp_column: str = xes_constants.DEFAULT_TIMESTAMP_KEY) -> Dict[Tuple[str, str], Dict[str, Any]]:
     """
     Performs a network analysis of the log based on the provided parameters.
+
+    The classical social network analysis methods are based on the order of the events inside a case. For example, the Handover of Work metric considers the directly-follows relationships between resources during the work of a case. An edge is added between the two resources if such relationships occurs.
+
+    Real-life scenarios may be more complicated. At first, is difficult to collect events inside the same case without having convergence/divergence issues (see first section of the OCEL part). At second, the type of relationship may also be important. Consider for example the relationship between two resources: this may be more efficient if the activity that is executed is liked by the resources, rather than disgusted.
+
+    The network analysis that we introduce here generalizes some existing social network analysis metrics, becoming independent from the choice of a case notion and permitting to build a multi-graph instead of a simple graph.
+
+    With this, we assume events to be linked by signals. An event emits a signal (that is contained as one attribute of the event) that is assumed to be received by other events (also, this is an attribute of these events) that follow the first event in the log. So, we assume there is an OUT attribute (of the event) that is identical to the IN attribute (of the other events).
+
+    When we collect this information, we can build the network analysis graph:
+    - The source node of the relation is given by an aggregation over a node_column_source attribute.
+    - The target node of the relation is given by an aggregation over a node_column_target attribute.
+    - The type of edge is given by an aggregation over an edge_column attribute.
+    - The network analysis graph can either be annotated with frequency or performance information.
+
     The output is a multigraph.
     Two events EV1 and EV2 of the log are merged (indipendently from the case notion) based on having
     EV1.OUT_COLUMN = EV2.IN_COLUMN.
@@ -150,6 +201,12 @@ def discover_network_analysis(log: Union[pd.DataFrame, EventLog, EventStream], o
     :param sorting_column: the column that should be used to sort the log before performing the network analysis (default: time:timestamp)
     :param timestamp_column: the column that should be used as timestamp for the performance-related analysis (default: time:timestamp)
     :rtype: ``Dict[Tuple[str, str], Dict[str, Any]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net_ana = pm4py.discover_network_analysis(dataframe, out_column='case:concept:name', in_column='case:concept:name', node_column_source='org:resource', node_column_target='org:resource', edge_column='concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)

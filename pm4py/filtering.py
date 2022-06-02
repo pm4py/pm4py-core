@@ -1,48 +1,5 @@
 __doc__ = """
-Filtering is the restriction of the event log to a subset of the behavior.
-
-* Filtering Traditional Event Logs
-    * Endpoint Filters
-        * `Filter on Start Activities`_
-        * `Filter on End Activities`_
-    * `Timeframe Filter`_
-    * `Case Performance Filter`_
-    * Attributes Filter
-        * `Event Attributes Filter`_
-        * `Case Attributes Filter`_
-    * Variants Filter
-        * `Manual Variants Specification`_
-        * `Top K Variants`_
-        * `Coverage Percentage`_
-    * LTL Checking
-        * `Four Eyes Principle`_
-        * `Activity done by different Resources`_
-* Filtering Object-Centric Event Logs
-    * `OCEL Filter on Event Attributes`_
-    * `OCEL Filter on Object Attributes`_
-    * `OCEL Filter on Allowed Activities per Object Type`_
-    * `OCEL Filter on Number of Objects per Type`_
-    * `OCEL Filter on Start Events per Object Type`_
-    * `OCEL Filter on End Events per Object Type`_
-
-.. _Filter on Start Activities: pm4py.html#pm4py.filtering.filter_start_activities
-.. _Filter on End Activities: pm4py.html#pm4py.filtering.filter_end_activities
-.. _Timeframe Filter: pm4py.html#pm4py.filtering.filter_time_range
-.. _Case Performance Filter: pm4py.html#pm4py.filtering.filter_case_performance
-.. _Event Attributes Filter: pm4py.html#pm4py.filtering.filter_event_attribute_values
-.. _Case Attributes Filter: pm4py.html#pm4py.filtering.filter_trace_attribute_values
-.. _Manual Variants Specification: pm4py.html#pm4py.filtering.filter_variants
-.. _Top K Variants: pm4py.html#pm4py.filtering.filter_variants_top_k
-.. _Coverage Percentage: pm4py.html#pm4py.filtering.filter_variants_by_coverage_percentage
-.. _OCEL Filter on Event Attributes: pm4py.html#pm4py.filtering.filter_ocel_event_attribute
-.. _OCEL Filter on Object Attributes: pm4py.html#pm4py.filtering.filter_ocel_object_attribute
-.. _OCEL Filter on Allowed Activities per Object Type: pm4py.html#pm4py.filtering.filter_ocel_object_types_allowed_activities
-.. _OCEL Filter on Number of Objects per Type: pm4py.html#pm4py.filtering.filter_ocel_object_per_type_count
-.. _OCEL Filter on Start Events per Object Type: pm4py.html#pm4py.filtering.filter_ocel_start_events_per_object_type
-.. _OCEL Filter on End Events per Object Type: pm4py.html#pm4py.filtering.filter_ocel_end_events_per_object_type
-.. _Four Eyes Principle: pm4py.html#pm4py.filtering.filter_four_eyes_principle
-.. _Activity done by different Resources: pm4py.html#pm4py.filtering.filter_activity_done_different_resources
-
+The ``pm4py.filtering`` module contains the filtering features offered in ``pm4py``
 """
 
 import warnings
@@ -72,6 +29,12 @@ def filter_log_relative_occurrence_event_attribute(log: Union[EventLog, pd.DataF
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_log_relative_occurrence_event_attribute(dataframe, 0.5, level='cases', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -102,6 +65,12 @@ Union[EventLog, pd.DataFrame]:
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_start_activities(dataframe, ['Act. A'], activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -132,6 +101,12 @@ def filter_end_activities(log: Union[EventLog, pd.DataFrame], activities:  Union
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_end_activities(dataframe, ['Act. Z'], activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -162,6 +137,12 @@ def filter_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
     :param retain: specifies if the values should be kept or removed
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_event_attribute_values(dataframe, 'concept:name', ['Act. A', 'Act. Z'], case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -200,6 +181,12 @@ def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
     :param retain: boolean value (keep/discard matching traces)
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_trace_attribute_values(dataframe, 'case:creator', ['Mike'], case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -230,6 +217,12 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_variants(dataframe, [('Act. A', 'Act. B', 'Act. Z'), ('Act. A', 'Act. C', 'Act. Z')], activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -263,6 +256,12 @@ def filter_directly_follows_relation(log: Union[EventLog, pd.DataFrame], relatio
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_directly_follows_relation(dataframe, [('A','B'),('A','C')], activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -292,6 +291,12 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_eventually_follows_relation(dataframe, [('A','B'),('A','C')], activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     __event_log_deprecation_warning(log)
 
@@ -347,6 +352,14 @@ def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mo
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe1 = pm4py.filter_time_range(dataframe, '2010-01-01 00:00:00', '2011-01-01 00:00:00', mode='traces_contained', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        filtered_dataframe1 = pm4py.filter_time_range(dataframe, '2010-01-01 00:00:00', '2011-01-01 00:00:00', mode='traces_intersecting', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        filtered_dataframe1 = pm4py.filter_time_range(dataframe, '2010-01-01 00:00:00', '2011-01-01 00:00:00', mode='events', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -405,6 +418,12 @@ def filter_between(log: Union[EventLog, pd.DataFrame], act1: str, act2: str, act
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_between(dataframe, 'A', 'D', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -429,6 +448,12 @@ def filter_case_size(log: Union[EventLog, pd.DataFrame], min_size: int, max_size
     :param max_size: maximum allowed number of events
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_case_size(dataframe, 5, 10, case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -456,6 +481,12 @@ def filter_case_performance(log: Union[EventLog, pd.DataFrame], min_performance:
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_case_performance(dataframe, 3600.0, 86400.0, timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -481,6 +512,12 @@ def filter_activities_rework(log: Union[EventLog, pd.DataFrame], activity: str, 
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_activities_rework(dataframe, 'Approve Order', 2, activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -511,6 +548,12 @@ def filter_paths_performance(log: Union[EventLog, pd.DataFrame], path: Tuple[str
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_paths_performance(dataframe, ('A', 'D'), 3600.0, 86400.0, activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -539,6 +582,12 @@ def filter_variants_top_k(log: Union[EventLog, pd.DataFrame], k: int, activity_k
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_variants_top_k(dataframe, 5, activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -566,6 +615,12 @@ def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], m
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_variants_by_coverage_percentage(dataframe, 0.1, activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -602,6 +657,12 @@ def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_prefixes(dataframe, 'Act. C', activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -641,6 +702,12 @@ def filter_suffixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=Tr
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_prefixes(dataframe, 'Act. C', activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -667,6 +734,12 @@ def filter_ocel_event_attribute(ocel: OCEL, attribute_key: str, attribute_values
     :param attribute_values: collection of attribute values
     :param positive: decides if the values should be kept (positive=True) or removed (positive=False)
     :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_ocel = pm4py.filter_ocel_event_attribute(ocel, 'ocel:activity', ['A', 'B', 'D'])
     """
     from pm4py.algo.filtering.ocel import event_attributes
 
@@ -682,6 +755,12 @@ def filter_ocel_object_attribute(ocel: OCEL, attribute_key: str, attribute_value
     :param attribute_values: collection of attribute values
     :param positive: decides if the values should be kept (positive=True) or removed (positive=False)
     :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_ocel = pm4py.filter_ocel_object_attribute(ocel, 'ocel:type', ['order'])
     """
     from pm4py.algo.filtering.ocel import object_attributes
 
@@ -696,6 +775,12 @@ def filter_ocel_object_types_allowed_activities(ocel: OCEL, correspondence_dict:
     :param ocel: object-centric event log
     :param correspondence_dict: dictionary containing, for every object type of interest, a collection of allowed activities. Example: {"order": ["Create Order"], "element": ["Create Order", "Create Delivery"]}
     :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_ocel = pm4py.filter_ocel_object_types_allowed_activities(ocel, {'order': ['create order', 'pay order'], 'item})
     """
     from pm4py.algo.filtering.ocel import activity_type_matching
 
@@ -719,6 +804,12 @@ def filter_ocel_object_per_type_count(ocel: OCEL, min_num_obj_type: Dict[str, in
     :param ocel: object-centric event log
     :param min_num_obj_type: minimum number of objects per type
     :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_ocel = pm4py.filter_ocel_object_per_type_count(ocel, {'order': 1, 'element': 2})
     """
     from pm4py.algo.filtering.ocel import objects_ot_count
 
@@ -733,6 +824,12 @@ def filter_ocel_start_events_per_object_type(ocel: OCEL, object_type: str) -> OC
     :param ocel: object-centric event log
     :param object_type: object type to consider
     :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_ocel = pm4py.filter_ocel_start_events_per_object_type(ocel, 'delivery')
     """
     from pm4py.algo.filtering.ocel import ot_endpoints
     return ot_endpoints.filter_start_events_per_object_type(ocel, object_type)
@@ -746,6 +843,12 @@ def filter_ocel_end_events_per_object_type(ocel: OCEL, object_type: str) -> OCEL
     :param ocel: object-centric event log
     :param object_type: object type to consider
     :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_ocel = pm4py.filter_ocel_end_events_per_object_type(ocel, 'delivery')
     """
     from pm4py.algo.filtering.ocel import ot_endpoints
     return ot_endpoints.filter_end_events_per_object_type(ocel, object_type)
@@ -760,6 +863,12 @@ def filter_ocel_events_timestamp(ocel: OCEL, min_timest: Union[datetime.datetime
     :param max_timest: right extreme of the allowed timestamp interval (provided in the format: YYYY-mm-dd HH:MM:SS)
     :param timestamp_key: the attribute to use as timestamp (default: ocel:timestamp)
     :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_ocel = pm4py.filter_ocel_events_timestamp(ocel, '1990-01-01 00:00:00', '2010-01-01 00:00:00')
     """
     from pm4py.algo.filtering.ocel import event_attributes
     return event_attributes.apply_timestamp(ocel, min_timest, max_timest, parameters={"pm4py:param:timestamp_key": timestamp_key})
@@ -777,6 +886,12 @@ def filter_four_eyes_principle(log: Union[EventLog, pd.DataFrame], activity1: st
     :param case_id_key: attribute to be used as case identifier
     :param resource_key: attribute to be used as resource
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_four_eyes_principle(dataframe, 'Act. A', 'Act. B', activity_key='concept:name', resource_key='org:resource', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -805,6 +920,12 @@ def filter_activity_done_different_resources(log: Union[EventLog, pd.DataFrame],
     :param case_id_key: attribute to be used as case identifier
     :param resource_key: attribute to be used as resource
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_activity_done_different_resources(dataframe, 'Act. A', activity_key='concept:name', resource_key='org:resource', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
