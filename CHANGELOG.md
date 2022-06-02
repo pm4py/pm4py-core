@@ -19,6 +19,8 @@
 ### Fixed
 * f45883421423ca49139adf24490625ad2980fc92
   * Fixing OCEL processing when an event has empty object map
+* e45a136198b7dbf546d97a65095d2b126133a754
+  * Fixed problem with footprints discovery on loops (process tree / Petri nets)
 
 ### Removed
 
