@@ -74,6 +74,11 @@ def apply(net: PetriNet, im: Marking, parameters: Optional[Dict[Any, Any]] = Non
     parallel = {(x.label, y.label) for (x, y) in parallel}
     sequence = {(x.label, y.label) for (x, y) in sequence}
 
+    par_els = {(x[0], x[1]) for x in sequence if (x[1], x[0]) in sequence}
+    for el in par_els:
+        parallel.add(el)
+        sequence.remove(el)
+
     activities = set(x.label for x in net.transitions if x.label is not None)
     start_activities = set(x.label for x in eventually_enabled[im])
 
