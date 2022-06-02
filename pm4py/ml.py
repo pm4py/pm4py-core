@@ -1,14 +1,5 @@
 __doc__ = """
-PM4Py offers some features useful for the application of machine learning techniques.
-
-* `Feature extraction from an event log`_
-* `Split a log into training/test log`_
-* `Get fixed-length prefixes from an event log`_
-
-.. _Feature extraction from an event log: pm4py.html#pm4py.ml.extract_features_dataframe
-.. _Split a log into training/test log: pm4py.html#pm4py.ml.split_train_test
-.. _Get fixed-length prefixes from an event log: pm4py.html#pm4py.ml.get_prefixes_from_log
-
+The ``pm4py.ml`` module contains the machine learning features offered in ``pm4py``
 """
 
 from typing import Union, Tuple
@@ -33,6 +24,12 @@ def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float
     :param train_percentage: fraction of traces to be included in the training log (from 0.0 to 1.0)
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[Tuple[EventLog, EventLog], Tuple[pd.DataFrame, pd.DataFrame]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        train_df, test_df = pm4py.split_train_test(dataframe, train_percentage=0.75)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -66,6 +63,12 @@ def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int, case_
     :param length: length
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        trimmed_df = pm4py.get_prefixes_from_log(dataframe, length=5, case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -94,6 +97,12 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
     :param case_id_key: the attribute to be used as case identifier
     :param resource_key: the attribute to be used as resource
     :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        trimmed_df = pm4py.get_prefixes_from_log(dataframe, length=5, case_id_key='case:concept:name')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)

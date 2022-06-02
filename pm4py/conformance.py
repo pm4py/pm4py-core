@@ -1,37 +1,5 @@
 __doc__ = """
-Conformance checking is a techniques to compare a process model with an event log of the same process. The goal is to check if the event log conforms to the model, and, vice versa.
-
-* Procedural models
-    * Conformance Checking diagnostics
-        * `Token-Based Replay (TBR)`_
-        * `Alignments`_
-        * `Footprints`_
-    * Evaluation
-        * Fitness
-            * `Fitness TBR`_
-            * `Fitness Alignments`_
-            * `Fitness Footprints`_
-        * Precision
-            * `Precision TBR`_
-            * `Precision Alignments`_
-            * `Precision Footprints`_
-* Declarative models
-    * `Conformance diagnostics using the Log Skeleton`_
-* Time-infused models
-    * `Conformance checking using the Temporal Profile`_
-
-.. _Token-Based Replay (TBR): pm4py.html#pm4py.conformance.conformance_diagnostics_token_based_replay
-.. _Alignments: pm4py.html#pm4py.conformance.conformance_diagnostics_alignments
-.. _Footprints: pm4py.html#pm4py.conformance.conformance_diagnostics_footprints
-.. _Fitness TBR: pm4py.html#pm4py.conformance.fitness_token_based_replay
-.. _Fitness Alignments: pm4py.html#pm4py.conformance.fitness_alignments
-.. _Fitness Footprints: pm4py.html#pm4py.conformance.fitness_footprints
-.. _Precision TBR: pm4py.html#pm4py.conformance.precision_token_based_replay
-.. _Precision Alignments: pm4py.html#pm4py.conformance.precision_alignments
-.. _Precision Footprints: pm4py.html#pm4py.conformance.precision_footprints
-.. _Conformance diagnostics using the Log Skeleton: pm4py.html#pm4py.conformance.conformance_log_skeleton
-.. _Conformance checking using the Temporal Profile: pm4py.html#pm4py.conformance.conformance_temporal_profile
-
+The ``pm4py.conformance`` module contains the conformance checking algorithms implemented in ``pm4py``
 """
 
 import warnings
@@ -54,6 +22,22 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
     Apply token-based replay for conformance checking analysis.
     The methods return the full token-based-replay diagnostics.
 
+    Token-based replay matches a trace and a Petri net model, starting from the initial place, in order to discover which transitions are executed and in which places we have remaining or missing tokens for the given process instance. Token-based replay is useful for Conformance Checking: indeed, a trace is fitting according to the model if, during its execution, the transitions can be fired without the need to insert any missing token. If the reaching of the final marking is imposed, then a trace is fitting if it reaches the final marking without any missing or remaining tokens.
+
+    In PM4Py there is an implementation of a token replayer that is able to go across hidden transitions (calculating shortest paths between places) and can be used with any Petri net model with unique visible transitions and hidden transitions. When a visible transition needs to be fired and not all places in the preset are provided with the correct number of tokens, starting from the current marking it is checked if for some place there is a sequence of hidden transitions that could be fired in order to enable the visible transition. The hidden transitions are then fired and a marking that permits to enable the visible transition is reached.
+    The approach is described in:
+    Berti, Alessandro, and Wil MP van der Aalst. "Reviving Token-based Replay: Increasing Speed While Improving Diagnostics." ATAED@ Petri Nets/ACSD. 2019.
+
+    The output of the token-based replay, stored in the variable replayed_traces, contains for each trace of the log:
+
+    - trace_is_fit: boolean value (True/False) that is true when the trace is according to the model.
+    - activated_transitions: list of transitions activated in the model by the token-based replay.
+    - reached_marking: marking reached at the end of the replay.
+    - missing_tokens: number of missing tokens.
+    - consumed_tokens: number of consumed tokens.
+    - remaining_tokens: number of remaining tokens.
+    - produced_tokens: number of produced tokens.
+
     :param log: event log
     :param petri_net: petri net
     :param initial_marking: initial marking
@@ -62,6 +46,13 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``List[Dict[str, Any]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        tbr_diagnostics = pm4py.conformance_diagnostics_token_based_replay(dataframe, net, im, fm, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -80,6 +71,20 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
     Apply the alignments algorithm between a log and a process model.
     The methods return the full alignment diagnostics.
 
+    Alignment-based replay aims to find one of the best alignment between the trace and the model. For each trace, the output of an alignment is a list of couples where the first element is an event (of the trace) or » and the second element is a transition (of the model) or ». For each couple, the following classification could be provided:
+
+    - Sync move: the classification of the event corresponds to the transition label; in this case, both the trace and the model advance in the same way during the replay.
+    - Move on log: for couples where the second element is », it corresponds to a replay move in the trace that is not mimicked in the model. This kind of move is unfit and signal a deviation between the trace and the model.
+    - Move on model: for couples where the first element is », it corresponds to a replay move in the model that is not mimicked in the trace. For moves on model, we can have the following distinction:
+        * Moves on model involving hidden transitions: in this case, even if it is not a sync move, the move is fit.
+        * Moves on model not involving hidden transitions: in this case, the move is unfit and signals a deviation between the trace and the model.
+
+    With each trace, a dictionary containing among the others the following information is associated:
+
+    alignment: contains the alignment (sync moves, moves on log, moves on model)
+    cost: contains the cost of the alignment according to the provided cost function
+    fitness: is equal to 1 if the trace is perfectly fitting.
+
     :param log: event log
     :param args: specification of the process model
     :param multi_processing: boolean value that enables the multiprocessing (default: False)
@@ -87,6 +92,13 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``List[Dict[str, Any]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        alignments_diagnostics = pm4py.conformance_diagnostics_alignments(dataframe, net, im, fm, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -133,6 +145,16 @@ def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: Pe
     Calculates the fitness using token-based replay.
     The fitness is calculated on a log-based level.
 
+    Token-based replay matches a trace and a Petri net model, starting from the initial place, in order to discover which transitions are executed and in which places we have remaining or missing tokens for the given process instance. Token-based replay is useful for Conformance Checking: indeed, a trace is fitting according to the model if, during its execution, the transitions can be fired without the need to insert any missing token. If the reaching of the final marking is imposed, then a trace is fitting if it reaches the final marking without any missing or remaining tokens.
+
+    In PM4Py there is an implementation of a token replayer that is able to go across hidden transitions (calculating shortest paths between places) and can be used with any Petri net model with unique visible transitions and hidden transitions. When a visible transition needs to be fired and not all places in the preset are provided with the correct number of tokens, starting from the current marking it is checked if for some place there is a sequence of hidden transitions that could be fired in order to enable the visible transition. The hidden transitions are then fired and a marking that permits to enable the visible transition is reached.
+    The approach is described in:
+    Berti, Alessandro, and Wil MP van der Aalst. "Reviving Token-based Replay: Increasing Speed While Improving Diagnostics." ATAED@ Petri Nets/ACSD. 2019.
+
+    The calculation of the replay fitness aim to calculate how much of the behavior in the log is admitted by the process model. We propose two methods to calculate replay fitness, based on token-based replay and alignments respectively.
+
+    For token-based replay, the percentage of traces that are completely fit is returned, along with a fitness value that is calculated as indicated in the scientific contribution
+
     :param log: event log
     :param petri_net: petri net
     :param initial_marking: initial marking
@@ -141,6 +163,13 @@ def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: Pe
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Dict[str, float]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        fitness_tbr = pm4py.fitness_token_based_replay(dataframe, net, im, fm, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -160,6 +189,18 @@ def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, 
     """
     Calculates the fitness using alignments
 
+    Alignment-based replay aims to find one of the best alignment between the trace and the model. For each trace, the output of an alignment is a list of couples where the first element is an event (of the trace) or » and the second element is a transition (of the model) or ». For each couple, the following classification could be provided:
+
+    - Sync move: the classification of the event corresponds to the transition label; in this case, both the trace and the model advance in the same way during the replay.
+    - Move on log: for couples where the second element is », it corresponds to a replay move in the trace that is not mimicked in the model. This kind of move is unfit and signal a deviation between the trace and the model.
+    - Move on model: for couples where the first element is », it corresponds to a replay move in the model that is not mimicked in the trace. For moves on model, we can have the following distinction:
+        * Moves on model involving hidden transitions: in this case, even if it is not a sync move, the move is fit.
+        * Moves on model not involving hidden transitions: in this case, the move is unfit and signals a deviation between the trace and the model.
+
+    The calculation of the replay fitness aim to calculate how much of the behavior in the log is admitted by the process model. We propose two methods to calculate replay fitness, based on token-based replay and alignments respectively.
+
+    For alignments, the percentage of traces that are completely fit is returned, along with a fitness value that is calculated as the average of the fitness values of the single traces.
+
     :param log: event log
     :param petri_net: petri net
     :param initial_marking: initial marking
@@ -169,6 +210,13 @@ def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, 
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``Dict[str, float]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        fitness_alignments = pm4py.fitness_alignments(dataframe, net, im, fm, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -188,6 +236,17 @@ def precision_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: 
     """
     Calculates the precision precision using token-based replay
 
+    Token-based replay matches a trace and a Petri net model, starting from the initial place, in order to discover which transitions are executed and in which places we have remaining or missing tokens for the given process instance. Token-based replay is useful for Conformance Checking: indeed, a trace is fitting according to the model if, during its execution, the transitions can be fired without the need to insert any missing token. If the reaching of the final marking is imposed, then a trace is fitting if it reaches the final marking without any missing or remaining tokens.
+
+    In PM4Py there is an implementation of a token replayer that is able to go across hidden transitions (calculating shortest paths between places) and can be used with any Petri net model with unique visible transitions and hidden transitions. When a visible transition needs to be fired and not all places in the preset are provided with the correct number of tokens, starting from the current marking it is checked if for some place there is a sequence of hidden transitions that could be fired in order to enable the visible transition. The hidden transitions are then fired and a marking that permits to enable the visible transition is reached.
+    The approach is described in:
+    Berti, Alessandro, and Wil MP van der Aalst. "Reviving Token-based Replay: Increasing Speed While Improving Diagnostics." ATAED@ Petri Nets/ACSD. 2019.
+
+    The reference paper for the TBR-based precision (ETConformance) is:
+    Muñoz-Gama, Jorge, and Josep Carmona. "A fresh look at precision in process conformance." International Conference on Business Process Management. Springer, Berlin, Heidelberg, 2010.
+
+    In this approach, the different prefixes of the log are replayed (whether possible) on the model. At the reached marking, the set of transitions that are enabled in the process model is compared with the set of activities that follow the prefix. The more the sets are different, the more the precision value is low. The more the sets are similar, the more the precision value is high.
+
     :param log: event log
     :param petri_net: petri net
     :param initial_marking: initial marking
@@ -196,6 +255,13 @@ def precision_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: 
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``float``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        precision_tbr = pm4py.precision_token_based_replay(dataframe, net, im, fm, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -215,6 +281,19 @@ def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet
     """
     Calculates the precision of the model w.r.t. the event log using alignments
 
+    Alignment-based replay aims to find one of the best alignment between the trace and the model. For each trace, the output of an alignment is a list of couples where the first element is an event (of the trace) or » and the second element is a transition (of the model) or ». For each couple, the following classification could be provided:
+
+    - Sync move: the classification of the event corresponds to the transition label; in this case, both the trace and the model advance in the same way during the replay.
+    - Move on log: for couples where the second element is », it corresponds to a replay move in the trace that is not mimicked in the model. This kind of move is unfit and signal a deviation between the trace and the model.
+    - Move on model: for couples where the first element is », it corresponds to a replay move in the model that is not mimicked in the trace. For moves on model, we can have the following distinction:
+        * Moves on model involving hidden transitions: in this case, even if it is not a sync move, the move is fit.
+        * Moves on model not involving hidden transitions: in this case, the move is unfit and signals a deviation between the trace and the model.
+
+    The reference paper for the alignments-based precision (Align-ETConformance) is:
+    Adriansyah, Arya, et al. "Measuring precision of modeled behavior." Information systems and e-Business Management 13.1 (2015): 37-67
+
+    In this approach, the different prefixes of the log are replayed (whether possible) on the model. At the reached marking, the set of transitions that are enabled in the process model is compared with the set of activities that follow the prefix. The more the sets are different, the more the precision value is low. The more the sets are similar, the more the precision value is high.
+
     :param log: event log
     :param petri_net: petri net
     :param initial_marking: initial marking
@@ -224,6 +303,13 @@ def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``float``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        precision_alignments = pm4py.precision_alignments(dataframe, net, im, fm, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -267,6 +353,13 @@ def conformance_diagnostics_footprints(*args) -> Union[List[Dict[str, Any]], Dic
 
     :param args: provided arguments (the first argument is supposed to be an event log (or the footprints discovered from the event log); the other arguments are supposed to be the process model (or the footprints discovered from the process model).
     :rtype: ``Union[List[Dict[str, Any]], Dict[str, Any]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        footprints_diagnostics = pm4py.conformance_diagnostics_footprints(dataframe, net, im, fm, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     fp1 = __convert_to_fp(args[0])
     fp2 = __convert_to_fp(args[1:])
@@ -286,6 +379,13 @@ def fitness_footprints(*args) -> Dict[str, float]:
 
     :param args: provided arguments (the first argument is supposed to be an event log (or the footprints discovered from the event log); the other arguments are supposed to be the process model (or the footprints discovered from the process model).
     :rtype: ``Dict[str, float]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        fitness_fp = pm4py.fitness_footprints(dataframe, net, im, fm, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     fp_conf = conformance_diagnostics_footprints(*args)
     fp1 = __convert_to_fp(args[0])
@@ -301,6 +401,13 @@ def precision_footprints(*args) -> float:
 
     :param args: provided arguments (the first argument is supposed to be an event log (or the footprints discovered from the event log); the other arguments are supposed to be the process model (or the footprints discovered from the process model).
     :rtype: ``float``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        precision_fp = pm4py.precision_footprints(dataframe, net, im, fm, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     fp1 = __convert_to_fp(args[0])
     fp2 = __convert_to_fp(args[1:])
@@ -428,6 +535,13 @@ def conformance_temporal_profile(log: Union[EventLog, pd.DataFrame], temporal_pr
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``List[List[Tuple[float, float, float, float]]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        temporal_profile = pm4py.discover_temporal_profile(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        conformance_temporal_profile = pm4py.conformance_temporal_profile(dataframe, temporal_profile, zeta=1, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -472,6 +586,13 @@ def conformance_log_skeleton(log: Union[EventLog, pd.DataFrame], log_skeleton: D
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``List[Set[Any]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log_skeleton = pm4py.discover_log_skeleton(dataframe, noise_threshold=0.1, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        conformance_lsk = pm4py.conformance_log_skeleton(dataframe, log_skeleton, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
