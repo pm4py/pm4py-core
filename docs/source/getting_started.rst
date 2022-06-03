@@ -53,10 +53,6 @@ Importing Your First Event Log
 ----------------------------
 In this section, we explain how to import (and export) event data in PM4Py. We assume that you are familiar with the conceptual basics of process mining, i.e., as described in the previous section.
 
-.. raw:: html
-
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/pmpN3A_h2sQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 File Types: CSV and XES
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 As explained in the previous section, process mining exploits Event Logs to generate knowledge of a process. A wide variety of information systems, e.g., SAP, ORACLE, SalesForce, etc., allow us to extract, in one way or the other, event logs similar to the example event log presented in Table 1 and Table 2. All the examples we show in this section and all algorithms implemented in pm4py assume that we have already extracted the event data into an appropriate event log format. Hence, the core of pm4py does not support any data extraction features. However, we provide solutions for data extraction purposes, i.e., please inspect the corresponding `solutions page <https://pm4py.fit.fraunhofer.de/solution-connectors>`_.
@@ -81,6 +77,10 @@ Before we go into loading the example file into PM4Py, let us briefly take a loo
 
 Loading CSV Files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/bWOKVx0PO6g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Given that we have familiarized ourselves with event logs and a way to represent event logs in a CSV file, it is time to start doing some process mining! We are going to load the event data, and, we are going to count how many cases are present in the event log, as well as the number of events. Note that, for all this, we are effectively using a third-party library called `pandas <https://pandas.pydata.org>`_. We do so because pandas is the de-facto standard of loading/manipulating csv-based data. Hence, *any process mining algorithm implemented in PM4Py, using an event log as an input, can work directly with a pandas file!*
 
@@ -130,6 +130,10 @@ PM4Py exploits a built-in pandas function to detect the format of the timestamps
 Loading XES Files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. raw:: html
+
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/pmpN3A_h2sQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 Next to CSV files, event data can also be stored in an XML-based format, i.e., in XES files. In an XES file, we can describe a containment relation, i.e., a log contains a number of traces, which in turn contain several events. Furthermore, an object, i.e., a log, trace, or event, is allowed to have attributes. The advantage is that certain data attributes that are constant for a log or a trace, can be stored at that level. For example, assume that we only know the total costs of a case, rather than the costs of the individual events. If we want to store this information in a CSV file, we either need to replicate this information (i.e., we can only store data in rows, which directly refer to events), or, we need to explicitly define that certain columns only get a value once, i.e., referring to case-level attributes. The XES standard more naturally supports the storage of this type of information.
 
 Consider Figure 5, in which we depict a snapshot of the running example data stored in the .xes file format. The complete file can be downloaded
@@ -153,6 +157,11 @@ Importing an XES file is fairly straightforward. PM4Py has a special **read_xes(
 
 Exporting Event Data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/gVnfG6xLIxI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 Now we are able to import event data into PM4Py, let’s take a look at the opposite, i.e., exporting event data. Exporting of event logs can be very useful, e.g., we might want to convert a .csv file into a .xes file or we might want to filter out certain (noisy) cases and save the filtered event log. Like importing, exporting of event data is possible in two ways, i.e., exporting to csv (using pandas) and exporting to xes. In the upcoming sections, we show how to export an event log stored as a pandas data frame into a csv file, a pandas data frame as a xes file, a PM4Py event log object as a csv file and finally, a PM4Py event log object as a xes file.
 
@@ -211,6 +220,10 @@ Storing an event log object as a .xes file is rather straightforward. In pm4py, 
 
 Pre-Built Event Log Filters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/alkZkhK2mAo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 There are various pre-built filters in PM4Py, which make commonly needed process mining filtering functionality a lot easier. In the upcoming list, we briefly give an overview of these functions. We describe how to call them, their main input parameters and their return objects.
 
@@ -274,12 +287,18 @@ Discovering Your First Process Model
 
 Since we have studied basic conceptual knowledge of process mining and event data munging and crunching, we focus on process discovery. As indicated, the goal is to discover, i.e., primarily completely automated and algorithmically, a process model that accurately describes the process, i.e., as observed in the event data. For example, given the running example event data, we aim to discover the process model that we have used to explain the running example's process behavior, i.e., Figure 3. This section briefly explains what modeling formalisms exist in PM4Py while applying different process discovery algorithms. Secondly, we give an overview of the implemented process discovery algorithms, their output type(s), and how we can invoke them. Finally, we discuss the challenges of applying process discovery in practice.
 
+.. raw:: html
+
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/BJMp763Ye_o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 Obtaining a Process Model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There are three different process modeling notations that are currently supported in PM4Py. These notations are: BPMN, i.e., models such as the ones shown earlier in this tutorial, Process Trees and Petri nets. A Petri net is a more mathematical modeling representation compared to BPMN. Often the behavior of a Petri net is more difficult to comprehend compared to BPMN models. However, due to their mathematical nature, Petri nets are typically less ambiguous (i.e., confusion about their described behavior is not possible). Process Trees represent a strict subset of Petri nets and describe process behavior in a hierarchical manner. In this tutorial, we will focus primarily on BPMN models and process trees. For more information about Petri nets and their application to (business) process modeling (from a ‘workflow’ perspective), we refer to this article.
+There are three different process modeling notations that are currently supported in PM4Py. These notations are: BPMN, i.e., models such as the ones shown earlier in this tutorial, Process Trees and Petri nets. A Petri net is a more mathematical modeling representation compared to BPMN. Often the behavior of a Petri net is more difficult to comprehend compared to BPMN models. However, due to their mathematical nature, Petri nets are typically less ambiguous (i.e., confusion about their described behavior is not possible). Process Trees represent a strict subset of Petri nets and describe process behavior in a hierarchical manner. In this tutorial, we will focus primarily on BPMN models and process trees. For more information about Petri nets and their application to (business) process modeling (from a ‘workflow’ perspective), we refer to
+`this article <https://www.researchgate.net/profile/Wil_Aalst/publication/220337578_The_Application_of_Petri_Nets_to_Workflow_Management/links/0deec517a563a45197000000/The-Application-of-Petri-Nets-to-Workflow-Management.pdf?_sg%5B0%5D=2TrqDbNsoZEr67XgOwI_9qxtlO_S1HJFHn8edW7aE0fMWzmsY0D1GhrsbRXdtZhTLvQ1KcSm9pkLzooDMl-eRg.DhnNamQg4EvK8MAwucwkB1VDke7eNq0E4jxMAa2IMXXZtvr9k1PPiwZpQEt1Z2iqkdkN-SOlWyjFloP-BivLow&_sg%5B1%5D=XeHToX2_7feAtM6yO395-HEYttSzdWJeiLaGlD_7Dn3hRXYnVXya0-dHm5RWmjX22gF3ton7d7FSzF6FjL_NYZCQzRvJuPg4zPWnk_HCe0xj.DhnNamQg4EvK8MAwucwkB1VDke7eNq0E4jxMAa2IMXXZtvr9k1PPiwZpQEt1Z2iqkdkN-SOlWyjFloP-BivLow&_iepl=>`_.
 
-Interestingly, none of the algorithms implemented in PM4Py directly discovers a BPMN model. However, any process tree can easily be translated to a BPMN model. Since we have already discussed the basic operators of BPMN models, we will start with the discovery of a process tree, which we convert to a BPMN model. Later, we will study the ‘underlying’ process tree. The algorithm that we are going to use is the ‘Inductive Miner’; More details about the (inner workings of the) algorithm can be found in this presentation and in this article. Consider the following code snippet. We discover a BPMN model (using a conversion from process tree to BPMN) using the inductive miner, based on the running example event data set.
+Interestingly, none of the algorithms implemented in PM4Py directly discovers a BPMN model. However, any process tree can easily be translated to a BPMN model. Since we have already discussed the basic operators of BPMN models, we will start with the discovery of a process tree, which we convert to a BPMN model. Later, we will study the ‘underlying’ process tree. The algorithm that we are going to use is the ‘Inductive Miner’; More details about the (inner workings of the) algorithm can be found in
+`this presentation <http://www.processmining.org/_media/presentations/2013/petri_nets.pptx>`_ and in `this article <http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.396.197&rep=rep1&type=pdf>`_. Consider the following code snippet. We discover a BPMN model (using a conversion from process tree to BPMN) using the inductive miner, based on the running example event data set.
 
 .. code-block:: python3
 
@@ -291,14 +310,16 @@ Interestingly, none of the algorithms implemented in PM4Py directly discovers a 
     pm4py.view_bpmn(bpmn_model)
 
 
+Note that the resulting process model is the following image:
 
 .. image:: https://pm4py.fit.fraunhofer.de/static/assets/images/getting_started/bpmn_inductive_running_example.png
 
-Note that the resulting process model is the following image:
+*Figure 6: BPMN model discovered based on the running example event data set, using the Inductive Miner implementation of PM4Py.*
 
 Observe that the process model that we discovered, is indeed the same model as the model that we have used before, i.e., as shown in Figure 3.
 
-As indicated, the algorithm used in this example actually discovers a Process Tree. Such a process tree is, mathematically speaking, a rooted tree annotated with ‘control-flow’ information. We’ll first use the following code snippet to discover a process tree based on the running example, and, afterwards shortly analyze the model.
+As indicated, the algorithm used in this example actually discovers a Process Tree. Such a process tree is, mathematically speaking, a
+`rooted tree <https://en.wikipedia.org/wiki/Tree_(graph_theory)>`_ annotated with ‘control-flow’ information. We’ll first use the following code snippet to discover a process tree based on the running example, and, afterwards shortly analyze the model.
 
 .. code-block:: python3
 
@@ -311,12 +332,14 @@ As indicated, the algorithm used in this example actually discovers a Process Tr
 
 .. image:: https://pm4py.fit.fraunhofer.de/static/assets/images/getting_started/process_tree_running_example.png
 
+*Figure 7: Process Tree model discovered based on the running example event data set, using the Inductive Miner implementation of PM4Py.*
+
 We the process tree model from top to bottom. The first circle, i.e., the ‘root’ of the process tree, describes a ‘->’ symbol. This means that, when srolling further down, the process described by the model executes the ‘children’ of the root from left to right. Hence, first “register request” is executed, followed by the circle node with the ‘*’ symbol, finally to be followed by the node with the ‘X’ symbol. The node with the ‘*’ represents ‘repeated behavior’, i.e., the possibility to repeat the behavior. When scrolling further down, the left-most ‘subtree’ of the ‘*’-operator is always executed, the right-most child (in this case, “reinitiate request”) triggers a repeated execution of the left-most child. Observe that this is in line with the process models we have seen before, i.e., the “reinitiate request” activity allows us to repeat the behavior regarding examinations and checking the ticket. When we go further down below in the subtree of the ‘*’-operator, we again observe a ‘->’ node. Hence, its left-most child is executed first, followed by its right-most child (“decide”). The left-most child of the ‘->’ node has a ‘+’ symbol. This represents concurrent behavior; hence, its children can be executed simultaneously or in any order. Its left-most child is the “check ticket” activity. Its right-most child is a node with an ‘X’ symbol (just like the right-most child of the tree's root). This represents an exclusive choice, i.e., one of the children is executed (either “examine casually” or “examine thoroughly”). Observe that the process tree describes the exact same behavior as the BPMN models shown before.
 
 Obtaining a Process Map
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Many commercial process mining solutions do not provide extended support for discovering process models. Often, as a main visualization of processes, process maps are used. A process map contains activities and connections (by means of arcs) between them. A connection between two activities usually means that there some form of precedence relation. In its simplest form, it means that the ‘source’ activity directly precedes the ‘target’ activity. Let’s quickly take a look at a concrete example! Consider the following code snippet, in which we learn a ‘Directly Follows Graph’ (DFG)-based process map:
+Many `commercial process mining solutions <https://www.gartner.com/reviews/market/process-mining>`_ do not provide extended support for discovering process models. Often, as a main visualization of processes, process maps are used. A process map contains activities and connections (by means of arcs) between them. A connection between two activities usually means that there some form of precedence relation. In its simplest form, it means that the ‘source’ activity directly precedes the ‘target’ activity. Let’s quickly take a look at a concrete example! Consider the following code snippet, in which we learn a ‘Directly Follows Graph’ (DFG)-based process map:
 
 .. code-block:: python3
 
@@ -330,9 +353,11 @@ Many commercial process mining solutions do not provide extended support for dis
 
 .. image:: https://pm4py.fit.fraunhofer.de/static/assets/images/getting_started/dfg_running_example.png
 
-The pm4py.discover_dfg(log) function returns a triple. The first result, i.e., called dfg in this example, is a dictionary mapping pairs of activities that follow each other directly, to the number of corresponding observations. The second and third arguments are the start and end activities observed in the event log (again counters). In the visualization, the green circle represents the start of any observed process instance. The orange circle represents the end of an observed process instance. In 6 cases, the register request is the first activity observed (represented by the arc labeled with value 6). In the event log, the check ticket activity is executed directly after the register request activity. The examine thoroughly activity is following registration once, examine casually follows 3 times. Note that, indeed, in total, the register activity is followed by 6 different events, i.e., there are 6 traces in the running example event log. However, note that there are typically much more relations observable compared to the number of cases in an event log. Even using this simple event data, the DFG-based process map of the process is much more complex than the process models learned earlier. Furthermore, it is much more difficult to infer the actual execution of the process based on the process map. Hence, when using process maps, one should be very carefully when trying to comprehend the actual process.
+*Figure 8: Process Map (DFG-based) discovered based on the running example event data set.*
 
-In PM4Py, we also implemented the Heuristics Miner, a more advanced process map discovery algorithm, compared to its DFG-based alternative. We won’t go into the algorithmic details here, however, in a HM-based process map, the arcs between activities represent observed concurrency. For example, the algorithm is able to detect that the ticket check and examination are concurrent. Hence, these activities will not be connected in the process map. As such, a HM-based process map is typically simpler compared to a DFG-based process map.
+The **pm4py.discover_dfg(log)** function returns a triple. The first result, i.e., called dfg in this example, is a dictionary mapping pairs of activities that follow each other directly, to the number of corresponding observations. The second and third arguments are the start and end activities observed in the event log (again counters). In the visualization, the green circle represents the start of any observed process instance. The orange circle represents the end of an observed process instance. In 6 cases, the register request is the first activity observed (represented by the arc labeled with value 6). In the event log, the check ticket activity is executed directly after the register request activity. The examine thoroughly activity is following registration once, examine casually follows 3 times. Note that, indeed, in total, the register activity is followed by 6 different events, i.e., there are 6 traces in the running example event log. However, note that there are typically much more relations observable compared to the number of cases in an event log. Even using this simple event data, the DFG-based process map of the process is much more complex than the process models learned earlier. Furthermore, it is much more difficult to infer the actual execution of the process based on the process map. Hence, when using process maps, one should be very carefully when trying to comprehend the actual process.
+
+In PM4Py, we also implemented the `Heuristics Miner <https://ieeexplore.ieee.org/iel5/5937059/5949295/05949453.pdf>`_, a more advanced process map discovery algorithm, compared to its DFG-based alternative. We won’t go into the algorithmic details here, however, in a HM-based process map, the arcs between activities represent observed concurrency. For example, the algorithm is able to detect that the ticket check and examination are concurrent. Hence, these activities will not be connected in the process map. As such, a HM-based process map is typically simpler compared to a DFG-based process map.
 
 .. code-block:: python3
 
@@ -344,3 +369,5 @@ In PM4Py, we also implemented the Heuristics Miner, a more advanced process map 
 
 
 .. image:: https://pm4py.fit.fraunhofer.de/static/assets/images/getting_started/hnet_running_example.png
+
+*Figure 9: Process Map (HM-based) discovered based on the running example event data set.*
