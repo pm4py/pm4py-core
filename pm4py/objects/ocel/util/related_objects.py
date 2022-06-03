@@ -19,5 +19,11 @@ def related_objects_dct_overall(ocel: OCEL, parameters: Optional[Dict[Any, Any]]
     if parameters is None:
         parameters = {}
 
+    evids = set(ocel.events[ocel.event_id_column].unique())
     dct = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].apply(list).to_dict()
+
+    for evid in evids:
+        if evid not in dct:
+            dct[evid] = []
+
     return dct
