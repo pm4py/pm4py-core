@@ -27,6 +27,8 @@ def get_xml_string(bpmn_graph, parameters=None):
     if parameters is None:
         parameters = {}
 
+    layout = bpmn_graph.get_layout()
+
     import xml.etree.ElementTree as ET
     from xml.dom import minidom
 
@@ -64,9 +66,9 @@ def get_xml_string(bpmn_graph, parameters=None):
         node_shape = ET.SubElement(process_planes[process], "bpmndi:BPMNShape",
                                    {"bpmnElement": node.get_id(), "id": node.get_id() + "_gui"})
         node_shape_layout = ET.SubElement(node_shape, "omgdc:Bounds",
-                                          {"height": str(node.get_height()), "width": str(node.get_width()),
-                                           "x": str(node.get_x()),
-                                           "y": str(node.get_y())})
+                                          {"height": str(layout.get(node).get_height()), "width": str(layout.get(node).get_width()),
+                                           "x": str(layout.get(node).get_x()),
+                                           "y": str(layout.get(node).get_y())})
 
     for flow in bpmn_graph.get_flows():
         process = flow.get_process()
@@ -74,7 +76,7 @@ def get_xml_string(bpmn_graph, parameters=None):
         flow_shape = ET.SubElement(process_planes[process], "bpmndi:BPMNEdge",
                                    {"bpmnElement": "id" + str(flow.get_id()),
                                     "id": "id" + str(flow.get_id()) + "_gui"})
-        for x, y in flow.get_waypoints():
+        for x, y in layout.get(flow).get_waypoints():
             waypoint = ET.SubElement(flow_shape, "omgdi:waypoint", {"x": str(x), "y": str(y)})
 
     for node in bpmn_graph.get_nodes():
