@@ -5,7 +5,7 @@ The ``pm4py.vis`` module contains the visualizations offered in ``pm4py``
 import os
 from copy import copy
 from typing import Optional
-from typing import Union, List, Dict, Any, Tuple
+from typing import Union, List, Dict, Any, Tuple, Set
 
 import pandas as pd
 
@@ -18,6 +18,7 @@ from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_data
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.objects.transition_system.obj import TransitionSystem
 from pm4py.objects.trie.obj import Trie
+from pm4py.objects.ocel.obj import OCEL
 import deprecation
 
 
@@ -1033,3 +1034,47 @@ def save_vis_prefix_tree(trie: Trie, file_path: str):
     from pm4py.visualization.trie import visualizer as trie_visualizer
     gviz = trie_visualizer.apply(trie, parameters={"format": format})
     trie_visualizer.save(gviz, file_path)
+
+
+def view_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], format: str = "png"):
+    """
+    Visualizes an object graph on the screen
+
+    :param ocel: object-centric event log
+    :param graph: object graph
+    :param format: format of the visualization (png, svg, ...)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        obj_graph = pm4py.ocel_discover_objects_graph(ocel, graph_type='object_interaction')
+        pm4py.view_object_graph(ocel, obj_graph, format='svg')
+    """
+    from pm4py.visualization.ocel.object_graph import visualizer as obj_graph_vis
+    gviz = obj_graph_vis.apply(ocel, graph, parameters={"format": format})
+    obj_graph_vis.view(gviz)
+
+
+def save_vis_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], file_path: str):
+    """
+    Saves the visualization of an object graph
+
+    :param ocel: object-centric event log
+    :param graph: object graph
+    :param file_path: Destination path
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        obj_graph = pm4py.ocel_discover_objects_graph(ocel, graph_type='object_interaction')
+        pm4py.save_vis_object_graph(ocel, obj_graph, 'trial.pdf')
+    """
+    file_path = str(file_path)
+    format = os.path.splitext(file_path)[1][1:]
+    from pm4py.visualization.ocel.object_graph import visualizer as obj_graph_vis
+    gviz = obj_graph_vis.apply(ocel, graph, parameters={"format": format})
+    obj_graph_vis.save(gviz, file_path)
