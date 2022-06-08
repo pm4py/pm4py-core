@@ -112,31 +112,32 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
     # Instead of using the length of the trace, use the sum of the trace cost function
     trace_cost_function_sum = sum(trace_cost_function)
 
-    ltrace_bwc = trace_cost_function_sum + best_worst_cost
+    if ali is not None and best_worst_cost is not None:
+        ltrace_bwc = trace_cost_function_sum + best_worst_cost
 
-    fitness_num = ali['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST
-    fitness_den = ltrace_bwc // align_utils.STD_MODEL_LOG_MOVE_COST
-    fitness = 1 - fitness_num / fitness_den if fitness_den > 0 else 0
+        fitness_num = ali['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST
+        fitness_den = ltrace_bwc // align_utils.STD_MODEL_LOG_MOVE_COST
+        fitness = 1 - fitness_num / fitness_den if fitness_den > 0 else 0
 
-    # other possibility: avoid integer division but proceed to rounding.
-    # could lead to small differences with respect to the adopted-since-now fitness
-    # (since it is rounded)
+        # other possibility: avoid integer division but proceed to rounding.
+        # could lead to small differences with respect to the adopted-since-now fitness
+        # (since it is rounded)
 
-    """
-    initial_trace_cost_function = exec_utils.get_param_value(Parameters.PARAM_TRACE_COST_FUNCTION, parameters, None)
-    initial_model_cost_function = exec_utils.get_param_value(Parameters.PARAM_MODEL_COST_FUNCTION, parameters, None)
-    initial_sync_cost_function = exec_utils.get_param_value(Parameters.PARAM_SYNC_COST_FUNCTION, parameters, None)
-    uses_standard_cost_function = initial_trace_cost_function is None and initial_model_cost_function is None and \
-                                initial_sync_cost_function is None
-        
-    fitness = 1 - ali['cost'] / ltrace_bwc if ltrace_bwc > 0 else 0
-    fitness_round_digits = exec_utils.get_param_value(Parameters.FITNESS_ROUND_DIGITS, parameters, 3)
-    fitness = round(fitness, fitness_round_digits)
-    """
+        """
+        initial_trace_cost_function = exec_utils.get_param_value(Parameters.PARAM_TRACE_COST_FUNCTION, parameters, None)
+        initial_model_cost_function = exec_utils.get_param_value(Parameters.PARAM_MODEL_COST_FUNCTION, parameters, None)
+        initial_sync_cost_function = exec_utils.get_param_value(Parameters.PARAM_SYNC_COST_FUNCTION, parameters, None)
+        uses_standard_cost_function = initial_trace_cost_function is None and initial_model_cost_function is None and \
+                                    initial_sync_cost_function is None
+            
+        fitness = 1 - ali['cost'] / ltrace_bwc if ltrace_bwc > 0 else 0
+        fitness_round_digits = exec_utils.get_param_value(Parameters.FITNESS_ROUND_DIGITS, parameters, 3)
+        fitness = round(fitness, fitness_round_digits)
+        """
 
-    ali["fitness"] = fitness
-    # returning also the best worst cost, for log fitness computation
-    ali["bwc"] = ltrace_bwc
+        ali["fitness"] = fitness
+        # returning also the best worst cost, for log fitness computation
+        ali["bwc"] = ltrace_bwc
 
     return ali
 

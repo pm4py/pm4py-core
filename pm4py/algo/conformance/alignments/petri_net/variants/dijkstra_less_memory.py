@@ -80,7 +80,10 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=No
 
     best_worst = apply(trace, petri_net, initial_marking, final_marking, parameters=parameters)
 
-    return best_worst['cost']
+    if best_worst is not None:
+        return best_worst['cost']
+
+    return None
 
 
 def apply_from_variants_list_petri_string(var_list, petri_net_string, parameters=None):
