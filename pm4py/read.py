@@ -8,6 +8,7 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 
 from pandas import DataFrame
+import pkgutil
 
 INDEX_COLUMN = "@@index"
 
@@ -31,7 +32,9 @@ def read_xes(file_path: str, variant: str = "iterparse", **kwargs) -> DataFrame:
         log = pm4py.read_xes("<path_to_xes_file>")
     """
     from pm4py.objects.log.importer.xes import importer as xes_importer
-    v = xes_importer.Variants.ITERPARSE
+    v = xes_importer.Variants.LINE_BY_LINE
+    if pkgutil.find_loader("lxml"):
+        v = xes_importer.Variants.ITERPARSE
     if variant == "iterparse_20":
         v = xes_importer.Variants.ITERPARSE_20
     elif variant == "iterparse_mem_compressed":
