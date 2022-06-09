@@ -9,6 +9,10 @@
     OCEL - Added some filters in the simplified interface
 * 40c741c8298584402cd9ea8e86bcca09f2bfd857
     OCEL - Method to get a temporal description of an object-centric log
+* d63929cc36b1aba941f88efac05af3b25a384787
+    OCEL - method for objects summary
+* fdd87eb41e54ce8d179ae3030fd9e15ea74320e8
+    OCEL - expansion of the set of objects during filtering on object identifiers
 
 ### Changed
 * f6b7714eaf79e1c57e4283163a51631f0ea8d964
