@@ -978,6 +978,39 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         pm4py.save_vis_events_distribution_graph(dataframe, target, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
         os.remove(target)
 
+    def test_ocel_object_graph(self):
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        ev_graph = pm4py.discover_objects_graph(ocel, graph_type="object_interaction")
+        ev_graph = pm4py.discover_objects_graph(ocel, graph_type="object_descendants")
+        ev_graph = pm4py.discover_objects_graph(ocel, graph_type="object_inheritance")
+        ev_graph = pm4py.discover_objects_graph(ocel, graph_type="object_cobirth")
+        ev_graph = pm4py.discover_objects_graph(ocel, graph_type="object_codeath")
+
+    def test_ocel_temporal_summary(self):
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        temp_summary = pm4py.ocel_temporal_summary(ocel)
+
+    def test_ocel_objects_summary(self):
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        objects_summary = pm4py.ocel_objects_summary(ocel)
+
+    def test_ocel_filtering_ev_ids(self):
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        filtered_ocel = pm4py.filter_ocel_events(ocel, ["e1"])
+
+    def test_ocel_filtering_obj_ids(self):
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        filtered_ocel = pm4py.filter_ocel_objects(ocel, ["o1"], level=1)
+        filtered_ocel = pm4py.filter_ocel_objects(ocel, ["o1"], level=2)
+
+    def test_ocel_filtering_obj_types(self):
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        filtered_ocel = pm4py.filter_ocel_object_types(ocel, ["order"])
+
+    def test_ocel_filtering_cc(self):
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        filtered_ocel = pm4py.filter_ocel_cc_object(ocel, "o1")
+
 
 if __name__ == "__main__":
     unittest.main()

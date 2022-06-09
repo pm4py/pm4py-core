@@ -39,6 +39,10 @@ def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str, case_id_key: s
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, case_id_key=case_id_key)
 
+    file_path = str(file_path)
+    if not (file_path.lower().endswith("xes") or file_path.lower().endswith("xes.gz")):
+        file_path = file_path + ".xes"
+
     parameters = {}
     for k, v in kwargs.items():
         parameters[k] = v
@@ -64,6 +68,10 @@ def write_pnml(petri_net: PetriNet, initial_marking: Marking, final_marking: Mar
 
         log = pm4py.write_pnml(pn, im, fm, '<path_to_export_to>')
     """
+    file_path = str(file_path)
+    if not file_path.lower().endswith("pnml"):
+        file_path = file_path + ".pnml"
+
     from pm4py.objects.petri_net.exporter import exporter as petri_exporter
     petri_exporter.apply(petri_net, initial_marking, file_path, final_marking=final_marking)
 
@@ -81,6 +89,10 @@ def write_ptml(tree: ProcessTree, file_path: str) -> None:
 
         log = pm4py.write_ptml(tree, '<path_to_export_to>')
     """
+    file_path = str(file_path)
+    if not file_path.lower().endswith("ptml"):
+        file_path = file_path + ".ptml"
+
     from pm4py.objects.process_tree.exporter import exporter as tree_exporter
     tree_exporter.apply(tree, file_path)
 
@@ -100,6 +112,10 @@ def write_dfg(dfg: Dict[Tuple[str,str],int], start_activities:  Dict[str,int], e
 
         log = pm4py.write_dfg(dfg, sa, ea, '<path_to_export_to>')
     """
+    file_path = str(file_path)
+    if not file_path.lower().endswith("dfg"):
+        file_path = file_path + ".dfg"
+
     from pm4py.objects.dfg.exporter import exporter as dfg_exporter
     dfg_exporter.apply(dfg, file_path,
                        parameters={dfg_exporter.Variants.CLASSIC.value.Parameters.START_ACTIVITIES: start_activities,
@@ -120,6 +136,10 @@ def write_bpmn(model: BPMN, file_path: str, auto_layout: bool = True):
 
         log = pm4py.write_bpmn(model, '<path_to_export_to>')
     """
+    file_path = str(file_path)
+    if not file_path.lower().endswith("bpmn"):
+        file_path = file_path + ".bpmn"
+
     if auto_layout:
         from pm4py.objects.bpmn.layout import layouter
         model = layouter.apply(model)
@@ -143,6 +163,8 @@ def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
 
         log = pm4py.write_ocel(ocel, '<path_to_export_to>')
     """
+    file_path = str(file_path)
+
     if file_path.lower().endswith("csv"):
         from pm4py.objects.ocel.exporter.csv import exporter as csv_exporter
         return csv_exporter.apply(ocel, file_path, objects_path=objects_path)
@@ -170,6 +192,10 @@ def write_ocel_csv(ocel: OCEL, file_path: str, objects_path: str):
 
         log = pm4py.write_ocel_csv(ocel, '<path_to_export_events_to>', '<path_to_export_objects_to>')
     """
+    file_path = str(file_path)
+    if not file_path.lower().endswith("csv"):
+        file_path = file_path + ".csv"
+
     from pm4py.objects.ocel.exporter.csv import exporter as csv_exporter
     return csv_exporter.apply(ocel, file_path, objects_path=objects_path)
 
@@ -187,6 +213,10 @@ def write_ocel_json(ocel: OCEL, file_path: str):
 
         log = pm4py.write_ocel_json(ocel, '<path_to_export_to>')
     """
+    file_path = str(file_path)
+    if not file_path.lower().endswith("jsonocel"):
+        file_path = file_path + ".jsonocel"
+
     from pm4py.objects.ocel.exporter.jsonocel import exporter as jsonocel_exporter
     return jsonocel_exporter.apply(ocel, file_path)
 
@@ -204,5 +234,9 @@ def write_ocel_xml(ocel: OCEL, file_path: str):
 
         log = pm4py.write_ocel_xml(ocel, '<path_to_export_to>')
     """
+    file_path = str(file_path)
+    if not file_path.lower().endswith("xmlocel"):
+        file_path = file_path + ".xmlocel"
+
     from pm4py.objects.ocel.exporter.xmlocel import exporter as xmlocel_exporter
     return xmlocel_exporter.apply(ocel, file_path)
