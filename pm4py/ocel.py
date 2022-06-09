@@ -122,6 +122,40 @@ def ocel_temporal_summary(ocel: OCEL) -> pd.DataFrame:
     return temporal_summary
 
 
+def ocel_objects_summary(ocel: OCEL) -> pd.DataFrame:
+    """
+    Gets the objects summary of an object-centric event log
+
+    :param ocel: object-centric event log
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        objects_summary = pm4py.ocel_objects_summary(ocel)
+    """
+    gdf = ocel.relations.groupby(ocel.object_id_column)
+    act_comb = gdf[ocel.event_activity].agg(list).to_frame().rename(columns={ocel.event_activity: "activities_lifecycle"})
+    lif_start_tim = gdf[ocel.event_timestamp].min().to_frame().rename(columns={ocel.event_timestamp: "lifecycle_start"})
+    lif_end_tim = gdf[ocel.event_timestamp].max().to_frame().rename(columns={ocel.event_timestamp: "lifecycle_end"})
+    objects_summary = act_comb.join(lif_start_tim)
+    objects_summary = objects_summary.join(lif_end_tim)
+    objects_summary = objects_summary.reset_index()
+    objects_summary["lifecycle_duration"] = (objects_summary["lifecycle_end"] - objects_summary["lifecycle_start"]).astype('timedelta64[s]')
+    ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].apply(list).to_dict()
+    objects_ids = set(ocel.objects[ocel.object_id_column].unique())
+    graph = {o: set() for o in objects_ids}
+    for ev in ev_rel_obj:
+        rel_obj = ev_rel_obj[ev]
+        for o1 in rel_obj:
+            for o2 in rel_obj:
+                if o1 != o2:
+                    graph[o1].add(o2)
+    objects_summary["interacting_objects"] = objects_summary[ocel.object_id_column].map(graph)
+    return objects_summary
+
+
 def discover_ocdfg(ocel: OCEL, business_hours=False, worktiming=[7, 17], weekends=[6, 7]) -> Dict[str, Any]:
     """
     Discovers an OC-DFG from an object-centric event log.
