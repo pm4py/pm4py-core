@@ -5,7 +5,7 @@ The ``pm4py.vis`` module contains the visualizations offered in ``pm4py``
 import os
 from copy import copy
 from typing import Optional
-from typing import Union, List, Dict, Any, Tuple
+from typing import Union, List, Dict, Any, Tuple, Set
 
 import pandas as pd
 
@@ -18,6 +18,7 @@ from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_data
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.objects.transition_system.obj import TransitionSystem
 from pm4py.objects.trie.obj import Trie
+from pm4py.objects.ocel.obj import OCEL
 import deprecation
 
 
@@ -72,6 +73,7 @@ def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_mark
         net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
         pm4py.save_vis_petri_net(net, im, fm, 'petri_net.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.petri_net import visualizer as pn_visualizer
     gviz = pn_visualizer.apply(petri_net, initial_marking, final_marking,
@@ -127,6 +129,7 @@ def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: 
         performance_dfg, start_activities, end_activities = pm4py.discover_performance_dfg(dataframe, case_id_key='case:concept:name', activity_key='concept:name', timestamp_key='time:timestamp')
         pm4py.save_vis_performance_dfg(performance_dfg, start_activities, end_activities, 'perf_dfg.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     from pm4py.visualization.dfg.variants import performance as dfg_perf_visualizer
@@ -183,6 +186,7 @@ def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_p
         dfg, start_activities, end_activities = pm4py.discover_dfg(dataframe, case_id_key='case:concept:name', activity_key='concept:name', timestamp_key='time:timestamp')
         pm4py.save_vis_dfg(dfg, start_activities, end_activities, 'dfg.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     dfg_parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
@@ -229,6 +233,7 @@ def save_vis_process_tree(tree: ProcessTree, file_path: str):
         process_tree = pm4py.discover_process_tree_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
         pm4py.save_vis_process_tree(process_tree, 'process_tree.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.process_tree import visualizer as pt_visualizer
     parameters = pt_visualizer.Variants.WO_DECORATION.value.Parameters
@@ -250,6 +255,7 @@ def save_vis_bpmn(bpmn_graph: BPMN, file_path: str):
         bpmn_graph = pm4py.discover_bpmn_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
         pm4py.save_vis_bpmn(bpmn_graph, 'trial.bpmn')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.bpmn import visualizer as bpmn_visualizer
     parameters = bpmn_visualizer.Variants.CLASSIC.value.Parameters
@@ -311,6 +317,7 @@ def save_vis_heuristics_net(heu_net: HeuristicsNet, file_path: str):
         heu_net = pm4py.discover_heuristics_net(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
         pm4py.save_vis_heuristics_net(heu_net, 'heu.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.heuristics_net import visualizer as hn_visualizer
     parameters = hn_visualizer.Variants.PYDOTPLUS.value.Parameters
@@ -413,6 +420,7 @@ def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, at
 
         pm4py.save_vis_dotted_chart(dataframe, 'dotted.png', attributes=['time:timestamp', 'concept:name', 'org:resource'])
     """
+    file_path = str(file_path)
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
@@ -457,6 +465,7 @@ def save_vis_sna(sna_metric, file_path: str):
         metric = pm4py.discover_subcontracting_network(dataframe, resource_key='org:resource', timestamp_key='time:timestamp', case_id_key='case:concept:name')
         pm4py.save_vis_sna(metric, 'sna.png')
     """
+    file_path = str(file_path)
     from pm4py.visualization.sna import visualizer as sna_visualizer
     gviz = sna_visualizer.apply(sna_metric, variant=sna_visualizer.Variants.PYVIS)
     sna_visualizer.save(gviz, file_path)
@@ -509,6 +518,7 @@ def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: 
 
         pm4py.save_vis_case_duration_graph(dataframe, 'duration.png', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
+    file_path = str(file_path)
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
@@ -572,6 +582,7 @@ def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path
 
         pm4py.save_vis_events_per_time_graph(dataframe, 'ev_time.png', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
+    file_path = str(file_path)
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
@@ -649,6 +660,7 @@ def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities
 
         pm4py.save_vis_performance_spectrum(dataframe, ['Act. A', 'Act. C', 'Act. D'], 'perf_spec.png', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
+    file_path = str(file_path)
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
@@ -764,6 +776,7 @@ def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_
 
         pm4py.save_vis_events_distribution_graph(dataframe, 'ev_distr_graph.png', distr_type='days_week', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
+    file_path = str(file_path)
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
@@ -839,6 +852,7 @@ def save_vis_ocdfg(ocdfg: Dict[str, Any], file_path: str, annotation: str = "fre
         ocdfg = pm4py.discover_ocdfg(ocel)
         pm4py.save_vis_ocdfg(ocdfg, 'ocdfg.png', annotation='frequency')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.ocel.ocdfg import visualizer
     from pm4py.visualization.ocel.ocdfg.variants import classic
@@ -887,6 +901,7 @@ def save_vis_ocpn(ocpn: Dict[str, Any], file_path: str):
         ocpn = pm4py.discover_oc_petri_net(ocel)
         pm4py.save_vis_ocpn(ocpn, 'ocpn.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.ocel.ocpn import visualizer as ocpn_visualizer
     gviz = ocpn_visualizer.apply(ocpn, parameters={"format": format})
@@ -933,6 +948,7 @@ def save_vis_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, 
         net_ana = pm4py.discover_network_analysis(dataframe, out_column='case:concept:name', in_column='case:concept:name', node_column_source='org:resource', node_column_target='org:resource', edge_column='concept:name')
         pm4py.save_vis_network_analysis(net_ana, 'net_ana.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.network_analysis import visualizer as network_analysis_visualizer
     variant = network_analysis_visualizer.Variants.PERFORMANCE if variant == "performance" else network_analysis_visualizer.Variants.FREQUENCY
@@ -973,6 +989,7 @@ def save_vis_transition_system(transition_system: TransitionSystem, file_path: s
         transition_system = pm4py.discover_transition_system(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
         pm4py.save_vis_transition_system(transition_system, 'trans_system.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.transition_system import visualizer as ts_visualizer
     gviz = ts_visualizer.apply(transition_system, parameters={"format": format})
@@ -1012,7 +1029,52 @@ def save_vis_prefix_tree(trie: Trie, file_path: str):
         prefix_tree = pm4py.discover_prefix_tree(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
         pm4py.save_vis_prefix_tree(prefix_tree, 'trie.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.trie import visualizer as trie_visualizer
     gviz = trie_visualizer.apply(trie, parameters={"format": format})
     trie_visualizer.save(gviz, file_path)
+
+
+def view_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], format: str = "png"):
+    """
+    Visualizes an object graph on the screen
+
+    :param ocel: object-centric event log
+    :param graph: object graph
+    :param format: format of the visualization (png, svg, ...)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        obj_graph = pm4py.ocel_discover_objects_graph(ocel, graph_type='object_interaction')
+        pm4py.view_object_graph(ocel, obj_graph, format='svg')
+    """
+    from pm4py.visualization.ocel.object_graph import visualizer as obj_graph_vis
+    gviz = obj_graph_vis.apply(ocel, graph, parameters={"format": format})
+    obj_graph_vis.view(gviz)
+
+
+def save_vis_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], file_path: str):
+    """
+    Saves the visualization of an object graph
+
+    :param ocel: object-centric event log
+    :param graph: object graph
+    :param file_path: Destination path
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        obj_graph = pm4py.ocel_discover_objects_graph(ocel, graph_type='object_interaction')
+        pm4py.save_vis_object_graph(ocel, obj_graph, 'trial.pdf')
+    """
+    file_path = str(file_path)
+    format = os.path.splitext(file_path)[1][1:]
+    from pm4py.visualization.ocel.object_graph import visualizer as obj_graph_vis
+    gviz = obj_graph_vis.apply(ocel, graph, parameters={"format": format})
+    obj_graph_vis.save(gviz, file_path)

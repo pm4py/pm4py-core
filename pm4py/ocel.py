@@ -2,7 +2,7 @@ __doc__ = """
 The ``pm4py.ocel`` module contains the object-centric process mining features offered in ``pm4py``
 """
 
-from typing import List, Dict, Collection, Any, Optional
+from typing import List, Dict, Collection, Any, Optional, Set, Tuple
 
 import pandas as pd
 
@@ -100,6 +100,62 @@ def ocel_objects_ot_count(ocel: OCEL) -> Dict[str, Dict[str, int]]:
     return objects_ot_count.get_objects_ot_count(ocel)
 
 
+def ocel_temporal_summary(ocel: OCEL) -> pd.DataFrame:
+    """
+    Returns the ``temporal summary'' from an object-centric event log.
+    The temporal summary aggregates all the events performed in the same timestamp,
+    and reports the set of activities and the involved objects.
+
+    :param ocel: object-centric event log
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        temporal_summary = pm4py.ocel_temporal_summary(ocel)
+    """
+    gdf = ocel.relations.groupby(ocel.event_timestamp)
+    act_comb = gdf[ocel.event_activity].agg(set).to_frame()
+    obj_comb = gdf[ocel.object_id_column].agg(set).to_frame()
+    temporal_summary = act_comb.join(obj_comb).reset_index()
+    return temporal_summary
+
+
+def ocel_objects_summary(ocel: OCEL) -> pd.DataFrame:
+    """
+    Gets the objects summary of an object-centric event log
+
+    :param ocel: object-centric event log
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        objects_summary = pm4py.ocel_objects_summary(ocel)
+    """
+    gdf = ocel.relations.groupby(ocel.object_id_column)
+    act_comb = gdf[ocel.event_activity].agg(list).to_frame().rename(columns={ocel.event_activity: "activities_lifecycle"})
+    lif_start_tim = gdf[ocel.event_timestamp].min().to_frame().rename(columns={ocel.event_timestamp: "lifecycle_start"})
+    lif_end_tim = gdf[ocel.event_timestamp].max().to_frame().rename(columns={ocel.event_timestamp: "lifecycle_end"})
+    objects_summary = act_comb.join(lif_start_tim)
+    objects_summary = objects_summary.join(lif_end_tim)
+    objects_summary = objects_summary.reset_index()
+    objects_summary["lifecycle_duration"] = (objects_summary["lifecycle_end"] - objects_summary["lifecycle_start"]).astype('timedelta64[s]')
+    ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].apply(list).to_dict()
+    objects_ids = set(ocel.objects[ocel.object_id_column].unique())
+    graph = {o: set() for o in objects_ids}
+    for ev in ev_rel_obj:
+        rel_obj = ev_rel_obj[ev]
+        for o1 in rel_obj:
+            for o2 in rel_obj:
+                if o1 != o2:
+                    graph[o1].add(o2)
+    objects_summary["interacting_objects"] = objects_summary[ocel.object_id_column].map(graph)
+    return objects_summary
+
+
 def discover_ocdfg(ocel: OCEL, business_hours=False, worktiming=[7, 17], weekends=[6, 7]) -> Dict[str, Any]:
     """
     Discovers an OC-DFG from an object-centric event log.
@@ -146,3 +202,35 @@ def discover_oc_petri_net(ocel: OCEL) -> Dict[str, Any]:
     """
     from pm4py.algo.discovery.ocel.ocpn import algorithm as ocpn_discovery
     return ocpn_discovery.apply(ocel)
+
+
+def discover_objects_graph(ocel: OCEL, graph_type: str = "object_interaction") -> Set[Tuple[str, str]]:
+    """
+    Discovers an object graph from the provided object-centric event log
+
+    :param ocel: object-centric event log
+    :param graph_type: type of graph to consider (object_interaction, object_descendants, object_inheritance, object_cobirth, object_codeath)
+    :rtype: ``Dict[str, Any]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        obj_graph = pm4py.ocel_discover_objects_graph(ocel, graph_type='object_interaction')
+    """
+    if graph_type == "object_interaction":
+        from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
+        return object_interaction_graph.apply(ocel)
+    elif graph_type == "object_descendants":
+        from pm4py.algo.transformation.ocel.graphs import object_descendants_graph
+        return object_descendants_graph.apply(ocel)
+    elif graph_type == "object_inheritance":
+        from pm4py.algo.transformation.ocel.graphs import object_inheritance_graph
+        return object_inheritance_graph.apply(ocel)
+    elif graph_type == "object_cobirth":
+        from pm4py.algo.transformation.ocel.graphs import object_cobirth_graph
+        return object_cobirth_graph.apply(ocel)
+    elif graph_type == "object_codeath":
+        from pm4py.algo.transformation.ocel.graphs import object_codeath_graph
+        return object_codeath_graph.apply(ocel)
