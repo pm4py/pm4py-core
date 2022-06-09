@@ -100,6 +100,28 @@ def ocel_objects_ot_count(ocel: OCEL) -> Dict[str, Dict[str, int]]:
     return objects_ot_count.get_objects_ot_count(ocel)
 
 
+def ocel_temporal_summary(ocel: OCEL) -> pd.DataFrame:
+    """
+    Returns the ``temporal summary'' from an object-centric event log.
+    The temporal summary aggregates all the events performed in the same timestamp,
+    and reports the set of activities and the involved objects.
+
+    :param ocel: object-centric event log
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        temporal_summary = pm4py.ocel_temporal_summary(ocel)
+    """
+    gdf = ocel.relations.groupby(ocel.event_timestamp)
+    act_comb = gdf[ocel.event_activity].agg(set).to_frame()
+    obj_comb = gdf[ocel.object_id_column].agg(set).to_frame()
+    temporal_summary = act_comb.join(obj_comb).reset_index()
+    return temporal_summary
+
+
 def discover_ocdfg(ocel: OCEL, business_hours=False, worktiming=[7, 17], weekends=[6, 7]) -> Dict[str, Any]:
     """
     Discovers an OC-DFG from an object-centric event log.
