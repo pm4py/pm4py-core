@@ -968,13 +968,14 @@ def filter_ocel_object_types(ocel: OCEL, obj_types: Collection[str], positive: b
     return filtering_utils.propagate_object_filtering(filtered_ocel)
 
 
-def filter_ocel_objects(ocel: OCEL, object_identifiers: Collection[str], positive: bool = True) -> OCEL:
+def filter_ocel_objects(ocel: OCEL, object_identifiers: Collection[str], positive: bool = True, level: int = 1) -> OCEL:
     """
     Filters the object identifiers of an object-centric event log.
 
     :param ocel: object-centric event log
     :param object_identifiers: object identifiers to keep/remove
     :param positive: boolean value (True=keep, False=remove)
+    :param level: recursively expand the set of object identifiers until the specified level
     :rtype: ``OCEL``
 
     .. code-block:: python3
@@ -982,8 +983,24 @@ def filter_ocel_objects(ocel: OCEL, object_identifiers: Collection[str], positiv
         import pm4py
 
         ocel = pm4py.read_ocel('log.jsonocel')
-        filtered_ocel = pm4py.filter_ocel_objects(ocel, ['o1'])
+        filtered_ocel = pm4py.filter_ocel_objects(ocel, ['o1'], level=1)
     """
+    object_identifiers = set(object_identifiers)
+    if level > 1:
+        ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].apply(list).to_dict()
+        objects_ids = set(ocel.objects[ocel.object_id_column].unique())
+        graph = {o: set() for o in objects_ids}
+        for ev in ev_rel_obj:
+            rel_obj = ev_rel_obj[ev]
+            for o1 in rel_obj:
+                for o2 in rel_obj:
+                    if o1 != o2:
+                        graph[o1].add(o2)
+        while level > 1:
+            curr = list(object_identifiers)
+            for el in curr:
+                object_identifiers = object_identifiers.union(graph[el])
+            level = level - 1
     from copy import copy
     from pm4py.objects.ocel.util import filtering_utils
     filtered_ocel = copy(ocel)
