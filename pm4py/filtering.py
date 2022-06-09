@@ -940,3 +940,104 @@ def filter_activity_done_different_resources(log: Union[EventLog, pd.DataFrame],
     else:
         from pm4py.algo.filtering.log.ltl import ltl_checker
         return ltl_checker.attr_value_different_persons(log, activity, parameters=properties)
+
+
+def filter_ocel_object_types(ocel: OCEL, obj_types: Collection[str], positive: bool = True) -> OCEL:
+    """
+    Filters the object types of an object-centric event log.
+
+    :param ocel: object-centric event log
+    :param obj_types: object types to keep/remove
+    :param positive: boolean value (True=keep, False=remove)
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('log.jsonocel')
+        filtered_ocel = pm4py.filter_ocel_object_types(ocel, ['order'])
+    """
+    from copy import copy
+    from pm4py.objects.ocel.util import filtering_utils
+    filtered_ocel = copy(ocel)
+    if positive:
+        filtered_ocel.objects = filtered_ocel.objects[filtered_ocel.objects[filtered_ocel.object_type_column].isin(obj_types)]
+    else:
+        filtered_ocel.objects = filtered_ocel.objects[~filtered_ocel.objects[filtered_ocel.object_type_column].isin(obj_types)]
+    return filtering_utils.propagate_object_filtering(filtered_ocel)
+
+
+def filter_ocel_objects(ocel: OCEL, object_identifiers: Collection[str], positive: bool = True) -> OCEL:
+    """
+    Filters the object identifiers of an object-centric event log.
+
+    :param ocel: object-centric event log
+    :param object_identifiers: object identifiers to keep/remove
+    :param positive: boolean value (True=keep, False=remove)
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('log.jsonocel')
+        filtered_ocel = pm4py.filter_ocel_objects(ocel, ['o1'])
+    """
+    from copy import copy
+    from pm4py.objects.ocel.util import filtering_utils
+    filtered_ocel = copy(ocel)
+    if positive:
+        filtered_ocel.objects = filtered_ocel.objects[filtered_ocel.objects[filtered_ocel.object_id_column].isin(object_identifiers)]
+    else:
+        filtered_ocel.objects = filtered_ocel.objects[~filtered_ocel.objects[filtered_ocel.object_id_column].isin(object_identifiers)]
+    return filtering_utils.propagate_object_filtering(filtered_ocel)
+
+
+def filter_ocel_events(ocel: OCEL, event_identifiers: Collection[str], positive: bool = True) -> OCEL:
+    """
+    Filters the event identifiers of an object-centric event log.
+
+    :param ocel: object-centric event log
+    :param event_identifiers: event identifiers to keep/remove
+    :param positive: boolean value (True=keep, False=remove)
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('log.jsonocel')
+        filtered_ocel = pm4py.filter_ocel_events(ocel, ['e1'])
+    """
+    from copy import copy
+    from pm4py.objects.ocel.util import filtering_utils
+    filtered_ocel = copy(ocel)
+    if positive:
+        filtered_ocel.events = filtered_ocel.events[filtered_ocel.events[filtered_ocel.event_id_column].isin(event_identifiers)]
+    else:
+        filtered_ocel.events = filtered_ocel.events[~filtered_ocel.events[filtered_ocel.event_id_column].isin(event_identifiers)]
+    return filtering_utils.propagate_event_filtering(filtered_ocel)
+
+
+def filter_ocel_cc_object(ocel: OCEL, object_id: str) -> OCEL:
+    """
+    Returns the connected component of the object-centric event log
+    to which the object with the provided identifier belongs.
+
+    :param ocel: object-centric event log
+    :param object_id: object identifier
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('log.jsonocel')
+        filtered_ocel = pm4py.filter_ocel_cc_object(ocel, 'order1')
+    """
+    from pm4py.algo.transformation.ocel.split_ocel import algorithm
+    ocel_splits = algorithm.apply(ocel)
+    for cc in ocel_splits:
+        if object_id in cc.objects[ocel.object_id_column].unique():
+            return cc
