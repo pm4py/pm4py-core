@@ -26,7 +26,7 @@ from pm4py.conformance import conformance_diagnostics_token_based_replay, confor
     precision_alignments, conformance_diagnostics_footprints, \
     fitness_footprints, precision_footprints, check_is_fitting, conformance_temporal_profile, \
     conformance_log_skeleton
-from pm4py.ocel import ocel_get_object_types, ocel_get_attribute_names, ocel_flattening, ocel_object_type_activities, ocel_objects_ot_count, \
+from pm4py.ocel import ocel_temporal_summary, ocel_get_object_types, ocel_get_attribute_names, ocel_flattening, ocel_object_type_activities, ocel_objects_ot_count, \
                         discover_ocdfg, discover_oc_petri_net, discover_objects_graph
 from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg, view_process_tree, \
     save_vis_process_tree, \
