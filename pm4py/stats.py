@@ -13,7 +13,6 @@ from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_data
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.util import xes_constants, constants
 from copy import copy
-from pm4py.objects.log.pandas_log_wrapper import PandasLogWrapper
 import deprecation
 
 
@@ -142,7 +141,7 @@ def get_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
 
         activities = pm4py.get_event_attribute_values(dataframe, 'concept:name', case_id_key='case:concept:name')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream, PandasLogWrapper]: raise Exception("the method can be applied only to a traditional event log!")
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     parameters = get_properties(log, case_id_key=case_id_key)

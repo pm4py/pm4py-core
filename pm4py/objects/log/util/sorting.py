@@ -1,7 +1,6 @@
 from pm4py.objects.log.obj import EventLog, Trace, EventStream
 from pm4py.util import xes_constants as xes
 from pm4py.objects.conversion.log import converter as log_converter
-from pm4py.objects.log.pandas_log_wrapper import PandasLogWrapper
 
 
 def sort_timestamp_trace(trace, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=False):
@@ -101,7 +100,7 @@ def sort_timestamp(log, timestamp_key=xes.DEFAULT_TIMESTAMP_KEY, reverse_sort=Fa
     log
         Sorted Trace/Event log
     """
-    if type(log) is EventLog or type(log) is PandasLogWrapper:
+    if type(log) is EventLog:
         return sort_timestamp_log(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
     return sort_timestamp_stream(log, timestamp_key=timestamp_key, reverse_sort=reverse_sort)
 
@@ -178,6 +177,6 @@ def sort_lambda(log, sort_function, reverse=False):
     log
         Sorted log
     """
-    if type(log) is EventLog or type(log) is PandasLogWrapper:
+    if type(log) is EventLog:
         return sort_lambda_log(log, sort_function, reverse=reverse)
     return sort_lambda_stream(log, sort_function, reverse=reverse)

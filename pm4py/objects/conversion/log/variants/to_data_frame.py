@@ -5,7 +5,6 @@ from pm4py.objects.log import obj as log_instance
 from pm4py.objects.conversion.log import constants
 from copy import copy
 from pm4py.util import constants as pm4_constants
-from pm4py.objects.log.pandas_log_wrapper import PandasLogWrapper
 
 
 class Parameters(Enum):
@@ -40,8 +39,6 @@ def apply(log, parameters=None):
         parameters = dict()
     if isinstance(log, pd.core.frame.DataFrame):
         return log
-    elif isinstance(log, PandasLogWrapper):
-        return log.dataframe
     if type(log) is log_instance.EventLog:
         new_parameters = copy(parameters)
         new_parameters["deepcopy"] = False
