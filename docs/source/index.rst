@@ -1,21 +1,24 @@
-.. pm4py documentation master file, created by
-   sphinx-quickstart on Fri Aug 24 10:06:48 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Welcome to pmp4y's Documentation!
+===================================
 
-Welcome to pm4py's documentation!
-=================================
+``pm4py`` is a Python library implementing a variety of `process mining <https://en.wikipedia.org/wiki/Process_mining>`_ algorithms.
+
+A simple example of pm4py in action:
+
+.. code-block:: python
+
+   import pm4py
+   log = pm4py.read_xes('<path-to-xes-log-file.xes>')
+   process_model = pm4py.discover_bpmn_inductive(log)
+   pm4py.view_bpmn(process_model)
+					
+
+Contents
+--------
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-.. automodule:: pm4py
-
-
-Indices and tables
-==================
-
-.. * :ref:`genindex`
-* :ref:`modindex`
-.. * :ref:`search`
+   install
+   getting_started
+   api

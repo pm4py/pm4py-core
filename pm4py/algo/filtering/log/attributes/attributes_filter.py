@@ -14,7 +14,6 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CON
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_KEY_CASE_GLUE
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from copy import copy
-import deprecation
 from typing import Optional, Dict, Any, Union, Tuple, List
 from pm4py.objects.log.obj import EventLog, EventStream
 
@@ -414,46 +413,3 @@ def filter_log_relative_occurrence_event_attribute(log: EventLog, min_relative_s
         filtered_attributes = set(x for x, y in activities_occurrences.items() if y >= min_relative_stake * sum(len(x) for x in log))
 
     return apply_events(log, filtered_attributes, parameters=parameters)
-
-
-@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
-def apply_auto_filter(log, variants=None, parameters=None):
-    """
-    Apply an attributes filter detecting automatically a percentage
-
-    Parameters
-    ----------
-    log
-        Log
-    variants
-        (If specified) Dictionary with variant as the key and the list of traces as the value
-    parameters
-        Parameters of the algorithm, including:
-            Parameters.DECREASING_FACTOR -> Decreasing factor (stops the algorithm when the next activity by occurrence is
-            below this factor in comparison to previous)
-            Parameters.ATTRIBUTE_KEY -> Attribute key (must be specified if different from concept:name)
-
-    Returns
-    ---------
-    filtered_log
-        Filtered log
-    """
-    if parameters is None:
-        parameters = {}
-
-    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
-    decreasing_factor = exec_utils.get_param_value(Parameters.DECREASING_FACTOR, parameters,
-                                                   filtering_constants.DECREASING_FACTOR)
-
-    parameters_variants = {PARAMETER_CONSTANT_ATTRIBUTE_KEY: attribute_key,
-                           PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
-    if len(log) > 0:
-        if variants is None:
-            variants = variants_filter.get_variants(log, parameters=parameters_variants)
-        vc = variants_filter.get_variants_sorted_by_count(variants)
-        attributes_values = get_attribute_values(log, attribute_key, parameters=parameters_variants)
-        alist = attributes_common.get_sorted_attributes_list(attributes_values)
-        thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor)
-        filtered_log = filter_log_by_attributes_threshold(log, attributes_values, variants, vc, thresh, attribute_key)
-        return filtered_log
-    return log

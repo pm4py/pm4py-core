@@ -1,4 +1,4 @@
-from pm4py.algo.simulation import montecarlo, playout
+from pm4py.algo.simulation import playout
 
 import pkgutil
 if pkgutil.find_loader("tree_generator"):

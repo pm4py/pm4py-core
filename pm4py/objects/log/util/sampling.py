@@ -2,6 +2,7 @@ import random
 from copy import copy
 
 from pm4py.objects.log.obj import EventStream, EventLog
+from pm4py.objects.log.pandas_log_wrapper import PandasLogWrapper
 
 
 def sample_stream(event_log, no_events=100):
@@ -65,7 +66,7 @@ def sample(log, n=100):
         Filtered log
     """
 
-    if type(log) is EventLog:
+    if type(log) is EventLog or type(log) is PandasLogWrapper:
         return sample_log(log, no_traces=n)
 
     return sample_stream(log, no_events=n)

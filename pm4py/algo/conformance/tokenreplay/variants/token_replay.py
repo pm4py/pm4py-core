@@ -1,4 +1,4 @@
-from pm4py.statistics.variants.log import get as variants_module
+from pm4py.util import variants_util
 from pm4py.util import xes_constants as xes_util
 from pm4py.objects.petri_net import semantics
 from pm4py.objects.petri_net.obj import Marking
@@ -15,6 +15,8 @@ from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import typing
+from collections import Counter
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -896,40 +898,12 @@ def get_variant_from_trace(trace, activity_key, disable_variants=False):
     return variants_util.get_variant_from_trace(trace, parameters=parameters)
 
 
-def get_variants_from_log(log, activity_key, disable_variants=False):
-    """
-    Gets the variants from the log (allow disabling by giving each trace a different variant)
-
-    Parameters
-    -------------
-    log
-        Trace log
-    activity_key
-        Attribute that is the activity
-    disable_variants
-        Boolean value that disable variants
-
-    Returns
-    -------------
-    variants
-        Variants contained in the log
-    """
-    if disable_variants:
-        variants = {}
-        for trace in log:
-            variants[str(hash(trace))] = [trace]
-        return variants
-    parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}
-    variants = variants_module.get_variants(log, parameters=parameters_variants)
-    return variants
-
-
 def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=False, consider_remaining_in_fitness=False,
               activity_key="concept:name", reach_mark_through_hidden=True, stop_immediately_unfit=False,
               walk_through_hidden_trans=True, places_shortest_path_by_hidden=None,
-              variants=None, is_reduction=False, thread_maximum_ex_time=TechnicalParameters.MAX_DEF_THR_EX_TIME.value,
+              is_reduction=False, thread_maximum_ex_time=TechnicalParameters.MAX_DEF_THR_EX_TIME.value,
               cleaning_token_flood=False, disable_variants=False, return_object_names=False, show_progress_bar=True,
-              consider_activities_not_in_model_in_fitness=False):
+              consider_activities_not_in_model_in_fitness=False, case_id_key=constants.CASE_CONCEPT_NAME):
     """
     Apply token-based replay to a log
 
@@ -957,8 +931,6 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
         Boolean value that decides if we shall walk through hidden transitions in order to enable visible transitions
     places_shortest_path_by_hidden
         Shortest paths between places by hidden transitions
-    variants
-        List of variants contained in the event log
     is_reduction
         Expresses if the token-based replay is called in a reduction attempt
     thread_maximum_ex_time
@@ -999,90 +971,93 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
     trans_map = {}
     for t in net.transitions:
         trans_map[t.label] = t
-    if len(log) > 0:
-        if len(log[0]) > 0:
-            if activity_key in log[0][0]:
-                if variants is None:
-                    variants = get_variants_from_log(log, activity_key, disable_variants=disable_variants)
 
-                progress = None
-                if pkgutil.find_loader("tqdm") and show_progress_bar and len(variants) > 1:
-                    from tqdm.auto import tqdm
-                    progress = tqdm(total=len(variants), desc="replaying log with TBR, completed variants :: ")
+    if type(log) is pd.DataFrame:
+        traces = list(log.groupby(case_id_key)[activity_key].apply(tuple))
+    else:
+        traces = [tuple(x[activity_key] for x in trace) for trace in log]
 
-                vc = variants_module.get_variants_sorted_by_count(variants)
-                threads = {}
-                threads_results = {}
-                all_activated_transitions = set()
+    variants = Counter(traces)
 
-                for i in range(len(vc)):
-                    variant = vc[i][0]
-                    threads[variant] = ApplyTraceTokenReplay(variants[variant][0], net, initial_marking, final_marking,
-                                                             trans_map, enable_pltr_fitness, place_fitness_per_trace,
-                                                             transition_fitness_per_trace,
-                                                             notexisting_activities_in_model,
-                                                             places_shortest_path_by_hidden,
-                                                             consider_remaining_in_fitness,
-                                                             activity_key=activity_key,
-                                                             reach_mark_through_hidden=reach_mark_through_hidden,
-                                                             stop_immediately_when_unfit=stop_immediately_unfit,
-                                                             walk_through_hidden_trans=walk_through_hidden_trans,
-                                                             post_fix_caching=post_fix_cache,
-                                                             marking_to_activity_caching=marking_to_activity_cache,
-                                                             is_reduction=is_reduction,
-                                                             thread_maximum_ex_time=thread_maximum_ex_time,
-                                                             cleaning_token_flood=cleaning_token_flood,
-                                                             s_components=s_components, trace_occurrences=vc[i][1],
-                                                             consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness)
-                    threads[variant].run()
-                    if progress is not None:
-                        progress.update()
+    vc = [(k, v) for k, v in variants.items()]
+    vc = list(sorted(vc, key=lambda x: (x[1], x[0]), reverse=True))
 
-                    t = threads[variant]
-                    threads_results[variant] = {"trace_is_fit": copy(t.t_fit),
-                                                "trace_fitness": float(copy(t.t_value)),
-                                                "activated_transitions": copy(t.act_trans),
-                                                "reached_marking": copy(t.reached_marking),
-                                                "enabled_transitions_in_marking": copy(
-                                                    t.enabled_trans_in_mark),
-                                                "transitions_with_problems": copy(
-                                                    t.trans_probl),
-                                                "missing_tokens": int(t.missing),
-                                                "consumed_tokens": int(t.consumed),
-                                                "remaining_tokens": int(t.remaining),
-                                                "produced_tokens": int(t.produced)}
+    progress = None
+    if pkgutil.find_loader("tqdm") and show_progress_bar and len(variants) > 1:
+        from tqdm.auto import tqdm
+        progress = tqdm(total=len(variants), desc="replaying log with TBR, completed variants :: ")
 
-                    if return_object_names:
-                        threads_results[variant]["activated_transitions_labels"] = [x.label for x in
-                                                                                    threads_results[variant][
-                                                                                        "activated_transitions"]]
-                        threads_results[variant]["activated_transitions"] = [x.name for x in threads_results[variant][
-                            "activated_transitions"]]
-                        threads_results[variant]["enabled_transitions_in_marking_labels"] = [x.label for x in
-                                                                                             threads_results[variant][
-                                                                                                 "enabled_transitions_in_marking"]]
-                        threads_results[variant]["enabled_transitions_in_marking"] = [x.name for x in
-                                                                                      threads_results[variant][
-                                                                                          "enabled_transitions_in_marking"]]
-                        threads_results[variant]["transitions_with_problems"] = [x.name for x in
+    threads = {}
+    threads_results = {}
+
+    for i in range(len(vc)):
+        variant = vc[i][0]
+        considered_case = variants_util.variant_to_trace(variant, parameters={constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key})
+
+        threads[variant] = ApplyTraceTokenReplay(considered_case, net, initial_marking, final_marking,
+                                                 trans_map, enable_pltr_fitness, place_fitness_per_trace,
+                                                 transition_fitness_per_trace,
+                                                 notexisting_activities_in_model,
+                                                 places_shortest_path_by_hidden,
+                                                 consider_remaining_in_fitness,
+                                                 activity_key=activity_key,
+                                                 reach_mark_through_hidden=reach_mark_through_hidden,
+                                                 stop_immediately_when_unfit=stop_immediately_unfit,
+                                                 walk_through_hidden_trans=walk_through_hidden_trans,
+                                                 post_fix_caching=post_fix_cache,
+                                                 marking_to_activity_caching=marking_to_activity_cache,
+                                                 is_reduction=is_reduction,
+                                                 thread_maximum_ex_time=thread_maximum_ex_time,
+                                                 cleaning_token_flood=cleaning_token_flood,
+                                                 s_components=s_components, trace_occurrences=vc[i][1],
+                                                 consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness)
+        threads[variant].run()
+        if progress is not None:
+            progress.update()
+
+        t = threads[variant]
+        threads_results[variant] = {"trace_is_fit": copy(t.t_fit),
+                                    "trace_fitness": float(copy(t.t_value)),
+                                    "activated_transitions": copy(t.act_trans),
+                                    "reached_marking": copy(t.reached_marking),
+                                    "enabled_transitions_in_marking": copy(
+                                        t.enabled_trans_in_mark),
+                                    "transitions_with_problems": copy(
+                                        t.trans_probl),
+                                    "missing_tokens": int(t.missing),
+                                    "consumed_tokens": int(t.consumed),
+                                    "remaining_tokens": int(t.remaining),
+                                    "produced_tokens": int(t.produced)}
+
+        if return_object_names:
+            threads_results[variant]["activated_transitions_labels"] = [x.label for x in
+                                                                        threads_results[variant][
+                                                                            "activated_transitions"]]
+            threads_results[variant]["activated_transitions"] = [x.name for x in threads_results[variant][
+                "activated_transitions"]]
+            threads_results[variant]["enabled_transitions_in_marking_labels"] = [x.label for x in
                                                                                  threads_results[variant][
-                                                                                     "transitions_with_problems"]]
-                        threads_results[variant]["reached_marking"] = {x.name: y for x, y in
-                                                                       threads_results[variant][
-                                                                           "reached_marking"].items()}
-                    del threads[variant]
-                for trace in log:
-                    trace_variant = get_variant_from_trace(trace, activity_key, disable_variants=disable_variants)
-                    if trace_variant in threads_results:
-                        t = threads_results[trace_variant]
-                        aligned_traces.append(t)
+                                                                                     "enabled_transitions_in_marking"]]
+            threads_results[variant]["enabled_transitions_in_marking"] = [x.name for x in
+                                                                          threads_results[variant][
+                                                                              "enabled_transitions_in_marking"]]
+            threads_results[variant]["transitions_with_problems"] = [x.name for x in
+                                                                     threads_results[variant][
+                                                                         "transitions_with_problems"]]
+            threads_results[variant]["reached_marking"] = {x.name: y for x, y in
+                                                           threads_results[variant][
+                                                               "reached_marking"].items()}
+        del threads[variant]
 
-                # gracefully close progress bar
-                if progress is not None:
-                    progress.close()
-                del progress
-            else:
-                raise NoConceptNameException("at least an event is without " + activity_key)
+    for trace_variant in traces:
+        if trace_variant in threads_results:
+            t = threads_results[trace_variant]
+            aligned_traces.append(t)
+
+    # gracefully close progress bar
+    if progress is not None:
+        progress.close()
+    del progress
 
     if enable_pltr_fitness:
         return aligned_traces, place_fitness_per_trace, transition_fitness_per_trace, notexisting_activities_in_model
@@ -1127,10 +1102,13 @@ def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking:
     places_shortest_path_by_hidden = exec_utils.get_param_value(Parameters.PLACES_SHORTEST_PATH_BY_HIDDEN, parameters,
                                                                 None)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
-    variants = exec_utils.get_param_value(Parameters.VARIANTS, parameters, None)
     consider_activities_not_in_model_in_fitness = exec_utils.get_param_value(Parameters.CONSIDER_ACTIVITIES_NOT_IN_MODEL_IN_FITNESS, parameters, False)
 
     show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+
+    if type(log) is not pd.DataFrame:
+        log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     return apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=enable_pltr_fitness,
                      consider_remaining_in_fitness=consider_remaining_in_fitness,
@@ -1138,10 +1116,11 @@ def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking:
                      stop_immediately_unfit=stop_immediately_unfit,
                      walk_through_hidden_trans=walk_through_hidden_trans,
                      places_shortest_path_by_hidden=places_shortest_path_by_hidden, activity_key=activity_key,
-                     variants=variants, is_reduction=is_reduction, thread_maximum_ex_time=thread_maximum_ex_time,
+                     is_reduction=is_reduction, thread_maximum_ex_time=thread_maximum_ex_time,
                      cleaning_token_flood=cleaning_token_flood, disable_variants=disable_variants,
                      return_object_names=return_names, show_progress_bar=show_progress_bar,
-                     consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness)
+                     consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness,
+                     case_id_key=case_id_key)
 
 
 def apply_variants_list(variants_list, net, initial_marking, final_marking, parameters=None):
