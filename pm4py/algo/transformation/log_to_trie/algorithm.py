@@ -3,11 +3,11 @@ from enum import Enum
 from pm4py import util
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.trie.obj import Trie
-from pm4py.statistics.variants.log import get as get_variants
+from pm4py.statistics.variants.log import get as get_variants_log
+from pm4py.statistics.variants.pandas import get as get_variants_pandas
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.util import variants_util, constants
 import pandas as pd
-from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -16,13 +16,15 @@ class Parameters(Enum):
 
 def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Trie:
     parameters = parameters if parameters is not None else dict()
-    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
-    root = Trie()
-    variants = get_variants.get_variants(log, parameters=parameters)
-    if variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.STRING:
-        variants = list(map(lambda v: v.split(constants.DEFAULT_VARIANT_SEP), variants))
+
+    if type(log) is pd.DataFrame:
+        variants = get_variants_pandas.get_variants_set(log, parameters=parameters)
     else:
-        variants = list(variants)
+        variants = get_variants_log.get_variants(log, parameters=parameters)
+
+    variants = list(variants)
+
+    root = Trie()
 
     for variant in variants:
         trie = root

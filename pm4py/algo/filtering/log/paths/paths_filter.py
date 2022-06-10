@@ -6,7 +6,6 @@ from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY, DEFAULT_VARIANT_SEP
-import deprecation
 import sys
 
 from typing import Optional, Dict, Any, Union, Tuple, List
@@ -243,43 +242,4 @@ def filter_log_by_paths(log, paths, variants, vc, threshold, attribute_key="conc
             for attr in trace.attributes:
                 new_trace.attributes[attr] = trace.attributes[attr]
             filtered_log.append(new_trace)
-    return filtered_log
-
-
-@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
-def apply_auto_filter(log, variants=None, parameters=None):
-    """
-    Apply an attributes filter detecting automatically a percentage
-
-    Parameters
-    ----------
-    log
-        Log
-    variants
-        (If specified) Dictionary with variant as the key and the list of traces as the value
-    parameters
-        Parameters of the algorithm, including:
-            Parameters.DECREASING_FACTOR -> Decreasing factor (stops the algorithm when the next activity by occurrence is below
-            this factor in comparison to previous)
-            Parameters.ATTRIBUTE_KEY -> Attribute key (must be specified if different from concept:name)
-
-    Returns
-    ---------
-    filtered_log
-        Filtered log
-    """
-    if parameters is None:
-        parameters = {}
-    attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, xes.DEFAULT_NAME_KEY)
-    decreasing_factor = exec_utils.get_param_value(Parameters.DECREASING_FACTOR, parameters,
-                                                   filtering_constants.DECREASING_FACTOR)
-
-    parameters_variants = {variants_filter.Parameters.ACTIVITY_KEY: attribute_key}
-    if variants is None:
-        variants = variants_filter.get_variants(log, parameters=parameters_variants)
-    vc = variants_filter.get_variants_sorted_by_count(variants)
-    pths = get_paths_from_log(log, attribute_key=attribute_key)
-    plist = get_sorted_paths_list(pths)
-    thresh = get_paths_threshold(plist, decreasing_factor)
-    filtered_log = filter_log_by_paths(log, pths, variants, vc, thresh, attribute_key)
     return filtered_log
