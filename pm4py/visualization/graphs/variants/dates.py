@@ -28,6 +28,7 @@ class Parameters(Enum):
     FORMAT = "format"
     X_AXIS = "x_axis"
     Y_AXIS = "y_axis"
+    PYPLOT_PLOT_KWARGS = "pylot_plot_kwargs"
 
 
 TIMESTAMP_LABEL = "Date"
@@ -62,6 +63,7 @@ def apply_plot(x: List[float], y: List[float], parameters: Optional[Dict[Union[s
     title = exec_utils.get_param_value(Parameters.TITLE, parameters, GRAPH_DEFAULT_TITLE)
     x_axis = exec_utils.get_param_value(Parameters.X_AXIS, parameters, TIMESTAMP_LABEL)
     y_axis = exec_utils.get_param_value(Parameters.Y_AXIS, parameters, DENSITY_LABEL)
+    pyplot_plot_kwargs = exec_utils.get_param_value(Parameters.PYPLOT_PLOT_KWARGS, parameters, {})
 
     filename = common.get_temp_file_name(format)
 
@@ -70,7 +72,7 @@ def apply_plot(x: List[float], y: List[float], parameters: Optional[Dict[Union[s
     from matplotlib import pyplot
 
     pyplot.clf()
-    pyplot.plot(x, y)
+    pyplot.plot(x, y, **pyplot_plot_kwargs)
     pyplot.xlabel(x_axis)
     pyplot.ylabel(y_axis)
     pyplot.title(title)
@@ -108,6 +110,7 @@ def apply_semilogx(x: List[float], y: List[float], parameters: Optional[Dict[Uni
 
     format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     title = exec_utils.get_param_value(Parameters.TITLE, parameters, GRAPH_DEFAULT_TITLE)
+    pyplot_plot_kwargs = exec_utils.get_param_value(Parameters.PYPLOT_PLOT_KWARGS, parameters, {})
 
     filename = common.get_temp_file_name(format)
 
@@ -116,7 +119,7 @@ def apply_semilogx(x: List[float], y: List[float], parameters: Optional[Dict[Uni
     from matplotlib import pyplot
 
     pyplot.clf()
-    pyplot.semilogx(x, y)
+    pyplot.semilogx(x, y, **pyplot_plot_kwargs)
     pyplot.xlabel(TIMESTAMP_LABEL)
     pyplot.ylabel(DENSITY_LABEL)
     pyplot.title(title)

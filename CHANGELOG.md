@@ -1,5 +1,34 @@
 # Changelog of pm4py
 
+## pm4py 2.2.22 (???)
+
+### Added
+
+### Changed
+
+* 9bb6ad473bf46b2ca6a378193e2e3042bed98d31
+  * added the possibility to provide additional parameters to Matplotlib's plots
+* 0489353a21ce7a4044d775ed505f476556d2b4e4
+  * increased performance of the PM4Py's insert_partitioning method
+* ab196c5a2ee1430dfd7cef4943f7275aa5405873
+  * increased performance of dotted chart / performance spectrum representation
+    by disabling automatic layouting in neato.
+
+### Deprecated
+
+### Fixed
+* f45883421423ca49139adf24490625ad2980fc92
+  * Fixing OCEL processing when an event has empty object map
+* e45a136198b7dbf546d97a65095d2b126133a754
+  * Fixed problem with footprints discovery on loops (process tree / Petri nets)
+* 3b2082f744966e9c453013df41c15828b971e94d
+  * Alignments: Timeout results in an exception on fitness calculation
+
+### Removed
+
+### Other
+
+
 ## pm4py 2.2.21 (2022.05.12)
 
 ### Added

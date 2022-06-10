@@ -75,7 +75,10 @@ def get_best_worst_cost(petri_net, initial_marking, final_marking, parameters=No
 
     best_worst = apply(trace, petri_net, initial_marking, final_marking, parameters=parameters)
 
-    return best_worst['cost']
+    if best_worst is not None:
+        return best_worst['cost']
+
+    return None
 
 
 def apply(trace: Trace, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> typing.AlignmentResult:
