@@ -8,7 +8,6 @@ from pm4py.objects.log import obj as log_instance
 from pm4py.objects.log.obj import EventLog, Event, XESExtension
 from pm4py.util import constants as pmutil
 from pm4py.util import exec_utils, pandas_utils, xes_constants
-from pm4py.objects.log.pandas_log_wrapper import PandasLogWrapper
 
 
 class Parameters(Enum):
@@ -127,8 +126,6 @@ def apply(log, parameters=None):
         import pandas
         if isinstance(log, pandas.DataFrame):
             return __transform_dataframe_to_event_stream(log, stream_post_processing=stream_post_processing, compress=compress, extensions=extensions)
-        elif isinstance(log, PandasLogWrapper):
-            return __transform_dataframe_to_event_stream(log.dataframe, stream_post_processing=stream_post_processing, compress=compress, extensions=extensions)
 
     if isinstance(log, EventLog):
         return __transform_event_log_to_event_stream(log, include_case_attributes=include_case_attributes,
