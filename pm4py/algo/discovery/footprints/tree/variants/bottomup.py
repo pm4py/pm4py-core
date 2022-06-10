@@ -64,6 +64,12 @@ def fix_fp(sequence, parallel):
         Parallel
     """
     sequence = sequence.difference(parallel)
+
+    par_els = {(x[0], x[1]) for x in sequence if (x[1], x[0]) in sequence}
+    for el in par_els:
+        parallel.add(el)
+        sequence.remove(el)
+
     return sequence, parallel
 
 

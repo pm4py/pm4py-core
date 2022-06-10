@@ -211,16 +211,17 @@ def find_associations_per_edge(ocel: OCEL, parameters: Optional[Dict[Any, Any]] 
     edges = {}
 
     for evid in identifiers:
-        for obj in omap[evid]:
-            if obj in history:
-                objtype = objtypes[obj]
-                if objtype not in edges:
-                    edges[objtype] = {}
-                previd = history[obj]
-                acttup = (activities[previd], activities[evid])
-                if acttup not in edges[objtype]:
-                    edges[objtype][acttup] = list()
-                edges[objtype][acttup].append((previd, evid, obj))
-            history[obj] = evid
+        if evid in omap:
+            for obj in omap[evid]:
+                if obj in history:
+                    objtype = objtypes[obj]
+                    if objtype not in edges:
+                        edges[objtype] = {}
+                    previd = history[obj]
+                    acttup = (activities[previd], activities[evid])
+                    if acttup not in edges[objtype]:
+                        edges[objtype][acttup] = list()
+                    edges[objtype][acttup].append((previd, evid, obj))
+                history[obj] = evid
 
     return edges
