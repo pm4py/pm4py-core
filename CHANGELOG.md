@@ -70,6 +70,8 @@
 ## pm4py 2.2.22 (2022.06.10)
 
 ### Added
+* c7e04d3e8d4a3fc1859e50793a0693040602dd3c
+  * add starts-with and ends-with filter
 
 ### Changed
 * 9bb6ad473bf46b2ca6a378193e2e3042bed98d31
@@ -95,6 +97,7 @@
 ### Other
 
 ---
+>>>>>>> integration
 
 ## pm4py 2.2.21 (2022.05.12)
 
