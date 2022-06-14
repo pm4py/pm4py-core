@@ -10,6 +10,7 @@ from copy import copy
 import deprecation
 from typing import Optional, Dict, Any, Union, Tuple, List
 import pandas as pd
+from pm4py.util import variants_util, constants
 
 
 class Parameters(Enum):
@@ -49,7 +50,18 @@ def apply(df: pd.DataFrame, admitted_prefixes: List[str], parameters: Optional[D
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
     variants_df = parameters["variants_df"] if "variants_df" in parameters else get_variants_df(df,
                                                                                                 parameters=parameters)
-    variants_df = variants_df[variants_df["variant"].str.startswith(tuple(admitted_prefixes))]
+
+    admitted_prefixes = list(admitted_prefixes)
+    first_case_variant = variants_df["variant"].iloc[0]
+    if isinstance(first_case_variant, tuple):
+        # manage that as tuple
+        variants_df = variants_df.copy()
+        variants_df["variant"] = variants_df["variant"].apply(lambda x: constants.DEFAULT_VARIANT_SEP.join(list(x)))
+        admitted_prefixes = [constants.DEFAULT_VARIANT_SEP.join(x) for x in admitted_prefixes]
+    admitted_prefixes = tuple(admitted_prefixes)
+
+    variants_df = variants_df[variants_df["variant"].str.startswith(admitted_prefixes)]
+
     i1 = df.set_index(case_id_glue).index
     i2 = variants_df.index
     if positive:
