@@ -37,7 +37,7 @@ scipy==1.8.1
 setuptools==62.4.0
 six==1.16.0
 sortedcontainers==2.4.0
-stack-data==0.2.0
+stack-data==0.3.0
 stringdist==1.0.9
 sympy==1.10.1
 tqdm==4.64.0
