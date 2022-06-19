@@ -1,5 +1,23 @@
 # Changelog of pm4py
 
+## pm4py 2.2.23 (2022.06.24)
+
+### Added
+* 09c97115cfaafa033c595ddff089701a28bf1599
+	* added starts-with and ends-with filter on Pandas dataframes.
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 3396465f6d6944c84bbdfcf2bbe380b80c442350
+	* fixed inductive miner example's path
+
+### Removed
+
+### Other
+
 ## pm4py 2.2.22 (2022.06.10)
 
 ### Added
@@ -29,8 +47,6 @@
 
 ### Other
 
----
->>>>>>> integration
 
 ## pm4py 2.2.21 (2022.05.12)
 
