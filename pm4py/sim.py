@@ -34,7 +34,7 @@ def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, Proc
             from pm4py.algo.simulation.playout.petri_net import algorithm
             return algorithm.apply(args[0], args[1], final_marking=args[2], **kwargs)
         elif isinstance(args[0], dict):
-            from pm4py.objects.dfg.utils import dfg_playout
+            from pm4py.algo.simulation.playout.dfg import algorithm as dfg_playout
             return dfg_playout.apply(args[0], args[1], args[2], **kwargs)
     elif len(args) == 1:
         from pm4py.objects.process_tree.obj import ProcessTree
