@@ -6,9 +6,11 @@
 * 09c97115cfaafa033c595ddff089701a28bf1599
     * added starts-with and ends-with filter on Pandas dataframes.
 * f373955163ad58e6da3d762380b4f9802ac806f0
-    * new OCEL filters (event identifiers, object identifiers, collection of object types, connected component per object)
+    * new OCEL filters made available (event identifiers, object identifiers, collection of object types, connected component per object)
 * 2051ff1f5985ec34362a16d1f369e062220d7d1b
     * new footprints visualizer (symmetric comparison between differences in footprint matrix)
+* 0c6d023535f18318f1f7f78fec21f3565ce229cd
+  * new OCEL statistics made available (temporal summary of the log, objects summary)
 
 ### Changed
 
