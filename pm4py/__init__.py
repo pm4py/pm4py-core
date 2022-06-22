@@ -22,8 +22,8 @@ from pm4py.filtering import filter_log_relative_occurrence_event_attribute, filt
     filter_between, filter_case_size, filter_case_performance, filter_activities_rework, filter_paths_performance, \
     filter_variants_by_coverage_percentage, filter_variants_top_k, filter_ocel_event_attribute, filter_ocel_object_attribute, \
     filter_ocel_object_types_allowed_activities, filter_ocel_object_per_type_count, filter_ocel_start_events_per_object_type, \
-    filter_ocel_end_events_per_object_type, filter_ocel_events_timestamp, filter_prefixes, filter_suffixes
-from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log, filter_ocel_objects, filter_ocel_events, filter_ocel_cc_object, filter_ocel_object_types
+    filter_ocel_end_events_per_object_type, filter_ocel_events_timestamp, filter_prefixes, filter_suffixes, filter_ocel_objects, filter_ocel_events, filter_ocel_cc_object, filter_ocel_object_types
+from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
 from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
     __maintainer__, __maintainer_email__
 from pm4py.read import read_xes, read_petri_net, read_process_tree, read_dfg, \
