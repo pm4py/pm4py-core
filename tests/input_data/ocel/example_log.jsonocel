@@ -26,7 +26,10 @@
         "i3",
         "i2"
       ],
-      "ocel:vmap": {}
+      "ocel:vmap": {
+		"prova": "ciao",
+		"prova2": 456
+	  }
     },
     "e2": {
       "ocel:activity": "Confirm Order",
@@ -34,7 +37,9 @@
       "ocel:omap": [
         "o1"
       ],
-      "ocel:vmap": {}
+      "ocel:vmap": {
+		"prova": "ciao2"
+	  }
     },
     "e3": {
       "ocel:activity": "Item out of Stock",
@@ -220,19 +225,31 @@
   "ocel:objects": {
     "o1": {
       "ocel:type": "order",
-      "ocel:ovmap": {}
+      "ocel:ovmap": {
+		"oattr1": "uno",
+		"oattr2": 1.0
+	  }
     },
     "i1": {
       "ocel:type": "element",
-      "ocel:ovmap": {}
+      "ocel:ovmap": {
+		"oattr1": "due",
+		"oattr2": 2.0
+	  }
     },
     "i2": {
       "ocel:type": "element",
-      "ocel:ovmap": {}
+      "ocel:ovmap": {
+		"oattr1": "tre",
+		"oattr2": 3.0
+	  }
     },
     "i3": {
       "ocel:type": "element",
-      "ocel:ovmap": {}
+      "ocel:ovmap": {
+		"oattr1": "quattro",
+		"oattr2": 4.0
+	  }
     },
     "i4": {
       "ocel:type": "element",
