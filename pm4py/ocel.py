@@ -266,3 +266,26 @@ def discover_objects_graph(ocel: OCEL, graph_type: str = "object_interaction") -
     elif graph_type == "object_codeath":
         from pm4py.algo.transformation.ocel.graphs import object_codeath_graph
         return object_codeath_graph.apply(ocel)
+
+
+def sample_ocel_objects(ocel: OCEL, num_objects: int) -> OCEL:
+    """
+    Given an object-centric event log, returns a sampled event log with a subset of the objects
+    that is chosen in a random way.
+    Only the events related to at least one of these objects are filtered from the event log.
+    As a note, the relationships between the different objects are probably going to be ruined by
+    this sampling.
+
+    :param ocel: Object-centric event log
+    :param num_objects: Number of objects of the object-centric event log
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        sampled_ocel = pm4py.sample_ocel_objects(ocel, 50) # keeps only 50 random objects
+    """
+    from pm4py.objects.ocel.util import sampling
+    return sampling.sample_ocel_objects(ocel, parameters={"num_entities": num_objects})
