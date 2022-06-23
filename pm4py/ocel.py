@@ -156,6 +156,38 @@ def ocel_objects_summary(ocel: OCEL) -> pd.DataFrame:
     return objects_summary
 
 
+def ocel_objects_interactions_summary(ocel: OCEL) -> pd.DataFrame:
+    """
+    Gets the objects interactions summary of an object-centric event log.
+    The objects interactions summary has a row for every combination (event, related object, other related object).
+    Properties such as the activity of the event, and the object types of the two related objects, are included.
+
+    :param ocel: object-centric event log
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        interactions_summary = pm4py.ocel_objects_interactions_summary(ocel)
+    """
+    obj_types = ocel.objects.groupby(ocel.object_id_column)[ocel.object_type_column].first().to_dict()
+    eve_activities = ocel.events.groupby(ocel.event_id_column)[ocel.event_activity].first().to_dict()
+    ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].apply(list).to_dict()
+    stream = []
+    for ev in ev_rel_obj:
+        rel_obj = ev_rel_obj[ev]
+        for o1 in rel_obj:
+            for o2 in rel_obj:
+               if o1 != o2:
+                   stream.append({ocel.event_id_column: ev, ocel.event_activity: eve_activities[ev],
+                                  ocel.object_id_column: o1, ocel.object_type_column: obj_types[o1],
+                                  ocel.object_id_column+"_2": o2, ocel.object_type_column+"_2": obj_types[o2]})
+
+    import pandas as pd
+    return pd.DataFrame(stream)
+
+
 def discover_ocdfg(ocel: OCEL, business_hours=False, worktiming=[7, 17], weekends=[6, 7]) -> Dict[str, Any]:
     """
     Discovers an OC-DFG from an object-centric event log.
