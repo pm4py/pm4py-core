@@ -10,6 +10,8 @@
     OCEL - Visualization of object graphs (object interaction, object descendants, ...)
 * 15964a428e2e0fc50dcc96570fba39f2e0d40099
     OCEL - Added some filters in the simplified interface
+* 88c58a1c6809388be58db2ea6e64fb9b58d913d6
+  * OCEL - sampling objects
 * 40c741c8298584402cd9ea8e86bcca09f2bfd857
     OCEL - Method to get a temporal description of an object-centric log
 * d63929cc36b1aba941f88efac05af3b25a384787
