@@ -5,7 +5,7 @@
 
 ### Added
 * 00a7ab36bda245d16a35ae6fff2bfb51d8ff8aea
-	Adding several methods to the simplified interface (process discovery/conformance checking using log skeleton, temporal profile, batch detection).
+    Adding several methods to the simplified interface (process discovery/conformance checking using log skeleton, temporal profile, batch detection).
 * feeb1891f82014b3e86a4c5301c237226acc8fad
     OCEL - Visualization of object graphs (object interaction, object descendants, ...)
 * 15964a428e2e0fc50dcc96570fba39f2e0d40099
@@ -16,6 +16,8 @@
     OCEL - method for objects summary
 * fdd87eb41e54ce8d179ae3030fd9e15ea74320e8
     OCEL - expansion of the set of objects during filtering on object identifiers
+* e7b4f712e1bd9475c73be5bc82c9a22eb0b745b5
+  * OCEL - objects interactions summary
 
 ### Changed
 * f6b7714eaf79e1c57e4283163a51631f0ea8d964
