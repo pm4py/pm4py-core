@@ -18,6 +18,8 @@
     OCEL - method for objects summary
 * fdd87eb41e54ce8d179ae3030fd9e15ea74320e8
     OCEL - expansion of the set of objects during filtering on object identifiers
+* e7b4f712e1bd9475c73be5bc82c9a22eb0b745b5
+  * OCEL - objects interactions summary
 
 ### Changed
 * f6b7714eaf79e1c57e4283163a51631f0ea8d964
