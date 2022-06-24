@@ -151,6 +151,31 @@ def export_attribute(attr_name, attr_value, indent_level):
     return "".join(ret)
 
 
+def export_trace_line_by_line(trace, fp_obj, encoding):
+    """
+    Exports the content of a trace line-by-line
+    to a file object
+
+    Parameters
+    -----------------
+    trace
+        Trace
+    fp_obj
+        File object
+    encoding
+        Encoding
+    """
+    fp_obj.write((get_tab_indent(1) + "<trace>\n").encode(encoding))
+    for attr_name, attr_value in trace.attributes.items():
+        fp_obj.write(export_attribute(attr_name, attr_value, 2).encode(encoding))
+    for event in trace:
+        fp_obj.write((get_tab_indent(2) + "<event>\n").encode(encoding))
+        for attr_name, attr_value in event.items():
+            fp_obj.write(export_attribute(attr_name, attr_value, 3).encode(encoding))
+        fp_obj.write((get_tab_indent(2) + "</event>\n").encode(encoding))
+    fp_obj.write((get_tab_indent(1) + "</trace>\n").encode(encoding))
+
+
 def export_log_line_by_line(log, fp_obj, encoding, parameters=None):
     """
     Exports the contents of the log line-by-line
@@ -194,18 +219,9 @@ def export_log_line_by_line(log, fp_obj, encoding, parameters=None):
             fp_obj.write(export_attribute(attr_name, attr_value, 2).encode(encoding))
         fp_obj.write((get_tab_indent(1) + "</global>\n").encode(encoding))
     for trace in log:
-        fp_obj.write((get_tab_indent(1) + "<trace>\n").encode(encoding))
-        for attr_name, attr_value in trace.attributes.items():
-            fp_obj.write(export_attribute(attr_name, attr_value, 2).encode(encoding))
-        for event in trace:
-            fp_obj.write((get_tab_indent(2) + "<event>\n").encode(encoding))
-            for attr_name, attr_value in event.items():
-                fp_obj.write(export_attribute(attr_name, attr_value, 3).encode(encoding))
-            fp_obj.write((get_tab_indent(2) + "</event>\n").encode(encoding))
-        fp_obj.write((get_tab_indent(1) + "</trace>\n").encode(encoding))
+        export_trace_line_by_line(trace, fp_obj, encoding)
         if progress is not None:
             progress.update()
-
     # gracefully close progress bar
     if progress is not None:
         progress.close()
