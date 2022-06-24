@@ -39,7 +39,7 @@ def keep_one_trace_per_variant(log, parameters=None):
 
 
 def execute_script():
-    log_path = os.path.join("/Users/Julian/Documents/HiWi/PADS/EventLogs/BPI_Challenge_2012.xes")
+    log_path = os.path.join("..", "tests", "input_data", "running-example.xes")
     log = xes_import.apply(log_path)
     #log = keep_one_trace_per_variant(log)
     #log = log[15:30]

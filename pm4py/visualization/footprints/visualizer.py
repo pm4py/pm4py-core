@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.visualization.footprints.variants import comparison, single
+from pm4py.visualization.footprints.variants import comparison, single, comparison_symmetric
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.visualization.common import gview
@@ -27,6 +27,7 @@ from typing import Optional, Dict, Any, Union, Tuple
 class Variants(Enum):
     COMPARISON = comparison
     SINGLE = single
+    COMPARISON_SYMMETRIC = comparison_symmetric
 
 
 def apply(*args, variant=None, parameters: Optional[Dict[Any, Any]] = None) -> graphviz.Source:
@@ -61,7 +62,7 @@ def apply(*args, variant=None, parameters: Optional[Dict[Any, Any]] = None) -> g
 
     if variant in [Variants.SINGLE]:
         return exec_utils.get_variant(variant).apply(args[0], parameters=parameters)
-    elif variant in [Variants.COMPARISON]:
+    elif variant in [Variants.COMPARISON, Variants.COMPARISON_SYMMETRIC]:
         return exec_utils.get_variant(variant).apply(args[0], args[1], parameters=parameters)
 
 

@@ -28,6 +28,7 @@ from pm4py.util import exec_utils
 class Parameters(Enum):
     FORMAT = "format"
     DOT_SIZE = "dot_size"
+    LAYOUT_EXT_MULTIPLIER = "layout_ext_multiplier"
 
 
 def __build_unique_values(points_list: List[Any]) -> List[Any]:
@@ -144,6 +145,7 @@ def apply(points_list: List[Any], attributes: List[str], parameters: Optional[Di
 
     format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     dot_size = exec_utils.get_param_value(Parameters.DOT_SIZE, parameters, 0.07)
+    layout_ext_multiplier = exec_utils.get_param_value(Parameters.LAYOUT_EXT_MULTIPLIER, parameters, 50)
 
     unique_values = __build_unique_values(points_list)
     corr_dict, attr_type = __build_corr_dict(unique_values)
@@ -155,6 +157,9 @@ def apply(points_list: List[Any], attributes: List[str], parameters: Optional[Di
         x_length = max(x_length, len(unique_values[0]) * 1.8)
     if attr_type[1] == "str":
         y_length = max(y_length, len(unique_values[1]) * 0.75)
+
+    x_length *= layout_ext_multiplier
+    y_length *= layout_ext_multiplier
 
     output_file_gv = tempfile.NamedTemporaryFile(suffix=".gv")
     output_file_gv.close()
@@ -197,19 +202,19 @@ def apply(points_list: List[Any], attributes: List[str], parameters: Optional[Di
 
     if color_dict is not None:
         lines.append(
-            "Legend [label=\"legend (attribute: %s)\", shape=none, width=\"0px\", height=\"0px\", pos=\"0,-1!\"]" % (
-                attributes[2]))
+            "Legend [label=\"legend (attribute: %s)\", shape=none, width=\"0px\", height=\"0px\", pos=\"0,-%d!\"]" % (
+                attributes[2], 1*layout_ext_multiplier))
         row = -1
         for k, v in color_dict.items():
             row -= 1
             n_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
             lines.append(
                 "%s [label=\"\", shape=circle, width=\"%.10fpx\", height=\"%.10fpx\", fontsize=\"6pt\", style=\"filled\", fillcolor=\"%s\", pos=\"0,%d!\"]" % (
-                    n_id, dot_size, dot_size, v, row))
+                    n_id, dot_size, dot_size, v, layout_ext_multiplier*row))
             n_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
             lines.append(
                 "%s [label=\"%s\", shape=none, width=\"0px\", height=\"0px\", pos=\"1.5,%d!\", fontsize=\"9pt\"];" % (
-                    n_id, str(k), row))
+                    n_id, str(k), layout_ext_multiplier*row))
 
     lines.append("}")
 
@@ -219,6 +224,6 @@ def apply(points_list: List[Any], attributes: List[str], parameters: Optional[Di
     F.write(lines)
     F.close()
 
-    os.system("neato -T" + format + " " + output_file_gv.name + " > " + output_file_img.name)
+    os.system("neato -n1 -T" + format + " " + output_file_gv.name + " > " + output_file_img.name)
 
     return output_file_img.name

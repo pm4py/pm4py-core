@@ -38,7 +38,7 @@ from pm4py.filtering import filter_log_relative_occurrence_event_attribute, filt
     filter_between, filter_case_size, filter_case_performance, filter_activities_rework, filter_paths_performance, \
     filter_variants_by_coverage_percentage, filter_variants_top_k, filter_ocel_event_attribute, filter_ocel_object_attribute, \
     filter_ocel_object_types_allowed_activities, filter_ocel_object_per_type_count, filter_ocel_start_events_per_object_type, \
-    filter_ocel_end_events_per_object_type, filter_ocel_events_timestamp, filter_prefixes, filter_suffixes
+    filter_ocel_end_events_per_object_type, filter_ocel_events_timestamp, filter_prefixes, filter_suffixes, filter_ocel_objects, filter_ocel_events, filter_ocel_cc_object, filter_ocel_object_types
 from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
 from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
     __maintainer__, __maintainer_email__
@@ -61,6 +61,6 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
 from pm4py.write import write_xes, write_petri_net, write_process_tree, write_dfg, write_bpmn, write_pnml, write_ptml, write_ocel
 from pm4py.org import discover_handover_of_work_network, discover_activity_based_resource_similarity, discover_subcontracting_network, discover_working_together_network, discover_organizational_roles, discover_network_analysis
 from pm4py.ml import split_train_test, get_prefixes_from_log
-from pm4py.ocel import ocel_get_object_types, ocel_get_attribute_names, ocel_flattening, ocel_object_type_activities, ocel_objects_ot_count
+from pm4py.ocel import ocel_get_object_types, ocel_get_attribute_names, ocel_flattening, ocel_object_type_activities, ocel_objects_ot_count, ocel_temporal_summary, ocel_objects_summary
 
 time.clock = time.process_time
