@@ -1,5 +1,23 @@
 # Changelog of pm4py
 
+## pm4py 2.2.23.1 (2022.XX.YY)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* dc94e82825bd5994667dd9c6cf2e1908379db923
+	fixed problem(s) with the log skeleton
+
+### Removed
+
+### Other
+
+---
+
 ## pm4py 2.2.23 (2022.06.24)
 
 ### Added
