@@ -5,12 +5,14 @@
 ### Added
 
 ### Changed
+* 43e55f63d86e424e882617af7b0a483ffe653069
+  * setting default alignments variant to Dijkstra when no linear solver (Scipy, CVXOPT) is available
 
 ### Deprecated
 
 ### Fixed
 * dc94e82825bd5994667dd9c6cf2e1908379db923
-	fixed problem(s) with the log skeleton
+  * fixed problem(s) with the log skeleton
 
 ### Removed
 
