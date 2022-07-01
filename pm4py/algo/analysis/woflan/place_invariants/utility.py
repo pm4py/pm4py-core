@@ -124,17 +124,12 @@ def transform_basis(basis, style=None):
                 Aub = np.zeros((1, len(c))).astype(np.float64)
                 bub = np.zeros(1).transpose().astype(np.float64)
 
-            if "cvxopt" in solver.DEFAULT_LP_SOLVER_VARIANT:
-                from cvxopt import matrix
-                c = matrix([x * 1.0 for x in c])
-                Aeq = matrix(Aeq)
-                beq = matrix(beq)
-                Aub = matrix(Aub)
-                bub = matrix(bub)
-
-            sol = solver.apply(c, Aub, bub, Aeq, beq, variant=solver.DEFAULT_LP_SOLVER_VARIANT)
-            points = solver.get_points_from_sol(sol, variant=solver.DEFAULT_LP_SOLVER_VARIANT)
-
+            # solution provided by cvxopt seems uncorrect/unstable sometime.
+            # still looking for causes. for this small linear problem,
+            # let's just use SCIPY as default solver which is stable with this
+            # kind of problems.
+            sol = solver.apply(c, Aub, bub, Aeq, beq, variant=solver.SCIPY)
+            points = solver.get_points_from_sol(sol, variant=solver.SCIPY)
             new_vector = np.zeros(len(vector))
 
             if style == "weighted":
