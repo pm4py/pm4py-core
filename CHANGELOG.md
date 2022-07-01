@@ -7,6 +7,9 @@
 ### Changed
 * 43e55f63d86e424e882617af7b0a483ffe653069
   * setting default alignments variant to Dijkstra when no linear solver (Scipy, CVXOPT) is available
+* 5ff00475659c38792ebab685fb23b282c75c36c0
+  209558a0d6d4c43708389a0002fc7c62bd9f89e9
+  * optimizing retrieval and filtering of start/end activities from Pandas dataframes.
 
 ### Deprecated
 
