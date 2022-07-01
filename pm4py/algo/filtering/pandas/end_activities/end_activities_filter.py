@@ -150,11 +150,10 @@ def filter_df_on_end_activities(df, values, case_id_glue=CASE_CONCEPT_NAME,
         Filtered dataframe
     """
     if grouped_df is None:
-        grouped_df = df.groupby(case_id_glue)
-    last_eve_df = grouped_df.last()
-    last_eve_df = last_eve_df[last_eve_df[activity_key].isin(values)]
+        grouped_df = df.groupby(case_id_glue, sort=False)
+    gdf = grouped_df[activity_key].last().isin(values)
     i1 = df.set_index(case_id_glue).index
-    i2 = last_eve_df.index
+    i2 = gdf[gdf].index
     if positive:
         ret = df[i1.isin(i2)]
     else:
@@ -191,7 +190,7 @@ def filter_df_on_end_activities_nocc(df, nocc, ea_count0=None, case_id_glue=CASE
 
     if len(df) > 0:
         if grouped_df is None:
-            grouped_df = df.groupby(case_id_glue)
+            grouped_df = df.groupby(case_id_glue, sort=False)
         first_eve_df = grouped_df.last()
         if ea_count0 is None:
             parameters = {

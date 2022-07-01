@@ -16,6 +16,7 @@
 '''
 from collections import Counter
 
+
 def equivalence(trace):
     """
     Get the equivalence relations given a list of activities
@@ -30,13 +31,13 @@ def equivalence(trace):
     rel
         Relations inside the trace
     """
-    ret = set()
+    ret = list()
     freq = activ_freq(trace)
     for x in freq:
         for y in freq:
             if x != y and freq[x] == freq[y]:
-                ret.add((x, y))
-                ret.add((y, x))
+                for i in range(freq[x]):
+                    ret.append((x, y))
     return ret
 
 
@@ -54,7 +55,7 @@ def after(trace):
     rel
         After- inside the trace
     """
-    return set((trace[i], trace[j]) for i in range(len(trace)) for j in range(len(trace)) if j > i)
+    return list((trace[i], trace[j]) for i in range(len(trace)) for j in range(len(trace)) if j > i)
 
 
 def before(trace):
@@ -71,7 +72,7 @@ def before(trace):
     rel
         Before- inside the trace
     """
-    return set((trace[i], trace[j]) for i in range(len(trace)) for j in range(len(trace)) if j < i)
+    return list((trace[i], trace[j]) for i in range(len(trace)) for j in range(len(trace)) if j < i)
 
 
 def combos(trace):
@@ -105,7 +106,7 @@ def directly_follows(trace):
     rel
         Directly-follows relations inside the trace
     """
-    return set((trace[i], trace[i+1]) for i in range(len(trace)-1))
+    return list((trace[i], trace[i+1]) for i in range(len(trace)-1))
 
 
 def activ_freq(trace):

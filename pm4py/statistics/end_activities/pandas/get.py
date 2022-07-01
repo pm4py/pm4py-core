@@ -60,8 +60,7 @@ def get_end_activities(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Pa
     grouped_df = parameters[GROUPED_DATAFRAME] if GROUPED_DATAFRAME in parameters else None
 
     if grouped_df is None:
-        grouped_df = df.groupby(case_id_glue)
+        grouped_df = df.groupby(case_id_glue, sort=False)
 
-    last_eve_df = grouped_df.last()
-    endact_dict = dict(last_eve_df[activity_key].value_counts())
+    endact_dict = dict(grouped_df[activity_key].last().value_counts())
     return endact_dict
