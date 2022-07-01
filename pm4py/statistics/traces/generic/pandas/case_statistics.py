@@ -203,7 +203,7 @@ def get_variants_df(df, parameters=None):
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
 
-    new_df = df.groupby(case_id_glue)[activity_key].agg(lambda col: tuple(pd.Series.to_list(col))).to_frame()
+    new_df = df.groupby(case_id_glue, sort=False)[activity_key].agg(lambda col: tuple(pd.Series.to_list(col))).to_frame()
 
     new_cols = list(new_df.columns)
     new_df = new_df.rename(columns={new_cols[0]: "variant"})
