@@ -23,6 +23,7 @@ from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TRACEID_KEY
 from pm4py.objects.log.obj import Trace
 import time
+from pm4py.util.lp import solver
 from pm4py.util import exec_utils
 from enum import Enum
 import sys
@@ -64,7 +65,11 @@ class Parameters(Enum):
     EXPONENT="theta"
 
 
-DEFAULT_VARIANT = Variants.VERSION_STATE_EQUATION_A_STAR
+
+DEFAULT_VARIANT = Variants.VERSION_DIJKSTRA_LESS_MEMORY
+if solver.DEFAULT_LP_SOLVER_VARIANT is not None:
+    DEFAULT_VARIANT = Variants.VERSION_STATE_EQUATION_A_STAR
+
 VERSION_STATE_EQUATION_A_STAR = Variants.VERSION_STATE_EQUATION_A_STAR
 VERSION_DIJKSTRA_NO_HEURISTICS = Variants.VERSION_DIJKSTRA_NO_HEURISTICS
 VERSION_DIJKSTRA_LESS_MEMORY = Variants.VERSION_DIJKSTRA_LESS_MEMORY
@@ -190,8 +195,9 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     if parameters is None:
         parameters = dict()
 
-    if not check_soundness.check_easy_soundness_net_in_fin_marking(petri_net, initial_marking, final_marking):
-        raise Exception("trying to apply alignments on a Petri net that is not a easy sound net!!")
+    if solver.DEFAULT_LP_SOLVER_VARIANT is not None:
+        if not check_soundness.check_easy_soundness_net_in_fin_marking(petri_net, initial_marking, final_marking):
+            raise Exception("trying to apply alignments on a Petri net that is not a easy sound net!!")
 
     start_time = time.time()
     max_align_time = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME, parameters,
