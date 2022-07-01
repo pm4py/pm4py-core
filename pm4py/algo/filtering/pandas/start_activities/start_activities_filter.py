@@ -122,7 +122,7 @@ def filter_df_on_start_activities(df, values, case_id_glue=CASE_CONCEPT_NAME,
     """
 
     if grouped_df is None:
-        grouped_df = df.groupby(case_id_glue)
+        grouped_df = df.groupby(case_id_glue, sort=False)
     first_eve_df = grouped_df.first()
     first_eve_df = first_eve_df[first_eve_df[activity_key].isin(values)]
     i1 = df.set_index(case_id_glue).index
@@ -162,7 +162,7 @@ def filter_df_on_start_activities_nocc(df, nocc, sa_count0=None, case_id_glue=CA
         Filtered dataframe
     """
     if grouped_df is None:
-        grouped_df = df.groupby(case_id_glue)
+        grouped_df = df.groupby(case_id_glue, sort=False)
     first_eve_df = grouped_df.first()
     if sa_count0 is None:
         parameters = {
