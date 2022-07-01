@@ -44,6 +44,5 @@ def get_start_activities(df: pd.DataFrame, parameters: Optional[Dict[Union[str, 
 
     grouped_df = parameters[GROUPED_DATAFRAME] if GROUPED_DATAFRAME in parameters else df.groupby(case_id_glue, sort=False)
 
-    first_eve_df = grouped_df.first()
-    startact_dict = dict(first_eve_df[activity_key].value_counts())
+    startact_dict = dict(grouped_df[activity_key].first().value_counts())
     return startact_dict
