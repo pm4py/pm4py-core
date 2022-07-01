@@ -7,12 +7,19 @@
 ### Changed
 * 43e55f63d86e424e882617af7b0a483ffe653069
   * setting default alignments variant to Dijkstra when no linear solver (Scipy, CVXOPT) is available
+* 5ff00475659c38792ebab685fb23b282c75c36c0
+  209558a0d6d4c43708389a0002fc7c62bd9f89e9
+  * optimizing retrieval and filtering of start/end activities from Pandas dataframes.
 
 ### Deprecated
 
 ### Fixed
 * dc94e82825bd5994667dd9c6cf2e1908379db923
   * fixed problem(s) with the log skeleton
+* 1bd50ff5354317d57297e63d140618ffa7a58ef6
+  * bug fix in exporting OCEL(s)
+* 7c6c30ffcff04d3151f249556af9405402fdee83
+  * fixed problem with WOFLAN algorithm (LP solving)
 
 ### Removed
 
