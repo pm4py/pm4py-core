@@ -3,7 +3,7 @@ pm4py is a python library that supports (state-of-the-art) process mining algori
 pm4py is a product of the Fraunhofer Institute for Applied Information Technology.
 
 ## Documentation / API
-The documentation about pm4py is offered at https://pm4py.org/
+The documentation about pm4py is offered at https://www.pm4py.org/
 
 ## First Example
 A very simple example, to whet your appetite:
