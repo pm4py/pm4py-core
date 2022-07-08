@@ -136,40 +136,37 @@ def _compute_connected_components(dfg: DFG, alphabet: Set[str], start_activities
     return [nx_undirected.subgraph(c).copy() for c in nx.connected_components(nx_undirected)]
 
 
-def project(log: EventLog, cut: Cut, activity_key: str) -> List[EventLog]:
+def project(log: EventLog, cut: Cut) -> List[EventLog]:
     do = cut[0]
     redo = cut[1:]
     redo_activities = [y for x in redo for y in x]
-    do_log = EventLog()
-    redo_logs = []
-    for i in range(len(redo)):
-        redo_logs.append(EventLog())
+    do_log = []
+    redo_logs = [[] for i in range(len(redo))]
     for t in log:
-        do_trace = Trace()
-        redo_trace = Trace()
+        do_trace = []
+        redo_trace = []
         for e in t:
-            if e[activity_key] in do:
+            if e in do:
                 do_trace.append(e)
                 if len(redo_trace) > 0:
-                    redo_logs = _append_trace_to_redo_log(redo_trace, redo_logs, redo, activity_key)
-                    redo_trace = Trace()
+                    redo_logs = _append_trace_to_redo_log(redo_trace, redo_logs, redo)
+                    redo_trace = []
             else:
-                if e[activity_key] in redo_activities:
+                if e in redo_activities:
                     redo_trace.append(e)
                     if len(do_trace) > 0:
                         do_log.append(do_trace)
-                        do_trace = Trace()
+                        do_trace = []
         if len(redo_trace) > 0:
-            redo_logs = _append_trace_to_redo_log(redo_trace, redo_logs, redo, activity_key)
+            redo_logs = _append_trace_to_redo_log(redo_trace, redo_logs, redo)
         do_log.append(do_trace)
     logs = [do_log]
     logs.extend(redo_logs)
     return logs
 
 
-def _append_trace_to_redo_log(redo_trace: Trace, redo_logs: List[List[Trace]], redo_groups: List[Set[str]],
-                              activity_key: str) -> List[List[Trace]]:
-    activities = set(x[activity_key] for x in redo_trace)
+def _append_trace_to_redo_log(redo_trace: Trace, redo_logs: List[List[Trace]], redo_groups: List[Set[str]]) -> List[List[Trace]]:
+    activities = set(x for x in redo_trace)
     inte = [(i, len(activities.intersection(redo_groups[i]))) for i in range(len(redo_groups))]
     inte = sorted(inte, key=lambda x: (x[1], x[0]), reverse=True)
     redo_logs[inte[0][0]].append(redo_trace)

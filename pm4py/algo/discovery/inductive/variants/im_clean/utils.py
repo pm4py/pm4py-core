@@ -1,4 +1,66 @@
 from pm4py.objects.process_tree import obj as pt
+from collections import Counter
+import itertools
+
+
+def compress(log, ak):
+    lt = dict()
+    cl = list()
+    for t in log:
+        tc = list()
+        for e in t:
+            a = e[ak]
+            if a not in lt:
+                lt[a] = len(lt)
+            tc.append(lt[a])
+        cl.append(tc)
+    return lt, cl
+
+def discover_dfg(cl):
+    dfg = Counter()
+    for t in cl:
+        for i in range(0,len(t)-1):
+            dfg.update([(t[i],t[i+1])])
+    return dfg
+
+
+def get_start_activities(cl):
+    return set(map(lambda t: t[0], cl))
+
+def get_end_activities(cl):
+    return set(map(lambda t: t[len(t)-1], cl))
+
+def get_alphabet(cl):
+    return set(itertools.chain(*cl))
+
+def msd(cl):
+    msd = dict()
+    alphabet = get_alphabet(cl)
+    for a in alphabet:
+        if len(list(filter(lambda t: len(t) > 1, list(map(lambda t: list(filter(lambda e: e == a, t)), cl))))) > 0:
+            activity_indices = list(
+                filter(lambda t: len(t) > 1, list(map(lambda t: [i for i, x in enumerate(t) if x == a], cl))))
+            msd[a] = min([i for l in list(
+                map(lambda t: [t[i] - t[i - 1] - 1 for i, x in enumerate(t) if i > 0], activity_indices)) for i in l])
+    return msd
+
+def msdw(cl, msd):
+    witnesses = dict()
+    alphabet = get_alphabet(cl)
+    for a in alphabet:
+        if a in msd and msd[a] > 0:
+            witnesses[a] = set()
+        else:
+            continue
+        for t in cl:
+            if len(list(filter(lambda e: e == a, t))) > 1:
+                indices = [i for i, x in enumerate(t) if x == a]
+                for i in range(len(indices) - 1):
+                    if indices[i + 1] - indices[i] - 1 == msd[a]:
+                        for b in t[indices[i] + 1:indices[i + 1]]:
+                            witnesses[a].add(b)
+    return witnesses
+
 
 
 def transform_dfg_to_directed_nx_graph(dfg, alphabet):

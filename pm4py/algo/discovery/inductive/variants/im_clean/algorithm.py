@@ -17,6 +17,7 @@ from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.process_tree.utils import generic
 from pm4py.util import constants, exec_utils, xes_constants
 from pm4py.util import variants_util
+from pm4py.algo.discovery.inductive.variants.im_clean import utils as imut
 
 
 class Parameters(Enum):
@@ -30,7 +31,8 @@ def apply(event_log: Union[pd.DataFrame, EventLog, EventStream],
     if parameters is None:
         parameters = {}
     tree = apply_tree(event_log, parameters=parameters)
-    net, im, fm = tree_converter.apply(tree, variant=tree_converter.Variants.TO_PETRI_NET, parameters=parameters)
+    net, im, fm = tree_converter.apply(
+        tree, variant=tree_converter.Variants.TO_PETRI_NET, parameters=parameters)
     return net, im, fm
 
 
@@ -38,7 +40,8 @@ def apply_variants(variants, parameters=None):
     if parameters is None:
         parameters = {}
     tree = apply_tree_variants(variants, parameters=parameters)
-    net, im, fm = tree_converter.apply(tree, variant=tree_converter.Variants.TO_PETRI_NET, parameters=parameters)
+    net, im, fm = tree_converter.apply(
+        tree, variant=tree_converter.Variants.TO_PETRI_NET, parameters=parameters)
     return net, im, fm
 
 
@@ -47,7 +50,8 @@ def apply_tree_variants(variants, parameters=None):
         parameters = {}
 
     log = EventLog()
-    threshold = exec_utils.get_param_value(Parameters.NOISE_THRESHOLD, parameters, 0.0)
+    threshold = exec_utils.get_param_value(
+        Parameters.NOISE_THRESHOLD, parameters, 0.0)
 
     var_keys = list(variants.keys())
     for var in var_keys:
@@ -70,26 +74,31 @@ def apply_tree(event_log: Union[pd.DataFrame, EventLog, EventStream],
         parameters = {}
     act_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY.value, parameters,
                                          xes_constants.DEFAULT_NAME_KEY)
-
-    threshold = exec_utils.get_param_value(Parameters.NOISE_THRESHOLD, parameters, 0.0)
+    threshold = exec_utils.get_param_value(
+        Parameters.NOISE_THRESHOLD, parameters, 0.0)
 
     if type(event_log) is pd.DataFrame:
         if threshold == 0.0:
             # keep one trace per variant; more performant
             from pm4py.objects.conversion.log.variants import df_to_event_log_1v
-            event_log = df_to_event_log_1v.apply(event_log, parameters=parameters)
+            event_log = df_to_event_log_1v.apply(
+                event_log, parameters=parameters)
         else:
             from pm4py.objects.conversion.log.variants import df_to_event_log_nv
-            event_log = df_to_event_log_nv.apply(event_log, parameters=parameters)
+            event_log = df_to_event_log_nv.apply(
+                event_log, parameters=parameters)
     else:
-        event_log = log_converter.apply(event_log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+        event_log = log_converter.apply(
+            event_log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
         if threshold == 0.0:
             # keep one trace per variant; more performant
-            event_log = filtering_utils.keep_one_trace_per_variant(event_log, parameters=parameters)
+            event_log = filtering_utils.keep_one_trace_per_variant(
+                event_log, parameters=parameters)
 
-    tree = __inductive_miner(event_log, discover_dfg.apply(event_log, parameters=parameters),
-                             threshold, None,
-                             act_key, exec_utils.get_param_value(Parameters.USE_MSD_PARALLEL_CUT, parameters, True))
+    lt, cl = imut.compress(event_log, act_key)
+
+    tree = __inductive_miner(cl, imut.discover_dfg(cl),
+                             threshold, None, exec_utils.get_param_value(Parameters.USE_MSD_PARALLEL_CUT, parameters, True))
 
     tree_consistency.fix_parent_pointers(tree)
     tree = generic.fold(tree)
@@ -103,9 +112,11 @@ def apply_dfg(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int],
     if parameters is None:
         parameters = {}
 
-    tree = apply_tree_dfg(dfg, start_activities, end_activities, activities, parameters=parameters)
+    tree = apply_tree_dfg(dfg, start_activities,
+                          end_activities, activities, parameters=parameters)
 
-    net, im, fm = tree_converter.apply(tree, variant=tree_converter.Variants.TO_PETRI_NET, parameters=parameters)
+    net, im, fm = tree_converter.apply(
+        tree, variant=tree_converter.Variants.TO_PETRI_NET, parameters=parameters)
     return net, im, fm
 
 
@@ -114,8 +125,10 @@ def apply_tree_dfg(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, 
     if parameters is None:
         parameters = {}
 
-    dfg_sa_ea_actcount = DfgSaEaActCount(dfg, start_activities, end_activities, activities)
-    threshold = exec_utils.get_param_value(Parameters.NOISE_THRESHOLD, parameters, 0.0)
+    dfg_sa_ea_actcount = DfgSaEaActCount(
+        dfg, start_activities, end_activities, activities)
+    threshold = exec_utils.get_param_value(
+        Parameters.NOISE_THRESHOLD, parameters, 0.0)
 
     tree = dfg_im.__imd(dfg_sa_ea_actcount, threshold, None)
 

@@ -43,21 +43,18 @@ def detect(dfg: DFG, alphabet: Dict[str, int]) -> Optional[Cut]:
         return None
 
 
-def project(log, groups, activity_key):
-    # refactored to support both IM and IMf
-    logs = list()
-    for group in groups:
-        logs.append(EventLog())
+def project(log, groups):
+    logs = [ [] for g in groups]
     for t in log:
         count = {i: 0 for i in range(len(groups))}
         for index, group in enumerate(groups):
             for e in t:
-                if e[activity_key] in group:
+                if e in group:
                     count[index] += 1
         count = sorted(list((x, y) for x, y in count.items()), key=lambda x: (x[1], x[0]), reverse=True)
-        new_trace = Trace()
+        new_trace = list()
         for e in t:
-            if e[activity_key] in groups[count[0][0]]:
+            if e in groups[count[0][0]]:
                 new_trace.append(e)
         logs[count[0][0]].append(new_trace)
     return logs

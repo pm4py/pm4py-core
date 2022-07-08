@@ -1,13 +1,13 @@
-from typing import Dict, Optional, List
+from typing import Dict, Optional, List, Collection
 
 import pm4py
 from pm4py.objects.log.obj import EventLog
 
 
-def detect(log: EventLog, alphabet: Dict[str, int], act_key: str) -> Optional[str]:
-    candidates = set(alphabet.keys())
+def detect(log: List[List[int]], alphabet: Collection[int]) -> Optional[str]:
+    candidates = alphabet
     for t in log:
-        tr = list(map(lambda e: e[act_key], t))
+        tr = list(map(lambda e: e, t))
         cc = [x for x in candidates]
         for candi in cc:
             if len(list(filter(lambda e: e == candi, tr))) != 1:
@@ -17,8 +17,5 @@ def detect(log: EventLog, alphabet: Dict[str, int], act_key: str) -> Optional[st
     return next(iter(candidates))
 
 
-def project(log: EventLog, activity: str, activity_key: str) -> List[EventLog]:
-    proj = EventLog()
-    for t in log:
-        proj.append(pm4py.filter_trace(lambda e: e[activity_key] != activity, t))
-    return [proj]
+def project(log: List[List[int]], activity: int) -> List[EventLog]:
+    return [[list(filter(lambda e: e != activity, t)) for t in log]]

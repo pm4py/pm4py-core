@@ -32,15 +32,8 @@ def detect(dfg, alphabet, start_activities, end_activities, msd=None):
     return groups if len(groups) > 1 else None
 
 
-def project(log, groups, activity_key):
-    logs = list()
-    for group in groups:
-        proj = EventLog()
-        for t in log:
-            proj.append(pm4py.filter_trace(lambda e: e[activity_key] in group, t))
-        logs.append(proj)
-    return logs
-
+def project(log, groups):
+    return [[list(filter(lambda e: e in g, t)) for t in log] for g in groups]    
 
 def project_dfg(dfg_sa_ea_actcount, groups):
     dfgs = []

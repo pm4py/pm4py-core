@@ -16,7 +16,7 @@ def detect(alphabet, transitive_predecessors, transitive_successors):
     2. merge pairwise reachable nodes (based on transitive relations)
     3. merge pairwise unreachable nodes (based on transitive relations)
     4. sort the groups based on their reachability
-    
+
     Parameters
     ----------
     alphabet
@@ -45,7 +45,7 @@ def detect(alphabet, transitive_predecessors, transitive_successors):
     return groups if len(groups) > 1 else None
 
 
-def project(log, groups, activity_key):
+def project(log, groups):
     '''
     This method projects the log based on a presumed sequence cut and a list of activity groups
     Parameters
@@ -54,27 +54,23 @@ def project(log, groups, activity_key):
         original log
     groups
         list of activity sets to be used in projection (activities can only appear in one group)
-    activity_key
-        key to use in the event to derive the activity name
 
     Returns
     -------
         list of corresponding logs according to the sequence cut.
     '''
-    # refactored to support both IM and IMf
-    logs = list()
-    for group in groups:
-        logs.append(EventLog())
+    logs = [[] for g in groups]
     for t in log:
         i = 0
         split_point = 0
         act_union = set()
         while i < len(groups):
-            new_split_point = find_split_point(t, groups[i], split_point, act_union, activity_key)
-            trace_i = Trace()
+            new_split_point = find_split_point(
+                t, groups[i], split_point, act_union)
+            trace_i = []]
             j = split_point
             while j < new_split_point:
-                if t[j][activity_key] in groups[i]:
+                if t[j] in groups[i]:
                     trace_i.append(t[j])
                 j = j + 1
             logs[i].append(trace_i)
@@ -84,15 +80,15 @@ def project(log, groups, activity_key):
     return logs
 
 
-def find_split_point(t, group, start, ignore, activity_key):
+def find_split_point(t, group, start, ignore):
     least_cost = 0
     position_with_least_cost = start
     cost = 0
     i = start
     while i < len(t):
-        if t[i][activity_key] in group:
+        if t[i] in group:
             cost = cost - 1
-        elif t[i][activity_key] not in ignore:
+        elif t[i] not in ignore:
             cost = cost + 1
 
         if cost < least_cost:
@@ -142,7 +138,7 @@ def project_dfg(dfg_sa_ea_actcount, groups):
             start_activities.append({})
             for act in dfg_sa_ea_actcount.start_activities:
                 if act in groups[i]:
-                    start_activities[i][act] = dfg_sa_ea_actcount.start_activities[act];
+                    start_activities[i][act] = dfg_sa_ea_actcount.start_activities[act]
                 else:
                     j = i
                     while j < activities_idx[act]:
@@ -176,7 +172,8 @@ def project_dfg(dfg_sa_ea_actcount, groups):
 
     i = 0
     while i < len(dfgs):
-        dfgs[i] = im_utils.DfgSaEaActCount(dfgs[i], start_activities[i], end_activities[i], activities[i])
+        dfgs[i] = im_utils.DfgSaEaActCount(
+            dfgs[i], start_activities[i], end_activities[i], activities[i])
         i = i + 1
     for arc in dfg_sa_ea_actcount.dfg:
         z = activities_idx[arc[1]]
