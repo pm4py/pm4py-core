@@ -4,7 +4,7 @@ Installation
 pip
 ---
 
-To use ``pm4py``, i.e., on any OS, install it using ``pip``:
+To use ``pm4py`` on any OS, install it using ``pip``:
 
 .. code-block:: console
 
