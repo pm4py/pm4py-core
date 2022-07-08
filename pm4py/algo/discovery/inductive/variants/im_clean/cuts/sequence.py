@@ -7,7 +7,7 @@ from pm4py.objects.log.obj import EventLog, Trace
 
 def detect(alphabet, transitive_predecessors, transitive_successors):
     '''
-    This method finds a xor cut in the dfg.
+    This method finds a sequence cut in the dfg.
     Implementation follows function XorCut on page 188 of
     "Robust Process Mining with Guarantees" by Sander J.J. Leemans (ISBN: 978-90-386-4257-4)
 
