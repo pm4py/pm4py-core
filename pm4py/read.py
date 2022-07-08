@@ -13,7 +13,7 @@ import pkgutil
 INDEX_COLUMN = "@@index"
 
 __doc__ = """
-The ``pm4py.read`` module contains all funcationality related to reading files/objects from disk
+The ``pm4py.read`` module contains all funcationality related to reading files/objects from disk.
 """
 
 

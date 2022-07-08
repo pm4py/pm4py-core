@@ -33,16 +33,8 @@ Similarly to event data importing, ``pm4py`` supports export functionalities to:
 
 Conversion (:mod:`pm4py.convert`)
 -------------------------------------
-Cross-conversions are available between the different event log formats, and the different types of process models
-offered in PM4Py.
-
-The following conversions are available between different event log formats:
-
-* :meth:`pm4py.convert.convert_to_event_log` converts a log object to an EventLog
-* :meth:`pm4py.convert.convert_to_event_stream` converts a log object to an EventStream
-* :meth:`pm4py.convert.convert_to_dataframe` converts a log object to a dataframe
-
-The following conversions are available between different process models:
+Several conversions are available from/to different objects supported by ``pm4py``.
+The following conversions are currently available:
 
 * :meth:`pm4py.convert.convert_to_bpmn` converts a process model to BPMN
 * :meth:`pm4py.convert.convert_to_petri_net` converts a process model to Petri net
