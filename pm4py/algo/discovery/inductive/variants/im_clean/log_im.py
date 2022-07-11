@@ -36,8 +36,8 @@ def __inductive_miner_internal(log, dfg, threshold, root, use_msd, remove_noise=
         dfg = __filter_dfg_on_threshold(dfg, end_activities, threshold)
 
     original_length = len(log)
-    log = pm4py.filter_log(lambda t: len(t) > 0, log)
-
+    log = list(filter(lambda t: len(t) > 0, log))
+    
     # revised EMPTYSTRACES
     if original_length - len(log) > original_length * threshold:
         return __add_operator_recursive_logs(pt.ProcessTree(pt.Operator.XOR, root), threshold, [[], log], use_msd)
@@ -72,24 +72,20 @@ def __inductive_miner_internal(log, dfg, threshold, root, use_msd, remove_noise=
         operator.children.append(pt.ProcessTree(
             operator=None, parent=operator, label=aopt))
         return __add_operator_recursive_logs(operator, threshold, activity_once_per_trace.project(log, aopt), use_msd)
-    act_conc = activity_concurrent.detect(log, alphabet, act_key, use_msd)
+    act_conc = activity_concurrent.detect(log, alphabet, use_msd)
     if act_conc is not None:
-        return __add_operator_recursive_logs(pt.ProcessTree(pt.Operator.PARALLEL, root), threshold, act_key,
-                                             activity_concurrent.project(log, act_conc, act_key), use_msd)
+        return __add_operator_recursive_logs(pt.ProcessTree(pt.Operator.PARALLEL, root), threshold,
+                                             activity_concurrent.project(log, act_conc), use_msd)
     stl = strict_tau_loop.detect(
-        log, start_activities, end_activities, act_key)
+        log, start_activities, end_activities)
     if stl is not None:
-        return __add_operator_recursive_logs(pt.ProcessTree(pt.Operator.LOOP, root), threshold, act_key,
-                                             [stl, EventLog()],
-                                             use_msd)
-    tl = tau_loop.detect(log, start_activities, act_key)
+        return __add_operator_recursive_logs(pt.ProcessTree(pt.Operator.LOOP, root), threshold, [stl, []], use_msd)
+    tl = tau_loop.detect(log, start_activities)
     if tl is not None:
-        return __add_operator_recursive_logs(pt.ProcessTree(pt.Operator.LOOP, root), threshold, act_key,
-                                             [tl, EventLog()],
-                                             use_msd)
+        return __add_operator_recursive_logs(pt.ProcessTree(pt.Operator.LOOP, root), threshold, [tl, []], use_msd)
 
     if threshold > 0 and not remove_noise:
-        return __inductive_miner(log, dfg, threshold, root, act_key, use_msd, remove_noise=True)
+        return __inductive_miner(log, dfg, threshold, root, use_msd, remove_noise=True)
 
     return __flower(alphabet, root)
 

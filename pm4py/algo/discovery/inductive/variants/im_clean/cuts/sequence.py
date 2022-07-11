@@ -67,7 +67,7 @@ def project(log, groups):
         while i < len(groups):
             new_split_point = find_split_point(
                 t, groups[i], split_point, act_union)
-            trace_i = []]
+            trace_i = []
             j = split_point
             while j < new_split_point:
                 if t[j] in groups[i]:
