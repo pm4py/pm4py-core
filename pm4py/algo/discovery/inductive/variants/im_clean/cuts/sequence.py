@@ -1,14 +1,13 @@
 from collections import Counter
 from itertools import product
-
+import sys
 from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
 from pm4py.objects.log.obj import EventLog, Trace
 
-
-def detect(alphabet, transitive_predecessors, transitive_successors):
+def detect(alphabet, trp, trs):
     '''
     This method finds a sequence cut in the dfg.
-    Implementation follows function XorCut on page 188 of
+    Implementation follows function sequence on page 188 of
     "Robust Process Mining with Guarantees" by Sander J.J. Leemans (ISBN: 978-90-386-4257-4)
 
     Basic Steps:
@@ -21,7 +20,7 @@ def detect(alphabet, transitive_predecessors, transitive_successors):
     ----------
     alphabet
         characters occurring in the dfg
-    transitive_predecessors
+    trp
         dictionary mapping activities to their (transitive) predecessors, according to the DFG
     transitive_successors
         dictionary mapping activities to their (transitive) successors, according to the DFG
@@ -36,12 +35,12 @@ def detect(alphabet, transitive_predecessors, transitive_successors):
     if len(groups) == 0:
         return None
     for a, b in product(alphabet, alphabet):
-        if (b in transitive_successors[a] and a in transitive_successors[b]) or (
-                b not in transitive_successors[a] and a not in transitive_successors[b]):
+        if (b in trs[a] and a in trs[b]) or (
+                b not in trs[a] and a not in trs[b]):
             groups = im_utils.__merge_groups_for_acts(a, b, groups)
 
     groups = list(sorted(groups, key=lambda g: len(
-        transitive_predecessors[next(iter(g))]) + (len(alphabet) - len(transitive_successors[next(iter(g))]))))
+        trp[next(iter(g))]) + (len(alphabet) - len(trs[next(iter(g))]))))
     return groups if len(groups) > 1 else None
 
 
@@ -182,3 +181,4 @@ def project_dfg(dfg_sa_ea_actcount, groups):
             skippable[j] = False
             j = j + 1
     return [dfgs, skippable]
+
