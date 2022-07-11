@@ -4,15 +4,17 @@ import itertools
 
 
 def compress(log, ak):
-    lt = dict()
+    actd = dict()
+    lt = []
     cl = list()
     for t in log:
         tc = list()
         for e in t:
             a = e[ak]
-            if a not in lt:
-                lt[a] = len(lt)
-            tc.append(lt[a])
+            if a not in actd:
+                actd[a] = len(lt)
+                lt.append(a)
+            tc.append(actd[a])
         cl.append(tc)
     return lt, cl
 
@@ -25,10 +27,10 @@ def discover_dfg(cl):
 
 
 def get_start_activities(cl):
-    return set(map(lambda t: t[0], cl))
+    return set(map(lambda t: t[0], filter(lambda t: len(t) > 0, cl)))
 
 def get_end_activities(cl):
-    return set(map(lambda t: t[len(t)-1], cl))
+    return set(map(lambda t: t[len(t)-1], filter(lambda t : len(t) > 0, cl)))
 
 def get_alphabet(cl):
     return set(itertools.chain(*cl))

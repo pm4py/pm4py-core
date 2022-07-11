@@ -100,6 +100,10 @@ def apply_tree(event_log: Union[pd.DataFrame, EventLog, EventStream],
     tree = __inductive_miner(cl, imut.discover_dfg(cl),
                              threshold, None, exec_utils.get_param_value(Parameters.USE_MSD_PARALLEL_CUT, parameters, True))
 
+    for c in generic.get_leaves(tree):
+        if c.label is not None: 
+            c.label = lt[c.label]
+
     tree_consistency.fix_parent_pointers(tree)
     tree = generic.fold(tree)
     generic.tree_sort(tree)

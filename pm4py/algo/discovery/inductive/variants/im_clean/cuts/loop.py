@@ -40,7 +40,7 @@ def detect(dfg: DFG, alphabet: Dict[str, int], start_activities: Dict[str, int],
     if len(dfg) == 0:
         return None
 
-    groups = [set(start_activities.keys()).union(set(end_activities.keys()))]
+    groups = [start_activities.union(end_activities)]
     for c in _compute_connected_components(dfg, alphabet, start_activities, end_activities, groups[0]):
         groups.append(set(c.nodes))
 
