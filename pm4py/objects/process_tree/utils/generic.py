@@ -281,7 +281,7 @@ def tree_sort(tree):
         tree.labels_hash_sum += child.labels_hash_sum
     if tree.label is not None:
         # this assures that among different executions, the same string gets always the same hash
-        this_hash = int(hashlib.md5(tree.label.encode(constants.DEFAULT_ENCODING)).hexdigest(), 16)
+        this_hash = int(hashlib.md5(str(tree.label).encode(constants.DEFAULT_ENCODING)).hexdigest(), 16)
         tree.labels_hash_sum += this_hash
     if tree.operator is pt_op.Operator.PARALLEL or tree.operator is pt_op.Operator.XOR:
         tree.children = sorted(tree.children, key=lambda x: x.labels_hash_sum)
