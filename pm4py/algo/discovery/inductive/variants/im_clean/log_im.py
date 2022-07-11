@@ -51,7 +51,7 @@ def __inductive_miner_internal(log, dfg, threshold, root, act_key, use_msd, remo
     if __is_base_case_act(log, act_key) or __is_base_case_silent(log):
         return __apply_base_case(log, root, act_key)
     pre, post = dfg_utils.get_transitive_relations(dfg, alphabet)
-    cut = sequence_cut.detect(alphabet, pre, post)
+    cut = sequence_cut.detect_sequence_strict(alphabet, pre, post, dfg, start_activities,end_activities)
     if cut is not None:
         return __add_operator_recursive_logs(pt.ProcessTree(pt.Operator.SEQUENCE, root), threshold, act_key,
                                              sequence_cut.project(log, cut, act_key), use_msd)
