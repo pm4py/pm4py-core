@@ -53,15 +53,8 @@ def detect(alphabet, trp, trs, dfg, start, end):
     '''
     C = seq_cut.detect(alphabet, trp, trs)
     if C is not None:
-        mf = [sys.maxsize for i in range(0, len(C))]
-        mt = [-1*sys.maxsize for i in range(0, len(C))]
-        for i in range(0, len(C)):
-            g = C[i]
-            for a in g:
-                if a in start:
-                    mf[i] = -1*sys.maxsize
-                if a in end:
-                    mt[i] = sys.maxsize
+        mf = [-1* sys.maxsize if len(G.intersection(start)) > 0 else sys.maxsize for G in C ]
+        mt = [sys.maxsize if len(G.intersection(end)) > 0 else -1 * sys.maxsize for G in C]
         cmap = _construct_alphabet_cluster_map(C)
         for (a, b) in dfg:
             mf[cmap[b]] = min(mf[cmap[b]], cmap[a])
@@ -81,7 +74,6 @@ def detect(alphabet, trp, trs, dfg, start, end):
                     q += 1
         return list(filter(lambda g: len(g) > 0, C))
     return None
-
 
 def _construct_alphabet_cluster_map(C):
     map = dict()
