@@ -1,14 +1,79 @@
 from collections import Counter
 from itertools import product
-
+import sys
 from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
 from pm4py.objects.log.obj import EventLog, Trace
 
-
-def detect(alphabet, transitive_predecessors, transitive_successors):
+def skippable(p: int, dfg, start, end, groups) -> bool:
     '''
-    This method finds a xor cut in the dfg.
-    Implementation follows function XorCut on page 188 of
+    This method implements the function SKIPPABLE as defined on page 233 of 
+    "Robust Process Mining with Guarantees" by Sander J.J. Leemans (ISBN: 978-90-386-4257-4)
+    The function is used as a helper function for the strict sequence cut detection mechanism, which detects
+    larger groups of skippable activities.
+    '''
+    for i,j in product(range(0,p),range(p+1,len(groups))):
+        for a,b in product(groups[i],groups[j]):
+            if (a,b) in dfg:
+                return True
+    for i in range(p+1,len(groups)):
+        for a in groups[i]:
+            if a in start:
+                return True
+    for i in range(0,p):
+        for a in groups[i]:
+            if a in end:
+                return True
+    return False
+
+def detect_sequence_strict(alphabet, trp, trs, dfg, start, end):
+    '''
+    This method implements the strict sequence cut as defined on page 233 of 
+    "Robust Process Mining with Guarantees" by Sander J.J. Leemans (ISBN: 978-90-386-4257-4)
+    The function merges groups that together can be sckipped
+    '''
+    C = detect(alphabet, trp, trs)
+    if C is not None:
+        mf = [sys.maxsize for i in range(0,len(C))]
+        mt = [-1*sys.maxsize for i in range(0,len(C))]
+        for i in range(0,len(C)):
+            g = C[i]
+            for a in g:
+                if a in start:
+                    mf[i] = -1*sys.maxsize
+                if a in end:
+                    mt[i] = sys.maxsize
+        cmap = _construct_alphabet_cluster_map(C)
+        for (a,b) in dfg:
+            mf[cmap[b]] = min(mf[cmap[b]], cmap[a])
+            mt[cmap[a]] = max(mt[cmap[a]], cmap[b])
+
+        for p in range(0,len(C)):
+            if skippable(p,dfg,start,end,C):
+                q = p - 1
+                while q >= 0 and mt[q] <= p:
+                    C[p] = C[p].union(C[q])
+                    C[q] = set()
+                    q -= 1
+                q = p + 1
+                while q < len(mf) and mf[q] >= p:
+                    C[p] = C[p].union(C[q])
+                    C[q] = set()
+                    q += 1
+        return list(filter(lambda g: len(g) > 0, C))
+    return None
+
+
+def _construct_alphabet_cluster_map(C):
+    map = dict()
+    for i in range(0,len(C)):
+        for a in C[i]:
+            map[a] = i
+    return map
+
+def detect(alphabet, trp, trs):
+    '''
+    This method finds a sequence cut in the dfg.
+    Implementation follows function sequence on page 188 of
     "Robust Process Mining with Guarantees" by Sander J.J. Leemans (ISBN: 978-90-386-4257-4)
 
     Basic Steps:
@@ -21,7 +86,7 @@ def detect(alphabet, transitive_predecessors, transitive_successors):
     ----------
     alphabet
         characters occurring in the dfg
-    transitive_predecessors
+    trp
         dictionary mapping activities to their (transitive) predecessors, according to the DFG
     transitive_successors
         dictionary mapping activities to their (transitive) successors, according to the DFG
@@ -36,12 +101,12 @@ def detect(alphabet, transitive_predecessors, transitive_successors):
     if len(groups) == 0:
         return None
     for a, b in product(alphabet, alphabet):
-        if (b in transitive_successors[a] and a in transitive_successors[b]) or (
-                b not in transitive_successors[a] and a not in transitive_successors[b]):
+        if (b in trs[a] and a in trs[b]) or (
+                b not in trs[a] and a not in trs[b]):
             groups = im_utils.__merge_groups_for_acts(a, b, groups)
 
     groups = list(sorted(groups, key=lambda g: len(
-        transitive_predecessors[next(iter(g))]) + (len(alphabet) - len(transitive_successors[next(iter(g))]))))
+        trp[next(iter(g))]) + (len(alphabet) - len(trs[next(iter(g))]))))
     return groups if len(groups) > 1 else None
 
 
@@ -185,3 +250,4 @@ def project_dfg(dfg_sa_ea_actcount, groups):
             skippable[j] = False
             j = j + 1
     return [dfgs, skippable]
+
