@@ -1,6 +1,26 @@
 # Changelog of pm4py
 
-## pm4py 2.2.23.1 (2022.XX.YY)
+## pm4py 2.2.24 (2022.07.12)
+
+### Added
+* 43800f763a2aede807ad40231f771c6ef19e0098
+	* added some examples for XES and OCEL generation out of a database
+
+### Changed
+* f72e011d38cec44823c00248039812a3fa0cfc7b
+  * application of the strict sequence cut in inductive miner (IMCLEAN)
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.23.1 (2022.07.01)
 
 ### Added
 

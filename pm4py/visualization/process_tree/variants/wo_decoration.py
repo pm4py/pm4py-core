@@ -66,7 +66,7 @@ def repr_tree_2(tree, viz, color_map, parameters):
             viz.node(this_node_id, "tau", style='filled', fillcolor='black', shape='point', width="0.075", fontsize=font_size)
         else:
             node_color = get_color(tree, color_map)
-            viz.node(this_node_id, str(tree), color=node_color, fontcolor=node_color, fontsize=font_size)
+            viz.node(this_node_id, str(tree.label), color=node_color, fontcolor=node_color, fontsize=font_size)
     else:
         node_color = get_color(tree, color_map)
         viz.node(this_node_id, operators_mapping[str(tree.operator)], color=node_color, fontcolor=node_color, fontsize=font_size)
