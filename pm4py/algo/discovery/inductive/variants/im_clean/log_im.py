@@ -19,7 +19,7 @@ from enum import Enum
 import pm4py
 from pm4py.algo.discovery.dfg import algorithm as discover_dfg
 from pm4py.algo.discovery.inductive.variants.im_clean.cuts import sequence as sequence_cut, xor as xor_cut, \
-    concurrency as concurrent_cut, loop as loop_cut
+    concurrency as concurrent_cut, loop as loop_cut, sequence_strict as sequence_strict_cut
 from pm4py.algo.discovery.inductive.variants.im_clean.fall_throughs import activity_once_per_trace, activity_concurrent, \
     strict_tau_loop, tau_loop
 from pm4py.algo.discovery.inductive.variants.im_clean.utils import __filter_dfg_on_threshold, __flower
@@ -67,7 +67,7 @@ def __inductive_miner_internal(log, dfg, threshold, root, act_key, use_msd, remo
     if __is_base_case_act(log, act_key) or __is_base_case_silent(log):
         return __apply_base_case(log, root, act_key)
     pre, post = dfg_utils.get_transitive_relations(dfg, alphabet)
-    cut = sequence_cut.detect(alphabet, pre, post)
+    cut = sequence_strict_cut.detect(alphabet, pre, post, dfg, start_activities,end_activities)
     if cut is not None:
         return __add_operator_recursive_logs(pt.ProcessTree(pt.Operator.SEQUENCE, root), threshold, act_key,
                                              sequence_cut.project(log, cut, act_key), use_msd)
