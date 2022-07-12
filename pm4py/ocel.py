@@ -289,3 +289,58 @@ def sample_ocel_objects(ocel: OCEL, num_objects: int) -> OCEL:
     """
     from pm4py.objects.ocel.util import sampling
     return sampling.sample_ocel_objects(ocel, parameters={"num_entities": num_objects})
+
+
+def ocel_drop_duplicates(ocel: OCEL) -> OCEL:
+    """
+    Drop relations between events and objects happening at the same time,
+    with the same activity, to the same object identifier.
+    This ends up cleaning the OCEL from duplicate events.
+
+    :param ocel: object-centric event log
+    :rtype: ``OCEL``
+    """
+    from pm4py.objects.ocel.util import filtering_utils
+    ocel.relations = ocel.relations.drop_duplicates(
+        subset=[ocel.event_activity, ocel.event_timestamp, ocel.object_id_column])
+    ocel = filtering_utils.propagate_relations_filtering(ocel)
+    return ocel
+
+
+def ocel_sort_by_additional_column(ocel: OCEL, additional_column: str, primary_column: str = "ocel:timestamp") -> OCEL:
+    """
+    Sorts the OCEL not only based on the timestamp column and the index,
+    but using an additional sorting column that further determines the order of
+    the events happening at the same timestamp.
+
+    :param ocel: object-centric event log
+    :param additional_column: additional column to use for the sorting
+    :param primary_column: primary column to be used for the sorting (default: ocel:timestamp)
+    :rtype: ``OCEL``
+    """
+    ocel.events["@@index"] = ocel.events.index
+    ocel.events = ocel.events.sort_values([primary_column, additional_column, "@@index"])
+    del ocel.events["@@index"]
+    ocel.events.reset_index(inplace=True, drop=True)
+    return ocel
+
+
+def ocel_add_index_based_timedelta(ocel: OCEL) -> OCEL:
+    """
+    Adds a small time-delta to the timestamp column based on the current index of the event.
+    This ensures the correct ordering of the events in any object-centric process mining
+    solution.
+
+    :param ocel: object-centric event log
+    :rtype: ``OCEL``
+    """
+    from datetime import timedelta
+    eids = ocel.events[ocel.event_id_column].to_list()
+    eids = {eids[i]: timedelta(milliseconds=i) for i in range(len(eids))}
+    ocel.events["@@timedelta"] = ocel.events[ocel.event_id_column].map(eids)
+    ocel.relations["@@timedelta"] = ocel.relations[ocel.event_id_column].map(eids)
+    ocel.events[ocel.event_timestamp] = ocel.events[ocel.event_timestamp] + ocel.events["@@timedelta"]
+    ocel.relations[ocel.event_timestamp] = ocel.relations[ocel.event_timestamp] + ocel.relations["@@timedelta"]
+    del ocel.events["@@timedelta"]
+    del ocel.relations["@@timedelta"]
+    return ocel
