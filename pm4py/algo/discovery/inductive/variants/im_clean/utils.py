@@ -33,7 +33,7 @@ def get_end_activities(cl):
     return set(map(lambda t: t[len(t)-1], filter(lambda t : len(t) > 0, cl)))
 
 def get_alphabet(cl):
-    return set(itertools.chain(*cl))
+    return set([e for t in cl for e in t])
 
 def msd(cl):
     msd = dict()

@@ -1,11 +1,13 @@
 from typing import Dict, Optional, List, Collection
+import copy
 
 import pm4py
 from pm4py.objects.log.obj import EventLog
 
 
+
 def detect(log: List[List[int]], alphabet: Collection[int]) -> Optional[str]:
-    candidates = alphabet
+    candidates = copy.copy(alphabet)
     for t in log:
         tr = list(map(lambda e: e, t))
         cc = [x for x in candidates]
