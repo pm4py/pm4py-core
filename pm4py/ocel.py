@@ -299,6 +299,14 @@ def ocel_drop_duplicates(ocel: OCEL) -> OCEL:
 
     :param ocel: object-centric event log
     :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        ocel = pm4py.ocel_drop_duplicates(ocel)
+
     """
     from pm4py.objects.ocel.util import filtering_utils
     ocel.relations = ocel.relations.drop_duplicates(
@@ -317,6 +325,14 @@ def ocel_sort_by_additional_column(ocel: OCEL, additional_column: str, primary_c
     :param additional_column: additional column to use for the sorting
     :param primary_column: primary column to be used for the sorting (default: ocel:timestamp)
     :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        ocel = pm4py.ocel_sort_by_additional_column(ocel, 'ordering')
+
     """
     ocel.events["@@index"] = ocel.events.index
     ocel.events = ocel.events.sort_values([primary_column, additional_column, "@@index"])
@@ -333,6 +349,14 @@ def ocel_add_index_based_timedelta(ocel: OCEL) -> OCEL:
 
     :param ocel: object-centric event log
     :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        ocel = pm4py.ocel_add_index_based_timedelta(ocel)
+
     """
     from datetime import timedelta
     eids = ocel.events[ocel.event_id_column].to_list()
