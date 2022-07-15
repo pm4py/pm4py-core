@@ -1011,6 +1011,14 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
         filtered_ocel = pm4py.filter_ocel_cc_object(ocel, "o1")
 
+    def test_ocel_drop_duplicates(self):
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        filtered_ocel = pm4py.ocel_drop_duplicates(ocel)
+
+    def test_ocel_add_index_based_timedelta(self):
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        filtered_ocel = pm4py.ocel_add_index_based_timedelta(ocel)
+
 
 if __name__ == "__main__":
     unittest.main()
