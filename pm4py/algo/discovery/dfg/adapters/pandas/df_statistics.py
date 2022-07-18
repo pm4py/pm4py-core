@@ -205,7 +205,7 @@ def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="tim
 
     df = df.join(df, rsuffix="_2")
     df = df[df[event_index] < df[event_index + "_2"]]
-    df = df[df[timestamp_key] < df[start_timestamp_key + '_2']]
+    df = df[df[timestamp_key] <= df[start_timestamp_key + '_2']]
 
     df.reset_index(inplace=True)
 
