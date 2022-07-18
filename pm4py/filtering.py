@@ -942,13 +942,15 @@ def filter_activity_done_different_resources(log: Union[EventLog, pd.DataFrame],
         return ltl_checker.attr_value_different_persons(log, activity, parameters=properties)
 
 
-def filter_ocel_object_types(ocel: OCEL, obj_types: Collection[str], positive: bool = True) -> OCEL:
+def filter_ocel_object_types(ocel: OCEL, obj_types: Collection[str], positive: bool = True, level: int = 1) -> OCEL:
     """
     Filters the object types of an object-centric event log.
 
     :param ocel: object-centric event log
     :param obj_types: object types to keep/remove
     :param positive: boolean value (True=keep, False=remove)
+    :param level: recursively expand the set of object identifiers until the specified level
+    
     :rtype: ``OCEL``
 
     .. code-block:: python3
@@ -960,12 +962,16 @@ def filter_ocel_object_types(ocel: OCEL, obj_types: Collection[str], positive: b
     """
     from copy import copy
     from pm4py.objects.ocel.util import filtering_utils
-    filtered_ocel = copy(ocel)
-    if positive:
-        filtered_ocel.objects = filtered_ocel.objects[filtered_ocel.objects[filtered_ocel.object_type_column].isin(obj_types)]
+    if level == 1:
+        filtered_ocel = copy(ocel)
+        if positive:
+            filtered_ocel.objects = filtered_ocel.objects[filtered_ocel.objects[filtered_ocel.object_type_column].isin(obj_types)]
+        else:
+            filtered_ocel.objects = filtered_ocel.objects[~filtered_ocel.objects[filtered_ocel.object_type_column].isin(obj_types)]
+        return filtering_utils.propagate_object_filtering(filtered_ocel)
     else:
-        filtered_ocel.objects = filtered_ocel.objects[~filtered_ocel.objects[filtered_ocel.object_type_column].isin(obj_types)]
-    return filtering_utils.propagate_object_filtering(filtered_ocel)
+        object_ids = ocel.objects[ocel.objects[ocel.object_type_column].isin(obj_types)][ocel.object_id_column].unique()
+        return filter_ocel_objects(ocel, object_ids, level=level, positive=positive)
 
 
 def filter_ocel_objects(ocel: OCEL, object_identifiers: Collection[str], positive: bool = True, level: int = 1) -> OCEL:
