@@ -184,7 +184,7 @@ def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="tim
     # to increase the speed of the approaches reduce dataframe to case, activity (and possibly complete timestamp)
     # columns
     if reduce_dataframe:
-        needed_columns = {case_id_glue, activity_key, start_timestamp_key, timestamp_key, event_index}
+        needed_columns = {case_id_glue, activity_key, start_timestamp_key, timestamp_key}
         if event_index in df.columns:
             needed_columns.add(event_index)
         needed_columns = list(needed_columns)
