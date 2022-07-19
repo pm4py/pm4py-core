@@ -2,15 +2,14 @@ from pm4py.objects.process_tree import obj as pt
 from pm4py.util.compression import util as compression
 
 
-def msd(cl):
+def msd(log):
     msd = dict()
-    alphabet = compression.get_alphabet(cl)
-    for a in alphabet:
-        if len(list(filter(lambda t: len(t) > 1, list(map(lambda t: list(filter(lambda e: e == a, t)), cl))))) > 0:
-            activity_indices = list(
-                filter(lambda t: len(t) > 1, list(map(lambda t: [i for i, x in enumerate(t) if x == a], cl))))
-            msd[a] = min([i for l in list(
-                map(lambda t: [t[i] - t[i - 1] - 1 for i, x in enumerate(t) if i > 0], activity_indices)) for i in l])
+    for a in compression.get_alphabet(log):
+        activity_indices = list(
+            filter(lambda t: len(t) > 1, map(lambda t: [i for i, x in enumerate(t) if x == a], log)))
+        if len(activity_indices) > 0:
+            msd[a] = min([i for l in map(lambda t: [
+                         t[i-1] - t[i] - 1 for i in range(len(t)) if i > 0], activity_indices) for i in l])
     return msd
 
 
