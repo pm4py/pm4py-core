@@ -1,6 +1,6 @@
 API Reference
 =============
-This page gives an overview of all public ``pm4py`` objects, functions and methods. 
+This page provides an overview of all public ``pm4py`` objects, functions and methods. 
 
 Input (:mod:`pm4py.read`)
 ---------------------------------
