@@ -1,7 +1,7 @@
 from typing import List, Tuple, Any
 
 
-class UnivariateCompressedLog(List[List[int]]):
+class UnivariateCompressedLog(List[List[Any]]):
     pass
 
 
