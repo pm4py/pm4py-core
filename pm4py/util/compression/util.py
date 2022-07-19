@@ -6,6 +6,40 @@ import numpy as np
 import copy
 
 
+def project_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:name', df_glue: str = 'case:concept:name',  df_sorting_criterion_key='time:timestamp') -> UCL:
+    '''
+    Projects an event log to a univariate list of values
+    For example, an event log of the form [[('concept:name':A,'k1':v1,'k2':v2),('concept:name':B,'k1':v3,'k2':v4),...],...]
+    is converted to [['A','B',...],...] 
+
+    The method returns the compressed log
+
+    :rtype: ``UCL``
+    :param log: log to compress (either EventLog or Dataframe)
+    :param key: key to use for compression
+    :param df_glue: key to use for combining events into traces when the input is a dataframe.
+    :param df_sorting_criterion_key: key to use as a sorting criterion for traces (typically timestamps)
+    '''
+    if type(log) not in {EventLog, pd.DataFrame}:
+        raise TypeError('%s provided, expecting %s or %s' %
+                        (str(type(log)), str(EventLog), str(pd.DataFrame)))
+    if type(log) is pd.DataFrame:
+        log = log.loc[:, [key, df_glue, df_sorting_criterion_key]]
+    if type(log) is EventLog:
+        return [[t[i][key]] for t in log for i in range(0, len(t))]
+    elif type(log) is pd.DataFrame:
+        cl = UCL()
+        log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
+        values = log[key].to_list()
+        distinct_ids, start_indexes, case_sizes = np.unique(
+            log[df_glue].to_numpy(), return_index=True, return_counts=True)
+        for i in range(len(distinct_ids)):
+            cl.append(
+                values[start_indexes[i]:start_indexes[i] + case_sizes[i]])
+        return cl
+    return None, None
+
+
 def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:name', df_glue: str = 'case:concept:name',
                         df_sorting_criterion_key='time:timestamp') -> Tuple[UCL, ULT]:
     """
