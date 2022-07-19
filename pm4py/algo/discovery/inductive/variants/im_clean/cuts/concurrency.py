@@ -19,7 +19,7 @@ def detect(dfg, alphabet, start_activities, end_activities, msd=None):
     groups = list(sorted(groups, key=lambda g: len(g)))
     i = 0
     while i < len(groups) and len(groups) > 1:
-        if len(groups[i].intersection(start_activities)) > 0 and len(groups[i].intersection(end_activities)) > 0:
+        if len(groups[i].intersection(set(start_activities.keys()))) > 0 and len(groups[i].intersection(set(end_activities.keys()))) > 0:
             i += 1
             continue
         group = groups[i]

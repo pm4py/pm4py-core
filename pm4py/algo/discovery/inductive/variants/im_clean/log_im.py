@@ -8,16 +8,10 @@ from pm4py.algo.discovery.inductive.variants.im_clean.fall_throughs import activ
     strict_tau_loop, tau_loop
 from pm4py.algo.discovery.inductive.variants.im_clean.utils import __filter_dfg_on_threshold, __flower
 from pm4py.algo.discovery.inductive.variants.im_clean import utils as imut
-from pm4py.algo.discovery.minimum_self_distance import algorithm as msd_algo
-from pm4py.algo.discovery.minimum_self_distance import utils as msdw_algo
 from pm4py.objects.dfg.utils import dfg_utils
-from pm4py.objects.log.obj import EventLog
-from pm4py.objects.log.util import log as log_util
 from pm4py.objects.process_tree import obj as pt
-from pm4py.statistics.end_activities.log import get as get_ends
-from pm4py.statistics.start_activities.log import get as get_starters
 from pm4py.util import constants
-
+from pm4py.util.compression import util as compression
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -30,9 +24,9 @@ def __inductive_miner(log, dfg, threshold, root, use_msd, remove_noise=False):
 
 
 def __inductive_miner_internal(log, dfg, threshold, root, use_msd, remove_noise=False):
-    alphabet = imut.get_alphabet(log)
+    alphabet = compression.get_alphabet(log)
     if threshold > 0 and remove_noise:
-        end_activities = imut.get_end_activities(log)
+        end_activities = compression.get_end_activities(log)
         dfg = __filter_dfg_on_threshold(dfg, end_activities, threshold)
 
     original_length = len(log)
@@ -42,8 +36,8 @@ def __inductive_miner_internal(log, dfg, threshold, root, use_msd, remove_noise=
     if original_length - len(log) > original_length * threshold:
         return __add_operator_recursive_logs(pt.ProcessTree(pt.Operator.XOR, root), threshold, [[], log], use_msd)
 
-    start_activities = imut.get_start_activities(log)
-    end_activities = imut.get_end_activities(log)
+    start_activities = compression.get_start_activities(log)
+    end_activities = compression.get_end_activities(log)
 
     if __is_base_case_act(log) or __is_base_case_silent(log):
         return __apply_base_case(log, root)
@@ -94,14 +88,14 @@ def __add_operator_recursive_logs(operator, threshold, logs, use_msd):
     if operator.operator != pt.Operator.LOOP:
         for log in logs:
             operator.children.append(__inductive_miner(
-                log, imut.discover_dfg(log), threshold, operator, use_msd))
+                log, compression.discover_dfg(log), threshold, operator, use_msd))
     else:
         operator.children.append(__inductive_miner(
-            logs[0], imut.discover_dfg(logs[0]), threshold, operator, use_msd))
+            logs[0], compression.discover_dfg(logs[0]), threshold, operator, use_msd))
         logs = logs[1:]
         if len(logs) == 1:
             operator.children.append(__inductive_miner(
-                logs[0], imut.discover_dfg(logs[0]), threshold, operator, use_msd))
+                logs[0], compression.discover_dfg(logs[0]), threshold, operator, use_msd))
         else:
             operator.children.append(
                 __add_operator_recursive_logs(
@@ -110,7 +104,7 @@ def __add_operator_recursive_logs(operator, threshold, logs, use_msd):
 
 
 def __is_base_case_act(log):
-    return True if len(list(filter(lambda t: len(t) == 1, log))) == len(log) and len(imut.get_alphabet(log)) == 1 else False
+    return True if len(list(filter(lambda t: len(t) == 1, log))) == len(log) and len(compression.get_alphabet(log)) == 1 else False
 
 
 def __is_base_case_silent(log):
