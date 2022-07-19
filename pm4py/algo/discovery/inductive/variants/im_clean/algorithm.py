@@ -5,7 +5,7 @@ import pandas as pd
 
 from pm4py.algo.discovery.inductive.util import tree_consistency
 from pm4py.algo.discovery.inductive.variants.im_clean import dfg_im
-from pm4py.algo.discovery.inductive.variants.im_clean.log_im import __inductive_miner
+from pm4py.algo.discovery.inductive.variants.im_clean.log_im import inductive_miner
 from pm4py.algo.discovery.inductive.variants.im_clean.utils import DfgSaEaActCount
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.conversion.process_tree import converter as tree_converter
@@ -94,13 +94,14 @@ def apply_tree(event_log: Union[pd.DataFrame, EventLog, EventStream],
             event_log = filtering_utils.keep_one_trace_per_variant(
                 event_log, parameters=parameters)
 
-    cl, lt = compress.compress_univariate(event_log, key=act_key)
-    tree = __inductive_miner(cl, compress.discover_dfg(cl),
+    cl = compress.project_univariate(event_log, key=act_key)
+    # cl = compress.project_univariate(event_log)
+    tree = inductive_miner(cl, compress.discover_dfg(cl),
                              threshold, None, exec_utils.get_param_value(Parameters.USE_MSD_PARALLEL_CUT, parameters, True))
 
-    for c in generic.get_leaves(tree):
-        if c.label is not None:
-            c.label = lt[c.label]
+    # for c in generic.get_leaves(tree):
+    #     if c.label is not None:
+    #        c.label = lt[c.label]
 
     tree_consistency.fix_parent_pointers(tree)
     tree = generic.fold(tree)
