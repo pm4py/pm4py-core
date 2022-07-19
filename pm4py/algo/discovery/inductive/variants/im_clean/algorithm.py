@@ -3,7 +3,6 @@ from typing import Union, Dict, Any, Optional, Tuple
 
 import pandas as pd
 
-from pm4py.algo.discovery.dfg import algorithm as discover_dfg
 from pm4py.algo.discovery.inductive.util import tree_consistency
 from pm4py.algo.discovery.inductive.variants.im_clean import dfg_im
 from pm4py.algo.discovery.inductive.variants.im_clean.log_im import __inductive_miner
@@ -17,7 +16,7 @@ from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.process_tree.utils import generic
 from pm4py.util import constants, exec_utils, xes_constants
 from pm4py.util import variants_util
-from pm4py.algo.discovery.inductive.variants.im_clean import utils as imut
+from pm4py.util.compression import util as compress
 
 
 class Parameters(Enum):
@@ -95,13 +94,12 @@ def apply_tree(event_log: Union[pd.DataFrame, EventLog, EventStream],
             event_log = filtering_utils.keep_one_trace_per_variant(
                 event_log, parameters=parameters)
 
-    lt, cl = imut.compress(event_log, act_key)
-
-    tree = __inductive_miner(cl, imut.discover_dfg(cl),
+    cl, lt = compress.compress_univariate(event_log, key=act_key)
+    tree = __inductive_miner(cl, compress.discover_dfg(cl),
                              threshold, None, exec_utils.get_param_value(Parameters.USE_MSD_PARALLEL_CUT, parameters, True))
 
     for c in generic.get_leaves(tree):
-        if c.label is not None: 
+        if c.label is not None:
             c.label = lt[c.label]
 
     tree_consistency.fix_parent_pointers(tree)
