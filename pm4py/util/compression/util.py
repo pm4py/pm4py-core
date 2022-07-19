@@ -26,7 +26,7 @@ def project_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:n
     if type(log) is pd.DataFrame:
         log = log.loc[:, [key, df_glue, df_sorting_criterion_key]]
     if type(log) is EventLog:
-        return [[t[i][key]] for t in log for i in range(0, len(t))]
+        return [[e[key] for e in t] for t in log]
     elif type(log) is pd.DataFrame:
         cl = UCL()
         log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
