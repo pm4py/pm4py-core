@@ -46,12 +46,12 @@ Process Discovery (:mod:`pm4py.discovery`)
 Process Discovery algorithms discover a process model that describes the process execution, as stored in the event log.
 ``pm4py`` implements a variety of different process discovery algorithms.
 These different algorithms return different kinds of models, i.e., models with *imprecise execution semantics*, *procedural process models* and *declarative process models*.
-Among the models with imprecise execution semantics, we offer:
+Among the models with *imprecise execution semantics*, ``pmp4py`` currently supports:
 
-  * :meth:`pm4py.discovery.discover_dfg`; discovers a *directly follows graph* annotated with the frequency.
-  * :meth:`pm4py.discovery.discover_performance_dfg`; discovers a *directly follows graph* annotated with the performance.
+  * :meth:`pm4py.discovery.discover_dfg`; discovers a *directly follows graph* annotated with frequency information (based on the log).
+  * :meth:`pm4py.discovery.discover_performance_dfg`; discovers a *directly follows graph* annotated with performance infomration (based on the log).
 
-Among procedural process models, we have:
+Among *procedural process models*, ``pmp4py`` currently supports:
 
   * :meth:`pm4py.discovery.discover_petri_net_alpha`; discovers a *Petri net* using the Alpha Miner algorithm.
   * :meth:`pm4py.discovery.discover_petri_net_inductive`; discovers a *Petri net* using the Inductive Miner algorithm.
@@ -60,32 +60,32 @@ Among procedural process models, we have:
   * :meth:`pm4py.discovery.discover_bpmn_inductive`; discovers a *BPMN model* using the Inductive Miner algorithm.
   * :meth:`pm4py.discovery.discover_heuristics_net`; discovers an *heuristics net* using the Heuristics Miner algorithm.
 
-Among declarative process models, we offer:
+Among *declarative process models*, ``pmp4py`` currently supports:
 
-  * :meth:`pm4py.discovery.discover_log_skeleton`; discovers the *log skeleton*.
-  * :meth:`pm4py.discovery.discover_temporal_profile`; discovers the *temporal profile*.
+  * :meth:`pm4py.discovery.discover_log_skeleton`; discovers a *log skeleton*.
+  * :meth:`pm4py.discovery.discover_temporal_profile`; discovers a *temporal profile*.
 
 Conformance Checking (:mod:`pm4py.conformance`)
 ------------------------------------------
-Conformance checking is a techniques to compare a process model with an event log of the same process. The goal is to check if the event log conforms to the model, and, vice versa.
-Among procedural process models, we have:
+Conformance checking techniques compare a process model with an event log of the same process. The goal is to check if the event log conforms to the model, and, vice versa.
+Among procedural process models, ``pmp4py`` currently supports:
 
   * :meth:`pm4py.conformance.conformance_diagnostics_token_based_replay`; token-based replay between the event log and a *Petri net*.
-  * :meth:`pm4py.conformance.conformance_diagnostics_alignments`; alignments-based replay between the event log and a *Petri net*.
+  * :meth:`pm4py.conformance.conformance_diagnostics_alignments`; alignment-based replay between the event log and a *Petri net*.
   * :meth:`pm4py.conformance.fitness_token_based_replay`; evaluation of the fitness between an event log and a *Petri net* using token-based replay.
   * :meth:`pm4py.conformance.fitness_alignments`; evaluation of the fitness between an event log and a *Petri net* using alignments.
   * :meth:`pm4py.conformance.precision_token_based_replay`; evaluation of the precision between an event log and a *Petri net* using token-based replay.
   * :meth:`pm4py.conformance.precision_alignments`; evaluation of the precision between an event log and a *Petri net* using alignments.
 
-Among declarative process models, we offer:
+Among declarative process models, ``pmp4py`` currently supports:
 
   * :meth:`pm4py.conformance.conformance_log_skeleton`; conformance checking using the *log skeleton*.
   * :meth:`pm4py.conformance.conformance_temporal_profile`; conformance checking using the *temporal profile*.
 
 Visualization (:mod:`pm4py.vis`)
 ------------------------------------------
-We offer a set of visualizations for process models and statistics.
-Among the on-screen visualizations, we have:
+The ``pm4py`` library implements basic visualizations of process models and statistics.
+Among the on-screen visualizations, ``pmp4py`` currently supports:
 
   * :meth:`pm4py.vis.view_petri_net`; views a *Petri net* model.
   * :meth:`pm4py.vis.view_dfg`; views a *directly-follows graph* annotated with the frequency.
