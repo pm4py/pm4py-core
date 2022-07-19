@@ -106,7 +106,10 @@ def convert_to_dataframe(obj: Union[EventStream, EventLog]) -> pd.DataFrame:
 
 def convert_to_bpmn(*args: Union[Tuple[PetriNet, Marking, Marking], ProcessTree]) -> BPMN:
     """
-    Converts an object to a BPMN diagram
+    Converts an object to a BPMN diagram.
+    As an input, either a Petri net (with corresponding initial and final marking) or a process tree can be provided.
+    A process tree can always be converted into a BPMN model and thus quality of the result object is guaranteed.
+    For Petri nets, the quality of the converison largely depends on the net provided (e.g., sound WF-nets are likely to produce reasonable BPMN models)    
 
     Example:
 
@@ -146,7 +149,9 @@ def convert_to_bpmn(*args: Union[Tuple[PetriNet, Marking, Marking], ProcessTree]
 
 def convert_to_petri_net(*args: Union[BPMN, ProcessTree, HeuristicsNet, dict]) -> Tuple[PetriNet, Marking, Marking]:
     """
-    Converts an object to an (accepting) Petri net
+    Converts an input model to an (accepting) Petri net.
+    The input objects can either be a process tree, BPMN model or a Heuristic net.
+    The output is a triple, containing the Petri net and the initial and final markings. The markings are only returned if they can be reasonable derived from the input model.
 
     Example:
 
@@ -185,7 +190,9 @@ def convert_to_petri_net(*args: Union[BPMN, ProcessTree, HeuristicsNet, dict]) -
 
 def convert_to_process_tree(*args: Union[Tuple[PetriNet, Marking, Marking], BPMN]) -> ProcessTree:
     """
-    Converts an object to a process tree.
+    Converts an input model to a process tree.
+    The input models can either be Petri nets (marked) or BPMN models.
+    For both input types, the conversion is not guaranteed to work, hence, invocation of the method can yield an Exception.
 
     Example:
 
@@ -222,7 +229,9 @@ def convert_to_process_tree(*args: Union[Tuple[PetriNet, Marking, Marking], BPMN
 
 def convert_to_reachability_graph(*args: Union[Tuple[PetriNet, Marking, Marking], BPMN, ProcessTree]) -> TransitionSystem:
     """
-    Converts an object to a reachability graph (transition system)
+    Converts an input model to a reachability graph (transition system)
+    The input models can either be Petri nets (with markings), BPMN models or process trees.
+    The output is the state-space of the model (i.e., the reachability graph), enocdoed as a ``TransitionSystem`` object.
 
     Example:
 
