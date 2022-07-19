@@ -13,17 +13,12 @@ from pm4py.objects.process_tree import obj as pt
 from pm4py.util import constants
 from pm4py.util.compression import util as compression
 
+
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
 
 
-def __inductive_miner(log, dfg, threshold, root, use_msd, remove_noise=False):
-    tree = __inductive_miner_internal(
-        log, dfg, threshold, root, use_msd, remove_noise)
-    return tree
-
-
-def __inductive_miner_internal(log, dfg, threshold, root, use_msd, remove_noise=False):
+def inductive_miner(log, dfg, threshold, root, use_msd, remove_noise=False):
     alphabet = compression.get_alphabet(log)
     if threshold > 0 and remove_noise:
         end_activities = compression.get_end_activities(log)
@@ -31,7 +26,7 @@ def __inductive_miner_internal(log, dfg, threshold, root, use_msd, remove_noise=
 
     original_length = len(log)
     log = list(filter(lambda t: len(t) > 0, log))
-    
+
     # revised EMPTYSTRACES
     if original_length - len(log) > original_length * threshold:
         return __add_operator_recursive_logs(pt.ProcessTree(pt.Operator.XOR, root), threshold, [[], log], use_msd)
@@ -42,7 +37,8 @@ def __inductive_miner_internal(log, dfg, threshold, root, use_msd, remove_noise=
     if __is_base_case_act(log) or __is_base_case_silent(log):
         return __apply_base_case(log, root)
     pre, post = dfg_utils.get_transitive_relations(dfg, alphabet)
-    cut = sequence_strict_cut.detect(alphabet, pre, post, dfg, start_activities,end_activities)
+    cut = sequence_strict_cut.detect(
+        alphabet, pre, post, dfg, start_activities, end_activities)
     if cut is not None:
         return __add_operator_recursive_logs(pt.ProcessTree(pt.Operator.SEQUENCE, root), threshold,
                                              sequence_cut.project(log, cut), use_msd)
@@ -79,7 +75,7 @@ def __inductive_miner_internal(log, dfg, threshold, root, use_msd, remove_noise=
         return __add_operator_recursive_logs(pt.ProcessTree(pt.Operator.LOOP, root), threshold, [tl, []], use_msd)
 
     if threshold > 0 and not remove_noise:
-        return __inductive_miner(log, dfg, threshold, root, use_msd, remove_noise=True)
+        return inductive_miner(log, dfg, threshold, root, use_msd, remove_noise=True)
 
     return __flower(alphabet, root)
 
@@ -87,14 +83,14 @@ def __inductive_miner_internal(log, dfg, threshold, root, use_msd, remove_noise=
 def __add_operator_recursive_logs(operator, threshold, logs, use_msd):
     if operator.operator != pt.Operator.LOOP:
         for log in logs:
-            operator.children.append(__inductive_miner(
+            operator.children.append(inductive_miner(
                 log, compression.discover_dfg(log), threshold, operator, use_msd))
     else:
-        operator.children.append(__inductive_miner(
+        operator.children.append(inductive_miner(
             logs[0], compression.discover_dfg(logs[0]), threshold, operator, use_msd))
         logs = logs[1:]
         if len(logs) == 1:
-            operator.children.append(__inductive_miner(
+            operator.children.append(inductive_miner(
                 logs[0], compression.discover_dfg(logs[0]), threshold, operator, use_msd))
         else:
             operator.children.append(
