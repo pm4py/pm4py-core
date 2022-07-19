@@ -1,10 +1,13 @@
-from typing import Union, Tuple, List, Counter
+from typing import Union, Tuple, List, Counter, Any
 import pandas as pd
 from pm4py.objects.log.obj import EventLog
 from pm4py.util.compression.dtypes import UCL, MCL, ULT, MLT
+import numpy as np
+import copy
 
 
-def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:name', df_glue: str = 'case:concept:name') -> Tuple[UCL, ULT]:
+def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:name', df_glue: str = 'case:concept:name',
+                        df_sorting_criterion_key='time:timestamp') -> Tuple[UCL, ULT]:
     """
     Compresses an event log to a univariate list of integer lists
     For example, an event log of the form [[('concept:name':A,'k1':v1,'k2':v2),('concept:name':B,'k1':v3,'k2':v4),...],...]
@@ -17,63 +20,100 @@ def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:
     :param log: log to compress (either EventLog or Dataframe)
     :param key: key to use for compression
     :param df_glue: key to use for combining events into traces when the input is a dataframe.
+    :param df_sorting_criterion_key: key to use as a sorting criterion for traces (typically timestamps)
     """
     if type(log) not in {EventLog, pd.DataFrame}:
         raise TypeError('%s provided, expecting %s or %s' %
                         (str(type(log)), str(EventLog), str(pd.DataFrame)))
-    vl = [[e[key] for e in t] for t in log] if type(log) is EventLog else [
-        log[log[df_glue] == g][key].to_list() for g in frozenset(log[df_glue].to_list())]
-    value_map = dict()
-    lookup = ULT()
-    compressed_log = UCL()
-    for t in vl:
-        compressed_trace = list()
-        for e in t:
-            if e not in value_map:
-                value_map[e] = len(lookup)
-                lookup.append(e)
-            compressed_trace.append(value_map[e])
-        compressed_log.append(compressed_trace)
-    return compressed_log, lookup
+    if type(log) is pd.DataFrame:
+        log = log.loc[:, [key, df_glue, df_sorting_criterion_key]]
+    lookup = list(set([x for xs in [[e[key] for e in t] for t in log]
+                  for x in xs])) if type(log) is EventLog else list(log[key].unique())
+    lookup_inv = {lookup[i]: i for i in range(len(lookup))}
+    if type(log) is EventLog:
+        return [[lookup_inv[t[i][key]] for i in range(0, len(t))] for t in log], lookup
+    elif type(log) is pd.DataFrame:
+        log[key] = log[key].map(lookup_inv)
+        cl = UCL()
+        log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
+        encoded_values = log[key].to_list()
+        distinct_ids, start_indexes, case_sizes = np.unique(
+            log[df_glue].to_numpy(), return_index=True, return_counts=True)
+        for i in range(len(distinct_ids)):
+            cl.append(encoded_values[start_indexes[i]
+                      :start_indexes[i] + case_sizes[i]])
+        return cl, lookup
+    return None, None
 
 
-def compress_mutlivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = ['concept:name'], df_glue: str = 'case:concept:name') -> Tuple[MCL, MLT]:
+def compress_mutlivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = ['concept:name'], df_glue: str = 'case:concept:name',
+                          df_sorting_criterion_key: str = 'time:timestamp', uncompressed: List[str] = []) -> Tuple[MCL, MLT]:
     """
     Compresses an event log to a list of lists containing tupes of integers.
     For example, an event log of the form [[('concept:name':A,'k1':v1,'k2':v2),('concept:name':B,'k1':v3,'k2':v4),...],...]
     is converted to [[(0,0),(1,1),...],...] with corresponding lookup table ['A', 'B'], i.e., if the 'concept:name' and 'k1' columns are used
     for comperssion.
+    The 2nd order criterion is used to sort the values that have the same trace attribute.
+    The uncompressed arguments will be included, yet, not compressed (e.g., a boolean value needs not to be compressed)
 
-    The method returns a tuple containing the compressed log and the lookup table
+    The method returns a tuple containing the compressed log and the lookup table. The order of the data in the compressed log follows the ordering of the provided keys. First the compressed columns are stored, secondly the uncompressed columns
 
     :rtype: ``Tuple[MCL,MLT]``
     :param log: log to compress (either EventLog or Dataframe)
     :param keys: keys to use for compression
     :param df_glue: key to use for combining events into traces when the input is a dataframe.
+    :param df_sorting_criterion_key: key to use as a sorting criterion for traces (typically timestamps)
+    :param uncompressed: columns that need to be included in the compression yet need not to be compressed
+
     """
     if type(log) not in {EventLog, pd.DataFrame}:
         raise TypeError('%s provided, expecting %s or %s' %
                         (str(type(log)), str(EventLog), str(pd.DataFrame)))
-    vl = [[tuple([e[k] for k in keys])for e in t] for t in log] if type(log) is EventLog else [
-        list(log[log[df_glue] == g][keys].itertuples(index=False)) for g in frozenset(log[df_glue].to_list())]
-    value_map = [dict() for k in keys]
-    lookup = MLT([] for k in keys)
-    compressed_log = MCL()
-    for t in vl:
-        compressed_trace = []
-        for e in t:
-            tpl = tuple()
-            for i, val in enumerate(e):
-                if val not in value_map[i]:
-                    value_map[i][val] = len(lookup[i])
-                    lookup[i].append(val)
-                tpl += (value_map[i][val],)
-            compressed_trace.append(tpl)
-        compressed_log.append(compressed_trace)
-    return compressed_log, lookup
+    if type(log) is pd.DataFrame:
+        retain = copy.copy(keys)
+        if df_glue not in retain:
+            retain.append(df_glue)
+        if df_sorting_criterion_key not in retain:
+            retain.append(df_sorting_criterion_key)
+        retain.extend([u for u in uncompressed if u not in retain])
+        log = log.loc[:, retain]
+    lookup = dict()
+    lookup_inv = dict()
+    for key in keys:
+        if key not in uncompressed:
+            lookup[key] = list(set([x for xs in [[e[key] for e in t] for t in log]
+                                    for x in xs])) if type(log) is EventLog else list(log[key].unique())
+            lookup_inv[key] = {lookup[key][i]: i for i in range(len(lookup[key]))}
+    if type(log) is EventLog:
+        encoded = MCL()
+        for t in log:
+            tr = list()
+            for i in range(0, len(t)):
+                vec = []
+                for key in keys:
+                    vec.append(lookup_inv[key][t[i][key]])
+                for key in uncompressed:
+                    vec.append(t[i][key])
+                tr.append(tuple(vec))
+            encoded.append(tr)
+        return encoded, lookup
+    else:
+        for key in keys:
+            log[key] = log[key].map(lookup_inv[key])
+        cl = MCL()
+        log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
+        retain = copy.copy(keys)
+        retain.extend([u for u in uncompressed if u not in retain])
+        encoded_values = list(log[retain].itertuples(index=False, name=None))
+        distinct_ids, start_indexes, case_sizes = np.unique(
+            log[df_glue].to_numpy(), return_index=True, return_counts=True)
+        for i in range(len(distinct_ids)):
+            cl.append(encoded_values[start_indexes[i]
+                      :start_indexes[i] + case_sizes[i]])
+    return cl, lookup
 
 
-def discover_dfg(log: Union[UCL, MCL], index=0) -> Counter[Tuple[int, int]]:
+def discover_dfg(log: Union[UCL, MCL], index: int = 0) -> Counter[Tuple[Any, int]]:
     """
     Discover a DFG object from a compressed event log (either univariate or multivariate)
     The DFG object represents a counter of integer pairs
@@ -82,23 +122,37 @@ def discover_dfg(log: Union[UCL, MCL], index=0) -> Counter[Tuple[int, int]]:
     :param log: compressed event log (either uni or multivariate)
     :param indes: index to use for dfg discovery in case of using an multivariate log
     """
+    log = _map_log_to_single_index(log, index)
     dfg = Counter()
-    for t in log:
-        for i in range(0, len(t)-1):
-            if type(log) is UCL:
-                dfg.update([(t[i], t[i+1])])
-            elif type(log) is MCL:
-                dfg.update([(t[i][index], t[i+1][index])])
+    [dfg.update([(t[i], t[i+1])]) for t in log for i in range(0, len(t)-1)]
     return dfg
 
 
-def get_start_activities(log: Union[UCL, MCL], index=0):
-    return set(map(lambda t: t[0], filter(lambda t: len(t) > 0, log))) if type(log) is UCL else set(map(lambda t: t[0][index], filter(lambda t: len(t) > 0, log)))
+def get_start_activities(log: Union[UCL, MCL], index: int = 0) -> Counter[Tuple[Any, int]]:
+    log = _map_log_to_single_index(log, index)
+    starts = Counter()
+    [starts.update([e]) for e in list(
+        map(lambda t: t[0], filter(lambda t: len(t) > 0, log)))]
+    return starts
 
 
-def get_end_activities(log: Union[UCL, MCL], index=0):
-    return set(map(lambda t: t[len(t)-1], filter(lambda t: len(t) > 0, log))) if type(log) is UCL else set(map(lambda t: t[len(t)-1][index], filter(lambda t: len(t) > 0, log)))
+def get_end_activities(log: Union[UCL, MCL], index: int = 0):
+    log = _map_log_to_single_index(log, index)
+    ends = Counter()
+    [ends.update([e]) for e in list(
+        map(lambda t: t[len(t)-1], filter(lambda t: len(t) > 0, log)))]
+    return ends
 
 
-def get_alphabet(log: Union[UCL, MCL], index=0):
-    return set([e for t in log for e in t]) if type(log) is UCL else set([e[index] for t in log for e in t])
+def get_alphabet(log: Union[UCL, MCL], index: int = 0):
+    log = _map_log_to_single_index(log, index)
+    return set([e for t in log for e in t])
+
+
+def get_variants(log: Union[UCL, MCL], index: int = 0):
+    log = _map_log_to_single_index(log, index)
+    return Counter(map(lambda t: tuple(t), log))
+
+
+def _map_log_to_single_index(log: Union[UCL, MCL], i: int):
+    return [list(map(lambda v: v[i], t)) for t in log] if type(log) is MCL else log
