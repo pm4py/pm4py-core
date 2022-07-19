@@ -23,6 +23,7 @@ def read_xes(file_path: str, variant: str = "iterparse", **kwargs) -> DataFrame:
     Returns a table (``pandas.DataFrame``) view of the event log.
 
     :param file_path: file path of the event log (``.xes`` file) on disk
+    :param variant: the variant of the importer to use. "iterparse" => traditional XML parser; "line_by_line" => text-based line-by-line importer (non standard); "chunk_regex" => chunk-of-bytes importer (standard); "iterparse20" => XES 2.0 importer
     :rtype: ``DataFrame``
 
     .. code-block:: python3
@@ -41,6 +42,8 @@ def read_xes(file_path: str, variant: str = "iterparse", **kwargs) -> DataFrame:
         v = xes_importer.Variants.ITERPARSE_MEM_COMPRESSED
     elif variant == "line_by_line":
         v = xes_importer.Variants.LINE_BY_LINE
+    elif variant == "chunk_regex":
+        v = xes_importer.Variants.CHUNK_REGEX
     log = xes_importer.apply(file_path, variant=v, parameters=kwargs)
     return log
 
