@@ -50,9 +50,11 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
 
     # if not differently specified, set the start timestamp key to the timestamp key
     # to avoid retro-compatibility problems
+    st_eq_ct = start_timestamp_key == timestamp_key
     if start_timestamp_key is None:
         start_timestamp_key = xes_constants.DEFAULT_START_TIMESTAMP_KEY
         df[start_timestamp_key] = df[timestamp_key]
+        st_eq_ct = True
 
     # to get rows belonging to same case ID together, we need to sort on case ID
     if sort_caseid_required:
@@ -84,8 +86,10 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     all_columns = list(all_columns - set([activity_key, target_activity_key + '_2']))
 
     if measure == "performance" or measure == "both":
-        # in the arc performance calculation, make sure to consider positive or null values
-        df_successive_rows[start_timestamp_key + '_2'] = df_successive_rows[[start_timestamp_key + '_2', timestamp_key]].max(axis=1)
+        if not st_eq_ct:
+            # in the arc performance calculation, make sure to consider positive or null values
+            df_successive_rows[start_timestamp_key + '_2'] = df_successive_rows[[start_timestamp_key + '_2', timestamp_key]].max(axis=1)
+        
         # calculate the difference between the timestamps of two successive events
         if business_hours:
             if worktiming is None:
