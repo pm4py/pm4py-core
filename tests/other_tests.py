@@ -236,6 +236,81 @@ class OtherPartsTests(unittest.TestCase):
         if "cvxopt" not in pm4py.util.lp.solver.DEFAULT_LP_SOLVER_VARIANT:
             raise Exception("cvxopt is not the solver")
 
+    def test_projection_univariate_log(self):
+        import pm4py
+        from pm4py.util.compression import util as compression_util
+        log = pm4py.read_xes(os.path.join("input_data", "receipt.xes"))
+        cl = compression_util.project_univariate(log, "concept:name")
+        # just verify that the set is non-empty
+        self.assertTrue(compression_util.get_start_activities(cl))
+        self.assertTrue(compression_util.get_end_activities(cl))
+        self.assertTrue(compression_util.get_alphabet(cl))
+        self.assertTrue(compression_util.discover_dfg(cl))
+        self.assertTrue(compression_util.get_variants(cl))
+
+    def test_projection_univariate_df(self):
+        import pandas as pd
+        from pm4py.util.compression import util as compression_util
+        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True)
+        cl = compression_util.project_univariate(dataframe, "concept:name")
+        # just verify that the set is non-empty
+        self.assertTrue(compression_util.get_start_activities(cl))
+        self.assertTrue(compression_util.get_end_activities(cl))
+        self.assertTrue(compression_util.get_alphabet(cl))
+        self.assertTrue(compression_util.discover_dfg(cl))
+        self.assertTrue(compression_util.get_variants(cl))
+
+    def test_compression_univariate_log(self):
+        import pm4py
+        from pm4py.util.compression import util as compression_util
+        log = pm4py.read_xes(os.path.join("input_data", "receipt.xes"))
+        cl, lookup = compression_util.compress_univariate(log, "concept:name")
+        # just verify that the set is non-empty
+        self.assertTrue(compression_util.get_start_activities(cl))
+        self.assertTrue(compression_util.get_end_activities(cl))
+        self.assertTrue(compression_util.get_alphabet(cl))
+        self.assertTrue(compression_util.discover_dfg(cl))
+        self.assertTrue(compression_util.get_variants(cl))
+
+    def test_compression_univariate_df(self):
+        import pandas as pd
+        from pm4py.util.compression import util as compression_util
+        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True)
+        cl, lookup = compression_util.compress_univariate(dataframe, "concept:name")
+        # just verify that the set is non-empty
+        self.assertTrue(compression_util.get_start_activities(cl))
+        self.assertTrue(compression_util.get_end_activities(cl))
+        self.assertTrue(compression_util.get_alphabet(cl))
+        self.assertTrue(compression_util.discover_dfg(cl))
+        self.assertTrue(compression_util.get_variants(cl))
+
+    def test_compression_multivariate_log(self):
+        import pm4py
+        from pm4py.util.compression import util as compression_util
+        log = pm4py.read_xes(os.path.join("input_data", "receipt.xes"))
+        cl, lookup = compression_util.compress_multivariate(log, ["concept:name", "org:resource"])
+        # just verify that the set is non-empty
+        self.assertTrue(compression_util.get_start_activities(cl))
+        self.assertTrue(compression_util.get_end_activities(cl))
+        self.assertTrue(compression_util.get_alphabet(cl))
+        self.assertTrue(compression_util.discover_dfg(cl))
+        self.assertTrue(compression_util.get_variants(cl))
+
+    def test_compression_multivariate_df(self):
+        import pandas as pd
+        from pm4py.util.compression import util as compression_util
+        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True)
+        cl, lookup = compression_util.compress_multivariate(dataframe, ["concept:name", "org:resource"])
+        # just verify that the set is non-empty
+        self.assertTrue(compression_util.get_start_activities(cl))
+        self.assertTrue(compression_util.get_end_activities(cl))
+        self.assertTrue(compression_util.get_alphabet(cl))
+        self.assertTrue(compression_util.discover_dfg(cl))
+        self.assertTrue(compression_util.get_variants(cl))
+
 
 if __name__ == "__main__":
     unittest.main()
