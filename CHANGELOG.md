@@ -6,7 +6,9 @@
 
 ### Changed
 * ce94110076e3269c96a6eee61d7618f08f44472a
-	Optimization of calculation of the eventually-follows graph
+  * optimization in the calculation of the eventually-follows graph on Pandas dataframes.
+* 3cca8f97bbd09f4ae5644dcc156489d4b2037028
+  * optimization in the calculation of the performance directly-follows graph on Pandas dataframes.
 
 ### Deprecated
 
