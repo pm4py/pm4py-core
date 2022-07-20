@@ -5,6 +5,8 @@
 ### Added
 
 ### Changed
+* ce94110076e3269c96a6eee61d7618f08f44472a
+	Optimization of calculation of the eventually-follows graph
 
 ### Deprecated
 
