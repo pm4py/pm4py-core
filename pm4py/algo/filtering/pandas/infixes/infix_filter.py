@@ -30,7 +30,7 @@ def apply(df: pd.DataFrame, admitted_infixes: List[List[str]],
     -----------
     df
         Dataframe
-    admitted_prefixes
+    admitted_infixes
         List of admitted infixes (to include/exclude)
     parameters
         Parameters of the algorithm, including:
