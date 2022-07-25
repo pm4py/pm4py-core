@@ -6,9 +6,9 @@ from enum import Enum
 from pm4py.util import constants, exec_utils
 from pm4py.util import variants_util
 
-from typing import Optional, Dict, Any, Union, Tuple, List
-from pm4py.objects.log.obj import EventLog, EventStream
-import pandas as pd
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.org.sna.obj import SNA
 
 
 class Parameters(Enum):
@@ -20,7 +20,7 @@ class Parameters(Enum):
 N = Parameters.N
 
 
-def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Any]:
+def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> SNA:
     """
     Calculates the Subcontracting metric
 
@@ -72,8 +72,9 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
                             sum_i_to_j[res_i][res_j] = 0
                         sum_i_to_j[res_i][res_j] += variants_occ[rvj]
 
+    connections = {}
     for key1 in sum_i_to_j:
         for key2 in sum_i_to_j[key1]:
-            metric_matrix[key1][key2] = sum_i_to_j[key1][key2] / dividend
+            connections[(flat_list[key1], flat_list[key2])] = sum_i_to_j[key1][key2] / dividend
 
-    return [metric_matrix, flat_list, True]
+    return SNA(connections, True)
