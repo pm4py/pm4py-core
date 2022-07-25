@@ -73,9 +73,9 @@ def privatize_tracevariants(log, epsilon, p, n):
 
     final_frequencies = {}
     trace_frequencies = {"": 0}
-    for n in range(1, n + 1):
+    for i in range(1, n + 1):
         # get prefix_frequencies, using either known frequency, or frequency of parent, or 0
-        trace_frequencies = get_prefix_frequencies_length_n(trace_frequencies, events, n, known_prefix_frequencies)
+        trace_frequencies = get_prefix_frequencies_length_n(trace_frequencies, events, i, known_prefix_frequencies)
         # laplace_mechanism
         trace_frequencies = apply_laplace_noise_tf(trace_frequencies, epsilon)
 
