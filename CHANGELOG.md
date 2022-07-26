@@ -18,6 +18,8 @@
   54970a58927ad0e17b173bff17705a10f5344d92
   ef575a8bf0519655bcf8a57b981c7fa3c018db7a
   * small fixes in OCEL utilities
+* d0094fa4ccc815b57ccc519d15ccbda6399c2ef7
+  * bug fix eventually_follows filter in LTL checker when timestamp_diff_boundaries is provided.
 
 ### Removed
 
