@@ -80,7 +80,7 @@ def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:
     return None, None
 
 
-def compress_mutlivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = ['concept:name'], df_glue: str = 'case:concept:name',
+def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = ['concept:name'], df_glue: str = 'case:concept:name',
                           df_sorting_criterion_key: str = 'time:timestamp', uncompressed: List[str] = []) -> Tuple[MCL, MLT]:
     """
     Compresses an event log to a list of lists containing tupes of integers.
