@@ -22,6 +22,8 @@
   * small fixes in OCEL utilities
 * d0094fa4ccc815b57ccc519d15ccbda6399c2ef7
   * bug fix eventually_follows filter in LTL checker when timestamp_diff_boundaries is provided.
+* eb8617de0cfcfebf7374b4545660158e4b4291b6
+  * bug fix eventually_follows filter in LTL checker on EventLog objects.
 
 ### Removed
 
