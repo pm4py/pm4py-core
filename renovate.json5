@@ -8,9 +8,8 @@
     "fileMatch": ["^requirements_stable.txt$"]
   },
   "ignorePaths": ["requirements.txt"],
-  "labels": [
-    "dependency"
-  ],
+  "assignees": ["sebastiaan.van.zelst"],
+  "baseBranches": ["integration"], // don't use the repo's default branch but create MRs for these baseBranches
   // Fix default branch rebasing - always rebase still-open temporary branches, whenever its source branch has changed
   "rebaseWhen": "behind-base-branch",
   // Handle pulled dependency updates
@@ -18,11 +17,4 @@
   // Improve overview of open PRs (caused by Renovate Bot)
   "dependencyDashboard": true,
   "dependencyDashboardAutoclose": true,
-  "packageRules": [
-    {
-      "description": "Automatically merge minor and patch-level updates",
-      "matchUpdateTypes": ["minor", "patch", "digest"],
-      "automerge": true
-    }
-  ]
 }
