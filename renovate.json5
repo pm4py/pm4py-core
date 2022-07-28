@@ -19,5 +19,5 @@
   "rollbackPrs": true,
   // Improve overview of open PRs (caused by Renovate Bot)
   "dependencyDashboard": true,
-  "dependencyDashboardAutoclose": true,
+  "dependencyDashboardAutoclose": true
 }
