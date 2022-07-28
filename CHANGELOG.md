@@ -9,6 +9,8 @@
   * optimization in the calculation of the eventually-follows graph on Pandas dataframes.
 * 3cca8f97bbd09f4ae5644dcc156489d4b2037028
   * optimization in the calculation of the performance directly-follows graph on Pandas dataframes.
+* 4d8721787a50da397b265678be614c94894ea851
+  * column reduction in DFG calculation on top of Pandas dataframes
 
 ### Deprecated
 
