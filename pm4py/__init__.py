@@ -19,7 +19,7 @@ from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_p
     discover_petri_net_inductive, discover_process_tree_inductive, discover_heuristics_net, \
     discover_dfg, discover_footprints, discover_eventually_follows_graph, discover_directly_follows_graph, discover_bpmn_inductive, \
     discover_performance_dfg, discover_transition_system, discover_prefix_tree, \
-    discover_temporal_profile, discover_log_skeleton, discover_batches, derive_minimum_self_distance
+    discover_temporal_profile, discover_log_skeleton, discover_batches, derive_minimum_self_distance, discover_dfg_typed
 from pm4py.conformance import conformance_diagnostics_token_based_replay, conformance_diagnostics_alignments, \
     fitness_token_based_replay, \
     fitness_alignments, precision_token_based_replay, \
