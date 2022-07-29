@@ -316,8 +316,8 @@ def eventually_follows(df0: pd.DataFrame, attribute_values: List[str], parameter
     attribute_key = exec_utils.get_param_value(Parameters.ATTRIBUTE_KEY, parameters, DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
-    enable_timestamp = exec_utils.get_param_value(Parameters.ENABLE_TIMESTAMP, parameters, False)
     timestamp_diff_boundaries = exec_utils.get_param_value(Parameters.TIMESTAMP_DIFF_BOUNDARIES, parameters, [])
+    enable_timestamp = exec_utils.get_param_value(Parameters.ENABLE_TIMESTAMP, parameters, len(timestamp_diff_boundaries) > 0)
 
     colset = [case_id_glue, attribute_key]
     if enable_timestamp:
@@ -341,7 +341,7 @@ def eventually_follows(df0: pd.DataFrame, attribute_values: List[str], parameter
         df_join = df_join[df_join["@@diffindex%d" % (i - 1)] > 0]
 
     if enable_timestamp:
-        for i in range(2, len(df_a)):
+        for i in range(1, len(df_a)):
             df_join["@@difftimestamp%d" % (i - 1)] = (
                         df_join[timestamp_key + "_%d" % i] - df_join[timestamp_key + '_%d' % (i-1)]).astype(
                 'timedelta64[s]')

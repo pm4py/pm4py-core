@@ -16,13 +16,15 @@
 '''
 from pm4py.util import xes_constants, pandas_utils, constants
 from pm4py.util.business_hours import soj_time_business_hours_diff
+import numpy as np
 
 
 def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_glue="case:concept:name",
                   start_timestamp_key=None, timestamp_key="time:timestamp", perf_aggregation_key="mean",
                   sort_caseid_required=True,
                   sort_timestamp_along_case_id=True, keep_once_per_case=False, window=1,
-                  business_hours=False, worktiming=None, weekends=None, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, target_activity_key=None):
+                  business_hours=False, worktiming=None, weekends=None, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, target_activity_key=None,
+                  reduce_columns=True):
     """
     Get DFG graph from Pandas dataframe
 
@@ -65,9 +67,19 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
 
     # if not differently specified, set the start timestamp key to the timestamp key
     # to avoid retro-compatibility problems
+    st_eq_ct = start_timestamp_key == timestamp_key
     if start_timestamp_key is None:
         start_timestamp_key = xes_constants.DEFAULT_START_TIMESTAMP_KEY
         df[start_timestamp_key] = df[timestamp_key]
+        st_eq_ct = True
+
+    # to increase the speed of the approaches reduce dataframe to case, activity (and possibly complete timestamp)
+    # columns
+    if reduce_columns:
+        if measure == "frequency" and not sort_timestamp_along_case_id:
+            df = df[list({case_id_glue, activity_key, target_activity_key})]
+        else:
+            df = df[list({case_id_glue, activity_key, start_timestamp_key, timestamp_key, target_activity_key})]
 
     # to get rows belonging to same case ID together, we need to sort on case ID
     if sort_caseid_required:
@@ -76,18 +88,12 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
         else:
             df = df.sort_values(case_id_glue)
 
-    # to increase the speed of the approaches reduce dataframe to case, activity (and possibly complete timestamp)
-    # columns
-    if measure == "frequency":
-        df_reduced = df[{case_id_glue, activity_key, target_activity_key}]
-    else:
-        df_reduced = df[{case_id_glue, activity_key, start_timestamp_key, timestamp_key, target_activity_key}]
     # shift the dataframe by 1, in order to couple successive rows
-    df_reduced_shifted = df_reduced.shift(-window)
+    df_shifted = df.shift(-window)
     # change column names to shifted dataframe
-    df_reduced_shifted.columns = [str(col) + '_2' for col in df_reduced_shifted.columns]
+    df_shifted.columns = [str(col) + '_2' for col in df_shifted.columns]
     # concate the two dataframe to get a unique dataframe
-    df_successive_rows = pd.concat([df_reduced, df_reduced_shifted], axis=1)
+    df_successive_rows = pd.concat([df, df_shifted], axis=1)
     # as successive rows in the sorted dataframe may belong to different case IDs we have to restrict ourselves to
     # successive rows belonging to same case ID
     df_successive_rows = df_successive_rows[df_successive_rows[case_id_glue] == df_successive_rows[case_id_glue + '_2']]
@@ -99,8 +105,10 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     all_columns = list(all_columns - set([activity_key, target_activity_key + '_2']))
 
     if measure == "performance" or measure == "both":
-        # in the arc performance calculation, make sure to consider positive or null values
-        df_successive_rows[start_timestamp_key + '_2'] = df_successive_rows[[start_timestamp_key + '_2', timestamp_key]].max(axis=1)
+        if not st_eq_ct:
+            # in the arc performance calculation, make sure to consider positive or null values
+            df_successive_rows[start_timestamp_key + '_2'] = df_successive_rows[[start_timestamp_key + '_2', timestamp_key]].max(axis=1)
+        
         # calculate the difference between the timestamps of two successive events
         if business_hours:
             if worktiming is None:
@@ -158,7 +166,8 @@ def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="tim
                                 case_id_glue="case:concept:name", activity_key="concept:name",
                                 sort_caseid_required=True,
                                 sort_timestamp_along_case_id=True, reduce_dataframe=True, keep_first_following=True,
-                                business_hours=False, worktiming=None, weekends=None, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR):
+                                business_hours=False, worktiming=None, weekends=None, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR,
+                                event_index=constants.DEFAULT_INDEX_KEY):
     """
     Gets the partial order between events (of the same case) in a Pandas dataframe
 
@@ -191,7 +200,18 @@ def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="tim
     # to avoid retro-compatibility problems
     if start_timestamp_key is None:
         start_timestamp_key = xes_constants.DEFAULT_START_TIMESTAMP_KEY
+
+    if start_timestamp_key not in df:
         df[start_timestamp_key] = df[timestamp_key]
+
+    # to increase the speed of the approaches reduce dataframe to case, activity (and possibly complete timestamp)
+    # columns
+    if reduce_dataframe:
+        needed_columns = {case_id_glue, activity_key, start_timestamp_key, timestamp_key}
+        if event_index in df.columns:
+            needed_columns.add(event_index)
+        needed_columns = list(needed_columns)
+        df = df[needed_columns]
 
     # to get rows belonging to same case ID together, we need to sort on case ID
     if sort_caseid_required:
@@ -199,21 +219,18 @@ def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="tim
             df = df.sort_values([case_id_glue, start_timestamp_key, timestamp_key])
         else:
             df = df.sort_values(case_id_glue)
+        df.reset_index(drop=True, inplace=True)
 
-    # to increase the speed of the approaches reduce dataframe to case, activity (and possibly complete timestamp)
-    # columns
-    if reduce_dataframe:
-        df = df[[case_id_glue, activity_key, start_timestamp_key, timestamp_key]]
+    if event_index not in df.columns:
+        df[event_index] = df.index
 
-    df = pandas_utils.insert_index(df)
-    df = df.set_index(case_id_glue)
-    df_copy = df.copy()
+    df.set_index(case_id_glue, inplace=True)
 
-    df = df.join(df_copy, rsuffix="_2").dropna()
-    df = df[df[constants.DEFAULT_INDEX_KEY] < df[constants.DEFAULT_INDEX_KEY + "_2"]]
-    df[start_timestamp_key + '_2'] = df[[start_timestamp_key + '_2', timestamp_key]].max(axis=1)
+    df = df.join(df, rsuffix="_2")
+    df = df[df[event_index] < df[event_index + "_2"]]
+    df = df[df[timestamp_key] <= df[start_timestamp_key + '_2']]
 
-    df = df.reset_index()
+    df.reset_index(inplace=True)
 
     if business_hours:
         if worktiming is None:

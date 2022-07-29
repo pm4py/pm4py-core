@@ -1033,7 +1033,8 @@ def filter_ocel_objects(ocel: OCEL, object_identifiers: Collection[str], positiv
         while level > 1:
             curr = list(object_identifiers)
             for el in curr:
-                object_identifiers = object_identifiers.union(graph[el])
+                for el2 in graph[el]:
+                    object_identifiers.add(el2)
             level = level - 1
     from copy import copy
     from pm4py.objects.ocel.util import filtering_utils
