@@ -1,14 +1,6 @@
-import logging
-import pkgutil
-import queue
 from collections import Counter
-from copy import copy
-from typing import Dict, Tuple, Collection, Any
+from typing import Dict, Collection, Any
 
-
-import numpy as np
-
-from pm4py.util import variants_util
 from pm4py.objects.dfg.obj import DFG
 
 
@@ -84,3 +76,4 @@ def get_sink_vertices(dfg: DFG) -> Collection[Any]:
     ends = set()
     outgoing = get_outgoing_arcs(dfg)
     [ends.add(a) for a in outgoing if len(outgoing[a]) == 0]
+    return ends
