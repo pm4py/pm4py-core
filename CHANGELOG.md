@@ -1,5 +1,36 @@
 # Changelog of pm4py
 
+## pm4py 2.2.25 (2022.07.29)
+
+### Added
+
+### Changed
+* ce94110076e3269c96a6eee61d7618f08f44472a
+  * optimization in the calculation of the eventually-follows graph on Pandas dataframes.
+* 3cca8f97bbd09f4ae5644dcc156489d4b2037028
+  * optimization in the calculation of the performance directly-follows graph on Pandas dataframes.
+* 4d8721787a50da397b265678be614c94894ea851
+  * column reduction in DFG calculation on top of Pandas dataframes
+
+### Deprecated
+
+### Fixed
+* d754ccdac680f610b2b628dc9830d92da6954dc1
+  cb76238c29b986026f07261c11a1c09a667c9ab9 
+  54970a58927ad0e17b173bff17705a10f5344d92
+  ef575a8bf0519655bcf8a57b981c7fa3c018db7a
+  * small fixes in OCEL utilities
+* d0094fa4ccc815b57ccc519d15ccbda6399c2ef7
+  * bug fix eventually_follows filter in LTL checker when timestamp_diff_boundaries is provided.
+* eb8617de0cfcfebf7374b4545660158e4b4291b6
+  * bug fix eventually_follows filter in LTL checker on EventLog objects.
+
+### Removed
+
+### Other
+
+-----
+
 ## pm4py 2.2.24 (2022.07.12)
 
 ### Added
