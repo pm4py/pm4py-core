@@ -3,7 +3,6 @@ The ``pm4py.vis`` module contains the visualizations offered in ``pm4py``
 """
 
 import os
-from copy import copy
 from typing import Optional
 from typing import Union, List, Dict, Any, Tuple, Set
 
@@ -15,10 +14,12 @@ from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
-from pm4py.utils import get_properties, __event_log_deprecation_warning
+from pm4py.utils import get_properties
 from pm4py.objects.transition_system.obj import TransitionSystem
 from pm4py.objects.trie.obj import Trie
 from pm4py.objects.ocel.obj import OCEL
+from pm4py.objects.org.sna.obj import SNA
+
 import deprecation
 
 
@@ -433,7 +434,7 @@ def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, at
     dotted_chart_visualizer.save(gviz, file_path)
 
 
-def view_sna(sna_metric):
+def view_sna(sna_metric: SNA):
     """
     Represents a SNA metric (.html)
 
@@ -451,7 +452,7 @@ def view_sna(sna_metric):
     sna_visualizer.view(gviz)
 
 
-def save_vis_sna(sna_metric, file_path: str):
+def save_vis_sna(sna_metric: SNA, file_path: str):
     """
     Saves the visualization of a SNA metric in a .html file
 

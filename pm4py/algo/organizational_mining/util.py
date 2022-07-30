@@ -117,7 +117,7 @@ def get_res_act_from_log(log_obj: Union[pd.DataFrame, EventLog], parameters: Opt
         log_obj = log_converter.apply(log_obj, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
         for trace in log_obj:
             for event in trace:
-                if activity_key in event and resource_key in event and group_key in event:
+                if activity_key in event and resource_key in event:
                     activity = event[activity_key]
                     resource = event[resource_key]
                     if resource not in res_act:
