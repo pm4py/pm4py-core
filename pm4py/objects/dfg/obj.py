@@ -20,5 +20,11 @@ class DirectlyFollowsGraph:
     def end_activities(self) -> List[Tuple[Any, int]]:
         return self._end_activities
 
+    def __repr__(self):
+        return repr(self._graph)
+
+    def __str__(self):
+        return str(self._graph)
+
 
 DFG = DirectlyFollowsGraph
