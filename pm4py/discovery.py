@@ -7,7 +7,6 @@ from typing import Tuple, Union, List, Dict, Any, Optional
 
 import pandas as pd
 from pandas import DataFrame
-import polars as pl
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.dfg.obj import DFG
@@ -22,6 +21,8 @@ from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_data
 from pm4py.utils import get_properties, xes_constants, __event_log_deprecation_warning
 from pm4py.util import constants
 import deprecation
+import pkgutil
+
 
 @deprecation.deprecated("2.3.0", "2.4.0", details="this method will be replaced by the discover_dfg_typed function(). Please adapt your code to use pm4py.discover_dfg_typed()")
 def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
@@ -85,7 +86,7 @@ def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame], activity
     return discover_dfg(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
 
-def discover_dfg_typed(log: Union[pd.DataFrame, pl.DataFrame], case_id_key: str = "case:concept:name", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp") -> DFG:
+def discover_dfg_typed(log: pd.DataFrame, case_id_key: str = "case:concept:name", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp") -> DFG:
     """
     Discovers a Directly-Follows Graph (DFG) from a log.
 
@@ -110,13 +111,18 @@ def discover_dfg_typed(log: Union[pd.DataFrame, pl.DataFrame], case_id_key: str 
 
         dfg = pm4py.discover_dfg_typed(log, case_id_key='case:concept:name', activity_key='concept:name', timestamp_key='time:timestamp')
     """
-    from pm4py.algo.discovery.dfg.variants import clean, clean_polars
+    from pm4py.algo.discovery.dfg.variants import clean
     parameters = get_properties(
         log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     if type(log) is pd.DataFrame:
         return clean.apply(log, parameters)
-    elif type(log) is pl.DataFrame:
-        return clean_polars.apply(log, parameters)
+    elif pkgutil.find_loader("polars"):
+        import polars as pl
+        if type(log) is pl.DataFrame:
+            from pm4py.algo.discovery.dfg.variants import clean_polars
+            return clean_polars.apply(log, parameters)
+        else:
+            raise TypeError('pm4py.discover_dfg_typed is only defined for pandas/polars DataFrames')
     else:
         raise TypeError('pm4py.discover_dfg_typed is only defined for pandas/polars DataFrames')
         
