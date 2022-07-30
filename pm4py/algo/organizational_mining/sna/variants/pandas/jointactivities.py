@@ -3,9 +3,9 @@ from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util import constants
 
-from typing import Optional, Dict, Any, Union, Tuple, List
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any, Union
 import pandas as pd
+from pm4py.objects.org.sna.obj import SNA
 
 
 class Parameters(Enum):
@@ -14,7 +14,7 @@ class Parameters(Enum):
     METRIC_NORMALIZATION = "metric_normalization"
 
 
-def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Any]:
+def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> SNA:
     """
     Calculates the Joint Activities / Similar Task metric
 
@@ -50,12 +50,13 @@ def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], A
         i = resources_keys.index(arc[0])
         j = activities_keys.index(arc[1])
         rsc_act_matrix[i, j] += activity_resource_couples[arc]
-    metric_matrix = np.zeros((len(resources_keys), len(resources_keys)))
+    connections = {}
     for i in range(rsc_act_matrix.shape[0]):
         vect_i = rsc_act_matrix[i, :]
         for j in range(rsc_act_matrix.shape[0]):
             if not i == j:
                 vect_j = rsc_act_matrix[j, :]
                 r, p = pearsonr(vect_i, vect_j)
-                metric_matrix[i, j] = r
-    return [metric_matrix, resources_keys, False]
+                connections[(resources_keys[i], resources_keys[j])] = r
+
+    return SNA(connections, False)
