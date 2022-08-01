@@ -60,6 +60,6 @@ def apply(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], An
     df[INT_CASE_ACT_SIZE] = df.groupby([activity_key, case_id_key]).cumcount()
     df = df[df[INT_CASE_ACT_SIZE] > 0]
     df = df.groupby([activity_key, case_id_key]).last()
-    ret = df.groupby(activity_key).size().to_dict()
+    ret = df.groupby(activity_key)[INT_CASE_ACT_SIZE].agg("sum").to_dict()
 
     return ret
