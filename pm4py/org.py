@@ -2,18 +2,20 @@ __doc__ = """
 The ``pm4py.org`` module contains the organizational analysis techniques offered in ``pm4py``
 """
 
-from typing import Union, Optional
+from typing import Union
 
 import pandas as pd
 
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties, __event_log_deprecation_warning
-from pm4py.util import constants, xes_constants
-from typing import Dict, Tuple, Any
+from pm4py.objects.org.sna.obj import SNA
+from pm4py.objects.org.roles.obj import Role
+from pm4py.util import xes_constants
+from typing import Dict, Tuple, Any, List
 
 
-def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0, resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
+def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0, resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> SNA:
     """
     Calculates the handover of work network of the event log.
     The handover of work network is essentially the DFG of the event log, however, using the
@@ -45,7 +47,7 @@ def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0
         return sna.apply(log, variant=sna.Variants.HANDOVER_LOG, parameters=parameters)
 
 
-def discover_working_together_network(log: Union[EventLog, pd.DataFrame], resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
+def discover_working_together_network(log: Union[EventLog, pd.DataFrame], resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> SNA:
     """
     Calculates the working together network of the process.
     Two nodes resources are connected in the graph if the resources collaborate on an instance of the process.
@@ -74,7 +76,7 @@ def discover_working_together_network(log: Union[EventLog, pd.DataFrame], resour
         return sna.apply(log, variant=sna.Variants.WORKING_TOGETHER_LOG, parameters=properties)
 
 
-def discover_activity_based_resource_similarity(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
+def discover_activity_based_resource_similarity(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> SNA:
     """
     Calculates similarity between the resources in the event log, based on their activity profiles.
 
@@ -103,7 +105,7 @@ def discover_activity_based_resource_similarity(log: Union[EventLog, pd.DataFram
         return sna.apply(log, variant=sna.Variants.JOINTACTIVITIES_LOG, parameters=properties)
 
 
-def discover_subcontracting_network(log: Union[EventLog, pd.DataFrame], n=2, resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
+def discover_subcontracting_network(log: Union[EventLog, pd.DataFrame], n=2, resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> SNA:
     """
     Calculates the subcontracting network of the process.
 
@@ -132,7 +134,7 @@ def discover_subcontracting_network(log: Union[EventLog, pd.DataFrame], n=2, res
         return sna.apply(log, variant=sna.Variants.SUBCONTRACTING_LOG, parameters=parameters)
 
 
-def discover_organizational_roles(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name"):
+def discover_organizational_roles(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", resource_key: str = "org:resource", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[Role]:
     """
     Mines the organizational roles
 
