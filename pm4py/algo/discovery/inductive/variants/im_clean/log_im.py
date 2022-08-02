@@ -1,9 +1,8 @@
 from enum import Enum
 
-import pm4py
-from pm4py.algo.discovery.dfg import algorithm as discover_dfg
-from pm4py.algo.discovery.inductive.variants.im_clean.cuts import sequence as sequence_cut, xor as xor_cut, \
-    concurrency as concurrent_cut, loop as loop_cut, sequence_strict as sequence_strict_cut
+from pm4py.algo.discovery.inductive.cuts import sequence as sequence_cut, xor as xor_cut, \
+    concurrency as concurrent_cut, loop as loop_cut
+from pm4py.algo.discovery.inductive.cuts import sequence_strict as sequence_strict_cut
 from pm4py.algo.discovery.inductive.variants.im_clean.fall_throughs import activity_once_per_trace, activity_concurrent, \
     strict_tau_loop, tau_loop
 from pm4py.algo.discovery.inductive.variants.im_clean.utils import __filter_dfg_on_threshold, __flower
