@@ -7,6 +7,8 @@
   * trace filter
 
 ### Changed
+* 5c06d520182317d140bd1b82d9d986c3edc81cf7
+  * minor fixes to DFG simulation
 
 ### Deprecated
 
