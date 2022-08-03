@@ -7,7 +7,8 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
                   start_timestamp_key=None, timestamp_key="time:timestamp", perf_aggregation_key="mean",
                   sort_caseid_required=True,
                   sort_timestamp_along_case_id=True, keep_once_per_case=False, window=1,
-                  business_hours=False, worktiming=None, weekends=None, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, target_activity_key=None):
+                  business_hours=False, worktiming=None, weekends=None, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, target_activity_key=None,
+                  reduce_columns=True):
     """
     Get DFG graph from Pandas dataframe
 
@@ -56,6 +57,14 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
         df[start_timestamp_key] = df[timestamp_key]
         st_eq_ct = True
 
+    # to increase the speed of the approaches reduce dataframe to case, activity (and possibly complete timestamp)
+    # columns
+    if reduce_columns:
+        if measure == "frequency" and not sort_timestamp_along_case_id:
+            df = df[list({case_id_glue, activity_key, target_activity_key})]
+        else:
+            df = df[list({case_id_glue, activity_key, start_timestamp_key, timestamp_key, target_activity_key})]
+
     # to get rows belonging to same case ID together, we need to sort on case ID
     if sort_caseid_required:
         if sort_timestamp_along_case_id:
@@ -63,18 +72,12 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
         else:
             df = df.sort_values(case_id_glue)
 
-    # to increase the speed of the approaches reduce dataframe to case, activity (and possibly complete timestamp)
-    # columns
-    if measure == "frequency":
-        df_reduced = df[{case_id_glue, activity_key, target_activity_key}]
-    else:
-        df_reduced = df[{case_id_glue, activity_key, start_timestamp_key, timestamp_key, target_activity_key}]
     # shift the dataframe by 1, in order to couple successive rows
-    df_reduced_shifted = df_reduced.shift(-window)
+    df_shifted = df.shift(-window)
     # change column names to shifted dataframe
-    df_reduced_shifted.columns = [str(col) + '_2' for col in df_reduced_shifted.columns]
+    df_shifted.columns = [str(col) + '_2' for col in df_shifted.columns]
     # concate the two dataframe to get a unique dataframe
-    df_successive_rows = pd.concat([df_reduced, df_reduced_shifted], axis=1)
+    df_successive_rows = pd.concat([df, df_shifted], axis=1)
     # as successive rows in the sorted dataframe may belong to different case IDs we have to restrict ourselves to
     # successive rows belonging to same case ID
     df_successive_rows = df_successive_rows[df_successive_rows[case_id_glue] == df_successive_rows[case_id_glue + '_2']]
