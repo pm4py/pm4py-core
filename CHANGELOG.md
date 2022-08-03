@@ -1,5 +1,23 @@
 # Changelog of pm4py
 
+## pm4py 2.2.26 (2022.??.??)
+
+### Added
+* 2146fc42020f11a364a98b724d6c6a44fcbcbb41
+  * trace filter
+
+### Changed
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+---
+
 ## pm4py 2.2.25 (2022.07.29)
 
 ### Added
