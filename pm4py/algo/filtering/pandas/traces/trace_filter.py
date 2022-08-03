@@ -1,16 +1,12 @@
-from pm4py.algo.filtering.common import filtering_constants
 from pm4py.util.constants import CASE_CONCEPT_NAME
-from pm4py.statistics.traces.generic.pandas import case_statistics
 from pm4py.statistics.traces.generic.pandas.case_statistics import get_variants_df
-from pm4py.statistics.variants.pandas import get as variants_get
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
-import deprecation
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, Union, List
 import pandas as pd
-from pm4py.util import variants_util, constants
+from pm4py.util import constants
 import re
 
 
@@ -21,7 +17,7 @@ class Parameters(Enum):
     POSITIVE = "positive"
 
 
-def apply(df: pd.DataFrame, admitted_infixes: List[List[str]],
+def apply(df: pd.DataFrame, admitted_traces: List[List[str]],
           parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Apply a filter on variants
@@ -30,8 +26,8 @@ def apply(df: pd.DataFrame, admitted_infixes: List[List[str]],
     -----------
     df
         Dataframe
-    admitted_infixes
-        List of admitted infixes (to include/exclude)
+    admitted_traces
+        List of admitted traces (to include/exclude)
     parameters
         Parameters of the algorithm, including:
             Parameters.CASE_ID_KEY -> Column that contains the Case ID
@@ -59,7 +55,7 @@ def apply(df: pd.DataFrame, admitted_infixes: List[List[str]],
         variants_df = variants_df.copy()
         variants_df["variant"] = variants_df["variant"].apply(lambda x: constants.DEFAULT_VARIANT_SEP.join(list(x)))
 
-    filter_regex = "|".join([f"({translate_infix_to_regex(inf)})" for inf in admitted_infixes])
+    filter_regex = "|".join([f"({translate_infix_to_regex(inf)})" for inf in admitted_traces])
     variants_df["matches_infix"] = variants_df["variant"].apply(lambda t: bool(re.search(filter_regex, t)))
     variants_df = variants_df[variants_df["matches_infix"]]
 
