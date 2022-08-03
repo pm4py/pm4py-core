@@ -85,7 +85,7 @@ setup(
               'pm4py.algo.filtering.pandas.attributes', 'pm4py.algo.filtering.pandas.auto_filter',
               'pm4py.algo.filtering.pandas.starts_with', 'pm4py.algo.filtering.pandas.end_activities',
               'pm4py.algo.filtering.pandas.start_activities', 'pm4py.algo.filtering.pandas.attr_value_repetition',
-              'pm4py.algo.filtering.pandas.infixes', 'pm4py.algo.reduction', 'pm4py.algo.reduction.process_tree',
+              'pm4py.algo.filtering.pandas.traces', 'pm4py.algo.reduction', 'pm4py.algo.reduction.process_tree',
               'pm4py.algo.reduction.process_tree.variants', 'pm4py.algo.clustering',
               'pm4py.algo.clustering.trace_attribute_driven', 'pm4py.algo.clustering.trace_attribute_driven.dfg',
               'pm4py.algo.clustering.trace_attribute_driven.util',
