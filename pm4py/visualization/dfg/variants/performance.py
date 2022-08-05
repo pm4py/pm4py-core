@@ -118,7 +118,7 @@ def get_activities_color_soj_time(soj_time):
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
                            max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, soj_time=None,
-                           font_size="12", bgcolor="transparent"):
+                           font_size="12", bgcolor=constants.DEFAULT_BGCOLOR):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -270,7 +270,7 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     font_size = str(font_size)
     activities = dfg_utils.get_activities_from_dfg(dfg)
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
-    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
 
     # if all the aggregation measures are provided for a given key,
     # then pick one of the values for the representation

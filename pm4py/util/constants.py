@@ -44,6 +44,8 @@ DEFAULT_BUSINESS_HOURS_WORKCALENDAR = None
 
 SHOW_EVENT_LOG_DEPRECATION = True
 
+DEFAULT_BGCOLOR = "white"
+
 from enum import Enum
 
 
