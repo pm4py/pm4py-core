@@ -12,7 +12,7 @@ from pm4py.util.compression.dtypes import UCL, UCT
 class LoopCut(ABC, Generic[T], Cut[T]):
 
     @classmethod
-    def detect(cls, dfg: DFG, log: UCL = None) -> Optional[List[Collection[Any]]]:
+    def detect(cls, dfg: DFG, log: UCL = None) -> Optional[Tuple[ProcessTree, List[Collection[Any]]]]:
         """
         This method finds a loop cut in the dfg.
         Implementation follows function LoopCut on page 190 of
@@ -42,7 +42,7 @@ class LoopCut(ABC, Generic[T], Cut[T]):
 
         groups = list(filter(lambda g: len(g) > 0, groups))
 
-        return groups if len(groups) > 1 else None
+        return (ProcessTree(operator=Operator.LOOP), groups) if len(groups) > 1 else None
 
     @classmethod
     def _check_start_completeness(cls, dfg: DFG, start_activities: Collection[Any], end_activities: Collection[Any],
@@ -133,7 +133,7 @@ class LoopCut(ABC, Generic[T], Cut[T]):
 class LoopLogCut(LoopCut[UCL]):
 
     @classmethod
-    def project(cls, obj: UCL, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[UCL]]:
+    def project(cls, obj: UCL, groups: List[Collection[Any]]) -> List[UCL]:
         do = groups[0]
         redo = groups[1:]
         redo_activities = [y for x in redo for y in x]
@@ -159,7 +159,7 @@ class LoopLogCut(LoopCut[UCL]):
             do_log.append(do_trace)
         logs = [do_log]
         logs.extend(redo_logs)
-        return ProcessTree(operator=Operator.LOOP), logs
+        return logs
 
     @classmethod
     def _append_trace_to_redo_log(cls, redo_trace: UCT, redo_logs: List[UCL], redo_groups: List[Collection[Any]]) -> \
@@ -174,7 +174,7 @@ class LoopLogCut(LoopCut[UCL]):
 class LoopDFGCut(LoopCut[DFG]):
 
     @classmethod
-    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[DFG], List[bool]]:
+    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> Tuple[List[DFG], List[bool]]:
         dfgs = []
         skippable = [False, False]
         start_activities = {a for (a, f) in dfg.start_activities}
@@ -202,4 +202,4 @@ class LoopDFGCut(LoopCut[DFG]):
                     dfn.start_activities.append((a, 1))
                     dfn.end_activities.append((a, 1))
             dfgs.append(dfn)
-        return ProcessTree(operator=Operator.LOOP), dfgs, skippable
+        return dfgs, skippable

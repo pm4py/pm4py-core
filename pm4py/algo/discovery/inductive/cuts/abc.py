@@ -12,7 +12,7 @@ class Cut(ABC, Generic[T]):
 
     @classmethod
     @abstractmethod
-    def detect(cls, dfg: DFG, obj: UCL = None) -> Optional[List[Collection[Any]]]:
+    def detect(cls, dfg: DFG, obj: UCL = None) -> Optional[Tuple[ProcessTree, List[Collection[Any]]]]:
         """
         Detects a cut in the DFG.
         Primarily uses the dfg object, may, in some cases, also use the event log object
@@ -21,7 +21,7 @@ class Cut(ABC, Generic[T]):
 
     @classmethod
     @abstractmethod
-    def project(cls, obj: T, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[T]]:
+    def project(cls, obj: T, groups: List[Collection[Any]]) -> List[T]:
         """
         Projection of the given data object (Generic type T).
         Returns a corresponding process tree and the projected sub logs according to the identified groups.
