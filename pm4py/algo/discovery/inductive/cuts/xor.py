@@ -13,7 +13,7 @@ from pm4py.util.compression.dtypes import UCL, UCT
 class ExclusiveChoiceCut(ABC, Generic[T], Cut[T]):
 
     @classmethod
-    def detect(cls, dfg: DFG, log: UCL = None) -> Optional[List[Collection[Any]]]:
+    def detect(cls, dfg: DFG, log: UCL = None) -> Optional[Tuple[ProcessTree, List[Collection[Any]]]]:
         '''
         This method finds a xor cut in the dfg.
         Implementation follows function XorCut on page 188 of
@@ -33,14 +33,14 @@ class ExclusiveChoiceCut(ABC, Generic[T], Cut[T]):
             cuts = list()
             for comp in conn_comps:
                 cuts.append(set(comp.nodes))
-            return cuts
+            return ProcessTree(operator=Operator.XOR), cuts
         else:
             return None
 
 
 class ExclusiveChoiceLogCut(ExclusiveChoiceCut[UCL]):
     @classmethod
-    def project(cls, log: UCL, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[UCL]]:
+    def project(cls, log: UCL, groups: List[Collection[Any]]) -> List[UCL]:
         logs = [UCL() for g in groups]
         for t in log:
             count = {i: 0 for i in range(len(groups))}
@@ -54,13 +54,13 @@ class ExclusiveChoiceLogCut(ExclusiveChoiceCut[UCL]):
                 if e in groups[count[0][0]]:
                     new_trace.append(e)
             logs[count[0][0]].append(new_trace)
-        return ProcessTree(operator=Operator.XOR), logs
+        return logs
 
 
 class ExclusiveChoiceDFGCut(ExclusiveChoiceCut[DFG]):
 
     @classmethod
-    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[DFG], List[bool]]:
+    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> Tuple[List[DFG], List[bool]]:
         dfgs = []
         for g in groups:
             dfg_new = DFG()
@@ -68,4 +68,4 @@ class ExclusiveChoiceDFGCut(ExclusiveChoiceCut[DFG]):
             [dfg_new.end_activities.append((a, f)) for (a, f) in dfg.end_activities if a in g]
             [dfg_new.graph.append((a, b, f)) for (a, b, f) in dfg.graph if a in g and b in g]
             dfgs.append(dfg)
-        return ProcessTree(operator=Operator.XOR), dfgs, [False for g in groups]
+        return dfgs, [False for g in groups]

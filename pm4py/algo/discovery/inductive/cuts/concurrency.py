@@ -17,7 +17,7 @@ class ConcurrencyCut(ABC, Generic[T], Cut[T]):
         return Operator.PARALLEL
 
     @classmethod
-    def detect(cls, dfg: DFG, log: UCL = None) -> Optional[List[Collection[Any]]]:
+    def detect(cls, dfg: DFG, log: UCL = None) -> Optional[Tuple[ProcessTree, List[Collection[Any]]]]:
         start_activities = {a for (a, f) in dfg.start_activities}
         end_activities = {a for (a, f) in dfg.end_activities}
         alphabet = dfu.get_vertices(dfg)
@@ -46,25 +46,25 @@ class ConcurrencyCut(ABC, Generic[T], Cut[T]):
             else:
                 groups[i - 1].update(group)
 
-        return groups if len(groups) > 1 else None
+        return (ProcessTree(operator=Operator.PARALLEL), groups) if len(groups) > 1 else None
 
 
 class ConcurrencyLogCut(ConcurrencyCut[UCL]):
 
     @classmethod
-    def project(cls, obj: UCL, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[UCL]]:
+    def project(cls, obj: UCL, groups: List[Collection[Any]]) -> List[UCL]:
         l = []
         for g in groups:
             ucl = UCL()
             ucl.append([list(filter(lambda e: e in g, t)) for t in obj])
             l.append(ucl)
-        return ProcessTree(operator=Operator.PARALLEL), l
+        return l
 
 
 class ConcurrencyDFGCut(ConcurrencyCut[DFG]):
 
     @classmethod
-    def project(cls, obj: DFG, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[DFG], List[bool]]:
+    def project(cls, obj: DFG, groups: List[Collection[Any]]) -> Tuple[List[DFG], List[bool]]:
         dfgs = []
         skippable = []
         for g in groups:
@@ -79,4 +79,4 @@ class ConcurrencyDFGCut(ConcurrencyCut[DFG]):
                 if a in g and b in g:
                     dfn.graph.append((a, b, f))
             skippable.append(False)
-        return ProcessTree(operator=Operator.PARALLEL), dfgs, skippable
+        return dfgs, skippable
