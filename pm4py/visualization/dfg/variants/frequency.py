@@ -132,7 +132,7 @@ def get_activities_color(activities_count):
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
                            max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, soj_time=None,
-                            font_size="12", bgcolor=constants.DEFAULT_BGCOLOR):
+                            font_size="12", bgcolor=constants.DEFAULT_BGCOLOR, stat_locale=None):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -287,6 +287,7 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     font_size = str(font_size)
     activities = dfg_utils.get_activities_from_dfg(dfg)
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
+    stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, {})
 
     if activities_count is None:
         if log is not None:

@@ -166,7 +166,7 @@ def get_edges_color(duration_list: list) -> str:
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
                            max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, soj_time=None,
-                           font_size="12", bgcolor=constants.DEFAULT_BGCOLOR):
+                           font_size="12", bgcolor=constants.DEFAULT_BGCOLOR, stat_locale=None):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -330,6 +330,7 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     activities = dfg_utils.get_activities_from_dfg(dfg)
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
+    stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, {})
 
     # if all the aggregation measures are provided for a given key,
     # then pick one of the values for the representation
@@ -367,5 +368,5 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     return graphviz_visualization(activities_count, dfg, image_format=image_format, measure="performance",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
                                   start_activities=start_activities, end_activities=end_activities, 
-                                  soj_time=soj_time, font_size=font_size, bgcolor=bgcolor, 
-                                  stat_locale=stat_locale)
+                                  soj_time=soj_time, font_size=font_size, bgcolor=bgcolor, stat_locale=stat_locale)
+
