@@ -19,7 +19,7 @@ import tempfile
 from graphviz import Digraph
 
 from pm4py.objects.petri_net.obj import Marking
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants
 from pm4py.visualization.petrinet.parameters import Parameters
 
 FORMAT = Parameters.FORMAT
@@ -64,7 +64,7 @@ def apply(net, initial_marking, final_marking, decorations=None, parameters=None
 
 
 def graphviz_visualization(net, image_format="png", initial_marking=None, final_marking=None, decorations=None,
-                           debug=False, set_rankdir=None, font_size="12", bgcolor="transparent"):
+                           debug=False, set_rankdir=None, font_size="12", bgcolor=constants.DEFAULT_BGCOLOR):
     """
     Provides visualization for the petrinet
 

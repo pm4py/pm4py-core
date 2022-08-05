@@ -20,7 +20,7 @@ from graphviz import Digraph
 
 from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.petri_net import properties as petri_properties
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants
 from enum import Enum
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY, DEFAULT_ARTIFICIAL_START_ACTIVITY, DEFAULT_ARTIFICIAL_END_ACTIVITY
 
@@ -66,7 +66,7 @@ def apply(net, initial_marking, final_marking, decorations=None, parameters=None
     debug = exec_utils.get_param_value(Parameters.DEBUG, parameters, False)
     set_rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, None)
     font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, "12")
-    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
 
     return graphviz_visualization(net, image_format=image_format, initial_marking=initial_marking,
                                   final_marking=final_marking, decorations=decorations, debug=debug,
@@ -74,7 +74,7 @@ def apply(net, initial_marking, final_marking, decorations=None, parameters=None
 
 
 def graphviz_visualization(net, image_format="png", initial_marking=None, final_marking=None, decorations=None,
-                           debug=False, set_rankdir=None, font_size="12", bgcolor="transparent"):
+                           debug=False, set_rankdir=None, font_size="12", bgcolor=constants.DEFAULT_BGCOLOR):
     """
     Provides visualization for the petrinet
 

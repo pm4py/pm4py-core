@@ -165,9 +165,8 @@ def get_edges_color(duration_list: list) -> str:
     return edges_color
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
-                           max_no_of_edges_in_diagram=100000, start_activities=None, 
-                           end_activities=None, soj_time=None, font_size="12", 
-                           bgcolor="transparent", stat_locale: dict = None):
+                           max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, soj_time=None,
+                           font_size="12", bgcolor=constants.DEFAULT_BGCOLOR):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -330,24 +329,7 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     font_size = str(font_size)
     activities = dfg_utils.get_activities_from_dfg(dfg)
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
-    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
-    stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, None)
-
-    if stat_locale is None:
-        stat_locale = {}
-
-    # if all the aggregation measures are provided for a given key,
-    # then pick one of the values for the representation
-    dfg0 = dfg
-    dfg = {}
-    for key in dfg0:
-        try:
-            if aggregation_measure in dfg0[key]:
-                dfg[key] = dfg0[key][aggregation_measure]
-            else:
-                dfg[key] = dfg0[key]
-        except:
-            dfg[key] = dfg0[key]
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
 
     # if all the aggregation measures are provided for a given key,
     # then pick one of the values for the representation

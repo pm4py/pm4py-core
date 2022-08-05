@@ -23,7 +23,7 @@ import graphviz
 import tempfile
 
 from graphviz import Digraph
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants
 from enum import Enum
 
 
@@ -43,7 +43,7 @@ def apply(tsys: TransitionSystem, parameters: Optional[Dict[Union[str, Parameter
         parameters = {}
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
-    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph(tsys.name, filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})

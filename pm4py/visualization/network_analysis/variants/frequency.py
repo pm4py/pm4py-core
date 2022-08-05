@@ -20,7 +20,7 @@ from enum import Enum
 from pm4py.util import exec_utils
 import tempfile
 from graphviz import Digraph
-from pm4py.util import vis_utils
+from pm4py.util import vis_utils, constants
 from typing import Dict, Optional, Any, Tuple
 
 
@@ -55,7 +55,7 @@ def apply(network_analysis_edges: Dict[Tuple[str, str], Dict[str, int]], paramet
         parameters = {}
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
-    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
     activity_threshold = exec_utils.get_param_value(Parameters.ACTIVITY_THRESHOLD, parameters, 1)
     edge_threshold = exec_utils.get_param_value(Parameters.EDGE_THRESHOLD, parameters, 1)
 

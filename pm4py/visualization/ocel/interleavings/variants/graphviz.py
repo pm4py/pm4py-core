@@ -102,7 +102,7 @@ def apply(dataframe1: pd.DataFrame, dataframe2: pd.DataFrame, interleavings: pd.
         parameters = {}
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
-    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
     rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "TB")
     annotation = exec_utils.get_param_value(Parameters.ANNOTATION, parameters, "frequency")
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
