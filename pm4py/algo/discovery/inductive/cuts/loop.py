@@ -12,7 +12,11 @@ from pm4py.util.compression.dtypes import UCL, UCT
 class LoopCut(ABC, Generic[T], Cut[T]):
 
     @classmethod
-    def detect(cls, dfg: DFG, log: UCL = None) -> Optional[Tuple[ProcessTree, List[Collection[Any]]]]:
+    def operator(cls) -> ProcessTree:
+        return ProcessTree(operator=Operator.LOOP)
+
+    @classmethod
+    def applies(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
         """
         This method finds a loop cut in the dfg.
         Implementation follows function LoopCut on page 190 of
@@ -26,6 +30,7 @@ class LoopCut(ABC, Generic[T], Cut[T]):
         5. return the cut if at least two groups remain
 
         """
+        dfg = dfg if dfg is not None else obj if type(obj) is DFG else None
         start_activities = {a for (a, f) in dfg.start_activities}
         end_activities = {a for (a, f) in dfg.end_activities}
         if len(dfg.graph) == 0:
@@ -42,7 +47,7 @@ class LoopCut(ABC, Generic[T], Cut[T]):
 
         groups = list(filter(lambda g: len(g) > 0, groups))
 
-        return (ProcessTree(operator=Operator.LOOP), groups) if len(groups) > 1 else None
+        return groups if len(groups) > 1 else None
 
     @classmethod
     def _check_start_completeness(cls, dfg: DFG, start_activities: Collection[Any], end_activities: Collection[Any],

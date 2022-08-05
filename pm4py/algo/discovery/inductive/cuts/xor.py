@@ -13,7 +13,11 @@ from pm4py.util.compression.dtypes import UCL, UCT
 class ExclusiveChoiceCut(ABC, Generic[T], Cut[T]):
 
     @classmethod
-    def detect(cls, dfg: DFG, log: UCL = None) -> Optional[Tuple[ProcessTree, List[Collection[Any]]]]:
+    def operator(cls) -> ProcessTree:
+        return ProcessTree(Operator=Operator.XOR)
+
+    @classmethod
+    def applies(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
         '''
         This method finds a xor cut in the dfg.
         Implementation follows function XorCut on page 188 of
@@ -33,7 +37,7 @@ class ExclusiveChoiceCut(ABC, Generic[T], Cut[T]):
             cuts = list()
             for comp in conn_comps:
                 cuts.append(set(comp.nodes))
-            return ProcessTree(operator=Operator.XOR), cuts
+            return cuts
         else:
             return None
 

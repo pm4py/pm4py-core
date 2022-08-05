@@ -8,7 +8,6 @@ from typing import Tuple
 
 from pm4py.algo.discovery.inductive.cuts.abc import Cut
 from pm4py.algo.discovery.inductive.cuts.abc import T
-from pm4py.algo.discovery.inductive.cuts.sequence import SequenceCut
 from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
@@ -19,7 +18,11 @@ from pm4py.util.compression.dtypes import UCL
 class SequenceCut(ABC, Cut[T]):
 
     @classmethod
-    def detect(cls, dfg: DFG, log: UCL = None) -> Optional[Tuple[ProcessTree, List[Collection[Any]]]]:
+    def operator(cls) -> ProcessTree:
+        return ProcessTree(operator=Operator.SEQUENCE)
+
+    @classmethod
+    def applies(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
         '''
         This method finds a sequence cut in the dfg.
         Implementation follows function sequence on page 188 of
@@ -31,6 +34,7 @@ class SequenceCut(ABC, Cut[T]):
         3. merge pairwise unreachable nodes (based on transitive relations)
         4. sort the groups based on their reachability
         '''
+        dfg = dfg if dfg is not None else obj if type(obj) is DFG else None
         alphabet = dfu.get_vertices(dfg)
         transitive_predecessors, transitive_successors = dfu.get_transitive_relations(dfg)
         groups = [{a} for a in alphabet]
@@ -72,13 +76,14 @@ class StrictSequenceCut(SequenceCut[T], ABC):
         return False
 
     @classmethod
-    def detect(cls, dfg: DFG, log: UCL = None) -> Optional[List[Collection[Any]]]:
+    def applies(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
         """
         This method implements the strict sequence cut as defined on page 233 of
         "Robust Process Mining with Guarantees" by Sander J.J. Leemans (ISBN: 978-90-386-4257-4)
         The function merges groups that together can be skipped.
         """
-        c = SequenceCut.detect(dfg)
+        dfg = dfg if dfg is not None else obj if type(obj) is DFG else None
+        c = SequenceCut.apply(dfg)
         start = {a for (a, f) in dfg.start_activities}
         end = {a for (a, f) in dfg.end_activities}
         if c is not None:
@@ -101,7 +106,7 @@ class StrictSequenceCut(SequenceCut[T], ABC):
                         c[p] = c[p].union(c[q])
                         c[q] = set()
                         q += 1
-            return ProcessTree(operator=Operator.SEQUENCE), list(filter(lambda g: len(g) > 0, c))
+            return list(filter(lambda g: len(g) > 0, c))
         return None
 
     @classmethod
