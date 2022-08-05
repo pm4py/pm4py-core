@@ -19,6 +19,8 @@
 ### Fixed
 * 9c12ffba4e4d1043fa4ad2ffe8349b13d7fa06f3
   * fixed the exporting of Petri nets (Petri net name property)
+* 7fdb3074c6924e5957f973a76ff34ae5dc7bc815
+  * fixed the visualization of heuristics nets
 
 ### Removed
 
