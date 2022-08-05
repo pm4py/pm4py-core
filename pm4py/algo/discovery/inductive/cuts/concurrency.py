@@ -12,16 +12,18 @@ from pm4py.util.compression.dtypes import UCL
 
 
 class ConcurrencyCut(ABC, Generic[T], Cut[T]):
-    @classmethod
-    def get_operator(cls) -> Operator:
-        return Operator.PARALLEL
 
     @classmethod
-    def detect(cls, dfg: DFG, log: UCL = None) -> Optional[Tuple[ProcessTree, List[Collection[Any]]]]:
+    def operator(cls) -> ProcessTree:
+        return ProcessTree(operator=Operator.PARALLEL)
+
+    @classmethod
+    def applies(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
+        dfg = dfg if dfg is not None else obj if type(obj) is DFG else None
         start_activities = {a for (a, f) in dfg.start_activities}
         end_activities = {a for (a, f) in dfg.end_activities}
         alphabet = dfu.get_vertices(dfg)
-        msdw = comut.msdw(log, comut.msd(log)) if log is not None else None
+        msdw = comut.msdw(obj, comut.msd(obj)) if obj is not None and type(obj) is UCL else None
         groups = [{a} for a in alphabet]
         if len(groups) == 0:
             return None
@@ -46,7 +48,7 @@ class ConcurrencyCut(ABC, Generic[T], Cut[T]):
             else:
                 groups[i - 1].update(group)
 
-        return (ProcessTree(operator=Operator.PARALLEL), groups) if len(groups) > 1 else None
+        return groups if len(groups) > 1 else None
 
 
 class ConcurrencyLogCut(ConcurrencyCut[UCL]):

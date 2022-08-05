@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Optional, List, Collection, Any, Union, Tuple, Generic, TypeVar
 
-from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.dfg.obj import DFG
+from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.compression.util import UCL
 
 T = TypeVar('T', bound=Union[UCL, DFG])
@@ -12,12 +12,18 @@ class Cut(ABC, Generic[T]):
 
     @classmethod
     @abstractmethod
-    def detect(cls, dfg: DFG, obj: UCL = None) -> Optional[Tuple[ProcessTree, List[Collection[Any]]]]:
-        """
-        Detects a cut in the DFG.
-        Primarily uses the dfg object, may, in some cases, also use the event log object
-        """
+    def operator(cls) -> ProcessTree:
         pass
+
+    @classmethod
+    @abstractmethod
+    def applies(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
+        pass
+
+    @classmethod
+    def apply(cls, obj: T, dfg: DFG = None) -> Optional[Tuple[ProcessTree, List[T]]]:
+        g = cls.applies(obj, dfg)
+        return (cls.operator(), cls.project(obj, g)) if g is not None else g
 
     @classmethod
     @abstractmethod
