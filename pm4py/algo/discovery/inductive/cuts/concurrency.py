@@ -18,7 +18,7 @@ class ConcurrencyCut(ABC, Generic[T], Cut[T]):
         return ProcessTree(operator=Operator.PARALLEL)
 
     @classmethod
-    def applies(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
+    def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
         dfg = dfg if dfg is not None else obj if type(obj) is DFG else None
         start_activities = {a for (a, f) in dfg.start_activities}
         end_activities = {a for (a, f) in dfg.end_activities}

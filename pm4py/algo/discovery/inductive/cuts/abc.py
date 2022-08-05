@@ -17,12 +17,12 @@ class Cut(ABC, Generic[T]):
 
     @classmethod
     @abstractmethod
-    def applies(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
+    def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
         pass
 
     @classmethod
     def apply(cls, obj: T, dfg: DFG = None) -> Optional[Tuple[ProcessTree, List[T]]]:
-        g = cls.applies(obj, dfg)
+        g = cls.holds(obj, dfg)
         return (cls.operator(), cls.project(obj, g)) if g is not None else g
 
     @classmethod

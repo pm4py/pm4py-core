@@ -16,7 +16,7 @@ class LoopCut(ABC, Generic[T], Cut[T]):
         return ProcessTree(operator=Operator.LOOP)
 
     @classmethod
-    def applies(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
+    def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
         """
         This method finds a loop cut in the dfg.
         Implementation follows function LoopCut on page 190 of

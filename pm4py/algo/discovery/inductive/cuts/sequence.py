@@ -22,7 +22,7 @@ class SequenceCut(ABC, Cut[T]):
         return ProcessTree(operator=Operator.SEQUENCE)
 
     @classmethod
-    def applies(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
+    def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
         '''
         This method finds a sequence cut in the dfg.
         Implementation follows function sequence on page 188 of
@@ -76,7 +76,7 @@ class StrictSequenceCut(SequenceCut[T], ABC):
         return False
 
     @classmethod
-    def applies(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
+    def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
         """
         This method implements the strict sequence cut as defined on page 233 of
         "Robust Process Mining with Guarantees" by Sander J.J. Leemans (ISBN: 978-90-386-4257-4)
