@@ -73,7 +73,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     """
     if variant == Variants.CLEAN and type(log) is pd.DataFrame:
         return clean.apply(log, parameters)
-    else:
+    elif variant is None:
         variant = Variants.NATIVE
     
     if parameters is None:
