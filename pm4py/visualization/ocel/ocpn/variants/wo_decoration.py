@@ -4,7 +4,7 @@ from graphviz import Digraph
 from enum import Enum
 from pm4py.util import exec_utils
 import tempfile
-from pm4py.util import vis_utils
+from pm4py.util import vis_utils, constants
 from pm4py.objects.petri_net.obj import PetriNet
 
 
@@ -51,7 +51,7 @@ def apply(ocpn: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) -> 
         parameters = {}
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
-    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
     rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "LR")
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')

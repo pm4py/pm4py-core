@@ -3,7 +3,7 @@ import tempfile
 
 import pydotplus
 
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants
 from pm4py.visualization.common.utils import human_readable_stat
 from enum import Enum
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
@@ -120,7 +120,7 @@ def get_graph(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Param
         parameters = {}
 
     graph = pydotplus.Dot(strict=True)
-    graph.obj_dict['attributes']['bgcolor'] = 'transparent'
+    graph.obj_dict['attributes']['bgcolor'] = constants.DEFAULT_BGCOLOR
 
     corr_nodes = {}
     corr_nodes_names = {}
