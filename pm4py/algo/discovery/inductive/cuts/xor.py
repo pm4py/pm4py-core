@@ -17,7 +17,7 @@ class ExclusiveChoiceCut(ABC, Generic[T], Cut[T]):
         return ProcessTree(Operator=Operator.XOR)
 
     @classmethod
-    def applies(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
+    def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
         '''
         This method finds a xor cut in the dfg.
         Implementation follows function XorCut on page 188 of
