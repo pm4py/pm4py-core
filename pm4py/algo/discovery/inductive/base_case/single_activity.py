@@ -13,5 +13,5 @@ class SingleActivity(BaseCase[UCL]):
             comut.get_alphabet(obj)) == 1
 
     @classmethod
-    def get_leaf(cls, obj=UCL) -> ProcessTree:
+    def leaf(cls, obj=UCL) -> ProcessTree:
         return ProcessTree(label=obj[0][0])
