@@ -5,15 +5,11 @@ from typing import List, Optional, Collection, Any, Tuple, Generic
 from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
-from pm4py.objects.process_tree.obj import Operator
+from pm4py.objects.process_tree.obj import Operator, ProcessTree
 from pm4py.util.compression.dtypes import UCL, UCT
 
 
 class LoopCut(ABC, Generic[T], Cut[T]):
-
-    @classmethod
-    def get_operator(cls) -> Operator:
-        return Operator.LOOP
 
     @classmethod
     def detect(cls, dfg: DFG, log: UCL = None) -> Optional[List[Collection[Any]]]:
@@ -137,7 +133,7 @@ class LoopCut(ABC, Generic[T], Cut[T]):
 class LoopLogCut(LoopCut[UCL]):
 
     @classmethod
-    def project(cls, obj: UCL, groups: List[Collection[Any]]) -> List[UCL]:
+    def project(cls, obj: UCL, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[UCL]]:
         do = groups[0]
         redo = groups[1:]
         redo_activities = [y for x in redo for y in x]
@@ -163,7 +159,7 @@ class LoopLogCut(LoopCut[UCL]):
             do_log.append(do_trace)
         logs = [do_log]
         logs.extend(redo_logs)
-        return logs
+        return ProcessTree(operator=Operator.LOOP), logs
 
     @classmethod
     def _append_trace_to_redo_log(cls, redo_trace: UCT, redo_logs: List[UCL], redo_groups: List[Collection[Any]]) -> \
@@ -178,7 +174,7 @@ class LoopLogCut(LoopCut[UCL]):
 class LoopDFGCut(LoopCut[DFG]):
 
     @classmethod
-    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> Tuple[List[DFG], List[bool]]:
+    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[DFG], List[bool]]:
         dfgs = []
         skippable = [False, False]
         start_activities = {a for (a, f) in dfg.start_activities}
@@ -206,4 +202,4 @@ class LoopDFGCut(LoopCut[DFG]):
                     dfn.start_activities.append((a, 1))
                     dfn.end_activities.append((a, 1))
             dfgs.append(dfn)
-        return dfgs, skippable
+        return ProcessTree(operator=Operator.LOOP), dfgs, skippable

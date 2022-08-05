@@ -6,7 +6,7 @@ from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.dfg import util as dfu
 from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
-from pm4py.objects.process_tree.obj import Operator
+from pm4py.objects.process_tree.obj import Operator, ProcessTree
 from pm4py.util.compression.dtypes import UCL, UCT
 
 
@@ -37,14 +37,10 @@ class ExclusiveChoiceCut(ABC, Generic[T], Cut[T]):
         else:
             return None
 
-    @classmethod
-    def get_operator(cls) -> Operator:
-        return Operator.XOR
-
 
 class ExclusiveChoiceLogCut(ExclusiveChoiceCut[UCL]):
     @classmethod
-    def project(cls, log: UCL, groups: List[Collection[Any]]) -> List[UCL]:
+    def project(cls, log: UCL, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[UCL]]:
         logs = [UCL() for g in groups]
         for t in log:
             count = {i: 0 for i in range(len(groups))}
@@ -58,13 +54,13 @@ class ExclusiveChoiceLogCut(ExclusiveChoiceCut[UCL]):
                 if e in groups[count[0][0]]:
                     new_trace.append(e)
             logs[count[0][0]].append(new_trace)
-        return logs
+        return ProcessTree(operator=Operator.XOR), logs
 
 
 class ExclusiveChoiceDFGCut(ExclusiveChoiceCut[DFG]):
 
     @classmethod
-    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> Tuple[List[DFG], List[bool]]:
+    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[DFG], List[bool]]:
         dfgs = []
         for g in groups:
             dfg_new = DFG()
@@ -72,4 +68,4 @@ class ExclusiveChoiceDFGCut(ExclusiveChoiceCut[DFG]):
             [dfg_new.end_activities.append((a, f)) for (a, f) in dfg.end_activities if a in g]
             [dfg_new.graph.append((a, b, f)) for (a, b, f) in dfg.graph if a in g and b in g]
             dfgs.append(dfg)
-        return dfgs, [False for g in groups]
+        return ProcessTree(operator=Operator.XOR), dfgs, [False for g in groups]

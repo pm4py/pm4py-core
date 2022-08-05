@@ -6,7 +6,7 @@ from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
 from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
-from pm4py.objects.process_tree.obj import Operator
+from pm4py.objects.process_tree.obj import Operator, ProcessTree
 from pm4py.util.compression import util as comut
 from pm4py.util.compression.dtypes import UCL
 
@@ -52,19 +52,19 @@ class ConcurrencyCut(ABC, Generic[T], Cut[T]):
 class ConcurrencyLogCut(ConcurrencyCut[UCL]):
 
     @classmethod
-    def project(cls, obj: UCL, groups: List[Collection[Any]]) -> List[UCL]:
+    def project(cls, obj: UCL, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[UCL]]:
         l = []
         for g in groups:
             ucl = UCL()
             ucl.append([list(filter(lambda e: e in g, t)) for t in obj])
             l.append(ucl)
-        return l
+        return ProcessTree(operator=Operator.PARALLEL), l
 
 
 class ConcurrencyDFGCut(ConcurrencyCut[DFG]):
 
     @classmethod
-    def project(cls, obj: DFG, groups: List[Collection[Any]]) -> Tuple[List[DFG], List[bool]]:
+    def project(cls, obj: DFG, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[DFG], List[bool]]:
         dfgs = []
         skippable = []
         for g in groups:
@@ -79,4 +79,4 @@ class ConcurrencyDFGCut(ConcurrencyCut[DFG]):
                 if a in g and b in g:
                     dfn.graph.append((a, b, f))
             skippable.append(False)
-        return dfgs, skippable
+        return ProcessTree(operator=Operator.PARALLEL), dfgs, skippable
