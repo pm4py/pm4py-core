@@ -9,5 +9,5 @@ class EmptyLogBaseCase(BaseCase[UCL]):
         return len(obj) == 0
 
     @classmethod
-    def get_leaf(cls, obj=UCL) -> ProcessTree:
+    def leaf(cls, obj=UCL) -> ProcessTree:
         return ProcessTree()
