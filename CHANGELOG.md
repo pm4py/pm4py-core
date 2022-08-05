@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.2.26 (2022.??.??)
+## pm4py 2.2.26 (2022.08.05)
 
 ### Added
 * 2146fc42020f11a364a98b724d6c6a44fcbcbb41
@@ -9,10 +9,16 @@
 ### Changed
 * 5c06d520182317d140bd1b82d9d986c3edc81cf7
   * minor fixes to DFG simulation
+* fe1aa9c5efa7dc274e728a769625a784d7f87c6f
+  * added default option for background color setup
+* ac080d2702192b588cf80444dd44fe447d14ede9
+  * background color as parameter in the simplified interface visualizations
 
 ### Deprecated
 
 ### Fixed
+* 9c12ffba4e4d1043fa4ad2ffe8349b13d7fa06f3
+  * fixed the exporting of Petri nets (Petri net name property)
 
 ### Removed
 
