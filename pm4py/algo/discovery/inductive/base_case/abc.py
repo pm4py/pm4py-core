@@ -12,11 +12,11 @@ class BaseCase(ABC, Generic[T]):
 
     @classmethod
     def apply(cls, obj=T) -> Optional[ProcessTree]:
-        return cls.leaf(obj) if cls.applies(obj) else None
+        return cls.leaf(obj) if cls.holds(obj) else None
 
     @classmethod
     @abstractmethod
-    def applies(cls, obj=T) -> bool:
+    def holds(cls, obj=T) -> bool:
         pass
 
     @classmethod

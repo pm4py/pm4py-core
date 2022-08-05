@@ -5,7 +5,7 @@ from pm4py.util.compression.dtypes import UCL
 
 class EmptyLogBaseCase(BaseCase[UCL]):
     @classmethod
-    def applies(cls, obj=UCL) -> bool:
+    def holds(cls, obj=UCL) -> bool:
         return len(obj) == 0
 
     @classmethod

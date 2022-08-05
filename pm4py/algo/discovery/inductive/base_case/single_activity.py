@@ -8,7 +8,7 @@ from pm4py.util.compression import util as comut
 
 class SingleActivity(BaseCase[UCL]):
     @classmethod
-    def applies(cls, obj=UCL) -> bool:
+    def holds(cls, obj=UCL) -> bool:
         return len(list(filter(lambda t: len(t) == 1, obj))) == len(obj) and len(
             comut.get_alphabet(obj)) == 1
 
