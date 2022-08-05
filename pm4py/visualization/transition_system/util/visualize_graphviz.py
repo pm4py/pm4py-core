@@ -18,7 +18,7 @@ import tempfile
 from copy import copy
 
 from graphviz import Digraph
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants
 from enum import Enum
 
 
@@ -43,7 +43,7 @@ def visualize(ts, parameters=None):
     fillcolors = exec_utils.get_param_value(Parameters.FILLCOLORS, parameters, {})
     font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 11)
     font_size = str(font_size)
-    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
 
     for state in ts.states:
         state.label = state.name
