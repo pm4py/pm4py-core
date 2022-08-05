@@ -12,7 +12,7 @@ from pm4py.algo.discovery.inductive.cuts.sequence import SequenceCut
 from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
-from pm4py.objects.process_tree.obj import Operator
+from pm4py.objects.process_tree.obj import Operator, ProcessTree
 from pm4py.util.compression.dtypes import UCL
 
 
@@ -44,10 +44,6 @@ class SequenceCut(ABC, Cut[T]):
         groups = list(sorted(groups, key=lambda g: len(
             transitive_predecessors[next(iter(g))]) + (len(alphabet) - len(transitive_successors[next(iter(g))]))))
         return groups if len(groups) > 1 else None
-
-    @classmethod
-    def get_operator(cls) -> Operator:
-        return Operator.SEQUENCE
 
 
 class StrictSequenceCut(SequenceCut[T], ABC):
@@ -120,7 +116,7 @@ class StrictSequenceCut(SequenceCut[T], ABC):
 class SequenceLogCut(SequenceCut[UCL]):
 
     @classmethod
-    def project(cls, log: UCL, groups: List[Collection[Any]]) -> List[UCL]:
+    def project(cls, log: UCL, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[UCL]]:
         logs = [UCL() for g in groups]
         for t in log:
             i = 0
@@ -139,7 +135,7 @@ class SequenceLogCut(SequenceCut[UCL]):
                 split_point = new_split_point
                 act_union = act_union.union(set(groups[i]))
                 i = i + 1
-        return logs
+        return ProcessTree(operator=Operator.SEQUENCE), logs
 
     @classmethod
     def _find_split_point(cls, t: List[Any], group: Collection[Any], start: int, ignore: Collection[Any]) -> int:
@@ -165,7 +161,7 @@ class SequenceLogCut(SequenceCut[UCL]):
 class SequenceDFGCut(SequenceCut[DFG]):
 
     @classmethod
-    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> Tuple[List[DFG], List[bool]]:
+    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> Tuple[ProcessTree, List[DFG], List[bool]]:
         start_activities = []
         end_activities = []
         activities = []
@@ -240,4 +236,4 @@ class SequenceDFGCut(SequenceCut[DFG]):
             while j < z:
                 skippable[j] = False
                 j = j + 1
-        return dfgs, skippable
+        return ProcessTree(operator=Operator.SEQUENCE), dfgs, skippable
