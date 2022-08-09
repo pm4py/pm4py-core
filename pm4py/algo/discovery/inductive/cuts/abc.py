@@ -3,7 +3,7 @@ from typing import Optional, List, Collection, Any, Union, Tuple, Generic, TypeV
 
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.process_tree.obj import ProcessTree
-from pm4py.util.compression.util import UCL
+from pm4py.util.compression.dtypes import UCL
 
 T = TypeVar('T', bound=Union[UCL, DFG])
 

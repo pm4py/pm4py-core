@@ -3,7 +3,7 @@ from itertools import product
 from typing import List, Collection, Any, Tuple, Optional, Generic
 
 from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
-from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
+from pm4py.algo.discovery.inductive.cuts import utils as cut_util
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.process_tree.obj import Operator, ProcessTree
@@ -11,7 +11,7 @@ from pm4py.util.compression import util as comut
 from pm4py.util.compression.dtypes import UCL
 
 
-class ConcurrencyCut(ABC, Generic[T], Cut[T]):
+class ConcurrencyCut(Cut[T], ABC, Generic[T]):
 
     @classmethod
     def operator(cls) -> ProcessTree:
@@ -29,10 +29,10 @@ class ConcurrencyCut(ABC, Generic[T], Cut[T]):
             return None
         for a, b in product(alphabet, alphabet):
             if (a, b) not in dfg or (b, a) not in dfg:
-                groups = im_utils.__merge_groups_for_acts(a, b, groups)
+                groups = cut_util.merge_groups_based_on_activities(a, b, groups)
             elif msdw is not None:
                 if (a in msdw and b in msdw[a]) or (b in msdw and a in msdw[b]):
-                    groups = im_utils.__merge_groups_for_acts(a, b, groups)
+                    groups = cut_util.merge_groups_based_on_activities(a, b, groups)
 
         groups = list(sorted(groups, key=lambda g: len(g)))
         i = 0

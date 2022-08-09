@@ -3,19 +3,19 @@ import sys
 from abc import ABC
 from collections import Counter
 from itertools import product
-from typing import Collection, Any, List, Optional
+from typing import Collection, Any, List, Optional, Generic
 from typing import Tuple
 
 from pm4py.algo.discovery.inductive.cuts.abc import Cut
 from pm4py.algo.discovery.inductive.cuts.abc import T
-from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
+from pm4py.algo.discovery.inductive.cuts import utils as cut_util
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.process_tree.obj import Operator, ProcessTree
 from pm4py.util.compression.dtypes import UCL
 
 
-class SequenceCut(ABC, Cut[T]):
+class SequenceCut(Cut[T], ABC, Generic[T]):
 
     @classmethod
     def operator(cls) -> ProcessTree:
@@ -43,14 +43,14 @@ class SequenceCut(ABC, Cut[T]):
         for a, b in product(alphabet, alphabet):
             if (b in transitive_successors[a] and a in transitive_successors[b]) or (
                     b not in transitive_successors[a] and a not in transitive_successors[b]):
-                groups = im_utils.__merge_groups_for_acts(a, b, groups)
+                groups = cut_util.merge_groups_based_on_activities(a, b, groups)
 
         groups = list(sorted(groups, key=lambda g: len(
             transitive_predecessors[next(iter(g))]) + (len(alphabet) - len(transitive_successors[next(iter(g))]))))
         return groups if len(groups) > 1 else None
 
 
-class StrictSequenceCut(SequenceCut[T], ABC):
+class StrictSequenceCut(SequenceCut[T], ABC, Generic[T]):
 
     @classmethod
     def _skippable(cls, p: int, dfg: DFG, start: Collection[Any], end: Collection[Any],
@@ -161,6 +161,13 @@ class SequenceLogCut(SequenceCut[UCL]):
             i = i + 1
 
         return position_with_least_cost
+
+
+class StrictSequenceLogCut(StrictSequenceCut[UCL], SequenceLogCut):
+
+    @classmethod
+    def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
+        return StrictSequenceCut.holds(obj, dfg)
 
 
 class SequenceDFGCut(SequenceCut[DFG]):

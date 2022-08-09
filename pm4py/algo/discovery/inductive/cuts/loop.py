@@ -9,7 +9,7 @@ from pm4py.objects.process_tree.obj import Operator, ProcessTree
 from pm4py.util.compression.dtypes import UCL, UCT
 
 
-class LoopCut(ABC, Generic[T], Cut[T]):
+class LoopCut(Cut[T], ABC, Generic[T]):
 
     @classmethod
     def operator(cls) -> ProcessTree:
