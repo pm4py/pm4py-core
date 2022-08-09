@@ -56,12 +56,7 @@ class ConcurrencyLogCut(ConcurrencyCut[UCL]):
 
     @classmethod
     def project(cls, obj: UCL, groups: List[Collection[Any]]) -> List[UCL]:
-        l = []
-        for g in groups:
-            ucl = list()
-            ucl.append([list(filter(lambda e: e in g, t)) for t in obj])
-            l.append(ucl)
-        return l
+        return [[list(filter(lambda e: e in g, t)) for t in obj] for g in groups]
 
 
 class ConcurrencyDFGCut(ConcurrencyCut[DFG]):
