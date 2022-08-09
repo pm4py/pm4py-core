@@ -2,8 +2,8 @@ from abc import ABC
 from itertools import product
 from typing import List, Collection, Any, Tuple, Optional, Generic
 
-from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
 from pm4py.algo.discovery.inductive.cuts import utils as cut_util
+from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.process_tree.obj import Operator, ProcessTree
@@ -57,7 +57,7 @@ class ConcurrencyLogCut(ConcurrencyCut[UCL]):
     def project(cls, obj: UCL, groups: List[Collection[Any]]) -> List[UCL]:
         l = []
         for g in groups:
-            ucl = UCL()
+            ucl = list()
             ucl.append([list(filter(lambda e: e in g, t)) for t in obj])
             l.append(ucl)
         return l

@@ -1,6 +1,8 @@
 from abc import ABC
 from typing import Optional, List, Collection, Any, Tuple, Generic
 
+import networkx as nx
+
 from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
@@ -26,7 +28,6 @@ class ExclusiveChoiceCut(Cut[T], ABC, Generic[T]):
         2.) we detect the connected components in the graph.
         3.) if there are more than one connected components, the cut exists and is non-minimal.
         '''
-        import networkx as nx
         nx_dfg = dfu.as_nx_graph(dfg)
         nx_und = nx_dfg.to_undirected()
         conn_comps = [nx_und.subgraph(c).copy() for c in nx.connected_components(nx_und)]
@@ -42,7 +43,7 @@ class ExclusiveChoiceCut(Cut[T], ABC, Generic[T]):
 class ExclusiveChoiceLogCut(ExclusiveChoiceCut[UCL]):
     @classmethod
     def project(cls, log: UCL, groups: List[Collection[Any]]) -> List[UCL]:
-        logs = [UCL() for g in groups]
+        logs = [list() for g in groups]
         for t in log:
             count = {i: 0 for i in range(len(groups))}
             for index, group in enumerate(groups):
@@ -50,7 +51,7 @@ class ExclusiveChoiceLogCut(ExclusiveChoiceCut[UCL]):
                     if e in group:
                         count[index] += 1
             count = sorted(list((x, y) for x, y in count.items()), key=lambda x: (x[1], x[0]), reverse=True)
-            new_trace = UCT()
+            new_trace = list()
             for e in t:
                 if e in groups[count[0][0]]:
                     new_trace.append(e)
