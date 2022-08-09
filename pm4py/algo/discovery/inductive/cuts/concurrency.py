@@ -27,8 +27,9 @@ class ConcurrencyCut(Cut[T], ABC, Generic[T]):
         groups = [{a} for a in alphabet]
         if len(groups) == 0:
             return None
+        edges = dfu.get_edges(dfg)
         for a, b in product(alphabet, alphabet):
-            if (a, b) not in dfg or (b, a) not in dfg:
+            if (a, b) not in edges or (b, a) not in edges:
                 groups = cut_util.merge_groups_based_on_activities(a, b, groups)
             elif msdw is not None:
                 if (a in msdw and b in msdw[a]) or (b in msdw and a in msdw[b]):
