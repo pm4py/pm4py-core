@@ -166,7 +166,7 @@ def discover_dfg(log: Union[UCL, MCL], index: int = 0) -> DFG:
     log = _map_log_to_single_index(log, index)
     dfg = DFG()
     cnt = Counter()
-    [cnt.update([(t[i], t[i + 1])]) for t in log for i in range(0, len(t) - 1)]
+    [cnt.update([(t[i], t[i + 1])]) for t in log for i in range(0, len(t) - 1) if len(t)]
     [dfg.graph.append((a, b, cnt[(a, b)])) for (a, b) in cnt]
     sa = get_start_activities(log)
     [dfg.start_activities.append((a, sa[a])) for a in sa]
