@@ -1,4 +1,4 @@
-asttokens==2.0.5
+asttokens==2.0.7
 backcall==0.2.0
 colorama==0.4.5
 cycler==0.11.0
