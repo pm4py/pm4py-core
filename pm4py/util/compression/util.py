@@ -1,5 +1,5 @@
 import copy
-from typing import Union, Tuple, List, Counter, Any, Dict
+from typing import Union, Tuple, List, Counter, Any, Dict, Optional
 
 import numpy as np
 import pandas as pd
@@ -10,7 +10,7 @@ from pm4py.util.compression.dtypes import UCL, MCL, ULT, MLT
 
 
 def project_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:name',
-                       df_glue: str = 'case:concept:name', df_sorting_criterion_key='time:timestamp') -> UCL:
+                       df_glue: str = 'case:concept:name', df_sorting_criterion_key='time:timestamp') -> Optional[UCL]:
     '''
     Projects an event log to a univariate list of values
     For example, an event log of the form [[('concept:name':A,'k1':v1,'k2':v2),('concept:name':B,'k1':v3,'k2':v4),...],...]
@@ -32,7 +32,7 @@ def project_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:n
     if type(log) is EventLog:
         return [[e[key] for e in t] for t in log]
     elif type(log) is pd.DataFrame:
-        cl = UCL()
+        cl = list()
         log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
         values = log[key].to_list()
         distinct_ids, start_indexes, case_sizes = np.unique(
@@ -41,12 +41,12 @@ def project_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:n
             cl.append(
                 values[start_indexes[i]:start_indexes[i] + case_sizes[i]])
         return cl
-    return None, None
+    return None
 
 
 def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:name',
                         df_glue: str = 'case:concept:name',
-                        df_sorting_criterion_key='time:timestamp') -> Tuple[UCL, ULT]:
+                        df_sorting_criterion_key='time:timestamp') -> Optional[Tuple[UCL, ULT]]:
     """
     Compresses an event log to a univariate list of integer lists
     For example, an event log of the form [[('concept:name':A,'k1':v1,'k2':v2),('concept:name':B,'k1':v3,'k2':v4),...],...]
@@ -73,7 +73,7 @@ def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:
         return [[lookup_inv[t[i][key]] for i in range(0, len(t))] for t in log], lookup
     elif type(log) is pd.DataFrame:
         log[key] = log[key].map(lookup_inv)
-        cl = UCL()
+        cl = list()
         log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
         encoded_values = log[key].to_list()
         distinct_ids, start_indexes, case_sizes = np.unique(
@@ -126,7 +126,7 @@ def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = 
                                     for x in xs])) if type(log) is EventLog else list(log[key].unique())
             lookup_inv[key] = {lookup[key][i]: i for i in range(len(lookup[key]))}
     if type(log) is EventLog:
-        encoded = MCL()
+        encoded = list()
         for t in log:
             tr = list()
             for i in range(0, len(t)):
@@ -141,7 +141,7 @@ def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = 
     else:
         for key in keys:
             log[key] = log[key].map(lookup_inv[key])
-        cl = MCL()
+        cl = list()
         log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
         retain = copy.copy(keys)
         retain.extend([u for u in uncompressed if u not in retain])
