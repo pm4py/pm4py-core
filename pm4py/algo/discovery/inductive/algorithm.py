@@ -1,6 +1,6 @@
+'''
 from enum import Enum
 
-from pm4py.algo.discovery.inductive.variants.im_clean import algorithm as im_clean
 from pm4py.util import exec_utils
 from typing import Optional, Dict, Any, Union, Tuple, List
 from pm4py.objects.log.obj import EventLog, EventStream
@@ -22,7 +22,8 @@ DEFAULT_VARIANT_VARIANTS = IM_CLEAN
 DEFAULT_VARIANT_DFG = IM_CLEAN
 
 
-def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT_LOG) -> Tuple[PetriNet, Marking, Marking]:
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None,
+          variant=DEFAULT_VARIANT_LOG) -> Tuple[PetriNet, Marking, Marking]:
     """
     Apply the chosen IM algorithm to a log obtaining a Petri net along with an initial and final marking
 
@@ -50,7 +51,9 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     return exec_utils.get_variant(variant).apply(log, parameters=parameters)
 
 
-def apply_dfg(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end_activities: Dict[str, int], activities: Dict[str, int], parameters=None, variant=DEFAULT_VARIANT_DFG) -> Tuple[PetriNet, Marking, Marking]:
+def apply_dfg(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end_activities: Dict[str, int],
+              activities: Dict[str, int], parameters=None, variant=DEFAULT_VARIANT_DFG) -> Tuple[
+    PetriNet, Marking, Marking]:
     """
     Apply the chosen IM algorithm to a DFG graph obtaining a Petri net along with an initial and final marking
 
@@ -75,10 +78,13 @@ def apply_dfg(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int],
     final_marking
         Final marking
     """
-    return exec_utils.get_variant(variant).apply_dfg(dfg, start_activities=start_activities, end_activities=end_activities, activities=activities, parameters=parameters)
+    return exec_utils.get_variant(variant).apply_dfg(dfg, start_activities=start_activities,
+                                                     end_activities=end_activities, activities=activities,
+                                                     parameters=parameters)
 
 
-def apply_tree(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT_LOG) -> ProcessTree:
+def apply_tree(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None,
+               variant=DEFAULT_VARIANT_LOG) -> ProcessTree:
     """
     Apply the chosen IM algorithm to a log obtaining a process tree
 
@@ -102,7 +108,9 @@ def apply_tree(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Opti
     return exec_utils.get_variant(variant).apply_tree(log, parameters=parameters)
 
 
-def apply_tree_dfg(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end_activities: Dict[str, int], activities: Dict[str, int], parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT_DFG) -> ProcessTree:
+def apply_tree_dfg(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end_activities: Dict[str, int],
+                   activities: Dict[str, int], parameters: Optional[Dict[Any, Any]] = None,
+                   variant=DEFAULT_VARIANT_DFG) -> ProcessTree:
     """
     Apply the chosen IM algorithm to a DFG graph obtaining a process tree
 
@@ -123,10 +131,13 @@ def apply_tree_dfg(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, 
     tree
         Process tree
     """
-    return exec_utils.get_variant(variant).apply_tree_dfg(dfg, start_activities=start_activities, end_activities=end_activities, activities=activities, parameters=parameters)
+    return exec_utils.get_variant(variant).apply_tree_dfg(dfg, start_activities=start_activities,
+                                                          end_activities=end_activities, activities=activities,
+                                                          parameters=parameters)
 
 
-def apply_variants(variants: Dict[Union[str, List[str]], int], parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT_VARIANTS) -> Tuple[PetriNet, Marking, Marking]:
+def apply_variants(variants: Dict[Union[str, List[str]], int], parameters: Optional[Dict[Any, Any]] = None,
+                   variant=DEFAULT_VARIANT_VARIANTS) -> Tuple[PetriNet, Marking, Marking]:
     """
     Apply the chosen IM algorithm to a dictionary/list/set of variants obtaining a Petri net along with an initial and final marking
 
@@ -154,7 +165,8 @@ def apply_variants(variants: Dict[Union[str, List[str]], int], parameters: Optio
     return exec_utils.get_variant(variant).apply_variants(variants, parameters=parameters)
 
 
-def apply_tree_variants(variants: Dict[Union[str, List[str]], int], parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT_VARIANTS) -> ProcessTree:
+def apply_tree_variants(variants: Dict[Union[str, List[str]], int], parameters: Optional[Dict[Any, Any]] = None,
+                        variant=DEFAULT_VARIANT_VARIANTS) -> ProcessTree:
     """
     Apply the chosen IM algorithm to a dictionary/list/set of variants a log obtaining a process tree
 
@@ -175,3 +187,4 @@ def apply_tree_variants(variants: Dict[Union[str, List[str]], int], parameters: 
         Process tree
     """
     return exec_utils.get_variant(variant).apply_tree_variants(variants, parameters=parameters)
+'''
