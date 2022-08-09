@@ -1,2 +1,2 @@
-from pm4py.algo.discovery.inductive import algorithm, variants, util
+from pm4py.algo.discovery.inductive import algorithm, variants
 
