@@ -27,7 +27,7 @@ class ActivityOncePerCase(FallThrough[UCL]):
 
     @classmethod
     def apply(cls, log: UCL) -> Optional[Tuple[ProcessTree, List[UCL]]]:
-        candidates = cls._get_candidates()
+        candidates = cls._get_candidates(log)
         if len(candidates) > 0:
             a = next(iter(candidates))
             return ProcessTree(operator=Operator.PARALLEL), [[[a]], [list(filter(lambda e: e != a, t)) for t in log]]
