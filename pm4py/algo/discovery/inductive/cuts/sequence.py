@@ -122,7 +122,7 @@ class SequenceLogCut(SequenceCut[UCL]):
 
     @classmethod
     def project(cls, log: UCL, groups: List[Collection[Any]]) -> List[UCL]:
-        logs = [UCL() for g in groups]
+        logs = [list() for g in groups]
         for t in log:
             i = 0
             split_point = 0

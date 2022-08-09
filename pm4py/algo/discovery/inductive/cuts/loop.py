@@ -142,11 +142,11 @@ class LoopLogCut(LoopCut[UCL]):
         do = groups[0]
         redo = groups[1:]
         redo_activities = [y for x in redo for y in x]
-        do_log = UCL()
-        redo_logs = [UCL() for i in range(len(redo))]
+        do_log = list()
+        redo_logs = [list() for i in range(len(redo))]
         for t in obj:
-            do_trace = UCT()
-            redo_trace = UCT()
+            do_trace = list()
+            redo_trace = list()
             for e in t:
                 if e in do:
                     do_trace.append(e)
