@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, Collection, Any, List
+from typing import Optional, Tuple, List
 
 from pm4py.algo.discovery.inductive.base_case.empty_log import EmptyLogBaseCase
 from pm4py.algo.discovery.inductive.base_case.single_activity import SingleActivity
@@ -6,13 +6,13 @@ from pm4py.algo.discovery.inductive.cuts.concurrency import ConcurrencyLogCut
 from pm4py.algo.discovery.inductive.cuts.loop import LoopLogCut
 from pm4py.algo.discovery.inductive.cuts.sequence import SequenceLogCut
 from pm4py.algo.discovery.inductive.cuts.xor import ExclusiveChoiceLogCut
-from pm4py.algo.discovery.inductive.fall_through.empty_traces import EmptyTraces
-from pm4py.algo.discovery.inductive.fall_through.activity_once_per_trace import ActivityOncePerCase
 from pm4py.algo.discovery.inductive.fall_through.activity_concurrent import ActivityConcurrent
+from pm4py.algo.discovery.inductive.fall_through.activity_once_per_trace import ActivityOncePerCase
+from pm4py.algo.discovery.inductive.fall_through.empty_traces import EmptyTraces
+from pm4py.algo.discovery.inductive.fall_through.flower import FlowerModel
 from pm4py.algo.discovery.inductive.fall_through.strict_tau_loop import StrictTauLoop
 from pm4py.algo.discovery.inductive.fall_through.tau_loop import TauLoop
-from pm4py.algo.discovery.inductive.fall_through.flower import FlowerModel
-from pm4py.algo.discovery.inductive.variants.abc import InductiveMinerFramework, T
+from pm4py.algo.discovery.inductive.variants.abc import InductiveMinerFramework
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.compression import util as comut
 from pm4py.util.compression.dtypes import UCL
