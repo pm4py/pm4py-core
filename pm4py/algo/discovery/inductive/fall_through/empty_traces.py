@@ -9,7 +9,7 @@ class EmptyTraces(FallThrough[UCL]):
 
     @classmethod
     def apply(cls, log: UCL) -> Optional[Tuple[ProcessTree, List[UCL]]]:
-        return ProcessTree(operator=Operator.XOR), [[], list(filter(lambda t: len(t) > 0, log))] if cls.holds(
+        return (ProcessTree(operator=Operator.XOR), [[], list(filter(lambda t: len(t) > 0, log))]) if cls.holds(
             log) else None
 
     @classmethod
