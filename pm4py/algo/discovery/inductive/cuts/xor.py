@@ -1,20 +1,18 @@
 from abc import ABC
+from typing import Optional, List, Collection, Any, Tuple, Generic
 
-from typing import Optional, Dict, List, Collection, Any, Union, Tuple, Generic
-
-from pm4py.algo.discovery.inductive.variants.im_clean import utils as im_utils
-from pm4py.objects.dfg.obj import DFG
-from pm4py.objects.dfg import util as dfu
 from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
+from pm4py.objects.dfg import util as dfu
+from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.process_tree.obj import Operator, ProcessTree
 from pm4py.util.compression.dtypes import UCL, UCT
 
 
-class ExclusiveChoiceCut(ABC, Generic[T], Cut[T]):
+class ExclusiveChoiceCut(Cut[T], ABC, Generic[T]):
 
     @classmethod
     def operator(cls) -> ProcessTree:
-        return ProcessTree(Operator=Operator.XOR)
+        return ProcessTree(operator=Operator.XOR)
 
     @classmethod
     def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
@@ -29,8 +27,7 @@ class ExclusiveChoiceCut(ABC, Generic[T], Cut[T]):
         3.) if there are more than one connected components, the cut exists and is non-minimal.
         '''
         import networkx as nx
-        alphabet = dfu.get_vertices(dfg)
-        nx_dfg = im_utils.transform_dfg_to_directed_nx_graph(dfg, alphabet)
+        nx_dfg = dfu.as_nx_graph(dfg)
         nx_und = nx_dfg.to_undirected()
         conn_comps = [nx_und.subgraph(c).copy() for c in nx.connected_components(nx_und)]
         if len(conn_comps) > 1:
