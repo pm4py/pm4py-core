@@ -2,6 +2,8 @@ import copy
 from abc import ABC
 from typing import List, Optional, Collection, Any, Tuple, Generic
 
+import networkx as nx
+
 from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
@@ -125,11 +127,12 @@ class LoopCut(Cut[T], ABC, Generic[T]):
     @classmethod
     def _compute_connected_components(cls, dfg: DFG, start_activities: Collection[Any],
                                       end_activities: Collection[Any]):
-        import networkx as nx
-        reduced_dfg = copy.copy(dfg.graph)
+        dfg = copy.copy(dfg)
         for (a, b, f) in dfg.graph:
             if a in start_activities or a in end_activities or b in start_activities or b in end_activities:
-                reduced_dfg.remove((a, b, f))
+                dfg.graph.remove((a, b, f))
+        dfg.start_activities.clear()
+        dfg.end_activities.clear()
         nxd = dfu.as_nx_graph(dfg)
         nxu = nxd.to_undirected()
         return [nxd.subgraph(c).copy() for c in nx.connected_components(nxu)]
