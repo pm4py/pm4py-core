@@ -1,6 +1,8 @@
 from collections import Counter
 from typing import Dict, Collection, Any, Tuple
 
+import networkx as nx
+
 from pm4py.objects.dfg.obj import DFG
 
 
@@ -130,7 +132,7 @@ def get_vertex_frequencies(dfg: DFG) -> Counter[Any]:
     return c
 
 
-def as_nx_graph(dfg: DFG):
+def as_nx_graph(dfg: DFG) -> nx.DiGraph:
     import networkx as nx
 
     nx_graph = nx.DiGraph()
@@ -138,3 +140,7 @@ def as_nx_graph(dfg: DFG):
     for a, b, f in dfg.graph:
         nx_graph.add_edge(a, b)
     return nx_graph
+
+
+def get_edges(dfg: DFG) -> Collection[Tuple[Any, Any]]:
+    return {(a, b) for (a, b, f) in dfg.graph}
