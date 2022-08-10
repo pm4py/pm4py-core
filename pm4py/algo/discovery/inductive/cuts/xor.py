@@ -1,4 +1,5 @@
 from abc import ABC
+from collections import Counter
 from typing import Optional, List, Collection, Any, Tuple, Generic
 
 import networkx as nx
@@ -7,7 +8,7 @@ from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.process_tree.obj import Operator, ProcessTree
-from pm4py.util.compression.dtypes import UCL, UCT
+from pm4py.util.compression.dtypes import UVCL
 
 
 class ExclusiveChoiceCut(Cut[T], ABC, Generic[T]):
@@ -40,10 +41,10 @@ class ExclusiveChoiceCut(Cut[T], ABC, Generic[T]):
             return None
 
 
-class ExclusiveChoiceLogCut(ExclusiveChoiceCut[UCL]):
+class ExclusiveChoiceLogCut(ExclusiveChoiceCut[UVCL]):
     @classmethod
-    def project(cls, log: UCL, groups: List[Collection[Any]]) -> List[UCL]:
-        logs = [list() for g in groups]
+    def project(cls, log: UVCL, groups: List[Collection[Any]]) -> List[UVCL]:
+        logs = [Counter() for g in groups]
         for t in log:
             count = {i: 0 for i in range(len(groups))}
             for index, group in enumerate(groups):
@@ -51,11 +52,11 @@ class ExclusiveChoiceLogCut(ExclusiveChoiceCut[UCL]):
                     if e in group:
                         count[index] += 1
             count = sorted(list((x, y) for x, y in count.items()), key=lambda x: (x[1], x[0]), reverse=True)
-            new_trace = list()
+            new_trace = tuple()
             for e in t:
                 if e in groups[count[0][0]]:
-                    new_trace.append(e)
-            logs[count[0][0]].append(new_trace)
+                    new_trace = new_trace + (e,)
+            logs[count[0][0]].update({new_trace: log[t]})
         return logs
 
 

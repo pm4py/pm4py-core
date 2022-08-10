@@ -1,5 +1,6 @@
 import copy
 from abc import ABC
+from collections import Counter
 from typing import List, Optional, Collection, Any, Tuple, Generic
 
 import networkx as nx
@@ -8,7 +9,7 @@ from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.process_tree.obj import Operator, ProcessTree
-from pm4py.util.compression.dtypes import UCL, UCT
+from pm4py.util.compression.dtypes import UVCL
 
 
 class LoopCut(Cut[T], ABC, Generic[T]):
@@ -127,55 +128,61 @@ class LoopCut(Cut[T], ABC, Generic[T]):
     @classmethod
     def _compute_connected_components(cls, dfg: DFG, start_activities: Collection[Any],
                                       end_activities: Collection[Any]):
-        dfg = copy.copy(dfg)
+        dfgc = copy.deepcopy((dfg))
         for (a, b, f) in dfg.graph:
             if a in start_activities or a in end_activities or b in start_activities or b in end_activities:
-                dfg.graph.remove((a, b, f))
-        dfg.start_activities.clear()
-        dfg.end_activities.clear()
-        nxd = dfu.as_nx_graph(dfg)
+                dfgc.graph.remove((a, b, f))
+        dfgc.start_activities.clear()
+        dfgc.end_activities.clear()
+        nxd = dfu.as_nx_graph(dfgc)
+        # add any nodes that are unconnected in the dfg object
+        nodes = dfu.get_vertices(dfg).difference(start_activities).difference(end_activities)
+        for n in nodes:
+            if not nxd.has_node(n):
+                nxd.add_node(n)
         nxu = nxd.to_undirected()
         return [nxd.subgraph(c).copy() for c in nx.connected_components(nxu)]
 
 
-class LoopLogCut(LoopCut[UCL]):
+class LoopLogCut(LoopCut[UVCL]):
 
     @classmethod
-    def project(cls, obj: UCL, groups: List[Collection[Any]]) -> List[UCL]:
+    def project(cls, obj: UVCL, groups: List[Collection[Any]]) -> List[UVCL]:
         do = groups[0]
         redo = groups[1:]
         redo_activities = [y for x in redo for y in x]
-        do_log = list()
-        redo_logs = [list() for i in range(len(redo))]
+        do_log = Counter()
+        redo_logs = [Counter() for i in range(len(redo))]
         for t in obj:
-            do_trace = list()
-            redo_trace = list()
+            do_trace = tuple()
+            redo_trace = tuple()
             for e in t:
                 if e in do:
-                    do_trace.append(e)
+                    do_trace = do_trace + (e,)
                     if len(redo_trace) > 0:
-                        redo_logs = cls._append_trace_to_redo_log(redo_trace, redo_logs, redo)
-                        redo_trace = []
+                        redo_logs = cls._append_trace_to_redo_log(redo_trace, redo_logs, redo, obj[t])
+                        redo_trace = tuple()
                 else:
                     if e in redo_activities:
-                        redo_trace.append(e)
+                        redo_trace = redo_trace + (e,)
                         if len(do_trace) > 0:
-                            do_log.append(do_trace)
-                            do_trace = []
+                            do_log.update({do_trace: obj[t]})
+                            do_trace = tuple()
             if len(redo_trace) > 0:
                 redo_logs = cls._append_trace_to_redo_log(redo_trace, redo_logs, redo)
-            do_log.append(do_trace)
+            do_log.update({do_trace: obj[t]})
         logs = [do_log]
         logs.extend(redo_logs)
         return logs
 
     @classmethod
-    def _append_trace_to_redo_log(cls, redo_trace: UCT, redo_logs: List[UCL], redo_groups: List[Collection[Any]]) -> \
-            List[UCL]:
+    def _append_trace_to_redo_log(cls, redo_trace: Tuple, redo_logs: List[UVCL], redo_groups: List[Collection[Any]],
+                                  cardinality) -> \
+            List[UVCL]:
         activities = set(x for x in redo_trace)
         inte = [(i, len(activities.intersection(redo_groups[i]))) for i in range(len(redo_groups))]
         inte = sorted(inte, key=lambda x: (x[1], x[0]), reverse=True)
-        redo_logs[inte[0][0]].append(redo_trace)
+        redo_logs[inte[0][0]].update({redo_trace: cardinality})
         return redo_logs
 
 

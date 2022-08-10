@@ -6,13 +6,13 @@ from itertools import product
 from typing import Collection, Any, List, Optional, Generic
 from typing import Tuple
 
+from pm4py.algo.discovery.inductive.cuts import utils as cut_util
 from pm4py.algo.discovery.inductive.cuts.abc import Cut
 from pm4py.algo.discovery.inductive.cuts.abc import T
-from pm4py.algo.discovery.inductive.cuts import utils as cut_util
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.process_tree.obj import Operator, ProcessTree
-from pm4py.util.compression.dtypes import UCL
+from pm4py.util.compression.dtypes import UVCL
 
 
 class SequenceCut(Cut[T], ABC, Generic[T]):
@@ -118,11 +118,11 @@ class StrictSequenceCut(SequenceCut[T], ABC, Generic[T]):
         return map
 
 
-class SequenceLogCut(SequenceCut[UCL]):
+class SequenceLogCut(SequenceCut[UVCL]):
 
     @classmethod
-    def project(cls, log: UCL, groups: List[Collection[Any]]) -> List[UCL]:
-        logs = [list() for g in groups]
+    def project(cls, log: UVCL, groups: List[Collection[Any]]) -> List[UVCL]:
+        logs = [Counter() for g in groups]
         for t in log:
             i = 0
             split_point = 0
@@ -130,20 +130,20 @@ class SequenceLogCut(SequenceCut[UCL]):
             while i < len(groups):
                 new_split_point = cls._find_split_point(
                     t, groups[i], split_point, act_union)
-                trace_i = []
+                trace_i = tuple()
                 j = split_point
                 while j < new_split_point:
                     if t[j] in groups[i]:
-                        trace_i.append(t[j])
+                        trace_i = trace_i + (t[j],)
                     j = j + 1
-                logs[i].append(trace_i)
+                logs[i].update({trace_i: log[t]})
                 split_point = new_split_point
                 act_union = act_union.union(set(groups[i]))
                 i = i + 1
         return logs
 
     @classmethod
-    def _find_split_point(cls, t: List[Any], group: Collection[Any], start: int, ignore: Collection[Any]) -> int:
+    def _find_split_point(cls, t: tuple[Any], group: Collection[Any], start: int, ignore: Collection[Any]) -> int:
         least_cost = 0
         position_with_least_cost = start
         cost = 0
@@ -163,7 +163,7 @@ class SequenceLogCut(SequenceCut[UCL]):
         return position_with_least_cost
 
 
-class StrictSequenceLogCut(StrictSequenceCut[UCL], SequenceLogCut):
+class StrictSequenceLogCut(StrictSequenceCut[UVCL], SequenceLogCut):
 
     @classmethod
     def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:

@@ -1,12 +1,13 @@
 import copy
-from typing import Union, Tuple, List, Counter, Any, Dict, Optional
+from collections import Counter
+from typing import Union, Tuple, List, Any, Dict, Optional
 
 import numpy as np
 import pandas as pd
 
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.log.obj import EventLog
-from pm4py.util.compression.dtypes import UCL, MCL, ULT, MLT
+from pm4py.util.compression.dtypes import UCL, MCL, ULT, MLT, UVCL
 
 
 def project_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:name',
@@ -175,7 +176,19 @@ def discover_dfg(log: Union[UCL, MCL], index: int = 0) -> DFG:
     return dfg
 
 
-def get_start_activities(log: Union[UCL, MCL], index: int = 0) -> Counter[Any]:
+def discover_dfg_uvcl(log: UVCL):
+    dfg = DFG()
+    cnt = Counter()
+    [cnt.update({(t[i], t[i + 1]): log[t]}) for t in log for i in range(0, len(t) - 1) if len(t)]
+    [dfg.graph.append((a, b, cnt[(a, b)])) for (a, b) in cnt]
+    sa = get_start_activities(log)
+    [dfg.start_activities.append((a, sa[a])) for a in sa]
+    es = get_end_activities(log)
+    [dfg.end_activities.append((a, es[a])) for a in es]
+    return dfg
+
+
+def get_start_activities(log: Union[UCL, MCL, UVCL], index: int = 0) -> Counter[Any]:
     log = _map_log_to_single_index(log, index)
     starts = Counter()
     [starts.update([e]) for e in list(
@@ -183,7 +196,7 @@ def get_start_activities(log: Union[UCL, MCL], index: int = 0) -> Counter[Any]:
     return starts
 
 
-def get_end_activities(log: Union[UCL, MCL], index: int = 0) -> Counter[Any]:
+def get_end_activities(log: Union[UCL, MCL, UVCL], index: int = 0) -> Counter[Any]:
     log = _map_log_to_single_index(log, index)
     ends = Counter()
     [ends.update([e]) for e in list(
@@ -191,21 +204,21 @@ def get_end_activities(log: Union[UCL, MCL], index: int = 0) -> Counter[Any]:
     return ends
 
 
-def get_alphabet(log: Union[UCL, MCL], index: int = 0):
+def get_alphabet(log: Union[UCL, MCL, UVCL], index: int = 0):
     log = _map_log_to_single_index(log, index)
     return set([e for t in log for e in t])
 
 
-def get_variants(log: Union[UCL, MCL], index: int = 0):
+def get_variants(log: Union[UCL, MCL], index: int = 0) -> UVCL:
     log = _map_log_to_single_index(log, index)
     return Counter(map(lambda t: tuple(t), log))
 
 
-def _map_log_to_single_index(log: Union[UCL, MCL], i: int):
+def _map_log_to_single_index(log: Union[UCL, MCL, UVCL], i: int):
     return [list(map(lambda v: v[i], t)) for t in log] if type(log) is MCL else log
 
 
-def msd(ucl: UCL) -> Dict[Any, int]:
+def msd(ucl: Union[UCL, UVCL]) -> Dict[Any, int]:
     msd = dict()
     for a in get_alphabet(ucl):
         activity_indices = list(
@@ -216,7 +229,7 @@ def msd(ucl: UCL) -> Dict[Any, int]:
     return msd
 
 
-def msdw(cl: UCL, msd: Dict[Any, int]) -> Dict[Any, Any]:
+def msdw(cl: Union[UCL, UVCL], msd: Dict[Any, int]) -> Dict[Any, Any]:
     witnesses = dict()
     alphabet = get_alphabet(cl)
     for a in alphabet:

@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar, Union, Tuple, List, Collection, Any, Optional
-from pm4py.util.compression.dtypes import UCL
+from typing import Generic, TypeVar, Union, Tuple, List, Optional
+
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.util.compression.dtypes import UVCL
 
-T = TypeVar('T', bound=Union[UCL, DFG])
+T = TypeVar('T', bound=Union[UVCL, DFG])
 
 
 class FallThrough(ABC, Generic[T]):
