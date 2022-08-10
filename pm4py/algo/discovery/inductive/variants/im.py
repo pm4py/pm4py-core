@@ -1,7 +1,7 @@
 from typing import Optional, Tuple, List
 
 from pm4py.algo.discovery.inductive.base_case.empty_log import EmptyLogBaseCase
-from pm4py.algo.discovery.inductive.base_case.single_activity import SingleActivity
+from pm4py.algo.discovery.inductive.base_case.single_activity import SingleActivityBaseCase
 from pm4py.algo.discovery.inductive.cuts.concurrency import ConcurrencyLogCut
 from pm4py.algo.discovery.inductive.cuts.loop import LoopLogCut
 from pm4py.algo.discovery.inductive.cuts.sequence import SequenceLogCut
@@ -50,7 +50,7 @@ class IM(InductiveMinerFramework[UCL]):
 
     def apply_base_case(self, obj: UCL) -> Optional[ProcessTree]:
         bc = EmptyLogBaseCase.apply(obj)
-        return bc if bc is not None else SingleActivity.apply(obj)
+        return bc if bc is not None else SingleActivityBaseCase.apply(obj)
 
     def find_cut(self, obj: UCL) -> Optional[Tuple[ProcessTree, List[UCL]]]:
         dfg = comut.discover_dfg(obj)
