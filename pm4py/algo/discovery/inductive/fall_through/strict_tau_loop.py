@@ -1,33 +1,34 @@
+from collections import Counter
 from typing import Optional, Tuple, List
 
-from pm4py.algo.discovery.inductive.fall_through.abc import FallThrough, T
+from pm4py.algo.discovery.inductive.fall_through.abc import FallThrough
 from pm4py.objects.process_tree.obj import ProcessTree, Operator
 from pm4py.util.compression import util as comut
-from pm4py.util.compression.dtypes import UCL
+from pm4py.util.compression.dtypes import UVCL
 
 
-class StrictTauLoop(FallThrough[UCL]):
+class StrictTauLoop(FallThrough[UVCL]):
 
     @classmethod
-    def _get_projected_log(cls, log: UCL):
+    def _get_projected_log(cls, log: UVCL) -> UVCL:
         start_activities = comut.get_start_activities(log)
         end_activities = comut.get_end_activities(log)
-        proj = []
+        proj = Counter()
         for t in log:
             x = 0
             for i in range(1, len(t)):
                 if t[i] in start_activities and t[i - 1] in end_activities:
-                    proj.append(t[x:i])
+                    proj.update({t[x:i]: log[t]})
                     x = i
-            proj.append(t[x:len(t)])
+            proj.update({t[x:len(t)]: log[t]})
         return proj
 
     @classmethod
-    def holds(cls, log: UCL) -> bool:
+    def holds(cls, log: UVCL) -> bool:
         return len(cls._get_projected_log(log)) > len(log)
 
     @classmethod
-    def apply(cls, log: UCL) -> Optional[Tuple[ProcessTree, List[UCL]]]:
+    def apply(cls, log: UVCL) -> Optional[Tuple[ProcessTree, List[UVCL]]]:
         proj = cls._get_projected_log(log)
         if len(cls._get_projected_log(log)) > len(log):
             return ProcessTree(operator=Operator.LOOP), [proj, []]

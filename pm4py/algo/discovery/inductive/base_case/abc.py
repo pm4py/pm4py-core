@@ -3,9 +3,9 @@ from typing import Union, TypeVar, Generic, Optional
 
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.process_tree.obj import ProcessTree
-from pm4py.util.compression.dtypes import UCL
+from pm4py.util.compression.dtypes import UVCL
 
-T = TypeVar('T', bound=Union[UCL, DFG])
+T = TypeVar('T', bound=Union[UVCL, DFG])
 
 
 class BaseCase(ABC, Generic[T]):
