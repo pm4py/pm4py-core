@@ -1,13 +1,12 @@
-import copy
-from collections import Counter
 from typing import Union, Tuple, List, Any, Dict, Optional
-
-import numpy as np
 import pandas as pd
 
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.log.obj import EventLog
 from pm4py.util.compression.dtypes import UCL, MCL, ULT, MLT, UVCL
+from collections import Counter
+import numpy as np
+import copy
 
 
 def project_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:name',
@@ -188,7 +187,7 @@ def discover_dfg_uvcl(log: UVCL):
     return dfg
 
 
-def get_start_activities(log: Union[UCL, MCL, UVCL], index: int = 0) -> Counter[Any]:
+def get_start_activities(log: Union[UCL, MCL], index: int = 0) -> Dict[Tuple[Any, int], int]:
     log = _map_log_to_single_index(log, index)
     starts = Counter()
     [starts.update([e]) for e in list(
