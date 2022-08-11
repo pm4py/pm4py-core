@@ -115,7 +115,7 @@ def get_transitive_relations(dfg: DFG) -> Tuple[Dict[Any, Collection[Any]], Dict
     return pre, post
 
 
-def get_vertex_frequencies(dfg: DFG) -> Counter[Any]:
+def get_vertex_frequencies(dfg: DFG) -> Dict[Any, int]:
     '''
     Computes the number of times a vertex in the dfg is visited.
     The number equals the number of occurrences in the underlying log and is computed by summing up the incoming

@@ -195,7 +195,7 @@ def get_start_activities(log: Union[UCL, MCL], index: int = 0) -> Dict[Tuple[Any
     return starts
 
 
-def get_end_activities(log: Union[UCL, MCL, UVCL], index: int = 0) -> Counter[Any]:
+def get_end_activities(log: Union[UCL, MCL, UVCL], index: int = 0) -> Dict[Any, int]:
     log = _map_log_to_single_index(log, index)
     ends = Counter()
     [ends.update([e]) for e in list(
