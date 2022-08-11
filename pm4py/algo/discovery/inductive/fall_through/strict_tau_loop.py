@@ -25,10 +25,10 @@ class StrictTauLoop(FallThrough[UVCL]):
 
     @classmethod
     def holds(cls, log: UVCL) -> bool:
-        return len(cls._get_projected_log(log)) > len(log)
+        return sum(cls._get_projected_log(log).values()) > sum(log.values())
 
     @classmethod
     def apply(cls, log: UVCL) -> Optional[Tuple[ProcessTree, List[UVCL]]]:
         proj = cls._get_projected_log(log)
-        if len(cls._get_projected_log(log)) > len(log):
+        if sum(proj.values()) > sum(log.values()):
             return ProcessTree(operator=Operator.LOOP), [proj, []]
