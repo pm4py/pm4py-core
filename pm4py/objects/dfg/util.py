@@ -133,8 +133,6 @@ def get_vertex_frequencies(dfg: DFG) -> Dict[Any, int]:
 
 
 def as_nx_graph(dfg: DFG) -> nx.DiGraph:
-    import networkx as nx
-
     nx_graph = nx.DiGraph()
     nx_graph.add_nodes_from(get_vertices(dfg))
     for a, b, f in dfg.graph:
