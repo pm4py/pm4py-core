@@ -1,7 +1,8 @@
-from typing import Union, Tuple, List, Counter, Any
+from typing import Union, Tuple, List, Any, Dict
 import pandas as pd
 from pm4py.objects.log.obj import EventLog
 from pm4py.util.compression.dtypes import UCL, MCL, ULT, MLT
+from collections import Counter
 import numpy as np
 import copy
 
@@ -147,7 +148,7 @@ def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = 
     return cl, lookup
 
 
-def discover_dfg(log: Union[UCL, MCL], index: int = 0) -> Counter[Tuple[Any, int]]:
+def discover_dfg(log: Union[UCL, MCL], index: int = 0) -> Dict[Tuple[Any, int], int]:
     """
     Discover a DFG object from a compressed event log (either univariate or multivariate)
     The DFG object represents a counter of integer pairs
@@ -162,7 +163,7 @@ def discover_dfg(log: Union[UCL, MCL], index: int = 0) -> Counter[Tuple[Any, int
     return dfg
 
 
-def get_start_activities(log: Union[UCL, MCL], index: int = 0) -> Counter[Tuple[Any, int]]:
+def get_start_activities(log: Union[UCL, MCL], index: int = 0) -> Dict[Tuple[Any, int], int]:
     log = _map_log_to_single_index(log, index)
     starts = Counter()
     [starts.update([e]) for e in list(
