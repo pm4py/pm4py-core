@@ -143,7 +143,7 @@ class SequenceLogCut(SequenceCut[UVCL]):
         return logs
 
     @classmethod
-    def _find_split_point(cls, t: tuple[Any], group: Collection[Any], start: int, ignore: Collection[Any]) -> int:
+    def _find_split_point(cls, t: Tuple[Any], group: Collection[Any], start: int, ignore: Collection[Any]) -> int:
         least_cost = 0
         position_with_least_cost = start
         cost = 0
