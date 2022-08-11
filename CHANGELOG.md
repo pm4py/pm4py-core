@@ -11,6 +11,8 @@
 ### Fixed
 * 98fd3c740d8b6ae2dfde4d7a018f181030f22175
   * fixed reflexivity in EventLog eventually_follows filter.
+* 9423897cdf0ea293ff1b032a0d4fa49ba746709c
+  * fixed chunk_regex XES importer.
 
 ### Removed
 
