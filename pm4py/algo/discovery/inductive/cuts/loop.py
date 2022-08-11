@@ -1,4 +1,3 @@
-import copy
 from abc import ABC
 from collections import Counter
 from typing import List, Optional, Collection, Any, Tuple, Generic
@@ -128,18 +127,11 @@ class LoopCut(Cut[T], ABC, Generic[T]):
     @classmethod
     def _compute_connected_components(cls, dfg: DFG, start_activities: Collection[Any],
                                       end_activities: Collection[Any]):
-        dfgc = copy.deepcopy((dfg))
-        for (a, b, f) in dfg.graph:
-            if a in start_activities or a in end_activities or b in start_activities or b in end_activities:
-                dfgc.graph.remove((a, b, f))
-        dfgc.start_activities.clear()
-        dfgc.end_activities.clear()
-        nxd = dfu.as_nx_graph(dfgc)
-        # add any nodes that are unconnected in the dfg object
-        nodes = dfu.get_vertices(dfg).difference(start_activities).difference(end_activities)
-        for n in nodes:
-            if not nxd.has_node(n):
-                nxd.add_node(n)
+        nxd = dfu.as_nx_graph(dfg)
+        [nxd.remove_edge(a, b) for (a, b, f) in dfg.graph if
+         a in start_activities or a in end_activities or b in start_activities or b in end_activities]
+        [nxd.remove_node(a) for a in start_activities if nxd.has_node(a)]
+        [nxd.remove_node(a) for a in end_activities if nxd.has_node(a)]
         nxu = nxd.to_undirected()
         return [nxd.subgraph(c).copy() for c in nx.connected_components(nxu)]
 
