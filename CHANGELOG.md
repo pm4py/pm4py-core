@@ -1,5 +1,21 @@
 # Changelog of pm4py
 
+## pm4py 2.2.27 (2022.08.XX)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 98fd3c740d8b6ae2dfde4d7a018f181030f22175
+  * fixed reflexivity in EventLog eventually_follows filter.
+
+### Removed
+
+### Other
+
 ## pm4py 2.2.26 (2022.08.05)
 
 ### Added
