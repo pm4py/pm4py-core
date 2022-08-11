@@ -17,7 +17,7 @@ def get_vertices(dfg: DFG) -> Collection[Any]:
     return alphabet
 
 
-def get_outgoing_arcs(dfg: DFG) -> Dict[Any, Counter[Any]]:
+def get_outgoing_arcs(dfg: DFG) -> Dict[Any, Dict[Any, int]]:
     """
     Returns the outgoing arcs of the provided DFG graph.
     Returns a dictionary mapping each 'source' node onto its set of 'target' nodes and associated frequency.
@@ -33,7 +33,7 @@ def get_outgoing_arcs(dfg: DFG) -> Dict[Any, Counter[Any]]:
     return outgoing
 
 
-def get_incoming_arcs(dfg: DFG) -> Dict[Any, Counter[Any]]:
+def get_incoming_arcs(dfg: DFG) -> Dict[Any, Dict[Any, int]]:
     """
     Returns the incoming arcs of the provided DFG graph.
     Returns a dictionary mapping each 'target' node onto its set of 'source' nodes and associated frequency.
