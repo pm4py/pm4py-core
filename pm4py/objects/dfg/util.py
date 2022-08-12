@@ -15,9 +15,9 @@ def get_vertices(dfg: DFG) -> Collection[Any]:
     :rtype: ``Collection[Any]``
     """
     alphabet = set()
-    [alphabet.update({a, b}) for (a, b, f) in dfg.graph]
-    [alphabet.update({a}) for (a, f) in dfg.start_activities]
-    [alphabet.update({a}) for (a, f) in dfg.end_activities]
+    [alphabet.update({a, b}) for (a, b) in dfg.graph]
+    [alphabet.update({a}) for a in dfg.start_activities]
+    [alphabet.update({a}) for a in dfg.end_activities]
     return alphabet
 
 
@@ -32,8 +32,8 @@ def get_outgoing_arcs(dfg: DFG) -> Dict[Any, Dict[Any, int]]:
 
     """
     outgoing = {a: Counter() for a in get_vertices(dfg)}
-    for (a, b, f) in dfg.graph:
-        outgoing[a][b] = f if b not in outgoing[a] else outgoing[a][b] + f
+    for (a, b) in dfg.graph:
+        outgoing[a][b] = dfg.graph[(a, b)] if b not in outgoing[a] else outgoing[a][b] + dfg.graph[(a, b)]
     return outgoing
 
 
@@ -48,8 +48,8 @@ def get_incoming_arcs(dfg: DFG) -> Dict[Any, Dict[Any, int]]:
 
     """
     incoming = {a: Counter() for a in get_vertices(dfg)}
-    for (a, b, f) in dfg.graph:
-        incoming[b][a] = f if a not in incoming[b] else incoming[b][a] + f
+    for (a, b) in dfg.graph:
+        incoming[b][a] = dfg.graph[(a, b)] if a not in incoming[b] else incoming[b][a] + dfg.graph[(a, b)]
     return incoming
 
 
