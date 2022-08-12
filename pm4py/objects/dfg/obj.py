@@ -1,23 +1,24 @@
-from typing import Tuple, List, Any
+from collections import Counter
+from typing import Tuple, Any, Counter as TCounter
 
 
 class DirectlyFollowsGraph:
 
     def __init__(self):
-        self._graph = list()
-        self._start_activities = list()
-        self._end_activities = list()
+        self._graph = Counter()
+        self._start_activities = Counter()
+        self._end_activities = Counter()
 
     @property
-    def graph(self) -> List[Tuple[Any, Any, int]]:
+    def graph(self) -> TCounter[Tuple[Any, Any]]:
         return self._graph
 
     @property
-    def start_activities(self) -> List[Tuple[Any, int]]:
+    def start_activities(self) -> TCounter[Any]:
         return self._start_activities
 
     @property
-    def end_activities(self) -> List[Tuple[Any, int]]:
+    def end_activities(self) -> TCounter[Any]:
         return self._end_activities
 
     def __repr__(self):
