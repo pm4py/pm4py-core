@@ -1,12 +1,12 @@
-from enum import Enum
-
-from pm4py.util import constants, exec_utils
-from pm4py.util import xes_constants as xes_util
+import time
 from enum import Enum
 from typing import Optional, Dict, Any
+
 import pandas as pd
+
 from pm4py.objects.dfg.obj import DFG
-import time
+from pm4py.util import constants, exec_utils
+from pm4py.util import xes_constants as xes_util
 
 
 class Parameters(Enum):
@@ -43,11 +43,15 @@ def apply(log: pd.DataFrame, parameters: Optional[Dict[str, Any]] = None) -> DFG
     starters.loc[starters[aux_act] == excl_starter, count] += 1
 
     df = df[(df[cid_key] == df[aux_case])]
-    dfg.graph.append(list(df.groupby([act_key, aux_act]).size(
-    ).reset_index().itertuples(index=False, name=None)))
-    dfg.start_activities.append(
-        list(starters.itertuples(index=False, name=None)))
-    dfg.end_activities.append(list(borders.groupby(
-        [act_key]).size().reset_index().itertuples(index=False, name=None)))
+    for (a, b, f) in list(df.groupby([act_key, aux_act]).size(
+    ).reset_index().itertuples(index=False, name=None)):
+        dfg.graph[(a, b)] += f
+
+    for (a, f) in list(starters.itertuples(index=False, name=None)):
+        dfg.start_activities[a] += f
+
+    for (a, f) in list(borders.groupby(
+            [act_key]).size().reset_index().itertuples(index=False, name=None)):
+        dfg.end_activities[a] += f
 
     return dfg
