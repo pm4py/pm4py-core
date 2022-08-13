@@ -1,12 +1,12 @@
-from enum import Enum
-
-from pm4py.util import constants, exec_utils
-from pm4py.util import xes_constants as xes_util
+import time
 from enum import Enum
 from typing import Optional, Dict, Any
+
 import polars as pl
+
 from pm4py.objects.dfg.obj import DFG
-import time
+from pm4py.util import constants, exec_utils
+from pm4py.util import xes_constants as xes_util
 
 
 class Parameters(Enum):
@@ -39,12 +39,15 @@ def apply(log: pl.DataFrame, parameters: Optional[Dict[str, Any]] = None) -> DFG
 
     excl_starter = df[0, act_key]
     borders = df[(df[cid_key] != df[aux_case])]
-    starters = list(filter(lambda d: d[aux_act] is not None, borders.groupby([aux_act]).count().to_dicts()))
-    for d in starters:
+
+    for d in filter(lambda d: d[aux_act] is not None, borders.groupby([aux_act]).count().to_dicts()):
         v = d['count'] + 1 if d[aux_act] == excl_starter else d['count']
-        dfg.start_activities.append((d[aux_act],v))
-    [dfg.end_activities.append((d[act_key], d['count'])) for d in filter(lambda d: d[act_key] is not None, borders.groupby([act_key]).count().to_dicts())]   
-        
-    [dfg.graph.append((d[act_key],d[aux_act],d['count'])) for d in df[(df[cid_key] == df[aux_case])].groupby([act_key, aux_act]).count().to_dicts()]
-    
+        dfg.start_activities[d[aux_act]] = v
+
+    for d in filter(lambda d: d[act_key] is not None, borders.groupby([act_key]).count().to_dicts()):
+        dfg.end_activities[d[act_key]] = d['count']
+
+    for d in df[(df[cid_key] == df[aux_case])].groupby([act_key, aux_act]).count().to_dicts():
+        dfg.graph[(d[act_key], d[aux_act])] = d['count']
+
     return dfg
