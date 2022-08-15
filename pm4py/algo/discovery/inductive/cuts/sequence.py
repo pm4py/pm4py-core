@@ -84,13 +84,13 @@ class StrictSequenceCut(SequenceCut[T], ABC, Generic[T]):
         """
         dfg = dfg if dfg is not None else obj if type(obj) is DFG else None
         c = SequenceCut.apply(dfg)
-        start = {a for (a, f) in dfg.start_activities}
-        end = {a for (a, f) in dfg.end_activities}
+        start = set(dfg.start_activities.keys())
+        end = set(dfg.end_activities.keys())
         if c is not None:
             mf = [-1 * sys.maxsize if len(G.intersection(start)) > 0 else sys.maxsize for G in c]
             mt = [sys.maxsize if len(G.intersection(end)) > 0 else -1 * sys.maxsize for G in c]
             cmap = cls._construct_alphabet_cluster_map(c)
-            for (a, b, f) in dfg.graph:
+            for (a, b) in dfg.graph:
                 mf[cmap[b]] = min(mf[cmap[b]], cmap[a])
                 mt[cmap[a]] = max(mt[cmap[a]], cmap[b])
 
@@ -190,20 +190,20 @@ class SequenceDFGCut(SequenceCut[DFG]):
             to_succ_arcs = Counter()
             from_prev_arcs = Counter()
             if i < len(groups) - 1:
-                for (a, b, f) in dfg.graph:
+                for (a, b) in dfg.graph:
                     if a in groups[i] and b in groups[i + 1]:
-                        to_succ_arcs[a] += f
+                        to_succ_arcs[a] += dfg.graph[(a, b)]
 
             if i > 0:
-                for (a, b, f) in dfg.graph:
+                for (a, b) in dfg.graph:
                     if a in groups[i - 1] and b in groups[i]:
-                        from_prev_arcs[b] += f
+                        from_prev_arcs[b] += dfg.graph[(a, b)]
 
             if i == 0:
                 start_activities.append({})
-                for (a, f) in dfg.start_activities:
+                for a in dfg.start_activities:
                     if a in groups[i]:
-                        start_activities[i][a] = f
+                        start_activities[i][a] = dfg.start_activities[a]
                     else:
                         j = i
                         while j < activities_idx[a]:
@@ -214,9 +214,9 @@ class SequenceDFGCut(SequenceCut[DFG]):
 
             if i == len(groups) - 1:
                 end_activities.append({})
-                for (a, f) in dfg.end_activities:
+                for a in dfg.end_activities:
                     if a in groups[i]:
-                        end_activities[i][a] = f
+                        end_activities[i][a] = dfg.end_activities[a]
                     else:
                         j = activities_idx[a] + 1
                         while j <= i:
@@ -230,19 +230,19 @@ class SequenceDFGCut(SequenceCut[DFG]):
             for a in groups[i]:
                 activities[i][a] = act_count[a]
             dfgs.append({})
-            for (a, b, f) in dfg.graph:
+            for (a, b) in dfg.graph:
                 if a in groups[i] and b in groups[i]:
-                    dfgs[i][(a, b)] = f
+                    dfgs[i][(a, b)] = dfg.graph[(a, b)]
             i = i + 1
         i = 0
         while i < len(dfgs):
             dfi = DFG()
-            [dfi.graph.append((a, b, dfgs[i][(a, b)])) for (a, b) in dfgs[i]]
-            [dfi.start_activities.append((a, start_activities[i][a])) for a in start_activities[i]]
-            [dfi.end_activities.append((a, end_activities[i][a])) for a in end_activities[i]]
+            [dfi.graph.update({(a, b): dfgs[i][(a, b)]}) for (a, b) in dfgs[i]]
+            [dfi.start_activities.update({a: start_activities[i][a]}) for a in start_activities[i]]
+            [dfi.end_activities.update({a: end_activities[i][a]}) for a in end_activities[i]]
             dfgs[i] = dfi
             i = i + 1
-        for (a, b, f) in dfg.graph:
+        for (a, b) in dfg.graph:
             z = activities_idx[b]
             j = activities_idx[a] + 1
             while j < z:

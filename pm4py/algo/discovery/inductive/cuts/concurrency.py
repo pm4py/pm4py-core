@@ -21,8 +21,6 @@ class ConcurrencyCut(Cut[T], ABC, Generic[T]):
     @classmethod
     def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
         dfg = dfg if dfg is not None else obj if type(obj) is DFG else None
-        start_activities = {a for (a, f) in dfg.start_activities}
-        end_activities = {a for (a, f) in dfg.end_activities}
         alphabet = dfu.get_vertices(dfg)
         msdw = comut.msdw(obj, comut.msd(obj)) if obj is not None and type(obj) is UVCL else None
         groups = [{a} for a in alphabet]
@@ -39,8 +37,8 @@ class ConcurrencyCut(Cut[T], ABC, Generic[T]):
         groups = list(sorted(groups, key=lambda g: len(g)))
         i = 0
         while i < len(groups) and len(groups) > 1:
-            if len(groups[i].intersection(start_activities)) > 0 and len(
-                    groups[i].intersection(end_activities)) > 0:
+            if len(groups[i].intersection(set(dfg.start_activities.keys()))) > 0 and len(
+                    groups[i].intersection(set(dfg.end_activities.keys()))) > 0:
                 i += 1
                 continue
             group = groups[i]
@@ -74,14 +72,14 @@ class ConcurrencyDFGCut(ConcurrencyCut[DFG]):
         skippable = []
         for g in groups:
             dfn = DFG()
-            for (a, f) in obj.start_activities:
+            for a in obj.start_activities:
                 if a in g:
-                    dfn.start_activities.append((a, f))
-            for (a, f) in obj.end_activities:
+                    dfn.start_activities[a] = obj.start_activities[a]
+            for a in obj.end_activities:
                 if a in g:
-                    dfn.end_activities.append((a, f))
-            for (a, b, f) in obj.graph:
+                    dfn.end_activities[a] = obj.end_activities[a]
+            for (a, b) in obj.graph:
                 if a in g and b in g:
-                    dfn.graph.append((a, b, f))
+                    dfn.graph[(a, b)] = obj[(a, b)]
             skippable.append(False)
         return dfgs, skippable
