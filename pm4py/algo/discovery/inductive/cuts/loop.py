@@ -33,8 +33,8 @@ class LoopCut(Cut[T], ABC, Generic[T]):
 
         """
         dfg = dfg if dfg is not None else obj if type(obj) is DFG else None
-        start_activities = {a for (a, f) in dfg.start_activities}
-        end_activities = {a for (a, f) in dfg.end_activities}
+        start_activities = set(dfg.start_activities.keys())
+        end_activities = set(dfg.end_activities.keys())
         if len(dfg.graph) == 0:
             return None
 
@@ -60,10 +60,10 @@ class LoopCut(Cut[T], ABC, Generic[T]):
             for a in groups[i]:
                 if merge:
                     break
-                for (x, b, f) in dfg.graph:
+                for (x, b) in dfg.graph:
                     if x == a and b in start_activities:
                         for s in start_activities:
-                            if not (a, s, f) in dfg.graph:
+                            if not (a, s) in dfg.graph:
                                 merge = True
             if merge:
                 groups[0] = set(groups[0]).union(groups[i])
@@ -81,10 +81,10 @@ class LoopCut(Cut[T], ABC, Generic[T]):
             for a in groups[i]:
                 if merge:
                     break
-                for (b, x, f) in dfg.graph:
+                for (b, x) in dfg.graph:
                     if x == a and b in end_activities:
                         for e in end_activities:
-                            if not (e, a, f) in dfg.graph:
+                            if not (e, a) in dfg.graph:
                                 merge = True
             if merge:
                 groups[0] = set(groups[0]).union(groups[i])
@@ -98,7 +98,7 @@ class LoopCut(Cut[T], ABC, Generic[T]):
                                                end_activities: Collection[Any],
                                                groups: List[Collection[Any]]) -> List[Collection[Any]]:
         for a in set(start_activities).difference(set(end_activities)):
-            for (x, b, f) in dfg.graph:
+            for (x, b) in dfg.graph:
                 if x == a:
                     group_a, group_b = None, None
                     for group in groups:
@@ -114,7 +114,7 @@ class LoopCut(Cut[T], ABC, Generic[T]):
                                             end_activities: Collection[Any],
                                             groups: List[Collection[Any]]) -> List[Collection[Any]]:
         for b in set(end_activities).difference(start_activities):
-            for (a, x, f) in dfg.graph:
+            for (a, x) in dfg.graph:
                 if x == b:
                     group_a, group_b = None, None
                     for group in groups:
@@ -128,7 +128,7 @@ class LoopCut(Cut[T], ABC, Generic[T]):
     def _compute_connected_components(cls, dfg: DFG, start_activities: Collection[Any],
                                       end_activities: Collection[Any]):
         nxd = dfu.as_nx_graph(dfg)
-        [nxd.remove_edge(a, b) for (a, b, f) in dfg.graph if
+        [nxd.remove_edge(a, b) for (a, b) in dfg.graph if
          a in start_activities or a in end_activities or b in start_activities or b in end_activities]
         [nxd.remove_node(a) for a in start_activities if nxd.has_node(a)]
         [nxd.remove_node(a) for a in end_activities if nxd.has_node(a)]
@@ -184,29 +184,27 @@ class LoopDFGCut(LoopCut[DFG]):
     def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> Tuple[List[DFG], List[bool]]:
         dfgs = []
         skippable = [False, False]
-        start_activities = {a for (a, f) in dfg.start_activities}
-        end_activities = {a for (a, f) in dfg.end_activities}
         for gind, g in enumerate(groups):
             dfn = DFG()
-            for (a, b, f) in dfg.graph:
+            for (a, b) in dfg.graph:
                 if a in g and b in g:
-                    dfn.graph.append((a, b, f))
-                if b in start_activities and a in end_activities:
+                    dfn.graph[(a, b)] = dfg[(a, b)]
+                if b in dfg.start_activities and a in dfg.end_activities:
                     skippable[1] = True
             if gind == 0:
-                for (a, f) in dfg.start_activities:
+                for a in dfg.start_activities:
                     if a in g:
-                        dfn.start_activities.append((a, f))
+                        dfn.start_activities[a] = dfg.start_activities[a]
                     else:
                         skippable[0] = True
-                for (a, f) in dfg.end_activities:
+                for a in dfg.end_activities:
                     if a in g:
-                        dfn.end_activities.append((a, f))
+                        dfn.end_activities[a] = dfg.end_activities[a]
                     else:
                         skippable[1] = True
             elif gind == 1:
                 for a in g:
-                    dfn.start_activities.append((a, 1))
-                    dfn.end_activities.append((a, 1))
+                    dfn.start_activities[a] = 1
+                    dfn.end_activities[a] = 1
             dfgs.append(dfn)
         return dfgs, skippable

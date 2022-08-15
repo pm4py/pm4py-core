@@ -67,8 +67,14 @@ class ExclusiveChoiceDFGCut(ExclusiveChoiceCut[DFG]):
         dfgs = []
         for g in groups:
             dfg_new = DFG()
-            [dfg_new.start_activities.append((a, f)) for (a, f) in dfg.start_activities if a in g]
-            [dfg_new.end_activities.append((a, f)) for (a, f) in dfg.end_activities if a in g]
-            [dfg_new.graph.append((a, b, f)) for (a, b, f) in dfg.graph if a in g and b in g]
+            for a in dfg.start_activities:
+                if a in g:
+                    dfg_new.start_activities[a] = dfg.start_activities[a]
+            for a in dfg.end_activities:
+                if a in g:
+                    dfg_new.end_activities[a] = dfg.end_activities[a]
+            for (a, b) in dfg.graph:
+                if a in g and b in g:
+                    dfg_new.graph[(a, b)] = dfg.graph[(a, b)]
             dfgs.append(dfg)
         return dfgs, [False for g in groups]

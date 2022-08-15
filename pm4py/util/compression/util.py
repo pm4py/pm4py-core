@@ -1,12 +1,13 @@
-from typing import Union, Tuple, List, Any, Dict, Optional
+import copy
+from collections import Counter
+from typing import Union, Tuple, List, Any, Dict, Optional, Counter as TCounter
+
+import numpy as np
 import pandas as pd
 
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.log.obj import EventLog
 from pm4py.util.compression.dtypes import UCL, MCL, ULT, MLT, UVCL
-from collections import Counter
-import numpy as np
-import copy
 
 
 def project_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:name',
@@ -165,41 +166,36 @@ def discover_dfg(log: Union[UCL, MCL], index: int = 0) -> DFG:
     """
     log = _map_log_to_single_index(log, index)
     dfg = DFG()
-    cnt = Counter()
-    [cnt.update([(t[i], t[i + 1])]) for t in log for i in range(0, len(t) - 1) if len(t)]
-    [dfg.graph.append((a, b, cnt[(a, b)])) for (a, b) in cnt]
-    sa = get_start_activities(log)
-    [dfg.start_activities.append((a, sa[a])) for a in sa]
-    es = get_end_activities(log)
-    [dfg.end_activities.append((a, es[a])) for a in es]
+    [dfg.graph.update([(t[i], t[i + 1])]) for t in log for i in range(0, len(t) - 1) if len(t)]
+    dfg.start_activities.update(get_start_activities(log, index))
+    dfg.end_activities.update(get_end_activities(log, index))
     return dfg
 
 
-def discover_dfg_uvcl(log: UVCL):
+def discover_dfg_uvcl(log: UVCL) -> DFG:
     dfg = DFG()
-    cnt = Counter()
-    [cnt.update({(t[i], t[i + 1]): log[t]}) for t in log for i in range(0, len(t) - 1) if len(t)]
-    [dfg.graph.append((a, b, cnt[(a, b)])) for (a, b) in cnt]
-    sa = get_start_activities(log)
-    [dfg.start_activities.append((a, sa[a])) for a in sa]
-    es = get_end_activities(log)
-    [dfg.end_activities.append((a, es[a])) for a in es]
+    [dfg.graph.update({(t[i], t[i + 1]): log[t]}) for t in log for i in range(0, len(t) - 1) if len(t)]
+    for a in get_alphabet(log):
+        for t in log:
+            if len(t) > 0:
+                if t[0] == a:
+                    dfg.start_activities.update({a: log[t]})
+                if t[len(t) - 1] == a:
+                    dfg.end_activities.update({a: log[t]})
     return dfg
 
 
-def get_start_activities(log: Union[UCL, MCL], index: int = 0) -> Dict[Tuple[Any, int], int]:
+def get_start_activities(log: Union[UCL, MCL], index: int = 0) -> TCounter[Any]:
     log = _map_log_to_single_index(log, index)
     starts = Counter()
-    [starts.update([e]) for e in list(
-        map(lambda t: t[0], filter(lambda t: len(t) > 0, log)))]
+    starts.update(map(lambda t: t[0], filter(lambda t: len(t) > 0, log)))
     return starts
 
 
-def get_end_activities(log: Union[UCL, MCL, UVCL], index: int = 0) -> Dict[Any, int]:
+def get_end_activities(log: Union[UCL, MCL, UVCL], index: int = 0) -> TCounter[Any]:
     log = _map_log_to_single_index(log, index)
     ends = Counter()
-    [ends.update([e]) for e in list(
-        map(lambda t: t[len(t) - 1], filter(lambda t: len(t) > 0, log)))]
+    ends.update(map(lambda t: t[len(t) - 1], filter(lambda t: len(t) > 0, log)))
     return ends
 
 

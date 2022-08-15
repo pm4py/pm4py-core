@@ -98,14 +98,14 @@ def get_transitive_relations(dfg: DFG) -> Tuple[Dict[Any, Collection[Any]], Dict
     pre = {a: set() for a in alph}
     post = {a: set() for a in alph}
     if len(dfg.graph) > 0:
-        q = [(a, b) for (a, b, f) in dfg.graph]
+        q = list(dfg.graph.keys())
         while len(q) > 0:
             s, t = q.pop(0)
             post[s].add(t)
             pre[t].add(s)
             post[s].update(post[t])
             pre[t].update(pre[s])
-            for a, b, f in dfg.graph:
+            for (a, b) in dfg.graph:
                 if b == s and not post[s].issubset(post[a]):
                     post[a].update(post[s])
                     q.append((a, b))
@@ -125,20 +125,20 @@ def get_vertex_frequencies(dfg: DFG) -> Dict[Any, int]:
     c = Counter()
     for v in get_vertices(dfg):
         c[v] = 0
-    for (a, b, f) in dfg.graph:
-        c[v] += f
-    for (a, f) in dfg.start_activities:
-        c[v] += f
+    for (a, b) in dfg.graph:
+        c[a] += dfg.graph[(a, b)]
+    for a in dfg.start_activities:
+        c[a] += dfg.start_activities[a]
     return c
 
 
 def as_nx_graph(dfg: DFG) -> nx.DiGraph:
     nx_graph = nx.DiGraph()
     nx_graph.add_nodes_from(get_vertices(dfg))
-    for a, b, f in dfg.graph:
+    for a, b in dfg.graph:
         nx_graph.add_edge(a, b)
     return nx_graph
 
 
 def get_edges(dfg: DFG) -> Collection[Tuple[Any, Any]]:
-    return {(a, b) for (a, b, f) in dfg.graph}
+    return dfg.graph.keys()
