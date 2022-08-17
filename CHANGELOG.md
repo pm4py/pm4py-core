@@ -3,6 +3,8 @@
 ## pm4py 2.2.27 (2022.08.XX)
 
 ### Added
+* 58e266610e82cfcc41868313f7b9ccfd9975d49c
+  * discover_objects_graph utility for OCELs.
 
 ### Changed
 * 1cbd37ac4b54a4c0e943b506ed685435f003640b
