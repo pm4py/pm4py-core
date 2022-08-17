@@ -1,5 +1,5 @@
 __name__ = 'pm4py'
-VERSION = '2.2.26'
+VERSION = '2.2.27'
 __version__ = VERSION
 __doc__ = 'Process Mining for Python (PM4Py)'
 __author__ = 'Fraunhofer Institute for Applied Technology'
