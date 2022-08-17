@@ -5,6 +5,7 @@ import pandas as pd
 
 from pm4py.algo.discovery.batches.utils import detection
 from pm4py.util import exec_utils, constants, xes_constants
+import numpy as np
 
 
 class Parameters(Enum):
@@ -13,6 +14,7 @@ class Parameters(Enum):
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    EVENT_ID_KEY = "event_id_key"
     MERGE_DISTANCE = "merge_distance"
     MIN_BATCH_SIZE = "min_batch_size"
 
@@ -68,22 +70,38 @@ def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], A
     start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
                                                      timestamp_key)
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    event_id_key = exec_utils.get_param_value(Parameters.EVENT_ID_KEY, parameters, constants.DEFAULT_INDEX_KEY)
 
-    log = log[list({activity_key, resource_key, start_timestamp_key, timestamp_key, case_id_key})]
-    events = log.to_dict('records')
+    attributes_to_consider = {activity_key, resource_key, start_timestamp_key, timestamp_key, case_id_key}
+    log_contains_evidkey = event_id_key in log
+    if log_contains_evidkey:
+        attributes_to_consider.add(event_id_key)
+
+    log = log[list(attributes_to_consider)]
+    log[timestamp_key] = log[timestamp_key].values.astype(np.int64) // 10**9
+    if start_timestamp_key != timestamp_key:
+        log[start_timestamp_key] = log[start_timestamp_key].values.astype(np.int64) // 10**9
+
+    actres_grouping0 = log.groupby([activity_key, resource_key]).agg(list).to_dict()
+    start_timestamps = actres_grouping0[start_timestamp_key]
+    complete_timestamps = actres_grouping0[timestamp_key]
+    cases = actres_grouping0[case_id_key]
+    if log_contains_evidkey:
+        events_ids = actres_grouping0[event_id_key]
 
     actres_grouping = {}
-
-    for ev in events:
-        case = ev[case_id_key]
-        activity = ev[activity_key]
-        resource = ev[resource_key]
-        st = ev[start_timestamp_key].timestamp()
-        et = ev[timestamp_key].timestamp()
-
-        if (activity, resource) not in actres_grouping:
-            actres_grouping[(activity, resource)] = []
-
-        actres_grouping[(activity, resource)].append((st, et, case))
+    for k in start_timestamps:
+        st = start_timestamps[k]
+        et = complete_timestamps[k]
+        c = cases[k]
+        if log_contains_evidkey:
+            eid = events_ids[k]
+        actres_grouping_k = []
+        for i in range(len(st)):
+            if log_contains_evidkey:
+                actres_grouping_k.append((st[i], et[i], c[i], eid[i]))
+            else:
+                actres_grouping_k.append((st[i], et[i], c[i]))
+        actres_grouping[k] = actres_grouping_k
 
     return detection.detect(actres_grouping, parameters=parameters)
