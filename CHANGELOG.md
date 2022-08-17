@@ -5,6 +5,8 @@
 ### Added
 
 ### Changed
+* 1cbd37ac4b54a4c0e943b506ed685435f003640b
+  * performance improvement batch detection on Pandas dataframes.
 
 ### Deprecated
 
