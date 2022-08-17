@@ -2,6 +2,8 @@ from enum import Enum
 from typing import Tuple, List, Any, Set, Optional, Dict, Union
 
 from pm4py.util import exec_utils
+import heapq
+from copy import copy
 
 
 class Parameters(Enum):
@@ -62,18 +64,15 @@ def __merge_near_intervals(intervals: List[Tuple[float, float, Set[Any]]], max_a
                 # decide to merge interval i and i+1
                 new_interval = (min(intervals[i][0], intervals[i + 1][0]), max(intervals[i][1], intervals[i + 1][1]),
                                 intervals[i][2].union(intervals[i + 1][2]))
-                # add the new interval to the list
-                intervals.append(new_interval)
                 # remove the i+1 interval
                 del intervals[i + 1]
                 # remove the i interval
                 del intervals[i]
-                # sort the intervals
-                intervals.sort()
+                # add the new interval to the list
+                heapq.heappush(intervals, new_interval)
                 # set the variable continue_cycle to True
                 continue_cycle = True
-                # interrupt the current iteration on the intervals
-                break
+                i = i - 1
             i = i + 1
     return intervals
 
@@ -136,9 +135,9 @@ def __detect_single(events: List[Tuple[float, float, str]], parameters: Optional
     merge_distance = exec_utils.get_param_value(Parameters.MERGE_DISTANCE, parameters, 15 * 60)
     min_batch_size = exec_utils.get_param_value(Parameters.MIN_BATCH_SIZE, parameters, 2)
 
-    intervals = [(e[0], e[1], {(e[0], e[1], e[2])}) for e in
+    intervals = [(e[0], e[1], {copy(e)}) for e in
                  events]
-    intervals.sort()
+    heapq.heapify(intervals)
     intervals = __merge_overlapping_intervals(intervals)
     intervals = __merge_near_intervals(intervals, merge_distance)
     batches = [x for x in intervals if len(x[2]) >= min_batch_size]
