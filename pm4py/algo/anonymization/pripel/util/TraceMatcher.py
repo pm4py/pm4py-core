@@ -132,9 +132,10 @@ class TraceMatcher:
         eventStacks = self.__transformTraceInEventStack(correspondingTrace)
         previousEvent = None
         # add trace attributes from the matched trace to the query trace
-        #if type(correspondingTrace) is not list:
-        for key in correspondingTrace.attributes:
-            traceInQuery.attributes[key] = correspondingTrace.attributes[key]
+        if not correspondingTrace == list():
+            for key in correspondingTrace.attributes:
+                if (key != 'variant' and key != 'variant-index'):
+                    traceInQuery.attributes[key] = correspondingTrace.attributes[key]
         for eventNr in range(0, len(traceInQuery)):
             currentEvent = traceInQuery[eventNr]
             activity = currentEvent["concept:name"]
