@@ -58,11 +58,13 @@
   9b90c2c18b708d39e3c75f8b2e25433c7e8b447f
   ba6b55b84d1f7191d578e0d5535c49ef1930ce65
   4d5765052fe4085fc8f8340e72a353369705b878
-	PMPY-1573 making methods directly working on Pandas dataframes
+    PMPY-1573 making methods directly working on Pandas dataframes
 * ba6b55b84d1f7191d578e0d5535c49ef1930ce65
   4d5765052fe4085fc8f8340e72a353369705b878
   aea15814ba8f67a51fce1ec0beebd9a4a3721a19
-	PMPY-1619 adding common parameters to simplified interface methods
+    PMPY-1619 adding common parameters to simplified interface methods
+* f8482b9e9aa4376543ad5d66d22fb04de0639530
+    PMPY-1880 missing parameters in heuristics net discovery
 
 ### Removed
 
