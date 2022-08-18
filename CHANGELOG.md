@@ -9,6 +9,8 @@
 ### Changed
 * 1cbd37ac4b54a4c0e943b506ed685435f003640b
   * performance improvement batch detection on Pandas dataframes.
+* 94dd96e0095f7cb1ef8d1eb48bd3da0a3cd85793
+  * minor changes to DFG variants simulation.
 
 ### Deprecated
 
