@@ -190,6 +190,7 @@ def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end
     overall_probability = 0.0
 
     final_traces = []
+    max_occ = 0
 
     start_time = time.time()
     for tr, p in get_traces(dfg, start_activities, end_activities, parameters=parameters):
@@ -225,6 +226,10 @@ def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end
         diff_original_dfg = set(dfg).difference(simulated_traces_dfg)
         interrupt_break_condition = len(diff_original_sa) == 0 and len(diff_original_ea) == 0 and len(
             diff_original_dfg) == 0
+        var_occ = math.ceil(p * max_no_variants)
+        max_occ = max(max_occ, var_occ)
+        if var_occ < min_variant_occ <= max_occ:
+            break
         final_traces.append((-p, tr))
         if interrupt_simulation_when_dfg_complete and interrupt_break_condition:
             break
@@ -237,12 +242,8 @@ def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end
     if return_variants:
         # returns the variants instead of the log
         variants = {}
-        max_occ = 0
         for p, tr in final_traces:
             var_occ = math.ceil(-p * max_no_variants)
-            max_occ = max(max_occ, var_occ)
-            if var_occ < min_variant_occ <= max_occ:
-                break
             variants[tr] = var_occ
 
         if not (interrupted and return_only_if_complete):
