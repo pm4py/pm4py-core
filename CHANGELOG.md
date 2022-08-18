@@ -32,6 +32,7 @@
 
 ### Changed
 * 5c06d520182317d140bd1b82d9d986c3edc81cf7
+  6a2eb404ba240b2c04eb91e7cf1407f72c5ae3e5
   * minor fixes to DFG simulation
 * fe1aa9c5efa7dc274e728a769625a784d7f87c6f
   * added default option for background color setup
