@@ -193,8 +193,13 @@ def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end
 
     start_time = time.time()
     for tr, p in get_traces(dfg, start_activities, end_activities, parameters=parameters):
-        if (interrupt_simulation_when_dfg_complete and interrupt_break_condition) or not (
-                len(final_traces) < max_no_variants and overall_probability <= min_weighted_probability):
+        if interrupt_simulation_when_dfg_complete and interrupt_break_condition:
+            break
+        if len(final_traces) >= max_no_variants:
+            interrupted = True
+            break
+        if overall_probability > min_weighted_probability:
+            interrupted = True
             break
         current_time = time.time()
         if (current_time - start_time) > max_execution_time:
@@ -236,7 +241,7 @@ def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end
         for p, tr in final_traces:
             var_occ = math.ceil(-p * max_no_variants)
             max_occ = max(max_occ, var_occ)
-            if max_occ >= min_variant_occ and var_occ < min_variant_occ:
+            if var_occ < min_variant_occ <= max_occ:
                 break
             variants[tr] = var_occ
 
