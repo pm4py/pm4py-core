@@ -45,7 +45,7 @@ def get_end_activities(log: Union[EventLog, pd.DataFrame]) -> Dict[str, int]:
     Parameters
     ---------------
     log
-        Lob object
+        Log object
 
     Returns
     ---------------
