@@ -326,7 +326,7 @@ def eventually_follows(log: EventLog, attribute_values: List[str], parameters: O
         for c in itertools.product(*occurrences):
             ok = True
             for i in range(len(c)-1):
-                if c[i] > c[i+1]:
+                if c[i] >= c[i+1]:
                     ok = False
                     break
             if ok:
