@@ -4,7 +4,7 @@ from pm4py.algo.discovery.inductive.base_case.empty_log import EmptyLogBaseCase
 from pm4py.algo.discovery.inductive.base_case.single_activity import SingleActivityBaseCase
 from pm4py.algo.discovery.inductive.cuts.concurrency import ConcurrencyLogCut
 from pm4py.algo.discovery.inductive.cuts.loop import LoopLogCut
-from pm4py.algo.discovery.inductive.cuts.sequence import SequenceLogCut
+from pm4py.algo.discovery.inductive.cuts.sequence import StrictSequenceLogCut
 from pm4py.algo.discovery.inductive.cuts.xor import ExclusiveChoiceLogCut
 from pm4py.algo.discovery.inductive.fall_through.activity_concurrent import ActivityConcurrent
 from pm4py.algo.discovery.inductive.fall_through.activity_once_per_trace import ActivityOncePerCase
@@ -56,6 +56,6 @@ class IM(InductiveMinerFramework[UVCL]):
     def find_cut(self, obj: UVCL) -> Optional[Tuple[ProcessTree, List[UVCL]]]:
         dfg = comut.discover_dfg_uvcl(obj)
         g = ExclusiveChoiceLogCut.apply(obj, dfg)
-        g = SequenceLogCut.apply(obj, dfg) if g is None else g
+        g = StrictSequenceLogCut.apply(obj, dfg) if g is None else g
         g = ConcurrencyLogCut.apply(obj, dfg) if g is None else g
         return LoopLogCut.apply(obj, dfg) if g is None else g
