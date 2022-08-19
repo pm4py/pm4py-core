@@ -63,7 +63,7 @@ class StrictSequenceCut(SequenceCut[T], ABC, Generic[T]):
         """
         for i, j in itertools.product(range(0, p), range(p + 1, len(groups))):
             for a, b in itertools.product(groups[i], groups[j]):
-                if (a, b, f) in dfg.graph:
+                if (a, b) in dfg.graph:
                     return True
         for i in range(p + 1, len(groups)):
             for a in groups[i]:
@@ -83,12 +83,12 @@ class StrictSequenceCut(SequenceCut[T], ABC, Generic[T]):
         The function merges groups that together can be skipped.
         """
         dfg = dfg if dfg is not None else obj if type(obj) is DFG else None
-        c = SequenceCut.apply(dfg)
+        c = SequenceCut.holds(obj, dfg)
         start = set(dfg.start_activities.keys())
         end = set(dfg.end_activities.keys())
         if c is not None:
-            mf = [-1 * sys.maxsize if len(G.intersection(start)) > 0 else sys.maxsize for G in c]
-            mt = [sys.maxsize if len(G.intersection(end)) > 0 else -1 * sys.maxsize for G in c]
+            mf = [-1 * sys.maxsize if len(set(G).intersection(start)) > 0 else sys.maxsize for G in c]
+            mt = [sys.maxsize if len(set(G).intersection(end)) > 0 else -1 * sys.maxsize for G in c]
             cmap = cls._construct_alphabet_cluster_map(c)
             for (a, b) in dfg.graph:
                 mf[cmap[b]] = min(mf[cmap[b]], cmap[a])
