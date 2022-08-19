@@ -1,5 +1,29 @@
 # Changelog of pm4py
 
+## pm4py 2.2.27 (2022.08.XX)
+
+### Added
+* 58e266610e82cfcc41868313f7b9ccfd9975d49c
+  * discover_objects_graph utility for OCELs.
+
+### Changed
+* 1cbd37ac4b54a4c0e943b506ed685435f003640b
+  * performance improvement batch detection on Pandas dataframes.
+* 94dd96e0095f7cb1ef8d1eb48bd3da0a3cd85793
+  * minor changes to DFG variants simulation.
+
+### Deprecated
+
+### Fixed
+* 98fd3c740d8b6ae2dfde4d7a018f181030f22175
+  * fixed reflexivity in EventLog eventually_follows filter.
+* 9423897cdf0ea293ff1b032a0d4fa49ba746709c
+  * fixed chunk_regex XES importer.
+
+### Removed
+
+### Other
+
 ## pm4py 2.2.26 (2022.08.05)
 
 ### Added
@@ -8,6 +32,7 @@
 
 ### Changed
 * 5c06d520182317d140bd1b82d9d986c3edc81cf7
+  6a2eb404ba240b2c04eb91e7cf1407f72c5ae3e5
   * minor fixes to DFG simulation
 * fe1aa9c5efa7dc274e728a769625a784d7f87c6f
   * added default option for background color setup
