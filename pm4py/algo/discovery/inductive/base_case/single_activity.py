@@ -7,7 +7,11 @@ from pm4py.util.compression.dtypes import UVCL
 class SingleActivityBaseCase(BaseCase[UVCL]):
     @classmethod
     def holds(cls, obj=UVCL) -> bool:
-        return len(obj.keys()) == 1 and len(comut.get_alphabet(obj)) == 1
+        if len(obj.keys()) != 1:
+            return False
+        if len(list(obj.keys())[0]) > 1:
+            return False
+        return True
 
     @classmethod
     def leaf(cls, obj=UVCL) -> ProcessTree:
