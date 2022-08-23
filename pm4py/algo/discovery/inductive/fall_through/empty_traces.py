@@ -1,21 +1,22 @@
 from collections import Counter
 from typing import Tuple, List, Optional
 
+from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
 from pm4py.algo.discovery.inductive.fall_through.abc import FallThrough
 from pm4py.objects.process_tree.obj import ProcessTree, Operator
-from pm4py.util.compression.dtypes import UVCL
 
 
-class EmptyTraces(FallThrough[UVCL]):
+class EmptyTracesUVCL(FallThrough[IMDataStructureUVCL]):
 
     @classmethod
-    def apply(cls, log: UVCL) -> Optional[Tuple[ProcessTree, List[UVCL]]]:
-        if cls.holds(log):
-            del log[()]
-            return ProcessTree(operator=Operator.XOR), [Counter(), log]
+    def apply(cls, obj: IMDataStructureUVCL) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
+        if cls.holds(obj):
+            del obj.data_structure[()]
+            return ProcessTree(operator=Operator.XOR), [IMDataStructureUVCL(Counter()),
+                                                        IMDataStructureUVCL(obj.data_structure)]
         else:
             return None
 
     @classmethod
-    def holds(cls, log: UVCL) -> bool:
-        return len(list(filter(lambda t: len(t) == 0, log))) > 0
+    def holds(cls, obj: IMDataStructureUVCL) -> bool:
+        return len(list(filter(lambda t: len(t) == 0, obj.data_structure))) > 0

@@ -1,10 +1,12 @@
 from abc import ABC
 from collections import Counter
 from itertools import product
-from typing import List, Collection, Any, Tuple, Optional, Generic
+from typing import List, Collection, Any, Optional, Generic
 
 from pm4py.algo.discovery.inductive.cuts import utils as cut_util
 from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
+from pm4py.algo.discovery.inductive.dtypes.im_dfg import InductiveDFG
+from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL, IMDataStructureDFG
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.process_tree.obj import Operator, ProcessTree
@@ -19,8 +21,8 @@ class ConcurrencyCut(Cut[T], ABC, Generic[T]):
         return ProcessTree(operator=Operator.PARALLEL)
 
     @classmethod
-    def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
-        dfg = dfg if dfg is not None else obj if type(obj) is DFG else None
+    def holds(cls, obj: T) -> Optional[List[Collection[Any]]]:
+        dfg = obj.dfg
         alphabet = dfu.get_vertices(dfg)
         msdw = comut.msdw(obj, comut.msd(obj)) if obj is not None and type(obj) is UVCL else None
         groups = [{a} for a in alphabet]
@@ -51,35 +53,37 @@ class ConcurrencyCut(Cut[T], ABC, Generic[T]):
         return groups if len(groups) > 1 else None
 
 
-class ConcurrencyLogCut(ConcurrencyCut[UVCL]):
+class ConcurrencyCutUVCL(ConcurrencyCut[IMDataStructureUVCL]):
 
     @classmethod
-    def project(cls, obj: UVCL, groups: List[Collection[Any]]) -> List[UVCL]:
+    def project(cls, obj: IMDataStructureUVCL, groups: List[Collection[Any]]) -> List[IMDataStructureUVCL]:
         r = list()
         for g in groups:
             c = Counter()
-            for t in obj:
-                c[tuple(filter(lambda e: e in g, t))] = obj[t]
+            for t in obj.data_structure:
+                c[tuple(filter(lambda e: e in g, t))] = obj.data_structure[t]
             r.append(c)
-        return r
+        return list(map(lambda l: IMDataStructureUVCL(l), r))
 
 
-class ConcurrencyDFGCut(ConcurrencyCut[DFG]):
+class ConcurrencyCutDFG(ConcurrencyCut[IMDataStructureDFG]):
 
     @classmethod
-    def project(cls, obj: DFG, groups: List[Collection[Any]]) -> Tuple[List[DFG], List[bool]]:
+    def project(cls, obj: IMDataStructureDFG, groups: List[Collection[Any]]) -> List[IMDataStructureDFG]:
         dfgs = []
         skippable = []
         for g in groups:
             dfn = DFG()
-            for a in obj.start_activities:
+            for a in obj.dfg.start_activities:
                 if a in g:
-                    dfn.start_activities[a] = obj.start_activities[a]
-            for a in obj.end_activities:
+                    dfn.start_activities[a] = obj.dfg.start_activities[a]
+            for a in obj.dfg.end_activities:
                 if a in g:
-                    dfn.end_activities[a] = obj.end_activities[a]
-            for (a, b) in obj.graph:
+                    dfn.end_activities[a] = obj.dfg.end_activities[a]
+            for (a, b) in obj.dfg.graph:
                 if a in g and b in g:
-                    dfn.graph[(a, b)] = obj[(a, b)]
+                    dfn.graph[(a, b)] = obj.dfg.graph[(a, b)]
             skippable.append(False)
-        return dfgs, skippable
+        r = list()
+        [r.append(IMDataStructureDFG(InductiveDFG(dfg=dfgs[i], skip=skippable[i]))) for i in range(len(dfgs))]
+        return r

@@ -1,13 +1,14 @@
 from collections import Counter
 from typing import Optional, Tuple, List
 
+from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
 from pm4py.algo.discovery.inductive.fall_through.abc import FallThrough
 from pm4py.objects.process_tree.obj import ProcessTree, Operator
 from pm4py.util.compression import util as comut
 from pm4py.util.compression.dtypes import UVCL
 
 
-class StrictTauLoop(FallThrough[UVCL]):
+class StrictTauLoopUVCL(FallThrough[IMDataStructureUVCL]):
 
     @classmethod
     def _get_projected_log(cls, log: UVCL) -> UVCL:
@@ -24,11 +25,13 @@ class StrictTauLoop(FallThrough[UVCL]):
         return proj
 
     @classmethod
-    def holds(cls, log: UVCL) -> bool:
+    def holds(cls, obj: IMDataStructureUVCL) -> bool:
+        log = obj.data_structure
         return sum(cls._get_projected_log(log).values()) > sum(log.values())
 
     @classmethod
-    def apply(cls, log: UVCL) -> Optional[Tuple[ProcessTree, List[UVCL]]]:
+    def apply(cls, obj: IMDataStructureUVCL) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
+        log = obj.data_structure
         proj = cls._get_projected_log(log)
         if sum(proj.values()) > sum(log.values()):
-            return ProcessTree(operator=Operator.LOOP), [proj, []]
+            return ProcessTree(operator=Operator.LOOP), [IMDataStructureUVCL(proj), IMDataStructureUVCL(Counter())]

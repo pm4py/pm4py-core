@@ -5,6 +5,8 @@ from typing import List, Optional, Collection, Any, Tuple, Generic
 import networkx as nx
 
 from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
+from pm4py.algo.discovery.inductive.dtypes.im_dfg import InductiveDFG
+from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL, IMDataStructureDFG
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.process_tree.obj import Operator, ProcessTree
@@ -18,7 +20,7 @@ class LoopCut(Cut[T], ABC, Generic[T]):
         return ProcessTree(operator=Operator.LOOP)
 
     @classmethod
-    def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
+    def holds(cls, obj: T) -> Optional[List[Collection[Any]]]:
         """
         This method finds a loop cut in the dfg.
         Implementation follows function LoopCut on page 190 of
@@ -32,7 +34,7 @@ class LoopCut(Cut[T], ABC, Generic[T]):
         5. return the cut if at least two groups remain
 
         """
-        dfg = dfg if dfg is not None else obj if type(obj) is DFG else None
+        dfg = obj.dfg
         start_activities = set(dfg.start_activities.keys())
         end_activities = set(dfg.end_activities.keys())
         if len(dfg.graph) == 0:
@@ -136,36 +138,36 @@ class LoopCut(Cut[T], ABC, Generic[T]):
         return [nxd.subgraph(c).copy() for c in nx.connected_components(nxu)]
 
 
-class LoopLogCut(LoopCut[UVCL]):
+class LoopCutUVCL(LoopCut[IMDataStructureUVCL]):
 
     @classmethod
-    def project(cls, obj: UVCL, groups: List[Collection[Any]]) -> List[UVCL]:
+    def project(cls, obj: IMDataStructureUVCL, groups: List[Collection[Any]]) -> List[IMDataStructureUVCL]:
         do = groups[0]
         redo = groups[1:]
         redo_activities = [y for x in redo for y in x]
         do_log = Counter()
         redo_logs = [Counter() for i in range(len(redo))]
-        for t in obj:
+        for t in obj.data_structure:
             do_trace = tuple()
             redo_trace = tuple()
             for e in t:
                 if e in do:
                     do_trace = do_trace + (e,)
                     if len(redo_trace) > 0:
-                        redo_logs = cls._append_trace_to_redo_log(redo_trace, redo_logs, redo, obj[t])
+                        redo_logs = cls._append_trace_to_redo_log(redo_trace, redo_logs, redo, obj.data_structure[t])
                         redo_trace = tuple()
                 else:
                     if e in redo_activities:
                         redo_trace = redo_trace + (e,)
                         if len(do_trace) > 0:
-                            do_log.update({do_trace: obj[t]})
+                            do_log.update({do_trace: obj.data_structure[t]})
                             do_trace = tuple()
             if len(redo_trace) > 0:
                 redo_logs = cls._append_trace_to_redo_log(redo_trace, redo_logs, redo)
-            do_log.update({do_trace: obj[t]})
+            do_log.update({do_trace: obj.data_structure[t]})
         logs = [do_log]
         logs.extend(redo_logs)
-        return logs
+        return list(map(lambda l: IMDataStructureUVCL(l), logs))
 
     @classmethod
     def _append_trace_to_redo_log(cls, redo_trace: Tuple, redo_logs: List[UVCL], redo_groups: List[Collection[Any]],
@@ -178,10 +180,11 @@ class LoopLogCut(LoopCut[UVCL]):
         return redo_logs
 
 
-class LoopDFGCut(LoopCut[DFG]):
+class LoopCutDFG(LoopCut[IMDataStructureDFG]):
 
     @classmethod
-    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> Tuple[List[DFG], List[bool]]:
+    def project(cls, obj: IMDataStructureUVCL, groups: List[Collection[Any]]) -> List[IMDataStructureDFG]:
+        dfg = obj.dfg
         dfgs = []
         skippable = [False, False]
         for gind, g in enumerate(groups):
@@ -207,4 +210,4 @@ class LoopDFGCut(LoopCut[DFG]):
                     dfn.start_activities[a] = 1
                     dfn.end_activities[a] = 1
             dfgs.append(dfn)
-        return dfgs, skippable
+        return [IMDataStructureDFG(InductiveDFG(dfg=dfgs[i], skip=skippable[i])) for i in range(len(dfgs))]

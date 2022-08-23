@@ -1,11 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import Union, TypeVar, Generic, Optional
 
-from pm4py.objects.dfg.obj import DFG
+from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructure
 from pm4py.objects.process_tree.obj import ProcessTree
-from pm4py.util.compression.dtypes import UVCL
 
-T = TypeVar('T', bound=Union[UVCL, DFG])
+T = TypeVar('T', bound=Union[IMDataStructure])
 
 
 class BaseCase(ABC, Generic[T]):

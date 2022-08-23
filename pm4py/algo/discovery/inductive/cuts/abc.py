@@ -1,11 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import Optional, List, Collection, Any, Union, Tuple, Generic, TypeVar
+from typing import Optional, List, Collection, Any, Tuple, Generic, TypeVar
 
-from pm4py.objects.dfg.obj import DFG
+from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructure
 from pm4py.objects.process_tree.obj import ProcessTree
-from pm4py.util.compression.dtypes import UVCL
 
-T = TypeVar('T', bound=Union[UVCL, DFG])
+T = TypeVar('T', bound=IMDataStructure)
 
 
 class Cut(ABC, Generic[T]):
@@ -17,12 +16,12 @@ class Cut(ABC, Generic[T]):
 
     @classmethod
     @abstractmethod
-    def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
+    def holds(cls, obj: T) -> Optional[List[Collection[Any]]]:
         pass
 
     @classmethod
-    def apply(cls, obj: T, dfg: DFG = None) -> Optional[Tuple[ProcessTree, List[T]]]:
-        g = cls.holds(obj, dfg)
+    def apply(cls, obj: T) -> Optional[Tuple[ProcessTree, List[T]]]:
+        g = cls.holds(obj)
         return (cls.operator(), cls.project(obj, g)) if g is not None else g
 
     @classmethod
