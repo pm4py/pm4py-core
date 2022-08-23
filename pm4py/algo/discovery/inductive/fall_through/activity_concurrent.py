@@ -7,29 +7,29 @@ from pm4py.algo.discovery.inductive.fall_through.abc import FallThrough
 from pm4py.algo.discovery.inductive.variants.instances import IMInstance
 from pm4py.objects.process_tree.obj import ProcessTree, Operator
 from pm4py.util.compression import util as comut
-from pm4py.util.compression.dtypes import UVCL
 
 
 class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
 
     @classmethod
-    def _get_candidates(cls, log: UVCL):
+    def _get_candidates(cls, obj: IMDataStructureUVCL):
+        log = obj.data_structure
         candidates = comut.get_alphabet(log)
         cc = set()
         for a in candidates:
             l_alt = Counter()
             for t in log:
                 l_alt[tuple(filter(lambda e: e != a, t))] = log[t]
-            cut = cls._find_cut(l_alt)
+            cut = cls._find_cut(IMDataStructureUVCL(l_alt))
             if cut is not None:
                 cc.add(a)
                 break
         return cc
 
     @classmethod
-    def _find_cut(cls, log: IMDataStructureUVCL) -> Optional[Tuple[ProcessTree, List[UVCL]]]:
-        for c in CutFactory.get_cuts(log, IMInstance.IM):
-            r = c.apply(log)
+    def _find_cut(cls, obj: IMDataStructureUVCL) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
+        for c in CutFactory.get_cuts(obj, IMInstance.IM):
+            r = c.apply(obj)
             if r is not None:
                 return r
         return None
@@ -40,9 +40,9 @@ class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
 
     @classmethod
     def apply(cls, obj: IMDataStructureUVCL) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
-        candidates = cls._get_candidates(obj.data_structure)
-        log = obj.data_structure
+        candidates = cls._get_candidates(obj)
         if len(candidates) > 0:
+            log = obj.data_structure
             a = next(iter(candidates))
             l_a = Counter()
             l_other = Counter()
