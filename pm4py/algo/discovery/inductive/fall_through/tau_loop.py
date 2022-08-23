@@ -1,11 +1,11 @@
 from collections import Counter
 
-from pm4py.algo.discovery.inductive.fall_through.strict_tau_loop import StrictTauLoop
+from pm4py.algo.discovery.inductive.fall_through.strict_tau_loop import StrictTauLoopUVCL
 from pm4py.util.compression import util as comut
 from pm4py.util.compression.dtypes import UVCL
 
 
-class TauLoop(StrictTauLoop):
+class TauLoopUVCL(StrictTauLoopUVCL):
 
     @classmethod
     def _get_projected_log(cls, log: UVCL) -> UVCL:

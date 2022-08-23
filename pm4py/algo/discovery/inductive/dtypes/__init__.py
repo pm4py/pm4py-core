@@ -1,1 +1,1 @@
-from pm4py.algo.discovery.inductive.dtypes import im_ds
+from pm4py.algo.discovery.inductive.dtypes import im_ds, im_dfg

@@ -185,7 +185,7 @@ def discover_dfg_uvcl(log: UVCL) -> DFG:
     return dfg
 
 
-def get_start_activities(log: Union[UCL, MCL], index: int = 0) -> TCounter[Any]:
+def get_start_activities(log: Union[UCL, MCL, UVCL], index: int = 0) -> TCounter[Any]:
     log = _map_log_to_single_index(log, index)
     starts = Counter()
     starts.update(map(lambda t: t[0], filter(lambda t: len(t) > 0, log)))

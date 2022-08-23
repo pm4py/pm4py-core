@@ -9,10 +9,11 @@ from typing import Tuple
 from pm4py.algo.discovery.inductive.cuts import utils as cut_util
 from pm4py.algo.discovery.inductive.cuts.abc import Cut
 from pm4py.algo.discovery.inductive.cuts.abc import T
+from pm4py.algo.discovery.inductive.dtypes.im_dfg import InductiveDFG
+from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL, IMDataStructureDFG
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.process_tree.obj import Operator, ProcessTree
-from pm4py.util.compression.dtypes import UVCL
 
 
 class SequenceCut(Cut[T], ABC, Generic[T]):
@@ -22,7 +23,7 @@ class SequenceCut(Cut[T], ABC, Generic[T]):
         return ProcessTree(operator=Operator.SEQUENCE)
 
     @classmethod
-    def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
+    def holds(cls, obj: T) -> Optional[List[Collection[Any]]]:
         '''
         This method finds a sequence cut in the dfg.
         Implementation follows function sequence on page 188 of
@@ -34,7 +35,7 @@ class SequenceCut(Cut[T], ABC, Generic[T]):
         3. merge pairwise unreachable nodes (based on transitive relations)
         4. sort the groups based on their reachability
         '''
-        dfg = dfg if dfg is not None else obj if type(obj) is DFG else None
+        dfg = obj.dfg
         alphabet = dfu.get_vertices(dfg)
         transitive_predecessors, transitive_successors = dfu.get_transitive_relations(dfg)
         groups = [{a} for a in alphabet]
@@ -76,14 +77,14 @@ class StrictSequenceCut(SequenceCut[T], ABC, Generic[T]):
         return False
 
     @classmethod
-    def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
+    def holds(cls, obj: T) -> Optional[List[Collection[Any]]]:
         """
         This method implements the strict sequence cut as defined on page 233 of
         "Robust Process Mining with Guarantees" by Sander J.J. Leemans (ISBN: 978-90-386-4257-4)
         The function merges groups that together can be skipped.
         """
-        dfg = dfg if dfg is not None else obj if type(obj) is DFG else None
-        c = SequenceCut.holds(obj, dfg)
+        dfg = obj.dfg
+        c = SequenceCut.holds(obj)
         start = set(dfg.start_activities.keys())
         end = set(dfg.end_activities.keys())
         if c is not None:
@@ -118,12 +119,12 @@ class StrictSequenceCut(SequenceCut[T], ABC, Generic[T]):
         return map
 
 
-class SequenceLogCut(SequenceCut[UVCL]):
+class SequenceCutUVCL(SequenceCut[IMDataStructureUVCL]):
 
     @classmethod
-    def project(cls, log: UVCL, groups: List[Collection[Any]]) -> List[UVCL]:
+    def project(cls, obj: IMDataStructureUVCL, groups: List[Collection[Any]]) -> List[IMDataStructureUVCL]:
         logs = [Counter() for g in groups]
-        for t in log:
+        for t in obj.data_structure:
             i = 0
             split_point = 0
             act_union = set()
@@ -136,11 +137,11 @@ class SequenceLogCut(SequenceCut[UVCL]):
                     if t[j] in groups[i]:
                         trace_i = trace_i + (t[j],)
                     j = j + 1
-                logs[i].update({trace_i: log[t]})
+                logs[i].update({trace_i: obj.data_structure[t]})
                 split_point = new_split_point
                 act_union = act_union.union(set(groups[i]))
                 i = i + 1
-        return logs
+        return list(map(lambda l: IMDataStructureUVCL(l), logs))
 
     @classmethod
     def _find_split_point(cls, t: Tuple[Any], group: Collection[Any], start: int, ignore: Collection[Any]) -> int:
@@ -163,17 +164,17 @@ class SequenceLogCut(SequenceCut[UVCL]):
         return position_with_least_cost
 
 
-class StrictSequenceLogCut(StrictSequenceCut[UVCL], SequenceLogCut):
+class StrictSequenceCutUVCL(StrictSequenceCut[IMDataStructureUVCL], SequenceCutUVCL):
 
     @classmethod
-    def holds(cls, obj: T, dfg: DFG = None) -> Optional[List[Collection[Any]]]:
-        return StrictSequenceCut.holds(obj, dfg)
+    def holds(cls, obj: T) -> Optional[List[Collection[Any]]]:
+        return StrictSequenceCut.holds(obj)
 
 
-class SequenceDFGCut(SequenceCut[DFG]):
+class SequenceCutDFG(SequenceCut[IMDataStructureDFG]):
 
     @classmethod
-    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> Tuple[List[DFG], List[bool]]:
+    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> List[IMDataStructureDFG]:
         start_activities = []
         end_activities = []
         activities = []
@@ -248,4 +249,12 @@ class SequenceDFGCut(SequenceCut[DFG]):
             while j < z:
                 skippable[j] = False
                 j = j + 1
-        return dfgs, skippable
+
+        return [IMDataStructureDFG(InductiveDFG(dfg=dfgs[i], skip=skippable[i])) for i in range(len(dfgs))]
+
+
+class StrictSequenceCutDFG(StrictSequenceCut[IMDataStructureDFG], SequenceCutDFG):
+
+    @classmethod
+    def holds(cls, obj: T) -> Optional[List[Collection[Any]]]:
+        return StrictSequenceCut.holds(obj)
