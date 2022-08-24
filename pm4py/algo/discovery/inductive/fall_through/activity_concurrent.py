@@ -1,5 +1,5 @@
 from collections import Counter
-from typing import Optional, Tuple, List
+from typing import Optional, Tuple, List, Collection, Any
 
 from pm4py.algo.discovery.inductive.cuts.factory import CutFactory
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
@@ -12,7 +12,7 @@ from pm4py.util.compression import util as comut
 class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
 
     @classmethod
-    def _get_candidates(cls, obj: IMDataStructureUVCL):
+    def _get_candidates(cls, obj: IMDataStructureUVCL) -> Collection[Any]:
         log = obj.data_structure
         candidates = comut.get_alphabet(log)
         cc = set()
@@ -36,7 +36,7 @@ class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
 
     @classmethod
     def holds(cls, obj: IMDataStructureUVCL) -> bool:
-        return len(cls._get_candidates(obj.data_structure)) > 0
+        return len(cls._get_candidates(obj)) > 0
 
     @classmethod
     def apply(cls, obj: IMDataStructureUVCL) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
@@ -47,8 +47,8 @@ class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
             l_a = Counter()
             l_other = Counter()
             for t in log:
-                l_a[tuple(filter(lambda e: e == a, t))] = log[t]
-                l_other[tuple(filter(lambda e: e != a, t))] = log[t]
+                l_a.update({tuple(filter(lambda e: e == a, t)): log[t]})
+                l_other.update({tuple(filter(lambda e: e != a, t)): log[t]})
             return ProcessTree(operator=Operator.PARALLEL), [IMDataStructureUVCL(l_a), IMDataStructureUVCL(l_other)]
         else:
             return None
