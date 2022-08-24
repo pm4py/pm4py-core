@@ -16,14 +16,15 @@ class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
         log = obj.data_structure
         candidates = comut.get_alphabet(log)
         cc = set()
-        for a in candidates:
-            l_alt = Counter()
-            for t in log:
-                l_alt[tuple(filter(lambda e: e != a, t))] = log[t]
-            cut = cls._find_cut(IMDataStructureUVCL(l_alt))
-            if cut is not None:
-                cc.add(a)
-                break
+        if len(candidates) > 2:
+            for a in candidates:
+                l_alt = Counter()
+                for t in log:
+                    l_alt[tuple(filter(lambda e: e != a, t))] = log[t]
+                cut = cls._find_cut(IMDataStructureUVCL(l_alt))
+                if cut is not None:
+                    cc.add(a)
+                    break
         return cc
 
     @classmethod
