@@ -23,7 +23,7 @@ COMPRESSED_INPUT_DATA = "compressed_input_data"
 
 
 class InductiveMinerTest(unittest.TestCase):
-    def obtain_petri_net_through_im(self, log_name, variant=inductive_miner.IM_CLEAN):
+    def obtain_petri_net_through_im(self, log_name, variant=inductive_miner.Variants.IM):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
