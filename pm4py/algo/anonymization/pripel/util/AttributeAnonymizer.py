@@ -195,8 +195,10 @@ class AttributeAnonymizer:
         i = 0
         for trace in log:
             # trace attribute anonymization
-            for attribute in trace.attributes.keys():
-                trace.attributes[attribute] = self.__anonymizeAttribute(trace.attributes[attribute],
+            if not isinstance(trace, list):
+                for attribute in trace.attributes.keys():
+                    if (attribute != 'variant' and attribute != 'variant-index'):
+                        trace.attributes[attribute] = self.__anonymizeAttribute(trace.attributes[attribute],
                                                                         mechanisms.get(attribute, None))
             # event attribute anonymization
             for eventNr in range(0, len(trace)):

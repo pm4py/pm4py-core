@@ -132,7 +132,7 @@ class TraceMatcher:
         eventStacks = self.__transformTraceInEventStack(correspondingTrace)
         previousEvent = None
         # add trace attributes from the matched trace to the query trace
-        if not correspondingTrace == list():
+        if not isinstance(correspondingTrace, list):
             for key in correspondingTrace.attributes:
                 if (key != 'variant' and key != 'variant-index'):
                     traceInQuery.attributes[key] = correspondingTrace.attributes[key]
@@ -186,12 +186,16 @@ class TraceMatcher:
         if eventNr == 0:
             timestamp = random.choice(self.__allTimestamps)
         else:
-            if previousEvent["concept:name"] in distributionOfAttributes[self.__timestamp]:
-                timestamp = previousEvent[self.__timestamp] + random.choice(
-                    distributionOfAttributes[self.__timestamp][previousEvent["concept:name"]].get(
-                        currentEvent["concept:name"], self.__allTimeStampDifferences))
-            else:
-                timestamp = previousEvent[self.__timestamp] + random.choice(self.__allTimeStampDifferences)
+            try:
+                if previousEvent["concept:name"] in distributionOfAttributes[self.__timestamp]:
+                    timestamp = previousEvent[self.__timestamp] + random.choice(
+                        distributionOfAttributes[self.__timestamp][previousEvent["concept:name"]].get(
+                            currentEvent["concept:name"], self.__allTimeStampDifferences))
+                else:
+                    timestamp = previousEvent[self.__timestamp] + random.choice(self.__allTimeStampDifferences)
+            except OverflowError as e:
+                print(e)
+                print("---------------------------------------------------------###########################################################--------------------------------------------------------------------------------")
         return timestamp
 
     def __resolveTraceMatching(self, traceMatching, distributionOfAttributes, fillUp):
