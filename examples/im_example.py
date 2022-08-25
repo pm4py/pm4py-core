@@ -11,7 +11,7 @@ def execute_script():
     log_path = os.path.join("..", "tests", "input_data", "running-example.xes")
 
     log = xes_importer.apply(log_path)
-    net, marking, final_marking = inductive.apply(log, variant=inductive.Variants.IM_CLEAN)
+    net, marking, final_marking = inductive.apply(log, variant=inductive.Variants.IM)
     for place in marking:
         print("initial marking " + place.name)
     for place in final_marking:
