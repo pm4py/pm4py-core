@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from multiprocessing import Pool, Manager
 from typing import Generic, TypeVar, Tuple, List, Optional
 
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructure
@@ -16,5 +17,5 @@ class FallThrough(ABC, Generic[T]):
 
     @classmethod
     @abstractmethod
-    def apply(cls, t: T) -> Optional[Tuple[ProcessTree, List[T]]]:
+    def apply(cls, t: T, pool: Pool = None, manager: Manager = None) -> Optional[Tuple[ProcessTree, List[T]]]:
         pass
