@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional, Dict, Any, Union, Tuple, Collection
+from typing import Optional, Dict, Any, Union
 
 import pandas as pd
 
@@ -16,8 +16,6 @@ from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes_util
 from pm4py.util.compression import util as comut
-from pm4py.objects.petri_net.obj import PetriNet, Marking
-from pm4py.objects.conversion.process_tree import converter
 
 
 class Parameters(Enum):
@@ -33,12 +31,6 @@ class Variants(Enum):
 
 
 def apply(obj: Union[EventLog, pd.DataFrame, DFG], parameters: Optional[Dict[Any, Any]] = None,
-          variant=Variants.IM) -> Tuple[PetriNet, Marking, Marking]:
-    process_tree = apply_tree(obj, parameters=parameters, variant=variant)
-    return converter.apply(process_tree, parameters=parameters)
-
-
-def apply_tree(obj: Union[EventLog, pd.DataFrame, DFG], parameters: Optional[Dict[Any, Any]] = None,
           variant=Variants.IM) -> ProcessTree:
     if type(obj) not in [EventLog, pd.DataFrame, DFG]:
         raise TypeError('Inductive miner called with an incorrect data type as an input (should be a dataframe or DFG)')
@@ -60,8 +52,3 @@ def apply_tree(obj: Union[EventLog, pd.DataFrame, DFG], parameters: Optional[Dic
         imd = IMD()
         idfg = InductiveDFG(dfg=obj, skip=False)
         return imd.apply(IMDataStructureDFG(idfg))
-
-
-def apply_variants(variants: Dict[Collection[str], int], parameters: Optional[Dict[Any, Any]] = None):
-    im = IMUVCL()
-    return im.apply(IMDataStructureUVCL(variants))
