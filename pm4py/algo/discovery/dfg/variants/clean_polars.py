@@ -33,12 +33,12 @@ def apply(log: pl.DataFrame, parameters: Optional[Dict[str, Any]] = None) -> DFG
     df = log[[cid_key, act_key, time_key]].clone()
     df = df.sort([cid_key, time_key])
     df = df[[cid_key, act_key]]
-    df[aux_act] = df[act_key].shift(-1)
-    df[aux_case] = df[cid_key].shift(-1)
+    df = df.with_column(df[act_key].shift(-1).alias(aux_act))
+    df = df.with_column(df[cid_key].shift(-1).alias(aux_case))
     dfg = DFG()
 
     excl_starter = df[0, act_key]
-    borders = df[(df[cid_key] != df[aux_case])]
+    borders = df.filter(df[cid_key] != df[aux_case])
 
     for d in filter(lambda d: d[aux_act] is not None, borders.groupby([aux_act]).count().to_dicts()):
         v = d['count'] + 1 if d[aux_act] == excl_starter else d['count']
@@ -47,7 +47,7 @@ def apply(log: pl.DataFrame, parameters: Optional[Dict[str, Any]] = None) -> DFG
     for d in filter(lambda d: d[act_key] is not None, borders.groupby([act_key]).count().to_dicts()):
         dfg.end_activities[d[act_key]] = d['count']
 
-    for d in df[(df[cid_key] == df[aux_case])].groupby([act_key, aux_act]).count().to_dicts():
+    for d in df.filter((df[cid_key] == df[aux_case])).groupby([act_key, aux_act]).count().to_dicts():
         dfg.graph[(d[act_key], d[aux_act])] = d['count']
 
     return dfg
