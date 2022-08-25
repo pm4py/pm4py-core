@@ -113,7 +113,7 @@ class AlgorithmTest(unittest.TestCase):
     def test_inductive_miner(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        net, im, fm = inductive_miner.apply(log, variant=inductive_miner.Variants.IM_CLEAN)
+        net, im, fm = inductive_miner.apply(log, variant=inductive_miner.Variants.IM)
 
     def test_performance_spectrum(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))

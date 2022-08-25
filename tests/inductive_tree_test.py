@@ -15,7 +15,7 @@ class InductiveMinerTreeTest(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        tree = inductive_miner.apply_tree(log, variant=inductive_miner.IM_CLEAN)
+        tree = inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM)
         gviz = pt_vis.apply(tree)
         del gviz
         # test log generation
@@ -27,7 +27,7 @@ class InductiveMinerTreeTest(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "receipt.xes"))
-        tree = inductive_miner.apply_tree(log, variant=inductive_miner.IM_CLEAN)
+        tree = inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM)
         gviz = pt_vis.apply(tree)
         del gviz
         del log
