@@ -1,5 +1,6 @@
 from collections import Counter
-from typing import Optional, Tuple, List, Collection, Any
+from multiprocessing import Pool, Queue, Manager, Event
+from typing import Optional, Tuple, List, Any
 
 from pm4py.algo.discovery.inductive.cuts.factory import CutFactory
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
@@ -7,29 +8,53 @@ from pm4py.algo.discovery.inductive.fall_through.abc import FallThrough
 from pm4py.algo.discovery.inductive.variants.instances import IMInstance
 from pm4py.objects.process_tree.obj import ProcessTree, Operator
 from pm4py.util.compression import util as comut
+from pm4py.util.compression.dtypes import UVCL
 
 
 class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
+    MULTI_PROCESSING_LOWER_BOUND = 20
 
     @classmethod
-    def _get_candidates(cls, obj: IMDataStructureUVCL) -> Collection[Any]:
+    def _process_candidate(cls, c: Any, log: UVCL, queue: Queue = None, ev: Event = None):
+        l_alt = Counter()
+        for t in log:
+            l_alt[tuple(filter(lambda e: e != c, t))] = log[t]
+        cut = cls._find_cut(IMDataStructureUVCL(l_alt), ev)
+        if queue is not None:
+            queue.put((c, cut))
+        return cut if cut is not None else None
+
+    @classmethod
+    def _get_candidate(cls, obj: IMDataStructureUVCL, pool: Pool, manager: Manager) -> Optional[Any]:
         log = obj.data_structure
         candidates = comut.get_alphabet(log)
-        cc = set()
         if len(candidates) > 2:
-            for a in candidates:
-                l_alt = Counter()
-                for t in log:
-                    l_alt[tuple(filter(lambda e: e != a, t))] = log[t]
-                cut = cls._find_cut(IMDataStructureUVCL(l_alt))
-                if cut is not None:
-                    cc.add(a)
-                    break
-        return cc
+            if pool is not None and manager is not None and len(
+                    candidates) > ActivityConcurrentUVCL.MULTI_PROCESSING_LOWER_BOUND:
+                q = manager.Queue()
+                ev = manager.Event()
+                for a in candidates:
+                    pool.apply_async(cls._process_candidate, (a, log, q, ev))
+                potentials = set(candidates)
+                while len(potentials) > 0:
+                    (c, cut) = q.get(block=True)
+                    if cut is None:
+                        potentials.remove(c)
+                    else:
+                        ev.set()
+                        return c
+            else:
+                for a in candidates:
+                    cut = cls._process_candidate(a, log)
+                    if cut is not None:
+                        return a
+        return None
 
     @classmethod
-    def _find_cut(cls, obj: IMDataStructureUVCL) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
+    def _find_cut(cls, obj: IMDataStructureUVCL, ev: Event) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
         for c in CutFactory.get_cuts(obj, IMInstance.IM):
+            if ev is not None and ev.is_set():
+                return None
             r = c.apply(obj)
             if r is not None:
                 return r
@@ -37,19 +62,18 @@ class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
 
     @classmethod
     def holds(cls, obj: IMDataStructureUVCL) -> bool:
-        return len(cls._get_candidates(obj)) > 0
+        return cls._get_candidate(obj, None, None) is not None
 
     @classmethod
-    def apply(cls, obj: IMDataStructureUVCL) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
-        candidates = cls._get_candidates(obj)
-        if len(candidates) > 0:
-            log = obj.data_structure
-            a = next(iter(candidates))
-            l_a = Counter()
-            l_other = Counter()
-            for t in log:
-                l_a.update({tuple(filter(lambda e: e == a, t)): log[t]})
-                l_other.update({tuple(filter(lambda e: e != a, t)): log[t]})
-            return ProcessTree(operator=Operator.PARALLEL), [IMDataStructureUVCL(l_a), IMDataStructureUVCL(l_other)]
-        else:
+    def apply(cls, obj: IMDataStructureUVCL, pool: Pool = None, manager: Manager = None) -> Optional[
+        Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
+        candidate = cls._get_candidate(obj, pool, manager)
+        if candidate is None:
             return None
+        log = obj.data_structure
+        l_a = Counter()
+        l_other = Counter()
+        for t in log:
+            l_a.update({tuple(filter(lambda e: e == candidate, t)): log[t]})
+            l_other.update({tuple(filter(lambda e: e != candidate, t)): log[t]})
+        return ProcessTree(operator=Operator.PARALLEL), [IMDataStructureUVCL(l_a), IMDataStructureUVCL(l_other)]

@@ -1,4 +1,5 @@
 from collections import Counter
+from multiprocessing import Pool, Manager
 from typing import Optional, Tuple, List
 
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
@@ -15,7 +16,8 @@ class FlowerModelUVCL(FallThrough[IMDataStructureUVCL]):
         return not EmptyTracesUVCL.holds(obj)
 
     @classmethod
-    def apply(cls, obj: IMDataStructureUVCL) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
+    def apply(cls, obj: IMDataStructureUVCL, pool: Pool = None, manager: Manager = None) -> Optional[
+        Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
         log = obj.data_structure
         logs = [IMDataStructureUVCL(Counter({(a,): 1})) for a in comut.get_alphabet(log)]
         logs.append(IMDataStructureUVCL(Counter()))

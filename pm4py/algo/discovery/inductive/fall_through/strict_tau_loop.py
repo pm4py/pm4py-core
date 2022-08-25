@@ -1,4 +1,5 @@
 from collections import Counter
+from multiprocessing import Pool, Manager
 from typing import Optional, Tuple, List
 
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
@@ -30,7 +31,7 @@ class StrictTauLoopUVCL(FallThrough[IMDataStructureUVCL]):
         return sum(cls._get_projected_log(log).values()) > sum(log.values())
 
     @classmethod
-    def apply(cls, obj: IMDataStructureUVCL) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
+    def apply(cls, obj: IMDataStructureUVCL, pool: Pool = None, manager: Manager = None) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
         log = obj.data_structure
         proj = cls._get_projected_log(log)
         if sum(proj.values()) > sum(log.values()):

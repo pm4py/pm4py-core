@@ -1,4 +1,6 @@
+import os
 from abc import abstractmethod, ABC
+from multiprocessing import Pool, Manager
 from typing import Optional, Tuple, List, TypeVar, Generic
 
 from pm4py.algo.discovery.inductive.base_case.factory import BaseCaseFactory
@@ -21,6 +23,10 @@ class InductiveMinerFramework(ABC, Generic[T]):
     4. Create a subclass of this class indicating the type on which it is defined and the corresponding IMInstance.
     """
 
+    def __init__(self):
+        self._pool = Pool(os.cpu_count() - 1)
+        self._manager = Manager()
+
     def apply_base_case(self, obj: T) -> Optional[ProcessTree]:
         for b in BaseCaseFactory.get_base_cases(obj, self.instance()):
             r = b.apply(obj)
@@ -37,7 +43,7 @@ class InductiveMinerFramework(ABC, Generic[T]):
 
     def fall_through(self, obj: T) -> Optional[Tuple[ProcessTree, List[T]]]:
         for f in FallThroughFactory.get_fall_throughs(obj, self.instance()):
-            r = f.apply(obj)
+            r = f.apply(obj, self._pool, self._manager)
             if r is not None:
                 return r
         return None
