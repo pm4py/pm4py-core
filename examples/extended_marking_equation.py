@@ -7,7 +7,7 @@ import os
 
 def execute_script():
     log = pm4py.read_xes(os.path.join("..", "tests", "input_data", "receipt.xes"))
-    net, im, fm = inductive_miner.apply(log, variant=inductive_miner.Variants.IM_CLEAN)
+    net, im, fm = inductive_miner.apply(log, variant=inductive_miner.Variants.IM)
     idx = 0
     # try to resolve the marking equation to find an heuristics and possible a vector of transitions
     # leading from im to fm
