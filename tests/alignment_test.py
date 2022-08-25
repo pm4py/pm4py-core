@@ -75,8 +75,8 @@ class AlignmentTest(unittest.TestCase):
         for trace in log:
             for event in trace:
                 event["@@classifier"] = event["concept:name"] + "+" + event["lifecycle:transition"]
-        from pm4py.algo.discovery.inductive.variants.im_clean import algorithm as im_clean
-        tree = im_clean.apply_tree(log, parameters={im_clean.Parameters.ACTIVITY_KEY: "@@classifier"})
+        from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+        tree = inductive_miner.apply_tree(log, parameters={inductive_miner.Parameters.ACTIVITY_KEY: "@@classifier"})
         from pm4py.algo.conformance.alignments.process_tree.variants import search_graph_pt
         al = search_graph_pt.apply(log, tree, parameters={search_graph_pt.Parameters.ACTIVITY_KEY: "@@classifier"})
 
