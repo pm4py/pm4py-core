@@ -27,29 +27,17 @@ class InductiveMinerFramework(ABC, Generic[T]):
         self._pool = Pool(os.cpu_count() - 1)
         self._manager = Manager()
 
-    def apply_base_case(self, obj: T) -> Optional[ProcessTree]:
-        for b in BaseCaseFactory.get_base_cases(obj, self.instance()):
-            r = b.apply(obj)
-            if r is not None:
-                return r
-        return None
+    def apply_base_cases(self, obj: T) -> Optional[ProcessTree]:
+        return BaseCaseFactory.apply_base_cases(obj, self.instance())
 
     def find_cut(self, obj: T) -> Optional[Tuple[ProcessTree, List[T]]]:
-        for c in CutFactory.get_cuts(obj, self.instance()):
-            r = c.apply(obj)
-            if r is not None:
-                return r
-        return None
+        return CutFactory.find_cut(obj, self.instance())
 
-    def fall_through(self, obj: T) -> Optional[Tuple[ProcessTree, List[T]]]:
-        for f in FallThroughFactory.get_fall_throughs(obj, self.instance()):
-            r = f.apply(obj, self._pool, self._manager)
-            if r is not None:
-                return r
-        return None
+    def fall_through(self, obj: T) -> Tuple[ProcessTree, List[T]]:
+        return FallThroughFactory.fall_through(obj, self.instance(), self._pool, self._manager)
 
     def apply(self, obj: T) -> ProcessTree:
-        tree = self.apply_base_case(obj)
+        tree = self.apply_base_cases(obj)
         if tree is None:
             cut = self.find_cut(obj)
             if cut is not None:
