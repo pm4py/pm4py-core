@@ -6,10 +6,10 @@ log = pm4py.read_xes('SepsisCases-EventLog.xes')
 epsilon = 0.1
 
 tvqLaplace = tvq_algorithm.apply(log=log, variant=tvq_algorithm.Variants.LAPLACE,
-                                 parameters={"epsilon": epsilon, "p": 1, "k": 4})
+                                 parameters={"epsilon": epsilon, "p": 2, "k": 4})
 print(len(tvqLaplace))
 
 #tvqSaCoFa = tvq_algorithm.apply(log=log, variant=tvq_algorithm.Variants.SACOFA,
 #                                parameters={"epsilon": epsilon, "p": 1, "k": 2})
 #anonymLogSaCoFa = pripel.apply(log=log, traceVariantQuery=tvqSaCoFa, parameters={"epsilon": epsilon})
-anonymLogLaplace = pripel.apply(log=log, traceVariantQuery=tvqLaplace, parameters={"epsilon": epsilon})
+anonymLogLaplace = pripel.apply(log=log, traceVariantQuery=tvqLaplace, epsilon=epsilon)
