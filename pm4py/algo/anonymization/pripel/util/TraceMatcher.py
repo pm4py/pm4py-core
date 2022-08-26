@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 import random
 import sys
 from collections import deque
@@ -186,16 +202,12 @@ class TraceMatcher:
         if eventNr == 0:
             timestamp = random.choice(self.__allTimestamps)
         else:
-            try:
-                if previousEvent["concept:name"] in distributionOfAttributes[self.__timestamp]:
-                    timestamp = previousEvent[self.__timestamp] + random.choice(
-                        distributionOfAttributes[self.__timestamp][previousEvent["concept:name"]].get(
-                            currentEvent["concept:name"], self.__allTimeStampDifferences))
-                else:
-                    timestamp = previousEvent[self.__timestamp] + random.choice(self.__allTimeStampDifferences)
-            except OverflowError as e:
-                print(e)
-                print("---------------------------------------------------------###########################################################--------------------------------------------------------------------------------")
+            if previousEvent["concept:name"] in distributionOfAttributes[self.__timestamp]:
+                timestamp = previousEvent[self.__timestamp] + random.choice(
+                    distributionOfAttributes[self.__timestamp][previousEvent["concept:name"]].get(
+                        currentEvent["concept:name"], self.__allTimeStampDifferences))
+            else:
+                timestamp = previousEvent[self.__timestamp] + random.choice(self.__allTimeStampDifferences)
         return timestamp
 
     def __resolveTraceMatching(self, traceMatching, distributionOfAttributes, fillUp):
@@ -205,7 +217,8 @@ class TraceMatcher:
             if fillUp or traceID in traceMatching:
                 #
                 if traceMatching.get(traceID, list()) != []:
-                    matchedTrace = self.__resolveTrace(trace, traceMatching.get(traceID, list()), distributionOfAttributes)
+                    matchedTrace = self.__resolveTrace(trace, traceMatching.get(traceID, list()),
+                                                       distributionOfAttributes)
                     log.append(matchedTrace)
         return log
 

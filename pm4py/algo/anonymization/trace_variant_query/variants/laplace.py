@@ -11,11 +11,12 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import warnings
 from enum import Enum
 from typing import Optional, Dict, Any, Union
 
 import numpy as np
-import warnings
+
 from pm4py.algo.anonymization.trace_variant_query.util.util import generate_pm4py_log
 from pm4py.objects.log.obj import EventLog
 from pm4py.util import exec_utils
@@ -62,10 +63,11 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
     p = exec_utils.get_param_value(Parameters.P, parameters, 1)
 
     if k == 0:
-        warnings.warn("k, the maximum prefix length of considered traces for the trace-variant-query, is set to 0, the trace-varaint-query will be empty.")
+        warnings.warn(
+            "k, the maximum prefix length of considered traces for the trace-variant-query, is set to 0, the trace-varaint-query will be empty.")
     if p == 1:
-        warnings.warn("p, the pruning parameter, is set to 1, the trace-varaint-query might be very large.", RuntimeWarning)
-
+        warnings.warn("p, the pruning parameter, is set to 1, the trace-varaint-query might be very large.",
+                      RuntimeWarning)
 
     return privatize_tracevariants(log, epsilon, p, k)
 
