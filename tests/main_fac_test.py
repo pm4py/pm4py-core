@@ -19,6 +19,7 @@ from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.log.exporter.xes import exporter as xes_exporter
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import dataframe_utils
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 
 class MainFactoriesTest(unittest.TestCase):
@@ -70,7 +71,8 @@ class MainFactoriesTest(unittest.TestCase):
 
     def test_inductiveminer_log(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
-        net, im, fm = inductive_miner.apply(log)
+        process_tree = inductive_miner.apply(log)
+        net, im, fm = process_tree_converter.apply(process_tree)
         aligned_traces_tr = tr_alg.apply(log, net, im, fm)
         aligned_traces_alignments = align_alg.apply(log, net, im, fm)
         evaluation = eval_alg.apply(log, net, im, fm)
@@ -79,23 +81,11 @@ class MainFactoriesTest(unittest.TestCase):
         gen = generalization.apply(log, net, im, fm)
         sim = simplicity.apply(net)
 
-    def test_inductiveminer_stream(self):
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
-        stream = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
-        net, im, fm = inductive_miner.apply(stream)
-        aligned_traces_tr = tr_alg.apply(stream, net, im, fm)
-        aligned_traces_alignments = align_alg.apply(stream, net, im, fm)
-        evaluation = eval_alg.apply(stream, net, im, fm)
-        fitness = rp_fit.apply(stream, net, im, fm)
-        precision = precision_evaluator.apply(stream, net, im, fm)
-        gen = generalization.apply(stream, net, im, fm)
-        sim = simplicity.apply(net)
-
     def test_inductiveminer_df(self):
         log = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         log = dataframe_utils.convert_timestamp_columns_in_df(log)
-        net, im, fm = inductive_miner.apply(log)
+        process_tree = inductive_miner.apply(log)
+        net, im, fm = process_tree_converter.apply(process_tree)
         aligned_traces_tr = tr_alg.apply(log, net, im, fm)
         aligned_traces_alignments = align_alg.apply(log, net, im, fm)
         evaluation = eval_alg.apply(log, net, im, fm)
