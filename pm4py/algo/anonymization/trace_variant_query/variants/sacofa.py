@@ -12,11 +12,11 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import random
+import warnings
 from enum import Enum
 from typing import Optional, Dict, Any
 
 import numpy as np
-import warnings
 
 from pm4py.algo.anonymization.trace_variant_query.util import behavioralAppropriateness as ba
 from pm4py.algo.anonymization.trace_variant_query.util import exp_mech as exp
@@ -70,11 +70,12 @@ def apply(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> EventLo
     p = exec_utils.get_param_value(Parameters.P, parameters, 1)
 
     if k == 0:
-        warnings.warn("k, the maximum prefix length of considered traces for the trace-variant-query, is set to 0, the trace-varaint-query will be empty.")
+        warnings.warn(
+            "k, the maximum prefix length of considered traces for the trace-variant-query, is set to 0, "
+            "the trace-varaint-query will be empty.")
     if p == 1:
-        warnings.warn("p, the pruning parameter, is set to 1, the trace-varaint-query might be very large.", RuntimeWarning)
-
-
+        warnings.warn("p, the pruning parameter, is set to 1, the trace-varaint-query might be very large.",
+                      RuntimeWarning)
 
     return privatize_tracevariants(log, epsilon, p, k)
 
@@ -93,7 +94,7 @@ def privatize_tracevariants(log, epsilon, P, N, smart_pruning=False, P_smart=0, 
     # print("Retrieving true prefix frequencies")
     known_prefix_frequencies = get_prefix_frequencies_from_log(log=log)
 
-    #print("Sanitizing...")
+    # print("Sanitizing...")
     final_frequencies = {}
     trace_frequencies = {"": 0}
     for n in range(1, N + 1):
