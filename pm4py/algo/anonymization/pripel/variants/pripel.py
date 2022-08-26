@@ -24,7 +24,6 @@ from pm4py.util import exec_utils
 
 
 class Parameters(Enum):
-    EPSILON = "epsilon"
     BLOCKLIST = "blocklist"
 
 
@@ -47,7 +46,8 @@ def apply_pripel(log, tv_query_log, epsilon, blacklist):
     return anonymizedLog
 
 
-def apply(log: EventLog, traceVariantQuery: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> EventLog:
+def apply(log: EventLog, traceVariantQuery: EventLog, epsilon: float,
+          parameters: Optional[Dict[Any, Any]] = None) -> EventLog:
     """
     PRIPEL (Privacy-preserving event log publishing with contextual information) is a framework to publish event logs
     that fulfill differential privacy. PRIPEL ensures privacy on the level of individual cases instead of the complete
@@ -68,9 +68,10 @@ def apply(log: EventLog, traceVariantQuery: EventLog, parameters: Optional[Dict[
         Event log
     traceVariantQuery
         An anonymized trace variant distribution as an EventLog
+    epsilon
+        Strength of the differential privacy guarantee
     parameters
         Parameters of the algorithm, including:
-            -Parameters.EPSILON -> Strength of the differential privacy guarantee
             -Parameters.BLOCKLIST -> Some event logs contain attributes that are equivalent to a case id. For privacy
             reasons, such attributes must be deleted from the anonymized log. We handle such attributes with this set.
     Returns
@@ -82,7 +83,6 @@ def apply(log: EventLog, traceVariantQuery: EventLog, parameters: Optional[Dict[
     if parameters is None:
         parameters = {}
 
-    epsilon = exec_utils.get_param_value(Parameters.EPSILON, parameters, 1)
     blocklist = exec_utils.get_param_value(Parameters.BLOCKLIST, parameters, None)
 
     return apply_pripel(log, traceVariantQuery, epsilon, blocklist)
