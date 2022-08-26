@@ -10,7 +10,7 @@ def execute_script():
     log_path = os.path.join("..", "tests", "input_data", "running-example.xes")
 
     log = xes_importer.apply(log_path)
-    tree = inductive.apply_tree(log)
+    tree = inductive.apply(log)
     gviz = pt_vis.apply(tree, parameters={pt_vis.Variants.WO_DECORATION.value.Parameters.FORMAT: "svg"})
     pt_vis.view(gviz)
 

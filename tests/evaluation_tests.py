@@ -9,6 +9,7 @@ from pm4py.algo.evaluation.replay_fitness import algorithm as fitness_alg
 from pm4py.algo.evaluation.simplicity import algorithm as simplicity_alg
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from tests.constants import INPUT_DATA_DIR
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 
 class ProcessModelEvaluationTests(unittest.TestCase):
@@ -17,7 +18,8 @@ class ProcessModelEvaluationTests(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        net, marking, final_marking = inductive_miner.apply(log)
+        process_tree = inductive_miner.apply(log)
+        net, marking, final_marking = process_tree_converter.apply(process_tree)
         fitness = fitness_alg.apply(log, net, marking, final_marking)
         precision = precision_alg.apply(log, net, marking, final_marking)
         generalization = generalization_alg.apply(log, net, marking, final_marking)
@@ -32,8 +34,9 @@ class ProcessModelEvaluationTests(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        net, marking, final_marking = inductive_miner.apply(log)
-        metrics = evaluation_alg.apply(log, net, marking, final_marking)
+        process_tree = inductive_miner.apply(log)
+        net, initial_marking, final_marking = process_tree_converter.apply(process_tree)
+        metrics = evaluation_alg.apply(log, net, initial_marking, final_marking)
         del metrics
 
 

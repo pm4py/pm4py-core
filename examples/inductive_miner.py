@@ -43,7 +43,7 @@ def execute_script():
     log = xes_import.apply(log_path)
     #log = keep_one_trace_per_variant(log)
     #log = log[15:30]
-    ptree = ind_miner.apply_tree(log, parameters={"noise_threshold": 0.5}, variant=ind_miner.Variants.IM)
+    ptree = ind_miner.apply(log, parameters={"noise_threshold": 0.5}, variant=ind_miner.Variants.IM)
     gviz = pt_vis.apply(ptree,
                         parameters={pt_vis.Variants.WO_DECORATION.value.Parameters.FORMAT: "svg"})
 

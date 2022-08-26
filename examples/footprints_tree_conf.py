@@ -20,7 +20,7 @@ def execute_script():
     dfg = dfg_discovery.apply(log)
     filtered_log = variants_filter.filter_log_variants_percentage(log, 0.2)
     # filtered_log = log
-    tree = inductive_miner.apply_tree(filtered_log)
+    tree = inductive_miner.apply(filtered_log)
     fp_log = fp_discovery.apply(log, variant=fp_discovery.Variants.ENTIRE_EVENT_LOG)
     fp_model = fp_discovery.apply(tree)
     conf = fp_conformance.apply(fp_log, fp_model)
