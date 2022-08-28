@@ -35,7 +35,7 @@ DEFAULT_VARIANT = Variants.PRIPEL
 VERSIONS = {Variants.PRIPEL}
 
 
-def apply(log: Union[EventLog, pd.DataFrame], traceVariantQuery: EventLog, epsilon: float, variant=DEFAULT_VARIANT,
+def apply(log: Union[EventLog, pd.DataFrame], trace_variant_query: EventLog, epsilon: float, variant=DEFAULT_VARIANT,
           parameters: Optional[Dict[Any, Any]] = None) -> EventLog:
     """
     PRIPEL (Privacy-preserving event log publishing with contextual information) is a framework to publish event logs
@@ -55,7 +55,7 @@ def apply(log: Union[EventLog, pd.DataFrame], traceVariantQuery: EventLog, epsil
     -------------
     log
         Event log
-    traceVariantQuery
+    trace_variant_query
         An anonymized trace variant distribution as an EventLog
     epsilon
         Strength of the differential privacy guarantee
@@ -72,4 +72,4 @@ def apply(log: Union[EventLog, pd.DataFrame], traceVariantQuery: EventLog, epsil
     """
 
     log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
-    return exec_utils.get_variant(variant).apply(log, traceVariantQuery, epsilon, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(log, trace_variant_query, epsilon, parameters=parameters)
