@@ -9,6 +9,8 @@
 ### Deprecated
 
 ### Fixed
+* 1343827595d4cfd9f6b5743bb378443079ce281c
+  * fixed sorting in DFG filtering
 
 ### Removed
 
