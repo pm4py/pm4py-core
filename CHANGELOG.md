@@ -11,6 +11,8 @@
 ### Fixed
 * 1343827595d4cfd9f6b5743bb378443079ce281c
   * fixed sorting in DFG filtering
+* acea877fd9000c8e6a62424c15d4a29c33d08eba
+  * fixed bug of LocallyLinearEmbedding(s) with newer version of Scipy
 
 ### Removed
 
