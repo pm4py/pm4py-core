@@ -82,7 +82,7 @@ def apply(log: EventLog, parameters: Optional[Dict[str, Any]] = None) -> Tuple[L
     x = [trace[0][timestamp_key] for trace in log]
     data, feature_names = log_to_features.apply(log, parameters={"str_ev_attr": [activity_key], "str_evsucc_attr": [activity_key]})
 
-    tsne = LocallyLinearEmbedding(n_components=1)
+    tsne = LocallyLinearEmbedding(n_components=1, eigen_solver='dense')
     data = tsne.fit_transform(data)
     data = np.ndarray.flatten(data)
 
