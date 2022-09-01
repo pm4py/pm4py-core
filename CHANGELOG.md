@@ -13,6 +13,8 @@
   * fixed sorting in DFG filtering
 * acea877fd9000c8e6a62424c15d4a29c33d08eba
   * fixed bug of LocallyLinearEmbedding(s) with newer version of Scipy
+* 55acf9c08d25886f384bb2e993d653af90874f3b
+  * fixed construction of tangible reachability graph
 
 ### Removed
 
