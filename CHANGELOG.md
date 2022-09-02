@@ -1,6 +1,28 @@
 # Changelog of pm4py
 
-## pm4py 2.2.27 (2022.08.XX)
+## pm4py 2.2.28 (2022.09.02)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 1343827595d4cfd9f6b5743bb378443079ce281c
+  * fixed sorting in DFG filtering
+* acea877fd9000c8e6a62424c15d4a29c33d08eba
+  * fixed bug of LocallyLinearEmbedding(s) with newer version of Scipy
+* 55acf9c08d25886f384bb2e993d653af90874f3b
+  * fixed construction of tangible reachability graph
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.27 (2022.08.19)
 
 ### Added
 * 58e266610e82cfcc41868313f7b9ccfd9975d49c
@@ -23,6 +45,8 @@
 ### Removed
 
 ### Other
+
+---
 
 ## pm4py 2.2.26 (2022.08.05)
 
