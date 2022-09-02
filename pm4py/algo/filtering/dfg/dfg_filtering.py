@@ -87,7 +87,7 @@ def filter_dfg_on_activities_percentage(dfg0, start_activities0, end_activities0
     activities_count = deepcopy(activities_count0)
 
     if len(activities_count) > 1 and len(dfg) > 1:
-        activities_count_sorted_list = sorted([(x, y) for x, y in activities_count.items()], key=lambda x: x[1],
+        activities_count_sorted_list = sorted([(x, y) for x, y in activities_count.items()], key=lambda x: (x[1], x[0]),
                                               reverse=True)
         # retrieve the minimum list of activities to keep in the graph, according to the percentage
         min_set_activities_to_keep = set(
@@ -239,7 +239,7 @@ def filter_dfg_on_paths_percentage(dfg0, start_activities0, end_activities0, act
         all_edges = [(x, y) for x, y in dfg.items()] + [((start_node, x), start_activities[x]) for x in
                                                         start_activities] + [((x, end_node), end_activities[x]) for x in
                                                                              end_activities]
-        all_edges = sorted(all_edges, key=lambda x: x[1], reverse=True)
+        all_edges = sorted(all_edges, key=lambda x: (x[1], x[0]), reverse=True)
         # calculate a set of edges that could be discarded and not
         non_discardable_edges = list(
             x[0] for x in all_edges[:math.ceil((len(all_edges) - 1) * percentage) + 1])
@@ -323,7 +323,7 @@ def filter_dfg_keep_connected(dfg0, start_activities0, end_activities0, activiti
         all_edges = [(x, y) for x, y in dependency.items()] + [((start_node, x), 1.0) for x in
                                                         start_activities] + [((x, end_node), 1.0) for x in
                                                                              end_activities]
-        all_edges = sorted(all_edges, key=lambda x: x[1], reverse=True)
+        all_edges = sorted(all_edges, key=lambda x: (x[1], x[0]), reverse=True)
         # calculate a set of edges that could be discarded and not
         non_discardable_edges = list(x[0] for x in all_edges if x[1] >= threshold)
         discardable_edges = list(x[0] for x in all_edges if x[1] < threshold)
