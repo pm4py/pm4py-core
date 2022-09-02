@@ -21,7 +21,7 @@ mpmath==1.2.1
 networkx==2.8.6
 numpy==1.23.2
 packaging==21.3
-pandas==1.4.3
+pandas==1.4.4
 parso==0.8.3
 pickleshare==0.7.5
 pillow==9.2.0
@@ -39,7 +39,7 @@ six==1.16.0
 sortedcontainers==2.4.0
 stack-data==0.5.0
 stringdist==1.0.9
-sympy==1.11
+sympy==1.11.1
 tqdm==4.64.0
 traitlets==5.3.0
 wcwidth==0.2.5
