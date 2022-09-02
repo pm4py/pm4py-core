@@ -1,23 +1,5 @@
 # Changelog of pm4py
 
-## pm4py 2.2.29 (2022.09.XX)
-
-### Added
-
-### Changed
-
-### Deprecated
-
-### Fixed
-
-### Removed
-
-### Other
-
----
-
-## pm4py 2.2.28 (2022.09.02)
-
 ## pm4py 2.3.0 (YYYY.MM.DD)
 
 ### Added
@@ -87,6 +69,189 @@
 
 * d2a95d306362f54e08070b98193abbf8498ba70e
 	PMPY-1575 removed all deprecated code for this release; standardized object definitions
+
+### Other
+
+---
+
+## pm4py 2.2.28 (2022.09.02)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 1343827595d4cfd9f6b5743bb378443079ce281c
+  * fixed sorting in DFG filtering
+* acea877fd9000c8e6a62424c15d4a29c33d08eba
+  * fixed bug of LocallyLinearEmbedding(s) with newer version of Scipy
+* 55acf9c08d25886f384bb2e993d653af90874f3b
+  * fixed construction of tangible reachability graph
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.27 (2022.08.19)
+
+### Added
+* 58e266610e82cfcc41868313f7b9ccfd9975d49c
+  * discover_objects_graph utility for OCELs.
+
+### Changed
+* 1cbd37ac4b54a4c0e943b506ed685435f003640b
+  * performance improvement batch detection on Pandas dataframes.
+* 94dd96e0095f7cb1ef8d1eb48bd3da0a3cd85793
+  * minor changes to DFG variants simulation.
+
+### Deprecated
+
+### Fixed
+* 98fd3c740d8b6ae2dfde4d7a018f181030f22175
+  * fixed reflexivity in EventLog eventually_follows filter.
+* 9423897cdf0ea293ff1b032a0d4fa49ba746709c
+  * fixed chunk_regex XES importer.
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.26 (2022.08.05)
+
+### Added
+* 2146fc42020f11a364a98b724d6c6a44fcbcbb41
+  * trace filter
+
+### Changed
+* 5c06d520182317d140bd1b82d9d986c3edc81cf7
+  6a2eb404ba240b2c04eb91e7cf1407f72c5ae3e5
+  * minor fixes to DFG simulation
+* fe1aa9c5efa7dc274e728a769625a784d7f87c6f
+  * added default option for background color setup
+* ac080d2702192b588cf80444dd44fe447d14ede9
+  * background color as parameter in the simplified interface visualizations
+
+### Deprecated
+
+### Fixed
+* 9c12ffba4e4d1043fa4ad2ffe8349b13d7fa06f3
+  * fixed the exporting of Petri nets (Petri net name property)
+* 7fdb3074c6924e5957f973a76ff34ae5dc7bc815
+  * fixed the visualization of heuristics nets
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.25 (2022.07.29)
+
+### Added
+
+### Changed
+* ce94110076e3269c96a6eee61d7618f08f44472a
+  * optimization in the calculation of the eventually-follows graph on Pandas dataframes.
+* 3cca8f97bbd09f4ae5644dcc156489d4b2037028
+  * optimization in the calculation of the performance directly-follows graph on Pandas dataframes.
+* 4d8721787a50da397b265678be614c94894ea851
+  * column reduction in DFG calculation on top of Pandas dataframes
+
+### Deprecated
+
+### Fixed
+* d754ccdac680f610b2b628dc9830d92da6954dc1
+  cb76238c29b986026f07261c11a1c09a667c9ab9 
+  54970a58927ad0e17b173bff17705a10f5344d92
+  ef575a8bf0519655bcf8a57b981c7fa3c018db7a
+  * small fixes in OCEL utilities
+* d0094fa4ccc815b57ccc519d15ccbda6399c2ef7
+  * bug fix eventually_follows filter in LTL checker when timestamp_diff_boundaries is provided.
+* eb8617de0cfcfebf7374b4545660158e4b4291b6
+  * bug fix eventually_follows filter in LTL checker on EventLog objects.
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.24 (2022.07.12)
+
+### Added
+* 43800f763a2aede807ad40231f771c6ef19e0098
+	* added some examples for XES and OCEL generation out of a database
+
+### Changed
+* f72e011d38cec44823c00248039812a3fa0cfc7b
+  * application of the strict sequence cut in inductive miner (IMCLEAN)
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.23.1 (2022.07.01)
+
+### Added
+
+### Changed
+* 43e55f63d86e424e882617af7b0a483ffe653069
+  * setting default alignments variant to Dijkstra when no linear solver (Scipy, CVXOPT) is available
+* 5ff00475659c38792ebab685fb23b282c75c36c0
+  209558a0d6d4c43708389a0002fc7c62bd9f89e9
+  * optimizing retrieval and filtering of start/end activities from Pandas dataframes.
+
+### Deprecated
+
+### Fixed
+* dc94e82825bd5994667dd9c6cf2e1908379db923
+  * fixed problem(s) with the log skeleton
+* 1bd50ff5354317d57297e63d140618ffa7a58ef6
+  * bug fix in exporting OCEL(s)
+* 7c6c30ffcff04d3151f249556af9405402fdee83
+  * fixed problem with WOFLAN algorithm (LP solving)
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.23 (2022.06.24)
+
+### Added
+* 09c97115cfaafa033c595ddff089701a28bf1599
+  * added starts-with and ends-with filter on Pandas dataframes.
+* f373955163ad58e6da3d762380b4f9802ac806f0
+  * new OCEL filters made available (event identifiers, object identifiers, collection of object types, connected component per object)
+* 2051ff1f5985ec34362a16d1f369e062220d7d1b
+  * new footprints visualizer (symmetric comparison between differences in footprint matrix)
+* 0c6d023535f18318f1f7f78fec21f3565ce229cd
+  * new OCEL statistics made available (temporal summary of the log, objects summary)
+
+### Changed
+* 1f36b168d33d6dd48f4e20fd16b7a71e25c6de67
+  * allow exporting trace-by-trace to disk in .xes
+
+### Deprecated
+
+### Fixed
+* 3396465f6d6944c84bbdfcf2bbe380b80c442350
+  * fixed inductive miner example's path
+
+### Removed
 
 ### Other
 
