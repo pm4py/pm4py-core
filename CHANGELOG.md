@@ -9,6 +9,8 @@
 ### Deprecated
 
 ### Fixed
+* d066d3f49a996c30d151031d66de90db4f4d9a2e
+  * Fixed issue with OCEL-CSV importing (Pandas index_col)
 
 ### Removed
 
