@@ -226,7 +226,7 @@ if __name__ == "__main__":
                         F.close()
 
             t1 = time.time()
-            tree = inductive.apply_tree(log, parameters=parameters_discovery, variant=INDUCTIVE_MINER_VARIANT)
+            tree = inductive.apply(log, parameters=parameters_discovery, variant=INDUCTIVE_MINER_VARIANT)
             # print(tree)
 
             inductive_model, inductive_im, inductive_fm = pt_converter.apply(tree,

@@ -364,8 +364,8 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
     from pm4py.algo.discovery.inductive import algorithm as inductive_miner
     parameters = get_properties(
         log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    parameters[inductive_miner.Variants.IM_CLEAN.value.Parameters.NOISE_THRESHOLD] = noise_threshold
-    return inductive_miner.apply_tree(log, variant=inductive_miner.Variants.IM_CLEAN, parameters=parameters)
+    parameters["noise_threshold"] = noise_threshold
+    return inductive_miner.apply(log, parameters=parameters)
 
 
 def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5,

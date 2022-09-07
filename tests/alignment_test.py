@@ -7,6 +7,7 @@ from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.objects import petri_net
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from tests.constants import INPUT_DATA_DIR
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 
 class AlignmentTest(unittest.TestCase):
@@ -36,7 +37,8 @@ class AlignmentTest(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        net, marking, final_marking = inductive_miner.apply(log)
+        process_tree = inductive_miner.apply(log)
+        net, marking, final_marking = process_tree_converter.apply(process_tree)
         for trace in log:
             cf_result = \
             align_alg.apply(trace, net, marking, final_marking, variant=align_alg.VERSION_DIJKSTRA_NO_HEURISTICS)[
@@ -76,7 +78,7 @@ class AlignmentTest(unittest.TestCase):
             for event in trace:
                 event["@@classifier"] = event["concept:name"] + "+" + event["lifecycle:transition"]
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        tree = inductive_miner.apply_tree(log, parameters={inductive_miner.Parameters.ACTIVITY_KEY: "@@classifier"})
+        tree = inductive_miner.apply(log, parameters={inductive_miner.Parameters.ACTIVITY_KEY: "@@classifier"})
         from pm4py.algo.conformance.alignments.process_tree.variants import search_graph_pt
         al = search_graph_pt.apply(log, tree, parameters={search_graph_pt.Parameters.ACTIVITY_KEY: "@@classifier"})
 

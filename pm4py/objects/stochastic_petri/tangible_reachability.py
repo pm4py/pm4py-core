@@ -64,7 +64,7 @@ def get_tangible_reachability_from_net_im_sinfo(net, im, stochastic_info, parame
     """
     if parameters is None:
         parameters = {}
-    reachab_graph = construct_reachability_graph(net, im)
+    reachab_graph = construct_reachability_graph(net, im, use_trans_name=True)
     tang_reach_graph = get_tangible_reachability_from_reachability(reachab_graph, stochastic_info)
 
     return reachab_graph, tang_reach_graph

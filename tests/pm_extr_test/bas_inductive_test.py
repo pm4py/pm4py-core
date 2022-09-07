@@ -4,8 +4,8 @@ import traceback
 import pandas as pd
 
 import pm4py
-from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.algo.discovery.inductive import algorithm as im_clean
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 from pm4py.objects.process_tree.utils import bottomup as bottomup_disc
 from pm4py.statistics.variants.log import get as variants_get
 
