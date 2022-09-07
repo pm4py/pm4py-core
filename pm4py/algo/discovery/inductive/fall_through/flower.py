@@ -1,4 +1,3 @@
-from collections import Counter
 from multiprocessing import Pool, Manager
 from typing import Optional, Tuple, List
 
@@ -7,8 +6,6 @@ from pm4py.algo.discovery.inductive.fall_through.abc import FallThrough
 from pm4py.algo.discovery.inductive.fall_through.empty_traces import EmptyTracesUVCL
 from pm4py.objects.process_tree.obj import ProcessTree, Operator
 from pm4py.util.compression import util as comut
-from pm4py.objects.dfg.obj import DFG
-from pm4py.algo.discovery.inductive.dtypes.im_dfg import InductiveDFG
 
 
 class FlowerModelUVCL(FallThrough[IMDataStructureUVCL]):
