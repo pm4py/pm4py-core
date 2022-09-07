@@ -22,7 +22,7 @@ class SingleActivityBaseCaseDFG(BaseCase[IMDataStructureDFG]):
 
     @classmethod
     def holds(cls, obj=IMDataStructureDFG) -> bool:
-        return len(obj.dfg.graph) == 0 and len(set(obj.dfg.start_activities).union(obj.dfg.end_activities)) == 0
+        return len(obj.dfg.graph) == 0 and len(set(obj.dfg.start_activities).union(obj.dfg.end_activities)) == 1
 
     @classmethod
     def leaf(cls, obj=IMDataStructureDFG) -> ProcessTree:
