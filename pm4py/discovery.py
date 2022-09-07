@@ -246,7 +246,7 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_k
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
 
 
-def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[
+def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[
         PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the inductive miner algorithm.
@@ -255,7 +255,7 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_thres
 
     Inductive miner models usually make extensive use of hidden transitions, especially for skipping/looping on a portion on the model. Furthermore, each visible transition has a unique label (there are no transitions in the model that share the same label).
 
-    :param log: event log / Pandas dataframe
+    :param log: event log / Pandas dataframe / typed DFG
     :param noise_threshold: noise threshold (default: 0.0)
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
@@ -268,7 +268,7 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame], noise_thres
 
         net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]:
+    if type(log) not in [pd.DataFrame, EventLog, EventStream, DFG]:
         raise Exception(
             "the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -331,7 +331,7 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
         return heuristics_miner.apply(log, parameters=parameters)
 
 
-def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> ProcessTree:
+def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> ProcessTree:
     """
     Discovers a process tree using the inductive miner algorithm
 
@@ -339,7 +339,7 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
 
     Inductive miner models usually make extensive use of hidden transitions, especially for skipping/looping on a portion on the model. Furthermore, each visible transition has a unique label (there are no transitions in the model that share the same label).
 
-    :param log: event log / Pandas dataframe
+    :param log: event log / Pandas dataframe / typed DFG
     :param noise_threshold: noise threshold (default: 0.0)
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
@@ -352,7 +352,7 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame], noise_th
 
         process_tree = pm4py.discover_process_tree_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]:
+    if type(log) not in [pd.DataFrame, EventLog, EventStream, DFG]:
         raise Exception(
             "the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -503,7 +503,7 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame], activi
         return get.apply(log, parameters=properties)
 
 
-def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> BPMN:
+def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> BPMN:
     """
     Discovers a BPMN using the Inductive Miner algorithm
 
@@ -511,7 +511,7 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
 
     Inductive miner models usually make extensive use of hidden transitions, especially for skipping/looping on a portion on the model. Furthermore, each visible transition has a unique label (there are no transitions in the model that share the same label).
 
-    :param log: event log / Pandas dataframe
+    :param log: event log / Pandas dataframe / typed DFG
     :param noise_threshold: noise threshold (default: 0.0)
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
@@ -524,7 +524,7 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame], noise_threshold:
 
         bpmn_graph = pm4py.discover_bpmn_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]:
+    if type(log) not in [pd.DataFrame, EventLog, EventStream, DFG]:
         raise Exception(
             "the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
