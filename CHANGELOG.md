@@ -51,6 +51,10 @@
 	PMPY-1660 deprecating the format_dataframe function.
 
 ### Fixed
+* d066d3f49a996c30d151031d66de90db4f4d9a2e
+  * Fixed issue with OCEL-CSV importing (Pandas index_col)
+* c38348df9cf165fd94a2e69ba29601e1643e80ae
+  * Fixed issue with OCEL-CSV importing (relations dataframe timestamp)
 
 * 22ec9ab7220088ef7535760dd93197092d6bf04a
   5c0b0d439c1a613ff78d4d24b7a05b7aa4150ce3
