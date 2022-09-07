@@ -191,7 +191,7 @@ class LoopCutDFG(LoopCut[IMDataStructureDFG]):
             dfn = DFG()
             for (a, b) in dfg.graph:
                 if a in g and b in g:
-                    dfn.graph[(a, b)] = dfg[(a, b)]
+                    dfn.graph[(a, b)] = dfg.graph[(a, b)]
                 if b in dfg.start_activities and a in dfg.end_activities:
                     skippable[1] = True
             if gind == 0:
