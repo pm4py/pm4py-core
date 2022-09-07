@@ -16,6 +16,7 @@ from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes_util
 from pm4py.util.compression import util as comut
+import warnings
 
 
 class Parameters(Enum):
@@ -49,7 +50,7 @@ def apply(obj: Union[EventLog, pd.DataFrame, DFG], parameters: Optional[Dict[Any
             return imd.apply(IMDataStructureDFG(idfg))
     if type(obj) is DFG:
         if variant is not Variants.IMd:
-            raise RuntimeWarning('Inductive Miner Variant requested for DFG artefact is not IMD, resorting back to IMD')
+            warnings.warn('Inductive Miner Variant requested for DFG artefact is not IMD, resorting back to IMD')
         imd = IMD()
         idfg = InductiveDFG(dfg=obj, skip=False)
         return imd.apply(IMDataStructureDFG(idfg))
