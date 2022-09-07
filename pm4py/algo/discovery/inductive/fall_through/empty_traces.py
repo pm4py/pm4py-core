@@ -32,7 +32,7 @@ class EmptyTracesDFG(FallThrough[IMDataStructureDFG]):
         Tuple[ProcessTree, List[IMDataStructureDFG]]]:
         if cls.holds(obj):
             return ProcessTree(operator=Operator.XOR), [IMDataStructureDFG(InductiveDFG(DFG())),
-                                                        IMDataStructureDFG(obj.data_structure)]
+                                                        IMDataStructureDFG(InductiveDFG(obj.data_structure.dfg))]
         return None
 
     @classmethod
