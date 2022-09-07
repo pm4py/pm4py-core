@@ -19,7 +19,7 @@ class BaseCaseFactory:
         if inst is IMInstance.IM:
             if type(obj) is IMDataStructureUVCL:
                 return [EmptyLogBaseCaseUVCL, SingleActivityBaseCaseUVCL]
-        if inst is IMInstance.IMD:
+        if inst is IMInstance.IMd:
             if type(obj) is IMDataStructureDFG:
                 return [EmptyLogBaseCaseDFG, SingleActivityBaseCaseDFG]
         return []
