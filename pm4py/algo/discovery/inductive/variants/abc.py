@@ -26,6 +26,7 @@ class InductiveMinerFramework(ABC, Generic[T]):
     def __init__(self):
         self._pool = Pool(os.cpu_count() - 1)
         self._manager = Manager()
+        self._manager.support_list = []
 
     def apply_base_cases(self, obj: T) -> Optional[ProcessTree]:
         return BaseCaseFactory.apply_base_cases(obj, self.instance())

@@ -33,6 +33,10 @@ class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
                     candidates) > ActivityConcurrentUVCL.MULTI_PROCESSING_LOWER_BOUND:
                 q = manager.Queue()
                 ev = manager.Event()
+                # avoid dangerous freealloc from Python's garbage collector
+                manager.support_list.append(q)
+                manager.support_list.append(ev)
+
                 for a in candidates:
                     pool.apply_async(cls._process_candidate, (a, log, q, ev))
                 potentials = set(candidates)
