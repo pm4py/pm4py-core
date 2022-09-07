@@ -174,7 +174,8 @@ class StrictSequenceCutUVCL(StrictSequenceCut[IMDataStructureUVCL], SequenceCutU
 class SequenceCutDFG(SequenceCut[IMDataStructureDFG]):
 
     @classmethod
-    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> List[IMDataStructureDFG]:
+    def project(cls, obj: IMDataStructureDFG, groups: List[Collection[Any]]) -> List[IMDataStructureDFG]:
+        dfg = obj.dfg
         start_activities = []
         end_activities = []
         activities = []
