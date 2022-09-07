@@ -78,5 +78,5 @@ class ExclusiveChoiceCutDFG(ExclusiveChoiceCut[IMDataStructureDFG]):
             for (a, b) in dfg.graph:
                 if a in g and b in g:
                     dfg_new.graph[(a, b)] = dfg.graph[(a, b)]
-            dfgs.append(dfg)
+            dfgs.append(dfg_new)
         return list(map(lambda d: IMDataStructureDFG(InductiveDFG(dfg=d, skip=False)), dfgs))
