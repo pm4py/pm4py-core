@@ -77,6 +77,8 @@ def get_ocel_from_extended_table(df: pd.DataFrame, objects_df: Optional[Dict[Any
     df[internal_index] = df.index
     relations[internal_index] = relations.index
 
+    relations[event_timestamp] = pd.to_datetime(relations[event_timestamp])
+
     df = df.sort_values([event_timestamp, internal_index])
     relations = relations.sort_values([event_timestamp, internal_index])
 
