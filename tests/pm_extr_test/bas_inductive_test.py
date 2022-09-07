@@ -13,6 +13,7 @@ LOGS_FOLDER = "../compressed_input_data"
 CLASSIFIER = "@@classifier"
 ENABLE_ALIGNMENTS = True
 NOISE_THRESHOLD = 0.0
+VARIANT = im_clean.Variants.IM
 
 
 if __name__ == "__main__":
@@ -46,8 +47,9 @@ if __name__ == "__main__":
                     variants = {",".join(x): y for x, y in variants.items()}
                     fp_log = pm4py.algo.discovery.footprints.log.variants.entire_dataframe.apply(dataframe)
                 print("start tree_im_clean")
-                tree_im_clean = im_clean.apply(log, parameters={"pm4py:param:activity_key": CLASSIFIER,
+                tree_im_clean = im_clean.apply(log, variant=VARIANT, parameters={"pm4py:param:activity_key": CLASSIFIER,
                                                                      "noise_threshold": NOISE_THRESHOLD})
+                print(tree_im_clean)
                 print("end tree_im_clean")
 
                 fp_tree_clean = pm4py.algo.discovery.footprints.tree.variants.bottomup.apply(tree_im_clean)
