@@ -64,7 +64,8 @@ class ExclusiveChoiceCutUVCL(ExclusiveChoiceCut[IMDataStructureUVCL]):
 class ExclusiveChoiceCutDFG(ExclusiveChoiceCut[IMDataStructureDFG]):
 
     @classmethod
-    def project(cls, dfg: DFG, groups: List[Collection[Any]]) -> List[IMDataStructureDFG]:
+    def project(cls, obj: IMDataStructureDFG, groups: List[Collection[Any]]) -> List[IMDataStructureDFG]:
+        dfg = obj.dfg
         dfgs = []
         for g in groups:
             dfg_new = DFG()
