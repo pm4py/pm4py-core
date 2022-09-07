@@ -25,4 +25,4 @@ class EmptyLogBaseCaseDFG(EmptyLogBaseCase[IMDataStructureDFG]):
     @classmethod
     def holds(cls, obj=IMDataStructureDFG):
         dfg = obj.dfg
-        return len(dfg.graph) == 0 and len(dfg.start_activities) == 0 and len(dfg.end_activties) == 0
+        return len(dfg.graph) == 0 and len(dfg.start_activities) == 0 and len(dfg.end_activities) == 0
