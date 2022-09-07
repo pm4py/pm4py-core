@@ -40,7 +40,7 @@ class IMDataStructureUVCL(IMDataStructureLog[UVCL]):
     Log-Based data structure class that represents the event log as a 'Univariate Variant Compressed Log (UVCL)'
     """
 
-    def __init__(self, obj: T):
+    def __init__(self, obj: UVCL):
         super().__init__(obj)
         self._dfg = comut.discover_dfg_uvcl(self._obj)
 
