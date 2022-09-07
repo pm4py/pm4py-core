@@ -84,6 +84,7 @@ class ConcurrencyCutDFG(ConcurrencyCut[IMDataStructureDFG]):
                 if a in g and b in g:
                     dfn.graph[(a, b)] = obj.dfg.graph[(a, b)]
             skippable.append(False)
+            dfgs.append(dfn)
         r = list()
         [r.append(IMDataStructureDFG(InductiveDFG(dfg=dfgs[i], skip=skippable[i]))) for i in range(len(dfgs))]
         return r
