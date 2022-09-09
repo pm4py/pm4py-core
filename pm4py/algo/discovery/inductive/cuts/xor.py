@@ -1,6 +1,6 @@
 from abc import ABC
 from collections import Counter
-from typing import Optional, List, Collection, Any, Generic
+from typing import Optional, List, Collection, Any, Generic, Dict
 
 import networkx as nx
 
@@ -15,11 +15,11 @@ from pm4py.objects.process_tree.obj import Operator, ProcessTree
 class ExclusiveChoiceCut(Cut[T], ABC, Generic[T]):
 
     @classmethod
-    def operator(cls) -> ProcessTree:
+    def operator(cls, parameters: Optional[Dict[str, Any]] = None) -> ProcessTree:
         return ProcessTree(operator=Operator.XOR)
 
     @classmethod
-    def holds(cls, obj: T) -> Optional[List[Collection[Any]]]:
+    def holds(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[List[Collection[Any]]]:
         '''
         This method finds a xor cut in the dfg.
         Implementation follows function XorCut on page 188 of
@@ -44,7 +44,7 @@ class ExclusiveChoiceCut(Cut[T], ABC, Generic[T]):
 
 class ExclusiveChoiceCutUVCL(ExclusiveChoiceCut[IMDataStructureUVCL]):
     @classmethod
-    def project(cls, obj: IMDataStructureUVCL, groups: List[Collection[Any]]) -> List[IMDataStructureUVCL]:
+    def project(cls, obj: IMDataStructureUVCL, groups: List[Collection[Any]], parameters: Optional[Dict[str, Any]] = None) -> List[IMDataStructureUVCL]:
         logs = [Counter() for g in groups]
         for t in obj.data_structure:
             count = {i: 0 for i in range(len(groups))}
@@ -64,7 +64,7 @@ class ExclusiveChoiceCutUVCL(ExclusiveChoiceCut[IMDataStructureUVCL]):
 class ExclusiveChoiceCutDFG(ExclusiveChoiceCut[IMDataStructureDFG]):
 
     @classmethod
-    def project(cls, obj: IMDataStructureDFG, groups: List[Collection[Any]]) -> List[IMDataStructureDFG]:
+    def project(cls, obj: IMDataStructureDFG, groups: List[Collection[Any]], parameters: Optional[Dict[str, Any]] = None) -> List[IMDataStructureDFG]:
         dfg = obj.dfg
         dfgs = []
         for g in groups:

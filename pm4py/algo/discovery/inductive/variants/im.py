@@ -1,4 +1,4 @@
-from typing import TypeVar, Generic
+from typing import TypeVar, Generic, Dict, Any, Optional
 
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL, IMDataStructureLog
 from pm4py.algo.discovery.inductive.fall_through.empty_traces import EmptyTracesUVCL
@@ -16,8 +16,8 @@ class IM(Generic[T], InductiveMinerFramework[T]):
 
 
 class IMUVCL(IM[IMDataStructureUVCL]):
-    def apply(self, obj: IMDataStructureUVCL) -> ProcessTree:
-        empty_traces = EmptyTracesUVCL.apply(obj)
+    def apply(self, obj: IMDataStructureUVCL, parameters: Optional[Dict[str, Any]] = None) -> ProcessTree:
+        empty_traces = EmptyTracesUVCL.apply(obj, parameters)
         if empty_traces is not None:
-            return self._recurse(empty_traces[0], empty_traces[1])
-        return super().apply(obj)
+            return self._recurse(empty_traces[0], empty_traces[1], parameters)
+        return super().apply(obj, parameters)

@@ -1,6 +1,6 @@
 from collections import Counter
 from multiprocessing import Pool, Manager
-from typing import Optional, Tuple, List
+from typing import Optional, Tuple, List, Dict, Any
 
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
 from pm4py.algo.discovery.inductive.fall_through.abc import FallThrough
@@ -12,7 +12,7 @@ from pm4py.util.compression.dtypes import UVCL
 class StrictTauLoopUVCL(FallThrough[IMDataStructureUVCL]):
 
     @classmethod
-    def _get_projected_log(cls, log: UVCL) -> UVCL:
+    def _get_projected_log(cls, log: UVCL, parameters: Optional[Dict[str, Any]] = None) -> UVCL:
         start_activities = comut.get_start_activities(log)
         end_activities = comut.get_end_activities(log)
         proj = Counter()
@@ -26,12 +26,12 @@ class StrictTauLoopUVCL(FallThrough[IMDataStructureUVCL]):
         return proj
 
     @classmethod
-    def holds(cls, obj: IMDataStructureUVCL) -> bool:
+    def holds(cls, obj: IMDataStructureUVCL, parameters: Optional[Dict[str, Any]] = None) -> bool:
         log = obj.data_structure
         return sum(cls._get_projected_log(log).values()) > sum(log.values())
 
     @classmethod
-    def apply(cls, obj: IMDataStructureUVCL, pool: Pool = None, manager: Manager = None) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
+    def apply(cls, obj: IMDataStructureUVCL, pool: Pool = None, manager: Manager = None, parameters: Optional[Dict[str, Any]] = None) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
         log = obj.data_structure
         proj = cls._get_projected_log(log)
         if sum(proj.values()) > sum(log.values()):
