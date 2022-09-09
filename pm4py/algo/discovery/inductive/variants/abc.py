@@ -1,7 +1,7 @@
 import os
 from abc import abstractmethod, ABC
 from multiprocessing import Pool, Manager
-from typing import Optional, Tuple, List, TypeVar, Generic
+from typing import Optional, Tuple, List, TypeVar, Generic, Dict, Any
 
 from pm4py.algo.discovery.inductive.base_case.factory import BaseCaseFactory
 from pm4py.algo.discovery.inductive.cuts.factory import CutFactory
@@ -28,28 +28,28 @@ class InductiveMinerFramework(ABC, Generic[T]):
         self._manager = Manager()
         self._manager.support_list = []
 
-    def apply_base_cases(self, obj: T) -> Optional[ProcessTree]:
-        return BaseCaseFactory.apply_base_cases(obj, self.instance())
+    def apply_base_cases(self, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[ProcessTree]:
+        return BaseCaseFactory.apply_base_cases(obj, self.instance(), parameters=parameters)
 
-    def find_cut(self, obj: T) -> Optional[Tuple[ProcessTree, List[T]]]:
-        return CutFactory.find_cut(obj, self.instance())
+    def find_cut(self, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[Tuple[ProcessTree, List[T]]]:
+        return CutFactory.find_cut(obj, self.instance(), parameters=parameters)
 
-    def fall_through(self, obj: T) -> Tuple[ProcessTree, List[T]]:
-        return FallThroughFactory.fall_through(obj, self.instance(), self._pool, self._manager)
+    def fall_through(self, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Tuple[ProcessTree, List[T]]:
+        return FallThroughFactory.fall_through(obj, self.instance(), self._pool, self._manager, parameters=parameters)
 
-    def apply(self, obj: T) -> ProcessTree:
-        tree = self.apply_base_cases(obj)
+    def apply(self, obj: T, parameters: Optional[Dict[str, Any]] = None) -> ProcessTree:
+        tree = self.apply_base_cases(obj, parameters)
         if tree is None:
-            cut = self.find_cut(obj)
+            cut = self.find_cut(obj, parameters)
             if cut is not None:
-                tree = self._recurse(cut[0], cut[1])
+                tree = self._recurse(cut[0], cut[1], parameters=parameters)
         if tree is None:
-            ft = self.fall_through(obj)
-            tree = self._recurse(ft[0], ft[1])
+            ft = self.fall_through(obj, parameters)
+            tree = self._recurse(ft[0], ft[1], parameters=parameters)
         return tree
 
-    def _recurse(self, tree: ProcessTree, objs: List[T]):
-        children = [self.apply(obj) for obj in objs]
+    def _recurse(self, tree: ProcessTree, objs: List[T], parameters: Optional[Dict[str, Any]] = None):
+        children = [self.apply(obj, parameters=parameters) for obj in objs]
         for c in children:
             c.parent = tree
         tree.children.extend(children)

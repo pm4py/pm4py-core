@@ -1,7 +1,7 @@
 from abc import ABC
 from collections import Counter
 from itertools import product
-from typing import List, Collection, Any, Optional, Generic
+from typing import List, Collection, Any, Optional, Generic, Dict
 
 from pm4py.algo.discovery.inductive.cuts import utils as cut_util
 from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
@@ -17,11 +17,11 @@ from pm4py.util.compression.dtypes import UVCL
 class ConcurrencyCut(Cut[T], ABC, Generic[T]):
 
     @classmethod
-    def operator(cls) -> ProcessTree:
+    def operator(cls, parameters: Optional[Dict[str, Any]] = None) -> ProcessTree:
         return ProcessTree(operator=Operator.PARALLEL)
 
     @classmethod
-    def holds(cls, obj: T) -> Optional[List[Collection[Any]]]:
+    def holds(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[List[Collection[Any]]]:
         dfg = obj.dfg
         alphabet = dfu.get_vertices(dfg)
         msdw = comut.msdw(obj, comut.msd(obj)) if obj is not None and type(obj) is UVCL else None
@@ -56,7 +56,7 @@ class ConcurrencyCut(Cut[T], ABC, Generic[T]):
 class ConcurrencyCutUVCL(ConcurrencyCut[IMDataStructureUVCL]):
 
     @classmethod
-    def project(cls, obj: IMDataStructureUVCL, groups: List[Collection[Any]]) -> List[IMDataStructureUVCL]:
+    def project(cls, obj: IMDataStructureUVCL, groups: List[Collection[Any]], parameters: Optional[Dict[str, Any]] = None) -> List[IMDataStructureUVCL]:
         r = list()
         for g in groups:
             c = Counter()
@@ -69,7 +69,7 @@ class ConcurrencyCutUVCL(ConcurrencyCut[IMDataStructureUVCL]):
 class ConcurrencyCutDFG(ConcurrencyCut[IMDataStructureDFG]):
 
     @classmethod
-    def project(cls, obj: IMDataStructureDFG, groups: List[Collection[Any]]) -> List[IMDataStructureDFG]:
+    def project(cls, obj: IMDataStructureDFG, groups: List[Collection[Any]], parameters: Optional[Dict[str, Any]] = None) -> List[IMDataStructureDFG]:
         dfgs = []
         skippable = []
         for g in groups:

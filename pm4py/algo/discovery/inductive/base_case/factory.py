@@ -1,4 +1,4 @@
-from typing import List, TypeVar, Optional
+from typing import List, TypeVar, Optional, Dict, Any
 
 from pm4py.algo.discovery.inductive.base_case.abc import BaseCase
 from pm4py.algo.discovery.inductive.base_case.empty_log import EmptyLogBaseCaseUVCL, EmptyLogBaseCaseDFG
@@ -15,8 +15,8 @@ S = TypeVar('S', bound=BaseCase)
 class BaseCaseFactory:
 
     @classmethod
-    def get_base_cases(cls, obj: T, inst: IMInstance) -> List[S]:
-        if inst is IMInstance.IM:
+    def get_base_cases(cls, obj: T, inst: IMInstance, parameters: Optional[Dict[str, Any]] = None) -> List[S]:
+        if inst is IMInstance.IM or inst is IMInstance.IMf:
             if type(obj) is IMDataStructureUVCL:
                 return [EmptyLogBaseCaseUVCL, SingleActivityBaseCaseUVCL]
         if inst is IMInstance.IMd:
@@ -25,9 +25,9 @@ class BaseCaseFactory:
         return []
 
     @classmethod
-    def apply_base_cases(cls, obj: T, inst: IMInstance) -> Optional[ProcessTree]:
+    def apply_base_cases(cls, obj: T, inst: IMInstance, parameters: Optional[Dict[str, Any]] = None) -> Optional[ProcessTree]:
         for b in BaseCaseFactory.get_base_cases(obj, inst):
-            r = b.apply(obj)
+            r = b.apply(obj, parameters)
             if r is not None:
                 return r
         return None

@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple, TypeVar
+from typing import List, Optional, Tuple, TypeVar, Dict, Any
 
 from pm4py.algo.discovery.inductive.cuts.abc import Cut
 from pm4py.algo.discovery.inductive.cuts.concurrency import ConcurrencyCutUVCL, ConcurrencyCutDFG
@@ -16,8 +16,8 @@ S = TypeVar('S', bound=Cut)
 class CutFactory:
 
     @classmethod
-    def get_cuts(cls, obj: T, inst: IMInstance) -> List[S]:
-        if inst is IMInstance.IM:
+    def get_cuts(cls, obj: T, inst: IMInstance, parameters: Optional[Dict[str, Any]] = None) -> List[S]:
+        if inst is IMInstance.IM or inst is IMInstance.IMf:
             if type(obj) is IMDataStructureUVCL:
                 return [ExclusiveChoiceCutUVCL, StrictSequenceCutUVCL, ConcurrencyCutUVCL, LoopCutUVCL]
         if inst is IMInstance.IMd:
@@ -26,9 +26,9 @@ class CutFactory:
         return list()
 
     @classmethod
-    def find_cut(cls, obj: IMDataStructure, inst: IMInstance) -> Optional[Tuple[ProcessTree, List[T]]]:
+    def find_cut(cls, obj: IMDataStructure, inst: IMInstance, parameters: Optional[Dict[str, Any]] = None) -> Optional[Tuple[ProcessTree, List[T]]]:
         for c in CutFactory.get_cuts(obj, inst):
-            r = c.apply(obj)
+            r = c.apply(obj, parameters)
             if r is not None:
                 return r
         return None
