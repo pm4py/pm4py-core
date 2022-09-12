@@ -95,7 +95,7 @@ def apply(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_ma
     if parameters is None:
         parameters = {}
 
-    multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, False)
+    multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, constants.ENABLE_MULTIPROCESSING_DEFAULT)
 
     if align_variant == decomp_alignments.Variants.RECOMPOS_MAXIMAL.value:
         alignment_result = decomp_alignments.apply(log, petri_net, initial_marking, final_marking,

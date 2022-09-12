@@ -118,6 +118,9 @@ Now we have loaded our first event log, it is time to put some PM4Py into the mi
         end_activities = pm4py.get_end_activities(event_log)
         print("Start activities: {}\nEnd activities: {}".format(start_activities, end_activities))
 
+    if __name__ == "__main__":
+        import_csv("csv_file.csv")
+
 *Example 2: Loading an event log stored in a CSV file and computing the start and end activities of the traces in the event log. If you run the code yourself, make sure to point the file path to the appropriate path on your computer containing the running example file.*
 
 Note that, we now import pandas and pm4py. The first line of our script again loads the event log stored in CSV format as a data frame. The second line transforms the event data table into a format that can be used by any process mining algorithm in pm4py. That is, the **format_dataframe()**-function creates a copy of the input event log, and renames the assigned columns to standardized column names used in pm4py. In our example, the column case_id is renamed to case:concept:name, the activity column is renamed to concept:name and the timestamp column is renamed to time:timestamp. The underlying reasons for using the aforementioned standard names is primarily related to XES-based (the other file format that we will look at shortly) legacy. Hence, it is advisable to always import a csv based log as follows.
@@ -155,6 +158,9 @@ Importing an XES file is fairly straightforward. PM4Py has a special **read_xes(
         end_activities = pm4py.get_end_activities(event_log)
         print("Start activities: {}\nEnd activities: {}".format(start_activities, end_activities))
 
+    if __name__ == "__main__":
+        import_xes("C:/Users/demo/Downloads/running-example.xes")
+
 Exporting Event Data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -175,9 +181,11 @@ Note that the example code imports the running example csv file as a pandas data
 .. code-block:: python3
 
     import pandas as pd
-    event_log = pm4py.format_dataframe(pd.read_csv('C:/Users/demo/Downloads/running-example.csv', sep=';'), case_id='case_id',
-    activity_key='activity', timestamp_key='timestamp')
-    event_log.to_csv('C:/Users/demo/Desktop/running-example-exported.csv')
+
+    if __name__ == "__main__":
+        event_log = pm4py.format_dataframe(pd.read_csv('C:/Users/demo/Downloads/running-example.csv', sep=';'), case_id='case_id',
+        activity_key='activity', timestamp_key='timestamp')
+        event_log.to_csv('C:/Users/demo/Desktop/running-example-exported.csv')
 
 Storing a Pandas Data Frame as a .xes file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -189,9 +197,10 @@ It is also possible to store a pandas data frame to a xes file. This is simply d
     import pandas
     import pm4py
 
-    event_log = pm4py.format_dataframe(pandas.read_csv('C:/Users/demo/Downloads/running-example.csv', sep=';'), case_id='case_id',
-                                           activity_key='activity', timestamp_key='timestamp')
-    pm4py.write_xes(event_log, 'C:/Users/demo/Desktop/running-example-exported.xes')
+    if __name__ == "__main__":
+        event_log = pm4py.format_dataframe(pandas.read_csv('C:/Users/demo/Downloads/running-example.csv', sep=';'), case_id='case_id',
+                                               activity_key='activity', timestamp_key='timestamp')
+        pm4py.write_xes(event_log, 'C:/Users/demo/Desktop/running-example-exported.xes')
 
 Storing an Event Log object as a .csv file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -202,9 +211,10 @@ In some cases, we might want to store an event log object, e.g., obtained by imp
 
     import pm4py
 
-    event_log = pm4py.read_xes(C:/Users/demo/Downloads/running-example.xes)
-    df = pm4py.convert_to_dataframe(event_log)
-    df.to_csv('C:/Users/demo/Desktop/running-example-exported.csv')
+    if __name__ == "__main__":
+        event_log = pm4py.read_xes('C:/Users/demo/Downloads/running-example.xes')
+        df = pm4py.convert_to_dataframe(event_log)
+        df.to_csv('C:/Users/demo/Desktop/running-example-exported.csv')
 
 Storing an Event Log object as a .xes file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -215,8 +225,9 @@ Storing an event log object as a .xes file is rather straightforward. In pm4py, 
 
     import pm4py
 
-    event_log = pm4py.read_xes(C:/Users/demo/Downloads/running-example.xes)
-    pm4py.write_xes(event_log, 'C:/Users/demo/Desktop/running-example-exported.xes')
+    if __name__ == "__main__":
+        event_log = pm4py.read_xes(C:/Users/demo/Downloads/running-example.xes)
+        pm4py.write_xes(event_log, 'C:/Users/demo/Desktop/running-example-exported.xes')
 
 Pre-Built Event Log Filters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -247,39 +258,40 @@ Consider the example code below, in which we provide various example application
     import pm4py
     import datetime as dt
 
-    log = pm4py.read_xes('C:/Users/demo/Downloads/running-example.xes')
+    if __name__ == "__main__":
+        log = pm4py.read_xes('C:/Users/demo/Downloads/running-example.xes')
 
-    filtered = pm4py.filter_start_activities(log, {'register request'})
+        filtered = pm4py.filter_start_activities(log, {'register request'})
 
-    filtered = pm4py.filter_start_activities(log, {'register request TYPO!'})
+        filtered = pm4py.filter_start_activities(log, {'register request TYPO!'})
 
-    filtered = pm4py.filter_end_activities(log, 'pay compensation')
+        filtered = pm4py.filter_end_activities(log, 'pay compensation')
 
-    filtered = pm4py.filter_event_attribute_values(log, 'org:resource', {'Pete', 'Mike'})
+        filtered = pm4py.filter_event_attribute_values(log, 'org:resource', {'Pete', 'Mike'})
 
-    filtered = pm4py.filter_event_attribute_values(log, 'org:resource', {'Pete', 'Mike'}, level='event')
+        filtered = pm4py.filter_event_attribute_values(log, 'org:resource', {'Pete', 'Mike'}, level='event')
 
-    filtered = pm4py.filter_trace_attribute_values(log, 'concept:name', {'3', '4'})
+        filtered = pm4py.filter_trace_attribute_values(log, 'concept:name', {'3', '4'})
 
-    filtered = pm4py.filter_trace_attribute_values(log, 'concept:name', {'3', '4'}, retain=False)
+        filtered = pm4py.filter_trace_attribute_values(log, 'concept:name', {'3', '4'}, retain=False)
 
-    filtered = pm4py.filter_variants(log, [
-        ['register request', 'check ticket', 'examine casually', 'decide', 'pay compensation']])
+        filtered = pm4py.filter_variants(log, [
+            ['register request', 'check ticket', 'examine casually', 'decide', 'pay compensation']])
 
-    filtered = pm4py.filter_variants(log, [
-        ['register request', 'check ticket', 'examine casually', 'decide', 'reject request']])
+        filtered = pm4py.filter_variants(log, [
+            ['register request', 'check ticket', 'examine casually', 'decide', 'reject request']])
 
-    filtered = pm4py.filter_directly_follows_relation(log, [('check ticket', 'examine casually')])
+        filtered = pm4py.filter_directly_follows_relation(log, [('check ticket', 'examine casually')])
 
-    filtered = pm4py.filter_eventually_follows_relation(log, [('examine casually', 'reject request')])
+        filtered = pm4py.filter_eventually_follows_relation(log, [('examine casually', 'reject request')])
 
-    filtered = pm4py.filter_time_range(log, dt.datetime(2010, 12, 30), dt.datetime(2010, 12, 31), mode='events')
+        filtered = pm4py.filter_time_range(log, dt.datetime(2010, 12, 30), dt.datetime(2010, 12, 31), mode='events')
 
-    filtered = pm4py.filter_time_range(log, dt.datetime(2010, 12, 30), dt.datetime(2010, 12, 31),
-                                       mode='traces_contained')
+        filtered = pm4py.filter_time_range(log, dt.datetime(2010, 12, 30), dt.datetime(2010, 12, 31),
+                                           mode='traces_contained')
 
-    filtered = pm4py.filter_time_range(log, dt.datetime(2010, 12, 30), dt.datetime(2010, 12, 31),
-                                       mode='traces_intersecting')
+        filtered = pm4py.filter_time_range(log, dt.datetime(2010, 12, 30), dt.datetime(2010, 12, 31),
+                                           mode='traces_intersecting')
 
 
 Discovering Your First Process Model
@@ -303,11 +315,13 @@ Interestingly, none of the algorithms implemented in PM4Py directly discovers a 
 .. code-block:: python3
 
     import pm4py
-    log = pm4py.read_xes('C:/Users/demo/Downloads/running-example.xes')
 
-    process_tree = pm4py.discover_tree_inductive(log)
-    bpmn_model = pm4py.convert_to_bpmn(process_tree)
-    pm4py.view_bpmn(bpmn_model)
+    if __name__ == "__main__":
+        log = pm4py.read_xes('C:/Users/demo/Downloads/running-example.xes')
+
+        process_tree = pm4py.discover_tree_inductive(log)
+        bpmn_model = pm4py.convert_to_bpmn(process_tree)
+        pm4py.view_bpmn(bpmn_model)
 
 
 Note that the resulting process model is the following image:
@@ -324,10 +338,12 @@ As indicated, the algorithm used in this example actually discovers a Process Tr
 .. code-block:: python3
 
     import pm4py
-    log = pm4py.read_xes('C:/Users/demo/Downloads/running-example.xes')
 
-    process_tree = pm4py.discover_tree_inductive(log)
-    pm4py.view_process_tree(process_tree)
+    if __name__ == "__main__":
+        log = pm4py.read_xes('C:/Users/demo/Downloads/running-example.xes')
+
+        process_tree = pm4py.discover_tree_inductive(log)
+        pm4py.view_process_tree(process_tree)
 
 
 .. image:: https://pm4py.fit.fraunhofer.de/static/assets/images/getting_started/process_tree_running_example.png
@@ -344,10 +360,12 @@ Many `commercial process mining solutions <https://www.gartner.com/reviews/marke
 .. code-block:: python3
 
     import pm4py
-    log = pm4py.read_xes('C:/Users/demo/Downloads/running-example.xes')
 
-    dfg, start_activities, end_activities = pm4py.discover_dfg(log)
-    pm4py.view_dfg(dfg, start_activities, end_activities)
+    if __name__ == "__main__":
+        log = pm4py.read_xes('C:/Users/demo/Downloads/running-example.xes')
+
+        dfg, start_activities, end_activities = pm4py.discover_dfg(log)
+        pm4py.view_dfg(dfg, start_activities, end_activities)
 
 
 
@@ -362,10 +380,12 @@ In PM4Py, we also implemented the `Heuristics Miner <https://ieeexplore.ieee.org
 .. code-block:: python3
 
     import pm4py
-    log = pm4py.read_xes('C:/Users/demo/Downloads/running-example.xes')
 
-    map = pm4py.discover_heuristics_net(log)
-    pm4py.view_heuristics_net(map)
+    if __name__ == "__main__":
+        log = pm4py.read_xes('C:/Users/demo/Downloads/running-example.xes')
+
+        map = pm4py.discover_heuristics_net(log)
+        pm4py.view_heuristics_net(map)
 
 
 .. image:: https://pm4py.fit.fraunhofer.de/static/assets/images/getting_started/hnet_running_example.png

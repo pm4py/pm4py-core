@@ -9,7 +9,7 @@ from pm4py.objects.log.obj import EventLog, Trace, Event, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from collections import Counter
 from pm4py.objects.process_tree.obj import ProcessTree
-from pm4py.util import xes_constants
+from pm4py.util import xes_constants, constants
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 import pandas as pd
@@ -66,7 +66,7 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
     return token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=properties)
 
 
-def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args, multi_processing: bool = False, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[Dict[str, Any]]:
+def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[Dict[str, Any]]:
     """
     Apply the alignments algorithm between a log and a process model.
     The methods return the full alignment diagnostics.
@@ -87,7 +87,7 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
 
     :param log: event log
     :param args: specification of the process model
-    :param multi_processing: boolean value that enables the multiprocessing (default: False)
+    :param multi_processing: boolean value that enables the multiprocessing
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
@@ -184,7 +184,7 @@ def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: Pe
                                 variant=replay_fitness.Variants.TOKEN_BASED, parameters=properties)
 
 
-def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, multi_processing: bool = False, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> \
+def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> \
         Dict[str, float]:
     """
     Calculates the fitness using alignments
@@ -205,7 +205,7 @@ def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, 
     :param petri_net: petri net
     :param initial_marking: initial marking
     :param final_marking: final marking
-    :param multi_processing: boolean value that enables the multiprocessing (default: False)
+    :param multi_processing: boolean value that enables the multiprocessing
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
@@ -277,7 +277,7 @@ def precision_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: 
 
 
 def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking,
-                         final_marking: Marking, multi_processing: bool = False, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> float:
+                         final_marking: Marking, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> float:
     """
     Calculates the precision of the model w.r.t. the event log using alignments
 
@@ -298,7 +298,7 @@ def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet
     :param petri_net: petri net
     :param initial_marking: initial marking
     :param final_marking: final marking
-    :param multi_processing: boolean value that enables the multiprocessing (default: False)
+    :param multi_processing: boolean value that enables the multiprocessing
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
