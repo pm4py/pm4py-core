@@ -198,7 +198,7 @@ def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameter
         parameters = {}
 
     show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
-    multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, False)
+    multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, constants.ENABLE_MULTIPROCESSING_DEFAULT)
 
     progress = None
     if pkgutil.find_loader("tqdm") and show_progress_bar and len(fake_log) > 1:

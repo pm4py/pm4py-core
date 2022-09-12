@@ -46,6 +46,8 @@ SHOW_EVENT_LOG_DEPRECATION = True
 
 DEFAULT_BGCOLOR = "white"
 
+ENABLE_MULTIPROCESSING_DEFAULT = False
+
 from enum import Enum
 
 
