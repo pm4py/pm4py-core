@@ -9,8 +9,15 @@ from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructure
 from pm4py.algo.discovery.inductive.fall_through.factory import FallThroughFactory
 from pm4py.algo.discovery.inductive.variants.instances import IMInstance
 from pm4py.objects.process_tree.obj import ProcessTree
+from enum import Enum
+from pm4py.util import exec_utils, constants
+
 
 T = TypeVar('T', bound=IMDataStructure)
+
+
+class Parameters(Enum):
+    MULTIPROCESSING = "multiprocessing"
 
 
 class InductiveMinerFramework(ABC, Generic[T]):
@@ -23,10 +30,19 @@ class InductiveMinerFramework(ABC, Generic[T]):
     4. Create a subclass of this class indicating the type on which it is defined and the corresponding IMInstance.
     """
 
-    def __init__(self):
-        self._pool = Pool(os.cpu_count() - 1)
-        self._manager = Manager()
-        self._manager.support_list = []
+    def __init__(self, parameters: Optional[Dict[str, Any]] = None):
+        if parameters is None:
+            parameters = {}
+
+        enable_multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, constants.ENABLE_MULTIPROCESSING_DEFAULT)
+
+        if enable_multiprocessing:
+            self._pool = Pool(os.cpu_count() - 1)
+            self._manager = Manager()
+            self._manager.support_list = []
+        else:
+            self._pool = None
+            self._manager = None
 
     def apply_base_cases(self, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[ProcessTree]:
         return BaseCaseFactory.apply_base_cases(obj, self.instance(), parameters=parameters)
