@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional, List, Collection, Any, Tuple, Generic, TypeVar
+from typing import Optional, List, Collection, Any, Tuple, Generic, TypeVar, Dict
 
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructure
 from pm4py.objects.process_tree.obj import ProcessTree
@@ -11,22 +11,22 @@ class Cut(ABC, Generic[T]):
 
     @classmethod
     @abstractmethod
-    def operator(cls) -> ProcessTree:
+    def operator(cls, parameters: Optional[Dict[str, Any]] = None) -> ProcessTree:
         pass
 
     @classmethod
     @abstractmethod
-    def holds(cls, obj: T) -> Optional[List[Collection[Any]]]:
+    def holds(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[List[Collection[Any]]]:
         pass
 
     @classmethod
-    def apply(cls, obj: T) -> Optional[Tuple[ProcessTree, List[T]]]:
-        g = cls.holds(obj)
-        return (cls.operator(), cls.project(obj, g)) if g is not None else g
+    def apply(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[Tuple[ProcessTree, List[T]]]:
+        g = cls.holds(obj, parameters)
+        return (cls.operator(), cls.project(obj, g, parameters)) if g is not None else g
 
     @classmethod
     @abstractmethod
-    def project(cls, obj: T, groups: List[Collection[Any]]) -> List[T]:
+    def project(cls, obj: T, groups: List[Collection[Any]], parameters: Optional[Dict[str, Any]] = None) -> List[T]:
         """
         Projection of the given data object (Generic type T).
         Returns a corresponding process tree and the projected sub logs according to the identified groups.

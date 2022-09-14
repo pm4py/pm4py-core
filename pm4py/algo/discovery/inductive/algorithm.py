@@ -7,6 +7,7 @@ from pm4py import util as pmutil
 from pm4py.algo.discovery.inductive.dtypes.im_dfg import InductiveDFG
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL, IMDataStructureDFG
 from pm4py.algo.discovery.inductive.variants.im import IMUVCL
+from pm4py.algo.discovery.inductive.variants.imf import IMFUVCL
 from pm4py.algo.discovery.inductive.variants.imd import IMD
 from pm4py.algo.discovery.inductive.variants.instances import IMInstance
 from pm4py.objects.dfg.obj import DFG
@@ -47,14 +48,17 @@ def apply(obj: Union[EventLog, pd.DataFrame, DFG, UVCL], parameters: Optional[Di
             uvcl = obj
         if variant is Variants.IM:
             im = IMUVCL()
-            return im.apply(IMDataStructureUVCL(uvcl))
+            return im.apply(IMDataStructureUVCL(uvcl), parameters)
+        if variant is Variants.IMf:
+            imf = IMFUVCL()
+            return imf.apply(IMDataStructureUVCL(uvcl), parameters)
         if variant is Variants.IMd:
             imd = IMD()
             idfg = InductiveDFG(dfg=comut.discover_dfg_uvcl(uvcl), skip=() in uvcl)
-            return imd.apply(IMDataStructureDFG(idfg))
+            return imd.apply(IMDataStructureDFG(idfg), parameters)
     elif type(obj) is DFG:
         if variant is not Variants.IMd:
             warnings.warn('Inductive Miner Variant requested for DFG artefact is not IMD, resorting back to IMD')
         imd = IMD()
         idfg = InductiveDFG(dfg=obj, skip=False)
-        return imd.apply(IMDataStructureDFG(idfg))
+        return imd.apply(IMDataStructureDFG(idfg), parameters)
