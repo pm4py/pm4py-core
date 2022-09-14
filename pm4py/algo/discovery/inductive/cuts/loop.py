@@ -1,6 +1,6 @@
 from abc import ABC
 from collections import Counter
-from typing import List, Optional, Collection, Any, Tuple, Generic
+from typing import List, Optional, Collection, Any, Tuple, Generic, Dict
 
 import networkx as nx
 
@@ -16,11 +16,11 @@ from pm4py.util.compression.dtypes import UVCL
 class LoopCut(Cut[T], ABC, Generic[T]):
 
     @classmethod
-    def operator(cls) -> ProcessTree:
+    def operator(cls, parameters: Optional[Dict[str, Any]] = None) -> ProcessTree:
         return ProcessTree(operator=Operator.LOOP)
 
     @classmethod
-    def holds(cls, obj: T) -> Optional[List[Collection[Any]]]:
+    def holds(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[List[Collection[Any]]]:
         """
         This method finds a loop cut in the dfg.
         Implementation follows function LoopCut on page 190 of
@@ -55,7 +55,7 @@ class LoopCut(Cut[T], ABC, Generic[T]):
 
     @classmethod
     def _check_start_completeness(cls, dfg: DFG, start_activities: Collection[Any], end_activities: Collection[Any],
-                                  groups: List[Collection[Any]]) -> List[Collection[Any]]:
+                                  groups: List[Collection[Any]], parameters: Optional[Dict[str, Any]] = None) -> List[Collection[Any]]:
         i = 1
         while i < len(groups):
             merge = False
@@ -76,7 +76,7 @@ class LoopCut(Cut[T], ABC, Generic[T]):
 
     @classmethod
     def _check_end_completeness(cls, dfg: DFG, start_activities: Collection[Any], end_activities: Collection[Any],
-                                groups: List[Collection[Any]]) -> List[Collection[Any]]:
+                                groups: List[Collection[Any]], parameters: Optional[Dict[str, Any]] = None) -> List[Collection[Any]]:
         i = 1
         while i < len(groups):
             merge = False
@@ -98,7 +98,7 @@ class LoopCut(Cut[T], ABC, Generic[T]):
     @classmethod
     def _exclude_sets_non_reachable_from_start(cls, dfg: DFG, start_activities: Collection[Any],
                                                end_activities: Collection[Any],
-                                               groups: List[Collection[Any]]) -> List[Collection[Any]]:
+                                               groups: List[Collection[Any]], parameters: Optional[Dict[str, Any]] = None) -> List[Collection[Any]]:
         for a in set(start_activities).difference(set(end_activities)):
             for (x, b) in dfg.graph:
                 if x == a:
@@ -114,7 +114,7 @@ class LoopCut(Cut[T], ABC, Generic[T]):
     @classmethod
     def _exclude_sets_no_reachable_from_end(cls, dfg: DFG, start_activities: Collection[Any],
                                             end_activities: Collection[Any],
-                                            groups: List[Collection[Any]]) -> List[Collection[Any]]:
+                                            groups: List[Collection[Any]], parameters: Optional[Dict[str, Any]] = None) -> List[Collection[Any]]:
         for b in set(end_activities).difference(start_activities):
             for (a, x) in dfg.graph:
                 if x == b:
@@ -128,7 +128,7 @@ class LoopCut(Cut[T], ABC, Generic[T]):
 
     @classmethod
     def _compute_connected_components(cls, dfg: DFG, start_activities: Collection[Any],
-                                      end_activities: Collection[Any]):
+                                      end_activities: Collection[Any], parameters: Optional[Dict[str, Any]] = None):
         nxd = dfu.as_nx_graph(dfg)
         [nxd.remove_edge(a, b) for (a, b) in dfg.graph if
          a in start_activities or a in end_activities or b in start_activities or b in end_activities]
@@ -141,7 +141,7 @@ class LoopCut(Cut[T], ABC, Generic[T]):
 class LoopCutUVCL(LoopCut[IMDataStructureUVCL]):
 
     @classmethod
-    def project(cls, obj: IMDataStructureUVCL, groups: List[Collection[Any]]) -> List[IMDataStructureUVCL]:
+    def project(cls, obj: IMDataStructureUVCL, groups: List[Collection[Any]], parameters: Optional[Dict[str, Any]] = None) -> List[IMDataStructureUVCL]:
         do = groups[0]
         redo = groups[1:]
         redo_activities = [y for x in redo for y in x]
@@ -171,7 +171,7 @@ class LoopCutUVCL(LoopCut[IMDataStructureUVCL]):
 
     @classmethod
     def _append_trace_to_redo_log(cls, redo_trace: Tuple, redo_logs: List[UVCL], redo_groups: List[Collection[Any]],
-                                  cardinality) -> \
+                                  cardinality, parameters: Optional[Dict[str, Any]] = None) -> \
             List[UVCL]:
         activities = set(x for x in redo_trace)
         inte = [(i, len(activities.intersection(redo_groups[i]))) for i in range(len(redo_groups))]

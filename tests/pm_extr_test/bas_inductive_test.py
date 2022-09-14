@@ -12,7 +12,7 @@ from pm4py.statistics.variants.log import get as variants_get
 LOGS_FOLDER = "../compressed_input_data"
 CLASSIFIER = "@@classifier"
 ENABLE_ALIGNMENTS = True
-NOISE_THRESHOLD = 0.0
+NOISE_THRESHOLD = 0.2
 VARIANT = im_clean.Variants.IM
 
 
