@@ -47,18 +47,18 @@ def apply(obj: Union[EventLog, pd.DataFrame, DFG, UVCL], parameters: Optional[Di
         else:
             uvcl = obj
         if variant is Variants.IM:
-            im = IMUVCL()
+            im = IMUVCL(parameters)
             return im.apply(IMDataStructureUVCL(uvcl), parameters)
         if variant is Variants.IMf:
-            imf = IMFUVCL()
+            imf = IMFUVCL(parameters)
             return imf.apply(IMDataStructureUVCL(uvcl), parameters)
         if variant is Variants.IMd:
-            imd = IMD()
+            imd = IMD(parameters)
             idfg = InductiveDFG(dfg=comut.discover_dfg_uvcl(uvcl), skip=() in uvcl)
             return imd.apply(IMDataStructureDFG(idfg), parameters)
     elif type(obj) is DFG:
         if variant is not Variants.IMd:
             warnings.warn('Inductive Miner Variant requested for DFG artefact is not IMD, resorting back to IMD')
-        imd = IMD()
+        imd = IMD(parameters)
         idfg = InductiveDFG(dfg=obj, skip=False)
         return imd.apply(IMDataStructureDFG(idfg), parameters)

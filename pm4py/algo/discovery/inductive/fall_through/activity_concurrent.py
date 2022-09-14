@@ -9,6 +9,12 @@ from pm4py.algo.discovery.inductive.variants.instances import IMInstance
 from pm4py.objects.process_tree.obj import ProcessTree, Operator
 from pm4py.util.compression import util as comut
 from pm4py.util.compression.dtypes import UVCL
+from enum import Enum
+from pm4py.util import exec_utils, constants
+
+
+class Parameters(Enum):
+    MULTIPROCESSING = "multiprocessing"
 
 
 class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
@@ -26,32 +32,36 @@ class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
 
     @classmethod
     def _get_candidate(cls, obj: IMDataStructureUVCL, pool: Pool, manager: Manager, parameters: Optional[Dict[str, Any]] = None) -> Optional[Any]:
+        if parameters is None:
+            parameters = {}
+
+        enable_multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, constants.ENABLE_MULTIPROCESSING_DEFAULT)
+
         log = obj.data_structure
         candidates = comut.get_alphabet(log)
-        if len(candidates) > 2:
-            if pool is not None and manager is not None and len(
-                    candidates) > ActivityConcurrentUVCL.MULTI_PROCESSING_LOWER_BOUND:
-                q = manager.Queue()
-                ev = manager.Event()
-                # avoid dangerous freealloc from Python's garbage collector
-                manager.support_list.append(q)
-                manager.support_list.append(ev)
+        if pool is None or manager is None or not enable_multiprocessing or len(candidates) <= ActivityConcurrentUVCL.MULTI_PROCESSING_LOWER_BOUND:
+            for a in candidates:
+                cut = cls._process_candidate(a, log, parameters=parameters)
+                if cut is not None:
+                    return a
+        else:
+            q = manager.Queue()
+            ev = manager.Event()
+            # avoid dangerous freealloc from Python's garbage collector
+            manager.support_list.append(q)
+            manager.support_list.append(ev)
 
-                for a in candidates:
-                    pool.apply_async(cls._process_candidate, (a, log, q, ev, parameters))
-                potentials = set(candidates)
-                while len(potentials) > 0:
-                    (c, cut) = q.get(block=True)
-                    if cut is None:
-                        potentials.remove(c)
-                    else:
-                        ev.set()
-                        return c
-            else:
-                for a in candidates:
-                    cut = cls._process_candidate(a, log, parameters=parameters)
-                    if cut is not None:
-                        return a
+            for a in candidates:
+                pool.apply_async(cls._process_candidate, (a, log, q, ev, parameters))
+            potentials = set(candidates)
+            while len(potentials) > 0:
+                (c, cut) = q.get(block=True)
+                if cut is None:
+                    potentials.remove(c)
+                else:
+                    ev.set()
+                    return c
+
         return None
 
     @classmethod
