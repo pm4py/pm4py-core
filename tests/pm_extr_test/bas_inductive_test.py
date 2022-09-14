@@ -14,6 +14,7 @@ CLASSIFIER = "@@classifier"
 ENABLE_ALIGNMENTS = True
 NOISE_THRESHOLD = 0.2
 VARIANT = im_clean.Variants.IM
+ENABLE_MULTIPROCESSING = False
 
 
 if __name__ == "__main__":
@@ -48,7 +49,7 @@ if __name__ == "__main__":
                     fp_log = pm4py.algo.discovery.footprints.log.variants.entire_dataframe.apply(dataframe)
                 print("start tree_im_clean")
                 tree_im_clean = im_clean.apply(log, variant=VARIANT, parameters={"pm4py:param:activity_key": CLASSIFIER,
-                                                                     "noise_threshold": NOISE_THRESHOLD})
+                                                                     "noise_threshold": NOISE_THRESHOLD, "multiprocessing": ENABLE_MULTIPROCESSING})
                 print(tree_im_clean)
                 print("end tree_im_clean")
 
