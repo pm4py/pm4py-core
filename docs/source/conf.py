@@ -26,7 +26,7 @@ author = 'Fraunhofer FIT'
 # The short X.Y version
 version = '2.2'
 # The full version, including alpha/beta/rc tags
-release = '2.2.28'
+release = '2.2.29'
 
 # -- General configuration ---------------------------------------------------
 
