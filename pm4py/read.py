@@ -7,6 +7,8 @@ from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 
+import os
+
 from pandas import DataFrame
 import pkgutil
 
@@ -32,6 +34,8 @@ def read_xes(file_path: str, variant: str = "chunk_regex", **kwargs) -> DataFram
 
         log = pm4py.read_xes("<path_to_xes_file>")
     """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
     from pm4py.objects.log.importer.xes import importer as xes_importer
     v = xes_importer.Variants.LINE_BY_LINE
     if pkgutil.find_loader("lxml"):
@@ -66,6 +70,8 @@ def read_pnml(file_path: str, auto_guess_final_marking: bool = False) -> Tuple[P
 
         pn = pm4py.read_pnml("<path_to_pnml_file>")
     """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
     from pm4py.objects.petri_net.importer import importer as pnml_importer
     net, im, fm = pnml_importer.apply(file_path, parameters={"auto_guess_final_marking": auto_guess_final_marking})
     return net, im, fm
@@ -84,6 +90,8 @@ def read_ptml(file_path: str) -> ProcessTree:
 
         process_tree = pm4py.read_ptml("<path_to_ptml_file>")
     """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
     from pm4py.objects.process_tree.importer import importer as tree_importer
     tree = tree_importer.apply(file_path)
     return tree
@@ -108,6 +116,8 @@ def read_dfg(file_path: str) -> Tuple[Dict[Tuple[str,str],int], Dict[str,int], D
 
        dfg = pm4py.read_dfg("<path_to_dfg_file>")
     """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
     from pm4py.objects.dfg.importer import importer as dfg_importer
     dfg, start_activities, end_activities = dfg_importer.apply(file_path)
     return dfg, start_activities, end_activities
@@ -127,6 +137,8 @@ def read_bpmn(file_path: str) -> BPMN:
         bpmn = pm4py.read_bpmn('<path_to_bpmn_file>')
 
     """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
     from pm4py.objects.bpmn.importer import importer as bpmn_importer
     bpmn_graph = bpmn_importer.apply(file_path)
     return bpmn_graph
@@ -147,6 +159,8 @@ def read_ocel(file_path: str, objects_path: Optional[str] = None) -> OCEL:
 
         ocel = pm4py.read_ocel("<path_to_ocel_file>")
     """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
     if file_path.lower().endswith("csv"):
         from pm4py.objects.ocel.importer.csv import importer as csv_importer
         return csv_importer.apply(file_path, objects_path=objects_path)
