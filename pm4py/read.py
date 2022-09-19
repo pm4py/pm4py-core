@@ -1,6 +1,7 @@
 import warnings
 from typing import Tuple
 
+import os
 import deprecation
 
 from pm4py.objects.bpmn.obj import BPMN
@@ -26,6 +27,8 @@ def read_xes(file_path: str) -> EventLog:
     log
         Event log
     """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
     from pm4py.objects.log.importer.xes import importer as xes_importer
     log = xes_importer.apply(file_path)
     return log
@@ -49,6 +52,8 @@ def read_pnml(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
     final_marking
         Final marking
     """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
     from pm4py.objects.petri_net.importer import importer as pnml_importer
     net, im, fm = pnml_importer.apply(file_path)
     return net, im, fm
@@ -75,6 +80,8 @@ def read_petri_net(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
     final_marking
         Final marking
     """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
     from pm4py.objects.petri_net.importer import importer as pnml_importer
     net, im, fm = pnml_importer.apply(file_path)
     return net, im, fm
@@ -94,6 +101,8 @@ def read_ptml(file_path: str) -> ProcessTree:
     tree
         Process tree
     """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
     from pm4py.objects.process_tree.importer import importer as tree_importer
     tree = tree_importer.apply(file_path)
     return tree
@@ -116,6 +125,8 @@ def read_process_tree(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
     tree
         Process tree
     """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
     from pm4py.objects.process_tree.importer import importer as tree_importer
     tree = tree_importer.apply(file_path)
     return tree
@@ -139,6 +150,8 @@ def read_dfg(file_path: str) -> Tuple[dict, dict, dict]:
     end_activities
         End activities
     """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
     from pm4py.objects.dfg.importer import importer as dfg_importer
     dfg, start_activities, end_activities = dfg_importer.apply(file_path)
     return dfg, start_activities, end_activities
@@ -158,6 +171,8 @@ def read_bpmn(file_path: str) -> BPMN:
     bpmn_graph
         BPMN graph
     """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
     from pm4py.objects.bpmn.importer import importer as bpmn_importer
     bpmn_graph = bpmn_importer.apply(file_path)
     return bpmn_graph
@@ -181,6 +196,8 @@ def read_ocel(file_path: str, objects_path: str = None) -> OCEL:
     ocel
         Object-centric event log
     """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
     if file_path.lower().endswith("csv"):
         from pm4py.objects.ocel.importer.csv import importer as csv_importer
         return csv_importer.apply(file_path, objects_path=objects_path)
