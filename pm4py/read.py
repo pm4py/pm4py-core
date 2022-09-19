@@ -7,6 +7,8 @@ from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 
+import os
+
 from pandas import DataFrame
 import pkgutil
 
