@@ -127,7 +127,7 @@ def discover_dfg_typed(log: pd.DataFrame, case_id_key: str = "case:concept:name"
         raise TypeError('pm4py.discover_dfg_typed is only defined for pandas/polars DataFrames')
         
 
-def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7], workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
+def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, business_hour_slots=constants.DEFAULT_BUSINESS_HOUR_SLOTS, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     """
     Discovers a performance directly-follows graph from an event log.
 
@@ -136,8 +136,7 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours:
 
     :param log: event log / Pandas dataframe
     :param business_hours: enables/disables the computation based on the business hours (default: False)
-    :param worktiming: (if the business hours are enabled) the hour range in which the resources of the log are working (default: 7 to 17)
-    :param weekends: (if the business hours are enabled) the weekends days (default: Saturday (6), Sunday (7))
+    :param business_hour_slots: work schedule of the company, provided as a list of tuples where each tuple represents one time slot of business hours. One slot i.e. one tuple consists of one start and one end time given in seconds since week start, e.g. [(7 * 60 * 60, 17 * 60 * 60), ((24 + 7) * 60 * 60, (24 + 12) * 60 * 60), ((24 + 13) * 60 * 60, (24 + 17) * 60 * 60),] meaning that business hours are Mondays 07:00 - 17:00 and Tuesdays 07:00 - 12:00 and 13:00 - 17:00
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
@@ -164,7 +163,7 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours:
 
         from pm4py.algo.discovery.dfg.adapters.pandas.df_statistics import get_dfg_graph
         dfg = get_dfg_graph(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_glue=case_id_key, measure="performance", perf_aggregation_key="all",
-                            business_hours=business_hours, worktiming=worktiming, weekends=weekends, workcalendar=workcalendar)
+                            business_hours=business_hours, business_hours_slot=business_hour_slots, workcalendar=workcalendar)
         from pm4py.statistics.start_activities.pandas import get as start_activities_module
         from pm4py.statistics.end_activities.pandas import get as end_activities_module
         start_activities = start_activities_module.get_start_activities(
@@ -175,8 +174,7 @@ def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours:
         from pm4py.algo.discovery.dfg.variants import performance as dfg_discovery
         properties[dfg_discovery.Parameters.AGGREGATION_MEASURE] = "all"
         properties[dfg_discovery.Parameters.BUSINESS_HOURS] = business_hours
-        properties[dfg_discovery.Parameters.WORKTIMING] = worktiming
-        properties[dfg_discovery.Parameters.WEEKENDS] = weekends
+        properties[dfg_discovery.Parameters.BUSINESS_HOUR_SLOTS] = business_hour_slots
         dfg = dfg_discovery.apply(log, parameters=properties)
         from pm4py.statistics.start_activities.log import get as start_activities_module
         from pm4py.statistics.end_activities.log import get as end_activities_module

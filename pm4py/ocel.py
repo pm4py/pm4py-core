@@ -7,7 +7,7 @@ from typing import List, Dict, Collection, Any, Optional, Set, Tuple
 import pandas as pd
 
 from pm4py.objects.ocel.obj import OCEL
-
+from pm4py.util import constants
 
 def ocel_get_object_types(ocel: OCEL) -> List[str]:
     """
@@ -188,7 +188,7 @@ def ocel_objects_interactions_summary(ocel: OCEL) -> pd.DataFrame:
     return pd.DataFrame(stream)
 
 
-def discover_ocdfg(ocel: OCEL, business_hours=False, worktiming=[7, 17], weekends=[6, 7]) -> Dict[str, Any]:
+def discover_ocdfg(ocel: OCEL, business_hours=False, business_hour_slots=constants.DEFAULT_BUSINESS_HOUR_SLOTS) -> Dict[str, Any]:
     """
     Discovers an OC-DFG from an object-centric event log.
 
@@ -199,8 +199,8 @@ def discover_ocdfg(ocel: OCEL, business_hours=False, worktiming=[7, 17], weekend
 
     :param ocel: object-centric event log
     :param business_hours: boolean value that enables the usage of the business hours
-    :param worktiming: (if business hours are in use) work timing during the day (default: [7, 17])
-    :param weekends: (if business hours are in use) weekends (default: [6, 7])
+    :param business_hour_slots: work schedule of the company, provided as a list of tuples where each tuple represents one time slot of business hours. One slot i.e. one tuple consists of one start and one end time given in seconds since week start, e.g. [(7 * 60 * 60, 17 * 60 * 60), ((24 + 7) * 60 * 60, (24 + 12) * 60 * 60), ((24 + 13) * 60 * 60, (24 + 17) * 60 * 60),] meaning that business hours are Mondays 07:00 - 17:00 and Tuesdays 07:00 - 12:00 and 13:00 - 17:00
+
     :rtype: ``Dict[str, Any]``
 
     .. code-block:: python3
@@ -211,8 +211,7 @@ def discover_ocdfg(ocel: OCEL, business_hours=False, worktiming=[7, 17], weekend
     """
     parameters = {}
     parameters["business_hours"] = business_hours
-    parameters["worktiming"] = worktiming
-    parameters["weekends"] = weekends
+    parameters["business_hour_slots"] = business_hour_slots
     from pm4py.algo.discovery.ocel.ocdfg import algorithm as ocdfg_discovery
     return ocdfg_discovery.apply(ocel, parameters=parameters)
 

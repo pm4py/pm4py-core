@@ -27,8 +27,7 @@ class Parameters(Enum):
     SORT_ASCENDING = "sort_ascending"
     MAX_RET_CASES = "max_ret_cases"
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING  = "worktiming"
-    WEEKENDS = "weekends"
+    BUSINESS_HOUR_SLOTS = "business_hour_slots"
     WORKCALENDAR = "workcalendar"
 
     INDEXED_LOG = "indexed_log"
@@ -119,8 +118,8 @@ def get_cases_description(log: EventLog,  parameters: Optional[Dict[Union[str, P
     sort_ascending = exec_utils.get_param_value(Parameters.SORT_ASCENDING, parameters, True)
     max_ret_cases = exec_utils.get_param_value(Parameters.MAX_RET_CASES, parameters, None)
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
-    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
-    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    business_hours_slots = exec_utils.get_param_value(Parameters.BUSINESS_HOUR_SLOTS, parameters, constants.DEFAULT_BUSINESS_HOUR_SLOTS)
+
     workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     statistics_list = []
@@ -131,9 +130,9 @@ def get_cases_description(log: EventLog,  parameters: Optional[Dict[Union[str, P
             st = trace[0][timestamp_key]
             et = trace[-1][timestamp_key]
             if business_hours:
-                bh = BusinessHours(st.replace(tzinfo=None), et.replace(tzinfo=None), worktiming=worktiming,
-                                   weekends=weekends, workcalendar=workcalendar)
-                diff = bh.getseconds()
+                bh = BusinessHours(st.replace(tzinfo=None), et.replace(tzinfo=None),
+                                   business_hour_slots=business_hours_slots, workcalendar=workcalendar)
+                diff = bh.get_seconds()
             else:
                 diff = et.timestamp() - st.timestamp()
             st = st.timestamp()
