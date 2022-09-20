@@ -14,8 +14,7 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING  = "worktiming"
-    WEEKENDS = "weekends"
+    BUSINESS_HOUR_SLOTS = "business_hour_slots"
     WORKCALENDAR = "workcalendar"
 
 
@@ -53,14 +52,13 @@ def apply(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> typi
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
 
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
-    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
-    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    business_hours_slots = exec_utils.get_param_value(Parameters.BUSINESS_HOUR_SLOTS, parameters, constants.DEFAULT_BUSINESS_HOUR_SLOTS)
+
     workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     efg = get_partial_order_dataframe(df, activity_key=activity_key, timestamp_key=timestamp_key,
                                       start_timestamp_key=start_timestamp_key, case_id_glue=case_id_key,
-                                      keep_first_following=False, business_hours=business_hours, worktiming=worktiming,
-                                      weekends=weekends, workcalendar=workcalendar)
+                                      keep_first_following=False, business_hours=business_hours, business_hours_slot=business_hours_slots, workcalendar=workcalendar)
     efg = efg[[activity_key, activity_key + "_2", "@@flow_time"]]
     temporal_profile = efg.groupby([activity_key, activity_key + "_2"]).agg(["mean", "std"]).reset_index().fillna(
         0).to_dict("records")

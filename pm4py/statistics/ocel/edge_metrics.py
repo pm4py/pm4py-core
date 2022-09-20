@@ -13,8 +13,7 @@ class Parameters(Enum):
     EVENT_ACTIVITY = ocel_constants.PARAM_EVENT_ACTIVITY
     EVENT_TIMESTAMP = ocel_constants.PARAM_EVENT_TIMESTAMP
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING  = "worktiming"
-    WEEKENDS = "weekends"
+    BUSINESS_HOUR_SLOTS = "business_hour_slots"
     WORKCALENDAR = "workcalendar"
 
 
@@ -37,8 +36,15 @@ def performance_calculation_ocel_aggregation(ocel: OCEL, aggregation: Dict[str, 
         - Parameters.EVENT_ID => the event identifier
         - Parameters.EVENT_TIMESTAMP => the timestamp
         - Parameters.BUSINESS_HOURS => enables/disables the business hours
-        - Parameters.WORKTIMING => the work timing (default: [7, 17])
-        - Parameters.WEEKENDS => the weekends (default: [6, 7])
+        - Parameters.BUSINESS_HOURS_SLOTS =>
+        work schedule of the company, provided as a list of tuples where each tuple represents one time slot of business
+        hours. One slot i.e. one tuple consists of one start and one end time given in seconds since week start, e.g.
+        [
+            (7 * 60 * 60, 17 * 60 * 60),
+            ((24 + 7) * 60 * 60, (24 + 12) * 60 * 60),
+            ((24 + 13) * 60 * 60, (24 + 17) * 60 * 60),
+        ]
+        meaning that business hours are Mondays 07:00 - 17:00 and Tuesdays 07:00 - 12:00 and 13:00 - 17:00
 
     Returns
     ----------------
@@ -55,8 +61,8 @@ def performance_calculation_ocel_aggregation(ocel: OCEL, aggregation: Dict[str, 
     timestamps = {x: y[0] for x, y in timestamps.items()}
 
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
-    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
-    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    business_hours_slots = exec_utils.get_param_value(Parameters.BUSINESS_HOUR_SLOTS, parameters, constants.DEFAULT_BUSINESS_HOUR_SLOTS)
+
     workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     ret = {}
@@ -69,10 +75,9 @@ def performance_calculation_ocel_aggregation(ocel: OCEL, aggregation: Dict[str, 
                 if business_hours:
                     bh = BusinessHours(timestamps[el[0]],
                                        timestamps[el[1]],
-                                       worktiming=worktiming,
-                                       weekends=weekends,
+                                       business_hour_slots=business_hours_slots,
                                        workcalendar=workcalendar)
-                    diff = bh.getseconds()
+                    diff = bh.get_seconds()
                 else:
                     diff = timestamps[el[1]].timestamp() - timestamps[el[0]].timestamp()
                 ret[ot][act].append(diff)
