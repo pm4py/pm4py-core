@@ -1,6 +1,6 @@
 import numpy as np
 from pm4py.util.business_hours import BusinessHours
-
+from pm4py.util import constants
 
 def get_class_representation_by_str_ev_attr_value_presence(log, str_attr_name, str_attr_value):
     """
@@ -107,8 +107,7 @@ def get_class_representation_by_trace_duration(log, target_trace_duration, times
         parameters = {}
 
     business_hours = parameters["business_hours"] if "business_hours" in parameters else False
-    worktiming = parameters["worktiming"] if "worktiming" in parameters else [7, 17]
-    weekends = parameters["weekends"] if "weekends" in parameters else [6, 7]
+    business_hours_slots = parameters["business_hour_slots"] if "business_hour_slots" in parameters else constants.DEFAULT_BUSINESS_HOUR_SLOTS
 
     count = 0
     dictionary = {}
@@ -122,8 +121,8 @@ def get_class_representation_by_trace_duration(log, target_trace_duration, times
             timestamp_et = trace[-1][timestamp_key]
             if business_hours:
                 bh = BusinessHours(timestamp_st.replace(tzinfo=None), timestamp_et.replace(tzinfo=None),
-                                   worktiming=worktiming, weekends=weekends)
-                diff = bh.getseconds()
+                                   business_hour_slots=business_hours_slots)
+                diff = bh.get_seconds()
             else:
                 diff = (timestamp_et - timestamp_st).total_seconds()
             if diff > target_trace_duration:
