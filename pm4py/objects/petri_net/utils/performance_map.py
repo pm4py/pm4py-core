@@ -7,6 +7,7 @@ from pm4py.util.vis_utils import human_readable_stat, get_arc_penwidth, get_tran
 from statistics import median, mean
 from pm4py.objects.log.obj import EventLog
 from pm4py.util.business_hours import BusinessHours
+from pm4py.util import constants
 
 MAX_NO_THREADS = 1000
 
@@ -170,8 +171,7 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
         parameters = {}
 
     business_hours = parameters["business_hours"] if "business_hours" in parameters else False
-    worktiming = parameters["worktiming"] if "worktiming" in parameters else [7, 17]
-    weekends = parameters["weekends"] if "weekends" in parameters else [6, 7]
+    business_hours_slots = parameters["business_hour_slots"] if "business_hour_slots" in parameters else constants.DEFAULT_BUSINESS_HOUR_SLOTS
 
     statistics = {}
 
@@ -201,9 +201,8 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
                             if business_hours:
                                 bh = BusinessHours(trace[perf_couple[1]][timestamp_key].replace(tzinfo=None),
                                                    trace[perf_couple[0]][timestamp_key].replace(tzinfo=None),
-                                                   worktiming=worktiming,
-                                                   weekends=weekends)
-                                perf = bh.getseconds()
+                                                   business_hour_slots=business_hours_slots)
+                                perf = bh.get_seconds()
                             else:
                                 perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][
                                     timestamp_key]).total_seconds()
@@ -221,9 +220,9 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
                     if timestamp_key in trace[perf_couple[0]] and timestamp_key in trace[perf_couple[1]]:
                         if business_hours:
                             bh = BusinessHours(trace[perf_couple[1]][timestamp_key].replace(tzinfo=None),
-                                               trace[perf_couple[0]][timestamp_key].replace(tzinfo=None), worktiming=worktiming,
-                                               weekends=weekends)
-                            perf = bh.getseconds()
+                                               trace[perf_couple[0]][timestamp_key].replace(tzinfo=None),
+                                               business_hour_slots=business_hours_slots)
+                            perf = bh.get_seconds()
                         else:
                             perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][
                                 timestamp_key]).total_seconds()

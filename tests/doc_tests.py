@@ -955,14 +955,15 @@ class DocTests(unittest.TestCase):
     def test_business_hours(self):
         from pm4py.util.business_hours import BusinessHours
         from datetime import datetime
+        from pm4py.util import constants
 
         st = datetime.fromtimestamp(100000000)
         et = datetime.fromtimestamp(200000000)
         bh_object = BusinessHours(st, et)
-        worked_time = bh_object.getseconds()
+        worked_time = bh_object.get_seconds()
 
-        bh_object = BusinessHours(st, et, worktiming=[10, 16], weekends=[5, 6, 7])
-        worked_time = bh_object.getseconds()
+        bh_object = BusinessHours(st, et, business_hour_slots=constants.DEFAULT_BUSINESS_HOUR_SLOTS)
+        worked_time = bh_object.get_seconds()
 
     def test_cycle_waiting_time(self):
         from pm4py.objects.log.importer.xes import importer as xes_importer
