@@ -430,14 +430,13 @@ def get_cycle_time(log: Union[EventLog, pd.DataFrame], activity_key: str = "conc
         return cycle_time.apply(log, parameters=properties)
 
 
-def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[float]:
+def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, business_hour_slots=constants.DEFAULT_BUSINESS_HOUR_SLOTS, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[float]:
     """
     Gets the durations of the cases in the event log
 
     :param log: Event log
     :param business_hours: Enables/disables the computation based on the business hours (default: False)
-    :param worktiming: (If the business hours are enabled) The hour range in which the resources of the log are working (default: 7 to 17)
-    :param weekends: (If the business hours are enabled) The weekends days (default: Saturday (6), Sunday (7))
+    :param business_hour_slots: work schedule of the company, provided as a list of tuples where each tuple represents one time slot of business hours. One slot i.e. one tuple consists of one start and one end time given in seconds since week start, e.g. [(7 * 60 * 60, 17 * 60 * 60), ((24 + 7) * 60 * 60, (24 + 12) * 60 * 60), ((24 + 13) * 60 * 60, (24 + 17) * 60 * 60),] meaning that business hours are Mondays 07:00 - 17:00 and Tuesdays 07:00 - 12:00 and 13:00 - 17:00
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
@@ -454,8 +453,7 @@ def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: b
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     properties["business_hours"] = business_hours
-    properties["worktiming"] = worktiming
-    properties["weekends"] = weekends
+    properties["business_hour_slots"] = business_hour_slots
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.statistics.traces.generic.pandas import case_statistics
@@ -466,15 +464,14 @@ def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: b
         return case_statistics.get_all_case_durations(log, parameters=properties)
 
 
-def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business_hours: bool = False, worktiming: List[int] = [7, 17], weekends: List[int] = [6, 7], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> float:
+def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business_hours: bool = False, business_hour_slots=constants.DEFAULT_BUSINESS_HOUR_SLOTS, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: Optional[str] = None) -> float:
     """
     Gets the duration of a specific case
 
     :param log: Event log
     :param case_id: Case identifier
     :param business_hours: Enables/disables the computation based on the business hours (default: False)
-    :param worktiming: (If the business hours are enabled) The hour range in which the resources of the log are working (default: 7 to 17)
-    :param weekends: (If the business hours are enabled) The weekends days (default: Saturday (6), Sunday (7))
+    :param business_hour_slots: work schedule of the company, provided as a list of tuples where each tuple represents one time slot of business hours. One slot i.e. one tuple consists of one start and one end time given in seconds since week start, e.g. [(7 * 60 * 60, 17 * 60 * 60), ((24 + 7) * 60 * 60, (24 + 12) * 60 * 60), ((24 + 13) * 60 * 60, (24 + 17) * 60 * 60),] meaning that business hours are Mondays 07:00 - 17:00 and Tuesdays 07:00 - 12:00 and 13:00 - 17:00
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
@@ -491,8 +488,7 @@ def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     properties["business_hours"] = business_hours
-    properties["worktiming"] = worktiming
-    properties["weekends"] = weekends
+    properties["business_hour_slots"] = business_hour_slots
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
         from pm4py.statistics.traces.generic.pandas import case_statistics
