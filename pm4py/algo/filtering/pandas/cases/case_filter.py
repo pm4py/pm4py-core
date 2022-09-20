@@ -13,8 +13,7 @@ class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING  = "worktiming"
-    WEEKENDS = "weekends"
+    BUSINESS_HOUR_SLOTS = "business_hour_slots"
     WORKCALENDAR = "workcalendar"
 
 
@@ -78,7 +77,7 @@ def filter_on_case_size(df0: pd.DataFrame, case_id_glue: str = "case:concept:nam
 def filter_on_case_performance(df: pd.DataFrame, case_id_glue: str = constants.CASE_CONCEPT_NAME,
                                timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
                                min_case_performance: float = 0, max_case_performance: float = 10000000000,
-                               business_hours=False, worktiming=[7, 17], weekends=[6, 7]) -> pd.DataFrame:
+                               business_hours=False, business_hours_slots=constants.DEFAULT_BUSINESS_HOUR_SLOTS) -> pd.DataFrame:
     """
     Filter a dataframe on case performance
 
@@ -107,8 +106,7 @@ def filter_on_case_performance(df: pd.DataFrame, case_id_glue: str = constants.C
     stacked_df = pd.concat([start_events, end_events], axis=1)
     if business_hours:
         stacked_df['caseDuration'] = stacked_df.apply(
-            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], worktiming,
-                                                   weekends), axis=1)
+            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], business_hours_slots), axis=1)
     else:
         stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
         stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
@@ -128,13 +126,11 @@ def filter_case_performance(df: pd.DataFrame, min_case_performance: float = 0, m
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     case_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
-    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
-    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    business_hours_slots = exec_utils.get_param_value(Parameters.BUSINESS_HOUR_SLOTS, parameters, constants.DEFAULT_BUSINESS_HOUR_SLOTS)
 
     return filter_on_case_performance(df, min_case_performance=min_case_performance,
                                       max_case_performance=max_case_performance, timestamp_key=timestamp_key,
-                                      case_id_glue=case_glue, business_hours=business_hours, worktiming=worktiming,
-                                      weekends=weekends)
+                                      case_id_glue=case_glue, business_hours=business_hours, business_hours_slots=business_hours_slots)
 
 
 def apply(df, parameters=None):

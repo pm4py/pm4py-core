@@ -1,12 +1,12 @@
-import datetime
-from typing import List
-from copy import copy
+import math
+from datetime import timedelta, datetime, time
+from typing import List, Tuple
+
 from pm4py.util import constants
 
 
-def soj_time_business_hours_diff(st: datetime.datetime, et: datetime.datetime, worktiming: List[int],
-                                 weekends: List[int],
-                                 workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR) -> float:
+def soj_time_business_hours_diff(st: datetime, et: datetime, business_hour_slots: List[Tuple[int]],
+                                 work_calendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR) -> float:
     """
     Calculates the difference between the provided timestamps based on the business hours
 
@@ -16,13 +16,17 @@ def soj_time_business_hours_diff(st: datetime.datetime, et: datetime.datetime, w
         Start timestamp
     et
         Complete timestamp
-    worktiming
-        work schedule of the company (provided as a list where the first number is the start
-            of the work time, and the second number is the end of the work time), if business hours are enabled
-                                        Default: [7, 17] (work shift from 07:00 to 17:00)
-    weekends
-        indexes of the days of the week that are weekend
-                                            Default: [6, 7] (weekends are Saturday and Sunday)
+    business_hour_slots
+        work schedule of the company, provided as a list of tuples where each tuple represents one time slot of business
+        hours. One slot i.e. one tuple consists of one start and one end time given in seconds since week start, e.g.
+        [
+            (7 * 60 * 60, 17 * 60 * 60),
+            ((24 + 7) * 60 * 60, (24 + 12) * 60 * 60),
+            ((24 + 13) * 60 * 60, (24 + 17) * 60 * 60),
+        ]
+        meaning that business hours are Mondays 07:00 - 17:00 and Tuesdays 07:00 - 12:00 and 13:00 - 17:00
+    work_calendar
+        work calendar (it permits querying if a given day is a working day in a given culture)
 
     Returns
     -----------------
@@ -30,62 +34,66 @@ def soj_time_business_hours_diff(st: datetime.datetime, et: datetime.datetime, w
         Difference in business hours
     """
     bh = BusinessHours(st.replace(tzinfo=None), et.replace(tzinfo=None),
-                       worktiming=worktiming,
-                       weekends=weekends, workcalendar=workcalendar)
-    return bh.getseconds()
+                       business_hour_slots=business_hour_slots, work_calendar=work_calendar)
+    return bh.get_seconds()
+
+
+def get_overlapping_time(timespan1_begin: datetime, timespan1_end: datetime,
+                         timespan2_begin: datetime, timespan2_end: datetime) -> float:
+    latest_start = max(timespan1_begin, timespan2_begin)
+    earliest_end = min(timespan1_end, timespan2_end)
+    delta = (earliest_end - latest_start).total_seconds()
+    overlap = max(0.0, delta)
+    return overlap
 
 
 class BusinessHours:
-
     def __init__(self, datetime1, datetime2, **kwargs):
         self.datetime1 = datetime1
         self.datetime2 = datetime2
-        self.weekends = kwargs["weekends"] if "weekends" in kwargs else [6, 7]
-        # supports either specification of uninterrupted work timing,
-        # or with breaks
-        self.worktiming = kwargs["worktiming"] if "worktiming" in kwargs else [7, 17]
-        # workalendar calendar (it permits to query if a given day
-        # is a working day in a given culture)
-        self.workcalendar = kwargs[
-            "workcalendar"] if "workcalendar" in kwargs else constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR
 
-        if type(self.worktiming[0]) is int or type(self.worktiming[0]) is float:
-            self.worktiming = [self.worktiming]
+        self.business_hour_slots = kwargs[
+            "business_hour_slots"] if "business_hour_slots" in kwargs else constants.DEFAULT_BUSINESS_HOUR_SLOTS
 
-        if type(self.worktiming) is not dict:
-            self.worktiming = {i: self.worktiming for i in range(0, 7)}
+        # union of business hour slots in order to avoid overlapping business hours
+        self.business_hour_slots_unified = []
+        for begin, end in sorted(self.business_hour_slots):
+            if self.business_hour_slots_unified and self.business_hour_slots_unified[-1][1] >= begin - 1:
+                self.business_hour_slots_unified[-1][1] = max(self.business_hour_slots_unified[-1][1], end)
+            else:
+                self.business_hour_slots_unified.append([begin, end])
 
-    def getseconds(self):
-        current_date = copy(self.datetime1)
+        # work calendar (it permits querying if a given day is a working day in a given culture) - not used yet
+        self.work_calendar = kwargs[
+            "work_calendar"] if "work_calendar" in kwargs else constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR
 
-        summ = 0
+    def get_seconds(self):
+        sum = 0
+        week_start = self.datetime1.date() - timedelta(days=self.datetime1.weekday())
 
-        for dayweek in self.worktiming:
-            for wt in self.worktiming[dayweek]:
-                timedelta_nd = datetime.timedelta(days=1.0)
+        for bhs, bhe in self.business_hour_slots_unified:
+            begin_day_of_week = math.floor(bhs / 60 / 60 / 24)
+            begin_seconds_of_day = bhs - 24 * 60 * 60 * begin_day_of_week
+            bh_start = datetime.combine(week_start, time.min) + timedelta(days=begin_day_of_week) + timedelta(
+                seconds=begin_seconds_of_day)
 
-                dt1 = datetime.datetime(year=current_date.year, month=current_date.month, day=current_date.day,
-                                        hour=int(wt[0]), minute=int((wt[0] - int(wt[0])) * 60))
-                dt2 = datetime.datetime(year=current_date.year, month=current_date.month, day=current_date.day,
-                                        hour=int(wt[1]), minute=int((wt[1] - int(wt[1])) * 60))
+            end_day_of_week = math.floor(bhe / 60 / 60 / 24)
+            end_seconds_of_day = bhe - 24 * 60 * 60 * end_day_of_week
+            bh_end = datetime.combine(week_start, time.min) + timedelta(days=end_day_of_week) + timedelta(
+                seconds=end_seconds_of_day)
 
-                while dt1 <= self.datetime2:
-                    if dt2 > self.datetime2:
-                        dt2 = self.datetime2
+            overlapping_time = get_overlapping_time(self.datetime1, self.datetime2, bh_start, bh_end)
+            sum += overlapping_time
 
-                    if dt1.weekday() == dayweek:
-                        timedelta_nd = datetime.timedelta(days=7.0)
-                        if self.__is_working_day(dt1):
-                                diff = dt2.timestamp() - max(dt1, self.datetime1).timestamp()
-                                if diff > 0:
-                                    summ += diff
+            while True:
+                bh_start += timedelta(days=7)
+                bh_end += timedelta(days=7)
 
-                    dt1 = dt1 + timedelta_nd
-                    dt2 = dt2 + timedelta_nd
+                overlapping_time = get_overlapping_time(self.datetime1, self.datetime2, bh_start, bh_end)
 
-        return summ
+                if overlapping_time <= 0:
+                    break
 
-    def __is_working_day(self, dt):
-        if self.workcalendar is None:
-            return dt.isoweekday() not in self.weekends
-        return self.workcalendar.is_working_day(dt)
+                sum += overlapping_time
+
+        return sum
