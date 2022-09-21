@@ -11,6 +11,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import pkgutil
 import random
 import warnings
 from enum import Enum
@@ -35,6 +36,7 @@ class Parameters(Enum):
     EPSILON = "epsilon"
     K = "k"
     P = "p"
+    SHOW_PROGRESS_BAR = "show_progress_bar"
 
 
 def apply(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> EventLog:
@@ -56,6 +58,8 @@ def apply(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> EventLo
             -Parameters.P -> Pruning parameter of the trace-variant-query. Of a noisy trace variant, at least P traces
                             must appear. Otherwise, the trace variant and its traces won't be part of the result of the
                             trace variant query.
+            -Parameters.SHOW_PROGRESS_BAR -> Enables/disables the progress bar (default: True)
+
     Returns
     ------------
     anonymized_trace_variant_distribution
@@ -77,10 +81,16 @@ def apply(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> EventLo
         warnings.warn("p, the pruning parameter, is set to 1, the trace-varaint-query might be very large.",
                       RuntimeWarning)
 
-    return privatize_tracevariants(log, epsilon, p, k)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    progress = None
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
+        from tqdm.auto import tqdm
+        progress = tqdm(total=k, desc="prefix tree construction, completed prefixes of length :: ")
+
+    return privatize_tracevariants(log, epsilon, p, k, progress)
 
 
-def privatize_tracevariants(log, epsilon, P, N, smart_pruning=False, P_smart=0, sensitivity=1):
+def privatize_tracevariants(log, epsilon, P, N, progress, smart_pruning=False, P_smart=0, sensitivity=1):
     epsilon = epsilon / sensitivity
     if not smart_pruning:
         P_smart = P
@@ -120,6 +130,11 @@ def privatize_tracevariants(log, epsilon, P, N, smart_pruning=False, P_smart=0, 
                 new_frequencies[entry[0]] = entry[1]
         trace_frequencies = new_frequencies
 
+        if progress is not None:
+            progress.update()
+    if progress is not None:
+        progress.close()
+    del progress
     return generate_pm4py_log(trace_frequencies=final_frequencies)
 
 

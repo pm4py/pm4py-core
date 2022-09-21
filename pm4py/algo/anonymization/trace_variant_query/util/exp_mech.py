@@ -14,6 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import sys
 
 import numpy as np
 
@@ -27,6 +28,14 @@ def score(output_universes):
 def exp_mech(output_universes, epsilon):
     scores = score(output_universes)
     raw_prob = [np.exp((epsilon * x) / (2 * GS_SCORE)) for x in scores]
-    max_value = np.sum(raw_prob)
-    prob = [x / max_value for x in raw_prob]
+    i = 0
+    for prob in raw_prob:
+        if prob == float('inf'):
+            raw_prob[i] = sys.float_info.max
+        i += 1
+    # max_value = np.sum(raw_prob)
+    # prob = [x / max_value for x in raw_prob]
+    # SOFTMAX
+    prob = np.exp(raw_prob - np.max(raw_prob))
+    prob = prob / prob.sum()
     return np.random.choice(output_universes, p=prob)

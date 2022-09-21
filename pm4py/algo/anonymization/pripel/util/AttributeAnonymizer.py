@@ -14,10 +14,10 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import datetime
 from datetime import timedelta
 
 import diffprivlib.mechanisms as privacyMechanisms
+from tqdm.auto import tqdm
 
 
 class AttributeAnonymizer:
@@ -190,8 +190,6 @@ class AttributeAnonymizer:
             event[self.__timestamp] = event[self.__timestamp] + timestampShift
 
     def anonymize(self, log, distributionOfAttributes, epsilon, allTimestampDifferences, allTimestamps):
-        # print("Setting up the mechanisms")
-        starttime = datetime.datetime.now()
         self.__maxAllTimestampDifferences = max(allTimestampDifferences)
         self.__minAllTimestampDifferences = min(allTimestampDifferences)
         self.__maxAllTimestamp = max(allTimestamps)
@@ -205,11 +203,10 @@ class AttributeAnonymizer:
                                                                     lower=lower, upper=upper)
         mechanisms = self.__setupMechanisms(epsilon, distributionOfAttributes, lower, upper, sensitivity)
         self.__domainTimestampData = dict()
-        endtime = datetime.datetime.now()
-        time = endtime - starttime
-        # ("Done with setting up mechanisms after " + str(time))
         i = 0
+        progress = tqdm(total=len(log), desc="attribute anonymization, anonymized traces :: ")
         for trace in log:
+
             # trace attribute anonymization
             if not isinstance(trace, list):
                 for attribute in trace.attributes.keys():
@@ -238,6 +235,7 @@ class AttributeAnonymizer:
                     elif eventNr == 0:
                         self.__performTimestampShift(trace, timeShiftMechanism)
             i = i + 1
-            # if (i % 100) == 0:
-            # print("Iteration " + str((i)))
+            progress.update()
+        progress.close()
+        del progress
         return log, self.__infectionSuspected

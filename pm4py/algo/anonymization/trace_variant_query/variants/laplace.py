@@ -11,6 +11,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import pkgutil
 import warnings
 from enum import Enum
 from typing import Optional, Dict, Any, Union
@@ -30,6 +31,7 @@ class Parameters(Enum):
     EPSILON = "epsilon"
     K = "k"
     P = "p"
+    SHOW_PROGRESS_BAR = "show_progress_bar"
 
 
 def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
@@ -49,6 +51,8 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
             -Parameters.P -> Pruning parameter of the trace-variant-query. Of a noisy trace variant, at least P traces
                             must appear. Otherwise, the trace variant and its traces won't be part of the result of the
                             trace variant query.
+            -Parameters.SHOW_PROGRESS_BAR -> Enables/disables the progress bar (default: True)
+
     Returns
     ------------
     anonymized_trace_variant_distribution
@@ -69,10 +73,16 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
         warnings.warn("p, the pruning parameter, is set to 1, the trace-varaint-query might be very large.",
                       RuntimeWarning)
 
-    return privatize_tracevariants(log, epsilon, p, k)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    progress = None
+    if pkgutil.find_loader("tqdm") and show_progress_bar:
+        from tqdm.auto import tqdm
+        progress = tqdm(total=k, desc="prefix tree construction, completed prefixes of length :: ")
+
+    return privatize_tracevariants(log, epsilon, p, k, progress)
 
 
-def privatize_tracevariants(log, epsilon, p, n):
+def privatize_tracevariants(log, epsilon, p, n, progress):
     # transform log into event view and get prefix frequencies
     event_int_mapping = create_event_int_mapping(log)
     known_prefix_frequencies = get_prefix_frequencies_from_log(log)
@@ -99,6 +109,11 @@ def privatize_tracevariants(log, epsilon, p, n):
                 new_frequencies[entry[0]] = entry[1]
         trace_frequencies = new_frequencies
         # print(trace_frequencies)
+        if progress is not None:
+            progress.update()
+    if progress is not None:
+        progress.close()
+    del progress
     return generate_pm4py_log(final_frequencies)
 
 
