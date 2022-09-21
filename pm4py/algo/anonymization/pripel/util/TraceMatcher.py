@@ -20,6 +20,7 @@ from collections import deque
 
 import numpy as np
 from scipy.optimize import linear_sum_assignment
+from tqdm.auto import tqdm
 
 from pm4py.algo.anonymization.pripel.util.trace_levenshtein import trace_levenshtein
 from pm4py.objects.log import obj
@@ -101,11 +102,15 @@ class TraceMatcher:
 
     def __findOptimalMatches(self):
         rows = list()
+        progress = tqdm(total=len(self.__query_log), desc="matching query traces, matched traces :: ")
         for traceQuery in self.__query_log:
             row = list()
             for traceLog in self.__log:
                 row.append(self.__getDistanceVariants(traceQuery.attributes["variant"], traceLog.attributes["variant"]))
             rows.append(row)
+            progress.update()
+        progress.close()
+        del progress
         distanceMatrix = np.array(rows)
         row_ind, col_ind = linear_sum_assignment(distanceMatrix)
         traceMatching = dict()
@@ -215,11 +220,8 @@ class TraceMatcher:
         for trace in self.__query_log:
             traceID = trace.attributes["concept:name"]
             if fillUp or traceID in traceMatching:
-                #
-                if traceMatching.get(traceID, list()) != []:
-                    matchedTrace = self.__resolveTrace(trace, traceMatching.get(traceID, list()),
-                                                       distributionOfAttributes)
-                    log.append(matchedTrace)
+                matchedTrace = self.__resolveTrace(trace, traceMatching.get(traceID, list()), distributionOfAttributes)
+                log.append(matchedTrace)
         return log
 
     def __handleAttributesOfDict(self, dictOfAttributes, distributionOfAttributes, attributeBlacklist,
