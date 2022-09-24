@@ -5,13 +5,15 @@ import pm4py
 from pm4py.algo.discovery.inductive import algorithm as inductive
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.visualization.petri_net import visualizer as pn_vis
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 
 def execute_script():
     log_path = os.path.join("..", "tests", "input_data", "running-example.xes")
 
     log = xes_importer.apply(log_path)
-    net, marking, final_marking = inductive.apply(log, variant=inductive.Variants.IM_CLEAN)
+    process_tree = inductive.apply(log)
+    net, marking, final_marking = process_tree_converter.apply(process_tree)
     for place in marking:
         print("initial marking " + place.name)
     for place in final_marking:

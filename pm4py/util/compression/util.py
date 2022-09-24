@@ -1,13 +1,17 @@
-from typing import Union, Tuple, List, Any, Dict
-import pandas as pd
-from pm4py.objects.log.obj import EventLog
-from pm4py.util.compression.dtypes import UCL, MCL, ULT, MLT
-from collections import Counter
-import numpy as np
 import copy
+from collections import Counter
+from typing import Union, Tuple, List, Any, Dict, Optional, Counter as TCounter
+
+import numpy as np
+import pandas as pd
+
+from pm4py.objects.dfg.obj import DFG
+from pm4py.objects.log.obj import EventLog
+from pm4py.util.compression.dtypes import UCL, MCL, ULT, MLT, UVCL
 
 
-def project_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:name', df_glue: str = 'case:concept:name',  df_sorting_criterion_key='time:timestamp') -> UCL:
+def project_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:name',
+                       df_glue: str = 'case:concept:name', df_sorting_criterion_key='time:timestamp') -> Optional[UCL]:
     '''
     Projects an event log to a univariate list of values
     For example, an event log of the form [[('concept:name':A,'k1':v1,'k2':v2),('concept:name':B,'k1':v3,'k2':v4),...],...]
@@ -29,7 +33,7 @@ def project_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:n
     if type(log) is EventLog:
         return [[e[key] for e in t] for t in log]
     elif type(log) is pd.DataFrame:
-        cl = UCL()
+        cl = list()
         log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
         values = log[key].to_list()
         distinct_ids, start_indexes, case_sizes = np.unique(
@@ -38,11 +42,12 @@ def project_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:n
             cl.append(
                 values[start_indexes[i]:start_indexes[i] + case_sizes[i]])
         return cl
-    return None, None
+    return None
 
 
-def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:name', df_glue: str = 'case:concept:name',
-                        df_sorting_criterion_key='time:timestamp') -> Tuple[UCL, ULT]:
+def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:name',
+                        df_glue: str = 'case:concept:name',
+                        df_sorting_criterion_key='time:timestamp') -> Optional[Tuple[UCL, ULT]]:
     """
     Compresses an event log to a univariate list of integer lists
     For example, an event log of the form [[('concept:name':A,'k1':v1,'k2':v2),('concept:name':B,'k1':v3,'k2':v4),...],...]
@@ -63,26 +68,28 @@ def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:
     if type(log) is pd.DataFrame:
         log = log.loc[:, [key, df_glue, df_sorting_criterion_key]]
     lookup = list(set([x for xs in [[e[key] for e in t] for t in log]
-                  for x in xs])) if type(log) is EventLog else list(log[key].unique())
+                       for x in xs])) if type(log) is EventLog else list(log[key].unique())
     lookup_inv = {lookup[i]: i for i in range(len(lookup))}
     if type(log) is EventLog:
         return [[lookup_inv[t[i][key]] for i in range(0, len(t))] for t in log], lookup
     elif type(log) is pd.DataFrame:
         log[key] = log[key].map(lookup_inv)
-        cl = UCL()
+        cl = list()
         log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
         encoded_values = log[key].to_list()
         distinct_ids, start_indexes, case_sizes = np.unique(
             log[df_glue].to_numpy(), return_index=True, return_counts=True)
         for i in range(len(distinct_ids)):
             cl.append(encoded_values[start_indexes[i]
-                      :start_indexes[i] + case_sizes[i]])
+                                     :start_indexes[i] + case_sizes[i]])
         return cl, lookup
     return None, None
 
 
-def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = ['concept:name'], df_glue: str = 'case:concept:name',
-                          df_sorting_criterion_key: str = 'time:timestamp', uncompressed: List[str] = []) -> Tuple[MCL, MLT]:
+def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = ['concept:name'],
+                          df_glue: str = 'case:concept:name',
+                          df_sorting_criterion_key: str = 'time:timestamp', uncompressed: List[str] = []) -> Tuple[
+    MCL, MLT]:
     """
     Compresses an event log to a list of lists containing tupes of integers.
     For example, an event log of the form [[('concept:name':A,'k1':v1,'k2':v2),('concept:name':B,'k1':v3,'k2':v4),...],...]
@@ -120,7 +127,7 @@ def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = 
                                     for x in xs])) if type(log) is EventLog else list(log[key].unique())
             lookup_inv[key] = {lookup[key][i]: i for i in range(len(lookup[key]))}
     if type(log) is EventLog:
-        encoded = MCL()
+        encoded = list()
         for t in log:
             tr = list()
             for i in range(0, len(t)):
@@ -135,7 +142,7 @@ def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = 
     else:
         for key in keys:
             log[key] = log[key].map(lookup_inv[key])
-        cl = MCL()
+        cl = list()
         log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
         retain = copy.copy(keys)
         retain.extend([u for u in uncompressed if u not in retain])
@@ -144,11 +151,11 @@ def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = 
             log[df_glue].to_numpy(), return_index=True, return_counts=True)
         for i in range(len(distinct_ids)):
             cl.append(encoded_values[start_indexes[i]
-                      :start_indexes[i] + case_sizes[i]])
+                                     :start_indexes[i] + case_sizes[i]])
     return cl, lookup
 
 
-def discover_dfg(log: Union[UCL, MCL], index: int = 0) -> Dict[Tuple[Any, int], int]:
+def discover_dfg(log: Union[UCL, MCL], index: int = 0) -> DFG:
     """
     Discover a DFG object from a compressed event log (either univariate or multivariate)
     The DFG object represents a counter of integer pairs
@@ -158,36 +165,78 @@ def discover_dfg(log: Union[UCL, MCL], index: int = 0) -> Dict[Tuple[Any, int], 
     :param indes: index to use for dfg discovery in case of using an multivariate log
     """
     log = _map_log_to_single_index(log, index)
-    dfg = Counter()
-    [dfg.update([(t[i], t[i+1])]) for t in log for i in range(0, len(t)-1)]
+    dfg = DFG()
+    [dfg.graph.update([(t[i], t[i + 1])]) for t in log for i in range(0, len(t) - 1) if len(t)]
+    dfg.start_activities.update(get_start_activities(log, index))
+    dfg.end_activities.update(get_end_activities(log, index))
     return dfg
 
 
-def get_start_activities(log: Union[UCL, MCL], index: int = 0) -> Dict[Tuple[Any, int], int]:
+def discover_dfg_uvcl(log: UVCL) -> DFG:
+    dfg = DFG()
+    [dfg.graph.update({(t[i], t[i + 1]): log[t]}) for t in log for i in range(0, len(t) - 1) if len(t)]
+    for a in get_alphabet(log):
+        for t in log:
+            if len(t) > 0:
+                if t[0] == a:
+                    dfg.start_activities.update({a: log[t]})
+                if t[len(t) - 1] == a:
+                    dfg.end_activities.update({a: log[t]})
+    return dfg
+
+
+def get_start_activities(log: Union[UCL, MCL, UVCL], index: int = 0) -> TCounter[Any]:
     log = _map_log_to_single_index(log, index)
     starts = Counter()
-    [starts.update([e]) for e in list(
-        map(lambda t: t[0], filter(lambda t: len(t) > 0, log)))]
+    starts.update(map(lambda t: t[0], filter(lambda t: len(t) > 0, log)))
     return starts
 
 
-def get_end_activities(log: Union[UCL, MCL], index: int = 0):
+def get_end_activities(log: Union[UCL, MCL, UVCL], index: int = 0) -> TCounter[Any]:
     log = _map_log_to_single_index(log, index)
     ends = Counter()
-    [ends.update([e]) for e in list(
-        map(lambda t: t[len(t)-1], filter(lambda t: len(t) > 0, log)))]
+    ends.update(map(lambda t: t[len(t) - 1], filter(lambda t: len(t) > 0, log)))
     return ends
 
 
-def get_alphabet(log: Union[UCL, MCL], index: int = 0):
+def get_alphabet(log: Union[UCL, MCL, UVCL], index: int = 0):
     log = _map_log_to_single_index(log, index)
     return set([e for t in log for e in t])
 
 
-def get_variants(log: Union[UCL, MCL], index: int = 0):
+def get_variants(log: Union[UCL, MCL], index: int = 0) -> UVCL:
     log = _map_log_to_single_index(log, index)
     return Counter(map(lambda t: tuple(t), log))
 
 
-def _map_log_to_single_index(log: Union[UCL, MCL], i: int):
+def _map_log_to_single_index(log: Union[UCL, MCL, UVCL], i: int):
     return [list(map(lambda v: v[i], t)) for t in log] if type(log) is MCL else log
+
+
+def msd(ucl: Union[UCL, UVCL]) -> Dict[Any, int]:
+    msd = dict()
+    for a in get_alphabet(ucl):
+        activity_indices = list(
+            filter(lambda t: len(t) > 1, map(lambda t: [i for i, x in enumerate(t) if x == a], ucl)))
+        if len(activity_indices) > 0:
+            msd[a] = min([i for l in map(lambda t: [
+                t[i - 1] - t[i] - 1 for i in range(len(t)) if i > 0], activity_indices) for i in l])
+    return msd
+
+
+def msdw(cl: Union[UCL, UVCL], msd: Dict[Any, int]) -> Dict[Any, Any]:
+    witnesses = dict()
+    alphabet = get_alphabet(cl)
+    for a in alphabet:
+        if a in msd and msd[a] > 0:
+            witnesses[a] = set()
+        else:
+            continue
+        for t in cl:
+            if len(list(filter(lambda e: e == a, t))) > 1:
+                indices = [i for i, x in enumerate(t) if x == a]
+                for i in range(len(indices) - 1):
+                    if indices[i + 1] - indices[i] - 1 == msd[a]:
+                        for b in t[indices[i] + 1:indices[i + 1]]:
+                            witnesses[a].add(b)
+    return witnesses

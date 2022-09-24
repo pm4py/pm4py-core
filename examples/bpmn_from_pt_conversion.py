@@ -11,7 +11,7 @@ from pm4py.objects.bpmn.exporter import exporter as bpmn_exporter
 def execute_script():
     log_path = os.path.join(os.path.join("..", "tests", "input_data", "running-example.xes"))
     log = xes_import.apply(log_path)
-    ptree = inductive_miner.apply_tree(log)
+    ptree = inductive_miner.apply(log)
     bpmn = pt_converter.apply(ptree, variant=pt_converter.Variants.TO_BPMN)
     #bpmn = bpmn_layouter.apply(bpmn)
     bpmn_exporter.apply(bpmn, "stru.bpmn")
