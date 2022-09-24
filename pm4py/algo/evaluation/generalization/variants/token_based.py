@@ -79,7 +79,7 @@ def get_generalization(petri_net, aligned_traces):
     return generalization
 
 
-def apply(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None):
+def apply(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None):
     """
     Calculates generalization on the provided log and Petri net.
 

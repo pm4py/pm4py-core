@@ -13,6 +13,7 @@ from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import sampling, sorting, index_attribute
 from pm4py.objects.petri_net.exporter import exporter as petri_exporter
 from pm4py.visualization.petri_net.common import visualize as pn_viz
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 # from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
 
@@ -23,7 +24,7 @@ COMPRESSED_INPUT_DATA = "compressed_input_data"
 
 
 class InductiveMinerTest(unittest.TestCase):
-    def obtain_petri_net_through_im(self, log_name, variant=inductive_miner.IM_CLEAN):
+    def obtain_petri_net_through_im(self, log_name, variant=inductive_miner.Variants.IM):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
@@ -33,7 +34,8 @@ class InductiveMinerTest(unittest.TestCase):
             df = pd.read_csv(log_name)
             df = dataframe_utils.convert_timestamp_columns_in_df(df)
             log = log_conversion.apply(df, variant=log_conversion.Variants.TO_EVENT_LOG)
-        net, marking, final_marking = inductive_miner.apply(log, variant=variant)
+        process_tree = inductive_miner.apply(log)
+        net, marking, final_marking = process_tree_converter.apply(process_tree)
 
         return log, net, marking, final_marking
 

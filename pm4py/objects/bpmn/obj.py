@@ -17,6 +17,8 @@
 import uuid
 from enum import Enum
 from collections import Counter
+import deprecation
+
 
 DEFAULT_PROCESS = str(uuid.uuid4())
 
@@ -81,6 +83,65 @@ class Marking(Counter):
         return marking
 
 
+class BPMNNodeLayout(object):
+    def __init__(self):
+        self.__x = 0
+        self.__y = 0
+        self.__width = 100
+        self.__height = 100
+
+    def set_x(self, x):
+        self.__x = x
+
+    def set_y(self, y):
+        self.__y = y
+
+    def get_x(self):
+        return self.__x
+
+    def get_y(self):
+        return self.__y
+
+    def get_width(self):
+        return self.__width
+
+    def set_width(self, width):
+        self.__width = width
+
+    def get_height(self):
+        return self.__height
+
+    def set_height(self, height):
+        self.__height = height
+
+
+class BPMNEdgeLayout(object):
+    def __init__(self):
+        self.__waypoints = [(0, 0), (0, 0)]
+
+    def add_waypoint(self, waypoint):
+        self.__waypoints.append(waypoint)
+
+    def del_waypoints(self):
+        self.__waypoints = list()
+
+    def get_waypoints(self):
+        return self.__waypoints
+
+
+class BPMNLayout(object):
+    def __init__(self):
+        self.layout_dict = {}
+
+    def get(self, n):
+        if n not in self.layout_dict:
+            if isinstance(n, BPMN.BPMNNode):
+                self.layout_dict[n] = BPMNNodeLayout()
+            elif isinstance(n, BPMN.Flow):
+                self.layout_dict[n] = BPMNEdgeLayout()
+        return self.layout_dict[n]
+
+
 class BPMN(object):
     class BPMNNode(object):
         def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None):
@@ -88,41 +149,14 @@ class BPMN(object):
             self.__name = name
             self.__in_arcs = list() if in_arcs is None else in_arcs
             self.__out_arcs = list() if out_arcs is None else out_arcs
-            self.__x = 0
-            self.__y = 0
-            self.__width = 100
-            self.__height = 100
             self.__process = DEFAULT_PROCESS if process == None else process
+            self.__layout = BPMNLayout()
 
         def get_id(self):
             return self.__id
 
         def get_name(self):
             return self.__name
-
-        def set_x(self, x):
-            self.__x = x
-
-        def set_y(self, y):
-            self.__y = y
-
-        def get_x(self):
-            return self.__x
-
-        def get_y(self):
-            return self.__y
-
-        def get_width(self):
-            return self.__width
-
-        def set_width(self, width):
-            self.__width = width
-
-        def get_height(self):
-            return self.__height
-
-        def set_height(self, height):
-            self.__height = height
 
         def get_in_arcs(self):
             return self.__in_arcs
@@ -149,6 +183,44 @@ class BPMN(object):
 
         def set_process(self, process):
             self.__process = process
+
+        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
+        def set_x(self, x):
+            return self.__layout.get(self).set_x(x)
+
+        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
+        def set_y(self, y):
+            return self.__layout.get(self).set_y(y)
+
+        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
+        def get_x(self):
+            return self.__layout.get(self).get_x()
+
+        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
+        def get_y(self):
+            return self.__layout.get(self).get_y()
+
+        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
+        def get_width(self):
+            return self.__layout.get(self).get_width()
+
+        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
+        def set_width(self, width):
+            return self.__layout.get(self).set_width(width)
+
+        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
+        def get_height(self):
+            return self.__layout.get(self).get_height()
+
+        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
+        def set_height(self, height):
+            return self.__layout.get(self).set_height(height)
+
+        def get_layout(self):
+            return self.__layout
+
+        def set_layout(self, layout):
+            self.__layout = layout
 
         def __hash__(self):
             return hash(self.id)
@@ -326,10 +398,8 @@ class BPMN(object):
             source.add_out_arc(self)
             self.__target = target
             target.add_in_arc(self)
-            self.__waypoints = list()
-            self.__waypoints.append((source.get_x(), source.get_y()))
-            self.__waypoints.append((target.get_x(), target.get_y()))
             self.__process = DEFAULT_PROCESS if process == None else process
+            self.__layout = BPMNLayout()
 
         def get_id(self):
             return self.__id
@@ -343,20 +413,29 @@ class BPMN(object):
         def get_target(self):
             return self.__target
 
-        def add_waypoint(self, waypoint):
-            self.__waypoints.append(waypoint)
-
-        def del_waypoints(self):
-            self.__waypoints = list()
-
-        def get_waypoints(self):
-            return self.__waypoints
-
         def get_process(self):
             return self.__process
 
         def set_process(self, process):
             self.__process = process
+
+        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
+        def add_waypoint(self, waypoint):
+            return self.__layout.get(self).add_waypoint(waypoint)
+
+        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
+        def del_waypoints(self):
+            return self.__layout.get(self).del_waypoints()
+
+        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
+        def get_waypoints(self):
+            return self.__layout.get(self).get_waypoints()
+
+        def get_layout(self):
+            return self.__layout
+
+        def set_layout(self, layout):
+            self.__layout = layout
 
         def __repr__(self):
             u_id = str(self.__source.get_id()) + "@" + str(self.__source.get_name())
@@ -386,12 +465,15 @@ class BPMN(object):
         self.__graph = nx.MultiDiGraph()
         self.__nodes = set() if nodes is None else nodes
         self.__flows = set() if flows is None else flows
+        self.__layout = BPMNLayout()
 
         if nodes is not None:
             for node in nodes:
+                node.set_layout(self.get_layout())
                 self.__graph.add_node(node)
         if flows is not None:
             for flow in flows:
+                flow.set_layout(self.get_layout())
                 self.__graph.add_edge(flow.get_source(), flow.get_target())
 
     def get_process_id(self):
@@ -413,6 +495,7 @@ class BPMN(object):
         return self.__name
 
     def add_node(self, node):
+        node.set_layout(self.get_layout())
         self.__nodes.add(node)
         self.__graph.add_node(node)
 
@@ -434,6 +517,7 @@ class BPMN(object):
     def add_flow(self, flow):
         if not isinstance(flow, BPMN.Flow):
             raise Exception()
+        flow.set_layout(self.get_layout())
         source = flow.get_source()
         target = flow.get_target()
         if source not in self.__nodes:
@@ -444,3 +528,13 @@ class BPMN(object):
         self.__graph.add_edge(source, target, id=flow.get_id(), name=flow.get_name())
         source.add_out_arc(flow)
         target.add_in_arc(flow)
+
+    def get_layout(self):
+        return self.__layout
+
+    def set_layout(self, layout):
+        self.__layout = layout
+        for n in self.__nodes:
+            n.set_layout(layout)
+        for e in self.__flows:
+            e.set_layout(layout)

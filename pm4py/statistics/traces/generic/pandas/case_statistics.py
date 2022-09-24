@@ -42,8 +42,7 @@ class Parameters(Enum):
     MAX_RET_CASES = "max_ret_cases"
 
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING  = "worktiming"
-    WEEKENDS = "weekends"
+    BUSINESS_HOUR_SLOTS = "business_hour_slots"
     WORKCALENDAR = "workcalendar"
 
 
@@ -157,8 +156,7 @@ def get_cases_description(df: pd.DataFrame, parameters: Optional[Dict[Union[str,
     max_ret_cases = exec_utils.get_param_value(Parameters.MAX_RET_CASES, parameters, None)
 
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
-    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
-    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    business_hours_slots = exec_utils.get_param_value(Parameters.BUSINESS_HOUR_SLOTS, parameters, constants.DEFAULT_BUSINESS_HOUR_SLOTS)
     workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
@@ -177,8 +175,7 @@ def get_cases_description(df: pd.DataFrame, parameters: Optional[Dict[Union[str,
 
     if business_hours:
         stacked_df['caseDuration'] = stacked_df.apply(
-            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], worktiming,
-                                                   weekends, workcalendar), axis=1)
+            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], business_hours_slots, workcalendar), axis=1)
     else:
         stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
         stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
@@ -219,10 +216,7 @@ def get_variants_df(df, parameters=None):
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
 
-    if variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.STRING:
-        new_df = df.groupby(case_id_glue, sort=False)[activity_key].agg(lambda col: constants.DEFAULT_VARIANT_SEP.join(pd.Series.to_list(col))).to_frame()
-    elif variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.LIST:
-        new_df = df.groupby(case_id_glue, sort=False)[activity_key].agg(lambda col: tuple(pd.Series.to_list(col))).to_frame()
+    new_df = df.groupby(case_id_glue, sort=False)[activity_key].agg(lambda col: tuple(pd.Series.to_list(col))).to_frame()
 
     new_cols = list(new_df.columns)
     new_df = new_df.rename(columns={new_cols[0]: "variant"})
@@ -257,17 +251,13 @@ def get_variants_df_with_case_duration(df, parameters=None):
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
 
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
-    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
-    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    business_hours_slots = exec_utils.get_param_value(Parameters.BUSINESS_HOUR_SLOTS, parameters, constants.DEFAULT_BUSINESS_HOUR_SLOTS)
+
     workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     grouped_df = df[[case_id_glue, timestamp_key, activity_key]].groupby(df[case_id_glue])
 
-    df1 = None
-    if variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.STRING:
-        df1 = grouped_df[activity_key].agg(lambda col: constants.DEFAULT_VARIANT_SEP.join(pd.Series.to_list(col))).to_frame()
-    elif variants_util.VARIANT_SPECIFICATION == variants_util.VariantsSpecifications.LIST:
-        df1 = grouped_df[activity_key].agg(lambda col: tuple(pd.Series.to_list(col))).to_frame()
+    df1 = grouped_df[activity_key].agg(lambda col: tuple(pd.Series.to_list(col))).to_frame()
     new_cols = list(df1.columns)
     df1 = df1.rename(columns={new_cols[0]: "variant"})
 
@@ -284,8 +274,7 @@ def get_variants_df_with_case_duration(df, parameters=None):
     stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
     if business_hours:
         stacked_df['caseDuration'] = stacked_df.apply(
-            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], worktiming,
-                                                   weekends, workcalendar), axis=1)
+            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], business_hours_slots, workcalendar), axis=1)
     else:
         stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
         stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')

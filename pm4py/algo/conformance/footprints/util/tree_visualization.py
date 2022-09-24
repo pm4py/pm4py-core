@@ -65,9 +65,9 @@ def apply(tree, conf_results, parameters=None):
     start_activities = {}
     end_activities = {}
 
-    if type(conf_results) is list:
+    if isinstance(conf_results, list):
         raise Exception("the visualization can only be applied with total footprints (not trace-by-trace)!")
-    elif type(conf_results) is dict:
+    elif isinstance(conf_results, dict):
         footprints = conf_results
         start_activities = conf_results[START_ACTIVITIES]
         end_activities = conf_results[END_ACTIVITIES]

@@ -31,8 +31,7 @@ class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     LIFECYCLE_INSTANCE_KEY = "pm4py:param:lifecycle:instance:key"
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING  = "worktiming"
-    WEEKENDS = "weekends"
+    BUSINESS_HOUR_SLOTS = "business_hour_slots"
     WORKCALENDAR = "workcalendar"
 
 
@@ -62,8 +61,7 @@ def to_interval(log, parameters=None):
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
     lifecycle_instance_key = exec_utils.get_param_value(Parameters.LIFECYCLE_INSTANCE_KEY, parameters, xes.DEFAULT_INSTANCE_KEY)
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
-    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
-    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    business_hours_slots = exec_utils.get_param_value(Parameters.BUSINESS_HOUR_SLOTS, parameters, constants.DEFAULT_BUSINESS_HOUR_SLOTS)
 
     if log is not None and len(log) > 0:
         if "PM4PY_TYPE" in log.attributes and log.attributes["PM4PY_TYPE"] == "interval":
@@ -113,9 +111,8 @@ def to_interval(log, parameters=None):
 
                     if business_hours:
                         bh = BusinessHours(start_timestamp.replace(tzinfo=None), timestamp.replace(tzinfo=None),
-                                           worktiming=worktiming,
-                                           weekends=weekends)
-                        new_event["@@approx_bh_duration"] = bh.getseconds()
+                                           business_hour_slots=business_hours_slots)
+                        new_event["@@approx_bh_duration"] = bh.get_seconds()
 
                     new_trace.append(new_event)
             new_trace = sorting.sort_timestamp_trace(new_trace, start_timestamp_key)
@@ -201,15 +198,14 @@ def assign_lead_cycle_time(log, parameters=None):
     log
         Interval log
     parameters
-        Parameters of the algorithm, including: start_timestamp_key, timestamp_key, worktiming, weekends
+        Parameters of the algorithm, including: start_timestamp_key, timestamp_key, business_hour_slots
     """
     if parameters is None:
         parameters = {}
 
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
     start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, xes.DEFAULT_START_TIMESTAMP_KEY)
-    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
-    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    business_hours_slots = exec_utils.get_param_value(Parameters.BUSINESS_HOUR_SLOTS, parameters, constants.DEFAULT_BUSINESS_HOUR_SLOTS)
 
     interval_log = to_interval(log, parameters=parameters)
 
@@ -228,23 +224,23 @@ def assign_lead_cycle_time(log, parameters=None):
 
             if max_et_seconds > 0 and st_seconds > max_et_seconds:
                 bh_unworked = BusinessHours(max_et.replace(tzinfo=None), st.replace(tzinfo=None),
-                                                           worktiming=worktiming, weekends=weekends)
-                unworked_sec = bh_unworked.getseconds()
+                                                           business_hour_slots=business_hours_slots)
+                unworked_sec = bh_unworked.get_seconds()
                 approx_partial_lead_time = approx_partial_lead_time + unworked_sec
                 approx_wasted_time = approx_wasted_time + unworked_sec
                 this_wasted_time = unworked_sec
 
             if st_seconds > max_et_seconds:
                 bh = BusinessHours(st.replace(tzinfo=None), et.replace(tzinfo=None),
-                                                  worktiming=worktiming, weekends=weekends)
-                approx_bh_duration = bh.getseconds()
+                                                  business_hour_slots=business_hours_slots)
+                approx_bh_duration = bh.get_seconds()
 
                 approx_partial_cycle_time = approx_partial_cycle_time + approx_bh_duration
                 approx_partial_lead_time = approx_partial_lead_time + approx_bh_duration
             elif st_seconds < max_et_seconds and et_seconds > max_et_seconds:
                 bh = BusinessHours(max_et.replace(tzinfo=None), et.replace(tzinfo=None),
-                                                  worktiming=worktiming, weekends=weekends)
-                approx_bh_duration = bh.getseconds()
+                                                  business_hour_slots=business_hours_slots)
+                approx_bh_duration = bh.get_seconds()
 
                 approx_partial_cycle_time = approx_partial_cycle_time + approx_bh_duration
                 approx_partial_lead_time = approx_partial_lead_time + approx_bh_duration

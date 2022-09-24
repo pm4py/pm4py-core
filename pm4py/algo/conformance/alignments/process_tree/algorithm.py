@@ -61,6 +61,4 @@ def apply(obj: Union[EventLog, Trace, pd.DataFrame], pt: ProcessTree, variant=DE
     if parameters is None:
         parameters = {}
 
-    obj = log_converter.apply(obj, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
-
     return exec_utils.get_variant(variant).apply(obj, pt, parameters=parameters)

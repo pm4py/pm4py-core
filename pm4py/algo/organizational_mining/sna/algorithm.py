@@ -20,15 +20,15 @@ from pm4py.algo.organizational_mining.sna.variants.pandas import jointactivities
     handover as pd_handover, subcontracting as pd_subcontracting, working_together as pd_workingtogether
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import exec_utils
-from enum import Enum
 import numpy as np
 
 from enum import Enum
 from pm4py.util import constants
 
-from typing import Optional, Dict, Any, Union, Tuple, List
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import EventLog
 import pandas as pd
+from pm4py.objects.org.sna.obj import SNA
 
 
 class Parameters(Enum):
@@ -48,7 +48,7 @@ class Variants(Enum):
     JOINTACTIVITIES_PANDAS = pd_jointactivities
 
 
-def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Union[str, Parameters], Any]] = None, variant=Variants.HANDOVER_LOG) -> List[Any]:
+def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Union[str, Parameters], Any]] = None, variant=Variants.HANDOVER_LOG) -> SNA:
     """
     Calculates a SNA metric
 
@@ -83,7 +83,8 @@ def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Union[st
                    Variants.SUBCONTRACTING_LOG]:
         log = log_conversion.apply(log, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters)
     sna = exec_utils.get_variant(variant).apply(log, parameters=parameters)
-    abs_max = np.max(np.abs(sna[0]))
+    abs_max = np.max(np.abs(list(sna.connections.values())))
     if enable_metric_normalization and abs_max > 0:
-        sna[0] = sna[0] / abs_max
+        for key in sna.connections:
+            sna.connections[key] = sna.connections[key] / abs_max
     return sna

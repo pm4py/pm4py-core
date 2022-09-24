@@ -66,7 +66,7 @@ def apply(*args, variant=None, parameters: Optional[Dict[Any, Any]] = None) -> D
             variant = Variants.PETRI_REACH_GRAPH
         elif type(args[0]) is ProcessTree:
             variant = Variants.PROCESS_TREE
-        elif type(args[0]) is dict or type(args[0]) is Counter:
+        elif isinstance(args[0], dict):
             variant = Variants.DFG
 
         if pkgutil.find_loader("pandas"):

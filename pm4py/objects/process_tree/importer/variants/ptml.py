@@ -17,7 +17,6 @@
 import os
 import tempfile
 
-import deprecation
 from lxml import etree, objectify
 
 from pm4py.meta import VERSION
@@ -25,43 +24,6 @@ from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.process_tree.obj import Operator
 from pm4py.objects.process_tree.utils.generic import tree_sort
 from pm4py.util import constants
-
-
-@deprecation.deprecated(deprecated_in="2.1.1", removed_in="3.0",
-                        current_version=VERSION,
-                        details="Use the entrypoint import_from_string method")
-def import_tree_from_string(tree_string, parameters=None):
-    """
-    Import a process tree from an XML string
-
-    Parameters
-    ----------
-    tree_string
-        Process tree expressed as PNML string
-    parameters
-        Other parameters of the algorithm
-
-    Returns
-    ----------
-    tree
-        Process tree
-    """
-    if parameters is None:
-        parameters = {}
-
-    fp = tempfile.NamedTemporaryFile(suffix='.ptml')
-    fp.close()
-
-    if type(tree_string) is bytes:
-        with open(fp.name, 'wb') as f:
-            f.write(tree_string)
-    else:
-        with open(fp.name, 'w') as f:
-            f.write(tree_string)
-
-    tree = apply(fp.name, parameters=parameters)
-    os.remove(fp.name)
-    return tree
 
 
 def apply(path, parameters=None):

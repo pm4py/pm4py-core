@@ -57,7 +57,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], net: PetriNet, initia
     """
     if parameters is None:
         parameters = {}
-    return exec_utils.get_variant(variant).apply(log_converter.apply(log, variant=log_converter.TO_EVENT_LOG, parameters=parameters), net, initial_marking,
+    return exec_utils.get_variant(variant).apply(log, net, initial_marking,
                              final_marking, parameters=parameters)
 
 

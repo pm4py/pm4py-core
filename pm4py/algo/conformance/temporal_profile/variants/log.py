@@ -31,8 +31,7 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     ZETA = "zeta"
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING  = "worktiming"
-    WEEKENDS = "weekends"
+    BUSINESS_HOUR_SLOTS = "business_hour_slots"
     WORKCALENDAR = "workcalendar"
 
 
@@ -59,11 +58,15 @@ def apply(log: EventLog, temporal_profile: typing.TemporalProfile,
          - Parameters.ZETA => multiplier for the standard deviation
          - Parameters.BUSINESS_HOURS => calculates the difference of time based on the business hours, not the total time.
                                         Default: False
-         - Parameters.WORKTIMING => work schedule of the company (provided as a list where the first number is the start
-            of the work time, and the second number is the end of the work time), if business hours are enabled
-                                        Default: [7, 17] (work shift from 07:00 to 17:00)
-         - Parameters.WEEKENDS => indexes of the days of the week that are weekend
-                                        Default: [6, 7] (weekends are Saturday and Sunday)
+        - Parameters.BUSINESS_HOURS_SLOTS =>
+        work schedule of the company, provided as a list of tuples where each tuple represents one time slot of business
+        hours. One slot i.e. one tuple consists of one start and one end time given in seconds since week start, e.g.
+        [
+            (7 * 60 * 60, 17 * 60 * 60),
+            ((24 + 7) * 60 * 60, (24 + 12) * 60 * 60),
+            ((24 + 13) * 60 * 60, (24 + 17) * 60 * 60),
+        ]
+        meaning that business hours are Mondays 07:00 - 17:00 and Tuesdays 07:00 - 12:00 and 13:00 - 17:00
 
     Returns
     ---------------
@@ -81,9 +84,7 @@ def apply(log: EventLog, temporal_profile: typing.TemporalProfile,
     log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
-    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
-    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
-    workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
+    business_hours_slots = exec_utils.get_param_value(Parameters.BUSINESS_HOUR_SLOTS, parameters, constants.DEFAULT_BUSINESS_HOUR_SLOTS)
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
@@ -107,9 +108,8 @@ def apply(log: EventLog, temporal_profile: typing.TemporalProfile,
                         if business_hours:
                             bh = BusinessHours(trace[i][timestamp_key].replace(tzinfo=None),
                                                trace[j][start_timestamp_key].replace(tzinfo=None),
-                                               worktiming=worktiming,
-                                               weekends=weekends, workcalendar=workcalendar)
-                            this_diff = bh.getseconds()
+                                               business_hour_slots=business_hours_slots)
+                            this_diff = bh.get_seconds()
                         else:
                             this_diff = time_j - time_i
                         mean = temporal_profile[(act_i, act_j)][0]

@@ -14,8 +14,9 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+from sqlite3 import paramstyle
 from pm4py import util as pmutil
-from pm4py.algo.discovery.dfg.variants import native, performance, freq_triples, case_attributes
+from pm4py.algo.discovery.dfg.variants import native, performance, freq_triples, case_attributes, clean
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import xes_constants as xes_util
 from pm4py.util import exec_utils
@@ -43,6 +44,7 @@ class Variants(Enum):
     PERFORMANCE_GREEDY = performance
     FREQ_TRIPLES = freq_triples
     CASE_ATTRIBUTES = case_attributes
+    CLEAN = clean # 'novel' replacement for native
 
 
 DFG_NATIVE = Variants.NATIVE
@@ -51,6 +53,7 @@ DFG_PERFORMANCE = Variants.PERFORMANCE
 DFG_FREQUENCY_GREEDY = Variants.FREQUENCY_GREEDY
 DFG_PERFORMANCE_GREEDY = Variants.PERFORMANCE_GREEDY
 FREQ_TRIPLES = Variants.FREQ_TRIPLES
+DFG_CLEAN = Variants.CLEAN
 
 DEFAULT_VARIANT = Variants.NATIVE
 
@@ -84,6 +87,11 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     dfg
         DFG graph
     """
+    if variant == Variants.CLEAN and type(log) is pd.DataFrame:
+        return clean.apply(log, parameters)
+    elif variant is None:
+        variant = Variants.NATIVE
+    
     if parameters is None:
         parameters = {}
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)

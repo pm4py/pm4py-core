@@ -9,7 +9,7 @@ from pm4py.visualization.graphs import visualizer
 
 def execute_script():
     df = pd.read_csv(os.path.join("..", "tests", "input_data", "receipt.csv"))
-    df = pm4py.format_dataframe(df)
+    df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True)
     # plots the distribution of the events over the days of a month
     x0, y0 = attr_get.get_events_distribution(df, distr_type="days_month")
     gviz = visualizer.apply(x0, y0, variant=visualizer.Variants.BARPLOT,
