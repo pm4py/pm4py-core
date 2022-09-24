@@ -1,24 +1,19 @@
-from typing import List, Tuple, Any
+from typing import List, Tuple, Any, Counter
 
+UnivariateCompressedTrace = List[Any]
+MultivariateCompressedTrace = List[Tuple[Any]]
+UCT = UnivariateCompressedTrace
+MCT = MultivariateCompressedTrace
 
-class UnivariateCompressedLog(List[List[Any]]):
-    pass
-
-
-class MultivariateCompressedLog(List[List[Tuple[Any]]]):
-    pass
-
-
-class UnivariateLookupTable(List[Any]):
-    pass
-
-
-class MultivariateLookupTable(List[List[Any]]):
-    pass
-
-
+UnivariateCompressedLog = List[UCT]
+MultivariateCompressedLog = List[MCT]
 UCL = UnivariateCompressedLog
 MCL = MultivariateCompressedLog
 
+UnivariateLookupTable = List[Any]
 ULT = UnivariateLookupTable
+MultivariateLookupTable = List[List[Any]]
 MLT = MultivariateLookupTable
+
+UnivariateVariantCompressedLog = Counter[Tuple[Any]]
+UVCL = UnivariateVariantCompressedLog

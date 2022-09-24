@@ -1,177 +1,64 @@
 from enum import Enum
+from typing import Optional, Dict, Any, Union
 
-from pm4py.algo.discovery.inductive.variants.im_clean import algorithm as im_clean
-from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple, List
-from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
-from pm4py.objects.petri_net.obj import PetriNet, Marking
+
+from pm4py import util as pmutil
+from pm4py.algo.discovery.inductive.dtypes.im_dfg import InductiveDFG
+from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL, IMDataStructureDFG
+from pm4py.algo.discovery.inductive.variants.im import IMUVCL
+from pm4py.algo.discovery.inductive.variants.imf import IMFUVCL
+from pm4py.algo.discovery.inductive.variants.imd import IMD
+from pm4py.algo.discovery.inductive.variants.instances import IMInstance
+from pm4py.objects.dfg.obj import DFG
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.util import constants
+from pm4py.util import exec_utils
+from pm4py.util import xes_constants as xes_util
+from pm4py.util.compression import util as comut
+from pm4py.util.compression.dtypes import UVCL
+import warnings
+
+
+class Parameters(Enum):
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
 
 class Variants(Enum):
-    IM_CLEAN = im_clean
+    IM = IMInstance.IM
+    IMf = IMInstance.IMf
+    IMd = IMInstance.IMd
 
 
-IM_CLEAN = Variants.IM_CLEAN
-
-VERSIONS = {Variants.IM_CLEAN}
-
-DEFAULT_VARIANT_LOG = IM_CLEAN
-DEFAULT_VARIANT_VARIANTS = IM_CLEAN
-DEFAULT_VARIANT_DFG = IM_CLEAN
-
-
-def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT_LOG) -> Tuple[PetriNet, Marking, Marking]:
-    """
-    Apply the chosen IM algorithm to a log obtaining a Petri net along with an initial and final marking
-
-    Parameters
-    -------------
-    log
-        Log
-    variant
-        Variant of the algorithm to apply, possible values:
-        - Variants.IMd
-    parameters
-        Parameters of the algorithm, including:
-            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
-            (default concept:name)
-
-    Returns
-    -----------
-    net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    """
-    return exec_utils.get_variant(variant).apply(log, parameters=parameters)
-
-
-def apply_dfg(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end_activities: Dict[str, int], activities: Dict[str, int], parameters=None, variant=DEFAULT_VARIANT_DFG) -> Tuple[PetriNet, Marking, Marking]:
-    """
-    Apply the chosen IM algorithm to a DFG graph obtaining a Petri net along with an initial and final marking
-
-    Parameters
-    -----------
-    dfg
-        Directly-Follows graph
-    variant
-        Variant of the algorithm to apply, possible values:
-        - Variants.IMd
-    parameters
-        Parameters of the algorithm, including:
-            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
-            (default concept:name)
-
-    Returns
-    -----------
-    net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    """
-    return exec_utils.get_variant(variant).apply_dfg(dfg, start_activities=start_activities, end_activities=end_activities, activities=activities, parameters=parameters)
-
-
-def apply_tree(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT_LOG) -> ProcessTree:
-    """
-    Apply the chosen IM algorithm to a log obtaining a process tree
-
-    Parameters
-    ----------
-    log
-        Log
-    variant
-        Variant of the algorithm to apply, possible values:
-        - Variants.IMd
-    parameters
-        Parameters of the algorithm, including:
-            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
-            (default concept:name)
-
-    Returns
-    ----------
-    tree
-        Process tree
-    """
-    return exec_utils.get_variant(variant).apply_tree(log, parameters=parameters)
-
-
-def apply_tree_dfg(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end_activities: Dict[str, int], activities: Dict[str, int], parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT_DFG) -> ProcessTree:
-    """
-    Apply the chosen IM algorithm to a DFG graph obtaining a process tree
-
-    Parameters
-    ----------
-    dfg
-        Directly-follows graph
-    variant
-        Variant of the algorithm to apply, possible values:
-        - Variants.IMd
-    parameters
-        Parameters of the algorithm, including:
-            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
-            (default concept:name)
-
-    Returns
-    ----------
-    tree
-        Process tree
-    """
-    return exec_utils.get_variant(variant).apply_tree_dfg(dfg, start_activities=start_activities, end_activities=end_activities, activities=activities, parameters=parameters)
-
-
-def apply_variants(variants: Dict[Union[str, List[str]], int], parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT_VARIANTS) -> Tuple[PetriNet, Marking, Marking]:
-    """
-    Apply the chosen IM algorithm to a dictionary/list/set of variants obtaining a Petri net along with an initial and final marking
-
-    Parameters
-    -----------
-    variants
-        Dictionary/list/set of variants in the log
-    variant
-        Variant of the algorithm to apply, possible values:
-        - Variants.IMd
-    parameters
-        Parameters of the algorithm, including:
-            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name
-            (default concept:name)
-
-    Returns
-    -----------
-    net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    """
-    return exec_utils.get_variant(variant).apply_variants(variants, parameters=parameters)
-
-
-def apply_tree_variants(variants: Dict[Union[str, List[str]], int], parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT_VARIANTS) -> ProcessTree:
-    """
-    Apply the chosen IM algorithm to a dictionary/list/set of variants a log obtaining a process tree
-
-    Parameters
-    ----------
-    variants
-        Dictionary/list/set of variants in the log
-    variant
-        Variant of the algorithm to apply, possible values:
-        - Variants.IMd
-    parameters
-        Parameters of the algorithm, including:
-            Parameters.ACTIVITY_KEY -> attribute of the log to use as activity name (default concept:name)
-
-    Returns
-    ----------
-    tree
-        Process tree
-    """
-    return exec_utils.get_variant(variant).apply_tree_variants(variants, parameters=parameters)
+def apply(obj: Union[EventLog, pd.DataFrame, DFG, UVCL], parameters: Optional[Dict[Any, Any]] = None, variant=Variants.IM) -> ProcessTree:
+    if parameters is None:
+        parameters = {}
+    if type(obj) not in [EventLog, pd.DataFrame, DFG]:
+        raise TypeError('Inductive miner called with an incorrect data type as an input (should be a dataframe or DFG)')
+    ack = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
+    tk = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)
+    cidk = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, pmutil.constants.CASE_CONCEPT_NAME)
+    if type(obj) in [EventLog, pd.DataFrame, UVCL]:
+        if type(obj) in [EventLog, pd.DataFrame]:
+            uvcl = comut.get_variants(comut.project_univariate(obj, key=ack, df_glue=cidk, df_sorting_criterion_key=tk))
+        else:
+            uvcl = obj
+        if variant is Variants.IM:
+            im = IMUVCL(parameters)
+            return im.apply(IMDataStructureUVCL(uvcl), parameters)
+        if variant is Variants.IMf:
+            imf = IMFUVCL(parameters)
+            return imf.apply(IMDataStructureUVCL(uvcl), parameters)
+        if variant is Variants.IMd:
+            imd = IMD(parameters)
+            idfg = InductiveDFG(dfg=comut.discover_dfg_uvcl(uvcl), skip=() in uvcl)
+            return imd.apply(IMDataStructureDFG(idfg), parameters)
+    elif type(obj) is DFG:
+        if variant is not Variants.IMd:
+            warnings.warn('Inductive Miner Variant requested for DFG artefact is not IMD, resorting back to IMD')
+        imd = IMD(parameters)
+        idfg = InductiveDFG(dfg=obj, skip=False)
+        return imd.apply(IMDataStructureDFG(idfg), parameters)

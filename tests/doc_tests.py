@@ -2,6 +2,7 @@ from pm4py.objects.log.util import dataframe_utils
 import unittest
 import os
 import pandas as pd
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 
 class DocTests(unittest.TestCase):
@@ -335,12 +336,13 @@ class DocTests(unittest.TestCase):
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
-        net, initial_marking, final_marking = inductive_miner.apply(log)
+        process_tree = inductive_miner.apply(log)
+        net, initial_marking, final_marking = process_tree_converter.apply(process_tree)
 
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         from pm4py.visualization.process_tree import visualizer as pt_visualizer
 
-        tree = inductive_miner.apply_tree(log)
+        tree = inductive_miner.apply(log)
 
         gviz = pt_visualizer.apply(tree)
 
@@ -420,7 +422,8 @@ class DocTests(unittest.TestCase):
 
         import os
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        net, initial_marking, final_marking = inductive_miner.apply(log)
+        process_tree = inductive_miner.apply(log)
+        net, initial_marking, final_marking = process_tree_converter.apply(process_tree)
 
         from pm4py.visualization.petri_net import visualizer as pn_visualizer
         parameters = {pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: "png"}
@@ -553,7 +556,8 @@ class DocTests(unittest.TestCase):
 
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
 
-        net, initial_marking, final_marking = inductive_miner.apply(log)
+        process_tree = inductive_miner.apply(log)
+        net, initial_marking, final_marking = process_tree_converter.apply(process_tree)
 
         from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
         alignments = alignments.apply_log(log, net, initial_marking, final_marking)
@@ -571,11 +575,12 @@ class DocTests(unittest.TestCase):
         from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
 
         # define the activity key in the parameters
-        parameters = {inductive_miner.Variants.IM_CLEAN.value.Parameters.ACTIVITY_KEY: "customClassifier",
+        parameters = {inductive_miner.Parameters.ACTIVITY_KEY: "customClassifier",
                       alignments.Variants.VERSION_STATE_EQUATION_A_STAR.value.Parameters.ACTIVITY_KEY: "customClassifier"}
 
         # calculate process model using the given classifier
-        net, initial_marking, final_marking = inductive_miner.apply(log, parameters=parameters)
+        process_tree = inductive_miner.apply(log)
+        net, initial_marking, final_marking = process_tree_converter.apply(process_tree)
         alignments = alignments.apply_log(log, net, initial_marking, final_marking, parameters=parameters)
 
         from pm4py.algo.evaluation.replay_fitness import algorithm as replay_fitness
@@ -588,7 +593,8 @@ class DocTests(unittest.TestCase):
 
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
 
-        net, initial_marking, final_marking = inductive_miner.apply(log)
+        process_tree = inductive_miner.apply(log)
+        net, initial_marking, final_marking = process_tree_converter.apply(process_tree)
 
         from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
 
@@ -721,7 +727,8 @@ class DocTests(unittest.TestCase):
         filtered_log = variants_filter.filter_log_variants_percentage(log, 0.2)
 
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        net, initial_marking, final_marking = inductive_miner.apply(filtered_log)
+        process_tree = inductive_miner.apply(log)
+        net, initial_marking, final_marking = process_tree_converter.apply(process_tree)
 
         from pm4py.algo.conformance.tokenreplay import algorithm as token_based_replay
         parameters_tbr = {token_based_replay.Variants.TOKEN_REPLAY.value.Parameters.DISABLE_VARIANTS: True,
@@ -752,7 +759,8 @@ class DocTests(unittest.TestCase):
         filtered_log = variants_filter.filter_log_variants_percentage(log, 0.2)
 
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        net, initial_marking, final_marking = inductive_miner.apply(filtered_log)
+        process_tree = inductive_miner.apply(log)
+        net, initial_marking, final_marking = process_tree_converter.apply(process_tree)
 
         # build decision trees
         string_attributes = ["org:group"]
@@ -853,7 +861,8 @@ class DocTests(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
 
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        net, im, fm = inductive_miner.apply(log)
+        process_tree = inductive_miner.apply(log)
+        net, im, fm = process_tree_converter.apply(process_tree)
 
         from pm4py.algo.discovery.footprints import algorithm as footprints_discovery
 
@@ -883,7 +892,8 @@ class DocTests(unittest.TestCase):
         filtered_log = variants_filter.filter_log_variants_percentage(log, 0.2)
 
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        net, im, fm = inductive_miner.apply(filtered_log)
+        process_tree = inductive_miner.apply(log)
+        net, im, fm = process_tree_converter.apply(process_tree)
 
         from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
 

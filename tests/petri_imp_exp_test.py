@@ -9,6 +9,7 @@ from pm4py.objects.petri_net.exporter import exporter as petri_exporter
 from pm4py.objects.petri_net.importer import importer as petri_importer
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 
 class PetriImportExportTest(unittest.TestCase):
@@ -67,7 +68,8 @@ class PetriImportExportTest(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "running-example.xes"))
-        net, im, fm = inductive_miner.apply(log)
+        process_tree = inductive_miner.apply(log)
+        net, im, fm = process_tree_converter.apply(process_tree)
         s_comps = petri_net.utils.petri_utils.get_s_components_from_petri(net, im, fm)
         del s_comps
 

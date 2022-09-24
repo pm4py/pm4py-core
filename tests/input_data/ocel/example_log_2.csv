@@ -1,0 +1,30 @@
+ocel:eid,ocel:activity,ocel:timestamp,ocel:type:pr,ocel:type:po,ocel:type:gi,ocel:type:inv,ocel:type:pay
+e1,Create Purchase Requisition,2021-03-20 10:30,['PR1'],,,,,
+e2,Close Purchase Requisition,2021-03-20 14:00,['PR1'],,,,,
+e3,Create Purchase Requisition,2021-03-21 09:30,['PR2'],,,,,
+e4,Create Purchase Order,2021-03-22 14:59,['PR2'],['PO1'],,,
+e5,Invoice Receipt,2021-03-25 11:00,,['PO1'],,['R1'],
+e6,Perform Payment,2021-03-30 11:58,,,,['R1'],['P1']
+e7,Create Purchase Requisition,2021-04-01 09:15,['PR3'],,,,,
+e8,PR Formal Approval,2021-04-01 10:15,['PR3'],,,,,
+e9,Create Purchase Order,2021-04-02 17:00,['PR3'],['PO2'],,,,
+e10,Change Purchase Requisition,2021-04-03 10:00,['PR3'],,,,,
+e11,Invoice Receipt,2021-04-05 15:00,,['PO2'],,['R2'],
+e12,Perform Payment,2021-04-15 09:27,,,,['R2'],['P2']
+e13,Create Purchase Order,2021-04-17 14:29,,['PO3'],,,,
+e14,Invoice Receipt,2021-04-28 10:00,,['PO3'],,['R3'],
+e15,Perform Payment,2021-04-30 15:00,,,,['R3'],['P3']
+e16,Invoice Receipt,2021-05-28 10:01,,['PO3'],,['R4'],
+e17,Perform Payment,2021-05-30 15:17,,,,['R4'],['P4']
+e18,Invoice Receipt,2021-06-28 10:01,,['PO3'],,['R5'],
+e19,Perform Payment,2021-06-30 15:29,,,,['R5'],['P5']
+e20,Create Purchase Requisition,2021-07-01 11:15,['PR4'],,,,,
+e21,Create Purchase Order,2021-07-02 09:38,['PR4'],['PO4'],,,,
+e22,Invoice Receipt,2021-07-09 16:00,,['PO4'],,['R6'],
+e23,Goods Issue,2021-07-11 10:30,,['PO4'],['GI1'],,
+e24,Perform Payment,2022-05-15 09:00,,,,['R6'],['P6']
+e25,Invoice Receipt,2022-05-20 12:00,,,,['R7'],
+e26,Create Purchase Order,2022-05-20 15:00,,['PO5'],,['R7'],
+e27,Create Purchase Order,2022-06-01 09:17,,['PO6'],,,
+e28,Create Purchase Order,2022-06-02 11:48,,['PO7'],,,
+e29,Create Invoice,2022-06-05 09:00,,"['PO6','PO7']",,['R8'],
