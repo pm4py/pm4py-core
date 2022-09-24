@@ -15,7 +15,7 @@ def execute_script():
     # found a filtered version of the log that is used to discover a process model
     filtered_log = variants_filter.filter_log_variants_percentage(log, 0.2)
     # discover a process tree using inductive miner
-    tree = inductive_miner.apply_tree(filtered_log)
+    tree = inductive_miner.apply(filtered_log)
     print(tree)
     # apply the conversion of a process tree into a Petri net
     net, im, fm = converter.apply(tree)

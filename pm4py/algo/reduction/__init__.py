@@ -15,3 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.algo.reduction import process_tree
+
+import warnings
+
+warnings.warn("The reduction package will be removed in a future release.")

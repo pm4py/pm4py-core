@@ -15,7 +15,6 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.algo.discovery.transition_system.variants import view_based
-from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.objects.transition_system.obj import TransitionSystem
@@ -57,4 +56,4 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     if parameters is None:
         parameters = {}
 
-    return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG), parameters=parameters)
+    return exec_utils.get_variant(variant).apply(log, parameters=parameters)

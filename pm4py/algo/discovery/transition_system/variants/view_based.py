@@ -25,6 +25,7 @@ from pm4py.util import constants
 from pm4py.objects.transition_system.obj import TransitionSystem
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.conversion.log import converter as log_conversion
 import pandas as pd
 
 
@@ -44,21 +45,30 @@ class Parameters(Enum):
     PARAM_KEY_DIRECTION = 'direction'
 
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
     INCLUDE_DATA = 'include_data'
 
 
-def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> TransitionSystem:
+def apply(log: Union[EventLog, EventStream, pd.DataFrame],
+          parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> TransitionSystem:
     if parameters is None:
         parameters = {}
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
     include_data = exec_utils.get_param_value(Parameters.INCLUDE_DATA, parameters, False)
 
+    if type(log) is pd.DataFrame:
+        case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+        control_flow_log = list(log.groupby(case_id_key)[activity_key].apply(list))
+    else:
+        log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
+        control_flow_log = log_util.log.project_traces(log, activity_key)
+
     transition_system = ts.TransitionSystem()
-    control_flow_log = log_util.log.project_traces(log, activity_key)
     view_sequence = []
-    for i in range(len(log)):
-        view_sequence.append(__compute_view_sequence(control_flow_log[i], log[i], parameters=parameters))
+    for i in range(len(control_flow_log)):
+        provided_case = log[i] if type(log) is EventLog else None
+        view_sequence.append(__compute_view_sequence(control_flow_log[i], provided_case, parameters=parameters))
     for vs in view_sequence:
         __construct_state_path(vs, transition_system, include_data=include_data)
     return transition_system
@@ -96,10 +106,12 @@ def __compute_view_sequence(trace, full_case, parameters):
     for i in range(0, len(trace) + 1):
         if direction == Parameters.DIRECTION_FORWARD.value:
             view_sequences.append((__apply_abstr(trace[i:i + window], parameters),
-                                   trace[i] if i < len(trace) else None, (full_case, i) if i < len(full_case) else None))
+                                   trace[i] if i < len(trace) else None,
+                                   (full_case, i) if full_case is not None and i < len(full_case) else None))
         else:
             view_sequences.append((__apply_abstr(trace[max(0, i - window):i], parameters),
-                                   trace[i] if i < len(trace) else None, (full_case, i) if i < len(full_case) else None))
+                                   trace[i] if i < len(trace) else None,
+                                   (full_case, i) if full_case is not None and i < len(full_case) else None))
     return view_sequences
 
 

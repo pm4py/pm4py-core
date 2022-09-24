@@ -1,6 +1,7 @@
 import unittest
 from pm4py.objects.log.util import dataframe_utils
 from pm4py.objects.log.importer.xes import importer as xes_importer
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 import os
 import pandas as pd
 
@@ -113,7 +114,8 @@ class AlgorithmTest(unittest.TestCase):
     def test_inductive_miner(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        net, im, fm = inductive_miner.apply(log, variant=inductive_miner.Variants.IM_CLEAN)
+        process_tree = inductive_miner.apply(log)
+        net, im, fm = process_tree_converter.apply(process_tree)
 
     def test_performance_spectrum(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))

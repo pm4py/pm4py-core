@@ -25,7 +25,6 @@ from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-import deprecation
 
 from typing import Optional, Dict, Any, Union, Tuple, List
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
@@ -107,44 +106,4 @@ def filter_log_by_start_activities(start_activities, variants, vc, threshold, ac
             if vsa == fvsa or start_activities[vsa] >= threshold:
                 for trace in variants[variant]:
                     filtered_log.append(trace)
-    return filtered_log
-
-
-@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
-def apply_auto_filter(log, variants=None, parameters=None):
-    """
-    Apply an end attributes filter detecting automatically a percentage
-    
-    Parameters
-    ----------
-    log
-        Log
-    variants
-        (If specified) Dictionary with variant as the key and the list of traces as the value
-    parameters
-        Parameters of the algorithm, including:
-            Parameters.DECREASING_FACTOR -> Decreasing factor (stops the algorithm when the next activity by occurrence is below
-            this factor in comparison to previous)
-            Parameters.ATTRIBUTE_KEY -> Attribute key (must be specified if different from concept:name)
-    
-    Returns
-    ---------
-    filtered_log
-        Filtered log    
-    """
-    if parameters is None:
-        parameters = {}
-
-    attribute_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
-    decreasing_factor = exec_utils.get_param_value(Parameters.DECREASING_FACTOR, parameters, DECREASING_FACTOR)
-
-    parameters_variants = {constants.PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
-
-    if variants is None:
-        variants = variants_filter.get_variants(log, parameters=parameters_variants)
-    vc = variants_filter.get_variants_sorted_by_count(variants)
-    start_activities = get_start_activities(log, parameters=parameters_variants)
-    salist = start_activities_common.get_sorted_start_activities_list(start_activities)
-    sathreshold = start_activities_common.get_start_activities_threshold(salist, decreasing_factor)
-    filtered_log = filter_log_by_start_activities(start_activities, variants, vc, sathreshold, attribute_key)
     return filtered_log
