@@ -21,7 +21,9 @@
   * OCEL - objects interactions summary
 * 3cc1a19f42420e034a7489f1c695fea788e9087f
   * OCEL - methods to manage duplicates, sorting and time-delta for events
-
+* 2c729e28e7f536acbd0919d88cf035a23542a3ae
+  * OCEL - conversion event log to OCEL accepts several object types
+  
 ### Changed
 * f6b7714eaf79e1c57e4283163a51631f0ea8d964
 	PMPY-1602 default variant representation is now a tuple of activities instead of a comma-separated string
