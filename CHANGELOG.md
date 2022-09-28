@@ -40,6 +40,11 @@
 * f89a1dfa797da4581c4cbbd8cde482caf2402ca4
   c768e5a33e5e2f872fd2dc0d45a11d589a130629
     PMPY-1650 documentation is taken inside docstrings and formatted using Sphinx
+* 7640c79932ef974524ca4424f91c6b9416401a8d
+    PMPY-1799 brand new implementation of the inductive miner, also with multi-processing support.
+              the .apply method of the inductive miner is now returning a process tree object.
+* cc74d5ebcd7181626d79d60b2a883ad061cd85ba
+    PMPY-1915 re-implementation of business hours in a slot-based way.
 
 ### Deprecated
 
