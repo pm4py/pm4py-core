@@ -1,11 +1,12 @@
 from enum import Enum
-from pm4py.objects.log.obj import EventLog
+from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Collection, Union
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel import constants as ocel_constants
 from pm4py.objects.conversion.log import converter as log_converter
+from copy import copy
 
 
 class Parameters(Enum):
@@ -252,5 +253,59 @@ def from_interleavings(df1: pd.DataFrame, df2: pd.DataFrame, interleavings: pd.D
 
     events = events.sort_values([ocel_constants.DEFAULT_EVENT_TIMESTAMP, ocel_constants.DEFAULT_EVENT_ID])
     relations = relations.sort_values([ocel_constants.DEFAULT_EVENT_TIMESTAMP, ocel_constants.DEFAULT_EVENT_ID])
+
+    return OCEL(events=events, objects=objects, relations=relations)
+
+
+def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.DataFrame], activity_column: str, timestamp_column: str, obj_types: Collection[str]) -> OCEL:
+    """
+    Converts an event log to an object-centric event log with one or more than one
+    object types.
+
+    Parameters
+    ---------------
+    log_obj
+        Log object
+    activity_column
+        Activity column
+    timestamp_column
+        Timestamp column
+    object_types
+        List of columns to consider as object types
+
+    Returns
+    ----------------
+    ocel
+        Object-centric event log
+    """
+    log_obj = log_converter.apply(log_obj, variant=log_converter.Variants.TO_DATA_FRAME)
+
+    events = []
+    objects = []
+    relations = []
+
+    obj_ids = set()
+
+    stream = log_obj.to_dict("records")
+
+    for index, eve in enumerate(stream):
+        ocel_eve = {ocel_constants.DEFAULT_EVENT_ID: str(index), ocel_constants.DEFAULT_EVENT_ACTIVITY: eve[activity_column], ocel_constants.DEFAULT_EVENT_TIMESTAMP: eve[timestamp_column]}
+        events.append(ocel_eve)
+
+        for col in obj_types:
+            if eve[col] not in obj_ids:
+                obj_ids.add(eve[col])
+
+                objects.append({ocel_constants.DEFAULT_OBJECT_ID: eve[col], ocel_constants.DEFAULT_OBJECT_TYPE: col})
+
+            rel = copy(ocel_eve)
+            rel[ocel_constants.DEFAULT_OBJECT_ID] = eve[col]
+            rel[ocel_constants.DEFAULT_OBJECT_TYPE] = col
+
+            relations.append(rel)
+
+    events = pd.DataFrame(events)
+    objects = pd.DataFrame(objects)
+    relations = pd.DataFrame(relations)
 
     return OCEL(events=events, objects=objects, relations=relations)
