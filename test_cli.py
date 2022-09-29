@@ -1,0 +1,15 @@
+import os
+
+#os.system("python -m pm4py.cli DiscoverPetriNetAlpha tests\\input_data prova2")
+#os.system("python -m pm4py.cli DiscoverPetriNetInductive tests\\input_data prova2")
+#os.system("python -m pm4py.cli DiscoverPetriNetHeuristics tests\\input_data prova2")
+#os.system("python -m pm4py.cli DiscoverBPMNInductive tests\\input_data prova2")
+#os.system("python -m pm4py.cli DiscoverProcessTreeInductive tests\\input_data prova2")
+#os.system("python -m pm4py.cli ConformanceDiagnosticsTBR tests\\input_data\\running-example.xes tests\\input_data\\running-example.pnml result_diagnostics_tbr.txt")
+#os.system("python -m pm4py.cli ConformanceDiagnosticsAlignments tests\\input_data\\running-example.xes tests\\input_data\\running-example.pnml result_diagnostics_alignments.txt")
+#os.system("python -m pm4py.cli FitnessTBR tests\\input_data\\running-example.xes tests\\input_data\\running-example.pnml result_fitness_tbr.txt")
+#os.system("python -m pm4py.cli FitnessAlignments tests\\input_data\\running-example.xes tests\\input_data\\running-example.pnml result_fitness_alignments.txt")
+#os.system("python -m pm4py.cli PrecisionTBR tests\\input_data\\running-example.xes tests\\input_data\\running-example.pnml result_precision_tbr.txt")
+#os.system("python -m pm4py.cli PrecisionAlignments tests\\input_data\\running-example.xes tests\\input_data\\running-example.pnml result_precision_alignments.txt")
+os.system("python -m pm4py.cli ConvertToXES tests\\input_data\\running-example.csv result_ru.xes")
+os.system("python -m pm4py.cli ConvertToCSV tests\\input_data\\running-example.xes result_ru.csv")
