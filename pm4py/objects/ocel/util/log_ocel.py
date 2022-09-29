@@ -257,7 +257,7 @@ def from_interleavings(df1: pd.DataFrame, df2: pd.DataFrame, interleavings: pd.D
     return OCEL(events=events, objects=objects, relations=relations)
 
 
-def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.DataFrame], activity_column: str, timestamp_column: str, obj_types: Collection[str]) -> OCEL:
+def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.DataFrame], activity_column: str, timestamp_column: str, obj_types: Collection[str], obj_separator: str = " AND ") -> OCEL:
     """
     Converts an event log to an object-centric event log with one or more than one
     object types.
@@ -272,6 +272,8 @@ def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.Data
         Timestamp column
     object_types
         List of columns to consider as object types
+    obj_separator
+        Separator between different objects in the same column
 
     Returns
     ----------------
@@ -293,16 +295,19 @@ def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.Data
         events.append(ocel_eve)
 
         for col in obj_types:
-            if eve[col] not in obj_ids:
-                obj_ids.add(eve[col])
+            objs = eve[col].split(obj_separator)
 
-                objects.append({ocel_constants.DEFAULT_OBJECT_ID: eve[col], ocel_constants.DEFAULT_OBJECT_TYPE: col})
+            for obj in objs:
+                if obj not in obj_ids:
+                    obj_ids.add(obj)
 
-            rel = copy(ocel_eve)
-            rel[ocel_constants.DEFAULT_OBJECT_ID] = eve[col]
-            rel[ocel_constants.DEFAULT_OBJECT_TYPE] = col
+                    objects.append({ocel_constants.DEFAULT_OBJECT_ID: obj, ocel_constants.DEFAULT_OBJECT_TYPE: col})
 
-            relations.append(rel)
+                rel = copy(ocel_eve)
+                rel[ocel_constants.DEFAULT_OBJECT_ID] = obj
+                rel[ocel_constants.DEFAULT_OBJECT_TYPE] = col
+
+                relations.append(rel)
 
     events = pd.DataFrame(events)
     objects = pd.DataFrame(objects)
