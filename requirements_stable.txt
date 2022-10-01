@@ -18,7 +18,7 @@ MarkupSafe==2.1.1
 matplotlib==3.6.0
 matplotlib-inline==0.1.6
 mpmath==1.2.1
-networkx==2.8.6
+networkx==2.8.7
 numpy==1.23.3
 packaging==21.3
 pandas==1.4.4
