@@ -54,7 +54,7 @@ def read_xes(file_path: str, variant: str = "chunk_regex", **kwargs) -> DataFram
 
 def read_pnml(file_path: str, auto_guess_final_marking: bool = False) -> Tuple[PetriNet, Marking, Marking]:
     """
-    Reads a Petri net object from a .pnmml file.
+    Reads a Petri net object from a .pnml file.
     The Petri net object returned is a triple containing the following objects:
     
     1. Petrinet Object, encoded as a ``PetriNet`` class
