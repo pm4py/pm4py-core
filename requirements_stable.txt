@@ -15,7 +15,7 @@ jsonpickle==2.2.0
 kiwisolver==1.4.4
 lxml==4.9.1
 MarkupSafe==2.1.1
-matplotlib==3.6.0
+matplotlib==3.6.1
 matplotlib-inline==0.1.6
 mpmath==1.2.1
 networkx==2.8.7
