@@ -9,6 +9,8 @@
 ### Deprecated
 
 ### Fixed
+* 32a4fc9e4ab23418493f281fc262615f2ff4c436
+  * Fixed trace filter
 
 ### Removed
 
