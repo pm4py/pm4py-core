@@ -71,7 +71,7 @@ def apply(df: pd.DataFrame, admitted_traces: List[List[str]],
 
 
 def translate_infix_to_regex(infix):
-    regex = ""
+    regex = "^"
     for i, act in enumerate(infix):
         is_last_activity = i == (len(infix) - 1)
         if act == "...":
@@ -85,4 +85,5 @@ def translate_infix_to_regex(infix):
             else:
                 regex = f"{regex}{act},"
 
+    regex = f"{regex}$"
     return regex
