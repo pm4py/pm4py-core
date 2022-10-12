@@ -12,14 +12,9 @@ libraries are added/removed.
 | cycler | https://pypi.org/project/cycler | BSD License (BSD) | 0.11.0 |
 | decorator | https://pypi.org/project/decorator | BSD License (new BSD License) | 5.1.1 |
 | deprecation | https://pypi.org/project/deprecation | Apache Software License (Apache 2) | 2.1.0 |
-| diffprivlib | https://pypi.org/project/diffprivlib | MIT License (MIT) | 0.5.1 |
 | executing | https://pypi.org/project/executing | MIT License (MIT) | 1.0.0 |
 | fonttools | https://pypi.org/project/fonttools | MIT License (MIT) | 4.37.1 |
 | graphviz | https://pypi.org/project/graphviz | MIT License (MIT) | 0.20.1 |
-| diffprivlib | https://pypi.org/project/diffprivlib | MIT License (MIT) | 0.5.1 |
-| executing | https://pypi.org/project/executing | MIT License (MIT) | 0.8.3 |
-| fonttools | https://pypi.org/project/fonttools | MIT License (MIT) | 4.33.3 |
-| graphviz | https://pypi.org/project/graphviz | MIT License (MIT) | 0.20 |
 | intervaltree | https://pypi.org/project/intervaltree | Apache Software License (Apache License, Version 2.0) | 3.1.0 |
 | ipython | https://pypi.org/project/ipython | BSD License (BSD) | 8.5.0 |
 | jedi | https://pypi.org/project/jedi | MIT License (MIT) | 0.18.1 |
