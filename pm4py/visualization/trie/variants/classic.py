@@ -21,7 +21,7 @@ from typing import Optional, Dict, Any, Union
 from graphviz import Graph
 
 from pm4py.objects.trie.obj import Trie
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants
 
 
 class Parameters(Enum):
@@ -72,7 +72,7 @@ def apply(trie: Trie, parameters: Optional[Dict[Union[str, Parameters], Any]] = 
         parameters = {}
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
-    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})

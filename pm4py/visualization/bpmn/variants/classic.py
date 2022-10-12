@@ -20,7 +20,7 @@ import tempfile
 from graphviz import Digraph
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.bpmn.obj import BPMN
-from pm4py.util import typing
+from pm4py.util import typing, constants
 import graphviz
 
 
@@ -59,7 +59,7 @@ def apply(bpmn_graph: BPMN, parameters: Optional[Dict[Any, Any]] = None) -> grap
     rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "LR")
     font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 12)
     font_size = str(font_size)
-    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})

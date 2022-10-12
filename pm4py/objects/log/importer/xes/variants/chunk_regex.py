@@ -93,6 +93,7 @@ def import_log_from_file_object(F, encoding, file_size=sys.maxsize, parameters=N
                 if idx > -1:
                     tag = el[:idx]
                     el = el.split('\"')
+                    el[-1] = el[-1].strip()
                     if tag == "string":
                         curr_els_attrs[-1][el[1]] = el[3]
                         if el[-1] != '/':

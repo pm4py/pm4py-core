@@ -74,4 +74,10 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Set[Tuple[
                     graph.add((o1, o2))
             set_objects.add(o2)
 
+    graph_it = list(graph)
+    for el in graph_it:
+        if (el[1], el[0]) in graph:
+            graph.remove((el[0], el[1]))
+            graph.remove((el[1], el[0]))
+
     return graph

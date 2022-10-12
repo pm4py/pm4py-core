@@ -20,11 +20,12 @@ import tempfile
 
 import pydotplus
 
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants
 from pm4py.visualization.common.utils import human_readable_stat
 from enum import Enum
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from typing import Optional, Dict, Any, Union, Tuple
+from uuid import uuid4
 
 
 class Parameters(Enum):
@@ -137,7 +138,7 @@ def get_graph(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Param
         parameters = {}
 
     graph = pydotplus.Dot(strict=True)
-    graph.obj_dict['attributes']['bgcolor'] = 'transparent'
+    graph.obj_dict['attributes']['bgcolor'] = constants.DEFAULT_BGCOLOR
 
     corr_nodes = {}
     corr_nodes_names = {}
@@ -149,11 +150,11 @@ def get_graph(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Param
         graycolor = transform_to_hex_2(max(255 - math.log(node_occ) * 9, 0))
         if node.node_type == "frequency":
             is_frequency = True
-            n = pydotplus.Node(name=node_name, shape="box", style="filled",
+            n = pydotplus.Node(name=str(uuid4()), shape="box", style="filled",
                                label=node_name + " (" + str(node_occ) + ")", fillcolor=node.get_fill_color(graycolor),
                                fontcolor=node.get_font_color())
         else:
-            n = pydotplus.Node(name=node_name, shape="box", style="filled",
+            n = pydotplus.Node(name=str(uuid4()), shape="box", style="filled",
                                label=node_name + " (" + human_readable_stat(heu_net.sojourn_times[
                                                                                 node_name]) + ")" if node_name in heu_net.sojourn_times else node_name + " (0s)",
                                fillcolor=node.get_fill_color(graycolor),

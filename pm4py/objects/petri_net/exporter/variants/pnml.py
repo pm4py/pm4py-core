@@ -54,7 +54,10 @@ def export_petri_tree(petrinet, marking, final_marking=None, export_prom5=False,
 
     root = etree.Element("pnml")
     net = etree.SubElement(root, "net")
-    net.set("id", "net1")
+    net.set("id", petrinet.name)
+    netname = etree.SubElement(net, "name")
+    netnametext = etree.SubElement(netname, "text")
+    netnametext.text = petrinet.name
     net.set("type", "http://www.pnml.org/version-2009/grammar/pnmlcoremodel")
     if export_prom5 is True:
         page = net

@@ -26,6 +26,7 @@ import deprecation
 
 from typing import Optional, Dict, Any, Union, Tuple, List
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
+import itertools
 
 
 class Parameters(Enum):
@@ -317,48 +318,29 @@ def eventually_follows(log: EventLog, attribute_values: List[str], parameters: O
                        omni_present=log.omni_present, properties=log.properties)
 
     for trace in log:
-        if enable_timestamp:
-            occurrences = [[trace[i][timestamp_key].timestamp() for i in range(len(trace)) 
-                            if attribute_key in trace[i] and trace[i][attribute_key] == attribute_value] for attribute_value in attribute_values]
-        else:
-            occurrences = [[i for i in range(len(trace)) 
-                            if attribute_key in trace[i] and trace[i][attribute_key] == attribute_value] for attribute_value in attribute_values]
+        occurrences = [[i for i in range(len(trace))
+                        if attribute_key in trace[i] and trace[i][attribute_key] == attribute_value] for attribute_value in attribute_values]
 
+        is_good = False
 
-        is_good = True
-        if enable_timestamp and timestamp_diff_boundaries:
-            prev_min = min(occurrences[0], default=-1)
-            for i in range(1, len(attribute_values)):
-                if prev_min == -1 or len(occurrences[i]) == 0:
-                    is_good = False
+        for c in itertools.product(*occurrences):
+            ok = True
+            for i in range(len(c)-1):
+                if c[i] >= c[i+1]:
+                    ok = False
                     break
+            if ok:
+                if enable_timestamp and timestamp_diff_boundaries:
+                    for i in range(len(c)-1):
+                        timest_i = trace[i][timestamp_key].timestamp()
+                        timest_j = trace[i+1][timestamp_key].timestamp()
+                        if timest_j - timest_i < timestamp_diff_boundaries[i][0] or timest_j - timest_i > timestamp_diff_boundaries[i][1]:
+                            ok = False
+                            break
 
-                if timestamp_diff_boundaries:
-                    min_diff = timestamp_diff_boundaries[i - 1][0]
-                    max_diff = timestamp_diff_boundaries[i - 1][1]
-                    min_timestamp = min([o for o in occurrences[i] if (o - prev_min) >= min_diff and (o - prev_min) <= max_diff], default=-1)
-                else:
-                    min_timestamp = min([o for o in occurrences[i] if o >= prev_min], default = -1)
-
-                prev_min = min_timestamp
-
-                if prev_min == -1:
-                    is_good = False
-                    break
-                
-        else:        
-            prev_min = min(occurrences[0], default=-1)
-            for i in range(1, len(attribute_values)):
-                if prev_min == -1:
-                    is_good = False
-                    break
-
-                if len(occurrences[i]) == 0:
-                    is_good = False
-                    break
-
-                min_index = min([o for o in occurrences[i] if o >= prev_min], default = -1)
-                prev_min = min_index
+            if ok:
+                is_good = True
+                break
 
         if is_good:
             if positive:

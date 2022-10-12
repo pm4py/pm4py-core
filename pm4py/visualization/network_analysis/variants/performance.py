@@ -17,7 +17,7 @@
 import sys
 import uuid
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants
 import tempfile
 from graphviz import Digraph
 from pm4py.util import vis_utils
@@ -58,7 +58,7 @@ def apply(network_analysis_edges0: Dict[Tuple[str, str], Dict[str, Any]], parame
         parameters = {}
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
-    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
     activity_threshold = exec_utils.get_param_value(Parameters.ACTIVITY_THRESHOLD, parameters, 1)
     edge_threshold = exec_utils.get_param_value(Parameters.EDGE_THRESHOLD, parameters, 1)
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")

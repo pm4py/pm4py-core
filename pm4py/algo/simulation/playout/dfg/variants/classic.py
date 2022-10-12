@@ -39,6 +39,8 @@ class Parameters(Enum):
     ADD_TRACE_IF_TAKES_NEW_ELS_TO_DFG = "add_trace_if_takes_new_els_to_dfg"
     RETURN_VARIANTS = "return_variants"
     MAX_EXECUTION_TIME = "max_execution_time"
+    RETURN_ONLY_IF_COMPLETE = "return_only_if_complete"
+    MIN_VARIANT_OCC = "min_variant_occ"
 
 
 def get_node_tr_probabilities(dfg, start_activities, end_activities):
@@ -192,23 +194,33 @@ def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end
                                                                    parameters, False)
     return_variants = exec_utils.get_param_value(Parameters.RETURN_VARIANTS, parameters, False)
     max_execution_time = exec_utils.get_param_value(Parameters.MAX_EXECUTION_TIME, parameters, sys.maxsize)
+    return_only_if_complete = exec_utils.get_param_value(Parameters.RETURN_ONLY_IF_COMPLETE, parameters, False)
+    min_variant_occ = exec_utils.get_param_value(Parameters.MIN_VARIANT_OCC, parameters, 1)
 
     # keep track of the DFG, start activities and end activities of the (ongoing) simulation
     simulated_traces_dfg = set()
     simulated_traces_sa = set()
     simulated_traces_ea = set()
     interrupt_break_condition = False
+    interrupted = False
     overall_probability = 0.0
 
     final_traces = []
+    max_occ = 0
 
     start_time = time.time()
     for tr, p in get_traces(dfg, start_activities, end_activities, parameters=parameters):
-        if (interrupt_simulation_when_dfg_complete and interrupt_break_condition) or not (
-                len(final_traces) < max_no_variants and overall_probability <= min_weighted_probability):
+        if interrupt_simulation_when_dfg_complete and interrupt_break_condition:
+            break
+        if len(final_traces) >= max_no_variants:
+            interrupted = True
+            break
+        if overall_probability > min_weighted_probability:
+            interrupted = True
             break
         current_time = time.time()
         if (current_time - start_time) > max_execution_time:
+            interrupted = True
             break
         overall_probability += p
         diff_sa = {tr[0]}.difference(simulated_traces_sa)
@@ -230,6 +242,10 @@ def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end
         diff_original_dfg = set(dfg).difference(simulated_traces_dfg)
         interrupt_break_condition = len(diff_original_sa) == 0 and len(diff_original_ea) == 0 and len(
             diff_original_dfg) == 0
+        var_occ = math.ceil(p * max_no_variants)
+        max_occ = max(max_occ, var_occ)
+        if var_occ < min_variant_occ <= max_occ:
+            break
         final_traces.append((-p, tr))
         if interrupt_simulation_when_dfg_complete and interrupt_break_condition:
             break
@@ -241,10 +257,13 @@ def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end
 
     if return_variants:
         # returns the variants instead of the log
-        variants = []
+        variants = {}
         for p, tr in final_traces:
-            variants.append({"variant": constants.DEFAULT_VARIANT_SEP.join(tr), "count": math.ceil(-p * max_no_variants)})
-        return variants
+            var_occ = math.ceil(-p * max_no_variants)
+            variants[tr] = var_occ
+
+        if not (interrupted and return_only_if_complete):
+            return variants
     else:
         event_log = EventLog()
         # assigns to each event an increased timestamp from 1970
@@ -258,7 +277,8 @@ def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end
                 # increases by 1 second
                 curr_timestamp += 1
             event_log.append(log_trace)
-        return event_log
+        if not (interrupted and return_only_if_complete):
+            return event_log
 
 
 def get_trace_probability(trace, dfg, start_activities, end_activities, parameters=None):
