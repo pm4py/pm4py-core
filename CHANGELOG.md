@@ -19,6 +19,8 @@
     OCEL - expansion of the set of objects during filtering on object identifiers
 * e7b4f712e1bd9475c73be5bc82c9a22eb0b745b5
   * OCEL - objects interactions summary
+* 43b5976f7040a77c0aa32f5a28c508eb19966fa1
+  * OCEL - methods to merge duplicates
 * 3cc1a19f42420e034a7489f1c695fea788e9087f
   * OCEL - methods to manage duplicates, sorting and time-delta for events
 * 2c729e28e7f536acbd0919d88cf035a23542a3ae
