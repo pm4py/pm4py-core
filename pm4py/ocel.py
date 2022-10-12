@@ -314,6 +314,47 @@ def ocel_drop_duplicates(ocel: OCEL) -> OCEL:
     return ocel
 
 
+def ocel_merge_duplicates(ocel: OCEL, have_common_object: Optional[bool]=False) -> OCEL:
+    """
+    Merge events in the OCEL that happen with the same activity at the same timestamp
+
+    :param ocel: object-centric event log
+    :param have_common_object: impose the additional merge condition that the two events should happen at the same
+                                timestamp.
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        ocel = pm4py.ocel_merge_duplicates(ocel)
+    """
+    import copy
+    import uuid
+    relations = copy.copy(ocel.relations)
+    if have_common_object:
+        relations["@@groupn"] = relations.groupby(["ocel:oid", "ocel:activity", "ocel:timestamp"]).ngroup()
+    else:
+        relations["@@groupn"] = relations.groupby(["ocel:activity", "ocel:timestamp"]).ngroup()
+
+    group_size = relations["@@groupn"].value_counts().to_dict()
+    relations["@@groupsize"] = relations["@@groupn"].map(group_size)
+    relations = relations.sort_values(["@@groupsize", "@@groupn"], ascending=False)
+    val_corr = {x: str(uuid.uuid4()) for x in relations["@@groupn"].unique()}
+    relations = relations.groupby("ocel:eid").first()["@@groupn"].to_dict()
+    relations = {x: val_corr[y] for x, y in relations.items()}
+
+    ocel.events["ocel:eid"] = ocel.events["ocel:eid"].map(relations)
+    ocel.relations["ocel:eid"] = ocel.relations["ocel:eid"].map(relations)
+
+    ocel.events = ocel.events.drop_duplicates(subset=["ocel:eid"])
+    ocel.relations = ocel.relations.drop_duplicates(subset=["ocel:eid", "ocel:oid"])
+
+    return ocel
+
+
+
 def ocel_sort_by_additional_column(ocel: OCEL, additional_column: str, primary_column: str = "ocel:timestamp") -> OCEL:
     """
     Sorts the OCEL not only based on the timestamp column and the index,
