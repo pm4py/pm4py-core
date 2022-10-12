@@ -15,4 +15,9 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-from pm4py.algo.anonymization import trace_variant_query, pripel
+from pm4py.algo.anonymization import trace_variant_query
+import pkgutil
+
+if pkgutil.find_loader("diffprivlib"):
+    # import the EMD only if the pyemd package is installed
+    from pm4py.algo.anonymization import pripel
