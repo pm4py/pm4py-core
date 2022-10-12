@@ -19,7 +19,7 @@ from enum import Enum
 
 import matplotlib
 
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants
 from pm4py.visualization.graphs.util import common
 from typing import Optional, Dict, Any, Union, Tuple, List
 
@@ -30,6 +30,7 @@ class Parameters(Enum):
     X_AXIS = "x_axis"
     Y_AXIS = "y_axis"
     PYPLOT_FIGURE_KWARGS = "pylot_figure_kwargs"
+    TRANSPARENT = "transparent"
 
 
 def apply_plot(x: List[float], y: List[float], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> str:
@@ -58,6 +59,7 @@ def apply_plot(x: List[float], y: List[float], parameters: Optional[Dict[Union[s
     x_axis = exec_utils.get_param_value(Parameters.X_AXIS, parameters, "")
     y_axis = exec_utils.get_param_value(Parameters.Y_AXIS, parameters, "")
     pyplot_figure_kwargs = exec_utils.get_param_value(Parameters.PYPLOT_FIGURE_KWARGS, parameters, {})
+    is_transp = exec_utils.get_param_value(Parameters.TRANSPARENT, parameters, True if constants.DEFAULT_BGCOLOR == "transparent" else False)
 
     filename = common.get_temp_file_name(format)
 
@@ -72,7 +74,7 @@ def apply_plot(x: List[float], y: List[float], parameters: Optional[Dict[Union[s
     pyplot.xlabel(x_axis)
     pyplot.ylabel(y_axis)
     pyplot.title(title)
-    pyplot.savefig(filename, bbox_inches="tight", transparent=True)
+    pyplot.savefig(filename, bbox_inches="tight", transparent=is_transp)
     pyplot.clf()
 
     matplotlib.use(current_backend)

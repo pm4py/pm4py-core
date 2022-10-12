@@ -26,7 +26,7 @@ from pm4py.util import exec_utils
 from typing import Optional, Dict, Any, Union
 from pm4py.objects.process_tree.obj import ProcessTree
 import graphviz
-from pm4py.util import vis_utils
+from pm4py.util import vis_utils, constants
 
 
 class Parameters(Enum):
@@ -101,7 +101,7 @@ def apply(tree: ProcessTree, parameters: Optional[Dict[Union[str, Parameters], A
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
 
-    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
 
     viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     viz.attr('node', shape='ellipse', fixedsize='false')

@@ -17,7 +17,7 @@
 from typing import Optional, Dict, Any
 from graphviz import Digraph
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants
 import tempfile
 from uuid import uuid4
 from pm4py.util import vis_utils
@@ -172,7 +172,7 @@ def apply(ocdfg: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) ->
         parameters = {}
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
-    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
     act_metric = exec_utils.get_param_value(Parameters.ACT_METRIC, parameters, "events")
     edge_metric = exec_utils.get_param_value(Parameters.EDGE_METRIC, parameters, "event_couples")
     act_threshold = exec_utils.get_param_value(Parameters.ACT_THRESHOLD, parameters, 0)

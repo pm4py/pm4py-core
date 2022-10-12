@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-from typing import List, Dict, Collection
+from typing import List, Dict, Collection, Set, Tuple
 
 import pandas as pd
 
@@ -180,3 +180,35 @@ def ocel_objects_summary(ocel: OCEL) -> pd.DataFrame:
                     graph[o1].add(o2)
     objects_summary["interacting_objects"] = objects_summary[ocel.object_id_column].map(graph)
     return objects_summary
+
+
+def discover_objects_graph(ocel: OCEL, graph_type: str = "object_interaction") -> Set[Tuple[str, str]]:
+    """
+    Discovers an object graph from the provided object-centric event log
+
+    :param ocel: object-centric event log
+    :param graph_type: type of graph to consider (object_interaction, object_descendants, object_inheritance, object_cobirth, object_codeath)
+    :rtype: ``Dict[str, Any]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        obj_graph = pm4py.ocel_discover_objects_graph(ocel, graph_type='object_interaction')
+    """
+    if graph_type == "object_interaction":
+        from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
+        return object_interaction_graph.apply(ocel)
+    elif graph_type == "object_descendants":
+        from pm4py.algo.transformation.ocel.graphs import object_descendants_graph
+        return object_descendants_graph.apply(ocel)
+    elif graph_type == "object_inheritance":
+        from pm4py.algo.transformation.ocel.graphs import object_inheritance_graph
+        return object_inheritance_graph.apply(ocel)
+    elif graph_type == "object_cobirth":
+        from pm4py.algo.transformation.ocel.graphs import object_cobirth_graph
+        return object_cobirth_graph.apply(ocel)
+    elif graph_type == "object_codeath":
+        from pm4py.algo.transformation.ocel.graphs import object_codeath_graph
+        return object_codeath_graph.apply(ocel)

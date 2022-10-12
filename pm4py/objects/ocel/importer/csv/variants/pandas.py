@@ -43,10 +43,10 @@ def apply(file_path: str, objects_path: str = None, parameters: Optional[Dict[An
     if parameters is None:
         parameters = {}
 
-    table = pd.read_csv(file_path)
+    table = pd.read_csv(file_path, index_col=False)
 
     objects = None
     if objects_path is not None:
-        objects = pd.read_csv(objects_path)
+        objects = pd.read_csv(objects_path, index_col=False)
 
     return extended_table.get_ocel_from_extended_table(table, objects, parameters=parameters)
