@@ -27,6 +27,7 @@ import os
 
 from pandas import DataFrame
 import pkgutil
+import deprecation
 
 INDEX_COLUMN = "@@index"
 
@@ -70,7 +71,7 @@ def read_xes(file_path: str, variant: str = "chunk_regex", **kwargs) -> DataFram
 
 def read_pnml(file_path: str, auto_guess_final_marking: bool = False) -> Tuple[PetriNet, Marking, Marking]:
     """
-    Reads a Petri net object from a .pnmml file.
+    Reads a Petri net object from a .pnml file.
     The Petri net object returned is a triple containing the following objects:
     
     1. Petrinet Object, encoded as a ``PetriNet`` class
@@ -159,11 +160,11 @@ def read_bpmn(file_path: str) -> BPMN:
     bpmn_graph = bpmn_importer.apply(file_path)
     return bpmn_graph
 
-
+@deprecation.deprecated("2.3.0", "3.0.0", "the read_ocel function is deprecated and replaced by read_ocel_csv, read_ocel_json and read_ocel_xml, respectively")
 def read_ocel(file_path: str, objects_path: Optional[str] = None) -> OCEL:
     """
     Reads an object-centric event log from a file (see: http://www.ocel-standard.org/).
-    The ``OCEL`` object returned by this 
+    The ``OCEL`` object is returned by this method
 
     :param file_path: file path of the object-centric event log
     :param objects_path: [Optional] file path from which the objects dataframe should be read
@@ -186,3 +187,67 @@ def read_ocel(file_path: str, objects_path: Optional[str] = None) -> OCEL:
     elif file_path.lower().endswith("xmlocel"):
         from pm4py.objects.ocel.importer.xmlocel import importer as xmlocel_importer
         return xmlocel_importer.apply(file_path)
+
+
+def read_ocel_csv(file_path: str, objects_path: Optional[str] = None) -> OCEL:
+    """
+    Reads an object-centric event log from a CSV file (see: http://www.ocel-standard.org/).
+    The ``OCEL`` object is returned by this method
+
+    :param file_path: file path of the object-centric event log (.csv)
+    :param objects_path: [Optional] file path from which the objects dataframe should be read
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel_csv("<path_to_ocel_file.csv>")
+    """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
+
+    from pm4py.objects.ocel.importer.csv import importer as csv_importer
+    return csv_importer.apply(file_path, objects_path=objects_path)
+
+
+def read_ocel_json(file_path: str) -> OCEL:
+    """
+    Reads an object-centric event log from a JSON-OCEL file (see: http://www.ocel-standard.org/).
+    The ``OCEL`` object is returned by this method
+
+    :param file_path: file path of the object-centric event log (.jsonocel)
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel_json("<path_to_ocel_file.jsonocel>")
+    """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
+
+    from pm4py.objects.ocel.importer.jsonocel import importer as jsonocel_importer
+    return jsonocel_importer.apply(file_path)
+
+
+def read_ocel_xml(file_path: str) -> OCEL:
+    """
+    Reads an object-centric event log from a XML-OCEL file (see: http://www.ocel-standard.org/).
+    The ``OCEL`` object is returned by this method
+
+    :param file_path: file path of the object-centric event log (.xmlocel)
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel_xml("<path_to_ocel_file.xmlocel>")
+    """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
+
+    from pm4py.objects.ocel.importer.xmlocel import importer as xmlocel_importer
+    return xmlocel_importer.apply(file_path)
