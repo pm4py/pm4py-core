@@ -19,5 +19,5 @@ from pm4py.algo.anonymization import trace_variant_query
 import pkgutil
 
 if pkgutil.find_loader("diffprivlib"):
-    # import the EMD only if the pyemd package is installed
+    # import pripel only if the diffprivlib package is installed
     from pm4py.algo.anonymization import pripel
