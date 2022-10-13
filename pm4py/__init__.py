@@ -18,8 +18,8 @@ import time
 
 from pm4py import util, objects, statistics, algo, visualization
 from pm4py import analysis, conformance, convert, discovery, filtering, hof, ml, ocel, org, read, sim, stats, utils, vis, write
-from pm4py.read import read_xes, read_dfg, read_bpmn, read_pnml, read_ptml, read_ocel
-from pm4py.write import write_xes, write_dfg, write_bpmn, write_pnml, write_ptml, write_ocel
+from pm4py.read import read_xes, read_dfg, read_bpmn, read_pnml, read_ptml, read_ocel, read_ocel_csv, read_ocel_xml, read_ocel_json
+from pm4py.write import write_xes, write_dfg, write_bpmn, write_pnml, write_ptml, write_ocel, write_ocel_json, write_ocel_csv, write_ocel_xml
 from pm4py.utils import format_dataframe, parse_process_tree, serialize, deserialize, set_classifier, parse_event_log_string, project_on_event_attribute, \
     sample_cases, sample_events, rebase
 from pm4py.filtering import filter_log_relative_occurrence_event_attribute, filter_start_activities, filter_end_activities, filter_variants, \
@@ -43,7 +43,7 @@ from pm4py.conformance import conformance_diagnostics_token_based_replay, confor
     fitness_footprints, precision_footprints, check_is_fitting, conformance_temporal_profile, \
     conformance_log_skeleton
 from pm4py.ocel import ocel_objects_interactions_summary, ocel_temporal_summary, ocel_objects_summary, ocel_get_object_types, ocel_get_attribute_names, ocel_flattening, ocel_object_type_activities, ocel_objects_ot_count, \
-                        discover_ocdfg, discover_oc_petri_net, discover_objects_graph, sample_ocel_objects, ocel_drop_duplicates, ocel_sort_by_additional_column, ocel_add_index_based_timedelta
+                        discover_ocdfg, discover_oc_petri_net, discover_objects_graph, sample_ocel_objects, ocel_drop_duplicates, ocel_merge_duplicates, ocel_sort_by_additional_column, ocel_add_index_based_timedelta
 from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg, view_process_tree, \
     save_vis_process_tree, \
     view_ocdfg, save_vis_ocdfg, view_heuristics_net, save_vis_heuristics_net, view_bpmn, save_vis_bpmn, view_sna, save_vis_sna,\
@@ -52,7 +52,7 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
     view_ocpn, save_vis_ocpn, view_network_analysis, save_vis_network_analysis, view_transition_system, save_vis_transition_system, \
     view_prefix_tree, save_vis_prefix_tree, view_object_graph, save_vis_object_graph
 from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
-    convert_to_petri_net, convert_to_process_tree, convert_to_reachability_graph
+    convert_to_petri_net, convert_to_process_tree, convert_to_reachability_graph, convert_log_to_ocel
 from pm4py.analysis import check_soundness, solve_marking_equation, solve_extended_marking_equation, \
     construct_synchronous_product_net, insert_artificial_start_end, check_is_workflow_net, maximal_decomposition, generate_marking
 from pm4py.stats import get_start_activities, get_end_activities, get_event_attributes, get_event_attribute_values, get_variants, \

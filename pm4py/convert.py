@@ -18,11 +18,12 @@ __doc__ = """
 The ``pm4py.convert`` module contains the cross-conversions implemented in ``pm4py``
 """
 
-from typing import Union, Tuple, Optional
+from typing import Union, Tuple, Optional, Collection
 
 import pandas as pd
 
 from pm4py.objects.bpmn.obj import BPMN
+from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
@@ -257,3 +258,25 @@ def convert_to_reachability_graph(*args: Union[Tuple[PetriNet, Marking, Marking]
 
     from pm4py.objects.petri_net.utils import reachability_graph
     return reachability_graph.construct_reachability_graph(net, im)
+
+
+def convert_log_to_ocel(log: Union[EventLog, EventStream, pd.DataFrame], activity_column: str = "concept:name", timestamp_column: str = "time:timestamp", object_types: Collection[str] = ["case:concept:name"], obj_separator: str = " AND ") -> OCEL:
+    """
+    Converts an event log to an object-centric event log with one or more than one
+    object types.
+
+    :param log_obj: log object
+    :param activity_column: activity column
+    :param timestamp_column: timestamp column
+    :param object_types: list of columns to consider as object types
+    :param obj_separator: separator between different objects in the same column
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+    import pm4py
+
+    ocel = pm4py.convert_log_to_ocel(log, activity_column='concept:name', timestamp_column='time:timestamp',
+                    object_types=['case:concept:name'])
+    """
+    from pm4py.objects.ocel.util import log_ocel
+    return log_ocel.log_to_ocel_multiple_obj_types(log, activity_column, timestamp_column, object_types, obj_separator)

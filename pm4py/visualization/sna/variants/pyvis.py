@@ -103,8 +103,10 @@ def apply(sna: SNA, parameters=None):
 
     got_net.show_buttons(filter_=['nodes', 'edges', 'physics'])
 
-    got_net.write_html(temp_file_name)
-
+    F = open(temp_file_name, "w")
+    F.write(got_net.generate_html())
+    F.close()
+    
     return temp_file_name
 
 

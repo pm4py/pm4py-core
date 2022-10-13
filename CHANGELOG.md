@@ -19,9 +19,13 @@
     OCEL - expansion of the set of objects during filtering on object identifiers
 * e7b4f712e1bd9475c73be5bc82c9a22eb0b745b5
   * OCEL - objects interactions summary
+* 43b5976f7040a77c0aa32f5a28c508eb19966fa1
+  * OCEL - methods to merge duplicates
 * 3cc1a19f42420e034a7489f1c695fea788e9087f
   * OCEL - methods to manage duplicates, sorting and time-delta for events
-
+* 2c729e28e7f536acbd0919d88cf035a23542a3ae
+  * OCEL - conversion event log to OCEL accepts several object types
+  
 ### Changed
 * f6b7714eaf79e1c57e4283163a51631f0ea8d964
 	PMPY-1602 default variant representation is now a tuple of activities instead of a comma-separated string
@@ -40,6 +44,11 @@
 * f89a1dfa797da4581c4cbbd8cde482caf2402ca4
   c768e5a33e5e2f872fd2dc0d45a11d589a130629
     PMPY-1650 documentation is taken inside docstrings and formatted using Sphinx
+* 7640c79932ef974524ca4424f91c6b9416401a8d
+    PMPY-1799 brand new implementation of the inductive miner, also with multi-processing support.
+              the .apply method of the inductive miner is now returning a process tree object.
+* cc74d5ebcd7181626d79d60b2a883ad061cd85ba
+    PMPY-1915 re-implementation of business hours in a slot-based way.
 
 ### Deprecated
 

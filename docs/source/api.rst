@@ -7,8 +7,6 @@ Input (:mod:`pm4py.read`)
 ``pm4py`` supports importing two different *event data* formats:
 
 * ``.xes`` files (`xes-standard <https://xes-standard.org/>`_); General interchange format for event data. :meth:`pm4py.read.read_xes`
-* ``.ocel`` files; Novel data format (under development) for multi-dimensional event data. :meth:`pm4py.read.read_ocel`
-
 In case an event log is stored as a ``.csv`` file, ``pandas`` can be used to directly import the event log as a ``data frame`` (`docs <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html>`_).
 ``.xes`` files are internally converted to a ``pandas dataframe``, which is the default data structure used by all algorithms implemented in ``pm4py``.
 
@@ -24,12 +22,11 @@ Output (:mod:`pm4py.write`)
 -------------------------------------
 Similarly to event data importing, ``pm4py`` supports export functionalities to:
 
-* ``.bpmn`` files,  :meth:`pm4py.read.read_bpmn`
-* ``.dfg`` files,  :meth:`pm4py.read.read_dfg`
-* ``.ocel`` files, :meth:`pm4py.read.read_ocel`
-* ``.pnml`` files, :meth:`pm4py.read.read_pnml`
-* ``.ptml`` files, :meth:`pm4py.read.read_ptml`
-* ``.xes`` files. :meth:`pm4py.read.read_xes`
+* ``.bpmn`` files,  :meth:`pm4py.write.write_bpmn`
+* ``.dfg`` files,  :meth:`pm4py.write.write_dfg`
+* ``.pnml`` files, :meth:`pm4py.write.wrtie_pnml`
+* ``.ptml`` files, :meth:`pm4py.write.write_ptml`
+* ``.xes`` files. :meth:`pm4py.write.write_xes`
 
 Conversion (:mod:`pm4py.convert`)
 -------------------------------------
@@ -66,7 +63,7 @@ Among *declarative process models*, ``pmp4py`` currently supports:
   * :meth:`pm4py.discovery.discover_temporal_profile`; discovers a *temporal profile*.
 
 Conformance Checking (:mod:`pm4py.conformance`)
-------------------------------------------
+-----------------------------------------------
 Conformance checking techniques compare a process model with an event log of the same process. The goal is to check if the event log conforms to the model, and, vice versa.
 Among procedural process models, ``pmp4py`` currently supports:
 
@@ -194,7 +191,7 @@ Among those:
   * :meth:`pm4py.sim.generate_process_tree`; generates a process tree with the desidered number of nodes.
 
 Object-Centric Process Mining (:mod:`pm4py.ocel`)
-------------------------------------------
+--------------------------------------------------
 Traditional event logs, used by mainstream process mining techniques, require the events to be related to a case. A case is a set of events for a particular purpose. A case notion is a criteria to assign a case to the events.
 
 However, in real processes this leads to two problems:
@@ -244,16 +241,12 @@ Overall List of Methods
    pm4py.read
    pm4py.read.read_bpmn
    pm4py.read.read_dfg
-   pm4py.read.read_ocel
    pm4py.read.read_pnml
    pm4py.read.read_ptml
    pm4py.read.read_xes
    pm4py.write
    pm4py.write.write_bpmn
    pm4py.write.write_dfg
-   pm4py.write.write_ocel_csv
-   pm4py.write.write_ocel_json
-   pm4py.write.write_ocel_xml
    pm4py.write.write_pnml
    pm4py.write.write_ptml
    pm4py.write.write_xes
