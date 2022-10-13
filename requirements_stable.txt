@@ -19,7 +19,7 @@ matplotlib==3.6.1
 matplotlib-inline==0.1.6
 mpmath==1.2.1
 networkx==2.8.7
-numpy==1.23.3
+numpy==1.23.4
 packaging==21.3
 pandas==1.4.4
 parso==0.8.3
