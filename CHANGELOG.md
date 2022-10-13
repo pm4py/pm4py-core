@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.2.30 (2022.09.XX)
+## pm4py 2.2.30 (2022.10.13)
 
 ### Added
 
@@ -9,6 +9,10 @@
 ### Deprecated
 
 ### Fixed
+* 32a4fc9e4ab23418493f281fc262615f2ff4c436
+  * Fixed trace filter
+* 4c5599ff60f4e448198a1971a669c4bf3a4154fe
+  * fixed issue with SNA HTML visualization
 
 ### Removed
 
