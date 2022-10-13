@@ -33,9 +33,6 @@ def exp_mech(output_universes, epsilon):
         if prob == float('inf'):
             raw_prob[i] = sys.float_info.max
         i += 1
-    # max_value = np.sum(raw_prob)
-    # prob = [x / max_value for x in raw_prob]
-    # SOFTMAX
     prob = np.exp(raw_prob - np.max(raw_prob))
     prob = prob / prob.sum()
     return np.random.choice(output_universes, p=prob)

@@ -25,7 +25,6 @@ from pm4py.util import exec_utils
 class Variants(Enum):
     LAPLACE = laplace
     SACOFA = sacofa
-    # SAPA = sapa
 
 
 DEFAULT_VARIANT = Variants.SACOFA
@@ -48,8 +47,6 @@ def apply(log: Union[EventLog, pd.DataFrame], variant=DEFAULT_VARIANT,
     S. A. Fahrenkog-Petersen, M. Kabierski, F. Rösel, H. van der Aa and M. Weidlich, "SaCoFa: Semantics-aware
     Control-flow Anonymization for Process Mining," 2021 3rd International Conference on Process Mining (ICPM), 2021,
     pp. 72-79, doi: 10.1109/ICPM53251.2021.9576857.
-
-    Variant SaPa is described in:
 
     Variant DF-Laplace:
 

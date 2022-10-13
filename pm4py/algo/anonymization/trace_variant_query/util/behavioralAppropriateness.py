@@ -25,11 +25,9 @@ def getFollowersOfEventInTrace(event, trace):
         return followers
     eventIndex = trace.index(event)
     restTrace = trace[eventIndex + 1:]
-
     for e in restTrace:
         if e not in followers:
             followers.append(e)
-
     return followers
 
 
@@ -68,10 +66,6 @@ def getFollowsRelations(allEvents, traces):
             sometimesCtr -= 1
             neverCtr += 1
 
-    totalRelations = sometimesCtr + neverCtr + alwaysCtr
-    ''' 
-    print("Always follows: " + str((alwaysCtr / totalRelations) * 100) + "%; Never follows: ",
-          (neverCtr / totalRelations) * 100, "%") '''
     return followsMatrix
 
 
@@ -110,8 +104,6 @@ def getPrecedesRelations(allEvents, traces):
             sometimesCtr -= 1
             neverCtr += 1
 
-    totalRelations = sometimesCtr + neverCtr + alwaysCtr
-    #   print("Always precedes: " + str((alwaysCtr/totalRelations)*100) + "%; Never precedes: ", (neverCtr/totalRelations)*100, "%")
     return precedesMatrix
 
 
