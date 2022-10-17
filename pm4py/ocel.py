@@ -334,22 +334,22 @@ def ocel_merge_duplicates(ocel: OCEL, have_common_object: Optional[bool]=False) 
     import uuid
     relations = copy.copy(ocel.relations)
     if have_common_object:
-        relations["@@groupn"] = relations.groupby(["ocel:oid", "ocel:activity", "ocel:timestamp"]).ngroup()
+        relations["@@groupn"] = relations.groupby([ocel.object_id_column, ocel.event_activity, ocel.event_timestamp]).ngroup()
     else:
-        relations["@@groupn"] = relations.groupby(["ocel:activity", "ocel:timestamp"]).ngroup()
+        relations["@@groupn"] = relations.groupby([ocel.event_activity, ocel.event_timestamp]).ngroup()
 
     group_size = relations["@@groupn"].value_counts().to_dict()
     relations["@@groupsize"] = relations["@@groupn"].map(group_size)
     relations = relations.sort_values(["@@groupsize", "@@groupn"], ascending=False)
     val_corr = {x: str(uuid.uuid4()) for x in relations["@@groupn"].unique()}
-    relations = relations.groupby("ocel:eid").first()["@@groupn"].to_dict()
+    relations = relations.groupby(ocel.event_id_column).first()["@@groupn"].to_dict()
     relations = {x: val_corr[y] for x, y in relations.items()}
 
-    ocel.events["ocel:eid"] = ocel.events["ocel:eid"].map(relations)
-    ocel.relations["ocel:eid"] = ocel.relations["ocel:eid"].map(relations)
+    ocel.events[ocel.event_id_column] = ocel.events[ocel.event_id_column].map(relations)
+    ocel.relations[ocel.event_id_column] = ocel.relations[ocel.event_id_column].map(relations)
 
-    ocel.events = ocel.events.drop_duplicates(subset=["ocel:eid"])
-    ocel.relations = ocel.relations.drop_duplicates(subset=["ocel:eid", "ocel:oid"])
+    ocel.events = ocel.events.drop_duplicates(subset=[ocel.event_id_column])
+    ocel.relations = ocel.relations.drop_duplicates(subset=[ocel.event_id_column, ocel.object_id_column])
 
     return ocel
 
