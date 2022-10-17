@@ -258,10 +258,10 @@ def convert_log_to_ocel(log: Union[EventLog, EventStream, pd.DataFrame], activit
     :rtype: ``OCEL``
 
     .. code-block:: python3
-    import pm4py
+        import pm4py
 
-    ocel = pm4py.convert_log_to_ocel(log, activity_column='concept:name', timestamp_column='time:timestamp',
-                    object_types=['case:concept:name'])
+        ocel = pm4py.convert_log_to_ocel(log, activity_column='concept:name', timestamp_column='time:timestamp',
+                        object_types=['case:concept:name'])
     """
     from pm4py.objects.ocel.util import log_ocel
     return log_ocel.log_to_ocel_multiple_obj_types(log, activity_column, timestamp_column, object_types, obj_separator)
