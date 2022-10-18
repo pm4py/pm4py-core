@@ -150,7 +150,7 @@ def write_bpmn(model: BPMN, file_path: str, auto_layout: bool = True):
 def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     """
     Writes an OCEL object to disk in the ``.bpmn`` format.
-    Different formats are supported, including CSV (flat table), JSON-OCEL and XML-OCEL
+    Different formats are supported, including CSV (flat table), JSON-OCEL, XML-OCEL and SQLite
     (described in the site http://www.ocel-standard.org/).
 
     :param ocel: OCEL object to write to disk
@@ -174,6 +174,9 @@ def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     elif file_path.lower().endswith("xmlocel"):
         from pm4py.objects.ocel.exporter.xmlocel import exporter as xmlocel_exporter
         return xmlocel_exporter.apply(ocel, file_path)
+    elif file_path.lower().endswith("sqlite"):
+        from pm4py.objects.ocel.exporter.sqlite import exporter as sqlite_exporter
+        return sqlite_exporter.apply(ocel, file_path)
 
 
 def write_ocel_csv(ocel: OCEL, file_path: str, objects_path: str):
@@ -240,3 +243,24 @@ def write_ocel_xml(ocel: OCEL, file_path: str):
 
     from pm4py.objects.ocel.exporter.xmlocel import exporter as xmlocel_exporter
     return xmlocel_exporter.apply(ocel, file_path)
+
+
+def write_ocel_sqlite(ocel: OCEL, file_path: str):
+    """
+    Writes an OCEL object to disk to a ``SQLite`` database (exported as ``.sqlite`` file).
+
+    :param ocel: OCEL object
+    :param file_path: target file path to the SQLite datbaase
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.v(ocel, '<path_to_export_to>')
+    """
+    file_path = str(file_path)
+    if not file_path.lower().endswith("sqlite"):
+        file_path = file_path + ".v"
+
+    from pm4py.objects.ocel.exporter.sqlite import exporter as sqlite_exporter
+    return sqlite_exporter.apply(ocel, file_path)
