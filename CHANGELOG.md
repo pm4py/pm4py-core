@@ -9,6 +9,8 @@
     PMPY-1741 OCEL - Visualization of object graphs (object interaction, object descendants, ...)
 * 15964a428e2e0fc50dcc96570fba39f2e0d40099
     PMPY-1742 - OCEL - Added some filters in the simplified interface
+* fefe740338b702eafb7049a8f777f48f464d157d
+  * PMPY-1953 OCEL - insertion of an attribute pointing to the parent object
 * 88c58a1c6809388be58db2ea6e64fb9b58d913d6
   * PMPY-1763 OCEL - sampling objects
 * 40c741c8298584402cd9ea8e86bcca09f2bfd857
