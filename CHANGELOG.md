@@ -9,6 +9,8 @@
 ### Deprecated
 
 ### Fixed
+* 43026f0d22605bafd104c9c752511b3a00c3988c
+  * missing encoding parameter in PNML importing/exporting
 
 ### Removed
 
