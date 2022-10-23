@@ -11,7 +11,12 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.objects.random_variables.random_variable import RandomVariable
-from pm4py.util import constants
+from pm4py.util import constants, exec_utils
+from enum import Enum
+
+
+class Parameters(Enum):
+    ENCODING = "encoding"
 
 
 @deprecation.deprecated(deprecated_in="2.1.1", removed_in="3.0",
@@ -69,7 +74,9 @@ def import_net(input_file_path, parameters=None):
     if parameters is None:
         parameters = {}
 
-    parser = etree.XMLParser(remove_comments=True)
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, None)
+
+    parser = etree.XMLParser(remove_comments=True, encoding=encoding)
     tree = objectify.parse(input_file_path, parser=parser)
     root = tree.getroot()
 
@@ -99,8 +106,10 @@ def import_net_from_string(petri_string, parameters=None):
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
     if type(petri_string) is str:
-        petri_string = petri_string.encode(constants.DEFAULT_ENCODING)
+        petri_string = petri_string.encode(encoding)
 
     parser = etree.XMLParser(remove_comments=True)
     root = objectify.fromstring(petri_string, parser=parser)
