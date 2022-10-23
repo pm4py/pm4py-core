@@ -4,11 +4,13 @@ from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
 import memory_profiler
 import time
 import os
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 
 class Shared:
     log = importer.apply(os.path.join("..", "tests", "input_data", "receipt.xes"))
-    net, im, fm = inductive_miner.apply(log)
+    process_tree = inductive_miner.apply(log)
+    net, im, fm = process_tree_converter.apply(process_tree)
 
 
 def nothing():

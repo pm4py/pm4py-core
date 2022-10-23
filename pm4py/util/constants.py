@@ -58,7 +58,21 @@ DEFAULT_ARTIFICIAL_END_ACTIVITY = "■"
 
 DEFAULT_BUSINESS_HOURS_WORKCALENDAR = None
 
+SHOW_EVENT_LOG_DEPRECATION = True
+
 DEFAULT_BGCOLOR = "white"
+
+ENABLE_MULTIPROCESSING_DEFAULT = False
+
+# Default business hour slots: Mondays to Fridays, 7:00 - 17:00 (in seconds)
+DEFAULT_BUSINESS_HOUR_SLOTS = [
+    ((0 * 24 + 7) * 60 * 60, (0 * 24 + 17) * 60 * 60),
+    ((1 * 24 + 7) * 60 * 60, (1 * 24 + 17) * 60 * 60),
+    ((2 * 24 + 7) * 60 * 60, (2 * 24 + 17) * 60 * 60),
+    ((3 * 24 + 7) * 60 * 60, (3 * 24 + 17) * 60 * 60),
+    ((4 * 24 + 7) * 60 * 60, (4 * 24 + 17) * 60 * 60),
+]
+
 
 from enum import Enum
 

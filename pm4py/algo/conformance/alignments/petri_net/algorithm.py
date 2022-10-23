@@ -18,16 +18,15 @@ from copy import copy
 
 from pm4py.algo.conformance.alignments.petri_net import variants
 from pm4py.objects.petri_net.utils import align_utils, check_soundness
-from pm4py.statistics.variants.log import get as variants_module
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TRACEID_KEY
-from pm4py.objects.log.obj import Trace
+from pm4py.objects.log.obj import Trace, Event
 import time
 from pm4py.util.lp import solver
 from pm4py.util import exec_utils
 from enum import Enum
 import sys
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY, CASE_CONCEPT_NAME
 import pkgutil
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
@@ -85,7 +84,7 @@ def apply(obj: Union[EventLog, EventStream, pd.DataFrame, Trace], petri_net: Pet
     if isinstance(obj, Trace):
         return apply_trace(obj, petri_net, initial_marking, final_marking, parameters=parameters, variant=variant)
     else:
-        return apply_log(log_converter.apply(obj, parameters, log_converter.TO_EVENT_LOG), petri_net, initial_marking,
+        return apply_log(obj, petri_net, initial_marking,
                          final_marking, parameters=parameters, variant=variant)
 
 
@@ -219,7 +218,7 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         if progress is not None:
             progress.update()
 
-    alignments = __form_alignments(log, variants_idxs, all_alignments)
+    alignments = __form_alignments(variants_idxs, all_alignments)
     __close_progress_bar(progress)
 
     return alignments
@@ -280,7 +279,7 @@ def apply_multiprocessing(log, petri_net, initial_marking, final_marking, parame
             all_alignments.append(futures[index].result())
         __close_progress_bar(progress)
 
-    alignments = __form_alignments(log, variants_idxs, all_alignments)
+    alignments = __form_alignments(variants_idxs, all_alignments)
 
     return alignments
 
@@ -295,17 +294,35 @@ def __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, pa
 
 
 def __get_variants_structure(log, parameters):
-    variants_idxs = exec_utils.get_param_value(Parameters.VARIANTS_IDX, parameters, None)
-    if variants_idxs is None:
-        variants_idxs = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
+    if parameters is None:
+        parameters = {}
 
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
+
+    variants_idxs = {}
     one_tr_per_var = []
-    variants_list = []
-    for index_variant, var in enumerate(variants_idxs):
-        variants_list.append(var)
 
-    for var in variants_list:
-        one_tr_per_var.append(log[variants_idxs[var][0]])
+    if type(log) is pd.DataFrame:
+        case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+        traces = list(log.groupby(case_id_key)[activity_key].apply(tuple))
+        for idx, trace in enumerate(traces):
+            if trace not in variants_idxs:
+                variants_idxs[trace] = [idx]
+                case = Trace()
+                for act in trace:
+                    case.append(Event({activity_key: act}))
+                one_tr_per_var.append(case)
+            else:
+                variants_idxs[trace].append(idx)
+    else:
+        log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+        for idx, case in enumerate(log):
+            trace = tuple(x[activity_key] for x in case)
+            if trace not in variants_idxs:
+                variants_idxs[trace] = [idx]
+                one_tr_per_var.append(case)
+            else:
+                variants_idxs[trace].append(idx)
 
     return variants_idxs, one_tr_per_var
 
@@ -319,14 +336,14 @@ def __get_progress_bar(num_variants, parameters):
     return progress
 
 
-def __form_alignments(log, variants_idxs, all_alignments):
+def __form_alignments(variants_idxs, all_alignments):
     al_idx = {}
     for index_variant, variant in enumerate(variants_idxs):
         for trace_idx in variants_idxs[variant]:
             al_idx[trace_idx] = all_alignments[index_variant]
 
     alignments = []
-    for i in range(len(log)):
+    for i in range(len(al_idx)):
         alignments.append(al_idx[i])
 
     return alignments

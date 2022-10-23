@@ -45,7 +45,7 @@ def apply(df, parameters=None):
         pm4_constants.PARAMETER_CONSTANT_ACTIVITY_KEY] if pm4_constants.PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else xes.DEFAULT_NAME_KEY
     log = EventLog()
     for vd in variant_stats:
-        variant = vd['variant'].split(pm4_constants.DEFAULT_VARIANT_SEP)
+        variant = vd['variant']
         trace = Trace()
         for activity in variant:
             event = Event()

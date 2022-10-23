@@ -14,10 +14,13 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+__doc__ = """
+The ``pm4py.vis`` module contains the visualizations offered in ``pm4py``
+"""
+
 import os
-from copy import copy
 from typing import Optional
-from typing import Union, List, Dict, Any, Tuple
+from typing import Union, List, Dict, Any, Tuple, Set
 
 import pandas as pd
 
@@ -28,6 +31,12 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties
+from pm4py.objects.transition_system.obj import TransitionSystem
+from pm4py.objects.trie.obj import Trie
+from pm4py.objects.ocel.obj import OCEL
+from pm4py.objects.org.sna.obj import SNA
+
+import deprecation
 
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = None,
@@ -35,18 +44,18 @@ def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = Non
     """
     Views a (composite) Petri net
 
-    Parameters
-    -------------
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final marking
-        Final marking
-    format
-        Format of the output picture (default: png)
-    bgcolor
-        Background color of the visualization (default: white)
+    :param petri_net: Petri net
+    :param initial_marking: Initial marking
+    :param final_marking: Final marking
+    :param format: Format of the output picture (default: png)
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        pm4py.view_petri_net(net, im, fm, format='svg')
     """
     from pm4py.visualization.petri_net import visualizer as pn_visualizer
     gviz = pn_visualizer.apply(petri_net, initial_marking, final_marking,
@@ -58,19 +67,20 @@ def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_mark
     """
     Saves a Petri net visualization to a file
 
-    Parameters
-    --------------
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final marking
-        Final marking
-    file_path
-        Destination path
-    bgcolor
-        Background color of the visualization (default: white)
+    :param petri_net: Petri net
+    :param initial_marking: Initial marking
+    :param final_marking: Final marking
+    :param file_path: Destination path
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        pm4py.save_vis_petri_net(net, im, fm, 'petri_net.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.petri_net import visualizer as pn_visualizer
     gviz = pn_visualizer.apply(petri_net, initial_marking, final_marking,
@@ -83,20 +93,19 @@ def view_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict
     """
     Views a performance DFG
 
-    Parameters
-    ----------------
-    dfg
-        DFG object
-    start_activities
-        Start activities
-    end_activities
-        End activities
-    format
-        Format of the output picture (default: png)
-    aggregation_measure
-        Aggregation measure (default: mean): mean, median, min, max, sum, stdev
-    bgcolor
-        Background color of the visualization (default: white)
+    :param dfg: DFG object
+    :param start_activities: Start activities
+    :param end_activities: End activities
+    :param format: Format of the output picture (default: png)
+    :param aggregation_measure: Aggregation measure (default: mean): mean, median, min, max, sum, stdev
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        performance_dfg, start_activities, end_activities = pm4py.discover_performance_dfg(dataframe, case_id_key='case:concept:name', activity_key='concept:name', timestamp_key='time:timestamp')
+        pm4py.view_performance_dfg(performance_dfg, start_activities, end_activities, format='svg')
     """
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     from pm4py.visualization.dfg.variants import performance as dfg_perf_visualizer
@@ -116,21 +125,21 @@ def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: 
     """
     Saves the visualization of a performance DFG
 
-    Parameters
-    ----------------
-    dfg
-        DFG object
-    start_activities
-        Start activities
-    end_activities
-        End activities
-    file_path
-        Destination path
-    aggregation_measure
-        Aggregation measure (default: mean): mean, median, min, max, sum, stdev
-    bgcolor
-        Background color of the visualization (default: white)
+    :param dfg: DFG object
+    :param start_activities: Start activities
+    :param end_activities: End activities
+    :param file_path: Destination path
+    :param aggregation_measure: Aggregation measure (default: mean): mean, median, min, max, sum, stdev
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        performance_dfg, start_activities, end_activities = pm4py.discover_performance_dfg(dataframe, case_id_key='case:concept:name', activity_key='concept:name', timestamp_key='time:timestamp')
+        pm4py.save_vis_performance_dfg(performance_dfg, start_activities, end_activities, 'perf_dfg.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     from pm4py.visualization.dfg.variants import performance as dfg_perf_visualizer
@@ -145,66 +154,62 @@ def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: 
     dfg_visualizer.save(gviz, file_path)
 
 
-def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = "png",
-             log: Optional[EventLog] = None, bgcolor: str = "white"):
+def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = "png", bgcolor: str = "white"):
     """
     Views a (composite) DFG
 
-    Parameters
-    -------------
-    dfg
-        DFG object
-    start_activities
-        Start activities
-    end_activities
-        End activities
-    format
-        Format of the output picture (default: png)
-    bgcolor
-        Background color of the visualization (default: white)
+    :param dfg: DFG object
+    :param start_activities: Start activities
+    :param end_activities: End activities
+    :param format: Format of the output picture (default: png)
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        dfg, start_activities, end_activities = pm4py.discover_dfg(dataframe, case_id_key='case:concept:name', activity_key='concept:name', timestamp_key='time:timestamp')
+        pm4py.view_dfg(dfg, start_activities, end_activities, format='svg')
     """
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     dfg_parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
-    parameters = get_properties(log)
+    parameters = {}
     parameters[dfg_parameters.FORMAT] = format
     parameters[dfg_parameters.START_ACTIVITIES] = start_activities
     parameters[dfg_parameters.END_ACTIVITIES] = end_activities
     parameters["bgcolor"] = bgcolor
-    gviz = dfg_visualizer.apply(dfg, log=log, variant=dfg_visualizer.Variants.FREQUENCY,
+    gviz = dfg_visualizer.apply(dfg, variant=dfg_visualizer.Variants.FREQUENCY,
                                 parameters=parameters)
     dfg_visualizer.view(gviz)
 
 
-def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str,
-                 log: Optional[EventLog] = None, bgcolor: str = "white"):
+def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str, bgcolor: str = "white"):
     """
     Saves a DFG visualization to a file
 
-    Parameters
-    --------------
-    dfg
-        DFG object
-    start_activities
-        Start activities
-    end_activities
-        End activities
-    file_path
-        Destination path
-    bgcolor
-        Background color of the visualization (default: white)
-    """
-    if log is not None:
-        if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    :param dfg: DFG object
+    :param start_activities: Start activities
+    :param end_activities: End activities
+    :param file_path: Destination path
+    :param bgcolor: Background color of the visualization (default: white)
 
+    .. code-block:: python3
+
+        import pm4py
+
+        dfg, start_activities, end_activities = pm4py.discover_dfg(dataframe, case_id_key='case:concept:name', activity_key='concept:name', timestamp_key='time:timestamp')
+        pm4py.save_vis_dfg(dfg, start_activities, end_activities, 'dfg.png')
+    """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     dfg_parameters = dfg_visualizer.Variants.FREQUENCY.value.Parameters
-    parameters = get_properties(log)
+    parameters = {}
     parameters[dfg_parameters.FORMAT] = format
     parameters[dfg_parameters.START_ACTIVITIES] = start_activities
     parameters[dfg_parameters.END_ACTIVITIES] = end_activities
     parameters["bgcolor"] = bgcolor
-    gviz = dfg_visualizer.apply(dfg, log=log, variant=dfg_visualizer.Variants.FREQUENCY,
+    gviz = dfg_visualizer.apply(dfg, variant=dfg_visualizer.Variants.FREQUENCY,
                                 parameters=parameters)
     dfg_visualizer.save(gviz, file_path)
 
@@ -213,14 +218,16 @@ def view_process_tree(tree: ProcessTree, format: str = "png", bgcolor: str = "wh
     """
     Views a process tree
 
-    Parameters
-    ---------------
-    tree
-        Process tree
-    format
-        Format of the visualization (default: png)
-    bgcolor
-        Background color of the visualization (default: white)
+    :param tree: Process tree
+    :param format: Format of the visualization (default: png)
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        process_tree = pm4py.discover_process_tree_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        pm4py.view_process_tree(process_tree, format='svg')
     """
     from pm4py.visualization.process_tree import visualizer as pt_visualizer
     parameters = pt_visualizer.Variants.WO_DECORATION.value.Parameters
@@ -232,15 +239,18 @@ def save_vis_process_tree(tree: ProcessTree, file_path: str, bgcolor: str = "whi
     """
     Saves the visualization of a process tree
 
-    Parameters
-    ---------------
-    tree
-        Process tree
-    file_path
-        Destination path
-    bgcolor
-        Background color of the visualization (default: white)
+    :param tree: Process tree
+    :param file_path: Destination path
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        process_tree = pm4py.discover_process_tree_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        pm4py.save_vis_process_tree(process_tree, 'process_tree.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.process_tree import visualizer as pt_visualizer
     parameters = pt_visualizer.Variants.WO_DECORATION.value.Parameters
@@ -252,15 +262,18 @@ def save_vis_bpmn(bpmn_graph: BPMN, file_path: str, bgcolor: str = "white"):
     """
     Saves the visualization of a BPMN graph
 
-    Parameters
-    --------------
-    bpmn_graph
-        BPMN graph
-    file_path
-        Destination path
-    bgcolor
-        Background color of the visualization (default: white)
+    :param bpmn_graph: BPMN graph
+    :param file_path: Destination path
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        bpmn_graph = pm4py.discover_bpmn_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        pm4py.save_vis_bpmn(bpmn_graph, 'trial.bpmn')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.bpmn import visualizer as bpmn_visualizer
     parameters = bpmn_visualizer.Variants.CLASSIC.value.Parameters
@@ -272,14 +285,16 @@ def view_bpmn(bpmn_graph: BPMN, format: str = "png", bgcolor: str = "white"):
     """
     Views a BPMN graph
 
-    Parameters
-    ---------------
-    bpmn_graph
-        BPMN graph
-    format
-        Format of the visualization (default: png)
-    bgcolor
-        Background color of the visualization (default: white)
+    :param bpmn_graph: BPMN graph
+    :param format: Format of the visualization (default: png)
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        bpmn_graph = pm4py.discover_bpmn_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        pm4py.view_bpmn(bpmn_graph)
     """
     from pm4py.visualization.bpmn import visualizer as bpmn_visualizer
     parameters = bpmn_visualizer.Variants.CLASSIC.value.Parameters
@@ -291,14 +306,16 @@ def view_heuristics_net(heu_net: HeuristicsNet, format: str = "png", bgcolor: st
     """
     Views an heuristics net
 
-    Parameters
-    --------------
-    heu_net
-        Heuristics net
-    format
-        Format of the visualization (default: png)
-    bgcolor
-        Background color of the visualization (default: white)
+    :param heu_net: Heuristics net
+    :param format: Format of the visualization (default: png)
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        heu_net = pm4py.discover_heuristics_net(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        pm4py.view_heuristics_net(heu_net, format='svg')
     """
     from pm4py.visualization.heuristics_net import visualizer as hn_visualizer
     parameters = hn_visualizer.Variants.PYDOTPLUS.value.Parameters
@@ -310,15 +327,18 @@ def save_vis_heuristics_net(heu_net: HeuristicsNet, file_path: str, bgcolor: str
     """
     Saves the visualization of an heuristics net
 
-    Parameters
-    --------------
-    heu_net
-        Heuristics nte
-    file_path
-        Destination path
-    bgcolor
-        Background color of the visualization (default: white)
+    :param heu_net: Heuristics net
+    :param file_path: Destination path
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        heu_net = pm4py.discover_heuristics_net(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        pm4py.save_vis_heuristics_net(heu_net, 'heu.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.heuristics_net import visualizer as hn_visualizer
     parameters = hn_visualizer.Variants.PYDOTPLUS.value.Parameters
@@ -329,18 +349,11 @@ def save_vis_heuristics_net(heu_net: HeuristicsNet, file_path: str, bgcolor: str
 def __dotted_attribute_selection(log: Union[EventLog, pd.DataFrame], attributes):
     """
     Default attribute selection for the dotted chart
-
-    Parameters
-    -----------------
-    log
-        Event log
-
-    Returns
-    -----------------
-    attributes
-        List of attributes
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
 
     if attributes is None:
         from pm4py.util import xes_constants
@@ -354,28 +367,42 @@ def __dotted_attribute_selection(log: Union[EventLog, pd.DataFrame], attributes)
     return log, attributes
 
 
+@deprecation.deprecated("2.3.0", "3.0.0", details="the dotted chart visualization will be removed in a future release.")
 def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", attributes=None, bgcolor: str = "white"):
     """
     Displays the dotted chart
 
-    Parameters
-    -----------------
-    log
-        Event log
-    format
-        Image format
-    attributes
-        Attributes that should be used to construct the dotted chart.
-        If None, the default dotted chart will be shown:
-            x-axis: time
-            y-axis: cases (in order of occurrence in the event log)
-            color: activity
-        For custom attributes, use a list of attributes
-        of the form [x-axis attribute, y-axis attribute, color attribute], e.g., ["concept:name", "org:resource", "concept:name"])
-    bgcolor
-        Background color of the visualization (default: white)
+    The dotted chart is a classic visualization of the events inside an event log across different dimensions. Each event of the event log is corresponding to a point. The dimensions are projected on a graph having:
+    - X axis: the values of the first dimension are represented there.
+    - Y-axis: the values of the second dimension are represented there.
+    - Color: the values of the third dimension are represented as different colors for the points of the dotted chart.
+
+    The values can be either string, numeric or date values, and are managed accordingly by the dotted chart.
+    The dotted chart can be built on different attributes. A convenient choice for the dotted chart is to visualize the distribution of cases and events over the time, with the following choices:
+    - X-axis: the timestamp of the event.
+    - Y-axis: the index of the case inside the event log.
+    - Color: the activity of the event.
+
+    The aforementioned choice permits to identify visually patterns such as:
+    - Batches.
+    - Variations in the case arrival rate.
+    - Variations in the case finishing rate.
+
+    :param log: Event log
+    :param format: Image format
+    :param attributes: Attributes that should be used to construct the dotted chart. If None, the default dotted chart will be shown: x-axis: time y-axis: cases (in order of occurrence in the event log) color: activity. For custom attributes, use a list of attributes of the form [x-axis attribute, y-axis attribute, color attribute], e.g., ["concept:name", "org:resource", "concept:name"])
+
+    .. code-block:: python3
+
+        import pm4py
+
+        pm4py.view_dotted_chart(dataframe, format='svg')
+        pm4py.view_dotted_chart(dataframe, attributes=['time:timestamp', 'concept:name', 'org:resource'])
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
 
     log, attributes = __dotted_attribute_selection(log, attributes)
     from pm4py.visualization.dotted_chart import visualizer as dotted_chart_visualizer
@@ -383,22 +410,42 @@ def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", a
     dotted_chart_visualizer.view(gviz)
 
 
+@deprecation.deprecated("2.3.0", "3.0.0", details="the dotted chart visualization will be removed in a future release.")
 def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, attributes=None, bgcolor: str = "white"):
     """
     Saves the visualization of the dotted chart
 
-    Parameters
-    -----------------
-    log
-        Event log
-    file_path
-        Destination path
-    attributes
-        Attributes that should be used to construct the dotted chart (for example, ["concept:name", "org:resource"])
-    bgcolor
-        Background color of the visualization (default: white)
+    The dotted chart is a classic visualization of the events inside an event log across different dimensions. Each event of the event log is corresponding to a point. The dimensions are projected on a graph having:
+    - X axis: the values of the first dimension are represented there.
+    - Y-axis: the values of the second dimension are represented there.
+    - Color: the values of the third dimension are represented as different colors for the points of the dotted chart.
+
+    The values can be either string, numeric or date values, and are managed accordingly by the dotted chart.
+    The dotted chart can be built on different attributes. A convenient choice for the dotted chart is to visualize the distribution of cases and events over the time, with the following choices:
+    - X-axis: the timestamp of the event.
+    - Y-axis: the index of the case inside the event log.
+    - Color: the activity of the event.
+
+    The aforementioned choice permits to identify visually patterns such as:
+    - Batches.
+    - Variations in the case arrival rate.
+    - Variations in the case finishing rate.
+
+    :param log: Event log
+    :param file_path: Destination path
+    :param attributes: Attributes that should be used to construct the dotted chart (for example, ["concept:name", "org:resource"])
+
+    .. code-block:: python3
+
+        import pm4py
+
+        pm4py.save_vis_dotted_chart(dataframe, 'dotted.png', attributes=['time:timestamp', 'concept:name', 'org:resource'])
     """
+    file_path = str(file_path)
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log)
 
     format = os.path.splitext(file_path)[1][1:]
     log, attributes = __dotted_attribute_selection(log, attributes)
@@ -407,82 +454,101 @@ def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, at
     dotted_chart_visualizer.save(gviz, file_path)
 
 
-def view_sna(sna_metric):
+def view_sna(sna_metric: SNA):
     """
     Represents a SNA metric (.html)
 
-    Parameters
-    ---------------
-    sna_metric
-        Values of the metric
+    :param sna_metric: Values of the metric
+
+    .. code-block:: python3
+
+        import pm4py
+
+        metric = pm4py.discover_subcontracting_network(dataframe, resource_key='org:resource', timestamp_key='time:timestamp', case_id_key='case:concept:name')
+        pm4py.view_sna(metric)
     """
     from pm4py.visualization.sna import visualizer as sna_visualizer
     gviz = sna_visualizer.apply(sna_metric, variant=sna_visualizer.Variants.PYVIS)
     sna_visualizer.view(gviz)
 
 
-def save_vis_sna(sna_metric, file_path: str):
+def save_vis_sna(sna_metric: SNA, file_path: str):
     """
     Saves the visualization of a SNA metric in a .html file
 
-    Parameters
-    ----------------
-    sna_metric
-        Values of the metric
-    file_path
-        Destination path
+    :param sna_metric: Values of the metric
+    :param file_path: Destination path
+
+    .. code-block:: python3
+
+        import pm4py
+
+        metric = pm4py.discover_subcontracting_network(dataframe, resource_key='org:resource', timestamp_key='time:timestamp', case_id_key='case:concept:name')
+        pm4py.save_vis_sna(metric, 'sna.png')
     """
+    file_path = str(file_path)
     from pm4py.visualization.sna import visualizer as sna_visualizer
     gviz = sna_visualizer.apply(sna_metric, variant=sna_visualizer.Variants.PYVIS)
     sna_visualizer.save(gviz, file_path)
 
 
-def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "png"):
+def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "png", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
     """
     Visualizes the case duration graph
 
-    Parameters
-    -----------------
-    log
-        Log object
-    format
-        Format of the visualization (png, svg, ...)
+    :param log: Log object
+    :param format: Format of the visualization (png, svg, ...)
+    :param activity_key: attribute to be used as activity
+    :param case_id_key: attribute to be used as case identifier
+    :param timestamp_key: attribute to be used as timestamp
+
+    .. code-block:: python3
+
+        import pm4py
+
+        pm4py.view_case_duration_graph(dataframe, format='svg', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
         from pm4py.statistics.traces.generic.pandas import case_statistics
-        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log))
+        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     else:
         from pm4py.statistics.traces.generic.log import case_statistics
-        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log))
+        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
                                         parameters={"format": format})
     graphs_visualizer.view(graph_vis)
 
 
-def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: str):
+def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: str, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
     """
     Saves the case duration graph in the specified path
 
-    Parameters
-    ----------------
-    log
-        Log object
-    file_path
-        Destination path
+    :param log: Log object
+    :param file_path: Destination path
+    :param activity_key: attribute to be used as activity
+    :param case_id_key: attribute to be used as case identifier
+    :param timestamp_key: attribute to be used as timestamp
+
+    .. code-block:: python3
+
+        import pm4py
+
+        pm4py.save_vis_case_duration_graph(dataframe, 'duration.png', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
+    file_path = str(file_path)
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
         from pm4py.statistics.traces.generic.pandas import case_statistics
-        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log))
+        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     else:
         from pm4py.statistics.traces.generic.log import case_statistics
-        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log))
+        graph = case_statistics.get_kde_caseduration(log, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
@@ -490,52 +556,63 @@ def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: 
     graphs_visualizer.save(graph_vis, file_path)
 
 
-def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str = "png"):
+def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str = "png", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
     """
     Visualizes the events per time graph
 
-    Parameters
-    -----------------
-    log
-        Log object
-    format
-        Format of the visualization (png, svg, ...)
+    :param log: Log object
+    :param format: Format of the visualization (png, svg, ...)
+    :param activity_key: attribute to be used as activity
+    :param case_id_key: attribute to be used as case identifier
+    :param timestamp_key: attribute to be used as timestamp
+
+    .. code-block:: python3
+
+        import pm4py
+
+        pm4py.view_events_per_time_graph(dataframe, format='svg', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
         from pm4py.statistics.attributes.pandas import get as attributes_get
-        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log))
+        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     else:
         from pm4py.statistics.attributes.log import get as attributes_get
-        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log))
+        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.DATES,
                                         parameters={"format": format})
     graphs_visualizer.view(graph_vis)
 
 
-def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path: str):
+def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path: str, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
     """
     Saves the events per time graph in the specified path
 
-    Parameters
-    ----------------
-    log
-        Log object
-    file_path
-        Destination path
+    :param log: Log object
+    :param file_path: Destination path
+    :param activity_key: attribute to be used as activity
+    :param case_id_key: attribute to be used as case identifier
+    :param timestamp_key: attribute to be used as timestamp
+
+    .. code-block:: python3
+
+        import pm4py
+
+        pm4py.save_vis_events_per_time_graph(dataframe, 'ev_time.png', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
+    file_path = str(file_path)
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
         from pm4py.statistics.attributes.pandas import get as attributes_get
-        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log))
+        graph = attributes_get.get_kde_date_attribute(log, attribute=timestamp_key, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     else:
         from pm4py.statistics.attributes.log import get as attributes_get
-        graph = attributes_get.get_kde_date_attribute(log, parameters=get_properties(log))
+        graph = attributes_get.get_kde_date_attribute(log, attribute=timestamp_key, parameters=get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key))
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.DATES,
@@ -543,56 +620,87 @@ def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path
     graphs_visualizer.save(graph_vis, file_path)
 
 
-def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], format: str = "png", bgcolor: str = "white"):
+@deprecation.deprecated("2.3.0", "3.0.0", details="the performance spectrum visualization will be removed in a future release.")
+def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], format: str = "png", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", bgcolor: str = "white"):
     """
     Displays the performance spectrum
 
-    Parameters
-    ----------------
-    perf_spectrum
-        Performance spectrum
-    format
-        Format of the visualization (png, svg ...)
-    bgcolor
-        Background color of the visualization (default: white)
+    The performance spectrum is a novel visualization of the performance of the process of the time elapsed between different activities in the process executions. The performance spectrum has initially been described in:
+
+    Denisov, Vadim, et al. "The Performance Spectrum Miner: Visual Analytics for Fine-Grained Performance Analysis of Processes." BPM (Dissertation/Demos/Industry). 2018.
+
+    :param perf_spectrum: Performance spectrum
+    :param format: Format of the visualization (png, svg ...)
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :param activity_key: attribute to be used as activity
+    :param case_id_key: attribute to be used as case identifier
+    :param timestamp_key: attribute to be used as timestamp
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        pm4py.view_performance_spectrum(dataframe, ['Act. A', 'Act. C', 'Act. D'], format='svg', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+
+    properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+
     from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
-    perf_spectrum = performance_spectrum.apply(log, activities, parameters=get_properties(log))
+    perf_spectrum = performance_spectrum.apply(log, activities, parameters=properties)
     from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
     from pm4py.visualization.performance_spectrum.variants import neato
     gviz = perf_spectrum_visualizer.apply(perf_spectrum, parameters={neato.Parameters.FORMAT.value: format, "bgcolor": bgcolor})
     perf_spectrum_visualizer.view(gviz)
 
 
-def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], file_path: str, bgcolor: str = "white"):
+@deprecation.deprecated("2.3.0", "3.0.0", details="the performance spectrum visualization will be removed in a future release.")
+def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], file_path: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", bgcolor: str = "white"):
     """
     Saves the visualization of the performance spectrum to a file
 
-    Parameters
-    ---------------
-    log
-        Event log
-    activities
-        List of activities (in order) that is used to build the performance spectrum
-    file_path
-        Destination path (including the extension)
-    bgcolor
-        Background color of the visualization (default: white)
+    The performance spectrum is a novel visualization of the performance of the process of the time elapsed between different activities in the process executions. The performance spectrum has initially been described in:
+
+    Denisov, Vadim, et al. "The Performance Spectrum Miner: Visual Analytics for Fine-Grained Performance Analysis of Processes." BPM (Dissertation/Demos/Industry). 2018.
+
+    :param log: Event log
+    :param activities: List of activities (in order) that is used to build the performance spectrum
+    :param file_path: Destination path (including the extension)
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        pm4py.save_vis_performance_spectrum(dataframe, ['Act. A', 'Act. C', 'Act. D'], 'perf_spec.png', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
+    file_path = str(file_path)
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+
+    properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+
     from pm4py.algo.discovery.performance_spectrum import algorithm as performance_spectrum
-    perf_spectrum = performance_spectrum.apply(log, activities, parameters=get_properties(log))
+    perf_spectrum = performance_spectrum.apply(log, activities, parameters=properties)
     from pm4py.visualization.performance_spectrum import visualizer as perf_spectrum_visualizer
     from pm4py.visualization.performance_spectrum.variants import neato
     format = os.path.splitext(file_path)[1][1:]
-    gviz = perf_spectrum_visualizer.apply(perf_spectrum, parameters={neato.Parameters.FORMAT.value: format})
+    gviz = perf_spectrum_visualizer.apply(perf_spectrum, parameters={neato.Parameters.FORMAT.value: format, "bgcolor": bgcolor})
     perf_spectrum_visualizer.save(gviz, file_path)
 
 
-def __builds_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_type: str = "days_week"):
+def __builds_events_distribution_graph(log: Union[EventLog, pd.DataFrame], parameters, distr_type: str = "days_week"):
     """
     Internal method to build the events distribution graph
     """
@@ -628,39 +736,40 @@ def __builds_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.statistics.attributes.pandas import get as attributes_get
-        x, y = attributes_get.get_events_distribution(log, distr_type=distr_type, parameters=get_properties(log))
+        x, y = attributes_get.get_events_distribution(log, distr_type=distr_type, parameters=parameters)
     else:
         from pm4py.statistics.attributes.log import get as attributes_get
-        x, y = attributes_get.get_events_distribution(log, distr_type=distr_type, parameters=get_properties(log))
+        x, y = attributes_get.get_events_distribution(log, distr_type=distr_type, parameters=parameters)
 
     return title, x_axis, y_axis, x, y
 
 
-def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_type: str = "days_week", format="png"):
+def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_type: str = "days_week", format="png", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
     """
     Shows the distribution of the events in the specified dimension
 
-    Parameters
-    ----------------
-    log
-        Event log
-    distr_type
-        Type of distribution (default: days_week):
-        - days_month => Gets the distribution of the events among the days of a month (from 1 to 31)
-        - months => Gets the distribution of the events among the months (from 1 to 12)
-        - years => Gets the distribution of the events among the years of the event log
-        - hours => Gets the distribution of the events among the hours of a day (from 0 to 23)
-        - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday)
-        - weeks => Gets the distribution of the events among the weeks of a year (from 0 to 52)
-    format
-        Format of the visualization (default: png)
-    bgcolor
-        Background color of the visualization (default: white)
+    Observing the distribution of events over time permits to infer useful information about the work shifts, the working days, and the period of the year that are more or less busy.
+
+    :param log: Event log
+    :param distr_type: Type of distribution (default: days_week): - days_month => Gets the distribution of the events among the days of a month (from 1 to 31) - months => Gets the distribution of the events among the months (from 1 to 12) - years => Gets the distribution of the events among the years of the event log - hours => Gets the distribution of the events among the hours of a day (from 0 to 23) - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday) - weeks => Gets the distribution of the events among the weeks of a year (from 0 to 52)
+    :param format: Format of the visualization (default: png)
+    :param activity_key: attribute to be used as activity
+    :param case_id_key: attribute to be used as case identifier
+    :param timestamp_key: attribute to be used as timestamp
+
+    .. code-block:: python3
+
+        import pm4py
+
+        pm4py.view_events_distribution_graph(dataframe, format='svg', distr_type='days_week', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
-    title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, distr_type)
-    parameters = copy(get_properties(log))
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+
+    parameters = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+    title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, parameters, distr_type)
     parameters["title"] = title;
     parameters["x_axis"] = x_axis;
     parameters["y_axis"] = y_axis;
@@ -671,31 +780,34 @@ def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_typ
 
 
 def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_path: str,
-                                       distr_type: str = "days_week"):
+                                       distr_type: str = "days_week", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
     """
     Saves the distribution of the events in a picture file
 
-    Parameters
-    ----------------
-    log
-        Event log
-    file_path
-        Destination path (including the extension)
-    distr_type
-        Type of distribution (default: days_week):
-        - days_month => Gets the distribution of the events among the days of a month (from 1 to 31)
-        - months => Gets the distribution of the events among the months (from 1 to 12)
-        - years => Gets the distribution of the events among the years of the event log
-        - hours => Gets the distribution of the events among the hours of a day (from 0 to 23)
-        - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday)
-    bgcolor
-        Background color of the visualization (default: white)
+    Observing the distribution of events over time permits to infer useful information about the work shifts, the working days, and the period of the year that are more or less busy.
+
+    :param log: Event log
+    :param file_path: Destination path (including the extension)
+    :param distr_type: Type of distribution (default: days_week): - days_month => Gets the distribution of the events among the days of a month (from 1 to 31) - months => Gets the distribution of the events among the months (from 1 to 12) - years => Gets the distribution of the events among the years of the event log - hours => Gets the distribution of the events among the hours of a day (from 0 to 23) - days_week => Gets the distribution of the events among the days of a week (from Monday to Sunday)
+    :param activity_key: attribute to be used as activity
+    :param case_id_key: attribute to be used as case identifier
+    :param timestamp_key: attribute to be used as timestamp
+
+    .. code-block:: python3
+
+        import pm4py
+
+        pm4py.save_vis_events_distribution_graph(dataframe, 'ev_distr_graph.png', distr_type='days_week', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
+    file_path = str(file_path)
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+
     format = os.path.splitext(file_path)[1][1:]
-    title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, distr_type)
-    parameters = copy(get_properties(log))
+    parameters = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+    title, x_axis, y_axis, x, y = __builds_events_distribution_graph(log, parameters, distr_type)
     parameters["title"] = title;
     parameters["x_axis"] = x_axis;
     parameters["y_axis"] = y_axis;
@@ -709,36 +821,24 @@ def view_ocdfg(ocdfg: Dict[str, Any], annotation: str = "frequency", act_metric:
     """
     Views an OC-DFG (object-centric directly-follows graph) with the provided configuration.
 
-    Parameters
-    ----------
-    ocdfg
-        Object-centric directly-follows graph
-    annotation
-        The annotation to use for the visualization. Values:
-            - "frequency": frequency annotation
-            - "performance": performance annotation
-    act_metric
-        The metric to use for the activities. Available values:
-            - "events" => number of events (default)
-            - "unique_objects" => number of unique objects
-            - "total_objects" => number of total objects
-    edge_metric
-        The metric to use for the edges. Available values:
-            - "event_couples" => number of event couples (default)
-            - "unique_objects" => number of unique objects
-            - "total_objects" => number of total objects
-    act_threshold
-        The threshold to apply on the activities frequency (default: 0). Only activities
-        having a frequency >= than this are kept in the graph.
-    edge_threshold
-        The threshold to apply on the edges frequency (default 0). Only edges
-        having a frequency >= than this are kept in the graph.
-    performance_aggregation
-        The aggregation measure to use for the performance: mean, median, min, max, sum
-    format
-        The format of the output visualization (default: "png")
-    bgcolor
-        Background color of the visualization (default: white)
+    Object-centric directly-follows multigraphs are a composition of directly-follows graphs for the single object type, which can be annotated with different metrics considering the entities of an object-centric event log (i.e., events, unique objects, total objects).
+
+    :param ocdfg: Object-centric directly-follows graph
+    :param annotation: The annotation to use for the visualization. Values: - "frequency": frequency annotation - "performance": performance annotation
+    :param act_metric: The metric to use for the activities. Available values: - "events" => number of events (default) - "unique_objects" => number of unique objects - "total_objects" => number of total objects
+    :param edge_metric: The metric to use for the edges. Available values: - "event_couples" => number of event couples (default) - "unique_objects" => number of unique objects - "total_objects" => number of total objects
+    :param act_threshold: The threshold to apply on the activities frequency (default: 0). Only activities having a frequency >= than this are kept in the graph.
+    :param edge_threshold: The threshold to apply on the edges frequency (default 0). Only edges having a frequency >= than this are kept in the graph.
+    :param performance_aggregation: The aggregation measure to use for the performance: mean, median, min, max, sum
+    :param format: The format of the output visualization (default: "png")
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocdfg = pm4py.discover_ocdfg(ocel)
+        pm4py.view_ocdfg(ocdfg, annotation='frequency', format='svg')
     """
     from pm4py.visualization.ocel.ocdfg import visualizer
     from pm4py.visualization.ocel.ocdfg.variants import classic
@@ -759,37 +859,26 @@ def save_vis_ocdfg(ocdfg: Dict[str, Any], file_path: str, annotation: str = "fre
     """
     Saves the visualization of an OC-DFG (object-centric directly-follows graph) with the provided configuration.
 
-    Parameters
-    ----------
-    ocdfg
-        Object-centric directly-follows graph
-    file_path
-        Destination path (including the extension)
-    annotation
-        The annotation to use for the visualization. Values:
-            - "frequency": frequency annotation
-            - "performance": performance annotation
-    act_metric
-        The metric to use for the activities. Available values:
-            - "events" => number of events (default)
-            - "unique_objects" => number of unique objects
-            - "total_objects" => number of total objects
-    edge_metric
-        The metric to use for the edges. Available values:
-            - "event_couples" => number of event couples (default)
-            - "unique_objects" => number of unique objects
-            - "total_objects" => number of total objects
-    act_threshold
-        The threshold to apply on the activities frequency (default: 0). Only activities
-        having a frequency >= than this are kept in the graph.
-    edge_threshold
-        The threshold to apply on the edges frequency (default 0). Only edges
-        having a frequency >= than this are kept in the graph.
-    performance_aggregation
-        The aggregation measure to use for the performance: mean, median, min, max, sum
-    bgcolor
-        Background color of the visualization (default: white)
+    Object-centric directly-follows multigraphs are a composition of directly-follows graphs for the single object type, which can be annotated with different metrics considering the entities of an object-centric event log (i.e., events, unique objects, total objects).
+
+    :param ocdfg: Object-centric directly-follows graph
+    :param file_path: Destination path (including the extension)
+    :param annotation: The annotation to use for the visualization. Values: - "frequency": frequency annotation - "performance": performance annotation
+    :param act_metric: The metric to use for the activities. Available values: - "events" => number of events (default) - "unique_objects" => number of unique objects - "total_objects" => number of total objects
+    :param edge_metric: The metric to use for the edges. Available values: - "event_couples" => number of event couples (default) - "unique_objects" => number of unique objects - "total_objects" => number of total objects
+    :param act_threshold: The threshold to apply on the activities frequency (default: 0). Only activities having a frequency >= than this are kept in the graph.
+    :param edge_threshold: The threshold to apply on the edges frequency (default 0). Only edges having a frequency >= than this are kept in the graph.
+    :param performance_aggregation: The aggregation measure to use for the performance: mean, median, min, max, sum
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocdfg = pm4py.discover_ocdfg(ocel)
+        pm4py.save_vis_ocdfg(ocdfg, 'ocdfg.png', annotation='frequency')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.ocel.ocdfg import visualizer
     from pm4py.visualization.ocel.ocdfg.variants import classic
@@ -810,14 +899,16 @@ def view_ocpn(ocpn: Dict[str, Any], format: str = "png", bgcolor: str = "white")
     """
     Visualizes on the screen the object-centric Petri net
 
-    Parameters
-    --------------
-    ocpn
-        Object-centric Petri net
-    format
-        Format of the visualization (default: png)
-    bgcolor
-        Background color of the visualization (default: white)
+    :param ocpn: Object-centric Petri net
+    :param format: Format of the visualization (default: png)
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocpn = pm4py.discover_oc_petri_net(ocel)
+        pm4py.view_ocpn(ocpn, format='svg')
     """
     from pm4py.visualization.ocel.ocpn import visualizer as ocpn_visualizer
     gviz = ocpn_visualizer.apply(ocpn, parameters={"format": format, "bgcolor": bgcolor})
@@ -828,15 +919,18 @@ def save_vis_ocpn(ocpn: Dict[str, Any], file_path: str, bgcolor: str = "white"):
     """
     Saves the visualization of the object-centric Petri net into a file
 
-    Parameters
-    ----------------
-    ocpn
-        Object-centric Petri net
-    file_path
-        Target path of the visualization
-    bgcolor
-        Background color of the visualization (default: white)
+    :param ocpn: Object-centric Petri net
+    :param file_path: Target path of the visualization
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocpn = pm4py.discover_oc_petri_net(ocel)
+        pm4py.save_vis_ocpn(ocpn, 'ocpn.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.ocel.ocpn import visualizer as ocpn_visualizer
     gviz = ocpn_visualizer.apply(ocpn, parameters={"format": format, "bgcolor": bgcolor})
@@ -847,22 +941,19 @@ def view_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, Any]
     """
     Visualizes the network analysis
 
-    Parameters
-    -----------------
-    network_analysis
-        Network analysis
-    variant
-        Variant of the visualization:
-            - frequency (if the discovered network analysis contains the frequency of the interactions)
-            - performance (if the discovered network analysis contains the performance of the interactions)
-    format
-        Format of the visualization (default: png)
-    activity_threshold
-        The minimum number of occurrences for an activity to be included (default: 1)
-    edge_threshold
-        The minimum number of occurrences for an edge to be included (default: 1)
-    bgcolor
-        Background color of the visualization (default: white)
+    :param network_analysis: Network analysis
+    :param variant: Variant of the visualization: - frequency (if the discovered network analysis contains the frequency of the interactions) - performance (if the discovered network analysis contains the performance of the interactions)
+    :param format: Format of the visualization (default: png)
+    :param activity_threshold: The minimum number of occurrences for an activity to be included (default: 1)
+    :param edge_threshold: The minimum number of occurrences for an edge to be included (default: 1)
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net_ana = pm4py.discover_network_analysis(dataframe, out_column='case:concept:name', in_column='case:concept:name', node_column_source='org:resource', node_column_target='org:resource', edge_column='concept:name')
+        pm4py.view_network_analysis(net_ana, format='svg')
     """
     from pm4py.visualization.network_analysis import visualizer as network_analysis_visualizer
     variant = network_analysis_visualizer.Variants.PERFORMANCE if variant == "performance" else network_analysis_visualizer.Variants.FREQUENCY
@@ -874,25 +965,153 @@ def save_vis_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, 
     """
     Saves the visualization of the network analysis
 
-    Parameters
-    -----------------
-    network_analysis
-        Network analysis
-    file_path
-        Target path of the visualization
-    variant
-        Variant of the visualization:
-            - frequency (if the discovered network analysis contains the frequency of the interactions)
-            - performance (if the discovered network analysis contains the performance of the interactions)
-    activity_threshold
-        The minimum number of occurrences for an activity to be included (default: 1)
-    edge_threshold
-        The minimum number of occurrences for an edge to be included (default: 1)
-    bgcolor
-        Background color of the visualization (default: white)
+    :param network_analysis: Network analysis
+    :param file_path: Target path of the visualization
+    :param variant: Variant of the visualization: - frequency (if the discovered network analysis contains the frequency of the interactions) - performance (if the discovered network analysis contains the performance of the interactions)
+    :param activity_threshold: The minimum number of occurrences for an activity to be included (default: 1)
+    :param edge_threshold: The minimum number of occurrences for an edge to be included (default: 1)
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net_ana = pm4py.discover_network_analysis(dataframe, out_column='case:concept:name', in_column='case:concept:name', node_column_source='org:resource', node_column_target='org:resource', edge_column='concept:name')
+        pm4py.save_vis_network_analysis(net_ana, 'net_ana.png')
     """
+    file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:]
     from pm4py.visualization.network_analysis import visualizer as network_analysis_visualizer
     variant = network_analysis_visualizer.Variants.PERFORMANCE if variant == "performance" else network_analysis_visualizer.Variants.FREQUENCY
     gviz = network_analysis_visualizer.apply(network_analysis, variant=variant, parameters={"format": format, "activity_threshold": activity_threshold, "edge_threshold": edge_threshold, "bgcolor": bgcolor})
     network_analysis_visualizer.save(gviz, file_path)
+
+
+def view_transition_system(transition_system: TransitionSystem, format: str = "png", bgcolor: str = "white"):
+    """
+    Views a transition system
+
+    :param transition_system: Transition system
+    :param format: Format of the visualization (png, svg, ...)
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        transition_system = pm4py.discover_transition_system(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        pm4py.view_transition_system(transition_system, format='svg')
+    """
+    from pm4py.visualization.transition_system import visualizer as ts_visualizer
+    gviz = ts_visualizer.apply(transition_system, parameters={"format": format, "bgcolor": bgcolor})
+    ts_visualizer.view(gviz)
+
+
+def save_vis_transition_system(transition_system: TransitionSystem, file_path: str, bgcolor: str = "white"):
+    """
+    Persists the visualization of a transition system
+
+    :param transition_system: Transition system
+    :param file_path: Destination path
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        transition_system = pm4py.discover_transition_system(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        pm4py.save_vis_transition_system(transition_system, 'trans_system.png')
+    """
+    file_path = str(file_path)
+    format = os.path.splitext(file_path)[1][1:]
+    from pm4py.visualization.transition_system import visualizer as ts_visualizer
+    gviz = ts_visualizer.apply(transition_system, parameters={"format": format, "bgcolor": bgcolor})
+    ts_visualizer.save(gviz, file_path)
+
+
+def view_prefix_tree(trie: Trie, format: str = "png", bgcolor: str = "white"):
+    """
+    Views a prefix tree
+
+    :param prefix_tree: Prefix tree
+    :param format: Format of the visualization (png, svg, ...)
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        prefix_tree = pm4py.discover_prefix_tree(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        pm4py.view_prefix_tree(prefix_tree, format='svg')
+    """
+    from pm4py.visualization.trie import visualizer as trie_visualizer
+    gviz = trie_visualizer.apply(trie, parameters={"format": format, "bgcolor": bgcolor})
+    trie_visualizer.view(gviz)
+
+
+def save_vis_prefix_tree(trie: Trie, file_path: str, bgcolor: str = "white"):
+    """
+    Persists the visualization of a prefix tree
+
+    :param prefix_tree: Prefix tree
+    :param file_path: Destination path
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        prefix_tree = pm4py.discover_prefix_tree(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        pm4py.save_vis_prefix_tree(prefix_tree, 'trie.png')
+    """
+    file_path = str(file_path)
+    format = os.path.splitext(file_path)[1][1:]
+    from pm4py.visualization.trie import visualizer as trie_visualizer
+    gviz = trie_visualizer.apply(trie, parameters={"format": format, "bgcolor": bgcolor})
+    trie_visualizer.save(gviz, file_path)
+
+
+def view_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], format: str = "png", bgcolor: str = "white"):
+    """
+    Visualizes an object graph on the screen
+
+    :param ocel: object-centric event log
+    :param graph: object graph
+    :param format: format of the visualization (png, svg, ...)
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        obj_graph = pm4py.ocel_discover_objects_graph(ocel, graph_type='object_interaction')
+        pm4py.view_object_graph(ocel, obj_graph, format='svg')
+    """
+    from pm4py.visualization.ocel.object_graph import visualizer as obj_graph_vis
+    gviz = obj_graph_vis.apply(ocel, graph, parameters={"format": format, "bgcolor": bgcolor})
+    obj_graph_vis.view(gviz)
+
+
+def save_vis_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], file_path: str, bgcolor: str = "white"):
+    """
+    Saves the visualization of an object graph
+
+    :param ocel: object-centric event log
+    :param graph: object graph
+    :param file_path: Destination path
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        obj_graph = pm4py.ocel_discover_objects_graph(ocel, graph_type='object_interaction')
+        pm4py.save_vis_object_graph(ocel, obj_graph, 'trial.pdf')
+    """
+    file_path = str(file_path)
+    format = os.path.splitext(file_path)[1][1:]
+    from pm4py.visualization.ocel.object_graph import visualizer as obj_graph_vis
+    gviz = obj_graph_vis.apply(ocel, graph, parameters={"format": format, "bgcolor": bgcolor})
+    obj_graph_vis.save(gviz, file_path)

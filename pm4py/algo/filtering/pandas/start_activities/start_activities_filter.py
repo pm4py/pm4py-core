@@ -26,7 +26,6 @@ from pm4py.util.constants import GROUPED_DATAFRAME
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
-import deprecation
 from typing import Optional, Dict, Any, Union, Tuple, List
 import pandas as pd
 
@@ -71,43 +70,6 @@ def apply(df: pd.DataFrame, values: List[str], parameters: Optional[Dict[Union[s
 
     return filter_df_on_start_activities(df, values, case_id_glue=case_id_glue, activity_key=activity_key,
                                          positive=positive, grouped_df=grouped_df)
-
-
-@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
-def apply_auto_filter(df, parameters=None):
-    """
-    Apply auto filter on end activities
-
-    Parameters
-    -----------
-    df
-        Pandas dataframe
-    parameters
-        Parameters of the algorithm, including:
-            Parameters.CASE_ID_KEY -> Case ID column in the dataframe
-            Parameters.ACTIVITY_KEY -> Column that represents the activity
-            Parameters.DECREASING_FACTOR -> Decreasing factor that should be passed to the algorithm
-
-    Returns
-    -----------
-    df
-        Filtered dataframe
-    """
-    if parameters is None:
-        parameters = {}
-
-    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
-    grouped_df = exec_utils.get_param_value(Parameters.GROUP_DATAFRAME, parameters, None)
-    decreasing_factor = exec_utils.get_param_value(Parameters.DECREASING_FACTOR, parameters,
-                                                   filtering_constants.DECREASING_FACTOR)
-
-    start_activities = get_start_activities(df, parameters=parameters)
-    salist = start_activities_common.get_sorted_start_activities_list(start_activities)
-    sathreshold = start_activities_common.get_start_activities_threshold(salist, decreasing_factor)
-
-    return filter_df_on_start_activities_nocc(df, sathreshold, sa_count0=start_activities, case_id_glue=case_id_glue,
-                                              activity_key=activity_key, grouped_df=grouped_df)
 
 
 def filter_df_on_start_activities(df, values, case_id_glue=CASE_CONCEPT_NAME,

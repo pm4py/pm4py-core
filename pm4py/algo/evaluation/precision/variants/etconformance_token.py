@@ -27,11 +27,13 @@ from pm4py.util import constants
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.conversion.log import converter as log_converter
 import pandas as pd
 
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     TOKEN_REPLAY_VARIANT = "token_replay_variant"
     CLEANING_TOKEN_FLOOD = "cleaning_token_flood"
     SHOW_PROGRESS_BAR = "show_progress_bar"
@@ -83,7 +85,9 @@ def apply(log: EventLog, net: PetriNet, marking: Marking, final_marking: Marking
     token_replay_variant = exec_utils.get_param_value(Parameters.TOKEN_REPLAY_VARIANT, parameters,
                                                       executor.Variants.TOKEN_REPLAY)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, log_lib.util.xes.DEFAULT_NAME_KEY)
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+
     # default value for precision, when no activated transitions (not even by looking at the initial marking) are found
     precision = 1.0
     sum_ee = 0
@@ -99,7 +103,10 @@ def apply(log: EventLog, net: PetriNet, marking: Marking, final_marking: Marking
         token_replay.Parameters.ACTIVITY_KEY: activity_key
     }
 
-    prefixes, prefix_count = precision_utils.get_log_prefixes(log, activity_key=activity_key)
+    if type(log) is not pd.DataFrame:
+        log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
+    prefixes, prefix_count = precision_utils.get_log_prefixes(log, activity_key=activity_key, case_id_key=case_id_key)
     prefixes_keys = list(prefixes.keys())
     fake_log = precision_utils.form_fake_log(prefixes_keys, activity_key=activity_key)
 

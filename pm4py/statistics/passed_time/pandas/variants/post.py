@@ -33,8 +33,7 @@ class Parameters(Enum):
     MAX_NO_POINTS_SAMPLE = "max_no_of_points_to_sample"
     KEEP_ONCE_PER_CASE = "keep_once_per_case"
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING = "worktiming"
-    WEEKENDS = "weekends"
+    BUSINESS_HOUR_SLOTS = "business_hour_slots"
     WORKCALENDAR = "workcalendar"
 
 
@@ -66,15 +65,14 @@ def apply(df: pd.DataFrame, activity: str, parameters: Optional[Dict[Any, Any]] 
     start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, None)
 
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
-    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
-    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
+    business_hours_slots = exec_utils.get_param_value(Parameters.BUSINESS_HOUR_SLOTS, parameters, constants.DEFAULT_BUSINESS_HOUR_SLOTS)
+
     workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
     [dfg_frequency, dfg_performance] = pandas.get_dfg_graph(df, measure="both", activity_key=activity_key,
                                            case_id_glue=case_id_glue, timestamp_key=timestamp_key,
                                                             start_timestamp_key=start_timestamp_key,
-                                                            business_hours=business_hours, worktiming=worktiming,
-                                                            weekends=weekends, workcalendar=workcalendar)
+                                                            business_hours=business_hours, business_hours_slot=business_hours_slots, workcalendar=workcalendar)
 
     post = []
     sum_perf_post = 0.0

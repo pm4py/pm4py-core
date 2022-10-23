@@ -116,60 +116,9 @@ def apply_pandas(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Paramete
     if parameters is None:
         parameters = {}
 
-    if pkgutil.find_loader("pandas"):
-        activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
-        case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
-        start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
-                                                         None)
-        timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
+    heu_net = apply_heu_pandas(df, parameters=parameters)
 
-        from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics, freq_triples as get_freq_triples
-        from pm4py.statistics.attributes.pandas import get as pd_attributes
-        from pm4py.statistics.start_activities.pandas import get as pd_sa_filter
-        from pm4py.statistics.end_activities.pandas import get as pd_ea_filter
-
-        start_activities = pd_sa_filter.get_start_activities(df, parameters=parameters)
-        end_activities = pd_ea_filter.get_end_activities(df, parameters=parameters)
-        activities_occurrences = pd_attributes.get_attribute_values(df, activity_key, parameters=parameters)
-        activities = list(activities_occurrences.keys())
-        heu_net_decoration = exec_utils.get_param_value(Parameters.HEU_NET_DECORATION, parameters, "frequency")
-
-        if timestamp_key in df:
-            dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
-                                              activity_key=activity_key, timestamp_key=timestamp_key,
-                                              start_timestamp_key=start_timestamp_key)
-            dfg_window_2 = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
-                                                       activity_key=activity_key, timestamp_key=timestamp_key, window=2,
-                                                       start_timestamp_key=start_timestamp_key)
-            frequency_triples = get_freq_triples.get_freq_triples(df, case_id_glue=case_id_glue,
-                                                                  activity_key=activity_key,
-                                                                  timestamp_key=timestamp_key)
-
-        else:
-            dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
-                                              activity_key=activity_key, sort_timestamp_along_case_id=False)
-            dfg_window_2 = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
-                                                       activity_key=activity_key, sort_timestamp_along_case_id=False,
-                                                       window=2)
-            frequency_triples = get_freq_triples.get_freq_triples(df, case_id_glue=case_id_glue,
-                                                                  activity_key=activity_key,
-                                                                  timestamp_key=timestamp_key,
-                                                                  sort_timestamp_along_case_id=False)
-
-        performance_dfg = None
-        if heu_net_decoration == "performance":
-            performance_dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
-                                                          activity_key=activity_key, timestamp_key=timestamp_key,
-                                                          start_timestamp_key=start_timestamp_key,
-                                                          measure="performance")
-
-        heu_net = apply_heu_dfg(dfg, activities=activities, activities_occurrences=activities_occurrences,
-                                start_activities=start_activities, end_activities=end_activities,
-                                dfg_window_2=dfg_window_2,
-                                freq_triples=frequency_triples, performance_dfg=performance_dfg, parameters=parameters)
-        net, im, fm = hn_conv_alg.apply(heu_net, parameters=parameters)
-
-        return net, im, fm
+    return hn_conv_alg.apply(heu_net, parameters=parameters)
 
 
 def apply_dfg(dfg: Dict[Tuple[str, str], int], activities=None, activities_occurrences=None, start_activities=None, end_activities=None,
@@ -270,6 +219,89 @@ def apply_heu(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> Heu
                          start_activities=start_activities,
                          end_activities=end_activities, dfg_window_2=dfg_window_2, freq_triples=freq_triples,
                          performance_dfg=performance_dfg, parameters=parameters)
+
+
+def apply_heu_pandas(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> HeuristicsNet:
+    """
+    Discovers an Heuristics Net using Heuristics Miner
+
+    Parameters
+    ------------
+    df
+        Pandas dataframe
+    parameters
+        Possible parameters of the algorithm,
+        including:
+            - Parameters.ACTIVITY_KEY
+            - Parameters.TIMESTAMP_KEY
+            - Parameters.CASE_ID_KEY
+            - Parameters.DEPENDENCY_THRESH
+            - Parameters.AND_MEASURE_THRESH
+            - Parameters.MIN_ACT_COUNT
+            - Parameters.MIN_DFG_OCCURRENCES
+            - Parameters.DFG_PRE_CLEANING_NOISE_THRESH
+            - Parameters.LOOP_LENGTH_TWO_THRESH
+
+    Returns
+    ------------
+    heu
+        Heuristics Net
+    """
+    if parameters is None:
+        parameters = {}
+
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
+                                                     None)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
+
+    from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics, freq_triples as get_freq_triples
+    from pm4py.statistics.attributes.pandas import get as pd_attributes
+    from pm4py.statistics.start_activities.pandas import get as pd_sa_filter
+    from pm4py.statistics.end_activities.pandas import get as pd_ea_filter
+
+    start_activities = pd_sa_filter.get_start_activities(df, parameters=parameters)
+    end_activities = pd_ea_filter.get_end_activities(df, parameters=parameters)
+    activities_occurrences = pd_attributes.get_attribute_values(df, activity_key, parameters=parameters)
+    activities = list(activities_occurrences.keys())
+    heu_net_decoration = exec_utils.get_param_value(Parameters.HEU_NET_DECORATION, parameters, "frequency")
+
+    if timestamp_key in df:
+        dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
+                                          activity_key=activity_key, timestamp_key=timestamp_key,
+                                          start_timestamp_key=start_timestamp_key)
+        dfg_window_2 = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
+                                                   activity_key=activity_key, timestamp_key=timestamp_key, window=2,
+                                                   start_timestamp_key=start_timestamp_key)
+        frequency_triples = get_freq_triples.get_freq_triples(df, case_id_glue=case_id_glue,
+                                                              activity_key=activity_key,
+                                                              timestamp_key=timestamp_key)
+
+    else:
+        dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
+                                          activity_key=activity_key, sort_timestamp_along_case_id=False)
+        dfg_window_2 = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
+                                                   activity_key=activity_key, sort_timestamp_along_case_id=False,
+                                                   window=2)
+        frequency_triples = get_freq_triples.get_freq_triples(df, case_id_glue=case_id_glue,
+                                                              activity_key=activity_key,
+                                                              timestamp_key=timestamp_key,
+                                                              sort_timestamp_along_case_id=False)
+
+    performance_dfg = None
+    if heu_net_decoration == "performance":
+        performance_dfg = df_statistics.get_dfg_graph(df, case_id_glue=case_id_glue,
+                                                      activity_key=activity_key, timestamp_key=timestamp_key,
+                                                      start_timestamp_key=start_timestamp_key,
+                                                      measure="performance")
+
+    heu_net = apply_heu_dfg(dfg, activities=activities, activities_occurrences=activities_occurrences,
+                            start_activities=start_activities, end_activities=end_activities,
+                            dfg_window_2=dfg_window_2,
+                            freq_triples=frequency_triples, performance_dfg=performance_dfg, parameters=parameters)
+
+    return heu_net
 
 
 def apply_heu_dfg(dfg, activities=None, activities_occurrences=None, start_activities=None, end_activities=None,

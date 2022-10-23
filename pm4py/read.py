@@ -15,11 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import warnings
-from typing import Tuple
-
-import os
-
-import deprecation
+from typing import Tuple, Dict, Optional
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.log.obj import EventLog
@@ -27,96 +23,89 @@ from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 
+import os
+
+from pandas import DataFrame
+import pkgutil
+import deprecation
+
 INDEX_COLUMN = "@@index"
 
+__doc__ = """
+The ``pm4py.read`` module contains all funcationality related to reading files/objects from disk.
+"""
 
-def read_xes(file_path: str) -> EventLog:
+
+def read_xes(file_path: str, variant: str = "chunk_regex", **kwargs) -> DataFrame:
     """
-    Reads an event log in the XES standard
+    Reads an event log stored in XES format (see `xes-standard <https://xes-standard.org/>`_)
+    Returns a table (``pandas.DataFrame``) view of the event log.
 
-    Parameters
-    ---------------
-    file_path
-        File path
+    :param file_path: file path of the event log (``.xes`` file) on disk
+    :param variant: the variant of the importer to use. "iterparse" => traditional XML parser; "line_by_line" => text-based line-by-line importer ; "chunk_regex" => chunk-of-bytes importer (default); "iterparse20" => XES 2.0 importer
+    :rtype: ``DataFrame``
 
-    Returns
-    ---------------
-    log
-        Event log
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("<path_to_xes_file>")
     """
     if not os.path.exists(file_path):
         raise Exception("File does not exist")
     from pm4py.objects.log.importer.xes import importer as xes_importer
-    log = xes_importer.apply(file_path)
+    v = xes_importer.Variants.LINE_BY_LINE
+    if pkgutil.find_loader("lxml"):
+        v = xes_importer.Variants.ITERPARSE
+    if variant == "iterparse_20":
+        v = xes_importer.Variants.ITERPARSE_20
+    elif variant == "iterparse_mem_compressed":
+        v = xes_importer.Variants.ITERPARSE_MEM_COMPRESSED
+    elif variant == "line_by_line":
+        v = xes_importer.Variants.LINE_BY_LINE
+    elif variant == "chunk_regex":
+        v = xes_importer.Variants.CHUNK_REGEX
+    log = xes_importer.apply(file_path, variant=v, parameters=kwargs)
     return log
 
 
-def read_pnml(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
+def read_pnml(file_path: str, auto_guess_final_marking: bool = False) -> Tuple[PetriNet, Marking, Marking]:
     """
-    Reads a Petri net from the .PNML format
+    Reads a Petri net object from a .pnml file.
+    The Petri net object returned is a triple containing the following objects:
+    
+    1. Petrinet Object, encoded as a ``PetriNet`` class
+    #. Initial Marking
+    #. Final Marking
 
-    Parameters
-    ----------------
-    file_path
-        File path
+    :rtype: ``Tuple[PetriNet, Marking, Marking]``
+    :param file_path: file path of the Petri net model (``.pnml`` file) on disk
 
-    Returns
-    ----------------
-    petri_net
-        Petri net object
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    """
-    if not os.path.exists(file_path):
-        raise Exception("File does not exist")
-    from pm4py.objects.petri_net.importer import importer as pnml_importer
-    net, im, fm = pnml_importer.apply(file_path)
-    return net, im, fm
+    .. code-block:: python3
 
+        import pm4py
 
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
-                        details='read_petri_net is deprecated, use read_pnml instead')
-def read_petri_net(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
-    warnings.warn('read_petri_net is deprecated, use read_pnml instead', DeprecationWarning)
-    """
-    Reads a Petri net from the .PNML format
-
-    Parameters
-    ----------------
-    file_path
-        File path
-
-    Returns
-    ----------------
-    petri_net
-        Petri net object
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
+        pn = pm4py.read_pnml("<path_to_pnml_file>")
     """
     if not os.path.exists(file_path):
         raise Exception("File does not exist")
     from pm4py.objects.petri_net.importer import importer as pnml_importer
-    net, im, fm = pnml_importer.apply(file_path)
+    net, im, fm = pnml_importer.apply(file_path, parameters={"auto_guess_final_marking": auto_guess_final_marking})
     return net, im, fm
 
 
 def read_ptml(file_path: str) -> ProcessTree:
     """
-    Reads a process tree from a .ptml file
+    Reads a process tree object from a .ptml file
 
-    Parameters
-    ---------------
-    file_path
-        File path
+    :param file_path: file path of the process tree object on disk
+    :rtype: ``ProcessTree``
 
-    Returns
-    ----------------
-    tree
-        Process tree
+    .. code-block:: python3
+
+        import pm4py
+
+        process_tree = pm4py.read_ptml("<path_to_ptml_file>")
     """
     if not os.path.exists(file_path):
         raise Exception("File does not exist")
@@ -125,47 +114,24 @@ def read_ptml(file_path: str) -> ProcessTree:
     return tree
 
 
-@deprecation.deprecated(deprecated_in='2.2.2', removed_in='2.4.0',
-                        details='read_process_tree is deprecated, use read_ptml instead')
-def read_process_tree(file_path: str) -> Tuple[PetriNet, Marking, Marking]:
-    warnings.warn('read_process_tree is deprecated, use read_ptml instead', DeprecationWarning)
+def read_dfg(file_path: str) -> Tuple[Dict[Tuple[str,str],int], Dict[str,int], Dict[str,int]]:
     """
-    Reads a process tree from a .ptml file
+    Reads a DFG object from a .dfg file.
+    The DFG object returned is a triple containing the following objects:
+    
+    1. DFG Object, encoded as a ``Dict[Tuple[str,str],int]``, s.t. ``DFG[('a','b')]=k`` implies that activity ``'a'`` is directly followed by activity ``'b'`` a total of ``k`` times in the log
+    #. Start activity dictionary, encoded as a ``Dict[str,int]``, s.t., ``S['a']=k`` implies that activity ``'a'`` is starting ``k`` traces in the event log
+    #. End activity dictionary, encoded as a ``Dict[str,int]``, s.t., ``E['z']=k`` implies that activity ``'z'`` is ending ``k`` traces in the event log.
 
-    Parameters
-    ---------------
-    file_path
-        File path
+    :rtype: ``Tuple[Dict[Tuple[str,str],int], Dict[str,int], Dict[str,int]]``
+    :param file_path: file path of the dfg model on disk
+    
 
-    Returns
-    ----------------
-    tree
-        Process tree
-    """
-    if not os.path.exists(file_path):
-        raise Exception("File does not exist")
-    from pm4py.objects.process_tree.importer import importer as tree_importer
-    tree = tree_importer.apply(file_path)
-    return tree
+    .. code-block:: python3
 
+       import pm4py
 
-def read_dfg(file_path: str) -> Tuple[dict, dict, dict]:
-    """
-    Reads a DFG from a .dfg file
-
-    Parameters
-    ------------------
-    file_path
-        File path
-
-    Returns
-    ------------------
-    dfg
-        DFG
-    start_activities
-        Start activities
-    end_activities
-        End activities
+       dfg = pm4py.read_dfg("<path_to_dfg_file>")
     """
     if not os.path.exists(file_path):
         raise Exception("File does not exist")
@@ -176,17 +142,17 @@ def read_dfg(file_path: str) -> Tuple[dict, dict, dict]:
 
 def read_bpmn(file_path: str) -> BPMN:
     """
-    Reads a BPMN from a .bpmn file
+    Reads a BPMN model from a .bpmn file
 
-    Parameters
-    ---------------
-    file_path
-        File path
+    :param file_path: file path of the bpmn model
+    :rtype: ``BPMN``
 
-    Returns
-    ---------------
-    bpmn_graph
-        BPMN graph
+    .. code-block:: python3
+
+        import pm4py
+
+        bpmn = pm4py.read_bpmn('<path_to_bpmn_file>')
+
     """
     if not os.path.exists(file_path):
         raise Exception("File does not exist")
@@ -194,24 +160,21 @@ def read_bpmn(file_path: str) -> BPMN:
     bpmn_graph = bpmn_importer.apply(file_path)
     return bpmn_graph
 
-
-def read_ocel(file_path: str, objects_path: str = None) -> OCEL:
+@deprecation.deprecated("2.3.0", "3.0.0", "the read_ocel function is deprecated and replaced by read_ocel_csv, read_ocel_json and read_ocel_xml, respectively")
+def read_ocel(file_path: str, objects_path: Optional[str] = None) -> OCEL:
     """
-    Reads an object-centric event log from a file
-    (to get an explanation of what an object-centric event log is,
-    you can refer to http://www.ocel-standard.org/).
+    Reads an object-centric event log from a file (see: http://www.ocel-standard.org/).
+    The ``OCEL`` object is returned by this method
 
-    Parameters
-    ----------------
-    file_path
-        Path from which the object-centric event log should be read.
-    objects_path
-        (Optional, only used in CSV exporter) Path from which the objects dataframe should be read.
+    :param file_path: file path of the object-centric event log
+    :param objects_path: [Optional] file path from which the objects dataframe should be read
+    :rtype: ``OCEL``
 
-    Returns
-    ----------------
-    ocel
-        Object-centric event log
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel("<path_to_ocel_file>")
     """
     if not os.path.exists(file_path):
         raise Exception("File does not exist")
@@ -224,3 +187,67 @@ def read_ocel(file_path: str, objects_path: str = None) -> OCEL:
     elif file_path.lower().endswith("xmlocel"):
         from pm4py.objects.ocel.importer.xmlocel import importer as xmlocel_importer
         return xmlocel_importer.apply(file_path)
+
+
+def read_ocel_csv(file_path: str, objects_path: Optional[str] = None) -> OCEL:
+    """
+    Reads an object-centric event log from a CSV file (see: http://www.ocel-standard.org/).
+    The ``OCEL`` object is returned by this method
+
+    :param file_path: file path of the object-centric event log (.csv)
+    :param objects_path: [Optional] file path from which the objects dataframe should be read
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel_csv("<path_to_ocel_file.csv>")
+    """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
+
+    from pm4py.objects.ocel.importer.csv import importer as csv_importer
+    return csv_importer.apply(file_path, objects_path=objects_path)
+
+
+def read_ocel_json(file_path: str) -> OCEL:
+    """
+    Reads an object-centric event log from a JSON-OCEL file (see: http://www.ocel-standard.org/).
+    The ``OCEL`` object is returned by this method
+
+    :param file_path: file path of the object-centric event log (.jsonocel)
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel_json("<path_to_ocel_file.jsonocel>")
+    """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
+
+    from pm4py.objects.ocel.importer.jsonocel import importer as jsonocel_importer
+    return jsonocel_importer.apply(file_path)
+
+
+def read_ocel_xml(file_path: str) -> OCEL:
+    """
+    Reads an object-centric event log from a XML-OCEL file (see: http://www.ocel-standard.org/).
+    The ``OCEL`` object is returned by this method
+
+    :param file_path: file path of the object-centric event log (.xmlocel)
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel_xml("<path_to_ocel_file.xmlocel>")
+    """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
+
+    from pm4py.objects.ocel.importer.xmlocel import importer as xmlocel_importer
+    return xmlocel_importer.apply(file_path)

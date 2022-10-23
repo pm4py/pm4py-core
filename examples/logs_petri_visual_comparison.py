@@ -5,12 +5,14 @@ from pm4py.algo.comparison.petrinet import element_usage_comparison
 from pm4py.objects.log.util import sorting
 from pm4py.objects.log.obj import EventLog
 from pm4py.visualization.petri_net import visualizer as pn_vis
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 
 def execute_script():
     log = xes_importer.apply(os.path.join("..", "tests", "input_data", "receipt.xes"))
     log = sorting.sort_timestamp(log)
-    net, im, fm = inductive_miner.apply(log)
+    process_tree = inductive_miner.apply(log)
+    net, im, fm = process_tree_converter.apply(process_tree)
     log1 = EventLog(log[:500])
     log2 = EventLog(log[len(log) - 500:])
     statistics = element_usage_comparison.compare_element_usage_two_logs(net, im, fm, log1, log2)
