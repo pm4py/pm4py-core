@@ -31,6 +31,7 @@ from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.objects.transition_system.obj import TransitionSystem
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
+import networkx as nx
 
 
 def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: str = "case:concept:name") -> EventLog:
@@ -273,10 +274,34 @@ def convert_log_to_ocel(log: Union[EventLog, EventStream, pd.DataFrame], activit
     :rtype: ``OCEL``
 
     .. code-block:: python3
-    import pm4py
+        import pm4py
 
-    ocel = pm4py.convert_log_to_ocel(log, activity_column='concept:name', timestamp_column='time:timestamp',
-                    object_types=['case:concept:name'])
+        ocel = pm4py.convert_log_to_ocel(log, activity_column='concept:name', timestamp_column='time:timestamp',
+                        object_types=['case:concept:name'])
     """
     from pm4py.objects.ocel.util import log_ocel
     return log_ocel.log_to_ocel_multiple_obj_types(log, activity_column, timestamp_column, object_types, obj_separator)
+
+
+def convert_ocel_to_networkx(ocel: OCEL, variant: str = "ocel_to_nx") -> nx.DiGraph:
+    """
+    Converts an OCEL to a NetworkX DiGraph object.
+
+    :param ocel: object-centric event log
+    :param variant: variant of the conversion to use: "ocel_to_nx" -> graph containing event and object IDS and two type of relations (REL=related objects, DF=directly-follows); "ocel_features_to_nx" -> graph containing different types of interconnection at the object level
+    :rtype: ``nx.DiGraph``
+
+    .. code-block:: python3
+        import pm4py
+
+        nx_digraph = pm4py.convert_ocel_to_networkx(ocel, variant='ocel_to_nx')
+    """
+    from pm4py.objects.conversion.ocel import converter
+
+    variant1 = None
+    if variant == "ocel_to_nx":
+        variant1 = converter.Variants.OCEL_TO_NX
+    elif variant == "ocel_features_to_nx":
+        variant1 = converter.Variants.OCEL_TO_NX
+
+    return converter.apply(ocel, variant=variant1)

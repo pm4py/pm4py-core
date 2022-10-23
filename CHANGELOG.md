@@ -4,27 +4,31 @@
 
 ### Added
 * 00a7ab36bda245d16a35ae6fff2bfb51d8ff8aea
-    Adding several methods to the simplified interface (process discovery/conformance checking using log skeleton, temporal profile, batch detection).
+    PMPY-1641 Adding several methods to the simplified interface (process discovery/conformance checking using log skeleton, temporal profile, batch detection).
 * feeb1891f82014b3e86a4c5301c237226acc8fad
-    OCEL - Visualization of object graphs (object interaction, object descendants, ...)
+    PMPY-1741 OCEL - Visualization of object graphs (object interaction, object descendants, ...)
 * 15964a428e2e0fc50dcc96570fba39f2e0d40099
-    OCEL - Added some filters in the simplified interface
+    PMPY-1742 - OCEL - Added some filters in the simplified interface
+* fefe740338b702eafb7049a8f777f48f464d157d
+  * PMPY-1953 OCEL - insertion of an attribute pointing to the parent object
 * 88c58a1c6809388be58db2ea6e64fb9b58d913d6
-  * OCEL - sampling objects
+  * PMPY-1763 OCEL - sampling objects
 * 40c741c8298584402cd9ea8e86bcca09f2bfd857
-    OCEL - Method to get a temporal description of an object-centric log
+    PMPY-1743 OCEL - Method to get a temporal description of an object-centric log
 * d63929cc36b1aba941f88efac05af3b25a384787
-    OCEL - method for objects summary
+    PMPY-1744 OCEL - method for objects summary
 * fdd87eb41e54ce8d179ae3030fd9e15ea74320e8
-    OCEL - expansion of the set of objects during filtering on object identifiers
+    PMPY-1812 OCEL - expansion of the set of objects during filtering on object identifiers
+* 908d0aa843f1a4e9f4a6c69139a3be755c2e8555
+  * PMPY-1951 OCEL - conversion to NetworkX DiGraph
 * e7b4f712e1bd9475c73be5bc82c9a22eb0b745b5
-  * OCEL - objects interactions summary
+  * PMPY-1764 OCEL - objects interactions summary
 * 43b5976f7040a77c0aa32f5a28c508eb19966fa1
-  * OCEL - methods to merge duplicates
+  * PMPY-1950 OCEL - methods to merge duplicates
 * 3cc1a19f42420e034a7489f1c695fea788e9087f
-  * OCEL - methods to manage duplicates, sorting and time-delta for events
+  * PMPY-1806 OCEL - methods to manage duplicates, sorting and time-delta for events
 * 2c729e28e7f536acbd0919d88cf035a23542a3ae
-  * OCEL - conversion event log to OCEL accepts several object types
+  * PMPY-1941 OCEL - conversion event log to OCEL accepts several object types
   
 ### Changed
 * f6b7714eaf79e1c57e4283163a51631f0ea8d964

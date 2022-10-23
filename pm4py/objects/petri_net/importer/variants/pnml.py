@@ -31,6 +31,7 @@ import warnings
 
 
 class Parameters(Enum):
+    ENCODING = "encoding"
     AUTO_GUESS_FINAL_MARKING = "auto_guess_final_marking"
 
 
@@ -57,7 +58,9 @@ def import_net(input_file_path, parameters=None):
     if parameters is None:
         parameters = {}
 
-    parser = etree.XMLParser(remove_comments=True)
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, None)
+
+    parser = etree.XMLParser(remove_comments=True, encoding=encoding)
     tree = objectify.parse(input_file_path, parser=parser)
     root = tree.getroot()
 
@@ -87,8 +90,10 @@ def import_net_from_string(petri_string, parameters=None):
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
     if type(petri_string) is str:
-        petri_string = petri_string.encode(constants.DEFAULT_ENCODING)
+        petri_string = petri_string.encode(encoding)
 
     parser = etree.XMLParser(remove_comments=True)
     root = objectify.fromstring(petri_string, parser=parser)
