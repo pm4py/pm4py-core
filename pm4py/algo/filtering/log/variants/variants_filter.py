@@ -23,7 +23,6 @@ from pm4py.statistics.variants.log.get import get_variants, \
 from pm4py.util import exec_utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-import deprecation
 
 from typing import Optional, Dict, Any, Union, Tuple, List
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
@@ -240,40 +239,3 @@ def find_auto_threshold(log, variants, decreasing_factor):
     percentage_already_added = already_added_sum / no_of_traces
 
     return percentage_already_added
-
-
-@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
-def apply_auto_filter(log, variants=None, parameters=None):
-    """
-    Apply a variants filter detecting automatically a percentage
-    
-    Parameters
-    ----------
-    log
-        Log
-    variants
-        Variants contained in the log
-    parameters
-        Parameters of the algorithm, including:
-            Parameters.ACTIVITY_KEY -> Key that identifies the activity
-            Parameters.DECREASING_FACTOR -> Decreasing factor (stops the algorithm when the next variant by occurrence is below
-            this factor in comparison to previous)
-    
-    Returns
-    ----------
-    filteredLog
-        Filtered log
-    """
-    if parameters is None:
-        parameters = {}
-
-    attribute_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
-    decreasing_factor = exec_utils.get_param_value(Parameters.DECREASING_FACTOR, parameters,
-                                                   filtering_constants.DECREASING_FACTOR)
-
-    parameters_variants = {PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
-    if variants is None:
-        variants = get_variants(log, parameters=parameters_variants)
-    variants_percentage = find_auto_threshold(log, variants, decreasing_factor)
-    filtered_log = filter_variants_variants_percentage(log, variants, variants_percentage)
-    return filtered_log

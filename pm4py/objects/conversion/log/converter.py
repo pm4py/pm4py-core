@@ -30,5 +30,7 @@ TO_EVENT_STREAM = Variants.TO_EVENT_STREAM
 TO_DATA_FRAME = Variants.TO_DATA_FRAME
 
 
-def apply(log, parameters=None, variant=Variants.TO_EVENT_LOG):
+def apply(log, parameters=None, variant=None):
+    if variant is None:
+        variant = Variants.TO_EVENT_LOG
     return variant.value.apply(log, parameters=parameters)

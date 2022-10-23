@@ -4,6 +4,7 @@ from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.algo.evaluation.earth_mover_distance import algorithm as earth_mover_distance
 from pm4py.statistics.variants.log import get as variants_get
 from pm4py.algo.simulation.playout.petri_net import algorithm
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 import os
 
 
@@ -41,7 +42,8 @@ def execute_script():
     log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
     lang_log = variants_get.get_language(log)
     net0, im0, fm0 = alpha_miner.apply(log)
-    net1, im1, fm1 = inductive_miner.apply(log)
+    process_tree = inductive_miner.apply(log)
+    net1, im1, fm1 = process_tree_converter.apply(process_tree)
     lang_model0 = variants_get.get_language(
         algorithm.apply(net0, im0, fm0, variant=algorithm.Variants.STOCHASTIC_PLAYOUT,
                         parameters={algorithm.Variants.STOCHASTIC_PLAYOUT.value.Parameters.LOG: log}))

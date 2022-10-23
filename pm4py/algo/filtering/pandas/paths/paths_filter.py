@@ -26,7 +26,6 @@ from pm4py.util.constants import DEFAULT_VARIANT_SEP
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
-import deprecation
 from typing import Optional, Dict, Any, Union, Tuple, List
 import pandas as pd
 import sys
@@ -146,10 +145,3 @@ def apply_performance(df: pd.DataFrame, provided_path: Tuple[str, str], paramete
 
     ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
     return ret
-
-
-@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
-def apply_auto_filter(df, parameters=None):
-    del df
-    del parameters
-    raise Exception("apply_auto_filter method not available for paths filter on dataframe")

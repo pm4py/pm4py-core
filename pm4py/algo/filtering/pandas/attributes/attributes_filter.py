@@ -26,7 +26,6 @@ from pm4py.util.constants import PARAM_MOST_COMMON_VARIANT
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
-import deprecation
 from typing import Optional, Dict, Any, Union, Tuple, List
 import pandas as pd
 
@@ -199,46 +198,6 @@ def apply(df: pd.DataFrame, values: List[str], parameters: Optional[Dict[Union[s
 
     return filter_df_on_attribute_values(df, values, case_id_glue=case_id_glue, attribute_key=attribute_key,
                                          positive=positive)
-
-
-@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
-def apply_auto_filter(df, parameters=None):
-    """
-    Apply auto filter on activity values
-
-    Parameters
-    ------------
-    df
-        Dataframe
-    parameters
-        Possible parameters of the algorithm, including:
-            Parameters.ACTIVITY_KEY -> Column containing the activity
-            Parameters.DECREASING_FACTOR -> Decreasing factor that should be passed to the algorithm
-
-    Returns
-    ------------
-    df
-        Filtered dataframe
-    """
-    if parameters is None:
-        parameters = {}
-
-    most_common_variant = parameters[PARAM_MOST_COMMON_VARIANT] if PARAM_MOST_COMMON_VARIANT in parameters else None
-
-    if most_common_variant is None:
-        most_common_variant = []
-
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
-    decreasing_factor = exec_utils.get_param_value(Parameters.DECREASING_FACTOR, parameters, DECREASING_FACTOR)
-
-    if len(df) > 0:
-        activities = get_attribute_values(df, activity_key)
-        alist = attributes_common.get_sorted_attributes_list(activities)
-        thresh = attributes_common.get_attributes_threshold(alist, decreasing_factor)
-
-        return filter_df_keeping_activ_exc_thresh(df, thresh, activity_key=activity_key, act_count0=activities,
-                                                  most_common_variant=most_common_variant)
-    return df
 
 
 def filter_df_on_attribute_values(df, values, case_id_glue="case:concept:name", attribute_key="concept:name",

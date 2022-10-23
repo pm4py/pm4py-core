@@ -129,7 +129,8 @@ def infer_start_activities_from_prev_connections_and_current_dfg(initial_dfg, df
         if el[0][1] in activities and not el[0][0] in activities:
             start_activities.add(el[0][1])
     if include_self:
-        start_activities = start_activities.union(set(infer_start_activities(dfg)))
+        start_activities = start_activities.union(
+            set(infer_start_activities(dfg)))
     return start_activities
 
 
@@ -575,7 +576,8 @@ def get_connected_components(ingoing, outgoing, activities, force_insert_missing
 
         if ingoing_act not in connected_components:
             connected_components.append(ingoing_act)
-            activities_considered = activities_considered.union(set(ingoing_act))
+            activities_considered = activities_considered.union(
+                set(ingoing_act))
 
     for act in outgoing:
         if act not in ingoing:
@@ -583,7 +585,8 @@ def get_connected_components(ingoing, outgoing, activities, force_insert_missing
             outgoing_act.add(act)
             if outgoing_act not in connected_components:
                 connected_components.append(outgoing_act)
-            activities_considered = activities_considered.union(set(outgoing_act))
+            activities_considered = activities_considered.union(
+                set(outgoing_act))
 
     if force_insert_missing_acti:
         for activ in activities:
@@ -782,8 +785,10 @@ def get_dfg_sa_ea_act_from_variants(variants, parameters=None):
     """
     if parameters is None:
         parameters = {}
-    variants = set(variants_util.get_activities_from_variant(v) for v in variants)
-    dfg = dict(Counter(list((x[i], x[i + 1]) for x in variants for i in range(len(x) - 1))))
+    variants = set(variants_util.get_activities_from_variant(v)
+                   for v in variants)
+    dfg = dict(Counter(list((x[i], x[i + 1])
+               for x in variants for i in range(len(x) - 1))))
     list_act = list(set(y for x in variants for y in x))
     start_activities = dict(Counter(x[0] for x in variants if x))
     end_activities = dict(Counter(x[-1] for x in variants if x))
@@ -922,33 +927,23 @@ def get_transitive_relations(dfg, alphabet):
         second argument maps an activity on all other activities that it can reach (transitively) ('transitive post set')
 
     '''
-    q = queue.Queue()
-    pre = dict()
-    post = dict()
-    for a in alphabet:
-        pre[a] = set()
-        post[a] = set()
+    pre = {a: set() for a in alphabet}
+    post = {a: set() for a in alphabet}
     if len(dfg) > 0:
-        for e in dfg:
-            q.put(e)
-        while q.qsize() > 0:
-            s, t = q.get()
+        q = [e for e in dfg]
+        while len(q) > 0:
+            s, t = q.pop(0)
             post[s].add(t)
             pre[t].add(s)
             post[s].update(post[t])
             pre[t].update(pre[s])
-
             for a, b in dfg:
-                if b == s:
-                    # incoming arcs in s; inherit postset of s
-                    if not post[s].issubset(post[a]):
-                        post[a].update(post[s])
-                        q.put((a, b))
-                if a == t:
-                    # outgoing arcs from t
-                    if not pre[t].issubset(pre[b]):
-                        pre[b].update(pre[t])
-                        q.put((a, b))
+                if b == s and not post[s].issubset(post[a]):
+                    post[a].update(post[s])
+                    q.append((a, b))
+                if a == t and not pre[t].issubset(pre[b]):
+                    pre[b].update(pre[t])
+                    q.append((a, b))
     return pre, post
 
 

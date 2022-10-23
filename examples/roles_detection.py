@@ -10,7 +10,7 @@ def execute_script():
     roles = roles_algorithm.apply(log)
 
     # print the results (grouped activities) on the screen
-    print([x[0] for x in roles])
+    print([x.activities for x in roles])
 
 
 if __name__ == "__main__":

@@ -14,5 +14,5 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.discovery.inductive.variants import im_clean
+from pm4py.algo.discovery.inductive.variants import abc, im, imd, imf
 

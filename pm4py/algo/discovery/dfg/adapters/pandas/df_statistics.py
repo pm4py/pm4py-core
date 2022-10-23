@@ -23,7 +23,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
                   start_timestamp_key=None, timestamp_key="time:timestamp", perf_aggregation_key="mean",
                   sort_caseid_required=True,
                   sort_timestamp_along_case_id=True, keep_once_per_case=False, window=1,
-                  business_hours=False, worktiming=None, weekends=None, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, target_activity_key=None,
+                  business_hours=False, business_hours_slot=None, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, target_activity_key=None,
                   reduce_columns=True):
     """
     Get DFG graph from Pandas dataframe
@@ -111,13 +111,10 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
         
         # calculate the difference between the timestamps of two successive events
         if business_hours:
-            if worktiming is None:
-                worktiming = [7, 17]
-            if weekends is None:
-                weekends = [6, 7]
+            if business_hours_slot is None:
+                business_hours_slot = constants.DEFAULT_BUSINESS_HOUR_SLOTS
             df_successive_rows[constants.DEFAULT_FLOW_TIME] = df_successive_rows.apply(
-            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[start_timestamp_key + '_2'], worktiming,
-                                                   weekends, workcalendar), axis=1)
+            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[start_timestamp_key + '_2'], business_hours_slot, workcalendar), axis=1)
         else:
             df_successive_rows[constants.DEFAULT_FLOW_TIME] = (
                     df_successive_rows[start_timestamp_key + '_2'] - df_successive_rows[timestamp_key]).astype(
@@ -166,7 +163,7 @@ def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="tim
                                 case_id_glue="case:concept:name", activity_key="concept:name",
                                 sort_caseid_required=True,
                                 sort_timestamp_along_case_id=True, reduce_dataframe=True, keep_first_following=True,
-                                business_hours=False, worktiming=None, weekends=None, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR,
+                                business_hours=False, business_hours_slot=None, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR,
                                 event_index=constants.DEFAULT_INDEX_KEY):
     """
     Gets the partial order between events (of the same case) in a Pandas dataframe
@@ -233,13 +230,10 @@ def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="tim
     df.reset_index(inplace=True)
 
     if business_hours:
-        if worktiming is None:
-            worktiming = [7, 17]
-        if weekends is None:
-            weekends = [6, 7]
+        if business_hours_slot is None:
+            business_hours_slot = constants.DEFAULT_BUSINESS_HOUR_SLOTS
         df[constants.DEFAULT_FLOW_TIME] = df.apply(
-            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[start_timestamp_key + '_2'], worktiming,
-                                                   weekends, workcalendar), axis=1)
+            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[start_timestamp_key + '_2'], business_hours_slot, workcalendar), axis=1)
     else:
         df[constants.DEFAULT_FLOW_TIME] = (df[start_timestamp_key + "_2"] - df[timestamp_key]).astype('timedelta64[s]')
 

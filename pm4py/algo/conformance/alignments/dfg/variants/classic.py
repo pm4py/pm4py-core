@@ -27,9 +27,11 @@ from pm4py.objects.log.obj import EventLog, Trace
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.util import typing
 from pm4py.objects.conversion.log import converter as log_converter
+import pandas as pd
 
 
 class Parameters(Enum):
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     SYNC_COST_FUNCTION = "sync_cost_function"
     MODEL_MOVE_COST_FUNCTION = "model_move_cost_function"
@@ -129,16 +131,20 @@ def apply_log(log, dfg, sa, ea, parameters=None):
     if parameters is None:
         parameters = {}
 
-    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
-
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     aligned_traces = []
     align_dict = {}
 
     al_empty_cost = __apply_list_activities([], dfg, sa, ea, parameters=parameters)["cost"]
 
-    for trace in log:
-        trace_act = tuple(x[activity_key] for x in trace)
+    if type(log) is pd.DataFrame:
+        case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+        traces = list(log.groupby(case_id_key)[activity_key].apply(tuple))
+    else:
+        log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+        traces = [tuple(x[activity_key] for x in trace) for trace in log]
+
+    for trace_act in traces:
         if trace_act in align_dict:
             aligned_traces.append(align_dict[trace_act])
         else:

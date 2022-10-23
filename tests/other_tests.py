@@ -18,6 +18,7 @@ from pm4py.algo.simulation.playout.petri_net import algorithm
 from pm4py.objects.conversion.log import converter
 from pm4py.objects.log.util import dataframe_utils
 from pm4py.util import pandas_utils
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 
 class OtherPartsTests(unittest.TestCase):
@@ -33,7 +34,8 @@ class OtherPartsTests(unittest.TestCase):
         from pm4py.algo.evaluation.earth_mover_distance import algorithm as earth_mover_distance
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         lang_log = variants_get.get_language(log)
-        net1, im1, fm1 = inductive_miner.apply(log)
+        process_tree = inductive_miner.apply(log)
+        net1, im1, fm1 = process_tree_converter.apply(process_tree)
         lang_model1 = variants_get.get_language(
             algorithm.apply(net1, im1, fm1, variant=algorithm.Variants.STOCHASTIC_PLAYOUT,
                             parameters={algorithm.Variants.STOCHASTIC_PLAYOUT.value.Parameters.LOG: log}))
@@ -108,7 +110,7 @@ class OtherPartsTests(unittest.TestCase):
     def test_footprints_tree(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        tree = inductive_miner.apply_tree(log)
+        tree = inductive_miner.apply(log)
         from pm4py.algo.discovery.footprints import algorithm as footprints_discovery
         fp_entire_log = footprints_discovery.apply(log, variant=footprints_discovery.Variants.ENTIRE_EVENT_LOG)
         fp_trace_trace = footprints_discovery.apply(log)
@@ -126,7 +128,7 @@ class OtherPartsTests(unittest.TestCase):
         df = dataframe_utils.convert_timestamp_columns_in_df(df)
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         log = converter.apply(df, variant=converter.Variants.TO_EVENT_LOG)
-        tree = inductive_miner.apply_tree(log)
+        tree = inductive_miner.apply(log)
         from pm4py.algo.discovery.footprints import algorithm as footprints_discovery
         fp_df = footprints_discovery.apply(df)
         fp_tree = footprints_discovery.apply(tree)
@@ -143,14 +145,14 @@ class OtherPartsTests(unittest.TestCase):
     def test_playout_tree_basic(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        tree = inductive_miner.apply_tree(log)
+        tree = inductive_miner.apply(log)
         from pm4py.algo.simulation.playout.process_tree import algorithm as tree_playout
         new_log = tree_playout.apply(tree)
 
     def test_playout_tree_extensive(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-        tree = inductive_miner.apply_tree(log)
+        tree = inductive_miner.apply(log)
         from pm4py.algo.simulation.playout.process_tree import algorithm as tree_playout
         new_log = tree_playout.apply(tree, variant=tree_playout.Variants.EXTENSIVE)
 
@@ -235,6 +237,81 @@ class OtherPartsTests(unittest.TestCase):
         import pm4py
         if "cvxopt" not in pm4py.util.lp.solver.DEFAULT_LP_SOLVER_VARIANT:
             raise Exception("cvxopt is not the solver")
+
+    def test_projection_univariate_log(self):
+        import pm4py
+        from pm4py.util.compression import util as compression_util
+        log = pm4py.read_xes(os.path.join("input_data", "receipt.xes"))
+        cl = compression_util.project_univariate(log, "concept:name")
+        # just verify that the set is non-empty
+        self.assertTrue(compression_util.get_start_activities(cl))
+        self.assertTrue(compression_util.get_end_activities(cl))
+        self.assertTrue(compression_util.get_alphabet(cl))
+        self.assertTrue(compression_util.discover_dfg(cl))
+        self.assertTrue(compression_util.get_variants(cl))
+
+    def test_projection_univariate_df(self):
+        import pandas as pd
+        from pm4py.util.compression import util as compression_util
+        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True)
+        cl = compression_util.project_univariate(dataframe, "concept:name")
+        # just verify that the set is non-empty
+        self.assertTrue(compression_util.get_start_activities(cl))
+        self.assertTrue(compression_util.get_end_activities(cl))
+        self.assertTrue(compression_util.get_alphabet(cl))
+        self.assertTrue(compression_util.discover_dfg(cl))
+        self.assertTrue(compression_util.get_variants(cl))
+
+    def test_compression_univariate_log(self):
+        import pm4py
+        from pm4py.util.compression import util as compression_util
+        log = pm4py.read_xes(os.path.join("input_data", "receipt.xes"))
+        cl, lookup = compression_util.compress_univariate(log, "concept:name")
+        # just verify that the set is non-empty
+        self.assertTrue(compression_util.get_start_activities(cl))
+        self.assertTrue(compression_util.get_end_activities(cl))
+        self.assertTrue(compression_util.get_alphabet(cl))
+        self.assertTrue(compression_util.discover_dfg(cl))
+        self.assertTrue(compression_util.get_variants(cl))
+
+    def test_compression_univariate_df(self):
+        import pandas as pd
+        from pm4py.util.compression import util as compression_util
+        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True)
+        cl, lookup = compression_util.compress_univariate(dataframe, "concept:name")
+        # just verify that the set is non-empty
+        self.assertTrue(compression_util.get_start_activities(cl))
+        self.assertTrue(compression_util.get_end_activities(cl))
+        self.assertTrue(compression_util.get_alphabet(cl))
+        self.assertTrue(compression_util.discover_dfg(cl))
+        self.assertTrue(compression_util.get_variants(cl))
+
+    def test_compression_multivariate_log(self):
+        import pm4py
+        from pm4py.util.compression import util as compression_util
+        log = pm4py.read_xes(os.path.join("input_data", "receipt.xes"))
+        cl, lookup = compression_util.compress_multivariate(log, ["concept:name", "org:resource"])
+        # just verify that the set is non-empty
+        self.assertTrue(compression_util.get_start_activities(cl))
+        self.assertTrue(compression_util.get_end_activities(cl))
+        self.assertTrue(compression_util.get_alphabet(cl))
+        self.assertTrue(compression_util.discover_dfg(cl))
+        self.assertTrue(compression_util.get_variants(cl))
+
+    def test_compression_multivariate_df(self):
+        import pandas as pd
+        from pm4py.util.compression import util as compression_util
+        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True)
+        cl, lookup = compression_util.compress_multivariate(dataframe, ["concept:name", "org:resource"])
+        # just verify that the set is non-empty
+        self.assertTrue(compression_util.get_start_activities(cl))
+        self.assertTrue(compression_util.get_end_activities(cl))
+        self.assertTrue(compression_util.get_alphabet(cl))
+        self.assertTrue(compression_util.discover_dfg(cl))
+        self.assertTrue(compression_util.get_variants(cl))
 
 
 if __name__ == "__main__":

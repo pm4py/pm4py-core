@@ -19,9 +19,14 @@ import uuid
 from lxml import etree
 
 from pm4py.objects.petri_net.obj import Marking
-from pm4py.objects.petri_net.obj import PetriNet
+from pm4py.objects.petri_net.obj import PetriNet, ResetNet, InhibitorNet
 from pm4py.objects.petri_net import properties as petri_properties
-from pm4py.util import constants
+from pm4py.util import constants, exec_utils
+from enum import Enum
+
+
+class Parameters(Enum):
+    ENCODING = "encoding"
 
 
 def export_petri_tree(petrinet, marking, final_marking=None, export_prom5=False, parameters=None):
@@ -171,10 +176,20 @@ def export_petri_tree(petrinet, marking, final_marking=None, export_prom5=False,
             arc_weight = etree.SubElement(inscription, "text")
             arc_weight.text = str(arc.weight)
 
-        for prop_key in arc.properties:
-            element = etree.SubElement(arc_el, prop_key)
+        if isinstance(arc, ResetNet.ResetArc):
+            element = etree.SubElement(arc_el, petri_properties.ARCTYPE)
             element_text = etree.SubElement(element, "text")
-            element_text.text = str(arc.properties[prop_key])
+            element_text.text = petri_properties.RESET_ARC
+        elif isinstance(arc, InhibitorNet.InhibitorArc):
+            element = etree.SubElement(arc_el, petri_properties.ARCTYPE)
+            element_text = etree.SubElement(element, "text")
+            element_text.text = petri_properties.INHIBITOR_ARC
+
+        for prop_key in arc.properties:
+            if prop_key != petri_properties.ARCTYPE:
+                element = etree.SubElement(arc_el, prop_key)
+                element_text = etree.SubElement(element, "text")
+                element_text.text = str(arc.properties[prop_key])
 
     if len(final_marking) > 0:
         finalmarkings = etree.SubElement(net, "finalmarkings")
@@ -222,12 +237,14 @@ def export_petri_as_string(petrinet, marking, final_marking=None, export_prom5=F
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
     # gets the XML tree
     tree = export_petri_tree(petrinet, marking, final_marking=final_marking,
                              export_prom5=export_prom5)
 
     # removing default decoding (return binary string as in other parts of the application)
-    return etree.tostring(tree, xml_declaration=True, encoding=constants.DEFAULT_ENCODING)
+    return etree.tostring(tree, xml_declaration=True, encoding=encoding)
 
 
 def export_net(petrinet, marking, output_filename, final_marking=None, export_prom5=False,
@@ -251,9 +268,11 @@ def export_net(petrinet, marking, output_filename, final_marking=None, export_pr
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
     # gets the XML tree
     tree = export_petri_tree(petrinet, marking, final_marking=final_marking,
                              export_prom5=export_prom5)
 
     # write the tree to a file
-    tree.write(output_filename, pretty_print=True, xml_declaration=True, encoding=constants.DEFAULT_ENCODING)
+    tree.write(output_filename, pretty_print=True, xml_declaration=True, encoding=encoding)

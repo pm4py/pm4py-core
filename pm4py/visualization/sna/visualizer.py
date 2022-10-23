@@ -17,6 +17,7 @@
 from pm4py.visualization.sna.variants import networkx, pyvis
 from enum import Enum
 from pm4py.util import exec_utils
+from pm4py.objects.org.sna.obj import SNA
 
 
 class Variants(Enum):
@@ -27,7 +28,7 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.NETWORKX
 
 
-def apply(metric_values, parameters=None, variant=DEFAULT_VARIANT):
+def apply(metric_values: SNA, parameters=None, variant=DEFAULT_VARIANT):
     """
     Perform SNA visualization starting from the Matrix Container object
     and the Resource-Resource matrix
