@@ -19,6 +19,8 @@
     PMPY-1744 OCEL - method for objects summary
 * fdd87eb41e54ce8d179ae3030fd9e15ea74320e8
     PMPY-1812 OCEL - expansion of the set of objects during filtering on object identifiers
+* 908d0aa843f1a4e9f4a6c69139a3be755c2e8555
+  * PMPY-1951 OCEL - conversion to NetworkX DiGraph
 * e7b4f712e1bd9475c73be5bc82c9a22eb0b745b5
   * PMPY-1764 OCEL - objects interactions summary
 * 43b5976f7040a77c0aa32f5a28c508eb19966fa1
