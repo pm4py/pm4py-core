@@ -577,19 +577,13 @@
 * d8f71bc3
     * add activity-position summary in the simplified interface
 * d4011ff1
-    * add link analysis code for OCEL
-* cf72dfe2
-    * add support for BPMN Gateway direction properties (community contribution by @gregvanhoudt)
-* 1c675fba
-    * fix hardcoded parameter in replay fitness computation (community contribution by @phi1-h)
+    * add link analysis code for OCEL    
 
 ### Changed
 * 79920a18
     * improved string representation of Petri net objects
 * 9358fdf4
     * minor refactoring for interval detection in event log
-* 413cee07
-    * improvement enhancement for token-based reply (community contribution by @phi1-h)
 ### Deprecated
 
 ### Fixed
@@ -1330,11 +1324,6 @@
     * fix usage of integer values in pulp solver rather than binary variables.
 * 6ba4322f
     * fixed conversion behavior lifecycle to interval logs
-* dd3e22da
-    * pass the flow name to edge attribute of graph in BPMN. Reported by @YJDave;
-      see: https://github.com/pm4py/pm4py-core/pull/202
-* ce240905
-    * fix for GLPK ILP when no solution exists. see: https://github.com/pm4py/pm4py-core/pull/204
 
 ### Removed
 
