@@ -289,3 +289,29 @@ def convert_ocel_to_networkx(ocel: OCEL, variant: str = "ocel_to_nx") -> nx.DiGr
         variant1 = converter.Variants.OCEL_TO_NX
 
     return converter.apply(ocel, variant=variant1)
+
+
+def convert_log_to_networkx(log: Union[EventLog, EventStream, pd.DataFrame], include_df: bool = True, case_id_key: str = "concept:name", other_case_attributes_as_nodes: Optional[Collection[str]] = None, event_attributes_as_nodes: Optional[Collection[str]] = None):
+    """
+    Converts an event log object to a NetworkX DiGraph object.
+    The nodes of the graph are the events, the cases (and possibly the attributes of the log).
+    The edges are:
+    - Connecting each event to the corresponding case (BELONGS_TO type)
+    - Connecting every event to the directly-following one (DF type, if enabled)
+    - Connecting every case/event to the given attribute values (ATTRIBUTE_EDGE type)
+
+    :param log: log object (EventLog, EventStream, Pandas dataframe)
+    :param include_df: include the directly-follows graph relation in the graph (bool)
+    :param case_id_attribute: specify which attribute at the case level should be considered the case ID (str)
+    :param other_case_attributes_as_nodes: specify which attributes at the case level should be inserted in the graph as nodes (other than the caseID) (list, default empty)
+    :param event_attributes_as_nodes: specify which attributes at the event level should be inserted in the graph as nodes (list, default empty)
+    :rtype: ``nx.DiGraph``
+
+    .. code-block:: python3
+        import pm4py
+
+        nx_digraph = pm4py.convert_log_to_networkx(log, other_case_attributes_as_nodes=['responsible', 'department'], event_attributes_as_nodes=['concept:name', 'org:resource'])
+    """
+    from pm4py.objects.conversion.log import converter
+
+    return converter.apply(log, variant=converter.Variants.TO_NX, parameters={"include_df": include_df, "case_id_attribute": case_id_key, "other_case_attributes_as_nodes": other_case_attributes_as_nodes, "event_attributes_as_nodes": event_attributes_as_nodes})
