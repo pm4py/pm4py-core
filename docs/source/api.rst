@@ -4,9 +4,10 @@ This page provides an overview of all public ``pm4py`` objects, functions and me
 
 Input (:mod:`pm4py.read`)
 ---------------------------------
-``pm4py`` supports importing two different *event data* formats:
+``pm4py`` supports importing the follwing standardized *event data* format:
 
 * ``.xes`` files (`xes-standard <https://xes-standard.org/>`_); General interchange format for event data. :meth:`pm4py.read.read_xes`
+
 In case an event log is stored as a ``.csv`` file, ``pandas`` can be used to directly import the event log as a ``data frame`` (`docs <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html>`_).
 ``.xes`` files are internally converted to a ``pandas dataframe``, which is the default data structure used by all algorithms implemented in ``pm4py``.
 
@@ -24,7 +25,7 @@ Similarly to event data importing, ``pm4py`` supports export functionalities to:
 
 * ``.bpmn`` files,  :meth:`pm4py.write.write_bpmn`
 * ``.dfg`` files,  :meth:`pm4py.write.write_dfg`
-* ``.pnml`` files, :meth:`pm4py.write.wrtie_pnml`
+* ``.pnml`` files, :meth:`pm4py.write.write_pnml`
 * ``.ptml`` files, :meth:`pm4py.write.write_ptml`
 * ``.xes`` files. :meth:`pm4py.write.write_xes`
 

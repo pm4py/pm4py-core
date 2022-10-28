@@ -23,6 +23,8 @@
   * PMPY-1952 OCEL - importing/exporting from/to SQLite
 * 908d0aa843f1a4e9f4a6c69139a3be755c2e8555
   * PMPY-1951 OCEL - conversion to NetworkX DiGraph
+* 5c7cc41b94810ec93f388f8014f2a3820d0063f2
+  * PMPY-1956 EventLog - conversion to NetworkX DiGraph 
 * e7b4f712e1bd9475c73be5bc82c9a22eb0b745b5
   * PMPY-1764 OCEL - objects interactions summary
 * 43b5976f7040a77c0aa32f5a28c508eb19966fa1
@@ -88,6 +90,47 @@
 
 * d2a95d306362f54e08070b98193abbf8498ba70e
 	PMPY-1575 removed all deprecated code for this release; standardized object definitions
+
+### Other
+
+---
+
+
+## pm4py 2.2.30 (2022.10.13)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 32a4fc9e4ab23418493f281fc262615f2ff4c436
+  * Fixed trace filter
+* 4c5599ff60f4e448198a1971a669c4bf3a4154fe
+  * fixed issue with SNA HTML visualization
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.29 (2022.09.16)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* d066d3f49a996c30d151031d66de90db4f4d9a2e
+  * Fixed issue with OCEL-CSV importing (Pandas index_col)
+* c38348df9cf165fd94a2e69ba29601e1643e80ae
+  * Fixed issue with OCEL-CSV importing (relations dataframe timestamp)
+
+### Removed
 
 ### Other
 
