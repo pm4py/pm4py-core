@@ -93,6 +93,47 @@
 
 ---
 
+
+## pm4py 2.2.30 (2022.10.13)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 32a4fc9e4ab23418493f281fc262615f2ff4c436
+  * Fixed trace filter
+* 4c5599ff60f4e448198a1971a669c4bf3a4154fe
+  * fixed issue with SNA HTML visualization
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.29 (2022.09.16)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* d066d3f49a996c30d151031d66de90db4f4d9a2e
+  * Fixed issue with OCEL-CSV importing (Pandas index_col)
+* c38348df9cf165fd94a2e69ba29601e1643e80ae
+  * Fixed issue with OCEL-CSV importing (relations dataframe timestamp)
+
+### Removed
+
+### Other
+
+---
+
 ## pm4py 2.2.28 (2022.09.02)
 
 ### Added
