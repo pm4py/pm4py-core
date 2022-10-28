@@ -58,6 +58,6 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> nx.DiGraph
             lif = lifecycle[obj]
             for i in range(len(lif)-1):
 
-                G.add_edge(lif[i], lif[i+1], attr={"class": "DF", "object": obj})
+                G.add_edge(lif[i], lif[i+1], attr={"type": "DF", "object": obj})
 
     return G
