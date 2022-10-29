@@ -24,7 +24,7 @@ packaging==21.3
 pandas==1.4.4
 parso==0.8.3
 pickleshare==0.7.5
-pillow==9.2.0
+pillow==9.3.0
 prompt-toolkit==3.0.31
 pure-eval==0.2.2
 pydotplus==2.0.2
