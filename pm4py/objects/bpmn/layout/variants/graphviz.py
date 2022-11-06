@@ -135,8 +135,8 @@ def apply(bpmn_graph, parameters=None):
     different_x = len(set(layout.get(node).get_x() for node in nodes))
     different_y = len(set(layout.get(node).get_y() for node in nodes))
 
-    stretch_fact_x = 1.25 * 1920.0 / max_x
-    stretch_fact_y = 1080.0 / max_y
+    stretch_fact_x = 2.5 * 1.25 * 1920.0 / max_x
+    stretch_fact_y = 2.5 * 1080.0 / max_y
 
     for node in nodes:
         layout.get(node).set_x(round(layout.get(node).get_x() * stretch_fact_x))
