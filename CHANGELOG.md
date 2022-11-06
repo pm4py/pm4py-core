@@ -11,7 +11,11 @@
 ### Fixed
 * 43026f0d22605bafd104c9c752511b3a00c3988c
   * missing encoding parameter in PNML importing/exporting
-
+* 07493cc94e40652983eeb7b25f911654937f0ae6
+  * bug fix Alpha Miner - check if the new place candidate pair has
+    causal relations between all elements of the first and second part
+    of the pair.
+  
 ### Removed
 
 ### Other
