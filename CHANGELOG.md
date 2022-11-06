@@ -5,6 +5,8 @@
 ### Added
 
 ### Changed
+* cc232ddc00528a0e7d568565c6b8fe76e2e38f71
+  * fine tuning existing BPMN layouter
 
 ### Deprecated
 
