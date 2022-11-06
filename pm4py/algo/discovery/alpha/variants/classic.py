@@ -169,7 +169,8 @@ def apply_dfg_sa_ea(dfg: Dict[str, int], start_activities: Union[None, Dict[str,
                         alpha_abstraction.parallel_relation, alpha_abstraction.causal_relation, t1[1], t2[1])):
                         new_alpha_pair = (t1[0] | t2[0], t1[1] | t2[1])
                         if new_alpha_pair not in pairs:
-                            pairs.append((t1[0] | t2[0], t1[1] | t2[1]))
+                            if __check_all_causal(alpha_abstraction.causal_relation, new_alpha_pair[0], new_alpha_pair[1]):
+                                pairs.append((t1[0] | t2[0], t1[1] | t2[1]))
     internal_places = filter(lambda p: __pair_maximizer(pairs, p), pairs)
     net = PetriNet('alpha_classic_net_' + str(time.time()))
     label_transition_dict = {}
@@ -226,3 +227,11 @@ def __check_is_unrelated(parallel_relation, causal_relation, item_set_1, item_se
         if pair in parallel_relation or pair in causal_relation:
             return True
     return False
+
+
+def __check_all_causal(causal_relation, item_set_1, item_set_2):
+    S = set(product(item_set_1, item_set_2))
+    for pair in S:
+        if pair not in causal_relation:
+            return False
+    return True
