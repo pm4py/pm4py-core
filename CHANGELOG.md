@@ -1,5 +1,29 @@
 # Changelog of pm4py
 
+## pm4py 2.2.31 (2022.11.06)
+
+### Added
+
+### Changed
+* cc232ddc00528a0e7d568565c6b8fe76e2e38f71
+  * fine tuning existing BPMN layouter
+
+### Deprecated
+
+### Fixed
+* 43026f0d22605bafd104c9c752511b3a00c3988c
+  * missing encoding parameter in PNML importing/exporting
+* 07493cc94e40652983eeb7b25f911654937f0ae6
+  * bug fix Alpha Miner - check if the new place candidate pair has
+    causal relations between all elements of the first and second part
+    of the pair.
+  
+### Removed
+
+### Other
+
+---
+
 ## pm4py 2.2.30 (2022.10.13)
 
 ### Added
