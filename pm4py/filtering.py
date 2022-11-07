@@ -227,7 +227,7 @@ def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str
     Filter a log on a specified set of variants
 
     :param log: event log / Pandas dataframe
-    :param variants: collection of variants to filter; A variant should be specified as a list of activity names, e.g., ['a','b','c']
+    :param variants: collection of variants to filter; A variant should be specified as a list of tuples of activity names, e.g., [('a', 'b', 'c')]
     :param retain: boolean; if True all traces conforming to the specified variants are retained; if False, all those traces are removed
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
