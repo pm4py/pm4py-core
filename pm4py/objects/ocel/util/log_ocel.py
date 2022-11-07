@@ -311,20 +311,23 @@ def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.Data
         events.append(ocel_eve)
 
         for col in obj_types:
-            objs = eve[col].split(obj_separator)
+            try:
+                objs = eve[col].split(obj_separator)
 
-            for obj in objs:
-                if len(obj.strip()) > 0:
-                    if obj not in obj_ids:
-                        obj_ids.add(obj)
+                for obj in objs:
+                    if len(obj.strip()) > 0:
+                        if obj not in obj_ids:
+                            obj_ids.add(obj)
 
-                        objects.append({ocel_constants.DEFAULT_OBJECT_ID: obj, ocel_constants.DEFAULT_OBJECT_TYPE: col})
+                            objects.append({ocel_constants.DEFAULT_OBJECT_ID: obj, ocel_constants.DEFAULT_OBJECT_TYPE: col})
 
-                    rel = copy(ocel_eve)
-                    rel[ocel_constants.DEFAULT_OBJECT_ID] = obj
-                    rel[ocel_constants.DEFAULT_OBJECT_TYPE] = col
+                        rel = copy(ocel_eve)
+                        rel[ocel_constants.DEFAULT_OBJECT_ID] = obj
+                        rel[ocel_constants.DEFAULT_OBJECT_TYPE] = col
 
-                    relations.append(rel)
+                        relations.append(rel)
+            except:
+                pass
 
     events = pd.DataFrame(events)
     objects = pd.DataFrame(objects)
