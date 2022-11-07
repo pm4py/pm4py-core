@@ -58,9 +58,7 @@ def import_net(input_file_path, parameters=None):
     if parameters is None:
         parameters = {}
 
-    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, None)
-
-    parser = etree.XMLParser(remove_comments=True, encoding=encoding)
+    parser = etree.XMLParser(remove_comments=True)
     tree = objectify.parse(input_file_path, parser=parser)
     root = tree.getroot()
 
@@ -90,10 +88,8 @@ def import_net_from_string(petri_string, parameters=None):
     if parameters is None:
         parameters = {}
 
-    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
-
     if type(petri_string) is str:
-        petri_string = petri_string.encode(encoding)
+        petri_string = petri_string.encode(constants.DEFAULT_ENCODING)
 
     parser = etree.XMLParser(remove_comments=True)
     root = objectify.fromstring(petri_string, parser=parser)
