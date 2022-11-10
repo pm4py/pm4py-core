@@ -316,5 +316,6 @@ def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.Data
     events = pd.DataFrame(events)
     objects = pd.DataFrame(objects)
     relations = pd.DataFrame(relations)
+    relations.drop_duplicates(subset=[ocel_constants.DEFAULT_EVENT_ID, ocel_constants.DEFAULT_OBJECT_ID], inplace=True)
 
     return OCEL(events=events, objects=objects, relations=relations)
