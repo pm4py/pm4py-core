@@ -1,5 +1,23 @@
 # Changelog of pm4py
 
+## pm4py 2.2.32 (2022.11.10)
+
+### Added
+
+### Changed
+* cfb9f37a15a6b990f32ceaab28f1e2153e36c23d
+  * Update WOFLAN to include diagnostics in output
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+---
+
 ## pm4py 2.2.31 (2022.11.06)
 
 ### Added
