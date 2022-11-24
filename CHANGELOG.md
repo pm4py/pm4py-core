@@ -4,6 +4,9 @@
 
 ### Added
 
+* b7139a5a90518afdf1fd603eb27311adc9cd342e
+  * object-centric marking for Petri nets
+
 ### Changed
 
 ### Deprecated
