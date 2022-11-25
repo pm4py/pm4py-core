@@ -1,11 +1,12 @@
 from enum import Enum
-from pm4py.objects.log.obj import EventLog
+from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Collection, Union
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel import constants as ocel_constants
 from pm4py.objects.conversion.log import converter as log_converter
+from copy import copy
 
 
 class Parameters(Enum):
@@ -252,5 +253,69 @@ def from_interleavings(df1: pd.DataFrame, df2: pd.DataFrame, interleavings: pd.D
 
     events = events.sort_values([ocel_constants.DEFAULT_EVENT_TIMESTAMP, ocel_constants.DEFAULT_EVENT_ID])
     relations = relations.sort_values([ocel_constants.DEFAULT_EVENT_TIMESTAMP, ocel_constants.DEFAULT_EVENT_ID])
+
+    return OCEL(events=events, objects=objects, relations=relations)
+
+
+def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.DataFrame], activity_column: str, timestamp_column: str, obj_types: Collection[str], obj_separator: str = " AND ") -> OCEL:
+    """
+    Converts an event log to an object-centric event log with one or more than one
+    object types.
+
+    Parameters
+    ---------------
+    log_obj
+        Log object
+    activity_column
+        Activity column
+    timestamp_column
+        Timestamp column
+    object_types
+        List of columns to consider as object types
+    obj_separator
+        Separator between different objects in the same column
+
+    Returns
+    ----------------
+    ocel
+        Object-centric event log
+    """
+    log_obj = log_converter.apply(log_obj, variant=log_converter.Variants.TO_DATA_FRAME)
+
+    events = []
+    objects = []
+    relations = []
+
+    obj_ids = set()
+
+    stream = log_obj.to_dict("records")
+
+    for index, eve in enumerate(stream):
+        ocel_eve = {ocel_constants.DEFAULT_EVENT_ID: str(index), ocel_constants.DEFAULT_EVENT_ACTIVITY: eve[activity_column], ocel_constants.DEFAULT_EVENT_TIMESTAMP: eve[timestamp_column]}
+        events.append(ocel_eve)
+
+        for col in obj_types:
+            try:
+                objs = eve[col].split(obj_separator)
+
+                for obj in objs:
+                    if len(obj.strip()) > 0:
+                        if obj not in obj_ids:
+                            obj_ids.add(obj)
+
+                            objects.append({ocel_constants.DEFAULT_OBJECT_ID: obj, ocel_constants.DEFAULT_OBJECT_TYPE: col})
+
+                        rel = copy(ocel_eve)
+                        rel[ocel_constants.DEFAULT_OBJECT_ID] = obj
+                        rel[ocel_constants.DEFAULT_OBJECT_TYPE] = col
+
+                        relations.append(rel)
+            except:
+                pass
+
+    events = pd.DataFrame(events)
+    objects = pd.DataFrame(objects)
+    relations = pd.DataFrame(relations)
+    relations.drop_duplicates(subset=[ocel_constants.DEFAULT_EVENT_ID, ocel_constants.DEFAULT_OBJECT_ID], inplace=True)
 
     return OCEL(events=events, objects=objects, relations=relations)

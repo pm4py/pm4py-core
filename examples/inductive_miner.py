@@ -6,7 +6,7 @@ from pm4py.algo.discovery.inductive import algorithm as ind_miner
 from pm4py.visualization.process_tree import visualizer as pt_vis
 from pm4py.objects.conversion.process_tree import converter
 from pm4py.algo.evaluation.replay_fitness import algorithm
-from pm4py.algo.discovery.inductive.variants.im_clean.algorithm import Parameters
+from pm4py.algo.discovery.inductive.algorithm import Parameters
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.objects.log.obj import EventLog
 
@@ -43,7 +43,7 @@ def execute_script():
     log = xes_import.apply(log_path)
     #log = keep_one_trace_per_variant(log)
     #log = log[15:30]
-    ptree = ind_miner.apply_tree(log, parameters={Parameters.NOISE_THRESHOLD: 0.5}, variant=ind_miner.Variants.IM_CLEAN)
+    ptree = ind_miner.apply(log, parameters={"noise_threshold": 0.5}, variant=ind_miner.Variants.IM)
     gviz = pt_vis.apply(ptree,
                         parameters={pt_vis.Variants.WO_DECORATION.value.Parameters.FORMAT: "svg"})
 

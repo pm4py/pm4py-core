@@ -1,12 +1,14 @@
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.algo.simulation.montecarlo import algorithm as montecarlo_simulation
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 import os
 
 
 def execute_script():
     log = xes_importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
-    net, im, fm = inductive_miner.apply(log)
+    process_tree = inductive_miner.apply(log)
+    net, im, fm = process_tree_converter.apply(process_tree)
     # perform the Montecarlo simulation with the arrival rate inferred by the log (the simulation lasts 5 secs)
     parameters = {}
     parameters[montecarlo_simulation.Variants.PETRI_SEMAPH_FIFO.value.Parameters.PARAM_ENABLE_DIAGNOSTICS] = False

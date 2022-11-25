@@ -3,6 +3,7 @@ import os
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.visualization.petri_net import visualizer as pn_vis
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 
 def execute_script():
@@ -10,7 +11,8 @@ def execute_script():
     log_path = os.path.join("..", "tests", "input_data", "receipt.xes")
     log = xes_importer.apply(log_path)
     # apply Inductive Miner
-    net, initial_marking, final_marking = inductive_miner.apply(log)
+    process_tree = inductive_miner.apply(log)
+    net, initial_marking, final_marking = process_tree_converter.apply(process_tree)
     # get visualization
     variant = pn_vis.Variants.PERFORMANCE
     parameters_viz = {pn_vis.Variants.PERFORMANCE.value.Parameters.AGGREGATION_MEASURE: "mean", pn_vis.Variants.PERFORMANCE.value.Parameters.FORMAT: "svg"}

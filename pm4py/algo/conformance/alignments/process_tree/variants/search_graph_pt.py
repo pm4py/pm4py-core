@@ -4,6 +4,8 @@ import pkgutil
 from enum import Enum
 from typing import List, Any, Optional
 
+import pandas as pd
+
 from pm4py.algo.conformance.alignments.process_tree.util import search_graph_pt_replay_semantics as pt_sem
 from pm4py.objects.log.obj import Trace
 from pm4py.objects.petri_net.utils import align_utils
@@ -22,6 +24,7 @@ class Parameters(Enum):
     CORES = 'cores'
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     SHOW_PROGRESS_BAR = "show_progress_bar"
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
 
 class SGASearchState:
@@ -263,7 +266,7 @@ def apply_from_variants_list(var_list, tree, parameters=None):
     return ret
 
 
-def apply_multiprocessing(obj: Union[EventLog, Trace], pt: ProcessTree, parameters: Optional[Dict[Any, Any]] = None) -> Union[typing.AlignmentResult, typing.ListAlignments]:
+def apply_multiprocessing(obj: Union[EventLog, Trace, pd.DataFrame], pt: ProcessTree, parameters: Optional[Dict[Any, Any]] = None) -> Union[typing.AlignmentResult, typing.ListAlignments]:
     """
     Returns alignments for a process tree (using the multiprocessing package to distribute the workload
     among different cores)
@@ -302,10 +305,18 @@ def apply_multiprocessing(obj: Union[EventLog, Trace], pt: ProcessTree, paramete
             best_worst_cost = align_variant([], leaves, pt)["cost"]
             futures = {}
             align_dict = {}
-            for trace in obj:
-                variant = tuple(x[activity_key] for x in trace)
-                if variant not in futures:
-                    futures[variant] = executor.submit(align_variant, variant, leaves, pt)
+
+            if type(obj) is pd.DataFrame:
+                case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters,
+                                                         constants.CASE_CONCEPT_NAME)
+                traces = list(obj.groupby(case_id_key)[activity_key].apply(tuple))
+            else:
+                obj = log_converter.apply(obj, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+                traces = [tuple(x[activity_key] for x in case) for case in obj]
+
+            for trace in traces:
+                if trace not in futures:
+                    futures[trace] = executor.submit(align_variant, trace, leaves, pt)
 
             progress = _construct_progress_bar(len(futures), parameters)
             alignments_ready = 0
@@ -318,8 +329,8 @@ def apply_multiprocessing(obj: Union[EventLog, Trace], pt: ProcessTree, paramete
                         for i in range(0, current - alignments_ready):
                             progress.update()
                     alignments_ready = current
-            for trace in obj:
-                variant = tuple(x[activity_key] for x in trace)
+
+            for variant in traces:
                 if variant not in align_dict:
                     al = futures[variant].result()
                     ltrace_bwc = len(trace) + best_worst_cost
@@ -330,7 +341,7 @@ def apply_multiprocessing(obj: Union[EventLog, Trace], pt: ProcessTree, paramete
         return ret
 
 
-def apply(obj: Union[EventLog, Trace], pt: ProcessTree, parameters: Optional[Dict[Any, Any]] = None) -> Union[typing.AlignmentResult, typing.ListAlignments]:
+def apply(obj: Union[EventLog, Trace, pd.DataFrame], pt: ProcessTree, parameters: Optional[Dict[Any, Any]] = None) -> Union[typing.AlignmentResult, typing.ListAlignments]:
     """
     Returns alignments for a process tree
 
@@ -351,26 +362,28 @@ def apply(obj: Union[EventLog, Trace], pt: ProcessTree, parameters: Optional[Dic
     if parameters is None:
         parameters = {}
 
-    obj = log_converter.apply(obj, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
-
     leaves = frozenset(pt_util.get_leaves_as_tuples(pt))
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     if type(obj) is Trace:
         variant = tuple(x[activity_key] for x in obj)
         return align_variant(variant, leaves, pt)
     else:
-        from pm4py.statistics.variants.log import get as variants_get
-        variants = variants_get.get_variants(obj, parameters=parameters)
-        progress = _construct_progress_bar(len(variants), parameters)
         ret = []
+        if type(obj) is pd.DataFrame:
+            case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+            traces = list(obj.groupby(case_id_key)[activity_key].apply(tuple))
+        else:
+            obj = log_converter.apply(obj, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+            traces = [tuple(x[activity_key] for x in case) for case in obj]
+        variants = set(traces)
         bwc = align_variant([], leaves, pt)["cost"]
         align_dict = {}
-        for trace in obj:
-            variant = tuple(x[activity_key] for x in trace)
-            if variant not in align_dict:
-                align_dict[variant] = _apply_variant(variant, pt, leaves, bwc, parameters)
+        progress = _construct_progress_bar(len(variants), parameters)
+        for trace in traces:
+            if trace not in align_dict:
+                align_dict[trace] = _apply_variant(trace, pt, leaves, bwc, parameters)
                 if progress is not None:
                     progress.update()
-            ret.append(align_dict[variant])
+            ret.append(align_dict[trace])
         _destroy_progress_bar(progress)
         return ret
