@@ -1,6 +1,11 @@
 pm4py.algo.discovery.batches package
 ====================================
 
+.. automodule:: pm4py.algo.discovery.batches
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -17,14 +22,6 @@ pm4py.algo.discovery.batches.algorithm module
 ---------------------------------------------
 
 .. automodule:: pm4py.algo.discovery.batches.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.discovery.batches
    :members:
    :undoc-members:
    :show-inheritance:

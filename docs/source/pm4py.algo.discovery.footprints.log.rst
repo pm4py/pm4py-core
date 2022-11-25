@@ -1,6 +1,11 @@
 pm4py.algo.discovery.footprints.log package
 ===========================================
 
+.. automodule:: pm4py.algo.discovery.footprints.log
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -8,11 +13,3 @@ Subpackages
    :maxdepth: 4
 
    pm4py.algo.discovery.footprints.log.variants
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.discovery.footprints.log
-   :members:
-   :undoc-members:
-   :show-inheritance:

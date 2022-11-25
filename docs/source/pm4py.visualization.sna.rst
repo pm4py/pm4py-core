@@ -1,6 +1,11 @@
 pm4py.visualization.sna package
 ===============================
 
+.. automodule:: pm4py.visualization.sna
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.visualization.sna.visualizer module
 -----------------------------------------
 
 .. automodule:: pm4py.visualization.sna.visualizer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization.sna
    :members:
    :undoc-members:
    :show-inheritance:

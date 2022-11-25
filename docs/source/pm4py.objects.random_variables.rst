@@ -1,6 +1,11 @@
 pm4py.objects.random\_variables package
 =======================================
 
+.. automodule:: pm4py.objects.random_variables
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -29,14 +34,6 @@ pm4py.objects.random\_variables.random\_variable module
 -------------------------------------------------------
 
 .. automodule:: pm4py.objects.random_variables.random_variable
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.random_variables
    :members:
    :undoc-members:
    :show-inheritance:

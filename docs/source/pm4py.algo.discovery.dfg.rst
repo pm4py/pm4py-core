@@ -1,6 +1,11 @@
 pm4py.algo.discovery.dfg package
 ================================
 
+.. automodule:: pm4py.algo.discovery.dfg
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -22,26 +27,10 @@ pm4py.algo.discovery.dfg.algorithm module
    :undoc-members:
    :show-inheritance:
 
-pm4py.algo.discovery.dfg.parameters module
-------------------------------------------
-
-.. automodule:: pm4py.algo.discovery.dfg.parameters
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pm4py.algo.discovery.dfg.replacement module
 -------------------------------------------
 
 .. automodule:: pm4py.algo.discovery.dfg.replacement
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.discovery.dfg
    :members:
    :undoc-members:
    :show-inheritance:

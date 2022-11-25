@@ -1,6 +1,11 @@
 pm4py.objects.petri\_net.utils package
 ======================================
 
+.. automodule:: pm4py.objects.petri_net.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -128,14 +133,6 @@ pm4py.objects.petri\_net.utils.synchronous\_product module
 ----------------------------------------------------------
 
 .. automodule:: pm4py.objects.petri_net.utils.synchronous_product
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.petri_net.utils
    :members:
    :undoc-members:
    :show-inheritance:

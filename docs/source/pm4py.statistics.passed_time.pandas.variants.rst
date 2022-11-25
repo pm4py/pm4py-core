@@ -1,6 +1,11 @@
 pm4py.statistics.passed\_time.pandas.variants package
 =====================================================
 
+.. automodule:: pm4py.statistics.passed_time.pandas.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -24,14 +29,6 @@ pm4py.statistics.passed\_time.pandas.variants.prepost module
 ------------------------------------------------------------
 
 .. automodule:: pm4py.statistics.passed_time.pandas.variants.prepost
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.statistics.passed_time.pandas.variants
    :members:
    :undoc-members:
    :show-inheritance:

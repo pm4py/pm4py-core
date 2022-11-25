@@ -1,6 +1,11 @@
 pm4py.algo.clustering.trace\_attribute\_driven.variants package
 ===============================================================
 
+.. automodule:: pm4py.algo.clustering.trace_attribute_driven.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -32,14 +37,6 @@ pm4py.algo.clustering.trace\_attribute\_driven.variants.suc\_dist\_calc module
 ------------------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.clustering.trace_attribute_driven.variants.suc_dist_calc
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.clustering.trace_attribute_driven.variants
    :members:
    :undoc-members:
    :show-inheritance:

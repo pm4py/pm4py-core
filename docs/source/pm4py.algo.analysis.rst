@@ -1,6 +1,11 @@
 pm4py.algo.analysis package
 ===========================
 
+.. automodule:: pm4py.algo.analysis
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -11,11 +16,3 @@ Subpackages
    pm4py.algo.analysis.marking_equation
    pm4py.algo.analysis.woflan
    pm4py.algo.analysis.workflow_net
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.analysis
-   :members:
-   :undoc-members:
-   :show-inheritance:

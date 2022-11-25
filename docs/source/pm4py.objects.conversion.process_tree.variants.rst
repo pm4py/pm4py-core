@@ -1,6 +1,11 @@
 pm4py.objects.conversion.process\_tree.variants package
 =======================================================
 
+.. automodule:: pm4py.objects.conversion.process_tree.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -24,14 +29,6 @@ pm4py.objects.conversion.process\_tree.variants.to\_petri\_net\_transition\_bord
 -------------------------------------------------------------------------------------------
 
 .. automodule:: pm4py.objects.conversion.process_tree.variants.to_petri_net_transition_bordered
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.conversion.process_tree.variants
    :members:
    :undoc-members:
    :show-inheritance:

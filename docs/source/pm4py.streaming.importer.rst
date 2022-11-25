@@ -1,6 +1,11 @@
 pm4py.streaming.importer package
 ================================
 
+.. automodule:: pm4py.streaming.importer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -9,11 +14,3 @@ Subpackages
 
    pm4py.streaming.importer.csv
    pm4py.streaming.importer.xes
-
-Module contents
----------------
-
-.. automodule:: pm4py.streaming.importer
-   :members:
-   :undoc-members:
-   :show-inheritance:

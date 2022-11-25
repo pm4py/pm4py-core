@@ -1,6 +1,11 @@
 pm4py.algo.simulation.playout.process\_tree.variants package
 ============================================================
 
+.. automodule:: pm4py.algo.simulation.playout.process_tree.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -24,14 +29,6 @@ pm4py.algo.simulation.playout.process\_tree.variants.topbottom module
 ---------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.simulation.playout.process_tree.variants.topbottom
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.simulation.playout.process_tree.variants
    :members:
    :undoc-members:
    :show-inheritance:

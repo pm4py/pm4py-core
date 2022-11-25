@@ -1,6 +1,11 @@
 pm4py.objects.petri\_net package
 ================================
 
+.. automodule:: pm4py.objects.petri_net
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -44,14 +49,6 @@ pm4py.objects.petri\_net.semantics module
 -----------------------------------------
 
 .. automodule:: pm4py.objects.petri_net.semantics
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.petri_net
    :members:
    :undoc-members:
    :show-inheritance:

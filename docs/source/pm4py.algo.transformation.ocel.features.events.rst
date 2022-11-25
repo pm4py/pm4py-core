@@ -1,6 +1,11 @@
 pm4py.algo.transformation.ocel.features.events package
 ======================================================
 
+.. automodule:: pm4py.algo.transformation.ocel.features.events
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -76,10 +81,18 @@ pm4py.algo.transformation.ocel.features.events.event\_timestamp module
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
+pm4py.algo.transformation.ocel.features.events.new\_interactions module
+-----------------------------------------------------------------------
 
-.. automodule:: pm4py.algo.transformation.ocel.features.events
+.. automodule:: pm4py.algo.transformation.ocel.features.events.new_interactions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pm4py.algo.transformation.ocel.features.events.related\_objects\_features module
+--------------------------------------------------------------------------------
+
+.. automodule:: pm4py.algo.transformation.ocel.features.events.related_objects_features
    :members:
    :undoc-members:
    :show-inheritance:

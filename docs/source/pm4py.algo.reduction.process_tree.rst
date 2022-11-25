@@ -1,6 +1,11 @@
 pm4py.algo.reduction.process\_tree package
 ==========================================
 
+.. automodule:: pm4py.algo.reduction.process_tree
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.algo.reduction.process\_tree.reducer module
 -------------------------------------------------
 
 .. automodule:: pm4py.algo.reduction.process_tree.reducer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.reduction.process_tree
    :members:
    :undoc-members:
    :show-inheritance:

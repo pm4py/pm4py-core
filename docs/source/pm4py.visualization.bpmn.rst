@@ -1,6 +1,11 @@
 pm4py.visualization.bpmn package
 ================================
 
+.. automodule:: pm4py.visualization.bpmn
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.visualization.bpmn.visualizer module
 ------------------------------------------
 
 .. automodule:: pm4py.visualization.bpmn.visualizer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization.bpmn
    :members:
    :undoc-members:
    :show-inheritance:

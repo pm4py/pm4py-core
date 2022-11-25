@@ -1,6 +1,11 @@
 pm4py.algo.conformance.alignments.petri\_net.variants package
 =============================================================
 
+.. automodule:: pm4py.algo.conformance.alignments.petri_net.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -40,14 +45,6 @@ pm4py.algo.conformance.alignments.petri\_net.variants.tweaked\_state\_equation\_
 ----------------------------------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.conformance.alignments.petri_net.variants.tweaked_state_equation_a_star
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.conformance.alignments.petri_net.variants
    :members:
    :undoc-members:
    :show-inheritance:

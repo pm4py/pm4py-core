@@ -1,6 +1,11 @@
 pm4py.algo.discovery.causal.variants package
 ============================================
 
+.. automodule:: pm4py.algo.discovery.causal.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -16,14 +21,6 @@ pm4py.algo.discovery.causal.variants.heuristic module
 -----------------------------------------------------
 
 .. automodule:: pm4py.algo.discovery.causal.variants.heuristic
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.discovery.causal.variants
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,6 +1,11 @@
 pm4py.algo.conformance.alignments.process\_tree.variants package
 ================================================================
 
+.. automodule:: pm4py.algo.conformance.alignments.process_tree.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.algo.conformance.alignments.process\_tree.variants.search\_graph\_pt modul
 ---------------------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.conformance.alignments.process_tree.variants.search_graph_pt
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.conformance.alignments.process_tree.variants
    :members:
    :undoc-members:
    :show-inheritance:

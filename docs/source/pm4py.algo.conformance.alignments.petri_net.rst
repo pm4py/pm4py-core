@@ -1,6 +1,11 @@
 pm4py.algo.conformance.alignments.petri\_net package
 ====================================================
 
+.. automodule:: pm4py.algo.conformance.alignments.petri_net
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -17,14 +22,6 @@ pm4py.algo.conformance.alignments.petri\_net.algorithm module
 -------------------------------------------------------------
 
 .. automodule:: pm4py.algo.conformance.alignments.petri_net.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.conformance.alignments.petri_net
    :members:
    :undoc-members:
    :show-inheritance:

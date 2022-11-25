@@ -1,6 +1,11 @@
 pm4py.algo.conformance.multialignments package
 ==============================================
 
+.. automodule:: pm4py.algo.conformance.multialignments
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.algo.conformance.multialignments.algorithm module
 -------------------------------------------------------
 
 .. automodule:: pm4py.algo.conformance.multialignments.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.conformance.multialignments
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,6 +1,11 @@
 pm4py.algo.analysis.workflow\_net package
 =========================================
 
+.. automodule:: pm4py.algo.analysis.workflow_net
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,22 +21,6 @@ pm4py.algo.analysis.workflow\_net.algorithm module
 --------------------------------------------------
 
 .. automodule:: pm4py.algo.analysis.workflow_net.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pm4py.algo.analysis.workflow\_net.evaluator module
---------------------------------------------------
-
-.. automodule:: pm4py.algo.analysis.workflow_net.evaluator
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.analysis.workflow_net
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,6 +1,11 @@
 pm4py.algo.filtering package
 ============================
 
+.. automodule:: pm4py.algo.filtering
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -12,11 +17,3 @@ Subpackages
    pm4py.algo.filtering.log
    pm4py.algo.filtering.ocel
    pm4py.algo.filtering.pandas
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.filtering
-   :members:
-   :undoc-members:
-   :show-inheritance:

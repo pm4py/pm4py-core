@@ -1,6 +1,11 @@
 pm4py.visualization.petri\_net.util package
 ===========================================
 
+.. automodule:: pm4py.visualization.petri_net.util
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -24,14 +29,6 @@ pm4py.visualization.petri\_net.util.vis\_trans\_shortest\_paths module
 ----------------------------------------------------------------------
 
 .. automodule:: pm4py.visualization.petri_net.util.vis_trans_shortest_paths
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization.petri_net.util
    :members:
    :undoc-members:
    :show-inheritance:

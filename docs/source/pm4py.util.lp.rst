@@ -1,6 +1,11 @@
 pm4py.util.lp package
 =====================
 
+.. automodule:: pm4py.util.lp
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -13,26 +18,10 @@ Subpackages
 Submodules
 ----------
 
-pm4py.util.lp.parameters module
--------------------------------
-
-.. automodule:: pm4py.util.lp.parameters
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pm4py.util.lp.solver module
 ---------------------------
 
 .. automodule:: pm4py.util.lp.solver
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.util.lp
    :members:
    :undoc-members:
    :show-inheritance:

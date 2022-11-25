@@ -1,6 +1,11 @@
 pm4py.util.dt\_parsing package
 ==============================
 
+.. automodule:: pm4py.util.dt_parsing
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.util.dt\_parsing.parser module
 ------------------------------------
 
 .. automodule:: pm4py.util.dt_parsing.parser
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.util.dt_parsing
    :members:
    :undoc-members:
    :show-inheritance:

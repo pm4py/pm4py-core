@@ -1,6 +1,11 @@
 pm4py.statistics.ocel package
 =============================
 
+.. automodule:: pm4py.statistics.ocel
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -40,14 +45,6 @@ pm4py.statistics.ocel.ot\_activities module
 -------------------------------------------
 
 .. automodule:: pm4py.statistics.ocel.ot_activities
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.statistics.ocel
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,6 +1,11 @@
 pm4py.objects.log.exporter package
 ==================================
 
+.. automodule:: pm4py.objects.log.exporter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -8,11 +13,3 @@ Subpackages
    :maxdepth: 4
 
    pm4py.objects.log.exporter.xes
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.log.exporter
-   :members:
-   :undoc-members:
-   :show-inheritance:

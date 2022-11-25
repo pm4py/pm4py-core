@@ -1,21 +1,18 @@
 pm4py.objects.bpmn.layout.variants package
 ==========================================
 
-Submodules
-----------
-
-pm4py.objects.bpmn.layout.variants.pygraphviz module
-----------------------------------------------------
-
-.. automodule:: pm4py.objects.bpmn.layout.variants.pygraphviz
+.. automodule:: pm4py.objects.bpmn.layout.variants
    :members:
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
+Submodules
+----------
 
-.. automodule:: pm4py.objects.bpmn.layout.variants
+pm4py.objects.bpmn.layout.variants.graphviz module
+--------------------------------------------------
+
+.. automodule:: pm4py.objects.bpmn.layout.variants.graphviz
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,6 +1,11 @@
 pm4py.objects.ocel.validation package
 =====================================
 
+.. automodule:: pm4py.objects.ocel.validation
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -16,14 +21,6 @@ pm4py.objects.ocel.validation.xmlocel module
 --------------------------------------------
 
 .. automodule:: pm4py.objects.ocel.validation.xmlocel
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.ocel.validation
    :members:
    :undoc-members:
    :show-inheritance:

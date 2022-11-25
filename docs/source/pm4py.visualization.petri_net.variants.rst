@@ -1,6 +1,11 @@
 pm4py.visualization.petri\_net.variants package
 ===============================================
 
+.. automodule:: pm4py.visualization.petri_net.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -48,14 +53,6 @@ pm4py.visualization.petri\_net.variants.wo\_decoration module
 -------------------------------------------------------------
 
 .. automodule:: pm4py.visualization.petri_net.variants.wo_decoration
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization.petri_net.variants
    :members:
    :undoc-members:
    :show-inheritance:

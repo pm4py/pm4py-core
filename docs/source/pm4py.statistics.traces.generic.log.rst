@@ -1,6 +1,11 @@
 pm4py.statistics.traces.generic.log package
 ===========================================
 
+.. automodule:: pm4py.statistics.traces.generic.log
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -16,14 +21,6 @@ pm4py.statistics.traces.generic.log.case\_statistics module
 -----------------------------------------------------------
 
 .. automodule:: pm4py.statistics.traces.generic.log.case_statistics
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.statistics.traces.generic.log
    :members:
    :undoc-members:
    :show-inheritance:

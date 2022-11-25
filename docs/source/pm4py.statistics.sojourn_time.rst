@@ -1,6 +1,11 @@
 pm4py.statistics.sojourn\_time package
 ======================================
 
+.. automodule:: pm4py.statistics.sojourn_time
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -9,11 +14,3 @@ Subpackages
 
    pm4py.statistics.sojourn_time.log
    pm4py.statistics.sojourn_time.pandas
-
-Module contents
----------------
-
-.. automodule:: pm4py.statistics.sojourn_time
-   :members:
-   :undoc-members:
-   :show-inheritance:

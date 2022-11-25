@@ -1,12 +1,18 @@
 pm4py.util package
 ==================
 
+.. automodule:: pm4py.util
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
 .. toctree::
    :maxdepth: 4
 
+   pm4py.util.compression
    pm4py.util.dt_parsing
    pm4py.util.lp
 
@@ -53,14 +59,6 @@ pm4py.util.pandas\_utils module
    :undoc-members:
    :show-inheritance:
 
-pm4py.util.parameters module
-----------------------------
-
-.. automodule:: pm4py.util.parameters
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pm4py.util.points\_subset module
 --------------------------------
 
@@ -101,14 +99,6 @@ pm4py.util.variants\_util module
    :undoc-members:
    :show-inheritance:
 
-pm4py.util.vers\_checker module
--------------------------------
-
-.. automodule:: pm4py.util.vers_checker
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pm4py.util.vis\_utils module
 ----------------------------
 
@@ -121,14 +111,6 @@ pm4py.util.xes\_constants module
 --------------------------------
 
 .. automodule:: pm4py.util.xes_constants
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.util
    :members:
    :undoc-members:
    :show-inheritance:

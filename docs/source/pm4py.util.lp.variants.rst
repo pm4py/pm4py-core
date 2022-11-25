@@ -1,6 +1,11 @@
 pm4py.util.lp.variants package
 ==============================
 
+.. automodule:: pm4py.util.lp.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -52,10 +57,10 @@ pm4py.util.lp.variants.pulp\_solver module
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
+pm4py.util.lp.variants.scipy\_solver module
+-------------------------------------------
 
-.. automodule:: pm4py.util.lp.variants
+.. automodule:: pm4py.util.lp.variants.scipy_solver
    :members:
    :undoc-members:
    :show-inheritance:

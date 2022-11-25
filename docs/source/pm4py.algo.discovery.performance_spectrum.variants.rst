@@ -1,6 +1,11 @@
 pm4py.algo.discovery.performance\_spectrum.variants package
 ===========================================================
 
+.. automodule:: pm4py.algo.discovery.performance_spectrum.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -32,14 +37,6 @@ pm4py.algo.discovery.performance\_spectrum.variants.log\_disconnected module
 ----------------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.discovery.performance_spectrum.variants.log_disconnected
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.discovery.performance_spectrum.variants
    :members:
    :undoc-members:
    :show-inheritance:

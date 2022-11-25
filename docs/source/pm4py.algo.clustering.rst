@@ -1,6 +1,11 @@
 pm4py.algo.clustering package
 =============================
 
+.. automodule:: pm4py.algo.clustering
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -8,11 +13,3 @@ Subpackages
    :maxdepth: 4
 
    pm4py.algo.clustering.trace_attribute_driven
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.clustering
-   :members:
-   :undoc-members:
-   :show-inheritance:

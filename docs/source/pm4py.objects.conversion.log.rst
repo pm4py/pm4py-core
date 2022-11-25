@@ -1,6 +1,11 @@
 pm4py.objects.conversion.log package
 ====================================
 
+.. automodule:: pm4py.objects.conversion.log
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -24,14 +29,6 @@ pm4py.objects.conversion.log.converter module
 ---------------------------------------------
 
 .. automodule:: pm4py.objects.conversion.log.converter
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.conversion.log
    :members:
    :undoc-members:
    :show-inheritance:

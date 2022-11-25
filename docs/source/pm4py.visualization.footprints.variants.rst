@@ -1,6 +1,11 @@
 pm4py.visualization.footprints.variants package
 ===============================================
 
+.. automodule:: pm4py.visualization.footprints.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -12,18 +17,18 @@ pm4py.visualization.footprints.variants.comparison module
    :undoc-members:
    :show-inheritance:
 
-pm4py.visualization.footprints.variants.single module
------------------------------------------------------
+pm4py.visualization.footprints.variants.comparison\_symmetric module
+--------------------------------------------------------------------
 
-.. automodule:: pm4py.visualization.footprints.variants.single
+.. automodule:: pm4py.visualization.footprints.variants.comparison_symmetric
    :members:
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
+pm4py.visualization.footprints.variants.single module
+-----------------------------------------------------
 
-.. automodule:: pm4py.visualization.footprints.variants
+.. automodule:: pm4py.visualization.footprints.variants.single
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,6 +1,11 @@
 pm4py.objects.conversion.process\_tree package
 ==============================================
 
+.. automodule:: pm4py.objects.conversion.process_tree
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.objects.conversion.process\_tree.converter module
 -------------------------------------------------------
 
 .. automodule:: pm4py.objects.conversion.process_tree.converter
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.conversion.process_tree
    :members:
    :undoc-members:
    :show-inheritance:

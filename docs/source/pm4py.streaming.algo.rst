@@ -1,6 +1,11 @@
 pm4py.streaming.algo package
 ============================
 
+.. automodule:: pm4py.streaming.algo
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -17,14 +22,6 @@ pm4py.streaming.algo.interface module
 -------------------------------------
 
 .. automodule:: pm4py.streaming.algo.interface
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.streaming.algo
    :members:
    :undoc-members:
    :show-inheritance:

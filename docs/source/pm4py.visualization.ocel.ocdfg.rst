@@ -1,6 +1,11 @@
 pm4py.visualization.ocel.ocdfg package
 ======================================
 
+.. automodule:: pm4py.visualization.ocel.ocdfg
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.visualization.ocel.ocdfg.visualizer module
 ------------------------------------------------
 
 .. automodule:: pm4py.visualization.ocel.ocdfg.visualizer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization.ocel.ocdfg
    :members:
    :undoc-members:
    :show-inheritance:

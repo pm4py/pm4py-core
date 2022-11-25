@@ -1,6 +1,11 @@
 pm4py.algo.conformance.footprints.variants package
 ==================================================
 
+.. automodule:: pm4py.algo.conformance.footprints.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -24,14 +29,6 @@ pm4py.algo.conformance.footprints.variants.trace\_extensive module
 ------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.conformance.footprints.variants.trace_extensive
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.conformance.footprints.variants
    :members:
    :undoc-members:
    :show-inheritance:

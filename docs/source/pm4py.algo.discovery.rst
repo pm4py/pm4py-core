@@ -1,6 +1,11 @@
 pm4py.algo.discovery package
 ============================
 
+.. automodule:: pm4py.algo.discovery
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -21,22 +26,3 @@ Subpackages
    pm4py.algo.discovery.performance_spectrum
    pm4py.algo.discovery.temporal_profile
    pm4py.algo.discovery.transition_system
-
-Submodules
-----------
-
-pm4py.algo.discovery.parameters module
---------------------------------------
-
-.. automodule:: pm4py.algo.discovery.parameters
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.discovery
-   :members:
-   :undoc-members:
-   :show-inheritance:

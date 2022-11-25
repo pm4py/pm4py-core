@@ -1,6 +1,11 @@
 pm4py.statistics.eventually\_follows package
 ============================================
 
+.. automodule:: pm4py.statistics.eventually_follows
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -9,11 +14,3 @@ Subpackages
 
    pm4py.statistics.eventually_follows.log
    pm4py.statistics.eventually_follows.pandas
-
-Module contents
----------------
-
-.. automodule:: pm4py.statistics.eventually_follows
-   :members:
-   :undoc-members:
-   :show-inheritance:

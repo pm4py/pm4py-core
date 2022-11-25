@@ -1,6 +1,11 @@
 pm4py.objects.log package
 =========================
 
+.. automodule:: pm4py.objects.log
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -14,26 +19,10 @@ Subpackages
 Submodules
 ----------
 
-pm4py.objects.log.log module
-----------------------------
-
-.. automodule:: pm4py.objects.log.log
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pm4py.objects.log.obj module
 ----------------------------
 
 .. automodule:: pm4py.objects.log.obj
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.log
    :members:
    :undoc-members:
    :show-inheritance:

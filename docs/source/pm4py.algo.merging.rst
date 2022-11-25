@@ -1,6 +1,11 @@
 pm4py.algo.merging package
 ==========================
 
+.. automodule:: pm4py.algo.merging
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -8,11 +13,3 @@ Subpackages
    :maxdepth: 4
 
    pm4py.algo.merging.case_relations
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.merging
-   :members:
-   :undoc-members:
-   :show-inheritance:

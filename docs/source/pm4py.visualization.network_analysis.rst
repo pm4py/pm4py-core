@@ -1,6 +1,11 @@
 pm4py.visualization.network\_analysis package
 =============================================
 
+.. automodule:: pm4py.visualization.network_analysis
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.visualization.network\_analysis.visualizer module
 -------------------------------------------------------
 
 .. automodule:: pm4py.visualization.network_analysis.visualizer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization.network_analysis
    :members:
    :undoc-members:
    :show-inheritance:

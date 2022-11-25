@@ -1,6 +1,11 @@
 pm4py.objects.bpmn package
 ==========================
 
+.. automodule:: pm4py.objects.bpmn
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -15,14 +20,6 @@ Subpackages
 Submodules
 ----------
 
-pm4py.objects.bpmn.bpmn\_graph module
--------------------------------------
-
-.. automodule:: pm4py.objects.bpmn.bpmn_graph
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pm4py.objects.bpmn.obj module
 -----------------------------
 
@@ -31,10 +28,10 @@ pm4py.objects.bpmn.obj module
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
+pm4py.objects.bpmn.semantics module
+-----------------------------------
 
-.. automodule:: pm4py.objects.bpmn
+.. automodule:: pm4py.objects.bpmn.semantics
    :members:
    :undoc-members:
    :show-inheritance:
