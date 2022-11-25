@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.3.0 (YYYY.MM.DD)
+## pm4py 2.3.0 (2022.11.25)
 
 ### Added
 * 00a7ab36bda245d16a35ae6fff2bfb51d8ff8aea
@@ -64,6 +64,105 @@
 	PMPY-1623 deprecating some packages for removal in future release (hierarchical clustering, comparison, alignments with edit distance, decision mining, earth mover distance, log to interval tree)
  * 000f23ca65226d66f52d85f9b876ec68669f03e0
 	PMPY-1660 deprecating the format_dataframe function.
+
+### Fixed
+* d066d3f49a996c30d151031d66de90db4f4d9a2e
+  * Fixed issue with OCEL-CSV importing (Pandas index_col)
+* c38348df9cf165fd94a2e69ba29601e1643e80ae
+  * Fixed issue with OCEL-CSV importing (relations dataframe timestamp)
+
+* 22ec9ab7220088ef7535760dd93197092d6bf04a
+  5c0b0d439c1a613ff78d4d24b7a05b7aa4150ce3
+  9b90c2c18b708d39e3c75f8b2e25433c7e8b447f
+  ba6b55b84d1f7191d578e0d5535c49ef1930ce65
+  4d5765052fe4085fc8f8340e72a353369705b878
+    PMPY-1573 making methods directly working on Pandas dataframes
+* ba6b55b84d1f7191d578e0d5535c49ef1930ce65
+  4d5765052fe4085fc8f8340e72a353369705b878
+  aea15814ba8f67a51fce1ec0beebd9a4a3721a19
+    PMPY-1619 adding common parameters to simplified interface methods
+* f8482b9e9aa4376543ad5d66d22fb04de0639530
+    PMPY-1880 missing parameters in heuristics net discovery
+
+### Removed
+
+* d2a95d306362f54e08070b98193abbf8498ba70e
+	PMPY-1575 removed all deprecated code for this release; standardized object definitions
+
+### Other
+
+---
+
+## pm4py 2.2.32 (2022.11.10)
+
+### Added
+
+### Changed
+* cfb9f37a15a6b990f32ceaab28f1e2153e36c23d
+  * Update WOFLAN to include diagnostics in output
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.31 (2022.11.06)
+
+### Added
+
+### Changed
+* cc232ddc00528a0e7d568565c6b8fe76e2e38f71
+  * fine tuning existing BPMN layouter
+
+### Deprecated
+
+### Fixed
+* 43026f0d22605bafd104c9c752511b3a00c3988c
+  * missing encoding parameter in PNML importing/exporting
+* 07493cc94e40652983eeb7b25f911654937f0ae6
+  * bug fix Alpha Miner - check if the new place candidate pair has
+    causal relations between all elements of the first and second part
+    of the pair.
+  
+### Removed
+
+### Other
+
+---
+
+
+## pm4py 2.2.30 (2022.10.13)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 32a4fc9e4ab23418493f281fc262615f2ff4c436
+  * Fixed trace filter
+* 4c5599ff60f4e448198a1971a669c4bf3a4154fe
+  * fixed issue with SNA HTML visualization
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.29 (2022.09.16)
+
+### Added
+
+### Changed
+
+### Deprecated
 
 ### Fixed
 * d066d3f49a996c30d151031d66de90db4f4d9a2e

@@ -306,6 +306,44 @@ def sample_ocel_objects(ocel: OCEL, num_objects: int) -> OCEL:
     return sampling.sample_ocel_objects(ocel, parameters={"num_entities": num_objects})
 
 
+def sample_ocel_connected_components(ocel: OCEL, connected_components: int = 1) -> OCEL:
+    """
+    Given an object-centric event log, returns a sampled event log with a subset of the executions.
+    The number of considered connected components need to be specified by the user.
+
+    :param ocel: Object-centric event log
+    :param connected_components: Number of connected components to pick from the OCEL
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        sampled_ocel = pm4py.sample_ocel_connected_components(ocel, 5) # keeps only 5 connected components
+    """
+    from pm4py.algo.transformation.ocel.split_ocel import algorithm
+    ocel_splits = algorithm.apply(ocel)
+    events = None
+    objects = None
+    relations = None
+    ocel_splits = sorted(list(ocel_splits), key=lambda x: (len(x.events), len(x.relations)))
+    i = 0
+    while i < min(connected_components, len(ocel_splits)):
+        cc = ocel_splits[i]
+        if events is None:
+            events = cc.events
+            objects = cc.objects
+            relations = cc.relations
+        else:
+            events = pd.concat([events, cc.events])
+            objects = pd.concat([objects, cc.objects])
+            relations = pd.concat([relations, cc.relations])
+        i = i + 1
+
+    return OCEL(events, objects, relations)
+
+
 def ocel_drop_duplicates(ocel: OCEL) -> OCEL:
     """
     Drop relations between events and objects happening at the same time,
