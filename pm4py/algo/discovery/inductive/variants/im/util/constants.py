@@ -1,1 +1,0 @@
-IMPLEMENTED_FALL_THROUGHS = ["empty_trace", "once_per_trace", "concurrent", "strict_tau_loop", "tau_loop"]

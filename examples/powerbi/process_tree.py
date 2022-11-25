@@ -16,7 +16,7 @@ dataset["time:timestamp"] = pd.to_datetime(dataset["time:timestamp"])
 dataset = dataset.sort_values("time:timestamp")
 
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-tree = inductive_miner.apply_tree(dataset)
+tree = inductive_miner.apply(dataset)
 
 from pm4py.visualization.process_tree import visualizer
 gviz = visualizer.apply(tree)

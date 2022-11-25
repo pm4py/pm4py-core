@@ -1,5 +1,4 @@
 from pm4py.algo.evaluation.generalization.variants import token_based
-from pm4py.objects.conversion.log import converter as log_conversion
 from enum import Enum
 from pm4py.util import exec_utils
 from typing import Optional, Dict, Any, Union, Tuple
@@ -20,6 +19,6 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], petri_net: PetriNet, 
     if parameters is None:
         parameters = {}
 
-    return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG),
+    return exec_utils.get_variant(variant).apply(log,
                                                  petri_net,
                                                  initial_marking, final_marking, parameters=parameters)
