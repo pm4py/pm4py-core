@@ -50,11 +50,11 @@ Based on the scenario we just presented, the steps look as follows:
 #. **Mike** *delivers your order*
 
 Importing Your First Event Log
-----------------------------
+------------------------------
 In this section, we explain how to import (and export) event data in PM4Py. We assume that you are familiar with the conceptual basics of process mining, i.e., as described in the previous section.
 
 File Types: CSV and XES
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 As explained in the previous section, process mining exploits Event Logs to generate knowledge of a process. A wide variety of information systems, e.g., SAP, ORACLE, SalesForce, etc., allow us to extract, in one way or the other, event logs similar to the example event log presented in Table 1 and Table 2. All the examples we show in this section and all algorithms implemented in pm4py assume that we have already extracted the event data into an appropriate event log format. Hence, the core of pm4py does not support any data extraction features. However, we provide solutions for data extraction purposes, i.e., please inspect the corresponding `solutions page <https://pm4py.fit.fraunhofer.de/solution-connectors>`_.
 
 In order to support interoperability between different process mining tools and libraries, two standard data formats are used to capture event logs, i.e., Comma Separated Value (CSV) files and eXtensible Event Stream (XES) files. CSV files resemble the example tables shown in the previous section, i.e., Table 1 and Table 2. Each line in such a file describes an event that occurred. The columns represent the same type of data, as shown in the examples, e.g., the case for which the event occurred, the activity, the timestamp, the resource executing the activity, etc. The XES file format is an XML-based format that allows us to describe process behavior. We will not go into details w.r.t. the format of XES files, i.e., we refer to `https://www.xes-standard.org <https://www.xes-standard.org>`_ for an overview.
@@ -172,7 +172,7 @@ Exporting Event Data
 Now we are able to import event data into PM4Py, let’s take a look at the opposite, i.e., exporting event data. Exporting of event logs can be very useful, e.g., we might want to convert a .csv file into a .xes file or we might want to filter out certain (noisy) cases and save the filtered event log. Like importing, exporting of event data is possible in two ways, i.e., exporting to csv (using pandas) and exporting to xes. In the upcoming sections, we show how to export an event log stored as a pandas data frame into a csv file, a pandas data frame as a xes file, a PM4Py event log object as a csv file and finally, a PM4Py event log object as a xes file.
 
 Storing a Pandas Data Frame as a csv file
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Storing an event log that is represented as a pandas dataframe is straightforward, i.e., we can directly use the **to_csv** function of the pandas DataFrame object. Consider the following example snippet of code, in which we show this functionality.
 
@@ -203,7 +203,7 @@ It is also possible to store a pandas data frame to a xes file. This is simply d
         pm4py.write_xes(event_log, 'C:/Users/demo/Desktop/running-example-exported.xes')
 
 Storing an Event Log object as a .csv file
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In some cases, we might want to store an event log object, e.g., obtained by importing a .xes file, as a csv file. For example, certain (commercial) process mining tools only support csv importing. For this purpose, pm4py offers conversion functionality that allows you to convert your event log object into a data frame, which you can subsequently export using pandas.
 
@@ -217,7 +217,7 @@ In some cases, we might want to store an event log object, e.g., obtained by imp
         df.to_csv('C:/Users/demo/Desktop/running-example-exported.csv')
 
 Storing an Event Log object as a .xes file
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Storing an event log object as a .xes file is rather straightforward. In pm4py, the **write_xes()** method allows us to do so. Consider the simple example script below in which we show an example of this functionality.
 
@@ -295,7 +295,7 @@ Consider the example code below, in which we provide various example application
 
 
 Discovering Your First Process Model
-----------------------------
+------------------------------------
 
 Since we have studied basic conceptual knowledge of process mining and event data munging and crunching, we focus on process discovery. As indicated, the goal is to discover, i.e., primarily completely automated and algorithmically, a process model that accurately describes the process, i.e., as observed in the event data. For example, given the running example event data, we aim to discover the process model that we have used to explain the running example's process behavior, i.e., Figure 3. This section briefly explains what modeling formalisms exist in PM4Py while applying different process discovery algorithms. Secondly, we give an overview of the implemented process discovery algorithms, their output type(s), and how we can invoke them. Finally, we discuss the challenges of applying process discovery in practice.
 

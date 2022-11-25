@@ -29,3 +29,4 @@ Contents
    install
    getting_started
    api
+   release_notes
