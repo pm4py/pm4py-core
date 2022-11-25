@@ -1,6 +1,11 @@
 pm4py.objects.process\_tree.exporter package
 ============================================
 
+.. automodule:: pm4py.objects.process_tree.exporter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.objects.process\_tree.exporter.exporter module
 ----------------------------------------------------
 
 .. automodule:: pm4py.objects.process_tree.exporter.exporter
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.process_tree.exporter
    :members:
    :undoc-members:
    :show-inheritance:

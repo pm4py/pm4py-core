@@ -1,6 +1,11 @@
 pm4py.statistics.rework.cases package
 =====================================
 
+.. automodule:: pm4py.statistics.rework.cases
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -9,11 +14,3 @@ Subpackages
 
    pm4py.statistics.rework.cases.log
    pm4py.statistics.rework.cases.pandas
-
-Module contents
----------------
-
-.. automodule:: pm4py.statistics.rework.cases
-   :members:
-   :undoc-members:
-   :show-inheritance:

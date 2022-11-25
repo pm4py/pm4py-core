@@ -1,6 +1,11 @@
 pm4py.visualization.transition\_system package
 ==============================================
 
+.. automodule:: pm4py.visualization.transition_system
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -13,26 +18,10 @@ Subpackages
 Submodules
 ----------
 
-pm4py.visualization.transition\_system.parameters module
---------------------------------------------------------
-
-.. automodule:: pm4py.visualization.transition_system.parameters
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pm4py.visualization.transition\_system.visualizer module
 --------------------------------------------------------
 
 .. automodule:: pm4py.visualization.transition_system.visualizer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization.transition_system
    :members:
    :undoc-members:
    :show-inheritance:

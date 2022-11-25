@@ -1,6 +1,11 @@
 pm4py.streaming.algo.conformance.tbr package
 ============================================
 
+.. automodule:: pm4py.streaming.algo.conformance.tbr
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.streaming.algo.conformance.tbr.algorithm module
 -----------------------------------------------------
 
 .. automodule:: pm4py.streaming.algo.conformance.tbr.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.streaming.algo.conformance.tbr
    :members:
    :undoc-members:
    :show-inheritance:

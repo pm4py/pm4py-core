@@ -1,6 +1,11 @@
 pm4py.algo.evaluation package
 =============================
 
+.. automodule:: pm4py.algo.evaluation
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -20,22 +25,6 @@ pm4py.algo.evaluation.algorithm module
 --------------------------------------
 
 .. automodule:: pm4py.algo.evaluation.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pm4py.algo.evaluation.evaluator module
---------------------------------------
-
-.. automodule:: pm4py.algo.evaluation.evaluator
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.evaluation
    :members:
    :undoc-members:
    :show-inheritance:

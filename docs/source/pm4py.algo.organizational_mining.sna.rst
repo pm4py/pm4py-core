@@ -1,6 +1,11 @@
 pm4py.algo.organizational\_mining.sna package
 =============================================
 
+.. automodule:: pm4py.algo.organizational_mining.sna
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -20,26 +25,10 @@ pm4py.algo.organizational\_mining.sna.algorithm module
    :undoc-members:
    :show-inheritance:
 
-pm4py.algo.organizational\_mining.sna.parameters module
--------------------------------------------------------
-
-.. automodule:: pm4py.algo.organizational_mining.sna.parameters
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pm4py.algo.organizational\_mining.sna.util module
 -------------------------------------------------
 
 .. automodule:: pm4py.algo.organizational_mining.sna.util
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.organizational_mining.sna
    :members:
    :undoc-members:
    :show-inheritance:

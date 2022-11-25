@@ -1,6 +1,11 @@
 pm4py.visualization.common package
 ==================================
 
+.. automodule:: pm4py.visualization.common
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -32,14 +37,6 @@ pm4py.visualization.common.visualizer module
 --------------------------------------------
 
 .. automodule:: pm4py.visualization.common.visualizer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization.common
    :members:
    :undoc-members:
    :show-inheritance:

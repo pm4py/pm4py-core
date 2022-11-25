@@ -1,6 +1,11 @@
 pm4py.visualization.graphs.variants package
 ===========================================
 
+.. automodule:: pm4py.visualization.graphs.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -32,14 +37,6 @@ pm4py.visualization.graphs.variants.dates module
 ------------------------------------------------
 
 .. automodule:: pm4py.visualization.graphs.variants.dates
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization.graphs.variants
    :members:
    :undoc-members:
    :show-inheritance:

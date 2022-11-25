@@ -1,6 +1,11 @@
 pm4py.objects.conversion.dfg.variants package
 =============================================
 
+.. automodule:: pm4py.objects.conversion.dfg.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -16,14 +21,6 @@ pm4py.objects.conversion.dfg.variants.to\_petri\_net\_invisibles\_no\_duplicates
 ---------------------------------------------------------------------------------------
 
 .. automodule:: pm4py.objects.conversion.dfg.variants.to_petri_net_invisibles_no_duplicates
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.conversion.dfg.variants
    :members:
    :undoc-members:
    :show-inheritance:

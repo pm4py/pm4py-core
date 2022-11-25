@@ -1,6 +1,11 @@
 pm4py.algo.transformation.ocel.features.objects package
 =======================================================
 
+.. automodule:: pm4py.algo.transformation.ocel.features.objects
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -8,6 +13,14 @@ pm4py.algo.transformation.ocel.features.objects.algorithm module
 ----------------------------------------------------------------
 
 .. automodule:: pm4py.algo.transformation.ocel.features.objects.algorithm
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pm4py.algo.transformation.ocel.features.objects.obj\_con\_in\_graph\_features module
+------------------------------------------------------------------------------------
+
+.. automodule:: pm4py.algo.transformation.ocel.features.objects.obj_con_in_graph_features
    :members:
    :undoc-members:
    :show-inheritance:
@@ -84,6 +97,14 @@ pm4py.algo.transformation.ocel.features.objects.object\_lifecycle\_length module
    :undoc-members:
    :show-inheritance:
 
+pm4py.algo.transformation.ocel.features.objects.object\_lifecycle\_unq\_act module
+----------------------------------------------------------------------------------
+
+.. automodule:: pm4py.algo.transformation.ocel.features.objects.object_lifecycle_unq_act
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pm4py.algo.transformation.ocel.features.objects.object\_num\_attributes module
 ------------------------------------------------------------------------------
 
@@ -116,10 +137,18 @@ pm4py.algo.transformation.ocel.features.objects.objects\_interaction\_graph\_ot 
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
+pm4py.algo.transformation.ocel.features.objects.related\_activities\_features module
+------------------------------------------------------------------------------------
 
-.. automodule:: pm4py.algo.transformation.ocel.features.objects
+.. automodule:: pm4py.algo.transformation.ocel.features.objects.related_activities_features
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pm4py.algo.transformation.ocel.features.objects.related\_events\_features module
+--------------------------------------------------------------------------------
+
+.. automodule:: pm4py.algo.transformation.ocel.features.objects.related_events_features
    :members:
    :undoc-members:
    :show-inheritance:

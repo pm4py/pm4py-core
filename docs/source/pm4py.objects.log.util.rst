@@ -1,6 +1,11 @@
 pm4py.objects.log.util package
 ==============================
 
+.. automodule:: pm4py.objects.log.util
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -36,22 +41,6 @@ pm4py.objects.log.util.filtering\_utils module
    :undoc-members:
    :show-inheritance:
 
-pm4py.objects.log.util.func module
-----------------------------------
-
-.. automodule:: pm4py.objects.log.util.func
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pm4py.objects.log.util.general module
--------------------------------------
-
-.. automodule:: pm4py.objects.log.util.general
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pm4py.objects.log.util.get\_class\_representation module
 --------------------------------------------------------
 
@@ -64,14 +53,6 @@ pm4py.objects.log.util.get\_log\_encoded module
 -----------------------------------------------
 
 .. automodule:: pm4py.objects.log.util.get_log_encoded
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pm4py.objects.log.util.get\_log\_representation module
-------------------------------------------------------
-
-.. automodule:: pm4py.objects.log.util.get_log_representation
    :members:
    :undoc-members:
    :show-inheritance:
@@ -140,14 +121,6 @@ pm4py.objects.log.util.pandas\_numpy\_variants module
    :undoc-members:
    :show-inheritance:
 
-pm4py.objects.log.util.prefix\_matrix module
---------------------------------------------
-
-.. automodule:: pm4py.objects.log.util.prefix_matrix
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pm4py.objects.log.util.sampling module
 --------------------------------------
 
@@ -172,26 +145,10 @@ pm4py.objects.log.util.split\_train\_test module
    :undoc-members:
    :show-inheritance:
 
-pm4py.objects.log.util.time\_from\_previous module
---------------------------------------------------
-
-.. automodule:: pm4py.objects.log.util.time_from_previous
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pm4py.objects.log.util.xes module
 ---------------------------------
 
 .. automodule:: pm4py.objects.log.util.xes
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.log.util
    :members:
    :undoc-members:
    :show-inheritance:

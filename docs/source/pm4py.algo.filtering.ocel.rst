@@ -1,6 +1,11 @@
 pm4py.algo.filtering.ocel package
 =================================
 
+.. automodule:: pm4py.algo.filtering.ocel
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -40,14 +45,6 @@ pm4py.algo.filtering.ocel.ot\_endpoints module
 ----------------------------------------------
 
 .. automodule:: pm4py.algo.filtering.ocel.ot_endpoints
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.filtering.ocel
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,6 +1,11 @@
 pm4py.objects.conversion.log.variants package
 =============================================
 
+.. automodule:: pm4py.objects.conversion.log.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -44,10 +49,10 @@ pm4py.objects.conversion.log.variants.to\_event\_stream module
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
+pm4py.objects.conversion.log.variants.to\_nx module
+---------------------------------------------------
 
-.. automodule:: pm4py.objects.conversion.log.variants
+.. automodule:: pm4py.objects.conversion.log.variants.to_nx
    :members:
    :undoc-members:
    :show-inheritance:

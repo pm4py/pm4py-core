@@ -1,6 +1,11 @@
 pm4py.algo.simulation.playout.petri\_net.variants package
 =========================================================
 
+.. automodule:: pm4py.algo.simulation.playout.petri_net.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -24,14 +29,6 @@ pm4py.algo.simulation.playout.petri\_net.variants.stochastic\_playout module
 ----------------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.simulation.playout.petri_net.variants.stochastic_playout
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.simulation.playout.petri_net.variants
    :members:
    :undoc-members:
    :show-inheritance:

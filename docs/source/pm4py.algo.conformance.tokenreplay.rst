@@ -1,6 +1,11 @@
 pm4py.algo.conformance.tokenreplay package
 ==========================================
 
+.. automodule:: pm4py.algo.conformance.tokenreplay
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -17,14 +22,6 @@ pm4py.algo.conformance.tokenreplay.algorithm module
 ---------------------------------------------------
 
 .. automodule:: pm4py.algo.conformance.tokenreplay.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.conformance.tokenreplay
    :members:
    :undoc-members:
    :show-inheritance:

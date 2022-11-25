@@ -1,6 +1,11 @@
 pm4py.algo.organizational\_mining.sna.variants.pandas package
 =============================================================
 
+.. automodule:: pm4py.algo.organizational_mining.sna.variants.pandas
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -32,14 +37,6 @@ pm4py.algo.organizational\_mining.sna.variants.pandas.working\_together module
 ------------------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.organizational_mining.sna.variants.pandas.working_together
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.organizational_mining.sna.variants.pandas
    :members:
    :undoc-members:
    :show-inheritance:

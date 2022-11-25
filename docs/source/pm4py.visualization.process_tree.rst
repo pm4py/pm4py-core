@@ -1,6 +1,11 @@
 pm4py.visualization.process\_tree package
 =========================================
 
+.. automodule:: pm4py.visualization.process_tree
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.visualization.process\_tree.visualizer module
 ---------------------------------------------------
 
 .. automodule:: pm4py.visualization.process_tree.visualizer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization.process_tree
    :members:
    :undoc-members:
    :show-inheritance:

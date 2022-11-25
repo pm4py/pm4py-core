@@ -1,6 +1,11 @@
 pm4py.algo.conformance.alignments.process\_tree.variants.approximated package
 =============================================================================
 
+.. automodule:: pm4py.algo.conformance.alignments.process_tree.variants.approximated
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -32,14 +37,6 @@ pm4py.algo.conformance.alignments.process\_tree.variants.approximated.utilities 
 --------------------------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.conformance.alignments.process_tree.variants.approximated.utilities
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.conformance.alignments.process_tree.variants.approximated
    :members:
    :undoc-members:
    :show-inheritance:

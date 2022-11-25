@@ -1,6 +1,11 @@
 pm4py.streaming.algo.conformance.temporal package
 =================================================
 
+.. automodule:: pm4py.streaming.algo.conformance.temporal
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.streaming.algo.conformance.temporal.algorithm module
 ----------------------------------------------------------
 
 .. automodule:: pm4py.streaming.algo.conformance.temporal.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.streaming.algo.conformance.temporal
    :members:
    :undoc-members:
    :show-inheritance:

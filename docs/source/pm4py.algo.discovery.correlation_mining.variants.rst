@@ -1,6 +1,11 @@
 pm4py.algo.discovery.correlation\_mining.variants package
 =========================================================
 
+.. automodule:: pm4py.algo.discovery.correlation_mining.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -24,14 +29,6 @@ pm4py.algo.discovery.correlation\_mining.variants.trace\_based module
 ---------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.discovery.correlation_mining.variants.trace_based
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.discovery.correlation_mining.variants
    :members:
    :undoc-members:
    :show-inheritance:

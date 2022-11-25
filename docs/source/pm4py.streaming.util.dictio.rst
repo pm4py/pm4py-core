@@ -1,6 +1,11 @@
 pm4py.streaming.util.dictio package
 ===================================
 
+.. automodule:: pm4py.streaming.util.dictio
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.streaming.util.dictio.generator module
 --------------------------------------------
 
 .. automodule:: pm4py.streaming.util.dictio.generator
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.streaming.util.dictio
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,6 +1,11 @@
 pm4py.algo.discovery.heuristics.variants package
 ================================================
 
+.. automodule:: pm4py.algo.discovery.heuristics.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -16,14 +21,6 @@ pm4py.algo.discovery.heuristics.variants.plusplus module
 --------------------------------------------------------
 
 .. automodule:: pm4py.algo.discovery.heuristics.variants.plusplus
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.discovery.heuristics.variants
    :members:
    :undoc-members:
    :show-inheritance:

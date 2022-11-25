@@ -1,6 +1,11 @@
 pm4py.algo.organizational\_mining.network\_analysis package
 ===========================================================
 
+.. automodule:: pm4py.algo.organizational_mining.network_analysis
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.algo.organizational\_mining.network\_analysis.algorithm module
 --------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.organizational_mining.network_analysis.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.organizational_mining.network_analysis
    :members:
    :undoc-members:
    :show-inheritance:

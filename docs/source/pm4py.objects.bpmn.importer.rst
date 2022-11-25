@@ -1,6 +1,11 @@
 pm4py.objects.bpmn.importer package
 ===================================
 
+.. automodule:: pm4py.objects.bpmn.importer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.objects.bpmn.importer.importer module
 -------------------------------------------
 
 .. automodule:: pm4py.objects.bpmn.importer.importer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.bpmn.importer
    :members:
    :undoc-members:
    :show-inheritance:

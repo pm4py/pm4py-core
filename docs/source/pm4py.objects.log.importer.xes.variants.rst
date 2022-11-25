@@ -1,8 +1,21 @@
 pm4py.objects.log.importer.xes.variants package
 ===============================================
 
+.. automodule:: pm4py.objects.log.importer.xes.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
+
+pm4py.objects.log.importer.xes.variants.chunk\_regex module
+-----------------------------------------------------------
+
+.. automodule:: pm4py.objects.log.importer.xes.variants.chunk_regex
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 pm4py.objects.log.importer.xes.variants.iterparse module
 --------------------------------------------------------
@@ -32,14 +45,6 @@ pm4py.objects.log.importer.xes.variants.line\_by\_line module
 -------------------------------------------------------------
 
 .. automodule:: pm4py.objects.log.importer.xes.variants.line_by_line
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.log.importer.xes.variants
    :members:
    :undoc-members:
    :show-inheritance:

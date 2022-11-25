@@ -1,6 +1,11 @@
 pm4py.algo.transformation.ocel.split\_ocel package
 ==================================================
 
+.. automodule:: pm4py.algo.transformation.ocel.split_ocel
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.algo.transformation.ocel.split\_ocel.algorithm module
 -----------------------------------------------------------
 
 .. automodule:: pm4py.algo.transformation.ocel.split_ocel.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.transformation.ocel.split_ocel
    :members:
    :undoc-members:
    :show-inheritance:

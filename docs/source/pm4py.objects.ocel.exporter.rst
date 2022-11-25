@@ -1,6 +1,11 @@
 pm4py.objects.ocel.exporter package
 ===================================
 
+.. automodule:: pm4py.objects.ocel.exporter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -11,11 +16,3 @@ Subpackages
    pm4py.objects.ocel.exporter.jsonocel
    pm4py.objects.ocel.exporter.util
    pm4py.objects.ocel.exporter.xmlocel
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.ocel.exporter
-   :members:
-   :undoc-members:
-   :show-inheritance:

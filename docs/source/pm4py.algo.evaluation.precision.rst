@@ -1,6 +1,11 @@
 pm4py.algo.evaluation.precision package
 =======================================
 
+.. automodule:: pm4py.algo.evaluation.precision
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -21,34 +26,10 @@ pm4py.algo.evaluation.precision.algorithm module
    :undoc-members:
    :show-inheritance:
 
-pm4py.algo.evaluation.precision.evaluator module
-------------------------------------------------
-
-.. automodule:: pm4py.algo.evaluation.precision.evaluator
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pm4py.algo.evaluation.precision.parameters module
--------------------------------------------------
-
-.. automodule:: pm4py.algo.evaluation.precision.parameters
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pm4py.algo.evaluation.precision.utils module
 --------------------------------------------
 
 .. automodule:: pm4py.algo.evaluation.precision.utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.evaluation.precision
    :members:
    :undoc-members:
    :show-inheritance:

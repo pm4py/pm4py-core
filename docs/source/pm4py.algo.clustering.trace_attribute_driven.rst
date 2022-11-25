@@ -1,6 +1,11 @@
 pm4py.algo.clustering.trace\_attribute\_driven package
 ======================================================
 
+.. automodule:: pm4py.algo.clustering.trace_attribute_driven
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -21,22 +26,6 @@ pm4py.algo.clustering.trace\_attribute\_driven.algorithm module
 ---------------------------------------------------------------
 
 .. automodule:: pm4py.algo.clustering.trace_attribute_driven.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pm4py.algo.clustering.trace\_attribute\_driven.parameters module
-----------------------------------------------------------------
-
-.. automodule:: pm4py.algo.clustering.trace_attribute_driven.parameters
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.clustering.trace_attribute_driven
    :members:
    :undoc-members:
    :show-inheritance:

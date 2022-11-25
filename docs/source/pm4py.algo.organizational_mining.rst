@@ -1,6 +1,11 @@
 pm4py.algo.organizational\_mining package
 =========================================
 
+.. automodule:: pm4py.algo.organizational_mining
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -20,14 +25,6 @@ pm4py.algo.organizational\_mining.util module
 ---------------------------------------------
 
 .. automodule:: pm4py.algo.organizational_mining.util
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.organizational_mining
    :members:
    :undoc-members:
    :show-inheritance:

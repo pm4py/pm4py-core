@@ -1,6 +1,11 @@
 pm4py.algo.analysis.woflan.place\_invariants package
 ====================================================
 
+.. automodule:: pm4py.algo.analysis.woflan.place_invariants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -32,14 +37,6 @@ pm4py.algo.analysis.woflan.place\_invariants.utility module
 -----------------------------------------------------------
 
 .. automodule:: pm4py.algo.analysis.woflan.place_invariants.utility
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.analysis.woflan.place_invariants
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,6 +1,11 @@
 pm4py.statistics.concurrent\_activities package
 ===============================================
 
+.. automodule:: pm4py.statistics.concurrent_activities
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -9,11 +14,3 @@ Subpackages
 
    pm4py.statistics.concurrent_activities.log
    pm4py.statistics.concurrent_activities.pandas
-
-Module contents
----------------
-
-.. automodule:: pm4py.statistics.concurrent_activities
-   :members:
-   :undoc-members:
-   :show-inheritance:

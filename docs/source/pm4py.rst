@@ -1,6 +1,11 @@
 pm4py package
 =============
 
+.. automodule:: pm4py
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -8,9 +13,7 @@ Subpackages
    :maxdepth: 4
 
    pm4py.algo
-   pm4py.evaluation
    pm4py.objects
-   pm4py.simulation
    pm4py.statistics
    pm4py.streaming
    pm4py.util
@@ -23,6 +26,14 @@ pm4py.analysis module
 ---------------------
 
 .. automodule:: pm4py.analysis
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pm4py.cli module
+----------------
+
+.. automodule:: pm4py.cli
    :members:
    :undoc-members:
    :show-inheritance:
@@ -143,14 +154,6 @@ pm4py.write module
 ------------------
 
 .. automodule:: pm4py.write
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py
    :members:
    :undoc-members:
    :show-inheritance:

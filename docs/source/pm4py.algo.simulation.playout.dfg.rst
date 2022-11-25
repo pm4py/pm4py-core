@@ -1,6 +1,11 @@
 pm4py.algo.simulation.playout.dfg package
 =========================================
 
+.. automodule:: pm4py.algo.simulation.playout.dfg
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.algo.simulation.playout.dfg.algorithm module
 --------------------------------------------------
 
 .. automodule:: pm4py.algo.simulation.playout.dfg.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.simulation.playout.dfg
    :members:
    :undoc-members:
    :show-inheritance:

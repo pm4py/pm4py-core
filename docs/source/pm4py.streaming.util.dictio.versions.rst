@@ -1,6 +1,11 @@
 pm4py.streaming.util.dictio.versions package
 ============================================
 
+.. automodule:: pm4py.streaming.util.dictio.versions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -24,14 +29,6 @@ pm4py.streaming.util.dictio.versions.thread\_safe module
 --------------------------------------------------------
 
 .. automodule:: pm4py.streaming.util.dictio.versions.thread_safe
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.streaming.util.dictio.versions
    :members:
    :undoc-members:
    :show-inheritance:

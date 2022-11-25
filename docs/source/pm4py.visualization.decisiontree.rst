@@ -1,6 +1,11 @@
 pm4py.visualization.decisiontree package
 ========================================
 
+.. automodule:: pm4py.visualization.decisiontree
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -17,14 +22,6 @@ pm4py.visualization.decisiontree.visualizer module
 --------------------------------------------------
 
 .. automodule:: pm4py.visualization.decisiontree.visualizer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization.decisiontree
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,6 +1,11 @@
 pm4py.visualization.dotted\_chart package
 =========================================
 
+.. automodule:: pm4py.visualization.dotted_chart
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.visualization.dotted\_chart.visualizer module
 ---------------------------------------------------
 
 .. automodule:: pm4py.visualization.dotted_chart.visualizer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization.dotted_chart
    :members:
    :undoc-members:
    :show-inheritance:

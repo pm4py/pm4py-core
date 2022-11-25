@@ -1,6 +1,11 @@
 pm4py.algo.filtering.common package
 ===================================
 
+.. automodule:: pm4py.algo.filtering.common
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -19,14 +24,6 @@ pm4py.algo.filtering.common.filtering\_constants module
 -------------------------------------------------------
 
 .. automodule:: pm4py.algo.filtering.common.filtering_constants
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.filtering.common
    :members:
    :undoc-members:
    :show-inheritance:

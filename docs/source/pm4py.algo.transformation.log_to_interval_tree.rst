@@ -1,6 +1,11 @@
 pm4py.algo.transformation.log\_to\_interval\_tree package
 =========================================================
 
+.. automodule:: pm4py.algo.transformation.log_to_interval_tree
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.algo.transformation.log\_to\_interval\_tree.algorithm module
 ------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.transformation.log_to_interval_tree.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.transformation.log_to_interval_tree
    :members:
    :undoc-members:
    :show-inheritance:

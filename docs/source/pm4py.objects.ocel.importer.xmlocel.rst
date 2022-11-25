@@ -1,6 +1,11 @@
 pm4py.objects.ocel.importer.xmlocel package
 ===========================================
 
+.. automodule:: pm4py.objects.ocel.importer.xmlocel
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.objects.ocel.importer.xmlocel.importer module
 ---------------------------------------------------
 
 .. automodule:: pm4py.objects.ocel.importer.xmlocel.importer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.ocel.importer.xmlocel
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,6 +1,11 @@
 pm4py.algo.organizational\_mining.resource\_profiles package
 ============================================================
 
+.. automodule:: pm4py.algo.organizational_mining.resource_profiles
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.algo.organizational\_mining.resource\_profiles.algorithm module
 ---------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.organizational_mining.resource_profiles.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.organizational_mining.resource_profiles
    :members:
    :undoc-members:
    :show-inheritance:

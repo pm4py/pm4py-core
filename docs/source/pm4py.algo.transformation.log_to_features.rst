@@ -1,6 +1,11 @@
 pm4py.algo.transformation.log\_to\_features package
 ===================================================
 
+.. automodule:: pm4py.algo.transformation.log_to_features
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -17,14 +22,6 @@ pm4py.algo.transformation.log\_to\_features.algorithm module
 ------------------------------------------------------------
 
 .. automodule:: pm4py.algo.transformation.log_to_features.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.transformation.log_to_features
    :members:
    :undoc-members:
    :show-inheritance:

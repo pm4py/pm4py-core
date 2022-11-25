@@ -1,6 +1,11 @@
 pm4py.algo.conformance.alignments package
 =========================================
 
+.. automodule:: pm4py.algo.conformance.alignments
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -12,23 +17,3 @@ Subpackages
    pm4py.algo.conformance.alignments.edit_distance
    pm4py.algo.conformance.alignments.petri_net
    pm4py.algo.conformance.alignments.process_tree
-   pm4py.algo.conformance.alignments.variants
-
-Submodules
-----------
-
-pm4py.algo.conformance.alignments.algorithm module
---------------------------------------------------
-
-.. automodule:: pm4py.algo.conformance.alignments.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.conformance.alignments
-   :members:
-   :undoc-members:
-   :show-inheritance:

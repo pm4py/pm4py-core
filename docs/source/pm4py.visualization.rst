@@ -1,6 +1,11 @@
 pm4py.visualization package
 ===========================
 
+.. automodule:: pm4py.visualization
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -20,27 +25,7 @@ Subpackages
    pm4py.visualization.ocel
    pm4py.visualization.performance_spectrum
    pm4py.visualization.petri_net
-   pm4py.visualization.petrinet
    pm4py.visualization.process_tree
    pm4py.visualization.sna
    pm4py.visualization.transition_system
    pm4py.visualization.trie
-
-Submodules
-----------
-
-pm4py.visualization.parameters module
--------------------------------------
-
-.. automodule:: pm4py.visualization.parameters
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization
-   :members:
-   :undoc-members:
-   :show-inheritance:

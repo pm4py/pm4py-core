@@ -1,6 +1,11 @@
 pm4py.algo.discovery.footprints.log.variants package
 ====================================================
 
+.. automodule:: pm4py.algo.discovery.footprints.log.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -24,14 +29,6 @@ pm4py.algo.discovery.footprints.log.variants.trace\_by\_trace module
 --------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.discovery.footprints.log.variants.trace_by_trace
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.discovery.footprints.log.variants
    :members:
    :undoc-members:
    :show-inheritance:

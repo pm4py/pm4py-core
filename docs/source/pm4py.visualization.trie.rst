@@ -1,6 +1,11 @@
 pm4py.visualization.trie package
 ================================
 
+.. automodule:: pm4py.visualization.trie
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.visualization.trie.visualizer module
 ------------------------------------------
 
 .. automodule:: pm4py.visualization.trie.visualizer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization.trie
    :members:
    :undoc-members:
    :show-inheritance:

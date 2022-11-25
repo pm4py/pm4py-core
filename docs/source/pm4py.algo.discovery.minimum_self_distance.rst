@@ -1,6 +1,11 @@
 pm4py.algo.discovery.minimum\_self\_distance package
 ====================================================
 
+.. automodule:: pm4py.algo.discovery.minimum_self_distance
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -24,14 +29,6 @@ pm4py.algo.discovery.minimum\_self\_distance.utils module
 ---------------------------------------------------------
 
 .. automodule:: pm4py.algo.discovery.minimum_self_distance.utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.discovery.minimum_self_distance
    :members:
    :undoc-members:
    :show-inheritance:

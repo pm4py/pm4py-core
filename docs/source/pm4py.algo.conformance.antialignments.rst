@@ -1,6 +1,11 @@
 pm4py.algo.conformance.antialignments package
 =============================================
 
+.. automodule:: pm4py.algo.conformance.antialignments
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.algo.conformance.antialignments.algorithm module
 ------------------------------------------------------
 
 .. automodule:: pm4py.algo.conformance.antialignments.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.conformance.antialignments
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,6 +1,11 @@
 pm4py.objects.conversion.dfg package
 ====================================
 
+.. automodule:: pm4py.objects.conversion.dfg
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.objects.conversion.dfg.converter module
 ---------------------------------------------
 
 .. automodule:: pm4py.objects.conversion.dfg.converter
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.conversion.dfg
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,6 +1,11 @@
 pm4py.algo.evaluation.replay\_fitness.variants package
 ======================================================
 
+.. automodule:: pm4py.algo.evaluation.replay_fitness.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -16,14 +21,6 @@ pm4py.algo.evaluation.replay\_fitness.variants.token\_replay module
 -------------------------------------------------------------------
 
 .. automodule:: pm4py.algo.evaluation.replay_fitness.variants.token_replay
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.evaluation.replay_fitness.variants
    :members:
    :undoc-members:
    :show-inheritance:

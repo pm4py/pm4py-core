@@ -1,6 +1,11 @@
 pm4py.algo.simulation.playout package
 =====================================
 
+.. automodule:: pm4py.algo.simulation.playout
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -10,30 +15,3 @@ Subpackages
    pm4py.algo.simulation.playout.dfg
    pm4py.algo.simulation.playout.petri_net
    pm4py.algo.simulation.playout.process_tree
-
-Submodules
-----------
-
-pm4py.algo.simulation.playout.algorithm module
-----------------------------------------------
-
-.. automodule:: pm4py.algo.simulation.playout.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pm4py.algo.simulation.playout.simulator module
-----------------------------------------------
-
-.. automodule:: pm4py.algo.simulation.playout.simulator
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.simulation.playout
-   :members:
-   :undoc-members:
-   :show-inheritance:

@@ -1,6 +1,11 @@
 pm4py.algo.conformance.alignments.dfg package
 =============================================
 
+.. automodule:: pm4py.algo.conformance.alignments.dfg
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.algo.conformance.alignments.dfg.algorithm module
 ------------------------------------------------------
 
 .. automodule:: pm4py.algo.conformance.alignments.dfg.algorithm
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.conformance.alignments.dfg
    :members:
    :undoc-members:
    :show-inheritance:

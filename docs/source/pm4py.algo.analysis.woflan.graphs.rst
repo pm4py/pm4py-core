@@ -1,6 +1,11 @@
 pm4py.algo.analysis.woflan.graphs package
 =========================================
 
+.. automodule:: pm4py.algo.analysis.woflan.graphs
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -18,14 +23,6 @@ pm4py.algo.analysis.woflan.graphs.utility module
 ------------------------------------------------
 
 .. automodule:: pm4py.algo.analysis.woflan.graphs.utility
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.algo.analysis.woflan.graphs
    :members:
    :undoc-members:
    :show-inheritance:

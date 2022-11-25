@@ -1,6 +1,11 @@
 pm4py.objects.conversion.wf\_net package
 ========================================
 
+.. automodule:: pm4py.objects.conversion.wf_net
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.objects.conversion.wf\_net.converter module
 -------------------------------------------------
 
 .. automodule:: pm4py.objects.conversion.wf_net.converter
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.conversion.wf_net
    :members:
    :undoc-members:
    :show-inheritance:

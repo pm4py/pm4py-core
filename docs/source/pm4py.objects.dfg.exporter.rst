@@ -1,6 +1,11 @@
 pm4py.objects.dfg.exporter package
 ==================================
 
+.. automodule:: pm4py.objects.dfg.exporter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -16,14 +21,6 @@ pm4py.objects.dfg.exporter.exporter module
 ------------------------------------------
 
 .. automodule:: pm4py.objects.dfg.exporter.exporter
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.objects.dfg.exporter
    :members:
    :undoc-members:
    :show-inheritance:

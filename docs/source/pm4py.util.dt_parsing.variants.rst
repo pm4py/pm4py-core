@@ -1,6 +1,11 @@
 pm4py.util.dt\_parsing.variants package
 =======================================
 
+.. automodule:: pm4py.util.dt_parsing.variants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Submodules
 ----------
 
@@ -24,14 +29,6 @@ pm4py.util.dt\_parsing.variants.strpfromiso module
 --------------------------------------------------
 
 .. automodule:: pm4py.util.dt_parsing.variants.strpfromiso
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.util.dt_parsing.variants
    :members:
    :undoc-members:
    :show-inheritance:

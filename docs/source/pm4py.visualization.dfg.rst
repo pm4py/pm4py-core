@@ -1,6 +1,11 @@
 pm4py.visualization.dfg package
 ===============================
 
+.. automodule:: pm4py.visualization.dfg
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -12,26 +17,10 @@ Subpackages
 Submodules
 ----------
 
-pm4py.visualization.dfg.parameters module
------------------------------------------
-
-.. automodule:: pm4py.visualization.dfg.parameters
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pm4py.visualization.dfg.visualizer module
 -----------------------------------------
 
 .. automodule:: pm4py.visualization.dfg.visualizer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: pm4py.visualization.dfg
    :members:
    :undoc-members:
    :show-inheritance:
