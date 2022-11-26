@@ -1,10 +1,11 @@
 import pm4py
 import os
 from pm4py.algo.reduction.process_tree import reducer
+from pm4py.objects.log.importer.xes import importer as xes_importer
 
 
 def execute_script():
-    log = pm4py.read_xes(os.path.join("..", "tests", "input_data", "receipt.xes"))
+    log = xes_importer.apply(os.path.join("..", "tests", "input_data", "receipt.xes"))
     # the tree discovered by inductive miner is huge and can replay the behavior of the log
     tree = pm4py.discover_process_tree_inductive(log)
     pm4py.view_process_tree(tree, "svg")
