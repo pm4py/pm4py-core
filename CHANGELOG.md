@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.3.0 (YYYY.MM.DD)
+## pm4py 2.3.0 (2022.11.25)
 
 ### Added
 * 00a7ab36bda245d16a35ae6fff2bfb51d8ff8aea
@@ -90,6 +90,48 @@
 
 * d2a95d306362f54e08070b98193abbf8498ba70e
 	PMPY-1575 removed all deprecated code for this release; standardized object definitions
+
+### Other
+
+---
+
+## pm4py 2.2.32 (2022.11.10)
+
+### Added
+
+### Changed
+* cfb9f37a15a6b990f32ceaab28f1e2153e36c23d
+  * Update WOFLAN to include diagnostics in output
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.2.31 (2022.11.06)
+
+### Added
+
+### Changed
+* cc232ddc00528a0e7d568565c6b8fe76e2e38f71
+  * fine tuning existing BPMN layouter
+
+### Deprecated
+
+### Fixed
+* 43026f0d22605bafd104c9c752511b3a00c3988c
+  * missing encoding parameter in PNML importing/exporting
+* 07493cc94e40652983eeb7b25f911654937f0ae6
+  * bug fix Alpha Miner - check if the new place candidate pair has
+    causal relations between all elements of the first and second part
+    of the pair.
+  
+### Removed
 
 ### Other
 

@@ -6,6 +6,7 @@ from pm4py.objects.log.obj import EventLog
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.conversion.log import converter as log_converter
 
 import os
 
@@ -50,6 +51,7 @@ def read_xes(file_path: str, variant: str = "chunk_regex", **kwargs) -> DataFram
     elif variant == "chunk_regex":
         v = xes_importer.Variants.CHUNK_REGEX
     log = xes_importer.apply(file_path, variant=v, parameters=kwargs)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
     return log
 
 
