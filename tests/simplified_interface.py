@@ -536,7 +536,6 @@ class SimplifiedInterfaceTest(unittest.TestCase):
     def test_ocel_flattening(self):
         ocel = pm4py.read_ocel("input_data/ocel/example_log.csv")
         pm4py.ocel_flattening(ocel, "order")
-
     def test_stats_var_tuples_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
         dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
