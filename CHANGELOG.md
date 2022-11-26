@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.3.1 (2022.11.XX)
+## pm4py 2.3.1 (2022.11.26)
 
 ### Added
 * cde09b3bdc122e0f38d62c5cecba26a6d1d9e4b6
@@ -11,6 +11,13 @@
 ### Deprecated
 
 ### Fixed
+* 37dc750566da858c738a94ea242160cada28a43d
+  37e7e92db973497b23b30610a005512bd2d3268a
+  * fixed tests and examples
+* 75ae8d12555d0fe354b55e3f99d09287ef4c5fd6
+  * fixed pm4py.read_xes problem with some conversions to DF
+* ea72675caf93f5e32bc146f6cef7f86d0769c747
+  * fixed inductive miner entrypoint function
 
 ### Removed
 
