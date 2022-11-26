@@ -7,6 +7,7 @@ import pm4py
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.log.importer.xes import importer as xes_importer
 
 
 class SimplifiedInterfaceTest(unittest.TestCase):
@@ -147,7 +148,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         pm4py.get_end_activities(df, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
         pm4py.get_event_attributes(df)
         pm4py.get_event_attribute_values(df, "Resource", case_id_key="CaseID")
-        pm4py.get_variants_as_tuples(df, case_id_key="case:concept:name", activity_key="Activity", timestamp_key="Timestamp")
+        pm4py.get_variants_as_tuples(df, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
 
     def test_playout(self):
         net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
@@ -157,7 +158,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         pm4py.generate_process_tree()
 
     def test_mark_em_equation(self):
-        log = pm4py.read_xes("input_data/running-example.xes")
+        log = xes_importer.apply("input_data/running-example.xes")
         net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
         sync_net, sync_im, sync_fm = pm4py.construct_synchronous_product_net(log[0], net, im, fm)
         m_h = pm4py.solve_marking_equation(sync_net, sync_im, sync_fm)
@@ -220,13 +221,13 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_marking_equation_net(self):
         import pm4py
-        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         net, im, fm = pm4py.discover_petri_net_inductive(log)
         pm4py.solve_marking_equation(net, im, fm)
 
     def test_marking_equation_sync_net(self):
         import pm4py
-        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         net, im, fm = pm4py.discover_petri_net_inductive(log)
         sync_net, sync_im, sync_fm = pm4py.construct_synchronous_product_net(log[0], net, im, fm)
         res = pm4py.solve_marking_equation(sync_net, sync_im, sync_fm)
@@ -235,7 +236,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_ext_marking_equation_sync_net(self):
         import pm4py
-        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
         net, im, fm = pm4py.discover_petri_net_inductive(log)
         sync_net, sync_im, sync_fm = pm4py.construct_synchronous_product_net(log[0], net, im, fm)
         res = pm4py.solve_extended_marking_equation(log[0], sync_net, sync_im, sync_fm)
@@ -380,19 +381,19 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         pm4py.insert_artificial_start_end(dataframe, activity_key="Activity", timestamp_key="Timestamp", case_id_key="CaseID")
 
     def test_hof_filter_log(self):
-        log = pm4py.read_xes("input_data/running-example.xes")
+        log = xes_importer.apply("input_data/running-example.xes")
         pm4py.filter_log(log, lambda x: len(x) > 5)
 
     def test_hof_filter_trace(self):
-        log = pm4py.read_xes("input_data/running-example.xes")
+        log = xes_importer.apply("input_data/running-example.xes")
         pm4py.filter_trace(log[0], lambda x: x["concept:name"] == "decide")
 
     def test_hof_sort_log(self):
-        log = pm4py.read_xes("input_data/running-example.xes")
+        log = xes_importer.apply("input_data/running-example.xes")
         pm4py.sort_log(log, key=lambda x: x.attributes["concept:name"])
 
     def test_hof_sort_trace(self):
-        log = pm4py.read_xes("input_data/running-example.xes")
+        log = xes_importer.apply("input_data/running-example.xes")
         pm4py.sort_trace(log[0], key=lambda x: x["concept:name"])
 
     def test_split_train_test_log(self):
@@ -538,7 +539,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_stats_var_tuples_log(self):
         log = pm4py.read_xes("input_data/running-example.xes")
-        pm4py.get_variants_as_tuples(log, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
+        pm4py.get_variants_as_tuples(log, activity_key="Activity", case_id_key="case:concept:name", timestamp_key="Timestamp")
 
     def test_stats_var_tuples_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
