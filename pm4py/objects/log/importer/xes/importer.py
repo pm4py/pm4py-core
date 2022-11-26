@@ -50,7 +50,12 @@ def apply(path, parameters=None, variant=DEFAULT_VARIANT):
     elif variant == 'chunk_regex':
         variant = Variants.CHUNK_REGEX
 
-    return variant.value.apply(path, parameters=parameters)
+    log = variant.value.apply(path, parameters=parameters)
+
+    return log
+
+    #from pm4py.objects.conversion.log import converter as log_converter
+    #return log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME, parameters=parameters)
 
 
 def deserialize(log_string, parameters=None, variant=DEFAULT_VARIANT):

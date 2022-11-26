@@ -39,7 +39,7 @@ def apply(df, parameters=None):
     log = EventLog()
     all_variants_log = {}
     for vd in variant_stats:
-        variant = vd['variant'].split(pm4_constants.DEFAULT_VARIANT_SEP)
+        variant = vd['variant']
         variant_count = vd[case_glue]
         trace = Trace()
         for activity in variant:

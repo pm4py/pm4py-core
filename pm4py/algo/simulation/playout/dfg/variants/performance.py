@@ -123,7 +123,7 @@ def apply(frequency_dfg: Dict[Tuple[str, str], int], start_activities: Dict[str,
             if next_act == artificial_end_activity or next_act is None:
                 break
             perf = performance_dfg[(curr_act, next_act)]
-            if type(perf) is dict:
+            if isinstance(perf, dict):
                 perf = perf["mean"]
             perf = 0 if perf == 0 else exponential(perf)
             curr_t += perf

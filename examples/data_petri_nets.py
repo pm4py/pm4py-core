@@ -15,7 +15,7 @@ def get_trans_by_name(net, name):
 
 def execute_script():
     log = pm4py.read_xes(os.path.join("..", "tests", "input_data", "roadtraffic100traces.xes"))
-    net, im, fm = pm4py.read_pnml(os.path.join("..", "tests", "input_data", "data_petri_net.pnml"))
+    net, im, fm = pm4py.read_pnml(os.path.join("..", "tests", "input_data", "data_petri_net.pnml"), auto_guess_final_marking=True)
     pm4py.view_petri_net(net, im, fm, format="svg")
     aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_DIJKSTRA_LESS_MEMORY, parameters={"ret_tuple_as_trans_desc": True})
     for index, trace in enumerate(log):

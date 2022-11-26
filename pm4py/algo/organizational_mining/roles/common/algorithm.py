@@ -3,6 +3,8 @@ import numpy as np
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util import constants
+from pm4py.objects.org.roles.obj import Role
+from typing import List
 
 
 class Parameters(Enum):
@@ -272,7 +274,7 @@ def get_initial_roles(res_act_couples, parameters=None):
     return roles
 
 
-def apply(res_act_couples, parameters=None):
+def apply(res_act_couples, parameters=None) -> List[Role]:
     """
     Apply the roles detection, introduced by
     Burattin, Andrea, Alessandro Sperduti, and Marco Veluscek. "Business models enhancement through discovery of roles." 2013 IEEE Symposium on Computational Intelligence and Data Mining (CIDM). IEEE, 2013.
@@ -298,6 +300,6 @@ def apply(res_act_couples, parameters=None):
 
     for r in roles:
         dictio = {x: int(y) for x, y in r[1].items()}
-        final_roles.append([r[0], dictio])
+        final_roles.append(Role(r[0], dictio))
 
     return final_roles

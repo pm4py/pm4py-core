@@ -13,6 +13,7 @@ def parse_element(bpmn_graph, counts, curr_el, parents, incoming_dict, outgoing_
     """
     Parses a BPMN element from the XML file
     """
+    layout = bpmn_graph.get_layout()
     tag = curr_el.tag.lower()
     if tag.endswith("subprocess"): # subprocess invocation
         name = curr_el.get("name").replace("\r", "").replace("\n", "") if "name" in curr_el.attrib else ""
@@ -210,17 +211,17 @@ def parse_element(bpmn_graph, counts, curr_el, parents, incoming_dict, outgoing_
                 if isinstance(outgoing_dict[flow_id][0], BPMN.BPMNNode) and isinstance(incoming_dict[flow_id][0], BPMN.BPMNNode):
                     flow = BPMN.SequenceFlow(outgoing_dict[flow_id][0], incoming_dict[flow_id][0], id=flow_id, name="", process=outgoing_dict[flow_id][1])
                     bpmn_graph.add_flow(flow)
-                    flow.del_waypoints()
+                    layout.get(flow).del_waypoints()
                     for waypoint in flow_info[flow_id]:
-                        flow.add_waypoint(waypoint)
+                        layout.get(flow).add_waypoint(waypoint)
         for node_id in nodes_bounds:
             if node_id in nodes_dict:
                 bounds = nodes_bounds[node_id]
                 node = nodes_dict[node_id]
-                node.set_x(bounds["x"])
-                node.set_y(bounds["y"])
-                node.set_width(bounds["width"])
-                node.set_height(bounds["height"])
+                layout.get(node).set_x(bounds["x"])
+                layout.get(node).set_y(bounds["y"])
+                layout.get(node).set_width(bounds["width"])
+                layout.get(node).set_height(bounds["height"])
     return bpmn_graph
 
 

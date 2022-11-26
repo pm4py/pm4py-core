@@ -7,10 +7,10 @@ from enum import Enum
 from pm4py.util import exec_utils
 from typing import Optional, Dict, Any, Union, Tuple, List, Set
 from pm4py.objects.log.obj import EventLog, Trace
-
+import pandas as pd
 
 from enum import Enum
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY, CASE_CONCEPT_NAME
 
 
 class Parameters(Enum):
@@ -50,7 +50,7 @@ class Outputs(Enum):
     IS_FIT = "is_fit"
 
 
-def apply_log(log: EventLog, model: Dict[str, Any], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Set[Any]]:
+def apply_log(log: Union[EventLog, pd.DataFrame], model: Dict[str, Any], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Set[Any]]:
     """
     Apply log-skeleton based conformance checking given an event log
     and a log-skeleton model
@@ -79,7 +79,11 @@ def apply_log(log: EventLog, model: Dict[str, Any], parameters: Optional[Dict[Un
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
 
-    traces = [tuple(y[activity_key] for y in x) for x in log]
+    if type(log) is pd.DataFrame:
+        case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+        traces = list(log.groupby(case_id_key)[activity_key].apply(tuple))
+    else:
+        traces = [tuple(y[activity_key] for y in x) for x in log]
     grouped_traces = {}
     gtk = []
     inv_idxs = {}

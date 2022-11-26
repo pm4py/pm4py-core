@@ -7,7 +7,7 @@ import os
 
 def execute_script():
     log = importer.apply(os.path.join("..", "tests", "input_data", "running-example.xes"))
-    tree = inductive_miner.apply_tree(log)
+    tree = inductive_miner.apply(log)
     gviz1 = pt_vis_factory.apply(tree, parameters={"format": "svg"})
     # pt_vis_factory.view(gviz1)
     gviz2 = pt_visualizer.apply(tree, parameters={pt_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: "svg"})
