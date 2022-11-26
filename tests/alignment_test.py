@@ -64,7 +64,7 @@ class AlignmentTest(unittest.TestCase):
 
     def test_tree_align_reviewing_classifier(self):
         import pm4py
-        log = pm4py.read_xes("compressed_input_data/04_reviewing.xes.gz")
+        log = xes_importer.apply("compressed_input_data/04_reviewing.xes.gz")
         for trace in log:
             for event in trace:
                 event["concept:name"] = event["concept:name"] + "+" + event["lifecycle:transition"]
@@ -73,7 +73,7 @@ class AlignmentTest(unittest.TestCase):
 
     def test_tree_align_reviewing_classifier_different_key(self):
         import pm4py
-        log = pm4py.read_xes("compressed_input_data/04_reviewing.xes.gz")
+        log = xes_importer.apply("compressed_input_data/04_reviewing.xes.gz")
         for trace in log:
             for event in trace:
                 event["@@classifier"] = event["concept:name"] + "+" + event["lifecycle:transition"]
