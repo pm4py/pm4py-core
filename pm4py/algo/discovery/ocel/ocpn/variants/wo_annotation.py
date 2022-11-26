@@ -6,6 +6,8 @@ from pm4py.util import exec_utils
 from pm4py.objects.ocel import constants as ocel_constants
 from collections import Counter
 from typing import Optional, Dict, Any
+from pm4py.objects.dfg.obj import DFG
+from pm4py.objects.conversion.process_tree import converter as tree_converter
 
 
 class Parameters(Enum):
@@ -66,7 +68,14 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
                 is_activity_double[act] = False
 
         double_arcs_on_activity[ot] = is_activity_double
-        petri_nets[ot] = inductive_miner.apply_dfg(dfg, start_activities, end_activities, activities)
+
+        obj = DFG()
+        obj._graph = Counter(dfg)
+        obj._start_activities = Counter(start_activities)
+        obj._end_activities = Counter(end_activities)
+
+        process_tree = inductive_miner.apply(obj, variant=inductive_miner.Variants.IMd)
+        petri_nets[ot] = tree_converter.apply(process_tree)
 
     ocdfg["petri_nets"] = petri_nets
     ocdfg["double_arcs_on_activity"] = double_arcs_on_activity

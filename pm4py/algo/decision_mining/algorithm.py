@@ -23,7 +23,7 @@ class Parameters(Enum):
     LABELS = "labels"
 
 
-def create_data_petri_nets_with_decisions(log: EventLog, net: PetriNet, initial_marking: Marking,
+def create_data_petri_nets_with_decisions(log: Union[EventLog, pd.DataFrame], net: PetriNet, initial_marking: Marking,
                                           final_marking: Marking) -> Tuple[PetriNet, Marking, Marking]:
     """
     Given a Petri net, create a data Petri net with the decisions given for each place by the decision
@@ -111,7 +111,7 @@ def get_decision_tree(log: Union[EventLog, pd.DataFrame], net: PetriNet, initial
 
     if parameters is None:
         parameters = {}
-    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     X, y, targets = apply(log, net, initial_marking, final_marking, decision_point=decision_point,
                           attributes=attributes, parameters=parameters)
     dt = tree.DecisionTreeClassifier()
@@ -161,7 +161,6 @@ def apply(log: Union[EventLog, pd.DataFrame], net: PetriNet, initial_marking: Ma
 
     labels = exec_utils.get_param_value(Parameters.LABELS, parameters, True)
 
-    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     if decision_point is None:
         decision_points_names = get_decision_points(net, labels=labels, parameters=parameters)

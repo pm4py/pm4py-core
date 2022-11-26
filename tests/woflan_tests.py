@@ -7,6 +7,7 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.petri_net.utils import petri_utils
 from pm4py.algo.analysis.woflan.graphs.minimal_coverability_graph import minimal_coverability_graph
 import unittest
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 
 class WoflanTest(unittest.TestCase):
@@ -19,8 +20,9 @@ class WoflanTest(unittest.TestCase):
     def test_running_example_inductive(self):
         path = os.path.join("input_data", "running-example.xes")
         log = xes_import.apply(path)
-        net, i_m, f_m = inductive_miner.apply(log)
-        self.assertTrue(woflan.apply(net, i_m, f_m, parameters={"print_diagnostics": False}))
+        process_tree = inductive_miner.apply(log)
+        net, im, fm = process_tree_converter.apply(process_tree)
+        self.assertTrue(woflan.apply(net, im, fm, parameters={"print_diagnostics": False}))
 
     def test_figure415(self):
         net = PetriNet("figure_4_15")

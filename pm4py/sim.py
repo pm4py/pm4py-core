@@ -1,3 +1,7 @@
+__doc__ = """
+The ``pm4py.sim`` module contains the simulation algorithms offered in ``pm4py``
+"""
+
 from collections import Counter
 from typing import Union, Tuple
 
@@ -12,25 +16,25 @@ def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, Proc
     i.e., gets a set of traces from the model.
     The function either takes a petri net, initial and final marking, or, a process tree as an input.
 
-    Parameters
-    ---------------
-    args
-        Model (Petri net, initial, final marking) or ProcessTree
-    kwargs
-        Parameters of the playout
+    :param args: model (Petri net with initial and final marking, or process tree)
+    :param kwargs: dictionary containing the parameters of the playout
+    :rtype: ``EventLog``
 
-    Returns
-    --------------
-    log
-        Simulated event log
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('model.pnml')
+        log = pm4py.play_out(net, im, fm)
+
     """
     if len(args) == 3:
         from pm4py.objects.petri_net.obj import PetriNet
         if type(args[0]) is PetriNet:
             from pm4py.algo.simulation.playout.petri_net import algorithm
             return algorithm.apply(args[0], args[1], final_marking=args[2], **kwargs)
-        elif type(args[0]) is dict or type(args[0]) is Counter:
-            from pm4py.objects.dfg.utils import dfg_playout
+        elif isinstance(args[0], dict):
+            from pm4py.algo.simulation.playout.dfg import algorithm as dfg_playout
             return dfg_playout.apply(args[0], args[1], args[2], **kwargs)
     elif len(args) == 1:
         from pm4py.objects.process_tree.obj import ProcessTree
@@ -44,15 +48,17 @@ def generate_process_tree(**kwargs) -> ProcessTree:
     """
     Generates a process tree
 
-    Parameters
-    -------------
-    kwargs
-        Parameters of the process tree generator algorithm
+    Reference paper:
+    PTandLogGenerator: A Generator for Artificial Event Data
 
-    Returns
-    -------------
-    model
-        process tree
+    :param kwargs: dictionary containing the parameters of the process tree generator algorithm
+    :rtype: ``ProcessTree``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        process_tree = pm4py.generate_process_tree()
     """
     from pm4py.algo.simulation.tree_generator import algorithm
     return algorithm.apply(**kwargs)

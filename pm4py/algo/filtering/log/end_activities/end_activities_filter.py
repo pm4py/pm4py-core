@@ -8,7 +8,6 @@ from pm4py.statistics.end_activities.log.get import get_end_activities
 from pm4py.util import exec_utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
-import deprecation
 
 from typing import Optional, Dict, Any, Union, Tuple, List
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
@@ -87,47 +86,3 @@ def filter_log_by_end_activities(end_activities, variants, vc, threshold, activi
                 for trace in variants[variant]:
                     filtered_log.append(trace)
     return filtered_log
-
-
-@deprecation.deprecated("2.2.11", "3.0.0", details="Removed")
-def apply_auto_filter(log, variants=None, parameters=None):
-    """
-    Apply an end attributes filter detecting automatically a percentage
-    
-    Parameters
-    ----------
-    log
-        Log
-    variants
-        (If specified) Dictionary with variant as the key and the list of traces as the value
-    parameters
-        Parameters of the algorithm, including:
-            Parameters.DECREASING_FACTOR -> Decreasing factor (stops the algorithm when the next activity by occurrence is below
-            this factor in comparison to previous)
-            Parameters.ACTIVITY_KEY -> Attribute key (must be specified if different from concept:name)
-    
-    Returns
-    ---------
-    filtered_log
-        Filtered log
-    """
-    if parameters is None:
-        parameters = {}
-
-    attribute_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
-    decreasing_factor = exec_utils.get_param_value(Parameters.DECREASING_FACTOR, parameters,
-                                                   filtering_constants.DECREASING_FACTOR)
-
-    if len(log) > 0:
-        parameters_variants = {PARAMETER_CONSTANT_ACTIVITY_KEY: attribute_key}
-        if variants is None:
-            variants = variants_filter.get_variants(log, parameters=parameters_variants)
-        vc = variants_filter.get_variants_sorted_by_count(variants)
-        end_activities = get_end_activities(log, parameters=parameters_variants)
-        ealist = end_activities_common.get_sorted_end_activities_list(end_activities)
-        eathreshold = end_activities_common.get_end_activities_threshold(ealist, decreasing_factor)
-        filtered_log = filter_log_by_end_activities(end_activities, variants, vc, eathreshold, attribute_key)
-
-        return filtered_log
-
-    return log
