@@ -36,7 +36,7 @@ class Variants(Enum):
 def apply(obj: Union[EventLog, pd.DataFrame, DFG, UVCL], parameters: Optional[Dict[Any, Any]] = None, variant=Variants.IM) -> ProcessTree:
     if parameters is None:
         parameters = {}
-    if type(obj) not in [EventLog, pd.DataFrame, DFG]:
+    if type(obj) not in [EventLog, pd.DataFrame, DFG, UVCL]:
         raise TypeError('Inductive miner called with an incorrect data type as an input (should be a dataframe or DFG)')
     ack = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
     tk = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)

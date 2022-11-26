@@ -7,6 +7,7 @@ from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.conversion.log import converter as log_converter
+from pm4py.objects.log.util import dataframe_utils
 
 import os
 
@@ -21,7 +22,7 @@ The ``pm4py.read`` module contains all funcationality related to reading files/o
 """
 
 
-def read_xes(file_path: str, variant: str = "chunk_regex", **kwargs) -> DataFrame:
+def read_xes(file_path: str, variant: str = "lxml", **kwargs) -> DataFrame:
     """
     Reads an event log stored in XES format (see `xes-standard <https://xes-standard.org/>`_)
     Returns a table (``pandas.DataFrame``) view of the event log.
@@ -52,6 +53,7 @@ def read_xes(file_path: str, variant: str = "chunk_regex", **kwargs) -> DataFram
         v = xes_importer.Variants.CHUNK_REGEX
     log = xes_importer.apply(file_path, variant=v, parameters=kwargs)
     log = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
+    log = dataframe_utils.convert_timestamp_columns_in_df(log)
     return log
 
 
