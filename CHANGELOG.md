@@ -1,5 +1,23 @@
 # Changelog of pm4py
 
+## pm4py 2.3.1 (2022.11.XX)
+
+### Added
+* cde09b3bdc122e0f38d62c5cecba26a6d1d9e4b6
+  * new variants of alignments - generating all optimal alignments
+
+### Changed
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+---
+
 ## pm4py 2.3.0 (2022.11.25)
 
 ### Added
