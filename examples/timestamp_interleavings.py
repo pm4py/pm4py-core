@@ -7,9 +7,9 @@ import os
 
 def execute_script():
     receipt_even = pd.read_csv(os.path.join("..", "tests", "input_data", "interleavings", "receipt_even.csv"))
-    receipt_even = pm4py.format_dataframe(receipt_even)
+    receipt_even["time:timestamp"] = pd.to_datetime(receipt_even["time:timestamp"], utc=True)
     receipt_odd = pd.read_csv(os.path.join("..", "tests", "input_data", "interleavings", "receipt_odd.csv"))
-    receipt_odd = pm4py.format_dataframe(receipt_odd)
+    receipt_odd["time:timestamp"] = pd.to_datetime(receipt_odd["time:timestamp"], utc=True)
     case_relations = pd.read_csv(os.path.join("..", "tests", "input_data", "interleavings", "case_relations.csv"))
     interleavings_dataframe = interleavings_miner.apply(receipt_even, receipt_odd, case_relations)
     print(interleavings_dataframe)

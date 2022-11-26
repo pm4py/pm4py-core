@@ -14,11 +14,13 @@ from pm4py.util import constants
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.conversion.log import converter as log_converter
 import pandas as pd
 
 
 class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     TOKEN_REPLAY_VARIANT = "token_replay_variant"
     CLEANING_TOKEN_FLOOD = "cleaning_token_flood"
     SHOW_PROGRESS_BAR = "show_progress_bar"
@@ -51,6 +53,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], net: PetriNet, markin
     debug_level = parameters["debug_level"] if "debug_level" in parameters else 0
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, log_lib.util.xes.DEFAULT_NAME_KEY)
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
 
     # default value for precision, when no activated transitions (not even by looking at the initial marking) are found
     precision = 1.0
@@ -61,7 +64,10 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], net: PetriNet, markin
     if not check_soundness.check_easy_soundness_net_in_fin_marking(net, marking, final_marking):
         raise Exception("trying to apply Align-ETConformance on a Petri net that is not a easy sound net!!")
 
-    prefixes, prefix_count = precision_utils.get_log_prefixes(log, activity_key=activity_key)
+    if type(log) is not pd.DataFrame:
+        log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
+    prefixes, prefix_count = precision_utils.get_log_prefixes(log, activity_key=activity_key, case_id_key=case_id_key)
     prefixes_keys = list(prefixes.keys())
     fake_log = precision_utils.form_fake_log(prefixes_keys, activity_key=activity_key)
 
@@ -192,7 +198,7 @@ def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameter
         parameters = {}
 
     show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
-    multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, False)
+    multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, constants.ENABLE_MULTIPROCESSING_DEFAULT)
 
     progress = None
     if pkgutil.find_loader("tqdm") and show_progress_bar and len(fake_log) > 1:

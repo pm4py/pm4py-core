@@ -4,9 +4,9 @@ from copy import copy
 from enum import Enum
 
 import matplotlib
-import numpy as np
 
 from pm4py.util import exec_utils, vis_utils
+from pm4py.objects.org.sna.obj import SNA
 
 
 class Parameters(Enum):
@@ -28,14 +28,14 @@ def get_temp_file_name(format):
     return filename.name
 
 
-def apply(metric_values, parameters=None):
+def apply(sna: SNA, parameters=None):
     """
     Perform SNA visualization starting from the Matrix Container object
     and the Resource-Resource matrix
 
     Parameters
     -------------
-    metric_values
+    sna
         Value of the metrics
     parameters
         Possible parameters of the algorithm, including:
@@ -55,33 +55,25 @@ def apply(metric_values, parameters=None):
     weight_threshold = exec_utils.get_param_value(Parameters.WEIGHT_THRESHOLD, parameters, 0)
     format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
 
-    directed = metric_values[2]
+    directed = sna.is_directed
 
     temp_file_name = get_temp_file_name(format)
-
-    rows, cols = np.where(metric_values[0] > weight_threshold)
-    edges = zip(rows.tolist(), cols.tolist())
 
     if directed:
         graph = nx.DiGraph()
     else:
         graph = nx.Graph()
 
-    labels = {}
-    nodes = []
-    for index, item in enumerate(metric_values[1]):
-        labels[index] = item
-        nodes.append(index)
+    connections = {x for x, y in sna.connections.items() if y >= weight_threshold}
 
-    graph.add_nodes_from(nodes)
-    graph.add_edges_from(edges)
+    graph.add_edges_from(connections)
 
     current_backend = copy(matplotlib.get_backend())
     matplotlib.use('Agg')
     from matplotlib import pyplot
 
     pyplot.clf()
-    nx.draw(graph, with_labels=True, labels=labels, node_size=500, pos=nx.circular_layout(graph))
+    nx.draw(graph, node_size=500, with_labels=True, pos=nx.circular_layout(graph))
     pyplot.savefig(temp_file_name, bbox_inches="tight")
     pyplot.clf()
 

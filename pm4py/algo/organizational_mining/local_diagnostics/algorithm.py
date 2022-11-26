@@ -6,6 +6,7 @@ import pandas as pd
 from pm4py.algo.organizational_mining import util
 from pm4py.objects.log.obj import EventLog
 from pm4py.util import constants
+from pm4py.objects.org.roles.obj import Role
 
 
 class Parameters(Enum):
@@ -58,7 +59,7 @@ def apply_from_clustering_or_roles(log_obj: Union[pd.DataFrame, EventLog], ja_cl
     resources = util.get_resources_from_log(log_obj, parameters=parameters)
 
     if type(ja_clustering_or_roles) is list:
-        ja_clustering_or_roles = {str(i): ja_clustering_or_roles[i][1] for i in range(len(ja_clustering_or_roles))}
+        ja_clustering_or_roles = {str(i): ja_clustering_or_roles[i].originator_importance for i in range(len(ja_clustering_or_roles))}
 
     groups = {}
     for cluster in ja_clustering_or_roles:

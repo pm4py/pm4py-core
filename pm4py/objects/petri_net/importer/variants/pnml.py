@@ -2,53 +2,21 @@ import os
 import tempfile
 import time
 
-import deprecation
 from lxml import etree, objectify
 
 from pm4py.meta import VERSION
 from pm4py.objects.petri_net.utils import final_marking
-from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.petri_net.obj import PetriNet, Marking, ResetNet, InhibitorNet, ResetInhibitorNet
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.objects.petri_net import properties as petri_properties
-from pm4py.objects.random_variables.random_variable import RandomVariable
 from pm4py.util import constants, exec_utils
 from enum import Enum
+import warnings
 
 
 class Parameters(Enum):
     ENCODING = "encoding"
-
-
-@deprecation.deprecated(deprecated_in="2.1.1", removed_in="3.0",
-                        current_version=VERSION,
-                        details="Use the entrypoint import_from_string method")
-def import_petri_from_string(petri_string, parameters=None):
-    """
-    Import a Petri net from a string
-
-    Parameters
-    ----------
-    petri_string
-        Petri net expressed as PNML string
-    parameters
-        Other parameters of the algorithm
-    """
-    if parameters is None:
-        parameters = {}
-
-    fp = tempfile.NamedTemporaryFile(suffix='.pnml')
-    fp.close()
-
-    if type(petri_string) is bytes:
-        with open(fp.name, 'wb') as f:
-            f.write(petri_string)
-    else:
-        with open(fp.name, 'w') as f:
-            f.write(petri_string)
-
-    net, initial_marking, this_final_marking = import_net(fp.name, parameters=parameters)
-    os.remove(fp.name)
-    return net, initial_marking, this_final_marking
+    AUTO_GUESS_FINAL_MARKING = "auto_guess_final_marking"
 
 
 def import_net(input_file_path, parameters=None):
@@ -126,14 +94,17 @@ def import_net_from_xml_object(root, parameters=None):
     root
         Root object of the XML
     parameters
-        Other parameters of the algorithm
+        Other parameters of the algorithm:
+        - AUTO_GUESS_FINAL_MARKING: automatic guessing the final marking from the .pnml file
     """
     if parameters is None:
         parameters = {}
 
+    auto_guess_final_marking = exec_utils.get_param_value(Parameters.AUTO_GUESS_FINAL_MARKING, parameters, True)
+
     net = PetriNet('imported_' + str(time.time()))
     marking = Marking()
-    fmarking = Marking()
+    fmarking = None
 
     nett = None
     page = None
@@ -253,6 +224,8 @@ def import_net_from_xml_object(root, parameters=None):
                                 elif key == "weight":
                                     weight = float(value)
 
+                            from pm4py.objects.random_variables.random_variable import RandomVariable
+
                             random_variable = RandomVariable()
                             random_variable.read_from_string(distribution_type, distribution_parameters)
                             random_variable.set_priority(priority)
@@ -307,6 +280,20 @@ def import_net_from_xml_object(root, parameters=None):
                                 arc_type = text_element.text
 
                 if arc_source in places_dict and arc_target in trans_dict:
+                    if arc_type == petri_properties.INHIBITOR_ARC and not isinstance(net, InhibitorNet):
+                        if isinstance(net, ResetNet):
+                            net = ResetInhibitorNet(name=net.name, places=net.places, transitions=net.transitions, arcs=net.arcs, properties=net.properties)
+                        else:
+                            net = InhibitorNet(name=net.name, places=net.places, transitions=net.transitions, arcs=net.arcs, properties=net.properties)
+                    if arc_type == petri_properties.RESET_ARC and not isinstance(net, ResetNet):
+                        if isinstance(net, InhibitorNet):
+                            net = ResetInhibitorNet(name=net.name, places=net.places,
+                                                    transitions=net.transitions, arcs=net.arcs,
+                                                    properties=net.properties)
+                        else:
+                            net = ResetNet(name=net.name, places=net.places,
+                                           transitions=net.transitions, arcs=net.arcs,
+                                           properties=net.properties)
                     a = add_arc_from_to(places_dict[arc_source], trans_dict[arc_target], net, weight=arc_weight, type=arc_type)
                     for prop in arc_properties:
                         a.properties[prop] = arc_properties[prop]
@@ -316,6 +303,7 @@ def import_net_from_xml_object(root, parameters=None):
                         a.properties[prop] = arc_properties[prop]
 
     if finalmarkings is not None:
+        fmarking = Marking()
         for child in finalmarkings:
             for child2 in child:
                 place_id = child2.get("idref")
@@ -335,8 +323,11 @@ def import_net_from_xml_object(root, parameters=None):
                     variable_name = child2.text
             net.properties[petri_properties.VARIABLES].append({"type": variable_type, "name": variable_name})
 
-    # generate the final marking in the case has not been found
-    if len(fmarking) == 0:
-        fmarking = final_marking.discover_final_marking(net)
+    if fmarking is None:
+        if auto_guess_final_marking:
+            # generate the final marking in the case has not been found
+            fmarking = final_marking.discover_final_marking(net)
+        else:
+            warnings.warn("the Petri net has been imported without a specified final marking. Please create it using the method pm4py.generate_marking")
 
     return net, marking, fmarking

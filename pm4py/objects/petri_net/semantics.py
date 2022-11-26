@@ -1,5 +1,4 @@
 import copy
-import deprecation
 from pm4py.objects.petri_net.sem_interface import Semantics
 
 
@@ -96,14 +95,6 @@ def execute(t, pn, m):
         m_out[a.target] += a.weight
 
     return m_out
-
-
-@deprecation.deprecated("2.2.13", "3.0.0", details="please use the execute method.")
-def try_to_execute(t, pn, m):
-    if not is_enabled(t, pn, m):
-        return None
-    else:
-        return execute(t, pn, m)
 
 
 def weak_execute(t, m):

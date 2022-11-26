@@ -18,8 +18,7 @@ class Parameters(Enum):
     EDGE_COLUMN = "edge_column"
     INCLUDE_PERFORMANCE = "include_performance"
     BUSINESS_HOURS = "business_hours"
-    WORKTIMING  = "worktiming"
-    WEEKENDS = "weekends"
+    BUSINESS_HOUR_SLOTS = "business_hour_slots"
     WORKCALENDAR = "workcalendar"
     TIMESTAMP_DIFF_COLUMN = "timestamp_diff_column"
     EDGE_REFERENCE = "edge_reference"
@@ -46,8 +45,15 @@ Dict[Tuple[str, str], Dict[str, Any]]:
             - Parameters.TIMESTAMP_DIFF_COLUMN => timestamp diff column
             - Parameters.INCLUDE_PERFORMANCE => considers the performance of the edge
             - Parameters.BUSINESS_HOURS => boolean value that enables the business hours
-            - Parameters.WORKTIMING => defines the worktiming of the organization (e.g. [7, 17]) if business hours are enabled
-            - Parameters.WEEKENDS => defines the weekends of the organization (e.g. [6, 7]) if business hours are enabled
+            - Parameters.BUSINESS_HOURS_SLOTS =>
+            work schedule of the company, provided as a list of tuples where each tuple represents one time slot of business
+            hours. One slot i.e. one tuple consists of one start and one end time given in seconds since week start, e.g.
+            [
+                (7 * 60 * 60, 17 * 60 * 60),
+                ((24 + 7) * 60 * 60, (24 + 12) * 60 * 60),
+                ((24 + 13) * 60 * 60, (24 + 17) * 60 * 60),
+            ]
+            meaning that business hours are Mondays 07:00 - 17:00 and Tuesdays 07:00 - 12:00 and 13:00 - 17:00
 
     Returns
     -----------------
@@ -67,17 +73,14 @@ Dict[Tuple[str, str], Dict[str, Any]]:
 
     include_performance = exec_utils.get_param_value(Parameters.INCLUDE_PERFORMANCE, parameters, False)
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
-    worktiming = exec_utils.get_param_value(Parameters.WORKTIMING, parameters, [7, 17])
-    weekends = exec_utils.get_param_value(Parameters.WEEKENDS, parameters, [6, 7])
-    workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
+    business_hours_slots = exec_utils.get_param_value(Parameters.BUSINESS_HOUR_SLOTS, parameters, constants.DEFAULT_BUSINESS_HOUR_SLOTS)
 
     edges = {}
 
     if business_hours:
         merged_df[timestamp_diff_column] = merged_df.apply(
             lambda x: soj_time_business_hours_diff(x[timestamp_column + "_out"], x[timestamp_column + "_in"],
-                                                   worktiming,
-                                                   weekends, workcalendar), axis=1)
+                                                   business_hours_slots), axis=1)
 
     else:
         merged_df[timestamp_diff_column] = (
@@ -126,8 +129,15 @@ def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) 
         - Parameters.TIMESTAMP_DIFF_COLUMN => timestamp diff column
         - Parameters.INCLUDE_PERFORMANCE => considers the performance of the edge
         - Parameters.BUSINESS_HOURS => boolean value that enables the business hours
-        - Parameters.WORKTIMING => defines the worktiming of the organization (e.g. [7, 17]) if business hours are enabled
-        - Parameters.WEEKENDS => defines the weekends of the organization (e.g. [6, 7]) if business hours are enabled
+        - Parameters.BUSINESS_HOURS_SLOTS =>
+        work schedule of the company, provided as a list of tuples where each tuple represents one time slot of business
+        hours. One slot i.e. one tuple consists of one start and one end time given in seconds since week start, e.g.
+        [
+            (7 * 60 * 60, 17 * 60 * 60),
+            ((24 + 7) * 60 * 60, (24 + 12) * 60 * 60),
+            ((24 + 13) * 60 * 60, (24 + 17) * 60 * 60),
+        ]
+        meaning that business hours are Mondays 07:00 - 17:00 and Tuesdays 07:00 - 12:00 and 13:00 - 17:00
 
     Returns
     -----------------
