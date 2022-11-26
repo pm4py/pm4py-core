@@ -147,7 +147,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         pm4py.get_end_activities(df, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
         pm4py.get_event_attributes(df)
         pm4py.get_event_attribute_values(df, "Resource", case_id_key="CaseID")
-        pm4py.get_variants_as_tuples(df, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
+        pm4py.get_variants_as_tuples(df, case_id_key="case:concept:name", activity_key="Activity", timestamp_key="Timestamp")
 
     def test_playout(self):
         net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
@@ -165,7 +165,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_new_statistics_log(self):
         log = pm4py.read_xes("input_data/running-example.xes")
-        pm4py.get_trace_attribute_values(log, "creator")
+        pm4py.get_trace_attribute_values(log, "case:creator")
         pm4py.discover_eventually_follows_graph(log)
         pm4py.get_case_arrival_average(log)
 
@@ -659,7 +659,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_trace_attr_values_log(self):
         log = pm4py.read_xes("input_data/running-example.xes")
-        pm4py.filter_trace_attribute_values(log, "creator", ["Fluxicon"])
+        pm4py.filter_trace_attribute_values(log, "case:creator", ["Fluxicon"])
 
     def test_filter_variant_log(self):
         log = pm4py.read_xes("input_data/running-example.xes")
