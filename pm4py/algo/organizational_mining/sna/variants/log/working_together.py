@@ -1,5 +1,3 @@
-import numpy
-
 from pm4py.statistics.variants.log import get as variants_filter
 from pm4py.util import xes_constants as xes
 from pm4py.util import exec_utils
@@ -7,9 +5,10 @@ from pm4py.util import variants_util
 from enum import Enum
 from pm4py.util import constants
 
-from typing import Optional, Dict, Any, Union, Tuple, List
-from pm4py.objects.log.obj import EventLog, EventStream
-import pandas as pd
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.org.sna.obj import SNA
+from collections import Counter
 
 
 class Parameters(Enum):
@@ -18,7 +17,7 @@ class Parameters(Enum):
     METRIC_NORMALIZATION = "metric_normalization"
 
 
-def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> List[Any]:
+def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> SNA:
     """
     Calculates the Working Together metric
 
@@ -49,7 +48,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
 
     flat_list = sorted(list(set([item for sublist in resources for item in sublist])))
 
-    metric_matrix = numpy.zeros((len(flat_list), len(flat_list)))
+    connections = Counter()
 
     for idx, rv in enumerate(resources):
         rvj = variants_resources[idx]
@@ -60,7 +59,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
             res_i = flat_list.index(ord_res_list[i])
             for j in range(i + 1, len(ord_res_list)):
                 res_j = flat_list.index(ord_res_list[j])
-                metric_matrix[res_i, res_j] += float(variants_occ[rvj]) / float(len(log))
-                metric_matrix[res_j, res_i] += float(variants_occ[rvj]) / float(len(log))
+                connections[(flat_list[res_i], flat_list[res_j])] += float(variants_occ[rvj]) / float(len(log))
+                connections[(flat_list[res_j], flat_list[res_i])] += float(variants_occ[rvj]) / float(len(log))
 
-    return [metric_matrix, flat_list, False]
+    return SNA(dict(connections), False)

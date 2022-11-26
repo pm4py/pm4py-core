@@ -49,8 +49,9 @@ def evaluate(aligned_traces: typing.ListAlignments, parameters: Optional[Dict[Un
             if tr["fitness"] == 1.0:
                 no_fit_traces = no_fit_traces + 1
             sum_fitness += tr["fitness"]
-            sum_bwc += tr["bwc"]
-            sum_cost += tr["cost"]
+            if "bwc" in tr and "cost" in tr:
+                sum_bwc += tr["bwc"]
+                sum_cost += tr["cost"]
 
     perc_fit_traces = 0.0
     average_fitness = 0.0
@@ -59,7 +60,8 @@ def evaluate(aligned_traces: typing.ListAlignments, parameters: Optional[Dict[Un
     if no_traces > 0:
         perc_fit_traces = (100.0 * float(no_fit_traces)) / (float(no_traces))
         average_fitness = float(sum_fitness) / float(no_traces)
-        log_fitness = 1.0 - float(sum_cost) / float(sum_bwc)
+        log_fitness = float(sum_cost) / float(sum_bwc) if sum_bwc > 0 else 0
+        log_fitness = 1.0 - log_fitness
 
     return {"percFitTraces": perc_fit_traces, "averageFitness": average_fitness,
             "percentage_of_fitting_traces": perc_fit_traces,
@@ -93,7 +95,7 @@ def apply(log: EventLog, petri_net: PetriNet, initial_marking: Marking, final_ma
     if parameters is None:
         parameters = {}
 
-    multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, False)
+    multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, constants.ENABLE_MULTIPROCESSING_DEFAULT)
 
     if align_variant == decomp_alignments.Variants.RECOMPOS_MAXIMAL.value:
         alignment_result = decomp_alignments.apply(log, petri_net, initial_marking, final_marking,

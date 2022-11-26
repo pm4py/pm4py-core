@@ -8,9 +8,8 @@ from pm4py.objects.log.obj import Trace, Event
 from pm4py.objects.petri_net import properties
 from pm4py.objects.petri_net import semantics, properties
 from pm4py.objects.petri_net.utils.networkx_graph import create_networkx_directed_graph
-from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.petri_net.obj import PetriNet, Marking, ResetNet, InhibitorNet
 from pm4py.util import xes_constants as xes_util
-import deprecation
 
 
 def is_sub_marking(sub_marking: Marking, marking: Marking) -> bool:
@@ -154,9 +153,20 @@ def add_arc_from_to(fr, to, net: PetriNet, weight=1, type=None) -> PetriNet.Arc:
     -------
     None
     """
-    a = PetriNet.Arc(fr, to, weight)
-    if type is not None:
-        a.properties[properties.ARCTYPE] = type
+    if type == properties.INHIBITOR_ARC:
+        if isinstance(net, InhibitorNet):
+            a = InhibitorNet.InhibitorArc(fr, to, weight)
+            a.properties[properties.ARCTYPE] = type
+        else:
+            raise Exception("trying to add an inhibitor arc on a traditional Petri net object.")
+    elif type == properties.RESET_ARC:
+        if isinstance(net, ResetNet):
+            a = ResetNet.ResetArc(fr, to, weight)
+            a.properties[properties.ARCTYPE] = type
+        else:
+            raise Exception("trying to add a reset arc on a traditional Petri net object.")
+    else:
+        a = PetriNet.Arc(fr, to, weight)
     net.arcs.add(a)
     fr.out_arcs.add(a)
     to.in_arcs.add(a)
@@ -307,62 +317,6 @@ def get_transition_by_name(net: PetriNet, transition_name) -> Optional[PetriNet.
     return None
 
 
-@deprecation.deprecated('2.2.7', '3.0.0')
-def get_cycles_petri_net_places(net):
-    """
-    Get the cycles of a Petri net (returning only list of places belonging to the cycle)
-
-    Parameters
-    -------------
-    net
-        Petri net
-
-    Returns
-    -------------
-    cycles
-        Cycles (places) of the Petri net
-    """
-    import networkx as nx
-
-    graph, inv_dictionary = create_networkx_directed_graph(net)
-    cycles = nx.simple_cycles(graph)
-    cycles_places = []
-    for cycle in cycles:
-        cycles_places.append([])
-        for el in cycle:
-            if el in inv_dictionary and type(inv_dictionary[el]) is PetriNet.Place:
-                cycles_places[-1].append(inv_dictionary[el])
-    return cycles_places
-
-
-@deprecation.deprecated('2.2.7', '3.0.0')
-def get_cycles_petri_net_transitions(net):
-    """
-    Get the cycles of a Petri net (returning only list of transitions belonging to the cycle)
-
-    Parameters
-    -------------
-    net
-        Petri net
-
-    Returns
-    -------------
-    cycles
-        Cycles (transitions) of the Petri net
-    """
-    import networkx as nx
-
-    graph, inv_dictionary = create_networkx_directed_graph(net)
-    cycles = nx.simple_cycles(graph)
-    cycles_trans = []
-    for cycle in cycles:
-        cycles_trans.append([])
-        for el in cycle:
-            if el in inv_dictionary and type(inv_dictionary[el]) is PetriNet.Transition:
-                cycles_trans[-1].append(inv_dictionary[el])
-    return cycles_trans
-
-
 def decorate_places_preset_trans(net: PetriNet):
     """
     Decorate places with information useful for the replay
@@ -404,52 +358,6 @@ def decorate_transitions_prepostset(net: PetriNet):
                 add_marking[arc.target] = arc.weight
         trans.sub_marking = sub_marking
         trans.add_marking = add_marking
-
-
-@deprecation.deprecated('2.2.7', '3.0.0')
-def get_strongly_connected_subnets(net):
-    """
-    Get the strongly connected components subnets in the Petri net
-
-    Parameters
-    -------------
-    net
-        Petri net
-
-    Returns
-    -------------
-    strongly_connected_transitions
-        List of strongly connected transitions of the Petri net
-    """
-    import networkx as nx
-
-    graph, inv_dictionary = create_networkx_directed_graph(net)
-    sccg = list(nx.strongly_connected_components(graph))
-    strongly_connected_subnets = []
-    for sg in list(sccg):
-        if len(sg) > 1:
-            subnet = PetriNet()
-            imarking = Marking()
-            fmarking = Marking()
-            corr = {}
-            for node in sg:
-                if node in inv_dictionary:
-                    if type(inv_dictionary[node]) is PetriNet.Transition:
-                        prev_trans = inv_dictionary[node]
-                        new_trans = PetriNet.Transition(prev_trans.name, prev_trans.label)
-                        corr[node] = new_trans
-                        subnet.transitions.add(new_trans)
-                    if type(inv_dictionary[node]) is PetriNet.Place:
-                        prev_place = inv_dictionary[node]
-                        new_place = PetriNet.Place(prev_place.name)
-                        corr[node] = new_place
-                        subnet.places.add(new_place)
-            for edge in graph.edges:
-                if edge[0] in sg and edge[1] in sg:
-                    add_arc_from_to(corr[edge[0]], corr[edge[1]], subnet)
-            strongly_connected_subnets.append([subnet, imarking, fmarking])
-
-    return strongly_connected_subnets
 
 
 def get_places_shortest_path(net, place_to_populate, current_place, places_shortest_path, actual_list, rec_depth,

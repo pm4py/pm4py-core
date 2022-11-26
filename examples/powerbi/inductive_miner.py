@@ -17,7 +17,9 @@ dataset = dataset.sort_values("time:timestamp")
 
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.visualization.petri_net import visualizer
+from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
-net, im, fm = inductive_miner.apply(dataset)
+process_tree = inductive_miner.apply(dataset)
+net, im, fm = process_tree_converter.apply(process_tree)
 gviz = visualizer.apply(net, im, fm)
 visualizer.matplotlib_view(gviz)

@@ -2,9 +2,8 @@ import shutil
 import tempfile
 from enum import Enum
 
-import numpy as np
-
 from pm4py.util import exec_utils, vis_utils
+from pm4py.objects.org.sna.obj import SNA
 
 
 class Parameters(Enum):
@@ -25,14 +24,14 @@ def get_temp_file_name(format):
     return filename.name
 
 
-def apply(metric_values, parameters=None):
+def apply(sna: SNA, parameters=None):
     """
     Perform SNA visualization starting from the Matrix Container object
     and the Resource-Resource matrix
 
     Parameters
     -------------
-    metric_values
+    sna
         Value of the metrics
     parameters
         Possible parameters of the algorithm, including:
@@ -49,37 +48,27 @@ def apply(metric_values, parameters=None):
         parameters = {}
 
     weight_threshold = exec_utils.get_param_value(Parameters.WEIGHT_THRESHOLD, parameters, 0)
-    directed = metric_values[2]
+    directed = sna.is_directed
 
     temp_file_name = get_temp_file_name("html")
-
-    rows, cols = np.where(metric_values[0] > weight_threshold)
-    weights = list()
-
-    for x in range(len(rows)):
-        weights.append(metric_values[0][rows[x]][cols[x]])
 
     got_net = Network(height="750px", width="100%", bgcolor="black", font_color="#3de975", directed=directed)
     # set the physics layout of the network
     got_net.barnes_hut()
 
-    edge_data = zip(rows, cols, weights)
+    for c, w in sna.connections.items():
+        if w >= weight_threshold:
+            src = c[0]  # convert ids to labels
+            dst = c[1]
 
-    for e in edge_data:
-        src = metric_values[1][e[0]]  # convert ids to labels
-        dst = metric_values[1][e[1]]
-        w = e[2]
-
-        # I have to add some options here, there is no parameter
-        highlight = {'border': "#3de975", 'background': "#41e9df"}
-        # color = {'border': "#000000", 'background': "#123456"}
-        got_net.add_node(src, src, title=src, labelHighlightBold=True, color={'highlight': highlight})
-        got_net.add_node(dst, dst, title=dst, labelHighlightBold=True, color={'highlight': highlight})
-        got_net.add_edge(src, dst, value=w, title=w)
+            # I have to add some options here, there is no parameter
+            highlight = {'border': "#3de975", 'background': "#41e9df"}
+            # color = {'border': "#000000", 'background': "#123456"}
+            got_net.add_node(src, src, title=src, labelHighlightBold=True, color={'highlight': highlight})
+            got_net.add_node(dst, dst, title=dst, labelHighlightBold=True, color={'highlight': highlight})
+            got_net.add_edge(src, dst, value=w, title=w)
 
     neighbor_map = got_net.get_adj_list()
-
-    dict = got_net.get_edges()
 
     # add neighbor data to node hover data
     for node in got_net.nodes:

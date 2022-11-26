@@ -68,14 +68,14 @@ def apply(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marki
 
     if variant == TOKEN_BASED:
         # execute the token-based replay variant
-        return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG),
+        return exec_utils.get_variant(variant).apply(log,
                                                      petri_net,
                                                      initial_marking, final_marking, parameters=parameters)
     else:
         # execute the alignments based variant, with the specification of the alignments variant
         align_variant = exec_utils.get_param_value(Parameters.ALIGN_VARIANT, parameters,
                                                    alignments.petri_net.algorithm.DEFAULT_VARIANT)
-        return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG),
+        return exec_utils.get_variant(variant).apply(log,
                                                      petri_net,
                                                      initial_marking, final_marking, align_variant=align_variant,
                                                      parameters=parameters)
