@@ -3,7 +3,7 @@ from typing import Counter, Generic, TypeVar
 
 import deprecation
 
-from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.petri_net.sem_interface import Semantics
 
 N = TypeVar("N", bound=PetriNet)
