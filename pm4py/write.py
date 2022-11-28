@@ -174,6 +174,7 @@ def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     elif file_path.lower().endswith("xmlocel"):
         from pm4py.objects.ocel.exporter.xmlocel import exporter as xmlocel_exporter
         return xmlocel_exporter.apply(ocel, file_path)
+    raise Exception("unsupported file format")
 
 
 def write_ocel_csv(ocel: OCEL, file_path: str, objects_path: str):
