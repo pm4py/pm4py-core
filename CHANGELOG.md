@@ -9,6 +9,8 @@
 ### Deprecated
 
 ### Fixed
+* 523589e13dfb6f5a8070478c245fc2a8058751ec
+  * raise exception when unsupported OCEL file format during read/write
 
 ### Removed
 
