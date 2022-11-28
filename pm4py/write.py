@@ -177,6 +177,7 @@ def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     elif file_path.lower().endswith("sqlite"):
         from pm4py.objects.ocel.exporter.sqlite import exporter as sqlite_exporter
         return sqlite_exporter.apply(ocel, file_path)
+    raise Exception("unsupported file format")
 
 
 def write_ocel_csv(ocel: OCEL, file_path: str, objects_path: str):
