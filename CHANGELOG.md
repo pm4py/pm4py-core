@@ -5,6 +5,8 @@
 ### Added
 
 ### Changed
+* f887397e9abf2e9f85b48b941aa2bd4a892600a0
+  * parametrization scale factors current BPMN layouter
 
 ### Deprecated
 
