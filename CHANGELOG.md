@@ -7,6 +7,8 @@
 ### Changed
 * f887397e9abf2e9f85b48b941aa2bd4a892600a0
   * parametrization scale factors current BPMN layouter
+* 35171256a7378f55713cec3b835b3418ecf4d356
+  * bug fix heuristics miner ++ on Pandas dataframes - Parameters are not passed
 
 ### Deprecated
 
