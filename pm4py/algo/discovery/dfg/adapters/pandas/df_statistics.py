@@ -159,7 +159,8 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
         return [dfg_frequency, dfg_performance]
 
 
-def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="time:timestamp",
+def get_partial_order_dataframe(df, concurrent_activities: Optional[Dict[Tuple[str, str], int]] = None,
+                                start_timestamp_key=None, timestamp_key="time:timestamp",
                                 case_id_glue="case:concept:name", activity_key="concept:name",
                                 sort_caseid_required=True,
                                 sort_timestamp_along_case_id=True, reduce_dataframe=True, keep_first_following=True,
@@ -172,6 +173,8 @@ def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="tim
     --------------
     df
         Dataframe
+    concurrent_activities:
+        concurrent activities
     start_timestamp_key
         Start timestamp key (if not provided, defaulted to the timestamp_key)
     timestamp_key
@@ -239,6 +242,62 @@ def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="tim
 
     if keep_first_following:
         df = df.groupby(constants.DEFAULT_INDEX_KEY).first().reset_index()
+    else:
+        # The first activity may be parallel to other activities in this group  
+        df["is_wanted_act"] = None
+
+        df["mark"] = 0
+
+        index_list_in_group_id = []
+
+        concurrent_activities_list = [i for i in concurrent_activities.keys()]
+
+        reverse_concurrent_activities_list = [(i[1], i[0]) for i in concurrent_activities.keys()]
+
+        all_concurrent_list = concurrent_activities_list + reverse_concurrent_activities_list
+
+        grouped = df.groupby(constants.DEFAULT_INDEX_KEY)
+
+        id_list = df[constants.DEFAULT_INDEX_KEY].unique().tolist()
+
+        first_idx_list = grouped.head(1).index.tolist()
+
+        df.loc[first_idx_list, "is_wanted_act"] = "is_first"
+
+        for group_id in id_list:
+
+            tmp_df = grouped.get_group(group_id)
+
+            len_tmp_df = len(tmp_df)
+            if len_tmp_df >= 2:
+                for i in range(0, len_tmp_df):
+                    for j in range(i + 1, len_tmp_df):
+                        # begin from first and second row
+                        tmp_df_1 = tmp_df.iloc[i:i + 1, :]
+                        tmp_df_2 = tmp_df.iloc[j:j + 1, :]
+                        idx_tmp_df_2 = tmp_df_2.index.values
+                        tmp_act_1 = list(tmp_df_1[activity_key + "_2"])
+                        tmp_act_2 = list(tmp_df_2[activity_key + "_2"])
+                        tp = tuple(tmp_act_1 + tmp_act_2)
+                        if tp in all_concurrent_list:
+                            df.iloc[idx_tmp_df_2, [-1]] = df.iloc[idx_tmp_df_2, [-1]] + 1
+                            continue
+                        else:
+                            continue
+
+            flag = 0
+            tmp_df = grouped.get_group(group_id)
+            len_tmp_df = len(tmp_df)
+            for index, row in tmp_df.iterrows():
+                if row['mark'] == flag and flag < len_tmp_df:
+                    flag = flag + 1
+                    if row['is_wanted_act'] != 'is_first':
+                        index_list_in_group_id.append(index)
+                else:
+                    break
+
+        df.iloc[index_list_in_group_id, [-2]] = "concurrent_act"
+        df = df[df["is_wanted_act"].isin(["concurrent_act", "is_first"])].reset_index()
 
     return df
 
