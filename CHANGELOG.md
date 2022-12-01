@@ -5,12 +5,18 @@
 ### Added
 
 ### Changed
+* f887397e9abf2e9f85b48b941aa2bd4a892600a0
+  * parametrization scale factors current BPMN layouter
+* 35171256a7378f55713cec3b835b3418ecf4d356
+  * bug fix heuristics miner ++ on Pandas dataframes - Parameters are not passed
 
 ### Deprecated
 
 ### Fixed
 * 523589e13dfb6f5a8070478c245fc2a8058751ec
   * raise exception when unsupported OCEL file format during read/write
+* 394960d9eabcc0ac2eb40520b2866a3e21178d7c
+  * fixed statistics.traces.generic.pandas.case_statistics.get_cases_description to support the start timestamp column
 
 ### Removed
 
