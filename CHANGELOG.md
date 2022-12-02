@@ -3,6 +3,8 @@
 ## pm4py 2.3.2 (2022.12.XX)
 
 ### Added
+* 55cf77276573efcc6d67ed1a51871914ba34f84e
+  * PMPY-1968 instantiation of some objects directly from the pm4py module.
 
 ### Changed
 * f887397e9abf2e9f85b48b941aa2bd4a892600a0
