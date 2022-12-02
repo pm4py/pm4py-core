@@ -3,6 +3,8 @@
 ## pm4py 2.3.3 (2022.12.XX)
 
 ### Added
+* e2e4d357e2218a48f9b2d6b89690fbbe61cd6906
+  * PMPY-1952 OCEL - importing/exporting from/to SQLite
 
 ### Changed
 
@@ -88,8 +90,6 @@
     PMPY-1744 OCEL - method for objects summary
 * fdd87eb41e54ce8d179ae3030fd9e15ea74320e8
     PMPY-1812 OCEL - expansion of the set of objects during filtering on object identifiers
-* e2e4d357e2218a48f9b2d6b89690fbbe61cd6906
-  * PMPY-1952 OCEL - importing/exporting from/to SQLite
 * 908d0aa843f1a4e9f4a6c69139a3be755c2e8555
   * PMPY-1951 OCEL - conversion to NetworkX DiGraph
 * 5c7cc41b94810ec93f388f8014f2a3820d0063f2
