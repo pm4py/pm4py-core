@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.3.2 (2022.12.XX)
+## pm4py 2.3.2 (2022.12.02)
 
 ### Added
 * 55cf77276573efcc6d67ed1a51871914ba34f84e
