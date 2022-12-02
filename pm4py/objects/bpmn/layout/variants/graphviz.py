@@ -35,6 +35,9 @@ class EndpointDirection(Enum):
 
 class Parameters(Enum):
     TASK_WH = "task_wh"
+    SCREEN_SIZE_X = "screen_size_x"
+    SCREEN_SIZE_Y = "screen_size_y"
+    SCALING_FACTOR = "scaling_factor"
 
 
 def get_right_edge_coord(layout, node, p, partial_counter, total_counter):
@@ -76,7 +79,10 @@ def apply(bpmn_graph, parameters=None):
     bpmn_graph
         BPMN graph
     parameters
-        Parameters of the algorithm
+        Parameters of the algorithm:
+        - Parameters.SCREEN_SIZE_X => target size of the screen in pixels (default 1920.0)
+        - Parameters.SCREEN_SIZE_Y => target size of the screen in pixels (default 1080.0)
+        - Parameters.SCALING_FACTOR => scaling factor of the layouting (defualt 2.5)
 
     Returns
     -------------
@@ -88,6 +94,10 @@ def apply(bpmn_graph, parameters=None):
 
     if parameters is None:
         parameters = {}
+
+    screen_size_x = exec_utils.get_param_value(Parameters.SCREEN_SIZE_X, parameters, 1920.0)
+    screen_size_y = exec_utils.get_param_value(Parameters.SCREEN_SIZE_Y, parameters, 1080.0)
+    scaling_factor = exec_utils.get_param_value(Parameters.SCALING_FACTOR, parameters, 2.5)
 
     nodes = bpmn_graph.get_nodes()
     flows = bpmn_graph.get_flows()
@@ -152,8 +162,8 @@ def apply(bpmn_graph, parameters=None):
     different_x = len(set(layout.get(node).get_x() for node in nodes))
     different_y = len(set(layout.get(node).get_y() for node in nodes))
 
-    stretch_fact_x = 2.5 * 1.25 * 1920.0 / max_x
-    stretch_fact_y = 2.5 * 1080.0 / max_y
+    stretch_fact_x = scaling_factor * 1.25 * screen_size_x / max_x
+    stretch_fact_y = scaling_factor * screen_size_y / max_y
 
     for node in nodes:
         layout.get(node).set_x(round(layout.get(node).get_x() * stretch_fact_x))

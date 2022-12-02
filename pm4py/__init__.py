@@ -67,4 +67,9 @@ from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
 from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
     __maintainer__, __maintainer_email__
 
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.ocel.obj import OCEL
+from pm4py.objects.bpmn.obj import BPMN
+
 time.clock = time.process_time

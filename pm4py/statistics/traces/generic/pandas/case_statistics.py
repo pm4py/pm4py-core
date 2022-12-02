@@ -33,6 +33,7 @@ class Parameters(Enum):
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
+    START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
 
     MAX_VARIANTS_TO_RETURN = "max_variants_to_return"
     VARIANTS_DF = "variants_df"
@@ -149,6 +150,9 @@ def get_cases_description(df: pd.DataFrame, parameters: Optional[Dict[Union[str,
 
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
+    start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters, None)
+    if start_timestamp_key is None:
+        start_timestamp_key = timestamp_key
 
     enable_sort = exec_utils.get_param_value(Parameters.ENABLE_SORT, parameters, True)
     sort_by_column = exec_utils.get_param_value(Parameters.SORT_BY_COLUMN, parameters, "startTime")
@@ -170,19 +174,17 @@ def get_cases_description(df: pd.DataFrame, parameters: Optional[Dict[Union[str,
     del last_eve_df
     del stacked_df[case_id_glue]
     del stacked_df[case_id_glue + "_2"]
-    stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
-    stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
 
     if business_hours:
         stacked_df['caseDuration'] = stacked_df.apply(
-            lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], business_hours_slots, workcalendar), axis=1)
+            lambda x: soj_time_business_hours_diff(x[start_timestamp_key], x[timestamp_key + "_2"], business_hours_slots, workcalendar), axis=1)
     else:
-        stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
+        stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[start_timestamp_key]
         stacked_df['caseDuration'] = stacked_df['caseDuration'].astype('timedelta64[s]')
 
     stacked_df[timestamp_key + "_2"] = stacked_df[timestamp_key + "_2"].astype('int64') // 10 ** 9
-    stacked_df[timestamp_key] = stacked_df[timestamp_key].astype('int64') // 10 ** 9
-    stacked_df = stacked_df.rename(columns={timestamp_key: 'startTime', timestamp_key + "_2": 'endTime'})
+    stacked_df[start_timestamp_key] = stacked_df[start_timestamp_key].astype('int64') // 10 ** 9
+    stacked_df = stacked_df.rename(columns={start_timestamp_key: 'startTime', timestamp_key + "_2": 'endTime'})
     if enable_sort:
         stacked_df = stacked_df.sort_values(sort_by_column, ascending=sort_ascending)
 
