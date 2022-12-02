@@ -266,7 +266,7 @@ def apply_heu_pandas(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = No
     start_activities, end_activities, activities_occurrences, dfg, performance_dfg, sojourn_time, concurrent_activities = discover_abstraction_dataframe(
         df, parameters=parameters)
     return discover_heu_net_plus_plus(start_activities, end_activities, activities_occurrences, dfg, performance_dfg,
-                                      sojourn_time, concurrent_activities)
+                                      sojourn_time, concurrent_activities, parameters=parameters)
 
 
 def discover_abstraction_dataframe(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> Tuple[

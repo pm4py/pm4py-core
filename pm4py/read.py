@@ -191,6 +191,7 @@ def read_ocel(file_path: str, objects_path: Optional[str] = None) -> OCEL:
     elif file_path.lower().endswith("xmlocel"):
         from pm4py.objects.ocel.importer.xmlocel import importer as xmlocel_importer
         return xmlocel_importer.apply(file_path)
+    raise Exception("unsupported file format")
 
 
 def read_ocel_csv(file_path: str, objects_path: Optional[str] = None) -> OCEL:
