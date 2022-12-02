@@ -11,7 +11,7 @@ intervaltree==3.1.0
 ipython==8.7.0
 jedi==0.18.2
 jinja2==3.1.2
-jsonpickle==2.2.0
+jsonpickle==3.0.0
 kiwisolver==1.4.4
 lxml==4.9.1
 MarkupSafe==2.1.1
