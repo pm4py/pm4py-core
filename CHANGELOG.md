@@ -17,6 +17,8 @@
   * raise exception when unsupported OCEL file format during read/write
 * 394960d9eabcc0ac2eb40520b2866a3e21178d7c
   * fixed statistics.traces.generic.pandas.case_statistics.get_cases_description to support the start timestamp column
+* PMPY-1973 - 0bd2caf62742627f840a5cde5486a0b92eaafeeb
+  * bug fix discovery DFG typed
 
 ### Removed
 
