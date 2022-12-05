@@ -3,6 +3,8 @@
 ## pm4py 2.3.3 (2022.12.XX)
 
 ### Added
+* e2e4d357e2218a48f9b2d6b89690fbbe61cd6906
+  * PMPY-1952 OCEL - importing/exporting from/to SQLite
 
 ### Changed
 

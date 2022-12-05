@@ -175,6 +175,9 @@ def read_ocel(file_path: str, objects_path: Optional[str] = None) -> OCEL:
     elif file_path.lower().endswith("xmlocel"):
         from pm4py.objects.ocel.importer.xmlocel import importer as xmlocel_importer
         return xmlocel_importer.apply(file_path)
+    elif file_path.lower().endswith(".sqlite"):
+        from pm4py.objects.ocel.importer.sqlite import importer as sqlite_importer
+        return sqlite_importer.apply(file_path)
     raise Exception("unsupported file format")
 
 
@@ -240,3 +243,24 @@ def read_ocel_xml(file_path: str) -> OCEL:
 
     from pm4py.objects.ocel.importer.xmlocel import importer as xmlocel_importer
     return xmlocel_importer.apply(file_path)
+
+
+def read_ocel_sqlite(file_path: str) -> OCEL:
+    """
+    Reads an object-centric event log from a SQLite database (see: http://www.ocel-standard.org/).
+    The ``OCEL`` object is returned by this method
+
+    :param file_path: file path of the SQLite database (.sqlite)
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel_sqlite("<path_to_ocel_file.sqlite>")
+    """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
+
+    from pm4py.objects.ocel.importer.sqlite import importer as sqlite_importer
+    return sqlite_importer.apply(file_path)
