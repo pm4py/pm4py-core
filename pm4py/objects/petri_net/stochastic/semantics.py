@@ -30,6 +30,21 @@ class StochasticPetriNetSemantics(PetriNetSemantics[N], Generic[N]):
         enabled = list(filter(lambda t: cls.is_enabled(
             pn, t, marking), [t for t in pn.transitions]))
         weights = list(map(lambda t: t.weight, enabled))
-        # sum_weights = sum(weights)
-        # probs = list(map(lambda w: w/sum_weights, weights))
         return random.choices(enabled, weights)[0]
+
+    @classmethod
+    def probability_of_transition(cls, pn: N, transition: T, marking: Counter[P]) -> float:
+        """
+        Compute the probability of firing a transition in the net and marking.
+
+        Args:
+            pn (N): Stochastic net
+            transition (T): transition to fire
+            marking (Counter[P]): marking to use
+
+        Returns:
+            float: _description_
+        """
+        if not transition in pn.transitions or not cls.is_enabled(pn, transition, marking):
+            return 0.0
+        return transition.weight / sum(list(map(lambda t: t.weight, list(filter(lambda t: cls.is_enabled(pn, t, marking), [t for t in pn.transitions])))))

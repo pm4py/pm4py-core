@@ -17,7 +17,7 @@ def convert_saw_net_to_stochastic_net(saw: StochasticArcWeightNet) -> Stochastic
             a_sums[a] = a_sums[a] + v
         
     for t in saw.transitions:
-        bindings = sawsem.all_bindings(saw, t)
+        bindings = sawsem.all_elegible_bindings(saw, t)
         for b in bindings:
             transition_weight = t.weight
             t_new = StochasticPetriNet.Transition('t'+str(len(sn.transitions)),t.label)
