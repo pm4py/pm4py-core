@@ -26,7 +26,7 @@ pandas==1.5.2
 parso==0.8.3
 pickleshare==0.7.5
 pillow==9.3.0
-prompt-toolkit==3.0.33
+prompt-toolkit==3.0.36
 pure-eval==0.2.2
 pydotplus==2.0.2
 pygments==2.13.0
