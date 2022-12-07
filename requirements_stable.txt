@@ -1,4 +1,4 @@
-asttokens==2.2.0
+asttokens==2.2.1
 backcall==0.2.0
 colorama==0.4.6
 contourpy==1.0.6
