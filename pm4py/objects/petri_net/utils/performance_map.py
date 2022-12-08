@@ -101,7 +101,7 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
             source_place = arc.source
             if arc not in annotations_arcs:
                 annotations_arcs[arc] = {"performance": [], "count": 0}
-                annotations_arcs[arc]["count"] = annotations_arcs[arc]["count"] + 1
+            annotations_arcs[arc]["count"] = annotations_arcs[arc]["count"] + 1
             if source_place in trace_place_stats and trace_place_stats[source_place]:
                 if trans.label or ht_perf_method == "first":
                     annotations_arcs[arc]["performance"].append(
@@ -118,7 +118,7 @@ def calculate_annotation_for_trace(trace, net, initial_marking, act_trans, activ
             target_place = arc.target
             if arc not in annotations_arcs:
                 annotations_arcs[arc] = {"performance": [], "count": 0}
-                annotations_arcs[arc]["count"] = annotations_arcs[arc]["count"] + 1
+            annotations_arcs[arc]["count"] = annotations_arcs[arc]["count"] + 1
             if target_place not in trace_place_stats:
                 trace_place_stats[target_place] = []
 
@@ -172,12 +172,20 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
 
     business_hours = parameters["business_hours"] if "business_hours" in parameters else False
     business_hours_slots = parameters["business_hour_slots"] if "business_hour_slots" in parameters else constants.DEFAULT_BUSINESS_HOUR_SLOTS
+    count_once_per_trace = parameters["count_once_per_trace"] if "count_once_per_trace" in parameters else False
 
     statistics = {}
 
     for variant in variants_idx:
         first_trace = log[variants_idx[variant][0]]
-        act_trans = aligned_traces[variants_idx[variant][0]]["activated_transitions"]
+        act_trans0 = aligned_traces[variants_idx[variant][0]]["activated_transitions"]
+        act_trans = []
+        if count_once_per_trace:
+            for t in act_trans0:
+                if t not in act_trans:
+                    act_trans.append(t)
+        else:
+            act_trans = act_trans0
         annotations_places_trans, annotations_arcs = calculate_annotation_for_trace(first_trace, net, initial_marking,
                                                                                     act_trans, activity_key,
                                                                                     ht_perf_method=ht_perf_method)
