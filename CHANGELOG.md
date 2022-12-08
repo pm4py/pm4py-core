@@ -7,6 +7,8 @@
   * PMPY-1952 OCEL - importing/exporting from/to SQLite
 
 ### Changed
+* 246be6c1aa1a3216faebf1440c38d59485621f4b
+  * PMPY-1975 Visualization of heuristics net - avoid totally unconnected nodes
 
 ### Deprecated
 
