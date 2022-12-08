@@ -21,7 +21,7 @@ matplotlib-inline==0.1.6
 mpmath==1.2.1
 networkx==3.0rc1
 numpy==1.24.0rc2
-packaging==21.3
+packaging==22.0
 pandas==1.5.2
 parso==0.8.3
 pickleshare==0.7.5
