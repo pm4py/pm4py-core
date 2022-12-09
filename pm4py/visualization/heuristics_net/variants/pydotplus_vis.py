@@ -144,24 +144,33 @@ def get_graph(heu_net: HeuristicsNet, parameters: Optional[Dict[Union[str, Param
     corr_nodes_names = {}
     is_frequency = False
 
+    start_end_nodes_set = set()
+
+    for index, sa_list in enumerate(heu_net.start_activities):
+        start_end_nodes_set = start_end_nodes_set.union({n for n in sa_list if n in corr_nodes_names})
+
+    for index, ea_list in enumerate(heu_net.end_activities):
+        start_end_nodes_set = start_end_nodes_set.union({n for n in ea_list if n in corr_nodes_names})
+
     for node_name in heu_net.nodes:
         node = heu_net.nodes[node_name]
-        node_occ = node.node_occ
-        graycolor = transform_to_hex_2(max(255 - math.log(node_occ) * 9, 0))
-        if node.node_type == "frequency":
-            is_frequency = True
-            n = pydotplus.Node(name=str(uuid4()), shape="box", style="filled",
-                               label=node_name + " (" + str(node_occ) + ")", fillcolor=node.get_fill_color(graycolor),
-                               fontcolor=node.get_font_color())
-        else:
-            n = pydotplus.Node(name=str(uuid4()), shape="box", style="filled",
-                               label=node_name + " (" + human_readable_stat(heu_net.sojourn_times[
-                                                                                node_name]) + ")" if node_name in heu_net.sojourn_times else node_name + " (0s)",
-                               fillcolor=node.get_fill_color(graycolor),
-                               fontcolor=node.get_font_color())
-        corr_nodes[node] = n
-        corr_nodes_names[node_name] = n
-        graph.add_node(n)
+        if node_name in start_end_nodes_set or node.input_connections or node.output_connections:
+            node_occ = node.node_occ
+            graycolor = transform_to_hex_2(max(255 - math.log(node_occ) * 9, 0))
+            if node.node_type == "frequency":
+                is_frequency = True
+                n = pydotplus.Node(name=str(uuid4()), shape="box", style="filled",
+                                   label=node_name + " (" + str(node_occ) + ")", fillcolor=node.get_fill_color(graycolor),
+                                   fontcolor=node.get_font_color())
+            else:
+                n = pydotplus.Node(name=str(uuid4()), shape="box", style="filled",
+                                   label=node_name + " (" + human_readable_stat(heu_net.sojourn_times[
+                                                                                    node_name]) + ")" if node_name in heu_net.sojourn_times else node_name + " (0s)",
+                                   fillcolor=node.get_fill_color(graycolor),
+                                   fontcolor=node.get_font_color())
+            corr_nodes[node] = n
+            corr_nodes_names[node_name] = n
+            graph.add_node(n)
 
     # gets max arc value
     max_arc_value = -1
