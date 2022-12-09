@@ -15,6 +15,8 @@
 ### Fixed
 * 2e560757b4717a94e8f774de4b42bbb26bcdfc12
   * PMPY-1974 Bug fix TBR decorations in Petri net
+* 743151159a3f240ea6cf0756bd9ae24ac5cac10b
+  * PMPY-1976 cope with changes in the deprecation/packaging packages
 
 ### Removed
 
