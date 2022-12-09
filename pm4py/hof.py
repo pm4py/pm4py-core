@@ -11,7 +11,7 @@ from pm4py.utils import __event_log_deprecation_warning
 import deprecation
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", details="the EventLog class will be removed in a future release.")
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the EventLog class will be removed in a future release.")
 def filter_log(f: Callable[[Any], bool], log: log_inst.EventLog) -> Union[log_inst.EventLog, log_inst.EventStream]:
     """
     Filters the log according to a given (lambda) function.
@@ -49,7 +49,7 @@ def filter_trace(f: Callable[[Any], bool], trace: log_inst.Trace) -> log_inst.Tr
         warnings.warn('input trace object is not of the appropriate type, filter() not applied')
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", details="the EventLog class will be removed in a future release.")
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the EventLog class will be removed in a future release.")
 def sort_log(log: log_inst.EventLog, key, reverse: bool = False) -> Union[log_inst.EventLog, log_inst.EventStream]:
     """
     Sorts the event log according to a given key.
@@ -73,7 +73,7 @@ def sort_log(log: log_inst.EventLog, key, reverse: bool = False) -> Union[log_in
         return log
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", details="the EventLog class will be removed in a future release.")
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the EventLog class will be removed in a future release.")
 def sort_trace(trace: log_inst.Trace, key, reverse: bool = False) -> log_inst.Trace:
     """
     Sorts the events in a trace according to a given key.
