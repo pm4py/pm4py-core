@@ -340,7 +340,8 @@ def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet
                                      variant=precision_evaluator.Variants.ALIGN_ETCONFORMANCE,
                                      parameters=parameters)
 
-@deprecation.deprecated("2.3.0", "3.0.0", "conformance checking using footprints will not be exposed in a future release")
+
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="conformance checking using footprints will not be exposed in a future release")
 def __convert_to_fp(*args) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
     """
     Internal method to convert the provided event log / process model argument
@@ -362,7 +363,7 @@ def __convert_to_fp(*args) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
     return fp
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", "conformance checking using footprints will not be exposed in a future release")
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="conformance checking using footprints will not be exposed in a future release")
 def conformance_diagnostics_footprints(*args) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
     """
     Provide conformance checking diagnostics using footprints
@@ -386,7 +387,7 @@ def conformance_diagnostics_footprints(*args) -> Union[List[Dict[str, Any]], Dic
         return footprints_conformance.apply(fp1, fp2, variant=footprints_conformance.Variants.LOG_EXTENSIVE)
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", "conformance checking using footprints will not be exposed in a future release")
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="conformance checking using footprints will not be exposed in a future release")
 def fitness_footprints(*args) -> Dict[str, float]:
     """
     Calculates fitness using footprints. The output is a dictionary containing two keys:
@@ -410,7 +411,7 @@ def fitness_footprints(*args) -> Dict[str, float]:
     return evaluation.fp_fitness(fp1, fp2, fp_conf)
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", "conformance checking using footprints will not be exposed in a future release")
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="conformance checking using footprints will not be exposed in a future release")
 def precision_footprints(*args) -> float:
     """
     Calculates precision using footprints
@@ -431,7 +432,7 @@ def precision_footprints(*args) -> float:
     return evaluation.fp_precision(fp1, fp2)
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", details="this method will be removed in a future release.")
+@deprecation.deprecated(removed_in="2.3.0", deprecated_in="3.0.0", details="this method will be removed in a future release.")
 def __check_is_fit_process_tree(trace, tree) -> bool:
     """
     Check if a trace object is fit against a process tree model
@@ -466,7 +467,7 @@ def __check_is_fit_process_tree(trace, tree) -> bool:
             return align_conf_res["fitness"] == 1.0
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", details="this method will be removed in a future release.")
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="this method will be removed in a future release.")
 def __check_is_fit_petri_net(trace, net, im, fm, activity_key=xes_constants.DEFAULT_NAME_KEY) -> bool:
     """
     Checks if a trace object is fit against Petri net object
@@ -501,7 +502,7 @@ def __check_is_fit_petri_net(trace, net, im, fm, activity_key=xes_constants.DEFA
             return align_conf_res["fitness"] == 1.0
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", details="this method will be removed in a future release.")
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="this method will be removed in a future release.")
 def check_is_fitting(*args, activity_key=xes_constants.DEFAULT_NAME_KEY) -> bool:
     """
     Checks if a trace object is fit against a process model

@@ -35,7 +35,7 @@ INDEX_COLUMN = "@@index"
 CASE_INDEX_COLUMN = "@@case_index"
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", details="the format_dataframe function does not need application anymore.")
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the format_dataframe function does not need application anymore.")
 def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAME,
                      activity_key: str = xes_constants.DEFAULT_NAME_KEY,
                      timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
@@ -298,7 +298,7 @@ def get_properties(log, activity_key: str = "concept:name", timestamp_key: str =
     return parameters
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", details="this method will be removed in a future release."
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="this method will be removed in a future release."
                                                   "Please use the method-specific arguments.")
 def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASSIFIER_ATTRIBUTE):
     """

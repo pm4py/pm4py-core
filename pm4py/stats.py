@@ -374,7 +374,7 @@ def get_rework_cases_per_activity(log: Union[EventLog, pd.DataFrame], activity_k
         return rework_get.apply(log, parameters=properties)
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", details="the get_case_overlap function will be removed in a future release.")
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the get_case_overlap function will be removed in a future release.")
 def get_case_overlap(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[int]:
     """
     Associates to each case in the log the number of cases concurrently open

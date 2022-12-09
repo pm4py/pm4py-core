@@ -164,7 +164,8 @@ def read_bpmn(file_path: str) -> BPMN:
     bpmn_graph = bpmn_importer.apply(file_path)
     return bpmn_graph
 
-@deprecation.deprecated("2.3.0", "3.0.0", "the read_ocel function is deprecated and replaced by read_ocel_csv, read_ocel_json and read_ocel_xml, respectively")
+
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the read_ocel function is deprecated and replaced by read_ocel_csv, read_ocel_json and read_ocel_xml, respectively")
 def read_ocel(file_path: str, objects_path: Optional[str] = None) -> OCEL:
     """
     Reads an object-centric event log from a file (see: http://www.ocel-standard.org/).
@@ -191,6 +192,9 @@ def read_ocel(file_path: str, objects_path: Optional[str] = None) -> OCEL:
     elif file_path.lower().endswith("xmlocel"):
         from pm4py.objects.ocel.importer.xmlocel import importer as xmlocel_importer
         return xmlocel_importer.apply(file_path)
+    elif file_path.lower().endswith(".sqlite"):
+        from pm4py.objects.ocel.importer.sqlite import importer as sqlite_importer
+        return sqlite_importer.apply(file_path)
     raise Exception("unsupported file format")
 
 
@@ -256,3 +260,24 @@ def read_ocel_xml(file_path: str) -> OCEL:
 
     from pm4py.objects.ocel.importer.xmlocel import importer as xmlocel_importer
     return xmlocel_importer.apply(file_path)
+
+
+def read_ocel_sqlite(file_path: str) -> OCEL:
+    """
+    Reads an object-centric event log from a SQLite database (see: http://www.ocel-standard.org/).
+    The ``OCEL`` object is returned by this method
+
+    :param file_path: file path of the SQLite database (.sqlite)
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel_sqlite("<path_to_ocel_file.sqlite>")
+    """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
+
+    from pm4py.objects.ocel.importer.sqlite import importer as sqlite_importer
+    return sqlite_importer.apply(file_path)
