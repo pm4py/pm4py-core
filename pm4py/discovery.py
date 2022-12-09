@@ -24,7 +24,7 @@ import deprecation
 import pkgutil
 
 
-@deprecation.deprecated("2.3.0", "2.4.0", details="this method will be replaced by the discover_dfg_typed function(). Please adapt your code to use pm4py.discover_dfg_typed()")
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="2.4.0", details="this method will be replaced by the discover_dfg_typed function(). Please adapt your code to use pm4py.discover_dfg_typed()")
 def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     """
     Discovers a Directly-Follows Graph (DFG) from a log.
@@ -77,7 +77,8 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concep
             log, parameters=properties)
     return dfg, start_activities, end_activities
 
-@deprecation.deprecated("2.3.0", "2.4.0", details="this method will be replaced by the discover_dfg_typed function(). Please adapt your code to use pm4py.discover_dfg_typed()")
+
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="2.4.0", details="this method will be replaced by the discover_dfg_typed function(). Please adapt your code to use pm4py.discover_dfg_typed()")
 def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     if type(log) not in [pd.DataFrame, EventLog, EventStream]:
         raise Exception(
@@ -214,7 +215,7 @@ def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame], activity_key: s
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", details="this method will be removed in a future release.")
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="this method will be removed in a future release.")
 def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the Alpha+ algorithm
