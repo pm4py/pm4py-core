@@ -146,7 +146,8 @@ def write_bpmn(model: BPMN, file_path: str, auto_layout: bool = True):
     from pm4py.objects.bpmn.exporter import exporter
     exporter.apply(model, file_path)
 
-@deprecation.deprecated("2.3.0", "3.0.0", "the write_ocel function is deprecated and replaced by write_ocel_csv, write_ocel_json and write_ocel_xml, respectively")
+
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the write_ocel function is deprecated and replaced by write_ocel_csv, write_ocel_json and write_ocel_xml, respectively")
 def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     """
     Writes an OCEL object to disk in the ``.bpmn`` format.
