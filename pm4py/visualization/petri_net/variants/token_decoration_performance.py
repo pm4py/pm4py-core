@@ -91,7 +91,8 @@ def get_decorations(log, net, initial_marking, final_marking, parameters=None, m
                                                                    aligned_traces, variants_idx,
                                                                    activity_key=activity_key,
                                                                    timestamp_key=timestamp_key,
-                                                                   ht_perf_method=ht_perf_method)
+                                                                   ht_perf_method=ht_perf_method,
+                                                                   parameters=parameters)
 
     aggregated_statistics = performance_map.aggregate_statistics(element_statistics, measure=measure,
                                                                  aggregation_measure=aggregation_measure,
