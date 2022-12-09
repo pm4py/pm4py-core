@@ -148,7 +148,8 @@ def read_bpmn(file_path: str) -> BPMN:
     bpmn_graph = bpmn_importer.apply(file_path)
     return bpmn_graph
 
-@deprecation.deprecated("2.3.0", "3.0.0", "the read_ocel function is deprecated and replaced by read_ocel_csv, read_ocel_json and read_ocel_xml, respectively")
+
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the read_ocel function is deprecated and replaced by read_ocel_csv, read_ocel_json and read_ocel_xml, respectively")
 def read_ocel(file_path: str, objects_path: Optional[str] = None) -> OCEL:
     """
     Reads an object-centric event log from a file (see: http://www.ocel-standard.org/).
