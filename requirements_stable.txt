@@ -41,5 +41,5 @@ stack-data==0.6.2
 stringdist==1.0.9
 sympy==1.11.1
 tqdm==4.64.1
-traitlets==5.7.0
+traitlets==5.7.1
 wcwidth==0.2.5
