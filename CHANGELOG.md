@@ -9,6 +9,8 @@
 ### Deprecated
 
 ### Fixed
+* 4b5c035f4a744c8de4efb7969a6f0abcfdd966d2
+  * bug fix between filter on EventLog
 
 ### Removed
 
