@@ -3,6 +3,8 @@
 ## pm4py 2.3.4 (2022.12.XX)
 
 ### Added
+* 89ca01e1378cb2cfac21f5d58e0e4fea44ca2186
+  * PMPY-1979 - extraction of temporal features (system dynamics log) in pm4py
 
 ### Changed
 
