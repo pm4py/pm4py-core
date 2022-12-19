@@ -391,3 +391,12 @@ In PM4Py, we also implemented the `Heuristics Miner <https://ieeexplore.ieee.org
 .. image:: https://pm4py.fit.fraunhofer.de/static/assets/images/getting_started/hnet_running_example.png
 
 *Figure 9: Process Map (HM-based) discovered based on the running example event data set.*
+
+
+Conformance Checking
+------------------------------------
+
+.. raw:: html
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/0YNvijqX3FY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
