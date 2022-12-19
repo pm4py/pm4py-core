@@ -1,5 +1,23 @@
 # Changelog of pm4py
 
+## pm4py 2.3.4 (2022.12.XX)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 4b5c035f4a744c8de4efb7969a6f0abcfdd966d2
+  * bug fix between filter on EventLog
+
+### Removed
+
+### Other
+
+---
+
 ## pm4py 2.3.3 (2022.12.09)
 
 ### Added

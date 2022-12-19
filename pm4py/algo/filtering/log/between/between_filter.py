@@ -63,7 +63,7 @@ def apply(log: EventLog, act1: str, act2: str, parameters: Optional[Dict[Union[s
         filt_trace = None
 
         i = 0
-        while i < len(trace) - 1:
+        while i < len(trace):
             if not act1_encountered and trace[i][activity_key] == act1:
                 act1_encountered = True
                 filt_trace = Trace(attributes=trace.attributes)
