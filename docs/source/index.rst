@@ -1,4 +1,4 @@
-Welcome to pmp4y's Documentation!
+Welcome to pm4py's Documentation!
 ===================================
 
 ``pm4py`` is a Python library implementing a variety of `process mining <https://en.wikipedia.org/wiki/Process_mining>`_ algorithms.
