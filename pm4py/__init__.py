@@ -64,6 +64,7 @@ from pm4py.sim import play_out, generate_process_tree
 from pm4py.ml import split_train_test, get_prefixes_from_log, extract_features_dataframe
 from pm4py.org import discover_handover_of_work_network, discover_activity_based_resource_similarity, discover_subcontracting_network, discover_working_together_network, discover_organizational_roles, discover_network_analysis
 from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
+from pm4py.privacy import anonymize_differential_privacy
 from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
     __maintainer__, __maintainer_email__
 
