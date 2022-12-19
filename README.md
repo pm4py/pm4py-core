@@ -17,7 +17,7 @@ if __name__ == "__main__":
     pm4py.view_petri_net(net, initial_marking, final_marking, format="svg")
 
 ## Installation
-pm4py can be installed on Python 3.7.x / 3.8.x / 3.9.x / 3.10.x by invoking:
+pm4py can be installed on Python 3.7.x / 3.8.x / 3.9.x / 3.10.x / 3.11.x by invoking:
 *pip install -U pm4py*
 
 ## Release Notes
