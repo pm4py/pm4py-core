@@ -2,7 +2,6 @@ cvxopt;python_version<'3.11'
 deprecation
 graphviz
 intervaltree
-jsonpickle
 lxml
 matplotlib
 networkx
@@ -10,7 +9,6 @@ numpy>=1.19.5
 pandas>=1.1.5
 pydotplus
 pytz
-pyvis
 scipy
 stringdist
 sympy
