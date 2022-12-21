@@ -173,6 +173,10 @@ Also, some filtering techniques are offered on top of object-centric event logs:
   * :meth:`pm4py.filtering.filter_ocel_start_events_per_object_type`; filters the events of an object-centric event log that start the lifecycle of an object of a given object type.
   * :meth:`pm4py.filtering.filter_ocel_end_events_per_object_type`; filters the events of an object-centric event log that end the lifecycle of an object of a given object type.
   * :meth:`pm4py.filtering.filter_ocel_events_timestamp`; filters the events of an object-centric event log based on a timestamp range.
+  * :meth:`pm4py.filtering.filter_ocel_object_types`; filters a specified collection of object types from the object-centric event log.
+  * :meth:`pm4py.filtering.filter_ocel_events`; filters a specified collection of event identifiers from the object-centric event log.
+  * :meth:`pm4py.filtering.filter_ocel_objects`; filters a specified collection of object identifiers from the object-centric event log.
+  * :meth:`pm4py.filtering.filter_ocel_cc_object`; filters a connected component from the object-centric event log to which the object with the provided identifier belongs.
 
 Machine Learning (:mod:`pm4py.ml`)
 ------------------------------------------
@@ -216,11 +220,21 @@ In PM4Py, we offer object-centric process mining features:
   * :meth:`pm4py.ocel.ocel_flattening`; flattens object-centric event log with the selection of an object type.
   * :meth:`pm4py.ocel.ocel_object_type_activities`; gets the activities related to an object type in an object-centric event log.
   * :meth:`pm4py.ocel.ocel_objects_ot_count`; counts the objects for an object type.
+  * :meth:`pm4py.ocel.ocel_temporal_summary`; returns the temporal summary from an object-centric event log.
+  * :meth:`pm4py.ocel.ocel_objects_summary`; returns the objects summary from an object-centric event log.
+  * :meth:`pm4py.ocel.ocel_objects_interactions_summary`; returns the objects interactions from an object-centric event log.
+  * :meth:`pm4py.ocel.sample_ocel_objects`; returns a sampled object-centric event log picking a subset of the objects of the original one.
+  * :meth:`pm4py.ocel.sample_ocel_connected_components`; returns a sampled object-centric event log containing the provided number of connected components.
+  * :meth:`pm4py.ocel.ocel_drop_duplicates`; drops relations between events and objects happening at the same time.
+  * :meth:`pm4py.ocel.ocel_merge_duplicates`; merge events in the OCEL which are happening with the same activity at the same timestamp.
+
 
 Some object-centric process discovery algorithms are also offered:
 
   * :meth:`pm4py.ocel.discover_ocdfg`; discovers an object-centric directly-follows graph from the object-centric event log.
   * :meth:`pm4py.ocel.discover_oc_petri_net`; discovers an object-centric Petri net from the object-centric event log.
+  * :meth:`pm4py.ocel.discover_objects_graph`; discovers an object-based graph from the object-centric event log.
+
 
 Social Network Analysis (:mod:`pm4py.org`)
 ------------------------------------------
@@ -365,6 +379,10 @@ Overall List of Methods
    pm4py.filtering.filter_ocel_events_timestamp
    pm4py.filtering.filter_four_eyes_principle
    pm4py.filtering.filter_activity_done_different_resources
+   pm4py.filtering.filter_ocel_object_types
+   pm4py.filtering.filter_ocel_events
+   pm4py.filtering.filter_ocel_objects
+   pm4py.filtering.filter_ocel_cc_object
    pm4py.ml
    pm4py.ml.split_train_test
    pm4py.ml.get_prefixes_from_log
@@ -380,6 +398,13 @@ Overall List of Methods
    pm4py.ocel.ocel_objects_ot_count
    pm4py.ocel.discover_ocdfg
    pm4py.ocel.discover_oc_petri_net
+   pm4py.ocel.ocel_temporal_summary
+   pm4py.ocel.ocel_objects_summary
+   pm4py.ocel.ocel_objects_interactions_summary
+   pm4py.ocel.sample_ocel_objects
+   pm4py.ocel.sample_ocel_connected_components
+   pm4py.ocel.ocel_drop_duplicates
+   pm4py.ocel.ocel_merge_duplicates
    pm4py.org
    pm4py.org.discover_handover_of_work_network
    pm4py.org.discover_working_together_network
