@@ -1,4 +1,4 @@
-import runpy
+mport runpy
 from os.path import dirname, join
 from pathlib import Path
 from setuptools import setup
@@ -111,7 +111,11 @@ setup(
               'pm4py.algo.conformance.log_skeleton.variants', 'pm4py.algo.conformance.antialignments',
               'pm4py.algo.conformance.antialignments.variants', 'pm4py.algo.conformance.multialignments',
               'pm4py.algo.conformance.multialignments.variants', 'pm4py.algo.conformance.temporal_profile',
-              'pm4py.algo.conformance.temporal_profile.variants', 'pm4py.algo.transformation',
+              'pm4py.algo.conformance.temporal_profile.variants', 'pm4py.algo.anonymization',
+              'pm4py.algo.anonymization.pripel', 'pm4py.algo.anonymization.pripel.util',
+              'pm4py.algo.anonymization.pripel.variants', 'pm4py.algo.anonymization.trace_variant_query',
+              'pm4py.algo.anonymization.trace_variant_query.util',
+              'pm4py.algo.anonymization.trace_variant_query.variants', 'pm4py.algo.transformation',
               'pm4py.algo.transformation.ocel', 'pm4py.algo.transformation.ocel.graphs',
               'pm4py.algo.transformation.ocel.features', 'pm4py.algo.transformation.ocel.features.events',
               'pm4py.algo.transformation.ocel.features.objects',
