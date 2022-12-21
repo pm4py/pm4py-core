@@ -5,6 +5,8 @@
 ### Added
 
 ### Changed
+* 7a40a3cff6b0b4a12b2fe4ca7bd08bf963917443
+  * PMPY-1989 - Improving the performance of streaming DFG discovery
 
 ### Deprecated
 
