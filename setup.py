@@ -1,4 +1,4 @@
-mport runpy
+import runpy
 from os.path import dirname, join
 from pathlib import Path
 from setuptools import setup
