@@ -2,8 +2,8 @@ import time
 
 from pm4py import util, objects, statistics, algo, visualization
 from pm4py import analysis, conformance, convert, discovery, filtering, hof, ml, ocel, org, read, sim, stats, utils, vis, write
-from pm4py.read import read_xes, read_dfg, read_bpmn, read_pnml, read_ptml, read_ocel, read_ocel_csv, read_ocel_xml, read_ocel_json
-from pm4py.write import write_xes, write_dfg, write_bpmn, write_pnml, write_ptml, write_ocel, write_ocel_json, write_ocel_csv, write_ocel_xml
+from pm4py.read import read_xes, read_dfg, read_bpmn, read_pnml, read_ptml, read_ocel, read_ocel_csv, read_ocel_xml, read_ocel_json, read_ocel_sqlite
+from pm4py.write import write_xes, write_dfg, write_bpmn, write_pnml, write_ptml, write_ocel, write_ocel_json, write_ocel_csv, write_ocel_xml, write_ocel_sqlite
 from pm4py.utils import format_dataframe, parse_process_tree, serialize, deserialize, set_classifier, parse_event_log_string, project_on_event_attribute, \
     sample_cases, sample_events, rebase
 from pm4py.filtering import filter_log_relative_occurrence_event_attribute, filter_start_activities, filter_end_activities, filter_variants, \
@@ -50,5 +50,10 @@ from pm4py.org import discover_handover_of_work_network, discover_activity_based
 from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
 from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
     __maintainer__, __maintainer_email__
+
+from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.ocel.obj import OCEL
+from pm4py.objects.bpmn.obj import BPMN
 
 time.clock = time.process_time

@@ -1,8 +1,54 @@
 # Changelog of pm4py
 
-## pm4py 2.3.2 (2022.12.XX)
+## pm4py 2.3.4 (2022.12.XX)
 
 ### Added
+
+### Changed
+* 7a40a3cff6b0b4a12b2fe4ca7bd08bf963917443
+  * PMPY-1989 - Improving the performance of streaming DFG discovery
+
+### Deprecated
+
+### Fixed
+* 4b5c035f4a744c8de4efb7969a6f0abcfdd966d2
+  * bug fix between filter on EventLog
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.3.3 (2022.12.09)
+
+### Added
+* e2e4d357e2218a48f9b2d6b89690fbbe61cd6906
+  * PMPY-1952 OCEL - importing/exporting from/to SQLite
+
+### Changed
+* 246be6c1aa1a3216faebf1440c38d59485621f4b
+  * PMPY-1975 Visualization of heuristics net - avoid totally unconnected nodes
+
+### Deprecated
+
+### Fixed
+* 2e560757b4717a94e8f774de4b42bbb26bcdfc12
+  * PMPY-1974 Bug fix TBR decorations in Petri net
+* 743151159a3f240ea6cf0756bd9ae24ac5cac10b
+  * PMPY-1976 cope with changes in the deprecation/packaging packages
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.3.2 (2022.12.02)
+
+### Added
+* 55cf77276573efcc6d67ed1a51871914ba34f84e
+  * PMPY-1968 instantiation of some objects directly from the pm4py module.
 
 ### Changed
 * f887397e9abf2e9f85b48b941aa2bd4a892600a0
@@ -17,6 +63,8 @@
   * raise exception when unsupported OCEL file format during read/write
 * 394960d9eabcc0ac2eb40520b2866a3e21178d7c
   * fixed statistics.traces.generic.pandas.case_statistics.get_cases_description to support the start timestamp column
+* PMPY-1973 - 0bd2caf62742627f840a5cde5486a0b92eaafeeb
+  * bug fix discovery DFG typed
 
 ### Removed
 

@@ -7,7 +7,7 @@ from pm4py.util.regex import SharedObj, get_new_char
 
 import warnings
 
-warnings.warn("The regex package will be removed in a future release.")
+#warnings.warn("The regex package will be removed in a future release.")
 
 
 def get_encoded_trace(trace, mapping, parameters=None):

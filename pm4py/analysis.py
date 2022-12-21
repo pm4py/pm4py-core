@@ -12,7 +12,7 @@ import pandas as pd
 import deprecation
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", details="this method will be removed in a future release.")
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="this method will be removed in a future release.")
 def construct_synchronous_product_net(trace: Trace, petri_net: PetriNet, initial_marking: Marking,
                                       final_marking: Marking) -> Tuple[PetriNet, Marking, Marking]:
     """
@@ -74,7 +74,7 @@ def solve_marking_equation(petri_net: PetriNet, initial_marking: Marking,
     return marking_equation.get_h_value(me)
 
 
-@deprecation.deprecated("2.3.0", "3.0.0", details="this method will be removed in a future release.")
+@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="this method will be removed in a future release.")
 def solve_extended_marking_equation(trace: Trace, sync_net: PetriNet, sync_im: Marking,
                                     sync_fm: Marking, split_points: Optional[List[int]] = None) -> float:
     """
