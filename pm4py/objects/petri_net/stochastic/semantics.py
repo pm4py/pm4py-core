@@ -29,7 +29,7 @@ class StochasticPetriNetSemantics(PetriNetSemantics[N], Generic[N]):
             random.seed(seed)
         enabled = list(filter(lambda t: cls.is_enabled(
             pn, t, marking), [t for t in pn.transitions]))
-        weights = list(map(lambda t: t.weight, enabled))
+        weights = list(map(lambda t : cls.probability_of_transition(pn,t,marking), enabled))
         return random.choices(enabled, weights)[0]
 
     @classmethod

@@ -1,14 +1,16 @@
+import copy
 import itertools
 import random
-import copy
+from abc import ABC, abstractclassmethod
 from collections import Counter
 from typing import Collection
 from typing import Counter as TCounter
-from typing import Generic, List, Tuple, TypeVar, Optional
+from typing import Generic, List, Optional, Tuple, TypeVar
 
 from pm4py.objects.petri_net.saw_net.obj import StochasticArcWeightNet
 from pm4py.objects.petri_net.semantics import PetriNetSemantics
-from pm4py.objects.petri_net.stochastic.semantics import StochasticPetriNetSemantics
+from pm4py.objects.petri_net.stochastic.semantics import \
+    StochasticPetriNetSemantics
 
 N = TypeVar("N", bound=StochasticArcWeightNet)
 T = TypeVar("T", bound=StochasticArcWeightNet.Transition)
@@ -17,7 +19,7 @@ A = TypeVar("A", bound=StochasticArcWeightNet.Arc)
 B = TypeVar("B", bound=StochasticArcWeightNet.Binding)
 
 
-class StochasticArcWeightNetSemantics(StochasticPetriNetSemantics[N], Generic[N]):
+class StochasticArcWeightNetSemantics(StochasticPetriNetSemantics[N], Generic[N], ABC):
 
     @classmethod
     def is_enabled(cls, pn: N, transition: T, marking: TCounter[P]) -> bool:
@@ -41,9 +43,9 @@ class StochasticArcWeightNetSemantics(StochasticPetriNetSemantics[N], Generic[N]
             if marking[a.source] < min([k for k, v in a.weight_distribution.items() if v > 0]):
                 return False
         return True
-    
+
     @classmethod
-    def fire(cls, pn:N, binding: B, marking: TCounter[P]) -> TCounter[P]:
+    def fire(cls, pn: N, binding: B, marking: TCounter[P]) -> TCounter[P]:
         """fires the binding in the given marking. Does not check if the the binding is feasible (this should be handled by the invoking code)
 
         Args:
@@ -55,29 +57,15 @@ class StochasticArcWeightNetSemantics(StochasticPetriNetSemantics[N], Generic[N]
             TCounter[P]: _description_
         """
         m_out = copy.copy(marking)
-        for (a,w) in binding:
+        for (a, w) in binding:
             if isinstance(a.source, StochasticArcWeightNet.Place):
                 m_out[a.source] -= w
             else:
                 m_out[a.target] += w
         return m_out
-            
-            
-    
-    @classmethod
-    def sample_enabled_transition(cls, pn: N, marking: Counter[P], seed: int = None) -> Optional[Tuple[T,B]]:
-        if seed is not None:
-            random.seed(seed)
-        bindings = list()
-        probs = list()
-        for t in [t for t in pn.transitions if cls.is_enabled(pn,t,marking)]:
-            for b in cls.all_feasible_bindings(pn,t,marking):
-                bindings.append((t, b))
-                probs.append(cls.probability_of_binding(pn,t,b,marking))
-        return None if len(bindings) == 0 else random.choices(bindings, probs)[0]
 
     @classmethod
-    def all_elegible_bindings(cls, pn: N, transition: T) -> List[List[Tuple[A, int]]]:
+    def all_legal_bindings(cls, pn: N, transition: T) -> List[List[Tuple[A, int]]]:
         """
         Creates all possible bindings for a given input transition
 
@@ -103,7 +91,7 @@ class StochasticArcWeightNetSemantics(StochasticPetriNetSemantics[N], Generic[N]
             return list(itertools.product(*l))
 
     @classmethod
-    def all_feasible_bindings(cls, pn: N, transition: T, marking: TCounter[P]) -> List[List[Tuple[A, int]]]:
+    def all_enabled_bindings(cls, pn: N, transition: T, marking: TCounter[P]) -> List[List[Tuple[A, int]]]:
         """
         Creates all possible feasible bindings for a given input transition in a given marking
 
@@ -117,12 +105,12 @@ class StochasticArcWeightNetSemantics(StochasticPetriNetSemantics[N], Generic[N]
         -------
         :return: list containing all posible feasible bindings
         """
-        return list(filter(lambda b: cls.is_feasible_binding(pn, transition, b, marking), cls.all_elegible_bindings(pn, transition)))
+        return list(filter(lambda b: cls.is_enabled_binding(pn, transition, b, marking), cls.all_legal_bindings(pn, transition)))
 
     @classmethod
-    def is_feasible_binding(cls, pn: N, transition: T, binding: StochasticArcWeightNet.Binding, marking: TCounter[P]) -> bool:
+    def is_enabled_binding(cls, pn: N, transition: T, binding: StochasticArcWeightNet.Binding, marking: TCounter[P]) -> bool:
         """
-        Creates all possible feasible bindings for a given input transition in a given marking
+        Checks if the provided binding is enabled
 
         Parameters
         ----------
@@ -132,7 +120,7 @@ class StochasticArcWeightNetSemantics(StochasticPetriNetSemantics[N], Generic[N]
 
         Returns
         -------
-        :return: list containing all posible feasible bindings
+        :return: bool indicates if the binding is enabled
         """
         if transition not in pn.transitions:
             return False
@@ -155,6 +143,22 @@ class StochasticArcWeightNetSemantics(StochasticPetriNetSemantics[N], Generic[N]
         return True
 
     @classmethod
+    def amortized_priority(cls, binding: StochasticArcWeightNet.Binding) -> float:
+        """
+        Computes the amortized priority (a.k.a weight) of a binding. The amortized priority is equal to the product of all individual weights of the arc weights includec in the binding.
+
+        Args:
+            binding (StochasticArcWeightNet.Binding): input binding
+
+        Returns:
+            float: amortized weight
+        """
+        prod = 1
+        for (a, w) in binding:
+            prod *= a.weight_distribution[w]
+        return prod
+
+    @abstractclassmethod
     def probability_of_binding(cls, pn: N, transition: T,  binding: StochasticArcWeightNet.Binding, marking: TCounter[P]) -> float:
         """
         Calculates the probability of firing a transition t under binding b in the net, in the given marking.
@@ -170,17 +174,80 @@ class StochasticArcWeightNetSemantics(StochasticPetriNetSemantics[N], Generic[N]
         -------
         :return: firing probability of transition t under binding b
         """
-        if transition not in pn.transitions or not cls.is_feasible_binding(pn, transition, binding, marking):
-            return 0.0
-        prob = cls.probability_of_transition(pn,transition,marking)
-        a_sum_in = dict()
-        a_sum_out = dict()
-        for (a, w) in binding:
-            if a.target == transition:
-                a_sum_in[a] = sum(a.weight_distribution.values())
-                prob *= a.weight_distribution[w] / a_sum_in[a]
-            else:
-                a_sum_out[a] = sum(a.weight_distribution.values())
-                prob *= a.weight_distribution[w] / a_sum_out[a]
-        return prob
+        pass
+
+
+class LocalStochasticArcWeightNetSemantics(StochasticArcWeightNetSemantics[N], Generic[N]):
+
+    @classmethod
+    def probability_of_binding(cls, pn: N, transition: T,  binding: StochasticArcWeightNet.Binding, marking: TCounter[P]) -> float:
+        """
+        Calculates the probability of firing a transition t under binding b in the net, in the given marking.
+
+        Parameters
+        ----------
+        :param pn: Petri net        
+        :param transition: transition to fire
+        :param binding: binding to consider
+        :param marking: marking to use
+
+        Returns
+        -------
+        :return: firing probability of transition t under binding b
+        """
+        s = 0
+        for t in pn.transitions:
+            if cls.is_enabled(pn,t,marking):
+                for b in cls.all_enabled_bindings(pn,transition,marking):
+                    s += t.weight * cls.amortized_priority(b)
         
+        print(cls.amortized_priority(binding))
+        return transition.weight * cls.amortized_priority(binding) / s
+
+
+class GlobalStochasticArcWeightNetSemantics(StochasticArcWeightNetSemantics[N], Generic[N]):
+
+    @classmethod
+    def probability_of_transition(cls, pn: N, transition: T, marking: Counter[P]) -> float:
+        """
+        Compute the probability of firing a transition in the net and marking.
+
+        Args:
+            pn (N): Stochastic net
+            transition (T): transition to fire
+            marking (Counter[P]): marking to use
+
+        Returns:
+            float: _description_
+        """
+        return 0.0 if not transition in pn.transitions or not cls.is_enabled(pn, transition, marking) else sum([transition.weight * cls.amortized_priority(b) for b in cls.all_enabled_bindings(pn, transition, marking)]) / sum([t.weight * cls.amortized_priority(b) for t in pn.transitions if cls.is_enabled(pn, t, marking) for b in cls.all_enabled_bindings(pn, t, marking)])
+
+    @classmethod
+    def sample_enabled_transition(cls, pn: N, marking: Counter[P], seed: int = None) -> Optional[Tuple[T, B]]:
+        if seed is not None:
+            random.seed(seed)
+        bindings = list()
+        probs = list()
+        for t in [t for t in pn.transitions if cls.is_enabled(pn, t, marking)]:
+            for b in cls.all_enabled_bindings(pn, t, marking):
+                bindings.append((t, b))
+                probs.append(cls.probability_of_binding(pn, t, b, marking))
+        return None if len(bindings) == 0 else random.choices(bindings, probs)[0]
+
+    @classmethod
+    def probability_of_binding(cls, pn: N, transition: T,  binding: StochasticArcWeightNet.Binding, marking: TCounter[P]) -> float:
+        """
+        Calculates the probability of firing a transition t under binding b in the net, in the given marking.
+
+        Parameters
+        ----------
+        :param pn: Petri net        
+        :param transition: transition to fire
+        :param binding: binding to consider
+        :param marking: marking to use
+
+        Returns
+        -------
+        :return: firing probability of transition t under binding b
+        """
+        return 0.0 if transition not in pn.transitions or not cls.is_enabled_binding(pn, transition, binding, marking) else (transition.weight * cls.amortized_priority(binding)) / sum([t.weight * cls.amortized_priority(b) for t in pn.transitions if cls.is_enabled(pn, t, marking) for b in cls.all_enabled_bindings(pn, t, marking)])
