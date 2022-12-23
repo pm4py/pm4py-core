@@ -1,12 +1,18 @@
 # Changelog of pm4py
 
-## pm4py 2.3.4 (2022.12.XX)
+## pm4py 2.3.4 (2022.12.23)
 
 ### Added
 
 ### Changed
 * 7a40a3cff6b0b4a12b2fe4ca7bd08bf963917443
   * PMPY-1989 - Improving the performance of streaming DFG discovery
+* ec766d97c9b8557324ab11a862d6630091a92059
+  * Removed Pyvis and Jsonpickle as explicit dependencies of the project
+* 04691455f47bc4ec84bb26ec7c5f6d187db1d41f
+  * PMPY-1993 - Removed Sympy requirement (re-implemented null space in WOFLAN)
+* b4fac01dff29ff34d6f0bb97e4398a101139d5b1
+  * Enabling disable_variants by default in TBR when place fitness is required
 
 ### Deprecated
 
