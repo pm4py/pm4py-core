@@ -18,6 +18,7 @@ class Parameters(Enum):
     AGGREGATION_MEASURE = "aggregationMeasure"
     FONT_SIZE = "font_size"
     BGCOLOR = "bgcolor"
+    DECORATIONS = "decorations"
 
 
 def apply(net, initial_marking, final_marking, decorations=None, parameters=None):
@@ -51,6 +52,9 @@ def apply(net, initial_marking, final_marking, decorations=None, parameters=None
     set_rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, None)
     font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, "12")
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
+
+    if decorations is None:
+        decorations = exec_utils.get_param_value(Parameters.DECORATIONS, parameters, None)
 
     return graphviz_visualization(net, image_format=image_format, initial_marking=initial_marking,
                                   final_marking=final_marking, decorations=decorations, debug=debug,
