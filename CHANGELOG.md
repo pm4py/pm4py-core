@@ -7,6 +7,8 @@
 ### Changed
 * 7a40a3cff6b0b4a12b2fe4ca7bd08bf963917443
   * PMPY-1989 - Improving the performance of streaming DFG discovery
+* 04691455f47bc4ec84bb26ec7c5f6d187db1d41f
+  * PMPY-1993 - Removed Sympy requirement (re-implemented null space in WOFLAN)
 
 ### Deprecated
 
