@@ -11,5 +11,4 @@ pydotplus
 pytz
 scipy
 stringdist
-sympy
 tqdm
