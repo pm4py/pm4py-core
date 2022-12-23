@@ -264,6 +264,19 @@ We offer different algorithms for the analysis of the organizational networks st
   * :meth:`pm4py.org.discover_organizational_roles`; discovers the organizational roles from the event log.
   * :meth:`pm4py.org.discover_network_analysis`; discovers the network analysis from the event log.
 
+Utilities (:mod:`pm4py.utils`)
+------------------------------------------
+
+Other algorithms, which do not belong to the aforementioned categories, are collected in this section:
+
+  * :meth:`pm4py.utils.parse_process_tree`; parses a process tree from a string.
+  * :meth:`pm4py.utils.parse_event_log_string`; parses an event log from a collection of comma-separated traces.
+  * :meth:`pm4py.utils.project_on_event_attribute`; projects an event log on top of a given attribute (e.g., the activity), obtaining a list of list of values for the attribute.
+  * :meth:`pm4py.utils.sample_cases`; samples a traditional event log returning the specified amount of cases.
+  * :meth:`pm4py.utils.sample_events`; samples a traditional event log / OCEL returning the specified amount of events.
+  * :meth:`pm4py.utils.serialize`; serializes mainstream pm4py objects as strings.
+  * :meth:`pm4py.utils.deserialize`; de-serializes mainstream pm4py objects given their string representation.
+
 Overall List of Methods
 ------------------------------------------
 
