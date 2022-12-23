@@ -16,7 +16,6 @@ libraries are added/removed.
 | kiwisolver | https://pypi.org/project/kiwisolver | BSD License | 1.4.4 |
 | lxml | https://pypi.org/project/lxml | BSD License (BSD-3-Clause) | 4.9.2 |
 | matplotlib | https://pypi.org/project/matplotlib | Python Software Foundation License (PSF) | 3.6.2 |
-| mpmath | https://pypi.org/project/mpmath | BSD License (BSD) | 1.2.1 |
 | networkx | https://pypi.org/project/networkx | BSD License | 2.8.8 |
 | numpy | https://pypi.org/project/numpy | BSD License (BSD-3-Clause) | 1.24.0 |
 | packaging | https://pypi.org/project/packaging | Apache Software License, BSD License | 22.0 |
@@ -30,6 +29,4 @@ libraries are added/removed.
 | six | https://pypi.org/project/six | MIT License (MIT) | 1.16.0 |
 | sortedcontainers | https://pypi.org/project/sortedcontainers | Apache Software License (Apache 2.0) | 2.4.0 |
 | stringdist | https://pypi.org/project/stringdist | MIT License (MIT) | 1.0.9 |
-| sympy | https://pypi.org/project/sympy | BSD License (BSD) | 1.11.1 |
 | tqdm | https://pypi.org/project/tqdm | MIT License, Mozilla Public License 2.0 (MPL 2.0) (MPLv2.0, MIT Licences) | 4.64.1 |
-
