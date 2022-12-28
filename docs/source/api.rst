@@ -203,6 +203,7 @@ Among those:
   * :meth:`pm4py.ml.split_train_test`; splits an event log into a *training event log* (default 80% of the cases) and a *test event log* (default 20% of the cases).
   * :meth:`pm4py.ml.get_prefixes_from_log`; gets fixed-length prefixes for the cases of an event log.
   * :meth:`pm4py.ml.extract_features_dataframe`; extracts machine learning features from an event log.
+  * :meth:`pm4py.ml.extract_temporal_features_dataframe`; extracts temporal features from an event log.
 
 Simulation (:mod:`pm4py.sim`)
 ------------------------------------------
@@ -430,6 +431,7 @@ Overall List of Methods
    pm4py.ml.split_train_test
    pm4py.ml.get_prefixes_from_log
    pm4py.ml.extract_features_dataframe
+   pm4py.ml.extract_temporal_features_dataframe
    pm4py.sim
    pm4py.sim.play_out
    pm4py.sim.generate_process_tree
