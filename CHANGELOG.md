@@ -1,5 +1,24 @@
 # Changelog of pm4py
 
+## pm4py 2.3.4 (2023.01.XX)
+
+### Added
+
+### Changed
+* c56c3ca6dd1068380ac7a0dc79f6fe64410e8d78
+  * PMPY-1995 - changed Petri net visualization in order to provide decorations for places/transitions/arcs
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+---
+
+
 ## pm4py 2.3.4 (2022.12.23)
 
 ### Added
