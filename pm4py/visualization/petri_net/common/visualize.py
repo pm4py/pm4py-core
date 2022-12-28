@@ -179,10 +179,10 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
 
     for a in arcs_sort_list:
         penwidth = decorations[a]["penwidth"] if a in decorations and "penwidth" in decorations[a] else None
-        label = decorations[a]["label"] if a in decorations and "label" in decorations[a] else None
+        label = decorations[a]["label"] if a in decorations and "label" in decorations[a] else ""
         color = decorations[a]["color"] if a in decorations and "color" in decorations[a] else None
 
-        if label is None and arc_weight_visible:
+        if not label and arc_weight_visible:
             label = a.weight
 
         label = str(label)
