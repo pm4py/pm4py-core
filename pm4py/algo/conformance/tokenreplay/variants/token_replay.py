@@ -1095,7 +1095,7 @@ def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking:
     walk_through_hidden_trans = exec_utils.get_param_value(Parameters.WALK_THROUGH_HIDDEN_TRANS, parameters, True)
     is_reduction = exec_utils.get_param_value(Parameters.IS_REDUCTION, parameters, False)
     cleaning_token_flood = exec_utils.get_param_value(Parameters.CLEANING_TOKEN_FLOOD, parameters, False)
-    disable_variants = exec_utils.get_param_value(Parameters.DISABLE_VARIANTS, parameters, False)
+    disable_variants = exec_utils.get_param_value(Parameters.DISABLE_VARIANTS, parameters, enable_pltr_fitness)
     return_names = exec_utils.get_param_value(Parameters.RETURN_NAMES, parameters, False)
     thread_maximum_ex_time = exec_utils.get_param_value(Parameters.THREAD_MAX_EX_TIME, parameters,
                                                         TechnicalParameters.MAX_DEF_THR_EX_TIME.value)

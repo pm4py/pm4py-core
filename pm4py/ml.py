@@ -102,7 +102,7 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
 
         import pm4py
 
-        trimmed_df = pm4py.get_prefixes_from_log(dataframe, length=5, case_id_key='case:concept:name')
+        features_df = pm4py.extract_features_dataframe(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -129,3 +129,43 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
     data, feature_names = log_to_features.apply(log, parameters=parameters)
 
     return pd.DataFrame(data, columns=feature_names)
+
+
+def extract_temporal_features_dataframe(log: Union[EventLog, pd.DataFrame], grouper_freq="W", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name", start_timestamp_key="time:timestamp", resource_key="org:resource") -> pd.DataFrame:
+    """
+    Extracts a dataframe containing the temporal features of the provided log object
+
+    Implements the approach described in the paper:
+    Pourbafrani, Mahsa, Sebastiaan J. van Zelst, and Wil MP van der Aalst. "Supporting automatic system dynamics model generation for simulation in the context of process mining." International Conference on Business Information Systems. Springer, Cham, 2020.
+
+
+    :param log: log object (event log / Pandas dataframe)
+    :param grouper_freq: the grouping frequency (D, W, M, Y) to use
+    :param activity_key: the attribute to be used as activity
+    :param timestamp_key: the attribute to be used as timestamp
+    :param case_id_key: the attribute to be used as case identifier
+    :param resource_key: the attribute to be used as resource
+    :param start_timestamp_key: the attribute to be used as start timestamp
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        temporal_features_df = pm4py.extract_temporal_features_dataframe(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    from pm4py.algo.transformation.log_to_features.variants import temporal
+
+    parameters[temporal.Parameters.GROUPER_FREQ] = grouper_freq
+    parameters[temporal.Parameters.ACTIVITY_COLUMN] = activity_key
+    parameters[temporal.Parameters.TIMESTAMP_COLUMN] = timestamp_key
+    parameters[temporal.Parameters.CASE_ID_COLUMN] = case_id_key
+    parameters[temporal.Parameters.START_TIMESTAMP_COLUMN] = start_timestamp_key
+    parameters[temporal.Parameters.RESOURCE_COLUMN] = resource_key
+
+    return temporal.apply(log, parameters=parameters)
