@@ -3,6 +3,8 @@
 ## pm4py 2.3.4 (2023.01.06)
 
 ### Added
+* 6fc781328a550a339e6e48d03f0e75464ad5249a
+  * PMPY-1997 - expose in the simplified interface the reduction of invisible transitions
 
 ### Changed
 * c56c3ca6dd1068380ac7a0dc79f6fe64410e8d78
