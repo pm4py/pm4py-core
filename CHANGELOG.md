@@ -1,8 +1,10 @@
 # Changelog of pm4py
 
-## pm4py 2.3.4 (2023.01.XX)
+## pm4py 2.3.4 (2023.01.06)
 
 ### Added
+* 6fc781328a550a339e6e48d03f0e75464ad5249a
+  * PMPY-1997 - expose in the simplified interface the reduction of invisible transitions
 
 ### Changed
 * c56c3ca6dd1068380ac7a0dc79f6fe64410e8d78
@@ -11,6 +13,8 @@
 ### Deprecated
 
 ### Fixed
+* 0bc31a7406f961122c3a124710d1a1ce8b6c74db
+  * fixed Scipy lp solver in order to allow for variables integrality specification.
 
 ### Removed
 
