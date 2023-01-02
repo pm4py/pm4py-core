@@ -98,8 +98,9 @@ def apply_reduction(net: PetriNet, im: Marking, fm: Marking) -> Tuple[PetriNet, 
         bub.append(0)
 
         c = [1] * (len(net.places) + 1)
+        integrality = [1] * (len(net.places) + 1)
 
-        xx = solver.apply(c, Aub, bub, Aeq, beq, variant=solver.SCIPY)
+        xx = solver.apply(c, Aub, bub, Aeq, beq, variant=solver.SCIPY, parameters={"integrality": integrality})
         if xx.success:
             redundant.add(place)
 
