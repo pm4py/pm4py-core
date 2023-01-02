@@ -12,6 +12,7 @@ from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.objects.transition_system.obj import TransitionSystem
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
@@ -291,7 +292,7 @@ def convert_ocel_to_networkx(ocel: OCEL, variant: str = "ocel_to_nx") -> nx.DiGr
     return converter.apply(ocel, variant=variant1)
 
 
-def convert_log_to_networkx(log: Union[EventLog, EventStream, pd.DataFrame], include_df: bool = True, case_id_key: str = "concept:name", other_case_attributes_as_nodes: Optional[Collection[str]] = None, event_attributes_as_nodes: Optional[Collection[str]] = None):
+def convert_log_to_networkx(log: Union[EventLog, EventStream, pd.DataFrame], include_df: bool = True, case_id_key: str = "concept:name", other_case_attributes_as_nodes: Optional[Collection[str]] = None, event_attributes_as_nodes: Optional[Collection[str]] = None) -> nx.DiGraph:
     """
     Converts an event log object to a NetworkX DiGraph object.
     The nodes of the graph are the events, the cases (and possibly the attributes of the log).
@@ -315,3 +316,30 @@ def convert_log_to_networkx(log: Union[EventLog, EventStream, pd.DataFrame], inc
     from pm4py.objects.conversion.log import converter
 
     return converter.apply(log, variant=converter.Variants.TO_NX, parameters={"include_df": include_df, "case_id_attribute": case_id_key, "other_case_attributes_as_nodes": other_case_attributes_as_nodes, "event_attributes_as_nodes": event_attributes_as_nodes})
+
+
+def convert_petri_to_networkx(net: PetriNet, im: Marking, fm: Marking) -> nx.DiGraph:
+    """
+    Converts a Petri net to a NetworkX DiGraph.
+    Each place and transition is corresponding to a node in the graph.
+
+    :param net: Petri net
+    :param im: initial marking
+    :param fm: final marking
+    :rtype: ``nx.DiGraph``
+
+    .. code-block:: python3
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('tests/input_data/running-example.pnml')
+        nx_digraph = pm4py.convert_petri_to_networkx(net, im, fm)
+    """
+    import networkx as nx
+    G = nx.DiGraph()
+    for place in net.places:
+        G.add_node(place.name, attr={"name": place.name, "is_in_im": place in im, "is_in_fm": place in fm, "type": "place"})
+    for trans in net.transitions:
+        G.add_node(trans.name, attr={"name": trans.name, "label": trans.label, "type": "transition"})
+    for arc in net.arcs:
+        G.add_edge(arc.source.name, arc.target.name, attr={"weight": arc.weight, "properties": arc.properties})
+    return G
