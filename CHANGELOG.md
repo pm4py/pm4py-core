@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.3.4 (2023.01.XX)
+## pm4py 2.3.4 (2023.01.06)
 
 ### Added
 
@@ -11,6 +11,8 @@
 ### Deprecated
 
 ### Fixed
+* 0bc31a7406f961122c3a124710d1a1ce8b6c74db
+  * fixed Scipy lp solver in order to allow for variables integrality specification.
 
 ### Removed
 
