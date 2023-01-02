@@ -265,6 +265,12 @@ We offer different algorithms for the analysis of the organizational networks st
   * :meth:`pm4py.org.discover_organizational_roles`; discovers the organizational roles from the event log.
   * :meth:`pm4py.org.discover_network_analysis`; discovers the network analysis from the event log.
 
+Privacy (:mod:`pm4py.privacy`)
+------------------------------------------
+We offer the following algorithms for the anonymization of event logs:
+
+  * :meth:`pm4py.privacy.anonymize_differential_privacy`; PRIPEL (Privacy-preserving event log publishing with contextual information) is a framework to publish event logs that fulfill differential privacy.
+
 Utilities (:mod:`pm4py.utils`)
 ------------------------------------------
 
@@ -464,6 +470,7 @@ Overall List of Methods
    pm4py.analysis.check_is_workflow_net
    pm4py.analysis.maximal_decomposition
    pm4py.analysis.generate_marking
+   pm4py.privacy.anonymize_differential_privacy
    pm4py.utils
    pm4py.utils.rebase
    pm4py.utils.parse_process_tree
