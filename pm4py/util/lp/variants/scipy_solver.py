@@ -19,11 +19,21 @@ import numpy as np
 from scipy.optimize import linprog
 from scipy.optimize.optimize import OptimizeResult
 from typing import Optional, Dict, Any, List
+from enum import Enum
+from pm4py.util import exec_utils
+
+
+class Parameters:
+    INTEGRALITY = "integrality"
 
 
 def apply(c: list, Aub: np.ndarray, bub: np.matrix, Aeq: np.matrix, beq: np.matrix,
           parameters: Optional[Dict[Any, Any]] = None) -> OptimizeResult:
-    sol = linprog(c, A_ub=Aub, b_ub=bub, A_eq=Aeq, b_eq=beq, method="revised simplex")
+    if parameters is None:
+        parameters = {}
+
+    integrality = exec_utils.get_param_value(Parameters.INTEGRALITY, parameters, None)
+    sol = linprog(c, A_ub=Aub, b_ub=bub, A_eq=Aeq, b_eq=beq, method="revised simplex", integrality=integrality)
     return sol
 
 

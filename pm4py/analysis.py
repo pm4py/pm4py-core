@@ -255,3 +255,21 @@ def generate_marking(net: PetriNet, place_or_dct_places: Union[str, PetriNet.Pla
             elif isinstance(dct_keys[0], str):
                 # we specified a dictionary associating to names of places a number of tokens
                 return Marking({dct_places[x]: y for x, y in place_or_dct_places.items()})
+
+
+def reduce_petri_net_invisibles(net: PetriNet) -> PetriNet:
+    """
+    Reduce the number of invisibles transitions in the provided Petri net.
+
+    :param net: petri net
+    :rtype: ``PetriNet``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('model.pnml')
+        net = pm4py.reduce_petri_net_invisibles(net)
+    """
+    from pm4py.objects.petri_net.utils import reduction
+    return reduction.apply_simple_reduction(net)
