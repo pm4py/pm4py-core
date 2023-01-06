@@ -8,13 +8,21 @@ We will also report all MAJOR and MINOR releases in the release notes.
 
 As today's release is a minor rele, we report on the main changes here.
 1. We added the Murata algorithm (Berthelot implementation) to remove the structurally redundant places, which is now available in the simplified interface.
+
 2. We added the reduction of invisible transitions in Petri nets to the simplified interface.
+
 3. We added support for calcuating stochastic languages of process models
+
 4. We adde support for calculating EMD between two stochastic languages 
+
 5. we added a visualization of alignments in simplified interface
+
 6. We added visualization of footprint table in simplified interface
+
 7. We added a conversion of Petri net objects to networkX DiGraphs
+
 8. We added support for stochastic Petri nets
+
 9. We added support for stochastic arc-weight nets (the paper describing this class of nets is submitted to the Petri nets 2023 conference)
 
 pm4py 2.3.0 - Release Notes
