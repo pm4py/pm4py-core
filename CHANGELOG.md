@@ -15,6 +15,9 @@
   * add visualization of footprint table in simplified interface
 * 82e20325229a3ae4e9c045ab2cfec3070ab02005
   * add conversion of Petri net object to networkX 
+* dfbd6c27c09ecb45c3dcf7edb35093455c09c429
+  * add support for stochastic Petri nets
+  * add support for stochastic arc-weight nets
 
 ### Changed
 * c56c3ca6dd1068380ac7a0dc79f6fe64410e8d78
