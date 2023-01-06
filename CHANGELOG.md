@@ -1,14 +1,29 @@
 # Changelog of pm4py
 
-## pm4py 2.3.4 (2023.01.06)
+## pm4py 2.3.5 (2023.01.06)
 
 ### Added
+* 7d3b0cb107452b9f7fa3d3c3e1c3609e3c5827dd
+  * Murata algorithm (Berthelot implementation) to remove the structurally redundant places
 * 6fc781328a550a339e6e48d03f0e75464ad5249a
-  * PMPY-1997 - expose in the simplified interface the reduction of invisible transitions
+  * expose in the simplified interface the reduction of invisible transitions
+* 21a79b0132aaf5e2d6ac4efbb31995fba91dd46b
+  * add support for calcuating stochastic languages of process models
+  * add support for calculating EMD between two stochastic languages 
+* 9186c5bac228383e3b2addba6e5205e6e0ce2a8d
+  * add visualization of alignments in simplified interface
+  * add visualization of footprint table in simplified interface
+* 82e20325229a3ae4e9c045ab2cfec3070ab02005
+  * add conversion of Petri net object to networkX 
+* dfbd6c27c09ecb45c3dcf7edb35093455c09c429
+  * add support for stochastic Petri nets
+  * add support for stochastic arc-weight nets
 
 ### Changed
 * c56c3ca6dd1068380ac7a0dc79f6fe64410e8d78
-  * PMPY-1995 - changed Petri net visualization in order to provide decorations for places/transitions/arcs
+  * changed Petri net visualization in order to provide decorations for places/transitions/arcs
+* 63371dbad1f9e9cf2e53a6b38977fd22f02661df
+  * changed xes importer to support returning the legacy event log object 
 
 ### Deprecated
 
@@ -27,15 +42,15 @@
 
 ### Added
 * 89ca01e1378cb2cfac21f5d58e0e4fea44ca2186
-  * PMPY-1979 - extraction of temporal features (system dynamics log) in pm4py
+  * extraction of temporal features (system dynamics log) in pm4py
 
 ### Changed
 * 7a40a3cff6b0b4a12b2fe4ca7bd08bf963917443
-  * PMPY-1989 - Improving the performance of streaming DFG discovery
+  * Improving the performance of streaming DFG discovery
 * ec766d97c9b8557324ab11a862d6630091a92059
   * Removed Pyvis and Jsonpickle as explicit dependencies of the project
 * 04691455f47bc4ec84bb26ec7c5f6d187db1d41f
-  * PMPY-1993 - Removed Sympy requirement (re-implemented null space in WOFLAN)
+  * Removed Sympy requirement (re-implemented null space in WOFLAN)
 * b4fac01dff29ff34d6f0bb97e4398a101139d5b1
   * Enabling disable_variants by default in TBR when place fitness is required
 
@@ -55,19 +70,19 @@
 
 ### Added
 * e2e4d357e2218a48f9b2d6b89690fbbe61cd6906
-  * PMPY-1952 OCEL - importing/exporting from/to SQLite
+  * importing/exporting from/to SQLite
 
 ### Changed
 * 246be6c1aa1a3216faebf1440c38d59485621f4b
-  * PMPY-1975 Visualization of heuristics net - avoid totally unconnected nodes
+  * Visualization of heuristics net - avoid totally unconnected nodes
 
 ### Deprecated
 
 ### Fixed
 * 2e560757b4717a94e8f774de4b42bbb26bcdfc12
-  * PMPY-1974 Bug fix TBR decorations in Petri net
+  * bug fix TBR decorations in Petri net
 * 743151159a3f240ea6cf0756bd9ae24ac5cac10b
-  * PMPY-1976 cope with changes in the deprecation/packaging packages
+  * cope with changes in the deprecation/packaging packages
 
 ### Removed
 
@@ -79,7 +94,7 @@
 
 ### Added
 * 55cf77276573efcc6d67ed1a51871914ba34f84e
-  * PMPY-1968 instantiation of some objects directly from the pm4py module.
+  * instantiation of some objects directly from the pm4py module.
 
 ### Changed
 * f887397e9abf2e9f85b48b941aa2bd4a892600a0
@@ -94,7 +109,7 @@
   * raise exception when unsupported OCEL file format during read/write
 * 394960d9eabcc0ac2eb40520b2866a3e21178d7c
   * fixed statistics.traces.generic.pandas.case_statistics.get_cases_description to support the start timestamp column
-* PMPY-1973 - 0bd2caf62742627f840a5cde5486a0b92eaafeeb
+* 0bd2caf62742627f840a5cde5486a0b92eaafeeb
   * bug fix discovery DFG typed
 
 ### Removed
@@ -132,66 +147,66 @@
 
 ### Added
 * 00a7ab36bda245d16a35ae6fff2bfb51d8ff8aea
-    PMPY-1641 Adding several methods to the simplified interface (process discovery/conformance checking using log skeleton, temporal profile, batch detection).
+    Adding several methods to the simplified interface (process discovery/conformance checking using log skeleton, temporal profile, batch detection).
 * feeb1891f82014b3e86a4c5301c237226acc8fad
-    PMPY-1741 OCEL - Visualization of object graphs (object interaction, object descendants, ...)
+    OCEL - Visualization of object graphs (object interaction, object descendants, ...)
 * 15964a428e2e0fc50dcc96570fba39f2e0d40099
-    PMPY-1742 - OCEL - Added some filters in the simplified interface
+    OCEL - Added some filters in the simplified interface
 * fefe740338b702eafb7049a8f777f48f464d157d
-  * PMPY-1953 OCEL - insertion of an attribute pointing to the parent object
+  *  OCEL - insertion of an attribute pointing to the parent object
 * 88c58a1c6809388be58db2ea6e64fb9b58d913d6
-  * PMPY-1763 OCEL - sampling objects
+  * OCEL - sampling objects
 * 40c741c8298584402cd9ea8e86bcca09f2bfd857
-    PMPY-1743 OCEL - Method to get a temporal description of an object-centric log
+    OCEL - Method to get a temporal description of an object-centric log
 * d63929cc36b1aba941f88efac05af3b25a384787
-    PMPY-1744 OCEL - method for objects summary
+    OCEL - method for objects summary
 * fdd87eb41e54ce8d179ae3030fd9e15ea74320e8
-    PMPY-1812 OCEL - expansion of the set of objects during filtering on object identifiers
+    OCEL - expansion of the set of objects during filtering on object identifiers
 * 908d0aa843f1a4e9f4a6c69139a3be755c2e8555
-  * PMPY-1951 OCEL - conversion to NetworkX DiGraph
+  * OCEL - conversion to NetworkX DiGraph
 * 5c7cc41b94810ec93f388f8014f2a3820d0063f2
-  * PMPY-1956 EventLog - conversion to NetworkX DiGraph 
+  * EventLog - conversion to NetworkX DiGraph 
 * e7b4f712e1bd9475c73be5bc82c9a22eb0b745b5
-  * PMPY-1764 OCEL - objects interactions summary
+  * OCEL - objects interactions summary
 * 43b5976f7040a77c0aa32f5a28c508eb19966fa1
-  * PMPY-1950 OCEL - methods to merge duplicates
+  * OCEL - methods to merge duplicates
 * 3cc1a19f42420e034a7489f1c695fea788e9087f
-  * PMPY-1806 OCEL - methods to manage duplicates, sorting and time-delta for events
+  * OCEL - methods to manage duplicates, sorting and time-delta for events
 * 2c729e28e7f536acbd0919d88cf035a23542a3ae
-  * PMPY-1941 OCEL - conversion event log to OCEL accepts several object types
+  * OCEL - conversion event log to OCEL accepts several object types
   
 ### Changed
 * f6b7714eaf79e1c57e4283163a51631f0ea8d964
-	PMPY-1602 default variant representation is now a tuple of activities instead of a comma-separated string
+	default variant representation is now a tuple of activities instead of a comma-separated string
 * 642dcdf2cc538d384c1869436879d7d0602e3fa0
-	PMPY-1670 refactoring PNML importing: auto-detection of final marking shall be optional
+	refactoring PNML importing: auto-detection of final marking shall be optional
 * 85cea58442348684440890612db8b5511491e0d2
-	PMPY-1671 refactoring XES exporting in the simplified interface
+	refactoring XES exporting in the simplified interface
 * f60fd1ded3210adb91345be49343cd0dceaecc6d
-	PMPY-1703 refactoring usage of type() and isinstance() throughout the code
+	refactoring usage of type() and isinstance() throughout the code
 * faabe5ee17ae6fb10e77637e614db5d764d66e93
-	PMPY-1655 introduced proper ResetNet, InhibitorNet, and ResetInhibitorNet classes
+	introduced proper ResetNet, InhibitorNet, and ResetInhibitorNet classes
 * 070d0467bda22d81b4166c2b3646333a23897f81
-	PMPY-1705 different OCEL exporters methods are now available for different outputs, instead of having a single method accepting a path with an extension
+	different OCEL exporters methods are now available for different outputs, instead of having a single method accepting a path with an extension
 * c614474e477a02836bd36f0b40db4b8ef37b78a6
-    PMPY-1706 made extension optional to write methods
+    made extension optional to write methods
 * f89a1dfa797da4581c4cbbd8cde482caf2402ca4
   c768e5a33e5e2f872fd2dc0d45a11d589a130629
-    PMPY-1650 documentation is taken inside docstrings and formatted using Sphinx
+    documentation is taken inside docstrings and formatted using Sphinx
 * 7640c79932ef974524ca4424f91c6b9416401a8d
-    PMPY-1799 brand new implementation of the inductive miner, also with multi-processing support.
+    brand new implementation of the inductive miner, also with multi-processing support.
               the .apply method of the inductive miner is now returning a process tree object.
 * cc74d5ebcd7181626d79d60b2a883ad061cd85ba
-    PMPY-1915 re-implementation of business hours in a slot-based way.
+    re-implementation of business hours in a slot-based way.
 
 ### Deprecated
 
 * 6184f7f9e4e323a222a28ed046686eb9f0d6b3e8
-	PMPY-1574 deprecating the usage of the EventLog class
+	deprecating the usage of the EventLog class
 * fddc1c0936514d819be77c993913a96172680f0e
-	PMPY-1623 deprecating some packages for removal in future release (hierarchical clustering, comparison, alignments with edit distance, decision mining, earth mover distance, log to interval tree)
+	deprecating some packages for removal in future release (hierarchical clustering, comparison, alignments with edit distance, decision mining, earth mover distance, log to interval tree)
  * 000f23ca65226d66f52d85f9b876ec68669f03e0
-	PMPY-1660 deprecating the format_dataframe function.
+	deprecating the format_dataframe function.
 
 ### Fixed
 * d066d3f49a996c30d151031d66de90db4f4d9a2e
@@ -204,18 +219,18 @@
   9b90c2c18b708d39e3c75f8b2e25433c7e8b447f
   ba6b55b84d1f7191d578e0d5535c49ef1930ce65
   4d5765052fe4085fc8f8340e72a353369705b878
-    PMPY-1573 making methods directly working on Pandas dataframes
+    making methods directly working on Pandas dataframes
 * ba6b55b84d1f7191d578e0d5535c49ef1930ce65
   4d5765052fe4085fc8f8340e72a353369705b878
   aea15814ba8f67a51fce1ec0beebd9a4a3721a19
-    PMPY-1619 adding common parameters to simplified interface methods
+    adding common parameters to simplified interface methods
 * f8482b9e9aa4376543ad5d66d22fb04de0639530
-    PMPY-1880 missing parameters in heuristics net discovery
+    missing parameters in heuristics net discovery
 
 ### Removed
 
 * d2a95d306362f54e08070b98193abbf8498ba70e
-	PMPY-1575 removed all deprecated code for this release; standardized object definitions
+	removed all deprecated code for this release; standardized object definitions
 
 ### Other
 
