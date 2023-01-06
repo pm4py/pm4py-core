@@ -14,6 +14,7 @@ import os
 from pandas import DataFrame
 import pkgutil
 import deprecation
+from typing import Union
 
 INDEX_COLUMN = "@@index"
 
@@ -22,13 +23,14 @@ The ``pm4py.read`` module contains all funcationality related to reading files/o
 """
 
 
-def read_xes(file_path: str, variant: str = "lxml", **kwargs) -> DataFrame:
+def read_xes(file_path: str, variant: str = "lxml", return_legacy_log_object: bool = False, **kwargs) -> Union[DataFrame, EventLog]:
     """
     Reads an event log stored in XES format (see `xes-standard <https://xes-standard.org/>`_)
     Returns a table (``pandas.DataFrame``) view of the event log.
 
     :param file_path: file path of the event log (``.xes`` file) on disk
     :param variant: the variant of the importer to use. "iterparse" => traditional XML parser; "line_by_line" => text-based line-by-line importer ; "chunk_regex" => chunk-of-bytes importer (default); "iterparse20" => XES 2.0 importer
+    :param return_legacy_log_object: boolean value enabling returning a log object (default: False)
     :rtype: ``DataFrame``
 
     .. code-block:: python3
@@ -52,6 +54,8 @@ def read_xes(file_path: str, variant: str = "lxml", **kwargs) -> DataFrame:
     elif variant == "chunk_regex":
         v = xes_importer.Variants.CHUNK_REGEX
     log = xes_importer.apply(file_path, variant=v, parameters=kwargs)
+    if return_legacy_log_object:
+        return log
     log = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
     log = dataframe_utils.convert_timestamp_columns_in_df(log)
     return log
