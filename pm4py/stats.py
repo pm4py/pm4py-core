@@ -235,13 +235,13 @@ def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame], activity_key: str
         return get.get_variants(log, parameters=properties)
 
 
-def get_stochastic_language(*args, **kwargs) -> Union[Dict[List[str], float], Dict[str, float]]:
+def get_stochastic_language(*args, **kwargs) -> Dict[List[str], float]:
     """
     Gets the stochastic language from the provided object
 
     :param args: Pandas dataframe / event log / accepting Petri net / process tree
     :param kwargs: keyword arguments
-    :rtype: ``Dict[Tuple[str], List[Trace]]``
+    :rtype: ``Dict[List[str], float]``
 
     .. code-block:: python3
 
