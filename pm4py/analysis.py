@@ -42,6 +42,32 @@ def construct_synchronous_product_net(trace: Trace, petri_net: PetriNet, initial
     return sync_net, sync_im, sync_fm
 
 
+def compute_emd(language1: Dict[List[str], float], language2: Dict[List[str], float]) -> float:
+    """
+    Computes the earth mover distance between two stochastic languages (for example, the first extracted from the log,
+    and the second extracted from the process model.
+
+    :param language1: (first) stochastic language
+    :param language2: (second) stochastic language
+    :rtype: ``float``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes('tests/input_data/running-example.xes')
+        language_log = pm4py.get_stochastic_language(log)
+        print(language_log)
+        net, im, fm = pm4py.read_pnml('tests/input_data/running-example.pnml')
+        language_model = pm4py.get_stochastic_language(net, im, fm)
+        print(language_model)
+        emd_distance = pm4py.compute_emd(language_log, language_model)
+        print(emd_distance)
+    """
+    from pm4py.algo.evaluation.earth_mover_distance import algorithm as earth_mover_distance
+    return earth_mover_distance.apply(language1, language2)
+
+
 def solve_marking_equation(petri_net: PetriNet, initial_marking: Marking,
                            final_marking: Marking, cost_function: Dict[PetriNet.Transition, float] = None) -> float:
     """
