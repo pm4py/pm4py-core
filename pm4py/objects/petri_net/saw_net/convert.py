@@ -35,7 +35,7 @@ def convert_saw_net_to_stochastic_net_global_semantics(saw: StochasticArcWeightN
                 sn.arcs.add(a_new)
                 transition_weight = transition_weight * (a.weight_distribution[w] / a_sums[a])
             t_new.weight = transition_weight
-    return sn
+    return sn, p_map
 
 
 def convert_saw_net_to_stochastic_net_local_semantics(saw: StochasticArcWeightNet, marking: TCounter[StochasticArcWeightNet.Place]) -> Tuple[StochasticPetriNet,TCounter[StochasticArcWeightNet.Place]]:
