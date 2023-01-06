@@ -42,7 +42,7 @@ def construct_synchronous_product_net(trace: Trace, petri_net: PetriNet, initial
     return sync_net, sync_im, sync_fm
 
 
-def compute_emd(language1: Union[Dict[List[str], float], Dict[str, float]], language2: Union[Dict[List[str], float], Dict[str, float]]) -> float:
+def compute_emd(language1: Dict[List[str], float], language2: Dict[List[str], float]) -> float:
     """
     Computes the earth mover distance between two stochastic languages (for example, the first extracted from the log,
     and the second extracted from the process model.
