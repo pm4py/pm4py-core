@@ -34,7 +34,8 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
     view_dotted_chart, save_vis_dotted_chart, view_performance_spectrum, save_vis_performance_spectrum, view_case_duration_graph, view_events_per_time_graph, save_vis_case_duration_graph, \
     save_vis_events_per_time_graph, view_events_distribution_graph, save_vis_events_distribution_graph, view_performance_dfg, save_vis_performance_dfg, \
     view_ocpn, save_vis_ocpn, view_network_analysis, save_vis_network_analysis, view_transition_system, save_vis_transition_system, \
-    view_prefix_tree, save_vis_prefix_tree, view_object_graph, save_vis_object_graph
+    view_prefix_tree, save_vis_prefix_tree, view_object_graph, save_vis_object_graph, view_alignments, save_vis_alignments, \
+    view_footprints, save_vis_footprints
 from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
     convert_to_petri_net, convert_to_process_tree, convert_to_reachability_graph, convert_log_to_ocel, convert_ocel_to_networkx, convert_log_to_networkx
 from pm4py.analysis import check_soundness, compute_emd, solve_marking_equation, solve_extended_marking_equation, \
