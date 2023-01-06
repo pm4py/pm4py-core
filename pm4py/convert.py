@@ -318,7 +318,7 @@ def convert_log_to_networkx(log: Union[EventLog, EventStream, pd.DataFrame], inc
     return converter.apply(log, variant=converter.Variants.TO_NX, parameters={"include_df": include_df, "case_id_attribute": case_id_key, "other_case_attributes_as_nodes": other_case_attributes_as_nodes, "event_attributes_as_nodes": event_attributes_as_nodes})
 
 
-def convert_petri_to_networkx(net: PetriNet, im: Marking, fm: Marking) -> nx.DiGraph:
+def convert_petri_net_to_networkx(net: PetriNet, im: Marking, fm: Marking) -> nx.DiGraph:
     """
     Converts a Petri net to a NetworkX DiGraph.
     Each place and transition is corresponding to a node in the graph.
