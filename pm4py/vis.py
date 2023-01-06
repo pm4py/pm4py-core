@@ -1059,6 +1059,95 @@ def save_vis_prefix_tree(trie: Trie, file_path: str, bgcolor: str = "white"):
     trie_visualizer.save(gviz, file_path)
 
 
+def view_alignments(log: Union[EventLog, pd.DataFrame], aligned_traces: List[Dict[str, Any]], format: str = "png"):
+    """
+    Views the alignment table as a figure
+
+    :param log: event log
+    :param aligned_traces: results of an alignment
+    :param format: format of the visualization (default: png)
+
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes('tests/input_data/running-example.xes')
+        net, im, fm = pm4py.discover_petri_net_inductive(log)
+        aligned_traces = pm4py.conformance_diagnostics_alignments(log, net, im, fm)
+        pm4py.view_alignments(log, aligned_traces, format='svg')
+    """
+    from pm4py.visualization.align_table import visualizer
+    gviz = visualizer.apply(log, aligned_traces, parameters={"format": format})
+    visualizer.view(gviz)
+
+
+def save_vis_alignments(log: Union[EventLog, pd.DataFrame], aligned_traces: List[Dict[str, Any]], file_path: str):
+    """
+    Saves an alignment table's figure in the disk
+
+    :param log: event log
+    :param aligned_traces: results of an alignment
+    :param file_path: target path in the disk
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes('tests/input_data/running-example.xes')
+        net, im, fm = pm4py.discover_petri_net_inductive(log)
+        aligned_traces = pm4py.conformance_diagnostics_alignments(log, net, im, fm)
+        pm4py.save_vis_alignments(log, aligned_traces, 'output.svg')
+    """
+    file_path = str(file_path)
+    format = os.path.splitext(file_path)[1][1:]
+    from pm4py.visualization.align_table import visualizer
+    gviz = visualizer.apply(log, aligned_traces, parameters={"format": format})
+    visualizer.save(gviz, file_path)
+
+
+def view_footprints(footprints: Union[List[Dict[str, Any]], Dict[str, Any]], format: str = "png"):
+    """
+    Views the footprints as a figure
+
+    :param footprints: footprints
+    :param format: format of the visualization (default: png)
+
+     .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes('tests/input_data/running-example.xes')
+        fp_log = pm4py.discover_footprints(log)
+        pm4py.view_footprints(fp_log, format='svg')
+    """
+    from pm4py.visualization.footprints import visualizer as fps_visualizer
+    gviz = fps_visualizer.apply(footprints, parameters={"format": format})
+    fps_visualizer.view(gviz)
+
+
+def save_vis_footprints(footprints: Union[List[Dict[str, Any]], Dict[str, Any]], file_path: str):
+    """
+    Saves the footprints' visualization on disk
+
+    :param footprints: footprints
+    :param file_path: target path of the visualization
+
+     .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes('tests/input_data/running-example.xes')
+        fp_log = pm4py.discover_footprints(log)
+        pm4py.save_vis_footprints(fp_log, 'output.svg')
+    """
+    file_path = str(file_path)
+    format = os.path.splitext(file_path)[1][1:]
+    from pm4py.visualization.footprints import visualizer as fps_visualizer
+    gviz = fps_visualizer.apply(footprints, parameters={"format": format})
+    fps_visualizer.save(gviz, file_path)
+
+
 def view_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], format: str = "png", bgcolor: str = "white"):
     """
     Visualizes an object graph on the screen
