@@ -3,6 +3,8 @@
 ## pm4py 2.3.4 (2023.01.06)
 
 ### Added
+* 7d3b0cb107452b9f7fa3d3c3e1c3609e3c5827dd
+  * PMPY-1996 - Murata algorithm (Berthelot implementation) to remove the structurally redundant places
 * 6fc781328a550a339e6e48d03f0e75464ad5249a
   * PMPY-1997 - expose in the simplified interface the reduction of invisible transitions
 
