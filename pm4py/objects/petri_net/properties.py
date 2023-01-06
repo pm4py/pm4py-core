@@ -25,6 +25,7 @@ TRACE_NET_PLACE_INDEX = "trace_net_place_index"
 ARCTYPE = "arctype"
 INHIBITOR_ARC = "inhibitor"
 RESET_ARC = "reset"
+STOCHASTIC_ARC = "stochastic_arc"
 
 TRANS_GUARD = "guard"
 WRITE_VARIABLE = "writeVariable"
