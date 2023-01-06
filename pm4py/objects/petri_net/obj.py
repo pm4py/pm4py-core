@@ -1,5 +1,6 @@
 from collections import Counter
 from copy import deepcopy
+from typing import Any, Collection, Dict
 
 
 class Marking(Counter):
@@ -241,29 +242,29 @@ class PetriNet(object):
         weight = property(__get_weight, __set_weight)
         properties = property(__get_properties)
 
-    def __init__(self, name=None, places=None, transitions=None, arcs=None, properties=None):
+    def __init__(self, name: str=None, places: Collection[Place]=None, transitions: Collection[Transition]=None, arcs: Collection[Arc]=None, properties:Dict[str, Any]=None):
         self.__name = "" if name is None else name
         self.__places = set() if places is None else places
         self.__transitions = set() if transitions is None else transitions
         self.__arcs = set() if arcs is None else arcs
         self.__properties = dict() if properties is None else properties
 
-    def __get_name(self):
+    def __get_name(self) -> str:
         return self.__name
 
     def __set_name(self, name):
         self.__name = name
 
-    def __get_places(self):
+    def __get_places(self) -> Collection[Place]:
         return self.__places
 
-    def __get_transitions(self):
+    def __get_transitions(self) -> Collection[Transition]:
         return self.__transitions
 
-    def __get_arcs(self):
+    def __get_arcs(self) -> Collection[Arc]:
         return self.__arcs
 
-    def __get_properties(self):
+    def __get_properties(self) -> Dict[str, Any]:
         return self.__properties
 
     def __hash__(self):
