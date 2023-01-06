@@ -12,6 +12,8 @@ from pm4py.objects.log.obj import EventLog, Trace, EventStream
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns, insert_ev_in_tr_index
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.util import xes_constants, constants
+from pm4py.objects.petri_net.obj import PetriNet
+from pm4py.objects.process_tree.obj import ProcessTree
 from copy import copy
 import deprecation
 
@@ -231,6 +233,38 @@ def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame], activity_key: str
     else:
         from pm4py.statistics.variants.log import get
         return get.get_variants(log, parameters=properties)
+
+
+def get_stochastic_language(*args, **kwargs) -> Dict[List[str], float]:
+    """
+    Gets the stochastic language from the provided object
+
+    :param args: Pandas dataframe / event log / accepting Petri net / process tree
+    :param kwargs: keyword arguments
+    :rtype: ``Dict[List[str], float]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes('tests/input_data/running-example.xes')
+        language_log = pm4py.get_stochastic_language(log)
+        print(language_log)
+        net, im, fm = pm4py.read_pnml('tests/input_data/running-example.pnml')
+        language_model = pm4py.get_stochastic_language(net, im, fm)
+        print(language_model)
+    """
+    from pm4py.statistics.variants.log import get
+    if isinstance(args[0], EventLog) or isinstance(args[0], EventStream) or isinstance(args[0], pd.DataFrame):
+        from pm4py.objects.conversion.log import converter as log_converter
+        log = log_converter.apply(args[0])
+        return get.get_language(log)
+    elif isinstance(args[0], PetriNet) or isinstance(args[0], ProcessTree) or isinstance(args[0], dict):
+        import pm4py
+        log = pm4py.play_out(*args, **kwargs)
+        return get.get_language(log)
+    else:
+        raise Exception("unsupported input")
 
 
 def get_minimum_self_distances(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, int]:

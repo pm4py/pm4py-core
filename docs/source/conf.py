@@ -26,7 +26,7 @@ author = 'Fraunhofer FIT'
 # The short X.Y version
 version = '2.3'
 # The full version, including alpha/beta/rc tags
-release = '2.3.4'
+release = '2.3.5'
 
 # -- General configuration ---------------------------------------------------
 
@@ -89,7 +89,12 @@ html_logo = 'pm4py-logo.png'
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+   "logo": {
+      "image_light": "pm4py-logo.png",
+      "image_dark": "pm4py-logo.png",
+   }
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
