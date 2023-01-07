@@ -11,7 +11,7 @@ def execute_script():
     fmo = Marking()
     sourceo = StochasticArcWeightNet.Place("sourceo")
     targeto = StochasticArcWeightNet.Place("targeto")
-    imo[sourceo] = 1
+    # imo[sourceo] = 1
     # fmo[targeto] = 1
     neto.places.add(sourceo)
     neto.places.add(targeto)
@@ -70,7 +70,7 @@ def execute_script():
     targete = StochasticArcWeightNet.Place("targete")
     nete.places.add(sourcee)
     nete.places.add(targete)
-    ime[sourcee] = 3
+    # ime[sourcee] = 3
     # fme[targete] = 3
     create_order_e = StochasticArcWeightNet.Transition(str(uuid4()), "Create Order")
     send_package_e = StochasticArcWeightNet.Transition(str(uuid4()), "Send Package")
