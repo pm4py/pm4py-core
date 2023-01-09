@@ -1,5 +1,24 @@
 # Changelog of pm4py
 
+## pm4py 2.4.1 (2023.01.XX)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 8687e8e0427a150d8a2ed342525392f8ef1f5dab
+  * required an older version of Pandas to handle timestamp issues.
+
+### Removed
+
+### Other
+
+---
+
+
 ## pm4py 2.4.0 (2023.01.06)
 
 ### Added
