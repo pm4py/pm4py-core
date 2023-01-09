@@ -4,8 +4,9 @@ intervaltree
 lxml
 matplotlib
 networkx
-numpy>=1.19.5
-pandas<=1.4.4
+numpy
+pandas<=1.4.4;python_version<'3.11'
+pandas;python_version>='3.11'
 pydotplus
 pytz
 scipy
