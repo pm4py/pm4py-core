@@ -11,6 +11,8 @@
 ### Deprecated
 
 ### Fixed
+* 26fe3ea4ec65b668002163ae451436a4452f0b20
+  * improved compatibility with Pandas 1.5.x (faster date processing)
 * 93ee76af7cd23816d8891d6e7925011dc4d0399e
   * fixed compatibility with Python 3.8 in typing
 
