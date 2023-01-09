@@ -225,7 +225,7 @@ class LocalStochasticArcWeightNetSemantics(StochasticArcWeightNetSemantics[N], G
 class GlobalStochasticArcWeightNetSemantics(StochasticArcWeightNetSemantics[N], Generic[N]):
 
     @classmethod
-    def probability_of_transition(cls, pn: N, transition: T, marking: Counter[P]) -> float:
+    def probability_of_transition(cls, pn: N, transition: T, marking: TCounter[P]) -> float:
         """
         Compute the probability of firing a transition in the net and marking.
 
@@ -240,7 +240,7 @@ class GlobalStochasticArcWeightNetSemantics(StochasticArcWeightNetSemantics[N], 
         return 0.0 if not transition in pn.transitions or not cls.is_enabled(pn, transition, marking) else sum([transition.weight * cls.amortized_priority(b) for b in cls.all_enabled_bindings(pn, transition, marking)]) / sum([t.weight * cls.amortized_priority(b) for t in pn.transitions if cls.is_enabled(pn, t, marking) for b in cls.all_enabled_bindings(pn, t, marking)])
 
     @classmethod
-    def sample_enabled_transition(cls, pn: N, marking: Counter[P], seed: int = None) -> Optional[Tuple[T, B]]:
+    def sample_enabled_transition(cls, pn: N, marking: TCounter[P], seed: int = None) -> Optional[Tuple[T, B]]:
         if seed is not None:
             random.seed(seed)
         bindings = list()
