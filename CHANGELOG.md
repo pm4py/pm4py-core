@@ -5,6 +5,8 @@
 ### Added
 
 ### Changed
+* 9e815620924b2bae5a83b85539f38f344d4293d2
+  * fontcolor support in visualizing invisibles.
 
 ### Deprecated
 
