@@ -52,6 +52,7 @@ The following conversions are currently available:
 * :meth:`pm4py.convert.convert_log_to_ocel` converts an event log to an object-centric event log
 * :meth:`pm4py.convert.convert_log_to_networkx` converts a traditional event log (dataframe) to a directed graph (NetworkX)
 * :meth:`pm4py.convert.convert_ocel_to_networkx` converts an object-centric event log to a directed graph (NetworkX)
+* :meth:`pm4py.convert.convert_petri_net_to_networkx` converts an accepting Petri net to a directed graph (NetworkX)
 
 
 Process Discovery (:mod:`pm4py.discovery`)
@@ -118,6 +119,9 @@ Among the on-screen visualizations, ``pmp4py`` currently supports:
   * :meth:`pm4py.vis.view_network_analysis`; views the results of a *network analysis*.
   * :meth:`pm4py.vis.view_transition_system`; views the results of a *transition system*.
   * :meth:`pm4py.vis.view_prefix_tree`; views a *prefix tree*.
+  * :meth:`pm4py.vis.view_alignments`; views the *alignments table*.
+  * :meth:`pm4py.vis.view_footprints`; views a *footprints table*.
+
 
 We offer also some methods to store the visualizations on the disk:
 
@@ -139,6 +143,9 @@ We offer also some methods to store the visualizations on the disk:
   * :meth:`pm4py.vis.save_vis_network_analysis`; saves the visualization of the results of a *network analysis*.
   * :meth:`pm4py.vis.save_vis_transition_system`; saves the visualization of the results of a *transition system*.
   * :meth:`pm4py.vis.save_vis_prefix_tree`; saves the visualization of a *prefix tree*.
+  * :meth:`pm4py.vis.save_vis_alignments`; saves the visualization of the *alignments table*.
+  * :meth:`pm4py.vis.save_vis_footprints`; saves the visualization of the *footprints table*.
+
 
 Statistics (:mod:`pm4py.stats`)
 ------------------------------------------
@@ -155,6 +162,7 @@ Different statistics that could be computed on top of event logs are proposed, i
   * :meth:`pm4py.stats.get_cycle_time`; gets the *cycle time* from the event log.
   * :meth:`pm4py.stats.get_all_case_durations`; gets the list of *case durations* for the cases of the event log.
   * :meth:`pm4py.stats.get_case_duration`; gets the *case duration* of a specific case in the log.
+  * :meth:`pm4py.stats.get_stochastic_language`; gets the *stochastic language* of an event log or a process model.
 
 Filtering (:mod:`pm4py.filtering`)
 ------------------------------------------
@@ -315,6 +323,7 @@ Overall List of Methods
    pm4py.convert.convert_log_to_ocel
    pm4py.convert.convert_log_to_networkx
    pm4py.convert.convert_ocel_to_networkx
+   pm4py.convert.convert_petri_net_to_networkx
    pm4py.discovery
    pm4py.discovery.discover_dfg
    pm4py.discovery.discover_performance_dfg
@@ -378,6 +387,10 @@ Overall List of Methods
    pm4py.vis.save_vis_transition_system
    pm4py.vis.view_prefix_tree
    pm4py.vis.save_vis_prefix_tree
+   pm4py.vis.view_alignments
+   pm4py.vis.save_vis_alignments
+   pm4py.vis.view_footprints
+   pm4py.vis.save_vis_footprints
    pm4py.stats
    pm4py.stats.get_start_activities
    pm4py.stats.get_end_activities
@@ -395,6 +408,7 @@ Overall List of Methods
    pm4py.stats.get_all_case_durations
    pm4py.stats.get_case_duration
    pm4py.stats.get_activity_position_summary
+   pm4py.stats.get_stochastic_language
    pm4py.filtering
    pm4py.filtering.filter_log_relative_occurrence_event_attribute
    pm4py.filtering.filter_start_activities
@@ -464,6 +478,8 @@ Overall List of Methods
    pm4py.analysis.check_is_workflow_net
    pm4py.analysis.maximal_decomposition
    pm4py.analysis.generate_marking
+   pm4py.analysis.compute_emd
+   pm4py.analysis.reduce_petri_net_invisibles
    pm4py.utils
    pm4py.utils.rebase
    pm4py.utils.parse_process_tree
