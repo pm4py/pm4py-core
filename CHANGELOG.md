@@ -11,6 +11,8 @@
 ### Fixed
 * 8687e8e0427a150d8a2ed342525392f8ef1f5dab
   * required an older version of Pandas to handle timestamp issues.
+* 93ee76af7cd23816d8891d6e7925011dc4d0399e
+  * fixed compatibility with Python 3.8 in typing
 
 ### Removed
 
