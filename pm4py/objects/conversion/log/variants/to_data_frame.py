@@ -50,12 +50,20 @@ def apply(log, parameters=None):
     # Pandas 1.5.x has problems in managing datetime.datetime types
     # ensure the dates are provided as np.datetime64 which is supported correctly
     # until a proper fix on the Pandas side is provided
+    wka_dt_columns = set()
     for ev in transf_log:
         for attr in ev:
             if isinstance(ev[attr], datetime):
                 ev[attr] = np.datetime64(ev[attr])
+                wka_dt_columns.add(attr)
 
     df = pd.DataFrame.from_dict(transf_log)
+
+    # additional requirement for the workaround: transform back np.datetime64 to datetime after the dataframe
+    # is created :)))
+    for attr in wka_dt_columns:
+        df[attr] = df[attr].apply(lambda x: x.to_datetime64())
+
     df.attrs = copy(log.properties)
     if pm4_constants.PARAMETER_CONSTANT_CASEID_KEY in df.attrs:
         del df.attrs[pm4_constants.PARAMETER_CONSTANT_CASEID_KEY]
