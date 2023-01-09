@@ -63,6 +63,7 @@ def apply(log, parameters=None):
     # is created :)))
     for attr in wka_dt_columns:
         df[attr] = df[attr].apply(lambda x: x.to_datetime64())
+        df[attr] = pd.to_datetime(df[attr], utc=True)
 
     df.attrs = copy(log.properties)
     if pm4_constants.PARAMETER_CONSTANT_CASEID_KEY in df.attrs:
