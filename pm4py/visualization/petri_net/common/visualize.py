@@ -125,6 +125,7 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
     for t in net.transitions:
         label = decorations[t]["label"] if t in decorations and "label" in decorations[t] else ""
         fillcolor = decorations[t]["color"] if t in decorations and "color" in decorations[t] else None
+        textcolor = "black"
 
         if t.label is not None and not label:
             label = t.label
@@ -135,10 +136,12 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
         if fillcolor is None:
             if t.label is None:
                 fillcolor = "black"
+                if label:
+                    textcolor = "white"
             else:
                 fillcolor = bgcolor
 
-        viz.node(str(id(t)), label, style='filled', fillcolor=fillcolor, border='1', fontsize=font_size)
+        viz.node(str(id(t)), label, style='filled', fillcolor=fillcolor, border='1', fontsize=font_size, fontcolor=textcolor)
 
         if petri_properties.TRANS_GUARD in t.properties:
             guard = t.properties[petri_properties.TRANS_GUARD]

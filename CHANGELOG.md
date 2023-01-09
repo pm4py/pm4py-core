@@ -1,5 +1,28 @@
 # Changelog of pm4py
 
+## pm4py 2.4.1 (2023.01.XX)
+
+### Added
+
+### Changed
+* 9e815620924b2bae5a83b85539f38f344d4293d2
+  * fontcolor support in visualizing invisibles.
+
+### Deprecated
+
+### Fixed
+* 6be4b01395520031c2f3e125443633fd0e2e9abd
+  * required an older version of Pandas to handle timestamp issues.
+* 93ee76af7cd23816d8891d6e7925011dc4d0399e
+  * fixed compatibility with Python 3.8 in typing
+
+### Removed
+
+### Other
+
+---
+
+
 ## pm4py 2.4.0 (2023.01.06)
 
 ### Added
