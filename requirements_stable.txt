@@ -10,7 +10,7 @@ lxml==4.9.2
 matplotlib==3.6.2
 networkx==2.8.8
 numpy==1.24.1
-packaging==22.0
+packaging==23.0
 pandas==1.4.4
 pillow==9.4.0
 pydotplus==2.0.2
