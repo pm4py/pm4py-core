@@ -1,5 +1,28 @@
 # Changelog of pm4py
 
+## pm4py 2.4.2 (2023.01.XX)
+
+### Added
+
+### Changed
+* e7f79a47d6349644ef33c137a9eea34e57b7224b
+  * changed process tree conversion to Petri net to follow the standard DO-REDO paradigm instead of DO-REDO-EXIT
+* 9adf32e3c934f9d9f458a1d87dfdda869358e79f
+  * scaling positioning nodes BPMN layouter
+* cc34a30e5a7dbac292f0bb784df28ade94215140
+  * removed searchbox in docs theme (not working with current version of sphinx)
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
 ## pm4py 2.4.1 (2023.01.09)
 
 ### Added

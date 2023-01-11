@@ -505,19 +505,16 @@ def recursively_add_tree(parent_tree, tree, net, initial_entity_subtree, final_e
             add_arc_from_to(final_place, loop_trans, net)
             add_arc_from_to(loop_trans, initial_place, net)
         else:
-            dummy = ProcessTree()
-            do = tree_childs[0]
-            redo = tree_childs[1]
-            exit = tree_childs[2] if len(tree_childs) > 2 and (
-                    tree_childs[2].label is not None or tree_childs[2].children) else dummy
+            net, counts, int1 = recursively_add_tree(tree, tree_childs[0], net, initial_place,
+                                                     None, counts,
+                                                     rec_depth + 1)
+            int2 = None
+            for i in range(1, len(tree_childs)):
+                net, counts, int2 = recursively_add_tree(tree, tree_childs[i], net, int1,
+                                                         int2, counts,
+                                                         rec_depth + 1)
 
-            net, counts, int1 = recursively_add_tree(tree, do, net, initial_place,
-                                                     None, counts,
-                                                     rec_depth + 1)
-            net, counts, int2 = recursively_add_tree(tree, redo, net, int1,
-                                                     None, counts,
-                                                     rec_depth + 1)
-            net, counts, int3 = recursively_add_tree(tree, exit, net, int1,
+            net, counts, int3 = recursively_add_tree(tree, ProcessTree(), net, int1,
                                                      final_place, counts,
                                                      rec_depth + 1)
 
