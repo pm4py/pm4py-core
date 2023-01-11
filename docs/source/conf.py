@@ -93,7 +93,8 @@ html_theme_options = {
    "logo": {
       "image_light": "pm4py-logo.png",
       "image_dark": "pm4py-logo.png",
-   }
+   },
+    "navbar_persistent": []
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
