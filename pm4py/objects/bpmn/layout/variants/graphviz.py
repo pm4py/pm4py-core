@@ -152,6 +152,15 @@ def apply(bpmn_graph, parameters=None):
         layout.get(node).set_x(round(layout.get(node).get_x() * stretch_fact_x))
         layout.get(node).set_y(round(layout.get(node).get_y() * stretch_fact_y))
 
+    min_x = min(layout.get(node).get_x() for node in nodes)
+    min_y = min(layout.get(node).get_y() for node in nodes)
+
+    for node in nodes:
+        x_coord = layout.get(node).get_x() - min_x
+        y_coord = layout.get(node).get_y() - min_y
+        layout.get(node).set_x(x_coord)
+        layout.get(node).set_y(y_coord)
+
     outgoing_edges = dict()
     ingoing_edges = dict()
     sources_dict = dict()
