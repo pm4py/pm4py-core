@@ -9,6 +9,8 @@
   * changed process tree conversion to Petri net to follow the standard DO-REDO paradigm instead of DO-REDO-EXIT
 * 9adf32e3c934f9d9f458a1d87dfdda869358e79f
   * scaling positioning nodes BPMN layouter
+* cc34a30e5a7dbac292f0bb784df28ade94215140
+  * removed searchbox in docs theme (not working with current version of sphinx)
 
 ### Deprecated
 
