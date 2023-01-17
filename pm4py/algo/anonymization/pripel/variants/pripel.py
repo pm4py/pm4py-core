@@ -14,11 +14,15 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import math
 from enum import Enum
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Union
+
+import pandas as pd
 
 from pm4py.algo.anonymization.pripel.util.AttributeAnonymizer import AttributeAnonymizer
 from pm4py.algo.anonymization.pripel.util.TraceMatcher import TraceMatcher
+from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log.obj import EventLog
 from pm4py.util import exec_utils
 
@@ -27,26 +31,44 @@ class Parameters(Enum):
     BLOCKLIST = "blocklist"
 
 
-def apply_pripel(log, tv_query_log, epsilon, blacklist):
+def apply_pripel(log, tv_query_log, epsilon, blocklist):
     if (len(tv_query_log) == 0):
         raise ValueError(
             "Pruning parameter k is too high. The result of the trace variant query is empty. At least k traces must appear "
             "in a noisy variant count to be part of the result of the query.")
 
-    traceMatcher = TraceMatcher(tv_query_log, log, blacklist)
+    for trace in log:
+        for event in trace:
+            delAttributes = set()
+            for attribute in event.keys():
+                if blocklist is not None:
+                    if attribute in blocklist:
+                        delAttributes.add(attribute)
+                if isinstance(event[attribute], float):
+                    if math.isnan(event[attribute]):
+                        delAttributes.add(attribute)
+            for attribute in delAttributes:
+                event._dict.pop(attribute)
+
+    traceMatcher = TraceMatcher(tv_query_log, log)
     matchedLog = traceMatcher.matchQueryToLog()
 
     distributionOfAttributes = traceMatcher.getAttributeDistribution()
     occurredTimestamps, occurredTimestampDifferences = traceMatcher.getTimeStampData()
 
-    attributeAnonymizer = AttributeAnonymizer(blacklist)
-    anonymizedLog, attributeDistribution = attributeAnonymizer.anonymize(matchedLog, distributionOfAttributes, epsilon,
+    attributeAnonymizer = AttributeAnonymizer()
+    anonymizedLog = attributeAnonymizer.anonymize(matchedLog, distributionOfAttributes, epsilon,
                                                                          occurredTimestampDifferences,
                                                                          occurredTimestamps)
+    for i in range(len(anonymizedLog)):
+        anonymizedLog[i].attributes['concept:name'] = str(i)
+
+    anonymizedLog = log_converter.apply(anonymizedLog, variant=log_converter.Variants.TO_DATA_FRAME)
+
     return anonymizedLog
 
 
-def apply(log: EventLog, traceVariantQuery: EventLog, epsilon: float,
+def apply(log: Union[EventLog, pd.DataFrame], traceVariantQuery: Union[EventLog, pd.DataFrame], epsilon: float,
           parameters: Optional[Dict[Any, Any]] = None) -> EventLog:
     """
     PRIPEL (Privacy-preserving event log publishing with contextual information) is a framework to publish event logs
@@ -73,7 +95,7 @@ def apply(log: EventLog, traceVariantQuery: EventLog, epsilon: float,
     parameters
         Parameters of the algorithm, including:
             -Parameters.BLOCKLIST -> Some event logs contain attributes that are equivalent to a case id. For privacy
-            reasons, such attributes must be deleted from the anonymized log. We handle such attributes with this set.
+            reasons, such attributes must be deleted from the anonymized log. We handle such attributes with this list.
     Returns
     ------------
     anonymised_log
