@@ -55,6 +55,7 @@ class TraceMatcher:
     def __getIgnorelistOfAttributes(self):
         ignorelist = set()
         ignorelist.add("concept:name")
+        ignorelist.add("variant")
         ignorelist.add(self.__timestamp)
         return ignorelist
 
