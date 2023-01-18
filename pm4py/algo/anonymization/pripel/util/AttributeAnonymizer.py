@@ -105,7 +105,7 @@ class AttributeAnonymizer:
         if len(potentialValues) >= 2000:
             warnings.warn(
                 '\nThe attribute ' + attribute + ' has ' + str(
-                len(potentialValues)) + ' different values in the log.\nThe exponential mechanism for achieving differential privacy on categorical data must work with a list that is ' + str(
+                len(potentialValues)) + ' different values in the log.\nTo anonymize this attribute the exponential mechanism for achieving differential privacy on categorical data must work with a list that is ' + str(
                 len(potentialValues) * len(potentialValues)) + ' elements long.', RuntimeWarning, 2)
         utilityList = []
         for x in potentialValues:
@@ -115,7 +115,7 @@ class AttributeAnonymizer:
 
     def __addCategoricalMechanisms(self, epsilon, mechanisms, dataTypesOfAttributes, potentialValues):
         for attribute in dataTypesOfAttributes.keys():
-            if dataTypesOfAttributes[attribute] is str:
+            if dataTypesOfAttributes[attribute] is str and attribute != "variant":
                 utilityList = self.__setupUniformUtilityList(potentialValues[attribute], attribute)
                 if len(utilityList) > 0:
                     exponentialMechanism = privacyMechanisms.ExponentialCategorical(epsilon=epsilon,

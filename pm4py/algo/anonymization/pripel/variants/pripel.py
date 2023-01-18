@@ -62,6 +62,7 @@ def apply_pripel(log, tv_query_log, epsilon, blocklist):
                                                                          occurredTimestamps)
     for i in range(len(anonymizedLog)):
         anonymizedLog[i].attributes['concept:name'] = str(i)
+        anonymizedLog[i].attributes.pop('variant', None)
 
     anonymizedLog = log_converter.apply(anonymizedLog, variant=log_converter.Variants.TO_DATA_FRAME)
 
