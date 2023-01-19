@@ -199,7 +199,7 @@ class LoopCutUVCL(LoopCut[IMDataStructureUVCL]):
 class LoopCutDFG(LoopCut[IMDataStructureDFG]):
 
     @classmethod
-    def project(cls, obj: IMDataStructureUVCL, groups: List[Collection[Any]]) -> List[IMDataStructureDFG]:
+    def project(cls, obj: IMDataStructureUVCL, groups: List[Collection[Any]], parameters: Optional[Dict[str, Any]] = None) -> List[IMDataStructureDFG]:
         dfg = obj.dfg
         dfgs = []
         skippable = [False, False]
