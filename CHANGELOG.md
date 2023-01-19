@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.4.2 (2023.01.XX)
+## pm4py 2.4.2 (2023.01.19)
 
 ### Added
 
@@ -15,6 +15,8 @@
 ### Deprecated
 
 ### Fixed
+* 479dc5c1afef98b2ae3b67b918568465b1c7c72b
+  * bug fix inductive miner DFG missing parameters in LoopCutDFG
 
 ### Removed
 
