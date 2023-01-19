@@ -27,16 +27,16 @@ from pm4py.objects.log import obj
 
 
 class TraceMatcher:
-    def __init__(self, tv_query_log, log, blacklist):
+    def __init__(self, tv_query_log, log):
         self.__timestamp = "time:timestamp"
         self.__allTimestamps = list()
         self.__allTimeStampDifferences = list()
         self.__distanceMatrix = dict()
         self.__trace_variants_query = self.__addTraceToAttribute(tv_query_log)
         self.__trace_variants_log = self.__addTraceToAttribute(log)
-        attributeBlacklist = self.__getBlacklistOfAttributes(blacklist)
+        attributeIgnorelist = self.__getIgnorelistOfAttributes()
         self.__distributionOfAttributes, self.__eventStructure = self.__getDistributionOfAttributesAndEventStructure(
-            log, attributeBlacklist)
+            log, attributeIgnorelist)
         self.__query_log = tv_query_log
         self.__log = log
 
@@ -52,12 +52,12 @@ class TraceMatcher:
             trace_variants[variant] = traceSet
         return trace_variants
 
-    def __getBlacklistOfAttributes(self, blacklist):
-        if blacklist is None:
-            blacklist = set()
-        blacklist.add("concept:name")
-        blacklist.add(self.__timestamp)
-        return blacklist
+    def __getIgnorelistOfAttributes(self):
+        ignorelist = set()
+        ignorelist.add("concept:name")
+        ignorelist.add("variant")
+        ignorelist.add(self.__timestamp)
+        return ignorelist
 
     def __handleVariantsWithSameCount(self, variants, traceMatching):
         for variant in variants:
@@ -153,10 +153,12 @@ class TraceMatcher:
         eventStacks = self.__transformTraceInEventStack(correspondingTrace)
         previousEvent = None
         # add trace attributes from the matched trace to the query trace
+        ''' 
         if not isinstance(correspondingTrace, list):
             for key in correspondingTrace.attributes:
                 if (key != 'variant' and key != 'variant-index'):
                     traceInQuery.attributes[key] = correspondingTrace.attributes[key]
+        '''
         for eventNr in range(0, len(traceInQuery)):
             currentEvent = traceInQuery[eventNr]
             activity = currentEvent["concept:name"]
@@ -224,10 +226,10 @@ class TraceMatcher:
                 log.append(matchedTrace)
         return log
 
-    def __handleAttributesOfDict(self, dictOfAttributes, distributionOfAttributes, attributeBlacklist,
+    def __handleAttributesOfDict(self, dictOfAttributes, distributionOfAttributes, attributeIgnorelist,
                                  previousEvent=None):
         for attribute in dictOfAttributes.keys():
-            if attribute not in attributeBlacklist:
+            if attribute not in attributeIgnorelist:
                 distribution = distributionOfAttributes.get(attribute, list())
                 distribution.append(dictOfAttributes[attribute])
                 distributionOfAttributes[attribute] = distribution
@@ -246,18 +248,18 @@ class TraceMatcher:
         self.__allTimestamps.append(currentEvent[self.__timestamp])
         self.__allTimeStampDifferences.append(timeStampDifference)
 
-    def __getDistributionOfAttributesAndEventStructure(self, log, attributeBlacklist):
+    def __getDistributionOfAttributesAndEventStructure(self, log, attributeIgnorelist):
         distributionOfAttributes = dict()
         eventStructure = dict()
         for trace in log:
-            self.__handleAttributesOfDict(trace.attributes, distributionOfAttributes, attributeBlacklist)
+            #self.__handleAttributesOfDict(trace.attributes, distributionOfAttributes, attributeIgnorelist)
             previousEvent = None
             currentEvent = None
             for eventNr in range(0, len(trace)):
                 if currentEvent is not None:
                     previousEvent = currentEvent
                 currentEvent = trace[eventNr]
-                self.__handleAttributesOfDict(currentEvent, distributionOfAttributes, attributeBlacklist, previousEvent)
+                self.__handleAttributesOfDict(currentEvent, distributionOfAttributes, attributeIgnorelist, previousEvent)
                 if not currentEvent["concept:name"] in eventStructure:
                     attributesOfEvent = set(currentEvent.keys())
                     attributesOfEvent.remove("concept:name")

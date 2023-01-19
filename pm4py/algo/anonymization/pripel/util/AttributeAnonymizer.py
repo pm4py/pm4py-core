@@ -14,6 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import warnings
 from datetime import timedelta
 
 import diffprivlib.mechanisms as privacyMechanisms
@@ -22,20 +23,19 @@ from tqdm.auto import tqdm
 
 class AttributeAnonymizer:
 
-    def __init__(self, blacklist):
+    def __init__(self):
         self.__timestamp = "time:timestamp"
-        self.__blacklist = self.__getBlacklistOfAttributes(blacklist)
+        self.__ignorelist = self.__getIgnorelistOfAttributes()
         self.__sensitivity = "sensitivity"
         self.__max = "max"
         self.__min = "min"
         self.__infectionSuspected = list()
 
-    def __getBlacklistOfAttributes(self, blacklist):
-        if blacklist is None:
-            blacklist = set()
-        blacklist.add("concept:name")
-        blacklist.add(self.__timestamp)
-        return blacklist
+    def __getIgnorelistOfAttributes(self):
+        ignorelist = set()
+        ignorelist.add("concept:name")
+        ignorelist.add(self.__timestamp)
+        return ignorelist
 
     def __retrieveAttributeDomains(self, distributionOfAttributes, dataTypesOfAttributes):
         domains = dict()
@@ -51,7 +51,7 @@ class AttributeAnonymizer:
     def __determineDataType(self, distributionOfAttributes):
         dataTypesOfAttributes = dict()
         for attribute in distributionOfAttributes.keys():
-            if attribute not in self.__blacklist:
+            if attribute not in self.__ignorelist:
                 dataTypesOfAttributes[attribute] = type(distributionOfAttributes[attribute][0])
         return dataTypesOfAttributes
 
@@ -101,14 +101,22 @@ class AttributeAnonymizer:
             mechanisms[attribute] = laplaceMechanism
         return mechanisms
 
-    def __setupUniformUtilityList(self, potentialValues):
-        utilityList = [[x, y, 1] for x in potentialValues for y in potentialValues]
+    def __setupUniformUtilityList(self, potentialValues, attribute):
+        if len(potentialValues) >= 2000:
+            warnings.warn(
+                '\nThe attribute ' + attribute + ' has ' + str(
+                len(potentialValues)) + ' different values in the log.\nTo anonymize this attribute the exponential mechanism for achieving differential privacy on categorical data must work with a list that is ' + str(
+                len(potentialValues) * len(potentialValues)) + ' elements long.', RuntimeWarning, 2)
+        utilityList = []
+        for x in potentialValues:
+            for y in potentialValues:
+                utilityList.append([x, y, 1])
         return utilityList
 
     def __addCategoricalMechanisms(self, epsilon, mechanisms, dataTypesOfAttributes, potentialValues):
         for attribute in dataTypesOfAttributes.keys():
-            if dataTypesOfAttributes[attribute] is str:
-                utilityList = self.__setupUniformUtilityList(potentialValues[attribute])
+            if dataTypesOfAttributes[attribute] is str and attribute != "variant":
+                utilityList = self.__setupUniformUtilityList(potentialValues[attribute], attribute)
                 if len(utilityList) > 0:
                     exponentialMechanism = privacyMechanisms.ExponentialCategorical(epsilon=epsilon,
                                                                                     utility_list=utilityList)
@@ -206,13 +214,14 @@ class AttributeAnonymizer:
         i = 0
         progress = tqdm(total=len(log), desc="attribute anonymization, anonymized traces :: ")
         for trace in log:
-
+            '''
             # trace attribute anonymization
             if not isinstance(trace, list):
                 for attribute in trace.attributes.keys():
                     if (attribute != 'variant' and attribute != 'variant-index'):
                         trace.attributes[attribute] = self.__anonymizeAttribute(trace.attributes[attribute],
                                                                                 mechanisms.get(attribute, None))
+            '''
             # event attribute anonymization
             for eventNr in range(0, len(trace)):
                 event = trace[eventNr]
@@ -238,4 +247,4 @@ class AttributeAnonymizer:
             progress.update()
         progress.close()
         del progress
-        return log, self.__infectionSuspected
+        return log
