@@ -1,8 +1,14 @@
 # Changelog of pm4py
 
-## pm4py 2.4.2 (2023.01.19)
+## pm4py 2.5.0 (2023.01.19)
 
 ### Added
+* e246a681298282e280d0a5d8c90958e1e4bfa139
+  * add cadoso and extended cardoso simplicity metrics
+* 34303df3a72e8d0c699f9cb61938c6c08a989274
+  * add discovery of Stochastic Arc Weight nets based on OCEL logs.
+* 32b74bb6125e1e914caab404514b606ac119d4f0
+  * add Murata simplification to the simplified interface (implicit place removal)   
 
 ### Changed
 * e7f79a47d6349644ef33c137a9eea34e57b7224b
