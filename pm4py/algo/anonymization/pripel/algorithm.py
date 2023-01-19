@@ -35,7 +35,8 @@ DEFAULT_VARIANT = Variants.PRIPEL
 VERSIONS = {Variants.PRIPEL}
 
 
-def apply(log: Union[EventLog, pd.DataFrame], trace_variant_query: EventLog, epsilon: float, variant=DEFAULT_VARIANT,
+def apply(log: Union[EventLog, pd.DataFrame], trace_variant_query: Union[EventLog, pd.DataFrame], epsilon: float,
+          variant=DEFAULT_VARIANT,
           parameters: Optional[Dict[Any, Any]] = None) -> EventLog:
     """
     PRIPEL (Privacy-preserving event log publishing with contextual information) is a framework to publish event logs
@@ -50,7 +51,6 @@ def apply(log: Union[EventLog, pd.DataFrame], trace_variant_query: EventLog, eps
     https://doi.org/10.1007/978-3-030-58666-9_7
 
 
-
     Parameters
     -------------
     log
@@ -63,8 +63,7 @@ def apply(log: Union[EventLog, pd.DataFrame], trace_variant_query: EventLog, eps
         - Variants.PRIPEL
     parameters
         Parameters of the algorithm, including:
-            -Parameters.BLOCKLIST -> Some event logs contain attributes that are equivalent to a case id. For privacy
-            reasons, such attributes must be deleted from the anonymized log. We handle such attributes with this set.
+            -Parameters.BLOCKLIST -> Some event logs contain attributes that are equivalent to a case id. For privacy reasons, such attributes must be deleted from the anonymized log. We handle such attributes with this set.
     Returns
     ------------
     anonymised_log
@@ -72,4 +71,7 @@ def apply(log: Union[EventLog, pd.DataFrame], trace_variant_query: EventLog, eps
     """
 
     log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+
+    trace_variant_query = log_converter.apply(trace_variant_query, variant=log_converter.Variants.TO_EVENT_LOG)
+
     return exec_utils.get_variant(variant).apply(log, trace_variant_query, epsilon, parameters=parameters)

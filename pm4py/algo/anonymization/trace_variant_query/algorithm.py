@@ -14,20 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
 from enum import Enum
 from typing import Optional, Dict, Any, Union
 
@@ -96,4 +82,5 @@ def apply(log: Union[EventLog, pd.DataFrame], variant=DEFAULT_VARIANT,
             "The pruning parameter p is probably too high. The result of the trace variant query is empty. Of a noisy trace "
             "variant, at least p traces must appear. Otherwise, the trace variant and its traces won't be part of the "
             "result of the trace variant query.")
+    tvq_log = log_converter.apply(tvq_log, variant=log_converter.Variants.TO_DATA_FRAME)
     return tvq_log
