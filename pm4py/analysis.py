@@ -299,3 +299,23 @@ def reduce_petri_net_invisibles(net: PetriNet) -> PetriNet:
     """
     from pm4py.objects.petri_net.utils import reduction
     return reduction.apply_simple_reduction(net)
+
+
+def reduce_petri_net_implicit_places(net: PetriNet, im: Marking, fm: Marking) -> Tuple[PetriNet, Marking, Marking]:
+    """
+    Reduce the number of invisibles transitions in the provided Petri net.
+
+    :param net: petri net
+    :param im: initial marking
+    :param fm: final marking
+    :rtype: ``Tuple[PetriNet, Marking, Marking]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('model.pnml')
+        net = pm4py.reduce_petri_net_implicit_places(net, im, fm)
+    """
+    from pm4py.objects.petri_net.utils import murata
+    return murata.apply_reduction(net, im, fm)
