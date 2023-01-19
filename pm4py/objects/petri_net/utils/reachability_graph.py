@@ -17,6 +17,7 @@
 import re
 
 from pm4py.objects import petri_net
+from pm4py.objects.transition_system.obj import TransitionSystem
 from pm4py.objects.petri_net.utils import align_utils
 from pm4py.objects.transition_system import obj as ts
 from pm4py.objects.transition_system import utils
@@ -135,7 +136,7 @@ def construct_reachability_graph_from_flow(incoming_transitions, outgoing_transi
     return re_gr
 
 
-def construct_reachability_graph(net, initial_marking, use_trans_name=False, parameters=None):
+def construct_reachability_graph(net, initial_marking, use_trans_name=False, parameters=None) -> TransitionSystem:
     """
     Creates a reachability graph of a certain Petri net.
     DO NOT ATTEMPT WITH AN UNBOUNDED PETRI NET, EVER.
