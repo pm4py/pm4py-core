@@ -1,6 +1,5 @@
 import pm4py
 from pm4py.objects.petri_net.utils import petri_utils
-from pm4py.objects.petri_net.utils import murata
 
 
 def execute_script():
@@ -27,7 +26,7 @@ def execute_script():
 
     pm4py.view_petri_net(net, im, fm, format="svg")
 
-    net, im, fm = murata.apply_reduction(net, im, fm)
+    net, im, fm = pm4py.reduce_petri_net_implicit_places(net, im, fm)
 
     pm4py.view_petri_net(net, im, fm, format="svg")
 
