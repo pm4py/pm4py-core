@@ -153,10 +153,12 @@ class TraceMatcher:
         eventStacks = self.__transformTraceInEventStack(correspondingTrace)
         previousEvent = None
         # add trace attributes from the matched trace to the query trace
+        ''' 
         if not isinstance(correspondingTrace, list):
             for key in correspondingTrace.attributes:
                 if (key != 'variant' and key != 'variant-index'):
                     traceInQuery.attributes[key] = correspondingTrace.attributes[key]
+        '''
         for eventNr in range(0, len(traceInQuery)):
             currentEvent = traceInQuery[eventNr]
             activity = currentEvent["concept:name"]
@@ -250,7 +252,7 @@ class TraceMatcher:
         distributionOfAttributes = dict()
         eventStructure = dict()
         for trace in log:
-            self.__handleAttributesOfDict(trace.attributes, distributionOfAttributes, attributeIgnorelist)
+            #self.__handleAttributesOfDict(trace.attributes, distributionOfAttributes, attributeIgnorelist)
             previousEvent = None
             currentEvent = None
             for eventNr in range(0, len(trace)):
@@ -277,11 +279,3 @@ class TraceMatcher:
 
     def getTimeStampData(self):
         return self.__allTimestamps, self.__allTimeStampDifferences
-
-def deleteNanAtributes(log):
-    for trace in log:
-        for event in trace:
-            for attribute in event.keys():
-                if event[attribute] == float("nan"):
-                    attribute.pop(attribute)
-    return log
