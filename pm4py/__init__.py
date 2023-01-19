@@ -41,7 +41,7 @@ from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert
     convert_petri_net_to_networkx
 from pm4py.analysis import check_soundness, compute_emd, solve_marking_equation, solve_extended_marking_equation, \
     construct_synchronous_product_net, insert_artificial_start_end, check_is_workflow_net, maximal_decomposition, generate_marking, \
-    reduce_petri_net_invisibles
+    reduce_petri_net_invisibles, reduce_petri_net_implicit_places
 from pm4py.stats import get_start_activities, get_end_activities, get_event_attributes, get_event_attribute_values, get_variants, \
     get_trace_attributes, get_variants_as_tuples, get_trace_attribute_values, get_case_arrival_average, \
     get_minimum_self_distances, get_minimum_self_distance_witnesses, \
