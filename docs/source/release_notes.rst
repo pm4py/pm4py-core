@@ -1,5 +1,14 @@
 Release Notes
 =============
+pm4py 2.5.0 - Release Notes
+---------------------------
+The major changes in pm4py 2.5.0 are as follows:
+1. We added the cadoso and extended cardoso simplicity metrics to pm4py
+
+2. We added discovery of Stochastic Arc Weight nets based on OCEL logs.
+
+3. We added Murata-based Petri net simplification to the simplified interface (implicit place removal)   
+
 pm4py 2.4.0 - Release Notes
 ---------------------------
 Today, we released pm4py 2.4.0.
