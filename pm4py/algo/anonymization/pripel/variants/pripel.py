@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import math
 from enum import Enum
 from typing import Optional, Dict, Any, Union
 
@@ -36,17 +35,26 @@ def apply_pripel(log, tv_query_log, epsilon, blocklist):
         raise ValueError(
             "Pruning parameter k is too high. The result of the trace variant query is empty. At least k traces must appear "
             "in a noisy variant count to be part of the result of the query.")
-
     for trace in log:
+        delTraceAttributes = set()
+        for attribute in trace.attributes.keys():
+            if pd.isnull(trace.attributes[attribute]):
+                delTraceAttributes.add(attribute)
+            if blocklist is not None:
+                if attribute in blocklist:
+                    delTraceAttributes.add(attribute)
+        for attribute in delTraceAttributes:
+            trace.attributes.pop(attribute)
         for event in trace:
             delAttributes = set()
             for attribute in event.keys():
                 if blocklist is not None:
                     if attribute in blocklist:
                         delAttributes.add(attribute)
-                if isinstance(event[attribute], float):
-                    if math.isnan(event[attribute]):
-                        delAttributes.add(attribute)
+                if pd.isnull(event[attribute]):
+                    delAttributes.add(attribute)
+                if not isinstance(event[attribute], (float, str, int, bool)) and attribute != "time:timestamp":
+                    delAttributes.add(attribute)
             for attribute in delAttributes:
                 event._dict.pop(attribute)
 
@@ -58,8 +66,8 @@ def apply_pripel(log, tv_query_log, epsilon, blocklist):
 
     attributeAnonymizer = AttributeAnonymizer()
     anonymizedLog = attributeAnonymizer.anonymize(matchedLog, distributionOfAttributes, epsilon,
-                                                                         occurredTimestampDifferences,
-                                                                         occurredTimestamps)
+                                                  occurredTimestampDifferences,
+                                                  occurredTimestamps)
     for i in range(len(anonymizedLog)):
         anonymizedLog[i].attributes['concept:name'] = str(i)
         anonymizedLog[i].attributes.pop('variant', None)

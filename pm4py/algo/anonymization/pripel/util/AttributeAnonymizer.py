@@ -214,13 +214,14 @@ class AttributeAnonymizer:
         i = 0
         progress = tqdm(total=len(log), desc="attribute anonymization, anonymized traces :: ")
         for trace in log:
-
+            '''
             # trace attribute anonymization
             if not isinstance(trace, list):
                 for attribute in trace.attributes.keys():
                     if (attribute != 'variant' and attribute != 'variant-index'):
                         trace.attributes[attribute] = self.__anonymizeAttribute(trace.attributes[attribute],
                                                                                 mechanisms.get(attribute, None))
+            '''
             # event attribute anonymization
             for eventNr in range(0, len(trace)):
                 event = trace[eventNr]
