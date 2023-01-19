@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.4.2 (2023.01.XX)
+## pm4py 2.4.2 (2023.01.19)
 
 ### Added
 
