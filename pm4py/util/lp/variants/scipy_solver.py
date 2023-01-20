@@ -16,7 +16,7 @@ def apply(c: list, Aub: np.ndarray, bub: np.matrix, Aeq: np.matrix, beq: np.matr
         parameters = {}
 
     integrality = exec_utils.get_param_value(Parameters.INTEGRALITY, parameters, None)
-    method = exec_utils.get_param_value(Parameters.METHOD, parameters, "revised simplex" if integrality is None else "highs")
+    method = exec_utils.get_param_value(Parameters.METHOD, parameters, "highs" if integrality is None else "highs")
     sol = linprog(c, A_ub=Aub, b_ub=bub, A_eq=Aeq, b_eq=beq, method=method, integrality=integrality)
     return sol
 
