@@ -16,14 +16,16 @@ def apply(c: list, Aub: np.ndarray, bub: np.matrix, Aeq: np.matrix, beq: np.matr
         parameters = {}
 
     integrality = exec_utils.get_param_value(Parameters.INTEGRALITY, parameters, None)
-    method = exec_utils.get_param_value(Parameters.METHOD, parameters, "revised simplex" if integrality is None else "highs")
+    method = exec_utils.get_param_value(Parameters.METHOD, parameters, "highs" if integrality is None else "highs")
     sol = linprog(c, A_ub=Aub, b_ub=bub, A_eq=Aeq, b_eq=beq, method=method, integrality=integrality)
     return sol
 
 
 def get_prim_obj_from_sol(sol: OptimizeResult, parameters: Optional[Dict[Any, Any]] = None) -> int:
-    return round(sol.fun)
+    if sol.fun is not None:
+        return round(sol.fun)
 
 
 def get_points_from_sol(sol: OptimizeResult, parameters: Optional[Dict[Any, Any]] = None) -> List[int]:
-    return [round(y) for y in sol.x]
+    if sol.x is not None:
+        return [round(y) for y in sol.x]
