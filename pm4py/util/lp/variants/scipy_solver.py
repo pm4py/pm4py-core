@@ -22,8 +22,10 @@ def apply(c: list, Aub: np.ndarray, bub: np.matrix, Aeq: np.matrix, beq: np.matr
 
 
 def get_prim_obj_from_sol(sol: OptimizeResult, parameters: Optional[Dict[Any, Any]] = None) -> int:
-    return round(sol.fun)
+    if sol.fun is not None:
+        return round(sol.fun)
 
 
 def get_points_from_sol(sol: OptimizeResult, parameters: Optional[Dict[Any, Any]] = None) -> List[int]:
-    return [round(y) for y in sol.x]
+    if sol.x is not None:
+        return [round(y) for y in sol.x]
