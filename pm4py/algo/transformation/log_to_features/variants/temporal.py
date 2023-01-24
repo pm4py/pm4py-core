@@ -70,8 +70,8 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     activity_column = exec_utils.get_param_value(Parameters.ACTIVITY_COLUMN, parameters, xes_constants.DEFAULT_NAME_KEY)
 
     log = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME, parameters=parameters)
-    log = pandas_utils.insert_feature_arrival_finish_rate(log, case_id_column=case_id_column, timestamp_column=timestamp_column, arrival_rate_column=arrival_rate, finish_rate_column=finish_rate)
-    log = pandas_utils.insert_feature_service_waiting_time(log, case_id_column=case_id_column, timestamp_column=timestamp_column, diff_start_end_column=diff_start_end, service_time_column=service_time, sojourn_time_column=sojourn_time, waiting_time_column=waiting_time)
+    log = pandas_utils.insert_case_arrival_finish_rate(log, case_id_column=case_id_column, timestamp_column=timestamp_column, arrival_rate_column=arrival_rate, finish_rate_column=finish_rate)
+    log = pandas_utils.insert_case_service_waiting_time(log, case_id_column=case_id_column, timestamp_column=timestamp_column, diff_start_end_column=diff_start_end, service_time_column=service_time, sojourn_time_column=sojourn_time, waiting_time_column=waiting_time)
 
     grouped_log = log.groupby(pd.Grouper(key=start_timestamp_column, freq=grouper_freq))
 

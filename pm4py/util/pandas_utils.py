@@ -148,7 +148,7 @@ def insert_feature_activity_position_in_trace(df: pd.DataFrame, case_id: str = c
     return df
 
 
-def insert_feature_arrival_finish_rate(log: pd.DataFrame, case_id_column=constants.CASE_CONCEPT_NAME, timestamp_column=xes_constants.DEFAULT_TIMESTAMP_KEY, start_timestamp_column=None, arrival_rate_column="@@arrival_rate", finish_rate_column="@@finish_rate") -> pd.DataFrame:
+def insert_case_arrival_finish_rate(log: pd.DataFrame, case_id_column=constants.CASE_CONCEPT_NAME, timestamp_column=xes_constants.DEFAULT_TIMESTAMP_KEY, start_timestamp_column=None, arrival_rate_column="@@arrival_rate", finish_rate_column="@@finish_rate") -> pd.DataFrame:
     """
     Inserts the arrival/finish rate in the dataframe.
 
@@ -193,7 +193,7 @@ def insert_feature_arrival_finish_rate(log: pd.DataFrame, case_id_column=constan
     return log
 
 
-def insert_feature_service_waiting_time(log: pd.DataFrame, case_id_column=constants.CASE_CONCEPT_NAME, timestamp_column=xes_constants.DEFAULT_TIMESTAMP_KEY, start_timestamp_column=None, diff_start_end_column="@@diff_start_end", service_time_column="@@service_time", sojourn_time_column="@@sojourn_time", waiting_time_column="@@waiting_time") -> pd.DataFrame:
+def insert_case_service_waiting_time(log: pd.DataFrame, case_id_column=constants.CASE_CONCEPT_NAME, timestamp_column=xes_constants.DEFAULT_TIMESTAMP_KEY, start_timestamp_column=None, diff_start_end_column="@@diff_start_end", service_time_column="@@service_time", sojourn_time_column="@@sojourn_time", waiting_time_column="@@waiting_time") -> pd.DataFrame:
     """
     Inserts the service/waiting/sojourn time in the dataframe.
 
