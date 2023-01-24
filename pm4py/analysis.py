@@ -4,9 +4,10 @@ __doc__ = """
 from typing import List, Optional, Tuple, Dict, Union
 
 from pm4py.objects.log.obj import Trace, EventLog, EventStream
+from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.utils import __event_log_deprecation_warning
 from pm4py.objects.petri_net.obj import PetriNet, Marking
-from pm4py.utils import get_properties, constants
+from pm4py.utils import get_properties, constants, pandas_utils
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 
 import pandas as pd
