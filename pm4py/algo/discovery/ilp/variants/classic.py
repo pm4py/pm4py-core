@@ -25,6 +25,7 @@ class Parameters(Enum):
     PARAM_ARTIFICIAL_END_ACTIVITY = constants.PARAM_ARTIFICIAL_END_ACTIVITY
     CAUSAL_RELATION = "causal_relation"
     SHOW_PROGRESS_BAR = "show_progress_bar"
+    ALPHA = "alpha"
 
 
 def __transform_log_to_matrix(log: EventLog, activities: List[str], activity_key: str):
@@ -88,12 +89,8 @@ def apply(log0: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional
     Discovers a Petri net using the ILP miner.
 
     The implementation follows what is described in the scientific paper:
-    Van der Werf, Jan Martijn EM, et al. "Process discovery using integer linear programming." International conference on applications and theory of petri nets. Springer, Berlin, Heidelberg, 2008.
-    https://research.tue.nl/files/3092412/633716.pdf
-
-    With two deviations:
-    - 1) imposing the additional condition that the place remains empty at the end of the replay of every trace
-    - 2) imposing the additional condition that the place contains initially 0 tokens (only the place before the artificial start activity contains 1 token)
+    van Zelst, Sebastiaan J., et al.
+    "Discovering workflow nets using integer linear programming." Computing 100.5 (2018): 529-556.
 
     Parameters
     ---------------
@@ -128,6 +125,8 @@ def apply(log0: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional
     log = artificial.insert_artificial_start_end(deepcopy(log0), parameters=parameters)
     # use the ALPHA causal relation if none is provided as parameter
     causal = exec_utils.get_param_value(Parameters.CAUSAL_RELATION, parameters, causal_discovery.apply(dfg_discovery.apply(log, parameters=parameters)))
+    # noise threshold for the sequence encoding graph (when alpha=1, no filtering is applied; when alpha=0, the greatest filtering is applied)
+    alpha = exec_utils.get_param_value(Parameters.ALPHA, parameters, 1.0)
 
     activities = sorted(list(set(x[activity_key] for trace in log for x in trace)))
     matr = __transform_log_to_matrix(log, activities, activity_key)
@@ -155,7 +154,24 @@ def apply(log0: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional
         elif act == artificial_end_activity:
             petri_utils.add_arc_from_to(trans_map[act], sink, net)
 
-    # STEP B) construction of the base linear problem
+    # STEP B) construction of the sequence encoding graph
+    seq_enc_graph = {}
+    for j in range(len(matr)):
+        trace = matr[j]
+        trace_occ = log0[j].attributes["@@num_traces"]
+        for i in range(len(trace)):
+            prev = -trace[i-1] if i > 0 else np.zeros(len(activities))
+            curr = trace[i]
+            prev = tuple(prev)
+            curr = tuple(curr)
+            if prev not in seq_enc_graph:
+                seq_enc_graph[prev] = {}
+            if curr not in seq_enc_graph[prev]:
+                seq_enc_graph[prev][curr] = 0
+            seq_enc_graph[prev][curr] += trace_occ
+    max_child_seq_enc_graph = {x: max(y.values()) for x, y in seq_enc_graph.items()}
+
+    # STEP C) construction of the base linear problem
     # which will be 'extended' in each step
     c = np.zeros(2*len(activities))
     Aub = []
@@ -170,19 +186,22 @@ def apply(log0: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional
         for i in range(len(trace)):
             row1 = -trace[i-1] if i > 0 else np.zeros(len(activities))
             row2 = trace[i]
-            row = row1.tolist() + row2.tolist() + [-1]
+            prev = tuple(row1)
+            curr = tuple(row2)
 
-            if i < len(trace)-1:
-                if tuple(row) not in added_rows_Aub:
-                    added_rows_Aub.add(tuple(row))
-                    Aub.append(row)
-                    bub.append(0)
-            else:
-                if tuple(row) not in added_rows_Aeq:
-                    # deviation 1: impose that the place is empty at the end of every trace of the log
-                    added_rows_Aeq.add(tuple(row))
-                    Aeq.append(row)
-                    beq.append(0)
+            if seq_enc_graph[prev][curr] >= (1-alpha) * max_child_seq_enc_graph[prev]:
+                row = row1.tolist() + row2.tolist() + [-1]
+                if i < len(trace)-1:
+                    if tuple(row) not in added_rows_Aub:
+                        added_rows_Aub.add(tuple(row))
+                        Aub.append(row)
+                        bub.append(0)
+                else:
+                    if tuple(row) not in added_rows_Aeq:
+                        # deviation 1: impose that the place is empty at the end of every trace of the log
+                        added_rows_Aeq.add(tuple(row))
+                        Aeq.append(row)
+                        beq.append(0)
 
             crow = row2.tolist() + (-row2).tolist()
             c += crow
@@ -219,7 +238,7 @@ def apply(log0: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional
         from tqdm.auto import tqdm
         progress = tqdm(total=len(causal), desc="discovering Petri net using ILP miner, completed causal relations :: ")
 
-    # STEP C) explore all the causal relations in the log
+    # STEP D) explore all the causal relations in the log
     # to find places
     for ca in causal:
         Aeq1 = copy(Aeq)

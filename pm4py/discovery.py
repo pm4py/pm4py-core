@@ -215,11 +215,12 @@ def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame], activity_key: s
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
 
 
-def discover_petri_net_ilp(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[PetriNet, Marking, Marking]:
+def discover_petri_net_ilp(log: Union[EventLog, pd.DataFrame], alpha: float = 1.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the ILP Miner.
 
     :param log: event log / Pandas dataframe
+    :param alpha: noise threshold for the sequence encoding graph (1.0=no filtering, 0.0=greatest filtering)
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
@@ -240,8 +241,11 @@ def discover_petri_net_ilp(log: Union[EventLog, pd.DataFrame], activity_key: str
         check_pandas_dataframe_columns(
             log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    parameters["alpha"] = alpha
+
     from pm4py.algo.discovery.ilp import algorithm as ilp_miner
-    return ilp_miner.apply(log, variant=ilp_miner.Variants.CLASSIC, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
+    return ilp_miner.apply(log, variant=ilp_miner.Variants.CLASSIC, parameters=parameters)
 
 
 @deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="this method will be removed in a future release.")
