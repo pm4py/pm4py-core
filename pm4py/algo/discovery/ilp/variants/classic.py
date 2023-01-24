@@ -127,7 +127,7 @@ def apply(log0: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional
     log0 = filtering_utils.keep_one_trace_per_variant(log0, parameters=parameters)
     log = artificial.insert_artificial_start_end(deepcopy(log0), parameters=parameters)
     # use the ALPHA causal relation if none is provided as parameter
-    causal = exec_utils.get_param_value(Parameters.CAUSAL_RELATION, parameters, causal_discovery.apply(dfg_discovery.apply(log, parameters=parameters))
+    causal = exec_utils.get_param_value(Parameters.CAUSAL_RELATION, parameters, causal_discovery.apply(dfg_discovery.apply(log, parameters=parameters)))
 
     activities = sorted(list(set(x[activity_key] for trace in log for x in trace)))
     matr = __transform_log_to_matrix(log, activities, activity_key)
