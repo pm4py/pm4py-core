@@ -7,6 +7,8 @@
 ### Changed
 * 284bd275ae444a72e3c81662b7aded4921befde4
   * updating Scipy adopted LP solver from simplex to highs (4x faster)
+* bc1f21ef4e83af66f1202ef82e389e5b5cb38ae8
+  * moving utilities for sojourn/service/waiting/arrial/finish times computation on Pandas dataframes
 
 ### Deprecated
 
