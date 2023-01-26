@@ -1,4 +1,5 @@
 import numpy as np
+import networkx as nx
 
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
@@ -17,6 +18,7 @@ from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
 from pm4py.objects.petri_net.utils import murata
 from pm4py.objects.petri_net.utils import reduction
 import pkgutil
+import warnings
 
 
 class Parameters(Enum):
@@ -129,6 +131,18 @@ def apply(log0: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional
     alpha = exec_utils.get_param_value(Parameters.ALPHA, parameters, 1.0)
 
     activities = sorted(list(set(x[activity_key] for trace in log for x in trace)))
+
+    # check if the causal relation satisfy the criteria for relaxed sound WF-nets
+    G = nx.DiGraph()
+    for ca in causal:
+        G.add_edge(ca[0], ca[1])
+
+    desc_start = set(nx.descendants(G, artificial_start_activity))
+    anc_end = set(nx.ancestors(G, artificial_end_activity))
+
+    if artificial_start_activity in desc_start or artificial_end_activity in anc_end or len(desc_start.union({artificial_start_activity}).difference(activities)) > 0 or len(anc_end.union({artificial_end_activity}).difference(activities)) > 0:
+        warnings.warn("The conditions needed to ensure a relaxed sound WF-net as output are not satisfied.")
+
     matr = __transform_log_to_matrix(log, activities, activity_key)
 
     net = PetriNet("ilp")
