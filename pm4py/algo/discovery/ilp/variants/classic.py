@@ -203,8 +203,11 @@ def apply(log0: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional
                         Aeq.append(row)
                         beq.append(0)
 
-            crow = row2.tolist() + (-row2).tolist()
-            c += crow
+                crow = row2.tolist() + (-row2).tolist()
+                c += crow
+            else:
+                # break not only the current node but all his children
+                break
 
     Aub.append([-1] * (2*len(activities)) + [0])
     bub.append(-1)
