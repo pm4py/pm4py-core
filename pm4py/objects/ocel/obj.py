@@ -12,10 +12,11 @@ class Parameters(Enum):
     EVENT_TIMESTAMP = constants.PARAM_EVENT_TIMESTAMP
     OBJECT_ID = constants.PARAM_OBJECT_ID
     OBJECT_TYPE = constants.PARAM_OBJECT_TYPE
+    QUALIFIER = constants.PARAM_QUALIFIER
 
 
 class OCEL(object):
-    def __init__(self, events=None, objects=None, relations=None, globals=None, parameters=None):
+    def __init__(self, events=None, objects=None, relations=None, globals=None, parameters=None, o2o=None, e2e=None):
         if parameters is None:
             parameters = {}
 
@@ -29,6 +30,7 @@ class OCEL(object):
                                                          constants.DEFAULT_EVENT_ACTIVITY)
         self.event_timestamp = exec_utils.get_param_value(Parameters.EVENT_TIMESTAMP, parameters,
                                                           constants.DEFAULT_EVENT_TIMESTAMP)
+        self.qualifier = exec_utils.get_param_value(Parameters.QUALIFIER, parameters, constants.DEFAULT_QUALIFIER)
 
         if events is None:
             events = pd.DataFrame({self.event_id_column: [], self.event_activity: [], self.event_timestamp: []})
@@ -40,11 +42,19 @@ class OCEL(object):
                  self.object_type_column: []})
         if globals is None:
             globals = {}
+        if o2o is None:
+            o2o = pd.DataFrame({self.object_id_column: [], self.object_id_column+"_2": [], self.qualifier: []})
+        if e2e is None:
+            e2e = pd.DataFrame({self.event_id_column: [], self.event_id_column+"_2": [], self.qualifier: []})
+        if self.qualifier not in relations:
+            relations[self.qualifier] = [None] * len(relations)
 
         self.events = events
         self.objects = objects
         self.relations = relations
         self.globals = globals
+        self.o2o = o2o
+        self.e2e = e2e
 
         self.parameters = parameters
 
@@ -90,8 +100,8 @@ class OCEL(object):
         return str(self.get_summary())
 
     def __copy__(self):
-        return OCEL(self.events, self.objects, self.relations, copy(self.globals), copy(self.parameters))
+        return OCEL(self.events, self.objects, self.relations, copy(self.globals), copy(self.parameters), copy(self.o2o), copy(self.e2e))
 
     def __deepcopy__(self, memo):
         return OCEL(self.events.copy(), self.objects.copy(), self.relations.copy(), deepcopy(self.globals),
-                    deepcopy(self.parameters))
+                    deepcopy(self.parameters), deepcopy(self.o2o), deepcopy(self.e2e))
