@@ -148,6 +148,84 @@ def insert_feature_activity_position_in_trace(df: pd.DataFrame, case_id: str = c
     return df
 
 
+def insert_case_arrival_finish_rate(log: pd.DataFrame, case_id_column=constants.CASE_CONCEPT_NAME, timestamp_column=xes_constants.DEFAULT_TIMESTAMP_KEY, start_timestamp_column=None, arrival_rate_column="@@arrival_rate", finish_rate_column="@@finish_rate") -> pd.DataFrame:
+    """
+    Inserts the arrival/finish rate in the dataframe.
+
+    Parameters
+    -----------------
+    log
+        Pandas dataframe
+
+    Returns
+    -----------------
+    log
+        Pandas dataframe enriched by arrival and finish rate
+    """
+    if start_timestamp_column is None:
+        start_timestamp_column = timestamp_column
+
+    case_arrival = log.groupby(case_id_column)[start_timestamp_column].agg(min).to_dict()
+    case_arrival = [[x, y.timestamp()] for x, y in case_arrival.items()]
+    case_arrival.sort(key=lambda x: (x[1], x[0]))
+
+    case_finish = log.groupby(case_id_column)[timestamp_column].agg(max).to_dict()
+    case_finish = [[x, y.timestamp()] for x, y in case_finish.items()]
+    case_finish.sort(key=lambda x: (x[1], x[0]))
+
+    i = len(case_arrival) - 1
+    while i > 0:
+        case_arrival[i][1] = case_arrival[i][1] - case_arrival[i-1][1]
+        i = i - 1
+    case_arrival[0][1] = 0
+    case_arrival = {x[0]: x[1] for x in case_arrival}
+
+    i = len(case_finish) - 1
+    while i > 0:
+        case_finish[i][1] = case_finish[i][1] - case_finish[i-1][1]
+        i = i - 1
+    case_finish[0][1] = 0
+    case_finish = {x[0]: x[1] for x in case_finish}
+
+    log[arrival_rate_column] = log[case_id_column].map(case_arrival)
+    log[finish_rate_column] = log[case_id_column].map(case_finish)
+
+    return log
+
+
+def insert_case_service_waiting_time(log: pd.DataFrame, case_id_column=constants.CASE_CONCEPT_NAME, timestamp_column=xes_constants.DEFAULT_TIMESTAMP_KEY, start_timestamp_column=None, diff_start_end_column="@@diff_start_end", service_time_column="@@service_time", sojourn_time_column="@@sojourn_time", waiting_time_column="@@waiting_time") -> pd.DataFrame:
+    """
+    Inserts the service/waiting/sojourn time in the dataframe.
+
+    Parameters
+    ----------------
+    log
+        Pandas dataframe
+    parameters
+        Parameters of the method
+
+    Returns
+    ----------------
+    log
+        Pandas dataframe with service, waiting and sojourn time
+    """
+    if start_timestamp_column is None:
+        start_timestamp_column = timestamp_column
+
+    log[diff_start_end_column] = (log[timestamp_column] - log[start_timestamp_column]).astype("timedelta64[ms]")
+    service_times = log.groupby(case_id_column)[diff_start_end_column].sum().to_dict()
+    log[service_time_column] = log[case_id_column].map(service_times)
+
+    start_timestamps = log.groupby(case_id_column)[start_timestamp_column].agg(min).to_dict()
+    complete_timestamps = log.groupby(case_id_column)[timestamp_column].agg(max).to_dict()
+    sojourn_time_cases = {x: complete_timestamps[x].timestamp() - start_timestamps[x].timestamp() for x in start_timestamps}
+
+    log[sojourn_time_column] = log[case_id_column].map(sojourn_time_cases)
+    log[waiting_time_column] = log[sojourn_time_column] - log[service_time_column]
+
+    return log
+
+
 def check_is_pandas_dataframe(log):
     """
     Checks if a log object is a dataframe
