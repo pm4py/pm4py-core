@@ -9,6 +9,8 @@
   * updating Scipy adopted LP solver from simplex to highs (4x faster)
 * bc1f21ef4e83af66f1202ef82e389e5b5cb38ae8
   * moving utilities for sojourn/service/waiting/arrial/finish times computation on Pandas dataframes
+* 7e59696b0d4c9fd659dc0594cff3c07fc504df5e
+  * OCPN discovery - specification of the variant of inductive miner to be used
 
 ### Deprecated
 
