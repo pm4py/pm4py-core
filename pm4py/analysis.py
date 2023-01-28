@@ -19,9 +19,11 @@ __doc__ = """
 
 from typing import List, Optional, Tuple, Dict, Union
 
-from pm4py.objects.log.obj import Trace, EventLog
+from pm4py.objects.log.obj import Trace, EventLog, EventStream
+from pm4py.objects.conversion.log import converter as log_converter
+from pm4py.utils import __event_log_deprecation_warning
 from pm4py.objects.petri_net.obj import PetriNet, Marking
-from pm4py.utils import get_properties
+from pm4py.utils import get_properties, constants, pandas_utils
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 
 import pandas as pd
@@ -196,6 +198,10 @@ def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame], activity_key
 
         dataframe = pm4py.insert_artificial_start_end(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception(
+        "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
     properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)

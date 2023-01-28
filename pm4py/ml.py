@@ -21,13 +21,12 @@ The ``pm4py.ml`` module contains the machine learning features offered in ``pm4p
 from typing import Union, Tuple
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream
-from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import constants
+from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.utils import __event_log_deprecation_warning
 import random
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
-from pm4py.utils import get_properties
-from copy import copy
+from pm4py.utils import get_properties, constants, pandas_utils
 
 
 def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float = 0.8, case_id_key="case:concept:name") -> Union[

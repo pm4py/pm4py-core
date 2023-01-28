@@ -24,11 +24,13 @@ from collections import Counter
 from typing import Optional, Dict, Any
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.conversion.process_tree import converter as tree_converter
+from pm4py.objects.ocel.util import flattening
 
 
 class Parameters(Enum):
     EVENT_ACTIVITY = ocel_constants.PARAM_EVENT_ACTIVITY
     OBJECT_TYPE = ocel_constants.PARAM_OBJECT_TYPE
+    INDUCTIVE_MINER_VARIANT = "inductive_miner_variant"
     DOUBLE_ARC_THRESHOLD = "double_arc_threshold"
 
 
@@ -59,6 +61,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
         parameters = {}
 
     double_arc_threshold = exec_utils.get_param_value(Parameters.DOUBLE_ARC_THRESHOLD, parameters, 0.0)
+    inductive_miner_variant = exec_utils.get_param_value(Parameters.INDUCTIVE_MINER_VARIANT, parameters, "im")
+
     ocdfg = ocdfg_discovery.apply(ocel, parameters=parameters)
 
     petri_nets = {}
@@ -85,13 +89,18 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
 
         double_arcs_on_activity[ot] = is_activity_double
 
-        obj = DFG()
-        obj._graph = Counter(dfg)
-        obj._start_activities = Counter(start_activities)
-        obj._end_activities = Counter(end_activities)
+        process_tree = None
+        if inductive_miner_variant == "imd":
+            obj = DFG()
+            obj._graph = Counter(dfg)
+            obj._start_activities = Counter(start_activities)
+            obj._end_activities = Counter(end_activities)
+            process_tree = inductive_miner.apply(obj, variant=inductive_miner.Variants.IMd, parameters=parameters)
+        elif inductive_miner_variant == "im":
+            flat_log = flattening.flatten(ocel, ot, parameters=parameters)
+            process_tree = inductive_miner.apply(flat_log, parameters=parameters)
 
-        process_tree = inductive_miner.apply(obj, variant=inductive_miner.Variants.IMd)
-        petri_nets[ot] = tree_converter.apply(process_tree)
+        petri_nets[ot] = tree_converter.apply(process_tree, parameters=parameters)
 
     ocdfg["petri_nets"] = petri_nets
     ocdfg["double_arcs_on_activity"] = double_arcs_on_activity

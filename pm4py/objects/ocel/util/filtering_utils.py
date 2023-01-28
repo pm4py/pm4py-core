@@ -58,6 +58,9 @@ def propagate_event_filtering(ocel: OCEL, parameters: Optional[Dict[Any, Any]] =
     selected_object_ids = set(ocel.relations[object_id].unique())
     ocel.objects = ocel.objects[ocel.objects[object_id].isin(selected_object_ids)]
 
+    ocel.e2e = ocel.e2e[(ocel.e2e[event_id].isin(selected_event_ids)) & (ocel.e2e[event_id+"_2"].isin(selected_event_ids))]
+    ocel.o2o = ocel.o2o[(ocel.o2o[object_id].isin(selected_object_ids)) & (ocel.o2o[object_id+"_2"].isin(selected_object_ids))]
+
     return ocel
 
 
@@ -92,6 +95,9 @@ def propagate_object_filtering(ocel: OCEL, parameters: Optional[Dict[Any, Any]] 
     selected_event_ids = set(ocel.relations[event_id].unique())
     ocel.events = ocel.events[ocel.events[event_id].isin(selected_event_ids)]
 
+    ocel.e2e = ocel.e2e[(ocel.e2e[event_id].isin(selected_event_ids)) & (ocel.e2e[event_id+"_2"].isin(selected_event_ids))]
+    ocel.o2o = ocel.o2o[(ocel.o2o[object_id].isin(selected_object_ids)) & (ocel.o2o[object_id+"_2"].isin(selected_object_ids))]
+
     return ocel
 
 
@@ -125,5 +131,8 @@ def propagate_relations_filtering(ocel: OCEL, parameters: Optional[Dict[Any, Any
     selected_object_ids = set(ocel.relations[object_id].unique())
     ocel.events = ocel.events[ocel.events[event_id].isin(selected_event_ids)]
     ocel.objects = ocel.objects[ocel.objects[object_id].isin(selected_object_ids)]
+
+    ocel.e2e = ocel.e2e[(ocel.e2e[event_id].isin(selected_event_ids)) & (ocel.e2e[event_id+"_2"].isin(selected_event_ids))]
+    ocel.o2o = ocel.o2o[(ocel.o2o[object_id].isin(selected_object_ids)) & (ocel.o2o[object_id+"_2"].isin(selected_object_ids))]
 
     return ocel

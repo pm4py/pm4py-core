@@ -1,5 +1,34 @@
 # Changelog of pm4py
 
+## pm4py 2.5.1 (2023.XX.YY)
+
+### Added
+* 23d5b0a81bbffbb69175aaa7cfa78e1ea0b78b6d
+  * adapted OCEL object to optionally support O2O/E2E relationships.
+
+### Changed
+* 284bd275ae444a72e3c81662b7aded4921befde4
+  * updating Scipy adopted LP solver from simplex to highs (4x faster)
+* bc1f21ef4e83af66f1202ef82e389e5b5cb38ae8
+  * moving utilities for sojourn/service/waiting/arrial/finish times computation on Pandas dataframes
+* 7e59696b0d4c9fd659dc0594cff3c07fc504df5e
+  * OCPN discovery - specification of the variant of inductive miner to be used
+* b32cada268fea2a9fdfb420821d9877d9144770d
+  * removed deprecation warning on Petri semantics
+
+### Deprecated
+
+### Fixed
+* a6a1f14cfc1714a5039dd445ea14091e3e8579c7
+  * removed extra parameters in pm4py.discover_petri_net_heuristics
+  
+### Removed
+
+### Other
+
+
+---
+
 ## pm4py 2.5.0 (2023.01.19)
 
 ### Added
