@@ -19,7 +19,9 @@
 ### Deprecated
 
 ### Fixed
-
+* a6a1f14cfc1714a5039dd445ea14091e3e8579c7
+  * removed extra parameters in pm4py.discover_petri_net_heuristics
+  
 ### Removed
 
 ### Other
