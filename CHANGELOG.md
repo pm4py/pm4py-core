@@ -11,6 +11,8 @@
   * moving utilities for sojourn/service/waiting/arrial/finish times computation on Pandas dataframes
 * 7e59696b0d4c9fd659dc0594cff3c07fc504df5e
   * OCPN discovery - specification of the variant of inductive miner to be used
+* b32cada268fea2a9fdfb420821d9877d9144770d
+  * removed deprecation warning on Petri semantics
 
 ### Deprecated
 
