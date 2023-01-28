@@ -232,7 +232,7 @@ def discover_ocdfg(ocel: OCEL, business_hours=False, business_hour_slots=constan
     return ocdfg_discovery.apply(ocel, parameters=parameters)
 
 
-def discover_oc_petri_net(ocel: OCEL) -> Dict[str, Any]:
+def discover_oc_petri_net(ocel: OCEL, inductive_miner_variant: str = "im") -> Dict[str, Any]:
     """
     Discovers an object-centric Petri net from the provided object-centric event log.
 
@@ -248,7 +248,9 @@ def discover_oc_petri_net(ocel: OCEL) -> Dict[str, Any]:
         ocpn = pm4py.discover_oc_petri_net(ocel)
     """
     from pm4py.algo.discovery.ocel.ocpn import algorithm as ocpn_discovery
-    return ocpn_discovery.apply(ocel)
+    parameters = {}
+    parameters["inductive_miner_variant"] = inductive_miner_variant
+    return ocpn_discovery.apply(ocel, parameters=parameters)
 
 
 def discover_objects_graph(ocel: OCEL, graph_type: str = "object_interaction") -> Set[Tuple[str, str]]:

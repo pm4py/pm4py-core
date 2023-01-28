@@ -486,6 +486,7 @@ Overall List of Methods
    pm4py.analysis.generate_marking
    pm4py.analysis.compute_emd
    pm4py.analysis.reduce_petri_net_invisibles
+   pm4py.analysis.reduce_petri_net_implicit_places
    pm4py.utils
    pm4py.utils.rebase
    pm4py.utils.parse_process_tree

@@ -16,7 +16,7 @@
 '''
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.objects.log.obj import EventLog, Trace, Event
-
+from copy import copy
 
 def keep_one_trace_per_variant(log, parameters=None):
     """
@@ -41,7 +41,12 @@ def keep_one_trace_per_variant(log, parameters=None):
     if log is not None:
         variants = variants_module.get_variants(log, parameters=parameters)
         for var in variants:
-            new_log.append(variants[var][0])
+            curr_trace = variants[var][0]
+            new_trace = Trace(attributes=copy(curr_trace.attributes))
+            new_trace.attributes["@@num_traces"] = len(variants[var])
+            for ev in curr_trace:
+                new_trace.append(ev)
+            new_log.append(new_trace)
 
     return new_log
 
