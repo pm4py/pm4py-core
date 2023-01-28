@@ -3,6 +3,8 @@
 ## pm4py 2.5.1 (2023.XX.YY)
 
 ### Added
+* 23d5b0a81bbffbb69175aaa7cfa78e1ea0b78b6d
+  * adapted OCEL object to optionally support O2O/E2E relationships.
 
 ### Changed
 * 284bd275ae444a72e3c81662b7aded4921befde4
