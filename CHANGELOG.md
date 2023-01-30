@@ -3,6 +3,8 @@
 ## pm4py 2.5.2 (2023.02.XX)
 
 ### Added
+* 87280959eb1612d01bbd4183d951f2c33750fed6
+  * added ADD_ONLY_IF_FM_IS_REACHED parameter to the playout
 
 ### Changed
 
