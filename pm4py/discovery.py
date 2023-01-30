@@ -285,7 +285,7 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame, DFG], multi_
 
 def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5,
                                   and_threshold: float = 0.65,
-                                  loop_two_threshold: float = 0.5, min_act_count: int = 1, min_dfg_occurrences: int = 1, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[PetriNet, Marking, Marking]:
+                                  loop_two_threshold: float = 0.5, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[PetriNet, Marking, Marking]:
     """
     Discover a Petri net using the Heuristics Miner
 
@@ -295,8 +295,6 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
     :param dependency_threshold: dependency threshold (default: 0.5)
     :param and_threshold: AND threshold (default: 0.65)
     :param loop_two_threshold: loop two threshold (default: 0.5)
-    :param min_act_count: minimum number of occurrences per activity in order to be included in the discovery
-    :param min_dfg_occurrences: minimum number of occurrences per arc in the DFG in order to be included in the discovery
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
@@ -320,8 +318,6 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
     parameters[heu_parameters.DEPENDENCY_THRESH] = dependency_threshold
     parameters[heu_parameters.AND_MEASURE_THRESH] = and_threshold
     parameters[heu_parameters.LOOP_LENGTH_TWO_THRESH] = loop_two_threshold
-    parameters[heu_parameters.MIN_ACT_COUNT] = min_act_count
-    parameters[heu_parameters.MIN_DFG_OCCURRENCES] = min_dfg_occurrences
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(
