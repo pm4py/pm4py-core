@@ -3,6 +3,7 @@ Release Notes
 pm4py 2.5.0 - Release Notes
 ---------------------------
 The major changes in pm4py 2.5.0 are as follows:
+
 1. We added the cadoso and extended cardoso simplicity metrics to pm4py
 
 2. We added discovery of Stochastic Arc Weight nets based on OCEL logs.
@@ -15,7 +16,8 @@ Today, we released pm4py 2.4.0.
 We have adopted our release policy slightly, i.e., as of now, the pm4py versioning follows the MAJOR.MINOR.FIX pattern.
 We will also report all MAJOR and MINOR releases in the release notes.
 
-As today's release is a minor rele, we report on the main changes here.
+As today's release is a minor release, we report on the main changes here.
+
 1. We added the Murata algorithm (Berthelot implementation) to remove the structurally redundant places, which is now available in the simplified interface.
 
 2. We added the reduction of invisible transitions in Petri nets to the simplified interface.
