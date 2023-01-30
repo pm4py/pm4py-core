@@ -14,7 +14,7 @@ RUN apt-get -y install libjemalloc-dev libboost-dev libboost-filesystem-dev libb
 RUN apt-get -y install libxml2-dev libxslt-dev libfreetype6-dev libsuitesparse-dev
 RUN pip install -U cvxopt
 RUN pip install -U wheel six pytest
-RUN pip install colorama==0.4.6 contourpy==1.0.6 cycler==0.11.0 deprecation==2.1.0 fonttools==4.38.0 graphviz==0.20.1 intervaltree==3.1.0 kiwisolver==1.4.4 lxml==4.9.2 matplotlib==3.6.2 networkx==2.8.8 numpy==1.24.0 packaging==22.0 pandas==1.4.4 pillow==9.3.0 pydotplus==2.0.2 pyparsing==3.0.9 python-dateutil==2.8.2 pytz==2022.7 scipy==1.9.3 six==1.16.0 sortedcontainers==2.4.0 stringdist==1.0.9 tqdm==4.64.1
+RUN pip install colorama==0.4.6 contourpy==1.0.7 cycler==0.11.0 deprecation==2.1.0 fonttools==4.38.0 graphviz==0.20.1 intervaltree==3.1.0 kiwisolver==1.4.4 lxml==4.9.2 matplotlib==3.6.3 networkx==3.0 numpy==1.24.1 packaging==23.0 pandas==1.5.3 pillow==9.4.0 pydotplus==2.0.2 pyparsing==3.0.9 python-dateutil==2.8.2 pytz==2022.7.1 scipy==1.10.0 six==1.16.0 sortedcontainers==2.4.0 stringdist==1.0.9 tqdm==4.64.1
 
 COPY . /app
 RUN cd /app && python setup.py install
