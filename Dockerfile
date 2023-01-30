@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.11
 
 RUN apt-get update
 RUN apt-get -y upgrade
