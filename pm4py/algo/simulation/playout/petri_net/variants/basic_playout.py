@@ -21,12 +21,14 @@ class Parameters(Enum):
     NO_TRACES = "noTraces"
     MAX_TRACE_LENGTH = "maxTraceLength"
     PETRI_SEMANTICS = "petri_semantics"
+    ADD_ONLY_IF_FM_IS_REACHED = "add_only_if_fm_is_reached"
 
 
 def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
                   case_id_key=xes_constants.DEFAULT_TRACEID_KEY,
                   activity_key=xes_constants.DEFAULT_NAME_KEY, timestamp_key=xes_constants.DEFAULT_TIMESTAMP_KEY,
-                  final_marking=None, return_visited_elements=False, semantics=petri_net.semantics.ClassicSemantics()):
+                  final_marking=None, return_visited_elements=False, semantics=petri_net.semantics.ClassicSemantics(),
+                  add_only_if_fm_is_reached=False):
     """
     Do the playout of a Petrinet generating a log
 
@@ -50,6 +52,8 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
         If provided, the final marking of the Petri net
     semantics
         Semantics of the Petri net to be used (default: petri_net.semantics.ClassicSemantics())
+    add_only_if_fm_is_reached
+        Adds the case only if the final marking is reached
     """
     # assigns to each event an increased timestamp from 1970
     curr_timestamp = 10000000
@@ -79,7 +83,8 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
 
             marking = semantics.execute(trans, net, marking)
 
-        all_visited_elements.append(tuple(visited_elements))
+        if not add_only_if_fm_is_reached or marking == final_marking:
+            all_visited_elements.append(tuple(visited_elements))
 
     if return_visited_elements:
         return all_visited_elements
@@ -120,6 +125,7 @@ def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking = None
             Parameters.NO_TRACES -> Number of traces of the log to generate
             Parameters.MAX_TRACE_LENGTH -> Maximum trace length
             Parameters.PETRI_SEMANTICS -> Petri net semantics to be used (default: petri_nets.semantics.ClassicSemantics())
+            Parameters.ADD_ONLY_IF_FM_IS_REACHED -> adds the case only if the final marking is reached
     """
     if parameters is None:
         parameters = {}
@@ -131,8 +137,9 @@ def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking = None
     max_trace_length = exec_utils.get_param_value(Parameters.MAX_TRACE_LENGTH, parameters, 1000)
     return_visited_elements = exec_utils.get_param_value(Parameters.RETURN_VISITED_ELEMENTS, parameters, False)
     semantics = exec_utils.get_param_value(Parameters.PETRI_SEMANTICS, parameters, petri_net.semantics.ClassicSemantics())
+    add_only_if_fm_is_reached = exec_utils.get_param_value(Parameters.ADD_ONLY_IF_FM_IS_REACHED, parameters, False)
 
     return apply_playout(net, initial_marking, max_trace_length=max_trace_length, no_traces=no_traces,
                          case_id_key=case_id_key, activity_key=activity_key, timestamp_key=timestamp_key,
                          final_marking=final_marking, return_visited_elements=return_visited_elements,
-                         semantics=semantics)
+                         semantics=semantics, add_only_if_fm_is_reached=add_only_if_fm_is_reached)
