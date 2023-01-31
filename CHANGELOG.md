@@ -14,6 +14,8 @@
   * playout Petri net simplified interface: detecting the correct Petri semantics to be used
 * ffffc623e6c52af2df0a4f3bb33fff5aa49b5588
   * added FM_LEQ_ACCEPTED parameter to Petri playout
+* df84b4702fc81ab3427330f05c6b5dfb572f595e
+  * possibility to decorate heuristics nets with performance from the simplified interface
 
 ### Deprecated
 

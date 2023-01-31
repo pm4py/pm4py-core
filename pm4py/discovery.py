@@ -371,7 +371,7 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame, DFG], noi
 
 def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5,
                             and_threshold: float = 0.65,
-                            loop_two_threshold: float = 0.5, min_act_count: int = 1, min_dfg_occurrences: int = 1, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> HeuristicsNet:
+                            loop_two_threshold: float = 0.5, min_act_count: int = 1, min_dfg_occurrences: int = 1, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", decoration: str = "frequency") -> HeuristicsNet:
     """
     Discovers an heuristics net
 
@@ -408,6 +408,7 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
     parameters[heu_parameters.LOOP_LENGTH_TWO_THRESH] = loop_two_threshold
     parameters[heu_parameters.MIN_ACT_COUNT] = min_act_count
     parameters[heu_parameters.MIN_DFG_OCCURRENCES] = min_dfg_occurrences
+    parameters[heu_parameters.HEU_NET_DECORATION] = decoration
     
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(
