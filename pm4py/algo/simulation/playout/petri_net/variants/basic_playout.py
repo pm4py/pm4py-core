@@ -95,9 +95,11 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
 
             marking = semantics.execute(trans, net, marking)
 
-        if not add_only_if_fm_is_reached or marking == final_marking:
+        if not add_only_if_fm_is_reached:
             all_visited_elements.append(tuple(visited_elements))
-
+        elif marking == final_marking:
+            all_visited_elements.append(tuple(visited_elements))
+        
         i = i + 1
 
     if return_visited_elements:
