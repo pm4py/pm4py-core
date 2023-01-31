@@ -10,6 +10,8 @@
 ### Changed
 * 87280959eb1612d01bbd4183d951f2c33750fed6
   * added ADD_ONLY_IF_FM_IS_REACHED parameter to Petri net playout
+* 38af1dabd9cf3478a6b728be5a602150ed837c7c
+  * playout Petri net simplified interface: detecting the correct Petri semantics to be used
 
 ### Deprecated
 

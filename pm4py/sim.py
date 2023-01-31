@@ -30,9 +30,22 @@ def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, Proc
     """
     if len(args) == 3:
         from pm4py.objects.petri_net.obj import PetriNet
-        if type(args[0]) is PetriNet:
+        if isinstance(args[0], PetriNet):
+            from pm4py.objects.petri_net.obj import ResetNet, InhibitorNet
             from pm4py.algo.simulation.playout.petri_net import algorithm
-            return algorithm.apply(args[0], args[1], final_marking=args[2], **kwargs)
+            from pm4py.objects.petri_net.semantics import ClassicSemantics
+            from pm4py.objects.petri_net.inhibitor_reset.semantics import InhibitorResetSemantics
+            net = args[0]
+            im = args[1]
+            fm = args[2]
+            parameters = kwargs["parameters"] if "parameters" in kwargs else None
+            if parameters is None:
+                parameters = {}
+            semantics = ClassicSemantics()
+            if isinstance(net, ResetNet) or isinstance(net, InhibitorNet):
+                semantics = InhibitorResetSemantics()
+            parameters["petri_semantics"] = semantics
+            return algorithm.apply(net, im, final_marking=fm, parameters=parameters)
         elif isinstance(args[0], dict):
             from pm4py.algo.simulation.playout.dfg import algorithm as dfg_playout
             return dfg_playout.apply(args[0], args[1], args[2], **kwargs)
