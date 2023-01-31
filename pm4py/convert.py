@@ -380,8 +380,20 @@ def convert_petri_net_type(net: PetriNet, im: Marking, fm: Marking, type: str = 
         new_net = ResetInhibitorNet(net.name)
     for place in net.places:
         new_net.places.add(place)
+        in_arcs = set(place.in_arcs)
+        out_arcs = set(place.out_arcs)
+        for arc in in_arcs:
+            place.in_arcs.remove(arc)
+        for arc in out_arcs:
+            place.out_arcs.remove(arc)
     for trans in net.transitions:
         new_net.transitions.add(trans)
+        in_arcs = set(trans.in_arcs)
+        out_arcs = set(trans.out_arcs)
+        for arc in in_arcs:
+            trans.in_arcs.remove(arc)
+        for arc in out_arcs:
+            trans.out_arcs.remove(arc)
     for arc in net.arcs:
         arc_type = arc.properties["arctype"] if "arctype" in arc.properties else None
         new_arc = petri_utils.add_arc_from_to(arc.source, arc.target, new_net, weight=arc.weight, type=arc_type)
