@@ -4,7 +4,16 @@
 
 ### Added
 
+* be6ac2f1c611da6abcb6ea10df0280f7b9ecb0f0
+  * added internal conversion method for Petri net type (classic, reset, inhibitor, reset_inhibitor)
+
 ### Changed
+* 87280959eb1612d01bbd4183d951f2c33750fed6
+  * added ADD_ONLY_IF_FM_IS_REACHED parameter to Petri net playout
+* 38af1dabd9cf3478a6b728be5a602150ed837c7c
+  * playout Petri net simplified interface: detecting the correct Petri semantics to be used
+* ffffc623e6c52af2df0a4f3bb33fff5aa49b5588
+  * added FM_LEQ_ACCEPTED parameter to Petri playout
 
 ### Deprecated
 
