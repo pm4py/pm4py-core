@@ -20,6 +20,8 @@
 ### Deprecated
 
 ### Fixed
+* b012df622c9bf28c3adf8cf4b53eaa2d6ec5efad
+  * fixed JSON/XML-OCEL importing (missing coherency check)
 
 ### Removed
 
@@ -49,8 +51,6 @@
 ### Fixed
 * a6a1f14cfc1714a5039dd445ea14091e3e8579c7
   * removed extra parameters in pm4py.discover_petri_net_heuristics
-* b012df622c9bf28c3adf8cf4b53eaa2d6ec5efad
-  * fixed JSON/XML-OCEL importing (missing coherency check)
 
 ### Removed
 
