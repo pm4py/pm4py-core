@@ -3,10 +3,13 @@
 ## pm4py 2.5.2 (2023.02.XX)
 
 ### Added
-* 87280959eb1612d01bbd4183d951f2c33750fed6
-  * added ADD_ONLY_IF_FM_IS_REACHED parameter to the playout
+
+* be6ac2f1c611da6abcb6ea10df0280f7b9ecb0f0
+  * added internal conversion method for Petri net type (classic, reset, inhibitor, reset_inhibitor)
 
 ### Changed
+* 87280959eb1612d01bbd4183d951f2c33750fed6
+  * added ADD_ONLY_IF_FM_IS_REACHED parameter to Petri net playout
 
 ### Deprecated
 
