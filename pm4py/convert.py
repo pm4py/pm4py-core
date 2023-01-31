@@ -5,6 +5,7 @@ The ``pm4py.convert`` module contains the cross-conversions implemented in ``pm4
 from typing import Union, Tuple, Optional, Collection
 
 import pandas as pd
+from copy import deepcopy
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.ocel.obj import OCEL
@@ -343,3 +344,45 @@ def convert_petri_net_to_networkx(net: PetriNet, im: Marking, fm: Marking) -> nx
     for arc in net.arcs:
         G.add_edge(arc.source.name, arc.target.name, attr={"weight": arc.weight, "properties": arc.properties})
     return G
+
+
+def convert_petri_net_type(net: PetriNet, im: Marking, fm: Marking, type: str = "classic") -> Tuple[PetriNet, Marking, Marking]:
+    """
+    Changes the Petri net (internal) type
+
+    :param net: petri net
+    :param im: initial marking
+    :param fm: final marking
+    :param type: internal type (classic, reset, inhibitor, reset_inhibitor)
+    :rtype: ``Tuple[PetriNet, Marking, Marking]``
+
+    .. code-block:: python3
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('tests/input_data/running-example.pnml')
+        reset_net, new_im, new_fm = pm4py.convert_petri_net_type(net, im, fm, type='reset_inhibitor')
+    """
+    from pm4py.objects.petri_net.utils import petri_utils
+
+    [net, im, fm] = deepcopy([net, im, fm])
+    new_net = None
+    if type == "classic":
+        from pm4py.objects.petri_net.obj import PetriNet
+        new_net = PetriNet(net.name)
+    elif type == "reset":
+        from pm4py.objects.petri_net.obj import ResetNet
+        new_net = ResetNet(net.name)
+    elif type == "inhibitor":
+        from pm4py.objects.petri_net.obj import InhibitorNet
+        new_net = InhibitorNet(net.name)
+    elif type == "reset_inhibitor":
+        from pm4py.objects.petri_net.obj import ResetInhibitorNet
+        new_net = ResetInhibitorNet(net.name)
+    for place in net.places:
+        new_net.places.add(place)
+    for trans in net.transitions:
+        new_net.transitions.add(trans)
+    for arc in net.arcs:
+        arc_type = arc.properties["arctype"] if "arctype" in arc.properties else None
+        new_arc = petri_utils.add_arc_from_to(arc.source, arc.target, new_net, weight=arc.weight, type=arc_type)
+    return new_net, im, fm
