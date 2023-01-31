@@ -7,6 +7,7 @@ from pm4py.algo.transformation.ocel.features.objects import object_lifecycle_len
 
 class Parameters(Enum):
     ENABLE_ALL = "enable_all"
+    ENABLE_LIFECYCLE_METRICS = "enable_lifecycle_metrics"
     ENABLE_OBJECT_LIFECYCLE_LENGTH = "enable_object_lifecycle_length"
     ENABLE_OBJECT_LIFECYCLE_UNQ_ACT = "enable_object_lifecycle_unq_act"
     ENABLE_OBJECT_LIFECYCLE_DURATION = "enable_object_lifecycle_duration"
@@ -38,6 +39,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     parameters
         Parameters of the algorithm, including:
         - Parameters.ENABLE_ALL => enable the extraction of all the belowmentioned features
+        - Parameters.ENABLE_LIFECYCLE_METRICS => enables the computation of the lifecycle metrics
         - Parameters.ENABLE_OBJECT_LIFECYCLE_LENGTH => enables the object lifecycle length feature
         - Parameters.ENABLE_OBJECT_LIFECYCLE_DURATION => enables the object lifecycle duration feature
         - Parameters.ENABLE_OBJECT_LIFECYCLE_UNQ_ACT => enables the object lifecycle unique activities feature
@@ -74,20 +76,21 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
         parameters = {}
 
     enable_all = exec_utils.get_param_value(Parameters.ENABLE_ALL, parameters, True)
-    enable_object_lifecycle_length = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_LIFECYCLE_LENGTH, parameters, enable_all)
-    enable_object_lifecycle_duration = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_LIFECYCLE_DURATION, parameters, enable_all)
+    enable_lifecycle_metrics = exec_utils.get_param_value(Parameters.ENABLE_LIFECYCLE_METRICS, parameters, enable_all)
+    enable_object_lifecycle_length = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_LIFECYCLE_LENGTH, parameters, enable_lifecycle_metrics)
+    enable_object_lifecycle_duration = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_LIFECYCLE_DURATION, parameters, enable_lifecycle_metrics)
+    enable_object_lifecycle_activities = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_LIFECYCLE_ACTIVITIES, parameters, enable_lifecycle_metrics)
+    enable_object_lifecycle_unq_act = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_LIFECYCLE_UNQ_ACT, parameters, enable_lifecycle_metrics)
+    enable_object_str_attributes = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_STR_ATTRIBUTES, parameters, enable_lifecycle_metrics)
+    enable_object_num_attributes = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_NUM_ATTRIBUTES, parameters, enable_lifecycle_metrics)
+    enable_work_in_progress = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_WORK_IN_PROGRESS, parameters, False)
     enable_object_degree_centrality = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_DEGREE_CENTRALITY, parameters, enable_all)
     enable_object_general_interaction_graph = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_GENERAL_INTERACTION_GRAPH, parameters, enable_all)
     enable_object_general_descendants_graph = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_GENERAL_DESCENDANTS_GRAPH, parameters, enable_all)
     enable_object_general_inheritance_graph = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_GENERAL_INHERITANCE_GRAPH, parameters, enable_all)
     enable_object_cobirth_graph = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_COBIRTH_GRAPH, parameters, enable_all)
     enable_object_codeath_graph = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_CODEATH_GRAPH, parameters, enable_all)
-    enable_object_lifecycle_activities = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_LIFECYCLE_ACTIVITIES, parameters, enable_all)
-    enable_object_str_attributes = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_STR_ATTRIBUTES, parameters, enable_all)
-    enable_object_num_attributes = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_NUM_ATTRIBUTES, parameters, enable_all)
     enable_object_interaction_graph_ot = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_INTERACTION_GRAPH_OT, parameters, enable_all)
-    enable_object_lifecycle_unq_act = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_LIFECYCLE_UNQ_ACT, parameters, enable_all)
-    enable_work_in_progress = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_WORK_IN_PROGRESS, parameters, False)
     enable_related_events_features = exec_utils.get_param_value(Parameters.ENABLE_RELATED_EVENTS_FEATURES, parameters, False)
     enable_related_activities_features = exec_utils.get_param_value(Parameters.ENABLE_RELATED_ACTIVITIES_FEATURES, parameters, False)
     enable_obj_con_in_graph_features = exec_utils.get_param_value(Parameters.ENABLE_OBJ_CON_IN_GRAPH_FEATURES, parameters, False)
