@@ -59,7 +59,19 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
     curr_timestamp = 10000000
     all_visited_elements = []
 
-    for i in range(no_traces):
+    i = 0
+    while True:
+        if len(all_visited_elements) >= no_traces:
+            break
+
+        if i >= no_traces:
+            if not add_only_if_fm_is_reached:
+                break
+
+            if len(all_visited_elements) == 0:
+                # likely, the final marking is not reachable, therefore terminate here the playout
+                break
+
         visited_elements = []
         visible_transitions_visited = []
 
@@ -85,6 +97,8 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
 
         if not add_only_if_fm_is_reached or marking == final_marking:
             all_visited_elements.append(tuple(visited_elements))
+
+        i = i + 1
 
     if return_visited_elements:
         return all_visited_elements
