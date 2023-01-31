@@ -386,6 +386,7 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+    :param decoration: the decoration that should be used (frequency, performance)
     :rtype: ``HeuristicsNet``
 
     .. code-block:: python3
