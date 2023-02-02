@@ -16,6 +16,8 @@
   * added FM_LEQ_ACCEPTED parameter to Petri playout
 * df84b4702fc81ab3427330f05c6b5dfb572f595e
   * possibility to decorate heuristics nets with performance from the simplified interface
+* e418e25a0008828337a92b23f57a0980baa8f24a
+  * changed convert_log_to_ocel to include automatically additional object types from the dataframe
 
 ### Deprecated
 
