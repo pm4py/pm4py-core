@@ -364,6 +364,9 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame, DFG], noi
 
     variant = inductive_miner.Variants.IMf if noise_threshold > 0 else inductive_miner.Variants.IM
 
+    if isinstance(log, DFG):
+        variant = inductive_miner.Variants.IMd
+
     return inductive_miner.apply(log, variant=variant, parameters=parameters)
 
 
