@@ -21,6 +21,7 @@ The ``pm4py.convert`` module contains the cross-conversions implemented in ``pm4
 from typing import Union, Tuple, Optional, Collection
 
 import pandas as pd
+from copy import deepcopy
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.ocel.obj import OCEL
@@ -262,7 +263,7 @@ def convert_to_reachability_graph(*args: Union[Tuple[PetriNet, Marking, Marking]
     return reachability_graph.construct_reachability_graph(net, im)
 
 
-def convert_log_to_ocel(log: Union[EventLog, EventStream, pd.DataFrame], activity_column: str = "concept:name", timestamp_column: str = "time:timestamp", object_types: Collection[str] = ["case:concept:name"], obj_separator: str = " AND ") -> OCEL:
+def convert_log_to_ocel(log: Union[EventLog, EventStream, pd.DataFrame], activity_column: str = "concept:name", timestamp_column: str = "time:timestamp", object_types: Optional[Collection[str]] = None, obj_separator: str = " AND ") -> OCEL:
     """
     Converts an event log to an object-centric event log with one or more than one
     object types.
@@ -280,6 +281,17 @@ def convert_log_to_ocel(log: Union[EventLog, EventStream, pd.DataFrame], activit
         ocel = pm4py.convert_log_to_ocel(log, activity_column='concept:name', timestamp_column='time:timestamp',
                         object_types=['case:concept:name'])
     """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]:
+        raise Exception(
+            "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    if isinstance(log, EventStream):
+        log = convert_to_dataframe(log)
+
+    if object_types is None:
+        object_types = list(set(x for x in log.columns if x == "case:concept:name" or x.startswith("ocel:type")))
+
     from pm4py.objects.ocel.util import log_ocel
     return log_ocel.log_to_ocel_multiple_obj_types(log, activity_column, timestamp_column, object_types, obj_separator)
 
@@ -359,3 +371,57 @@ def convert_petri_net_to_networkx(net: PetriNet, im: Marking, fm: Marking) -> nx
     for arc in net.arcs:
         G.add_edge(arc.source.name, arc.target.name, attr={"weight": arc.weight, "properties": arc.properties})
     return G
+
+
+def convert_petri_net_type(net: PetriNet, im: Marking, fm: Marking, type: str = "classic") -> Tuple[PetriNet, Marking, Marking]:
+    """
+    Changes the Petri net (internal) type
+
+    :param net: petri net
+    :param im: initial marking
+    :param fm: final marking
+    :param type: internal type (classic, reset, inhibitor, reset_inhibitor)
+    :rtype: ``Tuple[PetriNet, Marking, Marking]``
+
+    .. code-block:: python3
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('tests/input_data/running-example.pnml')
+        reset_net, new_im, new_fm = pm4py.convert_petri_net_type(net, im, fm, type='reset_inhibitor')
+    """
+    from pm4py.objects.petri_net.utils import petri_utils
+
+    [net, im, fm] = deepcopy([net, im, fm])
+    new_net = None
+    if type == "classic":
+        from pm4py.objects.petri_net.obj import PetriNet
+        new_net = PetriNet(net.name)
+    elif type == "reset":
+        from pm4py.objects.petri_net.obj import ResetNet
+        new_net = ResetNet(net.name)
+    elif type == "inhibitor":
+        from pm4py.objects.petri_net.obj import InhibitorNet
+        new_net = InhibitorNet(net.name)
+    elif type == "reset_inhibitor":
+        from pm4py.objects.petri_net.obj import ResetInhibitorNet
+        new_net = ResetInhibitorNet(net.name)
+    for place in net.places:
+        new_net.places.add(place)
+        in_arcs = set(place.in_arcs)
+        out_arcs = set(place.out_arcs)
+        for arc in in_arcs:
+            place.in_arcs.remove(arc)
+        for arc in out_arcs:
+            place.out_arcs.remove(arc)
+    for trans in net.transitions:
+        new_net.transitions.add(trans)
+        in_arcs = set(trans.in_arcs)
+        out_arcs = set(trans.out_arcs)
+        for arc in in_arcs:
+            trans.in_arcs.remove(arc)
+        for arc in out_arcs:
+            trans.out_arcs.remove(arc)
+    for arc in net.arcs:
+        arc_type = arc.properties["arctype"] if "arctype" in arc.properties else None
+        new_arc = petri_utils.add_arc_from_to(arc.source, arc.target, new_net, weight=arc.weight, type=arc_type)
+    return new_net, im, fm
