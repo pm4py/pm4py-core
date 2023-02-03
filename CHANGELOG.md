@@ -26,6 +26,8 @@
   * fixed JSON/XML-OCEL importing (missing coherency check)
 * 5a4d5a276c0a6c2dd33ebe930cdf60b5183c48a1
   * setting correct variant when applying pm4py.discover_process_tree_inductive on a DFG object
+* a5bc0b96d9b79ae8d4ea26be03f4b8154837f567
+  * bug fix Murata (removal place from IM)
 
 ### Removed
 
