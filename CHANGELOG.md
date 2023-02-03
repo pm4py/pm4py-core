@@ -14,10 +14,20 @@
   * playout Petri net simplified interface: detecting the correct Petri semantics to be used
 * ffffc623e6c52af2df0a4f3bb33fff5aa49b5588
   * added FM_LEQ_ACCEPTED parameter to Petri playout
+* df84b4702fc81ab3427330f05c6b5dfb572f595e
+  * possibility to decorate heuristics nets with performance from the simplified interface
+* e418e25a0008828337a92b23f57a0980baa8f24a
+  * changed convert_log_to_ocel to include automatically additional object types from the dataframe
 
 ### Deprecated
 
 ### Fixed
+* b012df622c9bf28c3adf8cf4b53eaa2d6ec5efad
+  * fixed JSON/XML-OCEL importing (missing coherency check)
+* 5a4d5a276c0a6c2dd33ebe930cdf60b5183c48a1
+  * setting correct variant when applying pm4py.discover_process_tree_inductive on a DFG object
+* a5bc0b96d9b79ae8d4ea26be03f4b8154837f567
+  * bug fix Murata (removal place from IM)
 
 ### Removed
 
@@ -47,7 +57,7 @@
 ### Fixed
 * a6a1f14cfc1714a5039dd445ea14091e3e8579c7
   * removed extra parameters in pm4py.discover_petri_net_heuristics
-  
+
 ### Removed
 
 ### Other

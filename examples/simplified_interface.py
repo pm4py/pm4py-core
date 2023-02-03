@@ -171,6 +171,17 @@ def execute_script():
     pm4py.save_vis_sna(wt_df, "ru_wt_df.png")
     os.remove("ru_wt_df.png")
 
+    footprints = pm4py.discover_footprints(log1)
+    alignments = pm4py.conformance_diagnostics_alignments(log1, petri_inductive, im_inductive, fm_inductive)
+
+    pm4py.view_footprints(footprints, format="svg")
+    pm4py.view_alignments(log1, alignments, format="svg")
+
+    pm4py.save_vis_footprints(footprints, "footprints.png")
+    pm4py.save_vis_alignments(log1, aligned_traces, "alignments.png")
+    os.remove("footprints.png")
+    os.remove("alignments.png")
+
 
 if __name__ == "__main__":
     execute_script()
