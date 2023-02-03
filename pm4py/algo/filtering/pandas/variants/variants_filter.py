@@ -138,3 +138,35 @@ def filter_variants_by_coverage_percentage(log, min_coverage_percentage, paramet
     allowed_variants = [x for x, y in variants.items() if y >= min_coverage_percentage * log[case_id_glue].nunique()]
 
     return apply(log, allowed_variants, parameters=parameters)
+
+
+def filter_variants_by_maximum_coverage_percentage(log, max_coverage_percentage, parameters=None):
+    """
+    Filters the variants of the log by a maximum coverage percentage
+    (e.g., if max_coverage_percentage=0.4, and we have a log with 1000 cases,
+    of which 500 of the variant 1, 400 of the variant 2, and 100 of the variant 3,
+    the filter keeps only the traces of variant w and variant 3).
+
+    Parameters
+    ---------------
+    log
+        Event log
+    max_coverage_percentage
+        Maximum allowed percentage of coverage
+    parameters
+        Parameters
+
+    Returns
+    ---------------
+    filtered_log
+        Filtered log
+    """
+    if parameters is None:
+        parameters = {}
+
+    case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+
+    variants = variants_get.get_variants_count(log, parameters=parameters)
+    allowed_variants = [x for x, y in variants.items() if y <= max_coverage_percentage * log[case_id_glue].nunique()]
+
+    return apply(log, allowed_variants, parameters=parameters)
