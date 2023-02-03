@@ -1,5 +1,41 @@
 # Changelog of pm4py
 
+## pm4py 2.5.2 (2023.02.XX)
+
+### Added
+
+* be6ac2f1c611da6abcb6ea10df0280f7b9ecb0f0
+  * added internal conversion method for Petri net type (classic, reset, inhibitor, reset_inhibitor)
+
+### Changed
+* 87280959eb1612d01bbd4183d951f2c33750fed6
+  * added ADD_ONLY_IF_FM_IS_REACHED parameter to Petri net playout
+* 38af1dabd9cf3478a6b728be5a602150ed837c7c
+  * playout Petri net simplified interface: detecting the correct Petri semantics to be used
+* ffffc623e6c52af2df0a4f3bb33fff5aa49b5588
+  * added FM_LEQ_ACCEPTED parameter to Petri playout
+* df84b4702fc81ab3427330f05c6b5dfb572f595e
+  * possibility to decorate heuristics nets with performance from the simplified interface
+* e418e25a0008828337a92b23f57a0980baa8f24a
+  * changed convert_log_to_ocel to include automatically additional object types from the dataframe
+
+### Deprecated
+
+### Fixed
+* b012df622c9bf28c3adf8cf4b53eaa2d6ec5efad
+  * fixed JSON/XML-OCEL importing (missing coherency check)
+* 5a4d5a276c0a6c2dd33ebe930cdf60b5183c48a1
+  * setting correct variant when applying pm4py.discover_process_tree_inductive on a DFG object
+* a5bc0b96d9b79ae8d4ea26be03f4b8154837f567
+  * bug fix Murata (removal place from IM)
+
+### Removed
+
+### Other
+
+
+---
+
 ## pm4py 2.5.1 (2023.01.30)
 
 ### Added
@@ -21,7 +57,7 @@
 ### Fixed
 * a6a1f14cfc1714a5039dd445ea14091e3e8579c7
   * removed extra parameters in pm4py.discover_petri_net_heuristics
-  
+
 ### Removed
 
 ### Other

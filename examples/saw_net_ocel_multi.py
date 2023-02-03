@@ -3,6 +3,7 @@ from pm4py.objects.petri_net.utils import petri_utils
 from pm4py.objects.petri_net.saw_net.obj import StochasticArcWeightNet
 from uuid import uuid4
 from pm4py.visualization.petri_net import visualizer as pn_visualizer
+import os
 
 
 def execute_script():
@@ -136,6 +137,8 @@ def execute_script():
 
     gviz = pn_visualizer.apply(neto, imo, fmo, parameters={"decorations": decorations})
     pn_visualizer.save(gviz, "total.png")
+
+    os.remove("total.png")
 
 
 if __name__ == "__main__":

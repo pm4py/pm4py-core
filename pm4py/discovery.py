@@ -40,7 +40,6 @@ import deprecation
 import pkgutil
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="2.4.0", details="this method will be replaced by the discover_dfg_typed function(). Please adapt your code to use pm4py.discover_dfg_typed()")
 def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     """
     Discovers a Directly-Follows Graph (DFG) from a log.
@@ -94,7 +93,6 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concep
     return dfg, start_activities, end_activities
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="2.4.0", details="this method will be replaced by the discover_dfg_typed function(). Please adapt your code to use pm4py.discover_dfg_typed()")
 def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     if type(log) not in [pd.DataFrame, EventLog, EventStream]:
         raise Exception(
@@ -382,12 +380,15 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame, DFG], noi
 
     variant = inductive_miner.Variants.IMf if noise_threshold > 0 else inductive_miner.Variants.IM
 
+    if isinstance(log, DFG):
+        variant = inductive_miner.Variants.IMd
+
     return inductive_miner.apply(log, variant=variant, parameters=parameters)
 
 
 def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_threshold: float = 0.5,
                             and_threshold: float = 0.65,
-                            loop_two_threshold: float = 0.5, min_act_count: int = 1, min_dfg_occurrences: int = 1, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> HeuristicsNet:
+                            loop_two_threshold: float = 0.5, min_act_count: int = 1, min_dfg_occurrences: int = 1, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", decoration: str = "frequency") -> HeuristicsNet:
     """
     Discovers an heuristics net
 
@@ -402,6 +403,7 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+    :param decoration: the decoration that should be used (frequency, performance)
     :rtype: ``HeuristicsNet``
 
     .. code-block:: python3
@@ -424,6 +426,7 @@ def discover_heuristics_net(log: Union[EventLog, pd.DataFrame], dependency_thres
     parameters[heu_parameters.LOOP_LENGTH_TWO_THRESH] = loop_two_threshold
     parameters[heu_parameters.MIN_ACT_COUNT] = min_act_count
     parameters[heu_parameters.MIN_DFG_OCCURRENCES] = min_dfg_occurrences
+    parameters[heu_parameters.HEU_NET_DECORATION] = decoration
     
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(

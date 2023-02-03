@@ -22,6 +22,7 @@ import pandas as pd
 
 from pm4py.objects.ocel import constants
 from pm4py.objects.ocel.obj import OCEL
+from pm4py.objects.ocel.util import filtering_utils
 from pm4py.util import exec_utils, dt_parsing
 
 
@@ -115,4 +116,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     globals[constants.OCEL_GLOBAL_EVENT] = ocel[constants.OCEL_GLOBAL_EVENT]
     globals[constants.OCEL_GLOBAL_OBJECT] = ocel[constants.OCEL_GLOBAL_OBJECT]
 
-    return OCEL(events, objects, relations, globals)
+    ocel = OCEL(events, objects, relations, globals)
+    ocel = filtering_utils.propagate_relations_filtering(ocel)
+
+    return ocel
