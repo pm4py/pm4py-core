@@ -38,6 +38,7 @@ if __name__ == "__main__":
     from tests.imp_exp_from_string import ImpExpFromString
     from tests.woflan_tests import WoflanTest
     from tests.simplified_interface import SimplifiedInterfaceTest
+    from tests.simplified_interface_2 import SimplifiedInterface2Test
     from tests.ocel_filtering_test import OcelFilteringTest
     from tests.ocel_discovery_test import OcelDiscoveryTest
 
@@ -74,5 +75,6 @@ if __name__ == "__main__":
     woflan_test = WoflanTest()
     diagn_dataframe_test = DiagnDfConfChecking()
     simplified_test = SimplifiedInterfaceTest()
+    simplified_2_test = SimplifiedInterface2Test()
 
     unittest.main()
