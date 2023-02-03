@@ -142,6 +142,7 @@ def execute_script():
 
     ocel = OCEL(events=pd.DataFrame(events), objects=pd.DataFrame(objects), relations=pd.DataFrame(relations))
     pm4py.write_ocel(ocel, "log2.jsonocel")
+    os.remove("log2.jsonocel")
 
 
 if __name__ == "__main__":
