@@ -111,6 +111,62 @@ class InductiveMinerTest(unittest.TestCase):
         del gviz
         del aligned_traces
 
+    def test_inductive_miner_new_log(self):
+        import pm4py
+        log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=True)
+        tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.2)
+
+    def test_inductive_miner_new_df(self):
+        import pm4py
+        log = pm4py.read_xes("input_data/running-example.xes")
+        tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.2)
+
+    def test_inductive_miner_new_log_dfg(self):
+        import pm4py
+        from pm4py.objects.dfg.obj import DFG
+        log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=True)
+        dfg, sa, ea = pm4py.discover_dfg(log)
+        typed_dfg = DFG(dfg, sa, ea)
+        tree = pm4py.discover_process_tree_inductive(typed_dfg, noise_threshold=0.2)
+
+    def test_inductive_miner_new_df_dfg(self):
+        import pm4py
+        log = pm4py.read_xes("input_data/running-example.xes")
+        typed_dfg = pm4py.discover_dfg_typed(log)
+        tree = pm4py.discover_process_tree_inductive(typed_dfg, noise_threshold=0.2)
+
+    def test_inductive_miner_new_log_variants(self):
+        import pm4py
+        from pm4py.util.compression.dtypes import UVCL
+        from pm4py.algo.discovery.inductive.variants.imf import IMFUVCL
+        from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
+        log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=True)
+        variants = pm4py.get_variants(log)
+        uvcl = UVCL()
+        for var, occ in variants.items():
+            uvcl[var] = len(occ)
+        parameters = {"noise_threshold": 0.2}
+        imfuvcl = IMFUVCL(parameters)
+
+        tree = imfuvcl.apply(IMDataStructureUVCL(uvcl), parameters=parameters)
+
+
+    def test_inductive_miner_new_df_variants(self):
+        import pm4py
+        from pm4py.util.compression.dtypes import UVCL
+        from pm4py.algo.discovery.inductive.variants.imf import IMFUVCL
+        from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
+        log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=True)
+        variants = pm4py.get_variants(log)
+        uvcl = UVCL()
+        for var, occ in variants.items():
+            uvcl[var] = len(occ)
+        parameters = {"noise_threshold": 0.2}
+        imfuvcl = IMFUVCL(parameters)
+
+        tree = imfuvcl.apply(IMDataStructureUVCL(uvcl), parameters=parameters)
+
+
 
 if __name__ == "__main__":
     unittest.main()

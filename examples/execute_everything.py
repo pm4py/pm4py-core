@@ -4,6 +4,120 @@ import sys
 import traceback
 
 
+def all_optimal_alignments():
+    from examples import all_optimal_alignments
+    print("\n\nall_optimal_alignments")
+    all_optimal_alignments.execute_script()
+
+
+def inductive_miner():
+    from examples import inductive_miner
+    print("\n\ninductive_miner")
+    inductive_miner.execute_script()
+
+
+def inductive_miner_dfg():
+    from examples import inductive_miner_dfg
+    print("\n\ninductive_miner_dfg")
+    inductive_miner_dfg.execute_script()
+
+
+def inductive_miner_variants():
+    from examples import inductive_miner_variants
+    print("\n\ninductive_miner_variants")
+    inductive_miner_variants.execute_script()
+
+
+def heu_miner_plus_plus():
+    from examples import heuminer_plusplus
+    print("\n\nheuminer_plusplus")
+    heuminer_plusplus.execute_script()
+
+
+def interval_events_overlap():
+    from examples import interval_events_overlap
+    print("\n\ninterval_events_overlap")
+    interval_events_overlap.execute_script()
+
+
+def kneighb_regression():
+    from examples import kneighb_regression
+    print("\n\nkneighb_regression")
+    kneighb_regression.execute_script()
+
+
+def log_to_int_tree_open_paths():
+    from examples import log_to_int_tree_open_paths
+    print("\n\nlog_to_int_tree_open_paths")
+    log_to_int_tree_open_paths.execute_script()
+
+
+def murata_reduction():
+    from examples import murata_reduction
+    print("\n\nmurata_reduction")
+    murata_reduction.execute_script()
+
+
+def ocel_merge_duplicates():
+    from examples import ocel_merge_duplicates
+    print("\n\nocel_merge_duplicates")
+    ocel_merge_duplicates.execute_script()
+
+
+def ocel_saw_net_disc():
+    from examples import ocel_saw_net_disc
+    print("\n\nocel_saw_net_disc")
+    ocel_saw_net_disc.execute_script()
+
+
+def ocel_to_nx():
+    from examples import ocel_to_nx
+    print("\n\nocel_to_nx")
+    ocel_to_nx.execute_script()
+
+
+def saw_net_ocel_multi():
+    from examples import saw_net_ocel_multi
+    print("\n\nsaw_net_ocel_multi")
+    saw_net_ocel_multi.execute_script()
+
+
+def saw_net_ocel_single():
+    from examples import saw_net_ocel_single
+    print("\n\nsaw_net_ocel_single")
+    saw_net_ocel_single.execute_script()
+
+
+def temporal_features():
+    from examples import temporal_features
+    print("\n\ntemporal_features")
+    temporal_features.execute_script()
+
+
+def transform_db_to_ocel():
+    from examples import transform_db_to_ocel
+    print("\n\ntransform_db_to_ocel")
+    transform_db_to_ocel.execute_script()
+
+
+def transform_db_to_ocel_2():
+    from examples import transform_db_to_ocel_2
+    print("\n\ntransform_db_to_ocel_2")
+    transform_db_to_ocel_2.execute_script()
+
+
+def transform_db_to_xes():
+    from examples import transform_db_to_xes
+    print("\n\ntransform_db_to_xes")
+    transform_db_to_xes.execute_script()
+
+
+def trie():
+    from examples import trie
+    print("\n\ntrie")
+    trie.execute_script()
+
+
 def feature_extraction_ocel():
     from examples import feature_extraction_ocel
     print("\n\nfeature_extraction_ocel")
@@ -543,6 +657,23 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(inductive_miner)
+    execute_script(inductive_miner_dfg)
+    execute_script(inductive_miner_variants)
+    execute_script(heu_miner_plus_plus)
+    execute_script(interval_events_overlap)
+    execute_script(kneighb_regression)
+    execute_script(log_to_int_tree_open_paths)
+    execute_script(murata_reduction)
+    execute_script(ocel_merge_duplicates)
+    execute_script(ocel_saw_net_disc)
+    execute_script(ocel_to_nx)
+    execute_script(saw_net_ocel_multi)
+    execute_script(saw_net_ocel_single)
+    execute_script(temporal_features)
+    execute_script(transform_db_to_ocel)
+    execute_script(transform_db_to_xes)
+    execute_script(transform_db_to_ocel_2)
     execute_script(feature_extraction_ocel)
     execute_script(ocel_validation)
     execute_script(process_tree_frequency_annotation)
