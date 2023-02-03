@@ -61,6 +61,17 @@ class SimplifiedInterface2Test(unittest.TestCase):
         dataframe = pd.read_csv("input_data/ocel/example_log.csv")
         pm4py.convert_log_to_ocel(dataframe, activity_column="ocel:activity", timestamp_column="ocel:timestamp")
 
+    def test_conversion_petri_to_nx(self):
+        net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
+        nx_digraph = pm4py.convert_petri_net_to_networkx(net, im, fm)
+
+    def test_stochastic_language(self):
+        log1 = pm4py.read_xes("input_data/running-example.xes")
+        log2 = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=True)
+        lang1 = pm4py.get_stochastic_language(log1)
+        lang2 = pm4py.get_stochastic_language(log2)
+        pm4py.compute_emd(lang1, lang2)
+
 
 if __name__ == "__main__":
     unittest.main()
