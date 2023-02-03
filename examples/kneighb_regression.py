@@ -5,7 +5,7 @@ from sklearn.neighbors import KNeighborsRegressor
 
 
 def execute_script():
-    log = pm4py.read_xes("../tests/input_data/receipt.xes")
+    log = pm4py.read_xes("../tests/input_data/receipt.xes", return_legacy_log_object=True)
 
     # train a predictor of the throughput timebased on the attributes at the case level (known at the beginning of the case)
 
