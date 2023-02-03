@@ -39,6 +39,26 @@ class ProcessModelEvaluationTests(unittest.TestCase):
         metrics = evaluation_alg.apply(log, net, initial_marking, final_marking)
         del metrics
 
+    def test_simplicity_arc_degree(self):
+        import pm4py
+        net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
+        from pm4py.algo.evaluation.simplicity import algorithm as simplicity_evaluator
+        val = simplicity_evaluator.apply(net, variant=simplicity_evaluator.Variants.SIMPLICITY_ARC_DEGREE)
+
+
+    def test_simplicity_extended_cardoso(self):
+        import pm4py
+        net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
+        from pm4py.algo.evaluation.simplicity import algorithm as simplicity_evaluator
+        val = simplicity_evaluator.apply(net, variant=simplicity_evaluator.Variants.EXTENDED_CARDOSO)
+
+
+    def test_simplicity_extended_cyclomatic(self):
+        import pm4py
+        net, im, fm = pm4py.read_pnml("input_data/running-example.pnml")
+        from pm4py.algo.evaluation.simplicity import algorithm as simplicity_evaluator
+        val = simplicity_evaluator.apply(net, variant=simplicity_evaluator.Variants.EXTENDED_CYCLOMATIC)
+
 
 if __name__ == "__main__":
     unittest.main()
