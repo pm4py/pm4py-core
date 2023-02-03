@@ -24,7 +24,6 @@ import deprecation
 import pkgutil
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="2.4.0", details="this method will be replaced by the discover_dfg_typed function(). Please adapt your code to use pm4py.discover_dfg_typed()")
 def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     """
     Discovers a Directly-Follows Graph (DFG) from a log.
@@ -78,7 +77,6 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concep
     return dfg, start_activities, end_activities
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="2.4.0", details="this method will be replaced by the discover_dfg_typed function(). Please adapt your code to use pm4py.discover_dfg_typed()")
 def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     if type(log) not in [pd.DataFrame, EventLog, EventStream]:
         raise Exception(
