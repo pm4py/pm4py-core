@@ -109,6 +109,6 @@ def apply_reduction(net: PetriNet, im: Marking, fm: Marking) -> Tuple[PetriNet, 
             net = remove_place(net, place)
             if place in im:
                 im = copy(im)
-                del place[im]
+                del im[place]
 
     return net, im, fm
