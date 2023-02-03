@@ -24,6 +24,8 @@
 ### Fixed
 * b012df622c9bf28c3adf8cf4b53eaa2d6ec5efad
   * fixed JSON/XML-OCEL importing (missing coherency check)
+* 5a4d5a276c0a6c2dd33ebe930cdf60b5183c48a1
+  * setting correct variant when applying pm4py.discover_process_tree_inductive on a DFG object
 
 ### Removed
 
