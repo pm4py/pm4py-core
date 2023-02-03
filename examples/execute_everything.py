@@ -4,6 +4,24 @@ import sys
 import traceback
 
 
+def inductive_miner():
+    from examples import inductive_miner
+    print("\n\ninductive_miner")
+    inductive_miner.execute_script()
+
+
+def inductive_miner_dfg():
+    from examples import inductive_miner_dfg
+    print("\n\ninductive_miner_dfg")
+    inductive_miner_dfg.execute_script()
+
+
+def inductive_miner_variants():
+    from examples import inductive_miner_variants
+    print("\n\ninductive_miner_variants")
+    inductive_miner_variants.execute_script()
+
+
 def heu_miner_plus_plus():
     from examples import heuminer_plusplus
     print("\n\nheuminer_plusplus")
@@ -633,6 +651,9 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(inductive_miner)
+    execute_script(inductive_miner_dfg)
+    execute_script(inductive_miner_variants)
     execute_script(heu_miner_plus_plus)
     execute_script(interval_events_overlap)
     execute_script(kneighb_regression)
