@@ -4,6 +4,12 @@ import sys
 import traceback
 
 
+def all_optimal_alignments():
+    from examples import all_optimal_alignments
+    print("\n\nall_optimal_alignments")
+    all_optimal_alignments.execute_script()
+
+
 def inductive_miner():
     from examples import inductive_miner
     print("\n\ninductive_miner")
