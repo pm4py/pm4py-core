@@ -180,7 +180,7 @@ class ProcessTree(object):
     def _get_leaves(self):
         root = self._get_root()
         leaves = root
-        if root._get_children != list():
+        if root._get_children() != list():
             leaves = root._get_children()
             change_of_leaves = True
             while change_of_leaves:
