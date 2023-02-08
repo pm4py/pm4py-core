@@ -1,6 +1,7 @@
 import tempfile
 
 from pm4py.util import vis_utils, constants
+from pm4py.visualization.common import dot_util
 from io import BytesIO
 from graphviz import Digraph
 
@@ -15,6 +16,7 @@ def view(gviz):
         GraphViz diagram
     """
     format = str(gviz.format)
+    is_dot_installed = dot_util.check_dot_installed()
 
     if vis_utils.check_visualization_inside_jupyter():
         vis_utils.view_image_in_jupyter(gviz.render())
@@ -32,6 +34,7 @@ def matplotlib_view(gviz):
         Graphviz
     """
     format = str(gviz.format)
+    is_dot_installed = dot_util.check_dot_installed()
 
     from pm4py.visualization.common import save
     import matplotlib.pyplot as plt
@@ -45,24 +48,6 @@ def matplotlib_view(gviz):
     img = mpimg.imread(file_name.name)
     plt.imshow(img)
     plt.show()
-
-
-def check_dot_installed():
-    """
-    Check if Graphviz's dot is installed correctly in the system
-
-    Returns
-    -------
-    boolean
-        Boolean telling if Graphviz's dot is installed correctly
-    """
-    import subprocess
-
-    try:
-        val = subprocess.run('dot -V', stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        return val.returncode == 0
-    except:
-        return False
 
 
 def serialize_dot(gviz: Digraph) -> bytes:
