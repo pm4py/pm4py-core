@@ -18,6 +18,8 @@
   * possibility to decorate heuristics nets with performance from the simplified interface
 * e418e25a0008828337a92b23f57a0980baa8f24a
   * changed convert_log_to_ocel to include automatically additional object types from the dataframe
+* fbe086eaff9683562ada39a14fb6bdd86d52c50b
+  * added constant for the default Gviz representation format in the simplified interface
 
 ### Deprecated
 
@@ -28,6 +30,8 @@
   * setting correct variant when applying pm4py.discover_process_tree_inductive on a DFG object
 * a5bc0b96d9b79ae8d4ea26be03f4b8154837f567
   * bug fix Murata (removal place from IM)
+* 91c20ccd0d6c88d76519e174b7e11ab82ac6a180
+  * bug fix process tree obj get_leaves function
 
 ### Removed
 
