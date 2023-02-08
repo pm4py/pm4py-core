@@ -20,6 +20,8 @@
   * changed convert_log_to_ocel to include automatically additional object types from the dataframe
 * fbe086eaff9683562ada39a14fb6bdd86d52c50b
   * added constant for the default Gviz representation format in the simplified interface
+* f746d8811fad34c082ddac3028f0269bdade0a15
+  * more efficient WIP implementation for OCEL
 
 ### Deprecated
 
