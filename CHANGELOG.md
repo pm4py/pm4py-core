@@ -22,6 +22,8 @@
   * added constant for the default Gviz representation format in the simplified interface
 * f746d8811fad34c082ddac3028f0269bdade0a15
   * more efficient WIP implementation for OCEL
+* 57167b094edcaeb01fc14e7d495a6bbc2d9907eb
+  * raising warning when parsing a XES log below Python 3.11 because of potential ISO-format parsing problems
 
 ### Deprecated
 
