@@ -35,12 +35,13 @@ from pm4py.objects.transition_system.obj import TransitionSystem
 from pm4py.objects.trie.obj import Trie
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.org.sna.obj import SNA
+from pm4py.util import constants
 
 import deprecation
 
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = None,
-                   final_marking: Optional[Marking] = None, format: str = "png", bgcolor: str = "white",
+                   final_marking: Optional[Marking] = None, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white",
                    decorations: Dict[Any, Any] = None):
     """
     Views a (composite) Petri net
@@ -48,7 +49,7 @@ def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = Non
     :param petri_net: Petri net
     :param initial_marking: Initial marking
     :param final_marking: Final marking
-    :param format: Format of the output picture (default: png)
+    :param format: Format of the output picture
     :param bgcolor: Background color of the visualization (default: white)
     :param decorations: Decorations (color, label) associated to the elements of the Petri net
 
@@ -92,7 +93,7 @@ def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_mark
     pn_visualizer.save(gviz, file_path)
 
 
-def view_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = "png",
+def view_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW,
                          aggregation_measure="mean", bgcolor: str = "white"):
     """
     Views a performance DFG
@@ -100,7 +101,7 @@ def view_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict
     :param dfg: DFG object
     :param start_activities: Start activities
     :param end_activities: End activities
-    :param format: Format of the output picture (default: png)
+    :param format: Format of the output picture
     :param aggregation_measure: Aggregation measure (default: mean): mean, median, min, max, sum, stdev
     :param bgcolor: Background color of the visualization (default: white)
 
@@ -158,14 +159,14 @@ def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: 
     dfg_visualizer.save(gviz, file_path)
 
 
-def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = "png", bgcolor: str = "white"):
+def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white"):
     """
     Views a (composite) DFG
 
     :param dfg: DFG object
     :param start_activities: Start activities
     :param end_activities: End activities
-    :param format: Format of the output picture (default: png)
+    :param format: Format of the output picture
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -218,12 +219,12 @@ def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_p
     dfg_visualizer.save(gviz, file_path)
 
 
-def view_process_tree(tree: ProcessTree, format: str = "png", bgcolor: str = "white"):
+def view_process_tree(tree: ProcessTree, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white"):
     """
     Views a process tree
 
     :param tree: Process tree
-    :param format: Format of the visualization (default: png)
+    :param format: Format of the visualization
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -285,12 +286,12 @@ def save_vis_bpmn(bpmn_graph: BPMN, file_path: str, bgcolor: str = "white"):
     bpmn_visualizer.save(gviz, file_path)
 
 
-def view_bpmn(bpmn_graph: BPMN, format: str = "png", bgcolor: str = "white"):
+def view_bpmn(bpmn_graph: BPMN, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white"):
     """
     Views a BPMN graph
 
     :param bpmn_graph: BPMN graph
-    :param format: Format of the visualization (default: png)
+    :param format: Format of the visualization
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -311,7 +312,7 @@ def view_heuristics_net(heu_net: HeuristicsNet, format: str = "png", bgcolor: st
     Views an heuristics net
 
     :param heu_net: Heuristics net
-    :param format: Format of the visualization (default: png)
+    :param format: Format of the visualization
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -821,7 +822,7 @@ def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_
     graphs_visualizer.save(gviz, file_path)
 
 
-def view_ocdfg(ocdfg: Dict[str, Any], annotation: str = "frequency", act_metric: str = "events", edge_metric="event_couples", act_threshold: int = 0, edge_threshold: int = 0, performance_aggregation: str = "mean", format: str = "png", bgcolor: str = "white"):
+def view_ocdfg(ocdfg: Dict[str, Any], annotation: str = "frequency", act_metric: str = "events", edge_metric="event_couples", act_threshold: int = 0, edge_threshold: int = 0, performance_aggregation: str = "mean", format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white"):
     """
     Views an OC-DFG (object-centric directly-follows graph) with the provided configuration.
 
@@ -834,7 +835,7 @@ def view_ocdfg(ocdfg: Dict[str, Any], annotation: str = "frequency", act_metric:
     :param act_threshold: The threshold to apply on the activities frequency (default: 0). Only activities having a frequency >= than this are kept in the graph.
     :param edge_threshold: The threshold to apply on the edges frequency (default 0). Only edges having a frequency >= than this are kept in the graph.
     :param performance_aggregation: The aggregation measure to use for the performance: mean, median, min, max, sum
-    :param format: The format of the output visualization (default: "png")
+    :param format: The format of the output visualization
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -899,12 +900,12 @@ def save_vis_ocdfg(ocdfg: Dict[str, Any], file_path: str, annotation: str = "fre
     visualizer.save(gviz, file_path)
 
 
-def view_ocpn(ocpn: Dict[str, Any], format: str = "png", bgcolor: str = "white"):
+def view_ocpn(ocpn: Dict[str, Any], format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white"):
     """
     Visualizes on the screen the object-centric Petri net
 
     :param ocpn: Object-centric Petri net
-    :param format: Format of the visualization (default: png)
+    :param format: Format of the visualization
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -941,13 +942,13 @@ def save_vis_ocpn(ocpn: Dict[str, Any], file_path: str, bgcolor: str = "white"):
     ocpn_visualizer.save(gviz, file_path)
 
 
-def view_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, Any]], variant: str = "frequency", format: str = "png", activity_threshold: int = 1, edge_threshold: int = 1, bgcolor: str = "white"):
+def view_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, Any]], variant: str = "frequency", format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, activity_threshold: int = 1, edge_threshold: int = 1, bgcolor: str = "white"):
     """
     Visualizes the network analysis
 
     :param network_analysis: Network analysis
     :param variant: Variant of the visualization: - frequency (if the discovered network analysis contains the frequency of the interactions) - performance (if the discovered network analysis contains the performance of the interactions)
-    :param format: Format of the visualization (default: png)
+    :param format: Format of the visualization
     :param activity_threshold: The minimum number of occurrences for an activity to be included (default: 1)
     :param edge_threshold: The minimum number of occurrences for an edge to be included (default: 1)
     :param bgcolor: Background color of the visualization (default: white)
@@ -991,12 +992,12 @@ def save_vis_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, 
     network_analysis_visualizer.save(gviz, file_path)
 
 
-def view_transition_system(transition_system: TransitionSystem, format: str = "png", bgcolor: str = "white"):
+def view_transition_system(transition_system: TransitionSystem, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white"):
     """
     Views a transition system
 
     :param transition_system: Transition system
-    :param format: Format of the visualization (png, svg, ...)
+    :param format: Format of the visualization
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -1033,12 +1034,12 @@ def save_vis_transition_system(transition_system: TransitionSystem, file_path: s
     ts_visualizer.save(gviz, file_path)
 
 
-def view_prefix_tree(trie: Trie, format: str = "png", bgcolor: str = "white"):
+def view_prefix_tree(trie: Trie, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white"):
     """
     Views a prefix tree
 
     :param prefix_tree: Prefix tree
-    :param format: Format of the visualization (png, svg, ...)
+    :param format: Format of the visualization
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -1164,13 +1165,13 @@ def save_vis_footprints(footprints: Union[List[Dict[str, Any]], Dict[str, Any]],
     fps_visualizer.save(gviz, file_path)
 
 
-def view_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], format: str = "png", bgcolor: str = "white"):
+def view_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white"):
     """
     Visualizes an object graph on the screen
 
     :param ocel: object-centric event log
     :param graph: object graph
-    :param format: format of the visualization (png, svg, ...)
+    :param format: format of the visualization
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
