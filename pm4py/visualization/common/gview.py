@@ -15,7 +15,7 @@ def view(gviz):
     gviz
         GraphViz diagram
     """
-    format = str(gviz.format)
+    format = str(gviz.format).lower()
     is_dot_installed = dot_util.check_dot_installed()
 
     if vis_utils.check_visualization_inside_jupyter():
@@ -33,7 +33,7 @@ def matplotlib_view(gviz):
     gviz
         Graphviz
     """
-    format = str(gviz.format)
+    format = str(gviz.format).lower()
     is_dot_installed = dot_util.check_dot_installed()
 
     from pm4py.visualization.common import save
