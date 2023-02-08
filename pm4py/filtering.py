@@ -651,6 +651,39 @@ def filter_variants_by_coverage_percentage(log: Union[EventLog, pd.DataFrame], m
         return variants_filter.filter_variants_by_coverage_percentage(log, min_coverage_percentage, parameters=parameters)
 
 
+def filter_variants_by_maximum_coverage_percentage(log: Union[EventLog, pd.DataFrame], max_coverage_percentage: float, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
+    """
+    Filters the variants of the log by a maximum coverage percentage
+    (e.g., if max_coverage_percentage=0.4, and we have a log with 1000 cases,
+    of which 500 of the variant 1, 400 of the variant 2, and 100 of the variant 3,
+    the filter keeps only the traces of variant 2 and variant 3).
+
+    :param log: event log / Pandas dataframe
+    :param max_coverage_percentage: maximum allowed percentage of coverage
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Union[EventLog, pd.DataFrame]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        filtered_dataframe = pm4py.filter_variants_by_maximum_coverage_percentage(dataframe, 0.1, activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+        from pm4py.algo.filtering.pandas.variants import variants_filter
+        return variants_filter.filter_variants_by_maximum_coverage_percentage(log, max_coverage_percentage, parameters=parameters)
+    else:
+        from pm4py.algo.filtering.log.variants import variants_filter
+        return variants_filter.filter_variants_by_maximum_coverage_percentage(log, max_coverage_percentage, parameters=parameters)
+
+
 def filter_prefixes(log: Union[EventLog, pd.DataFrame], activity: str, strict=True, first_or_last="first", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Filters the log, keeping the prefixes to a given activity. E.g., for a log with traces:
