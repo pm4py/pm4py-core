@@ -34,6 +34,8 @@
   * bug fix Murata (removal place from IM)
 * 91c20ccd0d6c88d76519e174b7e11ab82ac6a180
   * bug fix process tree obj get_leaves function
+* 480c4fd1a3f35f8312927defd09b4a89665e6f71
+  * bug fix convert_ocel_to_networkx variant
 
 ### Removed
 
