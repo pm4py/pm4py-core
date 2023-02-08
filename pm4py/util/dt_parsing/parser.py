@@ -16,6 +16,9 @@
 '''
 import sys
 import pkgutil
+import warnings
+from pm4py.util import constants
+
 
 CISO8601 = "ciso8601"
 STRPFROMISO = "strpfromiso"
@@ -31,6 +34,14 @@ VERSIONS[DUMMY] = dummy
 DEFAULT_VARIANT = DUMMY
 
 
+# this variant is available only for Python 3.7 and greater
+if sys.version_info >= (3, 7):
+    from pm4py.util.dt_parsing.variants import strpfromiso
+
+    VERSIONS[STRPFROMISO] = strpfromiso
+
+    DEFAULT_VARIANT = STRPFROMISO
+
 if pkgutil.find_loader("ciso8601"):
     # ciso8601 variant is included only if ciso8601 installed
     # slowly it will fade out of the default since now Python
@@ -42,15 +53,6 @@ if pkgutil.find_loader("ciso8601"):
 
     VERSIONS[CISO8601] = cs8601
     DEFAULT_VARIANT = CISO8601
-
-# this variant is available only for Python 3.7
-if sys.version_info >= (3, 7):
-    from pm4py.util.dt_parsing.variants import strpfromiso
-
-    VERSIONS[STRPFROMISO] = strpfromiso
-    # let's move the default option to strpfromiso in Python 3.7
-    # (at least we can drop ciso8601 somewhen)
-    DEFAULT_VARIANT = STRPFROMISO
 
 
 def get(variant=DEFAULT_VARIANT):
@@ -68,4 +70,11 @@ def get(variant=DEFAULT_VARIANT):
     mod
         Module with a function 'apply' that is able to parse a date string to a datetime
     """
+    if DEFAULT_VARIANT == STRPFROMISO:
+        if not constants.TRIGGERED_DT_PARSING_WARNING:
+            if sys.version_info < (3, 11):
+                warnings.warn(
+                    "XES parsing: ISO8601 strings are not fully supported with strpfromiso for Python versions below 3.11")
+                constants.TRIGGERED_DT_PARSING_WARNING = True
+
     return VERSIONS[variant]
