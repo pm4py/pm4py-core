@@ -14,6 +14,8 @@ def view(gviz):
     gviz
         GraphViz diagram
     """
+    format = str(gviz.format)
+
     if vis_utils.check_visualization_inside_jupyter():
         vis_utils.view_image_in_jupyter(gviz.render())
     else:
@@ -29,12 +31,13 @@ def matplotlib_view(gviz):
     gviz
         Graphviz
     """
+    format = str(gviz.format)
 
     from pm4py.visualization.common import save
     import matplotlib.pyplot as plt
     import matplotlib.image as mpimg
 
-    file_name = tempfile.NamedTemporaryFile(suffix='.png')
+    file_name = tempfile.NamedTemporaryFile(suffix='.'+format)
     file_name.close()
 
     save.save(gviz, file_name.name)
@@ -42,6 +45,7 @@ def matplotlib_view(gviz):
     img = mpimg.imread(file_name.name)
     plt.imshow(img)
     plt.show()
+
 
 def check_dot_installed():
     """
