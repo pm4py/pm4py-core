@@ -101,7 +101,7 @@ def apply(dataframe1: pd.DataFrame, dataframe2: pd.DataFrame, interleavings: pd.
     viz.attr('node', shape='ellipse', fixedsize='false')
 
     viz.attr(rankdir=rankdir)
-    viz.format = image_format
+    viz.format = image_format.replace("html", "plain-ext")
 
     freq_dfg1, perf_dfg1, sa1, ea1, act_count1 = __get_freq_perf_df(dataframe1, activity_key, aggregation_measure,
                                                                     activity_percentage, paths_percentage,
