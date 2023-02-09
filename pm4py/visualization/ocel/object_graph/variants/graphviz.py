@@ -92,6 +92,6 @@ def apply(ocel: OCEL, graph: Set[Tuple[str, str]], parameters: Optional[Dict[Any
         viz.edge(nodes_dict[e[0]], nodes_dict[e[1]])
 
     viz.attr(rankdir=rankdir)
-    viz.format = image_format
+    viz.format = image_format.replace("html", "plain-ext")
 
     return viz

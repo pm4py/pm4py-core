@@ -92,7 +92,7 @@ def apply(bpmn_graph: BPMN, parameters: Optional[Dict[Any, Any]] = None) -> grap
 
     viz.attr(overlap='false')
 
-    viz.format = image_format
+    viz.format = image_format.replace("html", "plain-ext")
 
     return viz
 
