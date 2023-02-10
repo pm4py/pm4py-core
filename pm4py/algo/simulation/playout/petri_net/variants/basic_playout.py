@@ -39,6 +39,8 @@ class Parameters(Enum):
     PETRI_SEMANTICS = "petri_semantics"
     ADD_ONLY_IF_FM_IS_REACHED = "add_only_if_fm_is_reached"
     FM_LEQ_ACCEPTED = "fm_leq_accepted"
+    INITIAL_TIMESTAMP = "initial_timestamp"
+    INITIAL_CASE_ID = "initial_case_id"
 
 
 def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
