@@ -1,6 +1,7 @@
 import tempfile
 
 from pm4py.util import vis_utils, constants
+from pm4py.visualization.common import dot_util
 from io import BytesIO
 from graphviz import Digraph
 
@@ -14,6 +15,9 @@ def view(gviz):
     gviz
         GraphViz diagram
     """
+    format = str(gviz.format).lower()
+    is_dot_installed = dot_util.check_dot_installed()
+
     if vis_utils.check_visualization_inside_jupyter():
         vis_utils.view_image_in_jupyter(gviz.render())
     else:
@@ -29,12 +33,14 @@ def matplotlib_view(gviz):
     gviz
         Graphviz
     """
+    format = str(gviz.format).lower()
+    is_dot_installed = dot_util.check_dot_installed()
 
     from pm4py.visualization.common import save
     import matplotlib.pyplot as plt
     import matplotlib.image as mpimg
 
-    file_name = tempfile.NamedTemporaryFile(suffix='.png')
+    file_name = tempfile.NamedTemporaryFile(suffix='.'+format)
     file_name.close()
 
     save.save(gviz, file_name.name)

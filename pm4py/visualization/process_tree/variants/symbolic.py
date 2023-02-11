@@ -101,6 +101,6 @@ def apply(tree: ProcessTree, parameters: Optional[Dict[Union[str, Parameters], A
 
     viz.attr(overlap='false')
     viz.attr(splines='false')
-    viz.format = image_format
+    viz.format = image_format.replace("html", "plain-ext")
 
     return viz
