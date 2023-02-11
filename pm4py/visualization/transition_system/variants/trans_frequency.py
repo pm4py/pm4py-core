@@ -66,6 +66,6 @@ def apply(tsys: TransitionSystem, parameters: Optional[Dict[Union[str, Parameter
 
     viz.attr(overlap='false')
 
-    viz.format = image_format
+    viz.format = image_format.replace("html", "plain-ext")
 
     return viz
