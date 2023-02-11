@@ -299,7 +299,7 @@ def convert_ocel_to_networkx(ocel: OCEL, variant: str = "ocel_to_nx") -> nx.DiGr
     if variant == "ocel_to_nx":
         variant1 = converter.Variants.OCEL_TO_NX
     elif variant == "ocel_features_to_nx":
-        variant1 = converter.Variants.OCEL_TO_NX
+        variant1 = converter.Variants.OCEL_FEATURES_TO_NX
 
     return converter.apply(ocel, variant=variant1)
 

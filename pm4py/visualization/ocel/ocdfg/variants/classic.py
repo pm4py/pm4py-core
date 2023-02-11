@@ -264,6 +264,6 @@ def apply(ocdfg: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) ->
                                      min_edges_count[ot], max_edges_count[ot])
 
     viz.attr(rankdir='LR')
-    viz.format = image_format
+    viz.format = image_format.replace("html", "plain-ext")
 
     return viz

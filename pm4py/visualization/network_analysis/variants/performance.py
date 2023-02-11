@@ -115,6 +115,6 @@ def apply(network_analysis_edges0: Dict[Tuple[str, str], Dict[str, Any]], parame
                 if network_analysis_edges[edge][edge_value] >= edge_threshold:
                     viz.edge(nodes_dict[edge[0]], nodes_dict[edge[1]], label=edge_value+"\n"+vis_utils.human_readable_stat(network_analysis_edges_agg_performance[edge][edge_value])+"", penwidth=str(vis_utils.get_arc_penwidth(network_analysis_edges[edge][edge_value], min_edge_value, max_edge_value)))
 
-    viz.format = image_format
+    viz.format = image_format.replace("html", "plain-ext")
 
     return viz
