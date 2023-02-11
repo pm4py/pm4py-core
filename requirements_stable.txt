@@ -9,7 +9,7 @@ kiwisolver==1.4.4
 lxml==4.9.2
 matplotlib==3.6.3
 networkx==3.0
-numpy==1.24.1
+numpy==1.24.2
 packaging==23.0
 pandas==1.5.3
 pillow==9.4.0

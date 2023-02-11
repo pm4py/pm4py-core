@@ -67,6 +67,6 @@ def apply(trie: Trie, parameters: Optional[Dict[Union[str, Parameters], Any]] = 
     viz.attr(overlap='false')
     viz.attr(splines='false')
     viz.attr(rankdir='LR')
-    viz.format = image_format
+    viz.format = image_format.replace("html", "plain-ext")
 
     return viz

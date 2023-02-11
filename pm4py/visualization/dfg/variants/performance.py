@@ -231,7 +231,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     viz.attr(overlap='false')
     viz.attr(fontsize='11')
 
-    viz.format = image_format
+    viz.format = image_format.replace("html", "plain-ext")
 
     return viz
 
