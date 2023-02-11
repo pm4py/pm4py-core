@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.5.2 (2023.02.XX)
+## pm4py 2.5.2 (2023.02.11)
 
 ### Added
 
@@ -38,7 +38,10 @@
   * bug fix process tree obj get_leaves function
 * 480c4fd1a3f35f8312927defd09b4a89665e6f71
   * bug fix convert_ocel_to_networkx variant
-
+* fc941525842a41bc5d712526ef17177d7f8be763
+  12ef518b00f16c5e1b6b8d5d3fc749959bc836ad
+  * fixed SNA visualization (variant & HTML)
+  
 ### Removed
 
 ### Other
