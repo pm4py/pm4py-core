@@ -482,7 +482,7 @@ def view_sna(sna_metric: SNA):
     """
     from pm4py.visualization.sna import visualizer as sna_visualizer
     gviz = sna_visualizer.apply(sna_metric, variant=sna_visualizer.Variants.PYVIS)
-    sna_visualizer.view(gviz)
+    sna_visualizer.view(gviz, variant=sna_visualizer.Variants.PYVIS)
 
 
 def save_vis_sna(sna_metric: SNA, file_path: str):
@@ -502,7 +502,7 @@ def save_vis_sna(sna_metric: SNA, file_path: str):
     file_path = str(file_path)
     from pm4py.visualization.sna import visualizer as sna_visualizer
     gviz = sna_visualizer.apply(sna_metric, variant=sna_visualizer.Variants.PYVIS)
-    sna_visualizer.save(gviz, file_path)
+    sna_visualizer.save(gviz, file_path, variant=sna_visualizer.Variants.PYVIS)
 
 
 def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "png", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
