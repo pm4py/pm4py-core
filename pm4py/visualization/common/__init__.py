@@ -1,1 +1,1 @@
-from pm4py.visualization.common import save, utils, gview, visualizer
+from pm4py.visualization.common import save, utils, gview, visualizer, dot_util

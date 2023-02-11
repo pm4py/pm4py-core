@@ -1,6 +1,23 @@
 # Changelog of pm4py
 
-## pm4py 2.5.2 (2023.02.XX)
+## pm4py 2.5.3 (2023.02.XX)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
+## pm4py 2.5.2 (2023.02.11)
 
 ### Added
 
@@ -18,6 +35,12 @@
   * possibility to decorate heuristics nets with performance from the simplified interface
 * e418e25a0008828337a92b23f57a0980baa8f24a
   * changed convert_log_to_ocel to include automatically additional object types from the dataframe
+* fbe086eaff9683562ada39a14fb6bdd86d52c50b
+  * added constant for the default Gviz representation format in the simplified interface
+* f746d8811fad34c082ddac3028f0269bdade0a15
+  * more efficient WIP implementation for OCEL
+* 57167b094edcaeb01fc14e7d495a6bbc2d9907eb
+  * raising warning when parsing a XES log below Python 3.11 because of potential ISO-format parsing problems
 
 ### Deprecated
 
@@ -28,7 +51,14 @@
   * setting correct variant when applying pm4py.discover_process_tree_inductive on a DFG object
 * a5bc0b96d9b79ae8d4ea26be03f4b8154837f567
   * bug fix Murata (removal place from IM)
-
+* 91c20ccd0d6c88d76519e174b7e11ab82ac6a180
+  * bug fix process tree obj get_leaves function
+* 480c4fd1a3f35f8312927defd09b4a89665e6f71
+  * bug fix convert_ocel_to_networkx variant
+* fc941525842a41bc5d712526ef17177d7f8be763
+  12ef518b00f16c5e1b6b8d5d3fc749959bc836ad
+  * fixed SNA visualization (variant & HTML)
+  
 ### Removed
 
 ### Other
