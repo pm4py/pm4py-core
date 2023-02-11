@@ -8,6 +8,9 @@ from pm4py.objects.org.sna.obj import SNA
 
 class Parameters(Enum):
     WEIGHT_THRESHOLD = "weight_threshold"
+    IFRAME_WIDTH = "iframe_width"
+    IFRAME_HEIGHT = "iframe_height"
+    LOCAL_JUPYTER_FILE_NAME = "local_jupyter_file_name"
 
 
 def get_temp_file_name(format):
@@ -108,8 +111,16 @@ def view(temp_file_name, parameters=None):
     if parameters is None:
         parameters = {}
 
+    iframe_width = exec_utils.get_param_value(Parameters.IFRAME_WIDTH, parameters, 900)
+    iframe_height = exec_utils.get_param_value(Parameters.IFRAME_HEIGHT, parameters, 600)
+    local_jupyter_file_name = exec_utils.get_param_value(Parameters.LOCAL_JUPYTER_FILE_NAME, parameters, "jupyter_sna_vis.html")
+
     if vis_utils.check_visualization_inside_jupyter():
-        raise Exception("pyvis visualization not working inside Jupyter notebooks")
+        from IPython.display import IFrame
+        shutil.copyfile(temp_file_name, local_jupyter_file_name)
+        iframe = IFrame(local_jupyter_file_name, width=iframe_width, height=iframe_height)
+        from IPython.display import display
+        return display(iframe)
     else:
         vis_utils.open_opsystem_image_viewer(temp_file_name)
 
