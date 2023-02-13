@@ -31,7 +31,7 @@ def apply(network_analysis_edges: Dict[Tuple[str, str], Dict[str, Any]], variant
     return exec_utils.get_variant(variant).apply(network_analysis_edges, parameters=parameters)
 
 
-def save(gviz: Digraph, output_file_path: str):
+def save(gviz: Digraph, output_file_path: str, parameters=None):
     """
     Save the diagram
 
@@ -42,10 +42,10 @@ def save(gviz: Digraph, output_file_path: str):
     output_file_path
         Path where the GraphViz output should be saved
     """
-    gsave.save(gviz, output_file_path)
+    gsave.save(gviz, output_file_path, parameters=parameters)
 
 
-def view(gviz: Digraph):
+def view(gviz: Digraph, parameters=None):
     """
     View the diagram
 
@@ -54,10 +54,10 @@ def view(gviz: Digraph):
     gviz
         GraphViz diagram
     """
-    return gview.view(gviz)
+    return gview.view(gviz, parameters=parameters)
 
 
-def matplotlib_view(gviz: Digraph):
+def matplotlib_view(gviz: Digraph, parameters=None):
     """
     Views the diagram using Matplotlib
 
@@ -67,4 +67,4 @@ def matplotlib_view(gviz: Digraph):
         Graphviz
     """
 
-    return gview.matplotlib_view(gviz)
+    return gview.matplotlib_view(gviz, parameters=parameters)
