@@ -41,7 +41,7 @@ def apply(tree0: ProcessTree, parameters: Optional[Dict[Any, Any]] = None, varia
     return exec_utils.get_variant(variant).apply(tree0, parameters=parameters)
 
 
-def save(gviz: graphviz.Graph, output_file_path: str):
+def save(gviz: graphviz.Graph, output_file_path: str, parameters=None):
     """
     Save the diagram
 
@@ -52,10 +52,10 @@ def save(gviz: graphviz.Graph, output_file_path: str):
     output_file_path
         Path where the GraphViz output should be saved
     """
-    gsave.save(gviz, output_file_path)
+    gsave.save(gviz, output_file_path, parameters=parameters)
 
 
-def view(gviz: graphviz.Graph):
+def view(gviz: graphviz.Graph, parameters=None):
     """
     View the diagram
 
@@ -64,10 +64,10 @@ def view(gviz: graphviz.Graph):
     gviz
         GraphViz diagram
     """
-    return gview.view(gviz)
+    return gview.view(gviz, parameters=parameters)
 
 
-def matplotlib_view(gviz: graphviz.Graph):
+def matplotlib_view(gviz: graphviz.Graph, parameters=None):
     """
     Views the diagram using Matplotlib
 
@@ -77,4 +77,4 @@ def matplotlib_view(gviz: graphviz.Graph):
         Graphviz
     """
 
-    return gview.matplotlib_view(gviz)
+    return gview.matplotlib_view(gviz, parameters=parameters)
