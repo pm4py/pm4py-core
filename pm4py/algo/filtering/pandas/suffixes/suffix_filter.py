@@ -77,7 +77,7 @@ def apply(df: pd.DataFrame, activity: str, parameters: Optional[Dict[Any, Any]] 
         position_activity = position_activity.first()
     elif first_or_last == "last":
         position_activity = position_activity.last()
-    position_activity = position_activity.reset_index()[[case_id_key, index_in_trace_key]].to_dict("r")
+    position_activity = position_activity.reset_index()[[case_id_key, index_in_trace_key]].to_dict("records")
     position_activity = {x[case_id_key]: x[index_in_trace_key] for x in position_activity}
 
     df[temp_column] = df[case_id_key].map(position_activity)

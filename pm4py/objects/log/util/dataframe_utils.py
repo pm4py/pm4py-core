@@ -173,7 +173,7 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None)
                 try:
                     if timest_format is None:
                         # makes operations faster if non-ISO8601 but anyhow regular dates are provided
-                        df[col] = pd.to_datetime(df[col], utc=True, infer_datetime_format=True)
+                        df[col] = pd.to_datetime(df[col], utc=True)
                     else:
                         df[col] = pd.to_datetime(df[col], utc=True, format=timest_format)
                 except:
@@ -269,7 +269,7 @@ def automatic_feature_selection_df(df, parameters=None):
 
     attributes_to_retain = mandatory_attributes.union(other_attributes_to_retain)
 
-    return df[attributes_to_retain]
+    return df[list(attributes_to_retain)]
 
 
 def select_number_column(df: pd.DataFrame, fea_df: pd.DataFrame, col: str,

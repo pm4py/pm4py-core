@@ -69,6 +69,6 @@ def apply(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], An
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
 
     events = [(x[start_timestamp_key].timestamp(), x[timestamp_key].timestamp()) for x in
-              df[{start_timestamp_key, timestamp_key}].to_dict("records")]
+              df[list({start_timestamp_key, timestamp_key})].to_dict("records")]
 
     return compute.cycle_time(events, df[case_id_key].nunique())

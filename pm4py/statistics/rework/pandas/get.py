@@ -56,7 +56,7 @@ def apply(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], An
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
 
     df = df.copy()
-    df = df[{activity_key, case_id_key}]
+    df = df[list({activity_key, case_id_key})]
     df[INT_CASE_ACT_SIZE] = df.groupby([activity_key, case_id_key]).cumcount()
     df = df[df[INT_CASE_ACT_SIZE] > 0]
     df = df.groupby([activity_key, case_id_key]).last()

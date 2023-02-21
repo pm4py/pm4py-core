@@ -72,7 +72,7 @@ def apply(exploded_ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
             break
         prefixes[e1] = val
 
-    map0 = exploded_ocel.events[[exploded_ocel.event_id_column, exploded_ocel.event_activity, exploded_ocel.event_timestamp]].to_dict("r")
+    map0 = exploded_ocel.events[[exploded_ocel.event_id_column, exploded_ocel.event_activity, exploded_ocel.event_timestamp]].to_dict("records")
     all_activities = set()
     evid_act_map = {}
     evid_timest_map = {}

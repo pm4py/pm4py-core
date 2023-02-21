@@ -88,7 +88,7 @@ def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Union[str, Paramete
     else:
         dataframe[DIFF_KEY] = (
             dataframe[timestamp_key] - dataframe[start_timestamp_key]
-        ).astype('timedelta64[s]')
+        ).dt.total_seconds()
 
     dataframe = dataframe.reset_index()
 

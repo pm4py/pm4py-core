@@ -228,7 +228,7 @@ def insert_case_service_waiting_time(log: pd.DataFrame, case_id_column=constants
     if start_timestamp_column is None:
         start_timestamp_column = timestamp_column
 
-    log[diff_start_end_column] = (log[timestamp_column] - log[start_timestamp_column]).astype("timedelta64[ms]")
+    log[diff_start_end_column] = (log[timestamp_column] - log[start_timestamp_column]).dt.total_seconds()
     service_times = log.groupby(case_id_column)[diff_start_end_column].sum().to_dict()
     log[service_time_column] = log[case_id_column].map(service_times)
 
