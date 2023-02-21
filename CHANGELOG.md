@@ -9,6 +9,8 @@
 ### Deprecated
 
 ### Fixed
+* 5d4bbb60bf940f8c5d654de0c8ecaec8cbb44d48
+  * fixes for Pandas 2.0
 
 ### Removed
 
