@@ -6,7 +6,7 @@ from io import BytesIO
 from graphviz import Digraph
 
 
-def view(gviz):
+def view(gviz, parameters=None):
     """
     View the diagram
 
@@ -24,7 +24,7 @@ def view(gviz):
         return gviz.view(cleanup=True)
 
 
-def matplotlib_view(gviz):
+def matplotlib_view(gviz, parameters=None):
     """
     Views the diagram using Matplotlib
 
@@ -50,7 +50,7 @@ def matplotlib_view(gviz):
     plt.show()
 
 
-def serialize_dot(gviz: Digraph) -> bytes:
+def serialize_dot(gviz: Digraph, parameters=None) -> bytes:
     """
     Serialize the DOT instructions of a Graphviz object
 
@@ -70,7 +70,7 @@ def serialize_dot(gviz: Digraph) -> bytes:
     return f.getvalue()
 
 
-def serialize(gviz: Digraph) -> bytes:
+def serialize(gviz: Digraph, parameters=None) -> bytes:
     """
     Serialize the image rendered from a Graphviz object
 
