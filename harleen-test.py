@@ -5,8 +5,6 @@ import os
 log = pm4py.read_xes("C:/Users/harleenkaur/Documents/thesis/event logs/Artificial - Loan Process.xes")
 print(f" Type of the file that is read : {type(log)}")
 
-#dfg, start_activities, end_activities = pm4py.discover_dfg(log) 
-#pm4py.discover_dfg_typed()
 dfg, start_activities, end_activities = pm4py.discover_dfg_typed(log) 
 pm4py.vis.view_dfg(dfg, start_activities, end_activities)  
 
