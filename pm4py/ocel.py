@@ -158,7 +158,7 @@ def ocel_objects_summary(ocel: OCEL) -> pd.DataFrame:
     objects_summary = act_comb.join(lif_start_tim)
     objects_summary = objects_summary.join(lif_end_tim)
     objects_summary = objects_summary.reset_index()
-    objects_summary["lifecycle_duration"] = (objects_summary["lifecycle_end"] - objects_summary["lifecycle_start"]).astype('timedelta64[s]')
+    objects_summary["lifecycle_duration"] = (objects_summary["lifecycle_end"] - objects_summary["lifecycle_start"]).dt.total_seconds()
     ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].apply(list).to_dict()
     objects_ids = set(ocel.objects[ocel.object_id_column].unique())
     graph = {o: set() for o in objects_ids}

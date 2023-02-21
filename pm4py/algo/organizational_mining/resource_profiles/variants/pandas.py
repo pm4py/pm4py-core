@@ -529,7 +529,7 @@ def average_duration_activity(df: pd.DataFrame, t1: Union[datetime, str], t2: Un
     df = df[df[timestamp_key] >= t1]
     df = df[df[timestamp_key] < t2]
 
-    return float((df[timestamp_key] - df[start_timestamp_key]).astype('timedelta64[s]').mean())
+    return float((df[timestamp_key] - df[start_timestamp_key]).dt.total_seconds().mean())
 
 
 def average_case_duration(df: pd.DataFrame, t1: Union[datetime, str], t2: Union[datetime, str], r: str,

@@ -97,6 +97,8 @@ def merge_dataframes(left_df: pd.DataFrame, right_df: pd.DataFrame, case_relatio
     right_df = directly_follows_dataframe(right_df, parameters=parameters)
 
     left_df = left_df.merge(case_relations, left_on=case_id_key, right_on=case_id_key+left_suffix, suffixes=('', ''))
+    del left_df[case_id_key+left_suffix]
+
     left_df = left_df.merge(right_df, left_on=case_id_key+right_suffix, right_on=case_id_key, suffixes=(left_suffix, right_suffix))
 
     return left_df

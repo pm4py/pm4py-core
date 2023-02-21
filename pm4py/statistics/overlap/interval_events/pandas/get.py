@@ -56,7 +56,7 @@ def apply(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], An
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
 
-    df = df[{start_timestamp_key, timestamp_key}].to_dict('records')
+    df = df[list({start_timestamp_key, timestamp_key})].to_dict('records')
     points = []
 
     for event in df:

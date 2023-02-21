@@ -68,7 +68,7 @@ def apply(df0: pd.DataFrame, activity: str, parameters: Optional[Dict[Any, Any]]
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     df = df0.copy()
-    df = df[{activity_key, case_id_key}]
+    df = df[list({activity_key, case_id_key})]
     df = df[df[activity_key] == activity]
     df[INT_CASE_ACT_SIZE] = df.groupby([activity_key, case_id_key]).cumcount()
     cases = df[df[INT_CASE_ACT_SIZE] >= (min_occurrences-1)][case_id_key].unique()

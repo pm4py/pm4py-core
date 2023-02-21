@@ -1,5 +1,24 @@
 # Changelog of pm4py
 
+## pm4py 2.5.3 (2023.02.XX)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 5d4bbb60bf940f8c5d654de0c8ecaec8cbb44d48
+  * fixes for Pandas 2.0
+
+### Removed
+
+### Other
+
+
+---
+
 ## pm4py 2.5.2 (2023.02.11)
 
 ### Added

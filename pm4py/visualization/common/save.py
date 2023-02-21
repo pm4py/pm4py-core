@@ -19,7 +19,7 @@ import os
 from pm4py.visualization.common import dot_util
 
 
-def save(gviz, output_file_path):
+def save(gviz, output_file_path, parameters=None):
     """
     Save the diagram
 
