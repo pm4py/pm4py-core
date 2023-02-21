@@ -45,7 +45,7 @@ def get_ocel_from_extended_table(df: pd.DataFrame, objects_df: Optional[Dict[Any
     meaningful_columns = object_type_columns.union({event_activity, event_id, event_timestamp})
     internal_index = exec_utils.get_param_value(Parameters.INTERNAL_INDEX, parameters, constants.DEFAULT_INTERNAL_INDEX)
 
-    df_red = df[meaningful_columns]
+    df_red = df[list(meaningful_columns)]
 
     stream = df_red.to_dict("records")
     relations = []
@@ -71,7 +71,7 @@ def get_ocel_from_extended_table(df: pd.DataFrame, objects_df: Optional[Dict[Any
 
     del objects
 
-    df = df[non_object_type_columns]
+    df = df[list(non_object_type_columns)]
     df[event_timestamp] = pd.to_datetime(df[event_timestamp])
 
     df[internal_index] = df.index
