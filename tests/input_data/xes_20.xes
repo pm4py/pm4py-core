@@ -1,0 +1,17 @@
+<log>
+    <trace>
+        <event>
+            <string key="sdasaddas" value="ciao">
+                <int key="cost" value="0" />
+            </string>
+            <list key="lista">
+                <int key="val1" value="5" />
+                <string key="val2" value="66" />
+            </list>
+            <container key="contenitore">
+                <int key="val3" value="7" />
+                <string key="val4" value="666" />
+            </container>
+        </event>
+    </trace>
+</log>

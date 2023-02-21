@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "additionalProperties": true,
+  "definitions": {
+    "AttributeBooleanType": {
+      "type": "boolean"
+    },
+    "AttributeDateType": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "AttributeFloatType": {
+      "type": "number"
+    },
+    "AttributeIntType": {
+      "type": "integer"
+    },
+    "AttributeStringType": {
+      "type": "string"
+    },
+    "ObjectMappingType": {
+      "type": "object"
+    },
+    "ValueMappingType": {
+      "type": "object"
+    },
+    "EventType": {
+      "properties": {
+        "ocel:id": {
+          "$ref": "#/definitions/AttributeStringType"
+        },
+        "ocel:activity": {
+          "$ref": "#/definitions/AttributeStringType"
+        },
+        "ocel:timestamp": {
+          "$ref": "#/definitions/AttributeDateType"
+        },
+        "ocel:vmap": {
+          "items": {
+            "$ref": "#/definitions/ValueMappingType"
+          },
+          "type": "object"
+        },
+        "ocel:omap": {
+          "type": "array"
+        }
+      },
+      "required": [
+        "ocel:id",
+        "ocel:activity",
+        "ocel:timestamp",
+        "ocel:omap",
+        "ocel:vmap"
+      ],
+      "type": "object"
+    },
+    "ObjectType": {
+      "properties": {
+        "ocel:id": {
+          "$ref": "#/definitions/AttributeStringType"
+        },
+        "ocel:type": {
+          "$ref": "#/definitions/AttributeStringType"
+        },
+        "ocel:ovmap": {
+          "items": {
+            "$ref": "#/definitions/ValueMappingType"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "ocel:id",
+        "ocel:type",
+        "ocel:ovmap"
+      ],
+      "type": "object"
+    }
+  },
+  "description": "Schema for the JSON-OCEL implementation",
+  "properties": {
+    "ocel:events": {
+      "items": {
+        "$ref": "#/definitions/EventType"
+      },
+      "type": "object"
+    },
+    "ocel:objects": {
+      "items": {
+        "$ref": "#/definitions/ObjectMappingType"
+      },
+      "type": "object"
+    }
+  },
+  "type": "object"
+}

@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <page id="n0">
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_3">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <transition id="reinitiate request">
+        <name>
+          <text>reinitiate request</text>
+        </name>
+        <toolspecific tool="StochasticPetriNet" version="0.2">
+          <property key="distributionType">UNIFORM</property>
+          <property key="distributionParameters">10799.99988674513;85800.00016545928</property>
+          <property key="priority">0</property>
+          <property key="invisible">false</property>
+          <property key="weight">0.3333333333333333</property>
+        </toolspecific>
+      </transition>
+      <transition id="register request">
+        <name>
+          <text>register request</text>
+        </name>
+        <toolspecific tool="StochasticPetriNet" version="0.2">
+          <property key="distributionType">IMMEDIATE</property>
+          <property key="priority">1</property>
+          <property key="invisible">false</property>
+          <property key="weight">1.0</property>
+        </toolspecific>
+      </transition>
+      <transition id="examine casually">
+        <name>
+          <text>examine casually</text>
+        </name>
+        <toolspecific tool="StochasticPetriNet" version="0.2">
+          <property key="distributionType">EXPONENTIAL</property>
+          <property key="distributionParameters">1.69176114501161e-05</property>
+          <property key="priority">0</property>
+          <property key="invisible">false</property>
+          <property key="weight">0.5</property>
+        </toolspecific>
+      </transition>
+      <transition id="pay compensation">
+        <name>
+          <text>pay compensation</text>
+        </name>
+        <toolspecific tool="StochasticPetriNet" version="0.2">
+          <property key="distributionType">UNIFORM</property>
+          <property key="distributionParameters">261779.99994853878;497520.0000676266</property>
+          <property key="priority">0</property>
+          <property key="invisible">false</property>
+          <property key="weight">0.3333333333333333</property>
+        </toolspecific>
+      </transition>
+      <transition id="decide">
+        <name>
+          <text>decide</text>
+        </name>
+        <toolspecific tool="StochasticPetriNet" version="0.2">
+          <property key="distributionType">UNIFORM</property>
+          <property key="distributionParameters">1799.9944315511989;576840.0224847647</property>
+          <property key="priority">0</property>
+          <property key="invisible">false</property>
+          <property key="weight">0.75</property>
+        </toolspecific>
+      </transition>
+      <transition id="check ticket">
+        <name>
+          <text>check ticket</text>
+        </name>
+        <toolspecific tool="StochasticPetriNet" version="0.2">
+          <property key="distributionType">EXPONENTIAL</property>
+          <property key="distributionParameters">6.5853843650133505e-06</property>
+          <property key="priority">0</property>
+          <property key="invisible">false</property>
+          <property key="weight">0.75</property>
+        </toolspecific>
+      </transition>
+      <transition id="examine thoroughly">
+        <name>
+          <text>examine thoroughly</text>
+        </name>
+        <toolspecific tool="StochasticPetriNet" version="0.2">
+          <property key="distributionType">UNIFORM</property>
+          <property key="distributionParameters">2879.9999331715608;92940.00006706228</property>
+          <property key="priority">0</property>
+          <property key="invisible">false</property>
+          <property key="weight">0.25</property>
+        </toolspecific>
+      </transition>
+      <transition id="loop_3">
+        <name>
+          <text>loop_3</text>
+        </name>
+        <toolspecific tool="StochasticPetriNet" version="0.2">
+          <property key="distributionType">IMMEDIATE</property>
+          <property key="priority">1</property>
+          <property key="invisible">true</property>
+          <property key="weight">0.25</property>
+        </toolspecific>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="efb0609a-8772-488b-bce4-5c59f886d26d"/>
+      </transition>
+      <transition id="tau_1">
+        <name>
+          <text>tau_1</text>
+        </name>
+        <toolspecific tool="StochasticPetriNet" version="0.2">
+          <property key="distributionType">IMMEDIATE</property>
+          <property key="priority">1</property>
+          <property key="invisible">true</property>
+          <property key="weight">1.0</property>
+        </toolspecific>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="5dd83bf4-10fe-4f70-a793-9da3d5373135"/>
+      </transition>
+      <transition id="skip_7">
+        <name>
+          <text>skip_7</text>
+        </name>
+        <toolspecific tool="StochasticPetriNet" version="0.2">
+          <property key="distributionType">IMMEDIATE</property>
+          <property key="priority">1</property>
+          <property key="invisible">true</property>
+          <property key="weight">0.6666666666666666</property>
+        </toolspecific>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="af653473-d985-4a92-9649-b0cef00a719b"/>
+      </transition>
+      <transition id="reject request">
+        <name>
+          <text>reject request</text>
+        </name>
+        <toolspecific tool="StochasticPetriNet" version="0.2">
+          <property key="distributionType">UNIFORM</property>
+          <property key="distributionParameters">92639.99999843462;203432.0460426052</property>
+          <property key="priority">0</property>
+          <property key="invisible">false</property>
+          <property key="weight">0.3333333333333333</property>
+        </toolspecific>
+      </transition>
+      <transition id="skip_5">
+        <name>
+          <text>skip_5</text>
+        </name>
+        <toolspecific tool="StochasticPetriNet" version="0.2">
+          <property key="distributionType">IMMEDIATE</property>
+          <property key="priority">1</property>
+          <property key="invisible">true</property>
+          <property key="weight">0.25</property>
+        </toolspecific>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="7877bfe4-44e0-428c-9060-1d923793fb4b"/>
+      </transition>
+      <transition id="skip_4">
+        <name>
+          <text>skip_4</text>
+        </name>
+        <toolspecific tool="StochasticPetriNet" version="0.2">
+          <property key="distributionType">IMMEDIATE</property>
+          <property key="priority">1</property>
+          <property key="invisible">true</property>
+          <property key="weight">0.25</property>
+        </toolspecific>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="c5371783-45dc-4015-86be-9aeb63edf982"/>
+      </transition>
+      <transition id="loop_2">
+        <name>
+          <text>loop_2</text>
+        </name>
+        <toolspecific tool="StochasticPetriNet" version="0.2">
+          <property key="distributionType">IMMEDIATE</property>
+          <property key="priority">1</property>
+          <property key="invisible">true</property>
+          <property key="weight">0.3333333333333333</property>
+        </toolspecific>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="406c444b-7769-4905-886e-0eab5bb30f41"/>
+      </transition>
+      <arc id="-9223371872538100725" source="p_7" target="check ticket"/>
+      <arc id="164316675087" source="check ticket" target="p_6"/>
+      <arc id="164316675094" source="p_7" target="skip_5"/>
+      <arc id="-9223371872538100711" source="skip_5" target="p_6"/>
+      <arc id="164316675115" source="p_6" target="decide"/>
+      <arc id="-9223371872538100690" source="decide" target="p_8"/>
+      <arc id="164316671920" source="p_3" target="tau_1"/>
+      <arc id="-9223371872538103885" source="tau_1" target="sink"/>
+      <arc id="-9223371872538096966" source="p_5" target="loop_2"/>
+      <arc id="164316678846" source="loop_2" target="p_4"/>
+      <arc id="-9223371872538100669" source="p_8" target="reinitiate request"/>
+      <arc id="164316675143" source="reinitiate request" target="p_5"/>
+      <arc id="-9223371872538096945" source="p_6" target="loop_3"/>
+      <arc id="-9223371872538100655" source="p_8" target="skip_7"/>
+      <arc id="164316678867" source="loop_3" target="p_4"/>
+      <arc id="164316675157" source="skip_7" target="p_5"/>
+      <arc id="-9223371872538097064" source="register request" target="p_4"/>
+      <arc id="-9223371872538096924" source="p_4" target="examine casually"/>
+      <arc id="164316678888" source="examine casually" target="p_7"/>
+      <arc id="164316675178" source="p_5" target="pay compensation"/>
+      <arc id="-9223371872538103829" source="source" target="register request"/>
+      <arc id="-9223371872538100627" source="pay compensation" target="p_3"/>
+      <arc id="164316678895" source="p_4" target="examine thoroughly"/>
+      <arc id="-9223371872538096910" source="examine thoroughly" target="p_7"/>
+      <arc id="-9223371872538100620" source="p_5" target="reject request"/>
+      <arc id="164316675192" source="reject request" target="p_3"/>
+      <arc id="-9223371872538096903" source="p_4" target="skip_4"/>
+      <arc id="164316678909" source="skip_4" target="p_7"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

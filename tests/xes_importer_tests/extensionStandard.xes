@@ -1,0 +1,9 @@
+<log xes.version="1849.2016" xes.features="">
+	<extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext" />
+	<extension name="Lifecycle" prefix="lifecycle" uri="http://www.xes-standard.org/lifecycle.xesext" />
+	<extension name="Organizational" prefix="org" uri="http://www.xes-standard.org/org.xesext" />
+	<extension name="Time" prefix="time" uri="http://www.xes-standard.org/time.xesext" />
+	<extension name="Semantic" prefix="semantic" uri="http://www.xes-standard.org/semantic.xesext" />
+	<extension name="Identity" prefix="identity" uri="http://www.xes-standard.org/identity.xesext" />
+	<extension name="Cost" prefix="cost" uri="http://www.xes-standard.org/cost.xesext" />
+</log>

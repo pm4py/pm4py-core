@@ -1,0 +1,22 @@
+<log xes.version="1849.2016" xes.features="nested-attributes">
+	<extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext" />
+	<global>
+		<string key="concept:event" value="value" />
+	</global>
+	<global scope="trace">
+		<string key="concept:trace" value="value" />
+	</global>
+	<string key="concept:log" value="value" />
+	<trace>
+		<string key="concept:trace" value="value" />
+		<event>
+			<string key="concept:event" value="value" />
+			<list key="list">
+				<string key="concept:meta" value="value" />
+				<values>
+					<string key="concept:meta" value="value" />
+				</values>
+			</list>
+		</event>
+	</trace>
+</log>
