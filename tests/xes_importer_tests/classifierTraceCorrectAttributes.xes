@@ -1,0 +1,9 @@
+<log xes.version="1849.2016" xes.features="">
+	<extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext" />
+	<extension name="Organizational" prefix="org" uri="http://www.xes-standard.org/org.xesext" />
+	<global scope="trace">
+		<string key="instance" value="name" />
+		<string key="role" value="name" />
+	</global>
+	<classifier name="name" scope="trace" keys="instance role" />
+</log>

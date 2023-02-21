@@ -1,0 +1,150 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <!--  This file describes the XML serialization of the OCL format for object-centric event log data.  -->
+    <!--  (c) 2020 by Chair of Process and Data Science (http://www.pads.rwth-aachen.de)  -->
+    <!--  Date: Nov. 13, 2020  -->
+    <!--  Version 0.1  -->
+    <!--  Author: Gyunam Park (gnpark@pads.rwth-aachen.de)  -->
+    <!--  Draft for the formal format of object-centric event log data  -->
+    <xs:element name="log" type="LogType"/>
+    <!--  Attributables  -->
+    <xs:complexType name="AttributableType">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="string" minOccurs="0" maxOccurs="unbounded" type="AttributeStringType"/>
+            <xs:element name="date" minOccurs="0" maxOccurs="unbounded" type="AttributeDateType"/>
+            <xs:element name="int" minOccurs="0" maxOccurs="unbounded" type="AttributeIntType"/>
+            <xs:element name="float" minOccurs="0" maxOccurs="unbounded" type="AttributeFloatType"/>
+            <xs:element name="boolean" minOccurs="0" maxOccurs="unbounded" type="AttributeBooleanType"/>
+            <xs:element name="id" minOccurs="0" maxOccurs="unbounded" type="AttributeIDType"/>
+            <xs:element name="list" minOccurs="0" maxOccurs="unbounded" type="AttributeListType"/>
+            <xs:element name="container" minOccurs="0" maxOccurs="unbounded" type="AttributeContainerType"/>
+        </xs:choice>
+    </xs:complexType>
+    <!--  String attribute  -->
+    <xs:complexType name="AttributeStringType">
+        <xs:complexContent>
+            <xs:extension base="AttributeType">
+                <xs:attribute name="value" use="required" type="xs:string"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  Date attribute  -->
+    <xs:complexType name="AttributeDateType">
+        <xs:complexContent>
+            <xs:extension base="AttributeType">
+                <xs:attribute name="value" use="required" type="xs:dateTime"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  Integer attribute  -->
+    <xs:complexType name="AttributeIntType">
+        <xs:complexContent>
+            <xs:extension base="AttributeType">
+                <xs:attribute name="value" use="required" type="xs:long"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  Floating-point attribute  -->
+    <xs:complexType name="AttributeFloatType">
+        <xs:complexContent>
+            <xs:extension base="AttributeType">
+                <xs:attribute name="value" use="required" type="xs:double"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  Boolean attribute  -->
+    <xs:complexType name="AttributeBooleanType">
+        <xs:complexContent>
+            <xs:extension base="AttributeType">
+                <xs:attribute name="value" use="required" type="xs:boolean"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  ID attribute  -->
+    <xs:complexType name="AttributeIDType">
+        <xs:complexContent>
+            <xs:extension base="AttributeType">
+                <xs:attribute name="value" use="required" type="xs:string"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  List attribute  -->
+    <xs:complexType name="AttributeListType">
+        <xs:complexContent>
+            <xs:extension base="AttributeType"></xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  Container attribute  -->
+    <xs:complexType name="AttributeContainerType">
+        <xs:complexContent>
+            <xs:extension base="AttributableType"></xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  Globals definition  -->
+    <xs:complexType name="GlobalsType">
+        <xs:complexContent>
+            <xs:extension base="AttributableType">
+                <xs:attribute name="scope" type="xs:NCName" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  Attribute  -->
+    <xs:complexType name="AttributeType">
+        <xs:complexContent>
+            <xs:extension base="AttributableType">
+                <xs:attribute name="key" use="required" type="xs:Name"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  Elements may contain attributes  -->
+    <xs:complexType name="ElementType">
+        <xs:complexContent>
+            <xs:extension base="AttributableType"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  Logs are elements that may contain executions  -->
+    <xs:complexType name="LogType">
+        <xs:complexContent>
+            <xs:extension base="ElementType">
+                <xs:sequence>
+                    <xs:element name="global" minOccurs="0" maxOccurs="4" type="GlobalsType"/>
+                    <xs:element name="events" minOccurs="0" maxOccurs="unbounded" type="EventsType"/>
+                    <xs:element name="objects" minOccurs="0" maxOccurs="unbounded" type="ObjectsType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  Executions are elements that may contain events  -->
+    <xs:complexType name="EventsType">
+        <xs:complexContent>
+            <xs:extension base="ElementType">
+                <xs:sequence>
+                    <xs:element name="event" minOccurs="0" maxOccurs="unbounded" type="EventType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  Events are elements  -->
+    <xs:complexType name="EventType">
+        <xs:complexContent>
+            <xs:extension base="ElementType">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  Specifications are elements that may contain data  -->
+    <xs:complexType name="ObjectsType">
+        <xs:complexContent>
+            <xs:extension base="ElementType">
+                <xs:sequence>
+                    <xs:element name="object" minOccurs="0" maxOccurs="unbounded" type="ObjectType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--  Objects are elements  -->
+    <xs:complexType name="ObjectType">
+        <xs:complexContent>
+            <xs:extension base="ElementType">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>
