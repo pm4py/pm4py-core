@@ -101,8 +101,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
             lambda x: soj_time_business_hours_diff(x[timestamp_key], x[start_timestamp_key + '_2'], business_hours_slot, workcalendar), axis=1)
         else:
             df_successive_rows[constants.DEFAULT_FLOW_TIME] = (
-                    df_successive_rows[start_timestamp_key + '_2'] - df_successive_rows[timestamp_key]).astype(
-                'timedelta64[s]')
+                    df_successive_rows[start_timestamp_key + '_2'] - df_successive_rows[timestamp_key]).dt.total_seconds()
         # groups couple of attributes (directly follows relation, we can measure the frequency and the performance)
         directly_follows_grouping = df_successive_rows.groupby([activity_key, target_activity_key + '_2'])[
             constants.DEFAULT_FLOW_TIME]
@@ -219,7 +218,7 @@ def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="tim
         df[constants.DEFAULT_FLOW_TIME] = df.apply(
             lambda x: soj_time_business_hours_diff(x[timestamp_key], x[start_timestamp_key + '_2'], business_hours_slot, workcalendar), axis=1)
     else:
-        df[constants.DEFAULT_FLOW_TIME] = (df[start_timestamp_key + "_2"] - df[timestamp_key]).astype('timedelta64[s]')
+        df[constants.DEFAULT_FLOW_TIME] = (df[start_timestamp_key + "_2"] - df[timestamp_key]).dt.total_seconds()
 
     if keep_first_following:
         df = df.groupby(constants.DEFAULT_INDEX_KEY).first().reset_index()

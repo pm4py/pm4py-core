@@ -57,7 +57,7 @@ def apply(df: pd.DataFrame, paths: List[Tuple[str, str]], parameters: Optional[D
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
     paths = [path[0] + DEFAULT_VARIANT_SEP + path[1] for path in paths]
     df = df.sort_values([case_id_glue, timestamp_key])
-    filt_df = df[{case_id_glue, attribute_key, target_attribute_key}]
+    filt_df = df[list({case_id_glue, attribute_key, target_attribute_key})]
     filt_dif_shifted = filt_df.shift(-1)
     filt_dif_shifted.columns = [str(col) + '_2' for col in filt_dif_shifted.columns]
     stacked_df = pd.concat([filt_df, filt_dif_shifted], axis=1)
@@ -117,7 +117,7 @@ def apply_performance(df: pd.DataFrame, provided_path: Tuple[str, str], paramete
     stacked_df = pd.concat([filt_df, filt_dif_shifted], axis=1)
     stacked_df["@@path"] = stacked_df[attribute_key] + DEFAULT_VARIANT_SEP + stacked_df[attribute_key + "_2"]
     stacked_df = stacked_df[stacked_df["@@path"] == provided_path]
-    stacked_df["@@timedelta"] = (stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]).astype('timedelta64[s]')
+    stacked_df["@@timedelta"] = (stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]).dt.total_seconds()
     stacked_df = stacked_df[stacked_df["@@timedelta"] >= min_performance]
     stacked_df = stacked_df[stacked_df["@@timedelta"] <= max_performance]
     i1 = df.set_index(case_id_glue).index
