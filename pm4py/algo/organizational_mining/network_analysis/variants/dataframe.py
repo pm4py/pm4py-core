@@ -84,8 +84,7 @@ Dict[Tuple[str, str], Dict[str, Any]]:
 
     else:
         merged_df[timestamp_diff_column] = (
-                merged_df[timestamp_column + "_in"] - merged_df[timestamp_column + "_out"]).astype(
-            'timedelta64[s]')
+                merged_df[timestamp_column + "_in"] - merged_df[timestamp_column + "_out"]).dt.total_seconds()
 
     edges0 = merged_df.dropna(subset=[node_column_source + "_out", node_column_target + "_in", edge_column + edge_reference], how="any").groupby([node_column_source + "_out", node_column_target + "_in", edge_column + edge_reference])[
         timestamp_diff_column].apply(list).to_dict()
@@ -158,7 +157,7 @@ def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) 
     node_column_target = exec_utils.get_param_value(Parameters.NODE_COLUMN_TARGET, parameters, xes_constants.DEFAULT_RESOURCE_KEY)
     edge_column = exec_utils.get_param_value(Parameters.EDGE_COLUMN, parameters, xes_constants.DEFAULT_NAME_KEY)
 
-    dataframe = dataframe[{timestamp_column, in_column, out_column, node_column_source, node_column_target, edge_column, sorting_column}]
+    dataframe = dataframe[list({timestamp_column, in_column, out_column, node_column_source, node_column_target, edge_column, sorting_column})]
 
     parameters_la = {link_analysis.Parameters.OUT_COLUMN: out_column, link_analysis.Parameters.IN_COLUMN: in_column,
                      link_analysis.Parameters.INDEX_COLUMN: index_key,
