@@ -30,7 +30,7 @@ def apply(file_name: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
                 if this_class == "node":
                     nodes[title] = {"label": label_text, "label_x": label_x, "label_y": label_y, "polygon": polygon}
                 elif this_class == "edge":
-                    title = title.replace("->", " ").strip()
+                    title = title.replace("-", " ").replace(">", " ").strip()
                     these_nodes = tuple(title.split(" "))
                     if these_nodes[0] in nodes and these_nodes[1] in nodes:
                         edges[these_nodes] = {"label": label_text, "label_x": label_x, "label_y": label_y,
