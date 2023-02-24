@@ -5,6 +5,8 @@
 ### Added
 
 ### Changed
+* ea0da47ff6faaddb087ffa2344c6139c30978dca
+  * SVG position parser utility (replacing text-based parsing in Graphviz BPMN-based layout)
 
 ### Deprecated
 
