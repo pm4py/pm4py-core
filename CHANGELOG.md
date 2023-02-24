@@ -5,12 +5,16 @@
 ### Added
 
 ### Changed
+* ea0da47ff6faaddb087ffa2344c6139c30978dca
+  * SVG position parser utility (replacing text-based parsing in Graphviz BPMN-based layout)
 
 ### Deprecated
 
 ### Fixed
 * 5d4bbb60bf940f8c5d654de0c8ecaec8cbb44d48
   * fixes for Pandas 2.0
+* ea09b4910874dbb165277a4de93286c05ac0ba5c
+  * carefully performing SQLite3 import (DLL compatibility issues with Anaconda)
 
 ### Removed
 
