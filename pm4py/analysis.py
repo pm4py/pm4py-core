@@ -1,7 +1,7 @@
 __doc__ = """
 """
 
-from typing import List, Optional, Tuple, Dict, Union
+from typing import List, Optional, Tuple, Dict, Union, Generator
 
 from pm4py.objects.log.obj import Trace, EventLog, EventStream
 from pm4py.objects.conversion.log import converter as log_converter
@@ -166,6 +166,35 @@ def check_soundness(petri_net: PetriNet, initial_marking: Marking,
     return woflan.apply(petri_net, initial_marking, final_marking)
 
 
+def cluster_log(log: Union[EventLog, EventStream, pd.DataFrame], sklearn_clusterer=None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Generator[EventLog, None, None]:
+    """
+    Apply clustering to the provided event log
+    (method based on the extraction of profiles for the traces of the event log)
+    :param log: log object
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Generator[pd.DataFrame, None, None]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        for clust_log in pm4py.cluster_log(df):
+            print(clust_log)
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception(
+        "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+    if sklearn_clusterer is not None:
+        properties["sklearn_clusterer"] = sklearn_clusterer
+
+    from pm4py.algo.clustering.profiles import algorithm as clusterer
+    return clusterer.apply(log, parameters=properties)
+
+
 def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Inserts the artificial start/end activities in an event log / Pandas dataframe
@@ -309,3 +338,4 @@ def reduce_petri_net_implicit_places(net: PetriNet, im: Marking, fm: Marking) ->
     """
     from pm4py.objects.petri_net.utils import murata
     return murata.apply_reduction(net, im, fm)
+
