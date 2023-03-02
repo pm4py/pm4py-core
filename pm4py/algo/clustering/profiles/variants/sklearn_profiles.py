@@ -39,8 +39,11 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     from sklearn.cluster import KMeans
     clusterer = exec_utils.get_param_value(Parameters.SKLEARN_CLUSTERER, parameters, KMeans(n_clusters=2, random_state=0, n_init="auto"))
 
-    parameters["enable_activity_def_representation"] = True
-    parameters["enable_succ_def_representation"] = True
+    if "enable_activity_def_representation" not in parameters:
+        parameters["enable_activity_def_representation"] = True
+
+    if "enable_succ_def_representation" not in parameters:
+        parameters["enable_succ_def_representation"] = True
 
     log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
     data, feature_names = features_extractor.apply(log, parameters=parameters)
