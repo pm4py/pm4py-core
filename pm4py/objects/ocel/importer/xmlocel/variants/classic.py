@@ -93,7 +93,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                 eve_id = None
                 eve_activity = None
                 eve_timestamp = None
-                eve_omap = []
+                eve_omap = {}
                 eve_vmap = {}
                 for child2 in event:
                     if child2.get("key") == "id":
@@ -104,11 +104,15 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                         eve_activity = child2.get("value")
                     elif child2.get("key") == "omap":
                         for child3 in child2:
-                            eve_omap.append(child3.get("value"))
+                            objref = child3.get("value")
+                            qualifier = child3.get("qualifier") if "qualifier" in child3.keys() else None
+                            eve_omap[objref] = qualifier
                     elif child2.get("key") == "vmap":
                         for child3 in child2:
-                            eve_vmap[child3.get("key")] = parse_xml(child3.get("value"), child3.tag.lower(),
+                            key = child3.get("key")
+                            value = parse_xml(child3.get("value"), child3.tag.lower(),
                                                                     date_parser)
+                            eve_vmap[key] = value
 
                 event_dict = {event_id: eve_id, event_activity: eve_activity, event_timestamp: eve_timestamp}
                 for k, v in eve_vmap.items():
@@ -117,13 +121,13 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
 
                 for obj in eve_omap:
                     rel_dict = {event_id: eve_id, event_activity: eve_activity, event_timestamp: eve_timestamp,
-                                object_id: obj}
+                                object_id: obj, constants.DEFAULT_QUALIFIER: eve_omap[obj]}
                     relations.append(rel_dict)
         elif child.tag.lower().endswith("objects"):
             for object in child:
                 obj_id = None
                 obj_type = None
-                obj_ovmap = {}
+                obj_ovmap = []
                 for child2 in object:
                     if child2.get("key") == "id":
                         obj_id = child2.get("value")
@@ -131,9 +135,16 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                         obj_type = child2.get("value")
                     elif child2.get("key") == "ovmap":
                         for child3 in child2:
-                            obj_ovmap[child3.get("key")] = parse_xml(child3.get("value"), child3.tag.lower(),
+                            key = child3.get("key")
+                            value = parse_xml(child3.get("value"), child3.tag.lower(),
                                                                      date_parser)
-                objects.append({object_id: obj_id, object_type: obj_type, constants.OCEL_OVMAP_KEY: obj_ovmap})
+                            timestamp = child3.get("timestamp") if "timestamp" in child3.keys() else None
+                            obj_ovmap.append((key, value, timestamp))
+                dct = {object_id: obj_id, object_type: obj_type}
+                for el in obj_ovmap:
+                    if el[0] not in dct:
+                        dct[el[0]] = el[1]
+                objects.append(dct)
                 obj_type_dict[obj_id] = obj_type
 
     for rel in relations:
