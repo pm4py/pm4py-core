@@ -107,7 +107,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
             for object in child:
                 obj_id = None
                 obj_type = None
-                obj_ovmap = {}
+                obj_ovmap = []
                 for child2 in object:
                     if child2.get("key") == "id":
                         obj_id = child2.get("value")
@@ -115,9 +115,16 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                         obj_type = child2.get("value")
                     elif child2.get("key") == "ovmap":
                         for child3 in child2:
-                            obj_ovmap[child3.get("key")] = parse_xml(child3.get("value"), child3.tag.lower(),
+                            key = child3.get("key")
+                            value = parse_xml(child3.get("value"), child3.tag.lower(),
                                                                      date_parser)
-                objects.append({object_id: obj_id, object_type: obj_type, constants.OCEL_OVMAP_KEY: obj_ovmap})
+                            timestamp = child3.get("timestamp") if "timestamp" in child3 else None
+                            obj_ovmap.append((key, value, timestamp))
+                dct = {object_id: obj_id, object_type: obj_type}
+                for el in obj_ovmap:
+                    if el[0] not in dct:
+                        dct[el[0]] = el[1]
+                objects.append(dct)
                 obj_type_dict[obj_id] = obj_type
 
     for rel in relations:
