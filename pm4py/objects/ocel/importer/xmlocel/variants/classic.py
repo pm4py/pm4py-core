@@ -89,7 +89,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                     elif child2.get("key") == "omap":
                         for child3 in child2:
                             objref = child3.get("value")
-                            qualifier = child3.get("qualifier") if "qualifier" in child3 else None
+                            qualifier = child3.get("qualifier") if "qualifier" in child3.keys() else None
                             eve_omap[objref] = qualifier
                     elif child2.get("key") == "vmap":
                         for child3 in child2:
@@ -122,7 +122,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                             key = child3.get("key")
                             value = parse_xml(child3.get("value"), child3.tag.lower(),
                                                                      date_parser)
-                            timestamp = child3.get("timestamp") if "timestamp" in child3 else None
+                            timestamp = child3.get("timestamp") if "timestamp" in child3.keys() else None
                             obj_ovmap.append((key, value, timestamp))
                 dct = {object_id: obj_id, object_type: obj_type}
                 for el in obj_ovmap:
