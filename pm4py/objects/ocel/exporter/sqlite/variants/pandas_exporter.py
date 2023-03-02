@@ -1,6 +1,5 @@
 from pm4py.objects.ocel.obj import OCEL
 from typing import Dict, Any, Optional
-import sqlite3
 
 
 def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = None):
@@ -18,6 +17,8 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
     """
     if parameters is None:
         parameters = {}
+
+    import sqlite3
 
     conn = sqlite3.connect(target_path)
 
