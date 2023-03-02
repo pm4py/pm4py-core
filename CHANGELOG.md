@@ -15,6 +15,8 @@
   * fixes for Pandas 2.0
 * ea09b4910874dbb165277a4de93286c05ac0ba5c
   * carefully performing SQLite3 import (DLL compatibility issues with Anaconda)
+* 06217786793dc7fa22706ecc143778d8ebbe3d2e
+  * fixed indeterminism in edges filtering during paths percentage filter
 
 ### Removed
 
