@@ -11,9 +11,9 @@ def execute_script():
     from sklearn.cluster import KMeans
     clusterer = KMeans(n_clusters=3, random_state=0, n_init="auto")
 
-    for clust_df in pm4py.cluster_log(dataframe, sklearn_clusterer=clusterer):
-        print(clust_df)
-        process_tree = pm4py.discover_process_tree_inductive(clust_df)
+    for clust_log in pm4py.cluster_log(dataframe, sklearn_clusterer=clusterer):
+        print(clust_log)
+        process_tree = pm4py.discover_process_tree_inductive(clust_log)
         pm4py.view_process_tree(process_tree, format="svg")
 
 
