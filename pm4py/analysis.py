@@ -170,7 +170,10 @@ def cluster_log(log: Union[EventLog, EventStream, pd.DataFrame], sklearn_cluster
     """
     Apply clustering to the provided event log
     (method based on the extraction of profiles for the traces of the event log)
+    based on a Scikit-Learn clusterer (default: K-means with two clusters)
+
     :param log: log object
+    :param sklearn_clusterer: the Scikit-Learn clusterer to be used (default: KMeans(n_clusters=2, random_state=0, n_init="auto"))
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier

@@ -26,7 +26,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
         Event log
     parameters
         Parameters of the feature extraction, including:
-        - Parameters.SKLEARN_CLUSTERER => the Scikit-Learn clusterer to be used (default: KMeans)
+        - Parameters.SKLEARN_CLUSTERER => the Scikit-Learn clusterer to be used (default: KMeans(n_clusters=2, random_state=0, n_init="auto"))
 
     Returns
     ---------------
