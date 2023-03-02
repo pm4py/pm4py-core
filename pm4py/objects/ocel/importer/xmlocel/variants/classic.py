@@ -77,7 +77,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                 eve_id = None
                 eve_activity = None
                 eve_timestamp = None
-                eve_omap = []
+                eve_omap = {}
                 eve_vmap = {}
                 for child2 in event:
                     if child2.get("key") == "id":
@@ -88,11 +88,15 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                         eve_activity = child2.get("value")
                     elif child2.get("key") == "omap":
                         for child3 in child2:
-                            eve_omap.append(child3.get("value"))
+                            objref = child3.get("value")
+                            qualifier = child3.get("qualifier") if "qualifier" in child3 else None
+                            eve_omap[objref] = qualifier
                     elif child2.get("key") == "vmap":
                         for child3 in child2:
-                            eve_vmap[child3.get("key")] = parse_xml(child3.get("value"), child3.tag.lower(),
+                            key = child3.get("key")
+                            value = parse_xml(child3.get("value"), child3.tag.lower(),
                                                                     date_parser)
+                            eve_vmap[key] = value
 
                 event_dict = {event_id: eve_id, event_activity: eve_activity, event_timestamp: eve_timestamp}
                 for k, v in eve_vmap.items():
@@ -101,7 +105,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
 
                 for obj in eve_omap:
                     rel_dict = {event_id: eve_id, event_activity: eve_activity, event_timestamp: eve_timestamp,
-                                object_id: obj}
+                                object_id: obj, constants.DEFAULT_QUALIFIER: eve_omap[obj]}
                     relations.append(rel_dict)
         elif child.tag.lower().endswith("objects"):
             for object in child:
