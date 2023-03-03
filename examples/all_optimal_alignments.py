@@ -1,5 +1,5 @@
 import pm4py
-from pm4py.algo.conformance.alignments.petri_net.variants import generator_dijkstra_no_heuristics
+from pm4py.algo.conformance.alignments.petri_net.variants import generator_dijkstra_less_memory
 import os
 
 
@@ -10,7 +10,7 @@ def execute_script():
 
     for trace in log:
         print("\n\n")
-        for ali in generator_dijkstra_no_heuristics.apply(trace, net, im, fm):
+        for ali in generator_dijkstra_less_memory.apply(trace, net, im, fm):
             print(ali)
 
 

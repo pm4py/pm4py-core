@@ -1,11 +1,12 @@
+
+
 from pm4py.statistics.attributes.log import get as attr_get
 from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.util import xes_constants as xes
 from pm4py.util import exec_utils
 from pm4py.statistics.sojourn_time.log import get as soj_time_get
-from pm4py.util import constants
 from enum import Enum
-from collections import Counter
+from pm4py.util import constants
 
 from typing import Optional, Dict, Any, Tuple
 import graphviz
@@ -25,11 +26,12 @@ class Parameters(Enum):
     FONT_SIZE = "font_size"
     AGGREGATION_MEASURE = "aggregation_measure"
     BGCOLOR = "bgcolor"
-    STAT_LOCALE = "stat_locale"
 
-def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Optional[Dict[Any, Any]] = None, activities_count : Dict[str, int] = None, soj_time: Dict[str, float] = None) -> graphviz.Digraph:
+
+def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Optional[Dict[Any, Any]] = None,
+          activities_count: Dict[str, int] = None, soj_time: Dict[str, float] = None) -> graphviz.Digraph:
     """
-    Visualize a performance directly-follows graph
+    Visualize a cost-based directly-follows graph
 
     Parameters
     -----------------
@@ -62,7 +64,6 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     activities = dfg_utils.get_activities_from_dfg(dfg)
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
-    stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, {})
 
     # if all the aggregation measures are provided for a given key,
     # then pick one of the values for the representation
@@ -76,7 +77,7 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
                 dfg[key] = dfg0[key]
         except:
             dfg[key] = dfg0[key]
-    
+
     if activities_count is None:
         if log is not None:
             activities_count = attr_get.get_attribute_values(log, activity_key, parameters=parameters)
@@ -97,8 +98,7 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
         else:
             soj_time = {key: -1 for key in activities}
 
-    return dfg_gviz.graphviz_visualization(activities_count, dfg, image_format=image_format, measure="performance",
+    return dfg_gviz.graphviz_visualization(activities_count, dfg, image_format=image_format, measure="cost",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
-                                  start_activities=start_activities, end_activities=end_activities, 
-                                  soj_time=soj_time, font_size=font_size, bgcolor=bgcolor, stat_locale=stat_locale)
-
+                                  start_activities=start_activities, end_activities=end_activities, soj_time=soj_time,
+                                  font_size=font_size, bgcolor=bgcolor)
