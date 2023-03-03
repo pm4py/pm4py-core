@@ -7,6 +7,10 @@
 ### Changed
 * ea0da47ff6faaddb087ffa2344c6139c30978dca
   * SVG position parser utility (replacing text-based parsing in Graphviz BPMN-based layout)
+* 9ea35fe209982f87f478262e1398e8474b3be1ba
+  * working variant for generator of all optimal alignments
+* 3f07223236eb350a72db87c8a708dcea13c1a5a3
+  * refactored df_statistics.get_dfg_graph method and DFG visualization
 
 ### Deprecated
 
