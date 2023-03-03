@@ -1,3 +1,5 @@
+
+
 from pm4py.statistics.attributes.log import get as attr_get
 from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.util import xes_constants as xes
@@ -26,9 +28,10 @@ class Parameters(Enum):
     BGCOLOR = "bgcolor"
 
 
-def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Optional[Dict[Any, Any]] = None, activities_count : Dict[str, int] = None, soj_time: Dict[str, float] = None) -> graphviz.Digraph:
+def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Optional[Dict[Any, Any]] = None,
+          activities_count: Dict[str, int] = None, soj_time: Dict[str, float] = None) -> graphviz.Digraph:
     """
-    Visualize a performance directly-follows graph
+    Visualize a cost-based directly-follows graph
 
     Parameters
     -----------------
@@ -74,7 +77,7 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
                 dfg[key] = dfg0[key]
         except:
             dfg[key] = dfg0[key]
-    
+
     if activities_count is None:
         if log is not None:
             activities_count = attr_get.get_attribute_values(log, activity_key, parameters=parameters)
@@ -95,7 +98,7 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
         else:
             soj_time = {key: -1 for key in activities}
 
-    return dfg_gviz.graphviz_visualization(activities_count, dfg, image_format=image_format, measure="performance",
+    return dfg_gviz.graphviz_visualization(activities_count, dfg, image_format=image_format, measure="cost",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
                                   start_activities=start_activities, end_activities=end_activities, soj_time=soj_time,
                                   font_size=font_size, bgcolor=bgcolor)
