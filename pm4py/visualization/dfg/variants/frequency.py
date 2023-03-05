@@ -101,4 +101,4 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     return dfg_gviz.graphviz_visualization(activities_count, dfg, image_format=image_format, measure="frequency",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
                                   start_activities=start_activities, end_activities=end_activities, 
-                                  soj_time=soj_time, font_size=font_size, bgcolor=bgcolor, stat_locale=stat_locale)
+                                  soj_time=soj_time, font_size=font_size, bgcolor=bgcolor)
