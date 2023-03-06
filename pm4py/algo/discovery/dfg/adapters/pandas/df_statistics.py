@@ -8,7 +8,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
                   sort_caseid_required=True,
                   sort_timestamp_along_case_id=True, keep_once_per_case=False, window=1,
                   business_hours=False, business_hours_slot=None, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, target_activity_key=None,
-                  reduce_columns=True):
+                  reduce_columns=True, cost_attribute=None):
     """
     Get DFG graph from Pandas dataframe
 
@@ -60,10 +60,20 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     # to increase the speed of the approaches reduce dataframe to case, activity (and possibly complete timestamp)
     # columns
     if reduce_columns:
+        red_attrs = {case_id_glue, activity_key, target_activity_key}
         if measure == "frequency" and not sort_timestamp_along_case_id:
-            df = df[list({case_id_glue, activity_key, target_activity_key})]
+            pass
         else:
-            df = df[list({case_id_glue, activity_key, start_timestamp_key, timestamp_key, target_activity_key})]
+            red_attrs.add(start_timestamp_key)
+            red_attrs.add(timestamp_key)
+
+        if measure == "cost":
+            red_attrs.add(cost_attribute)
+
+        df = df[list(red_attrs)]
+
+    if measure == "cost":
+        df[cost_attribute] = df[cost_attribute].fillna(value=0)
 
     # to get rows belonging to same case ID together, we need to sort on case ID
     if sort_caseid_required:
@@ -105,6 +115,8 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
         # groups couple of attributes (directly follows relation, we can measure the frequency and the performance)
         directly_follows_grouping = df_successive_rows.groupby([activity_key, target_activity_key + '_2'])[
             constants.DEFAULT_FLOW_TIME]
+    elif measure == "cost":
+        directly_follows_grouping = df_successive_rows.groupby([activity_key, target_activity_key + '_2'])[cost_attribute + '_2']
     else:
         directly_follows_grouping = df_successive_rows.groupby([activity_key, target_activity_key + '_2'])
         if all_columns:
@@ -116,7 +128,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     if measure == "frequency" or measure == "both":
         dfg_frequency = directly_follows_grouping.size().to_dict()
 
-    if measure == "performance" or measure == "both":
+    if measure == "performance" or measure == "cost" or measure == "both":
         if perf_aggregation_key == "all":
             dfg_performance_mean = directly_follows_grouping.agg("mean").to_dict()
             dfg_performance_median = directly_follows_grouping.agg("median").to_dict()
@@ -135,7 +147,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     if measure == "frequency":
         return dfg_frequency
 
-    if measure == "performance":
+    if measure == "performance" or measure == "cost":
         return dfg_performance
 
     if measure == "both":

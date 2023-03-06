@@ -1,12 +1,35 @@
 # Changelog of pm4py
 
-## pm4py 2.5.3 (2023.02.XX)
+## pm4py 2.5.4 (2023.03.XX)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
+## pm4py 2.5.3 (2023.03.05)
 
 ### Added
 
 ### Changed
 * ea0da47ff6faaddb087ffa2344c6139c30978dca
   * SVG position parser utility (replacing text-based parsing in Graphviz BPMN-based layout)
+* 9ea35fe209982f87f478262e1398e8474b3be1ba
+  * working variant for generator of all optimal alignments
+* 3f07223236eb350a72db87c8a708dcea13c1a5a3
+  * refactored df_statistics.get_dfg_graph method and DFG visualization
+* 268311a99ee7d2df245026371ab7449538ffcff8
+  * support for object versioning in OCEL
 
 ### Deprecated
 
