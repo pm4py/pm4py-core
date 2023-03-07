@@ -24,9 +24,6 @@ def apply(log, parameters=None):
     if type(log) is log_instance.Trace or type(log) is log_instance.EventLog:
         return log
 
-    from pm4py.utils import __event_log_deprecation_warning
-    __event_log_deprecation_warning(log)
-
     enable_deepcopy = exec_utils.get_param_value(Parameters.DEEP_COPY, parameters, False)
     glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, pmconstants.CASE_CONCEPT_NAME)
     case_pref = exec_utils.get_param_value(Parameters.CASE_ATTRIBUTE_PREFIX, parameters,
