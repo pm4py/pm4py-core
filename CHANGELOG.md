@@ -13,6 +13,11 @@
     pm4py.insert_case_service_waiting_time,
     pm4py.extract_outcome_enriched_dataframe
     methods to the simplified interface (Pandas dataframes)
+* 18b250e38bcfeb08cda549df94de98ce5c5b484e
+  * added baseline log clustering based on profiles
+    (Song, Minseok, Christian W. Günther, and Wil MP Van der Aalst.
+    "Trace clustering in process mining."
+    Business Process Management Workshops: BPM 2008. )
 
 ### Changed
 * d6d2301dd0d2ea57cba76015eba124f726f4544e
