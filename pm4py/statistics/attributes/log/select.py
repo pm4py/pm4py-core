@@ -47,15 +47,19 @@ def select_attributes_from_log_for_tree(log: EventLog, max_cases_for_attr_select
     string_trace_attributes_to_consider = list()
 
     for attr in event_attributes_values:
-        if type(list(event_attributes_values[attr])[0]) is int or type(list(event_attributes_values[attr])[0]) is float:
+        lst = list(event_attributes_values[attr])
+        val = lst[0]
+        if type(val) is int or type(val) is float:
             numeric_event_attributes_to_consider.append(attr)
-        elif type(list(event_attributes_values[attr])[0]) is str and len(event_attributes_values[attr]) < max_diff_occ:
+        elif type(val) is str and len(lst) < max_diff_occ:
             string_event_attributes_to_consider.append(attr)
 
     for attr in trace_attributes_values:
-        if type(list(trace_attributes_values[attr])[0]) is int or type(list(trace_attributes_values[attr])[0]) is float:
+        lst = list(trace_attributes_values[attr])
+        val = lst[0]
+        if type(val) is int or type(val) is float:
             numeric_trace_attributes_to_consider.append(attr)
-        elif type(list(trace_attributes_values[attr])[0]) is str and len(trace_attributes_values[attr]) < max_diff_occ:
+        elif type(val) is str and len(lst) < max_diff_occ:
             string_trace_attributes_to_consider.append(attr)
 
     numeric_event_attributes_to_consider = check_event_attributes_presence(log,
