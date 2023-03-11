@@ -18,7 +18,7 @@ from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any, List
 from enum import Enum
 from pm4py.util import exec_utils
-from pm4py.algo.transformation.ocel.features.objects import object_lifecycle_length, object_lifecycle_duration, object_degree_centrality, object_general_descendants_graph, object_general_interaction_graph, object_general_inheritance_graph, object_cobirth_graph, object_codeath_graph, object_lifecycle_activities, object_str_attributes, object_num_attributes, objects_interaction_graph_ot, object_work_in_progress, related_events_features, related_activities_features, obj_con_in_graph_features, object_lifecycle_unq_act
+from pm4py.algo.transformation.ocel.features.objects import object_lifecycle_length, object_lifecycle_duration, object_degree_centrality, object_general_descendants_graph, object_general_interaction_graph, object_general_inheritance_graph, object_cobirth_graph, object_codeath_graph, object_lifecycle_activities, object_str_attributes, object_num_attributes, objects_interaction_graph_ot, object_work_in_progress, related_events_features, related_activities_features, obj_con_in_graph_features, object_lifecycle_unq_act, object_lifecycle_paths
 
 
 class Parameters(Enum):
@@ -34,6 +34,7 @@ class Parameters(Enum):
     ENABLE_OBJECT_COBIRTH_GRAPH = "enable_object_cobirth_graph"
     ENABLE_OBJECT_CODEATH_GRAPH = "enable_object_codeath_graph"
     ENABLE_OBJECT_LIFECYCLE_ACTIVITIES = "enable_object_lifecycle_activities"
+    ENABLE_OBJECT_LIFECYCLE_PATHS = "enable_object_lifecycle_paths"
     ENABLE_OBJECT_STR_ATTRIBUTES = "enable_object_str_attributes"
     ENABLE_OBJECT_NUM_ATTRIBUTES = "enable_object_num_attributes"
     ENABLE_OBJECT_INTERACTION_GRAPH_OT = "enable_object_interaction_graph_ot"
@@ -80,6 +81,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
                                                         of an activity in the events related to the object.
         - Parameters.ENABLE_OBJ_CON_IN_GRAPH_FEATURES => enables the extraction of features from the neighboring
                                                         objects.
+        - Parameters.ENABLE_OBJECT_LIFECYCLE_PATHS => enables the features associated to the paths in the
+                                                            lifecycle of an object
 
     Returns
     ------------------
@@ -110,6 +113,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     enable_related_events_features = exec_utils.get_param_value(Parameters.ENABLE_RELATED_EVENTS_FEATURES, parameters, False)
     enable_related_activities_features = exec_utils.get_param_value(Parameters.ENABLE_RELATED_ACTIVITIES_FEATURES, parameters, False)
     enable_obj_con_in_graph_features = exec_utils.get_param_value(Parameters.ENABLE_OBJ_CON_IN_GRAPH_FEATURES, parameters, False)
+    enable_object_lifecycle_paths = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_LIFECYCLE_PATHS, parameters, False)
 
     filter_per_type = exec_utils.get_param_value(Parameters.FILTER_PER_TYPE, parameters, None)
 
@@ -216,6 +220,12 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
 
     if enable_obj_con_in_graph_features:
         data, feature_names = obj_con_in_graph_features.apply(ocel, parameters=parameters)
+        feature_namess = feature_namess + feature_names
+        for i in range(len(data)):
+            datas[i] = datas[i] + data[i]
+
+    if enable_object_lifecycle_paths:
+        data, feature_names = object_lifecycle_paths.apply(ocel, parameters=parameters)
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]

@@ -1,5 +1,30 @@
 # Changelog of pm4py
 
+## pm4py 2.5.4 (2023.03.XX)
+
+### Added
+
+### Changed
+* d6d2301dd0d2ea57cba76015eba124f726f4544e
+  * introduced optional "lifecycle paths" feature
+    in OCEL feature extraction
+
+### Deprecated
+
+### Fixed
+* 0a1c6f9c6e0ff45a0e732978589ed17513899be8
+  * fixed dependency on Simpy in __init__.py
+* 9663a863cc342cfe16800a2893e7b0e6b9df48d2
+  * fixed bug in WOFLAN (crashing after LP solving)
+
+### Removed
+
+### Other
+* a313db141148a960d7eb5126831bc1f8829a2ca4
+  * made fundamental and optional requirements clearer
+
+---
+
 ## pm4py 2.5.3 (2023.03.05)
 
 ### Added
