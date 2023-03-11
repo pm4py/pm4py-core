@@ -3,17 +3,40 @@
 ## pm4py 2.5.4 (2023.03.XX)
 
 ### Added
+* 73254a80b3430140fac2ff023a6e356edc48dd0f
+  * ILP miner (process discovery in ILP)
+* 7016026a2a514d529fe5cf9a49b4aa607d30183c
+  * "timestamp grouping filter" and "consecutive activities"
+    filters for Pandas dataframes
+* 4ba2a9e873c972c96fed8f3912f0dbaa8dfc96a1
+  * added pm4py.insert_case_arrival_finish_rate,
+    pm4py.insert_case_service_waiting_time,
+    pm4py.extract_outcome_enriched_dataframe
+    methods to the simplified interface (Pandas dataframes)
+* 18b250e38bcfeb08cda549df94de98ce5c5b484e
+  * added baseline log clustering based on profiles
+    (Song, Minseok, Christian W. Günther, and Wil MP Van der Aalst.
+    "Trace clustering in process mining."
+    Business Process Management Workshops: BPM 2008. )
 
 ### Changed
+* d6d2301dd0d2ea57cba76015eba124f726f4544e
+  * introduced optional "lifecycle paths" feature
+    in OCEL feature extraction
 
 ### Deprecated
 
 ### Fixed
+* 0a1c6f9c6e0ff45a0e732978589ed17513899be8
+  * fixed dependency on Simpy in __init__.py
+* 9663a863cc342cfe16800a2893e7b0e6b9df48d2
+  * fixed bug in WOFLAN (crashing after LP solving)
 
 ### Removed
 
 ### Other
-
+* a313db141148a960d7eb5126831bc1f8829a2ca4
+  * made fundamental and optional requirements clearer
 
 ---
 

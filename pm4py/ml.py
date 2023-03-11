@@ -82,6 +82,44 @@ def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int, case_
         return get_prefixes.get_prefixes_from_log(log, length)
 
 
+def extract_outcome_enriched_dataframe(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name",
+                                       timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name",
+                                       start_timestamp_key: str = "time:timestamp") -> pd.DataFrame:
+    """
+    Inserts additional columns in the dataframe which are computed on the overall case, so they model the
+    outcome of the case.
+
+    :param log: event log / Pandas dataframe
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :param start_timestamp_key: attribute to be used as start timestamp
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        enriched_df = pm4py.extract_outcome_enriched_dataframe(log, activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name', start_timestamp_key='time:timestamp')
+
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception(
+        "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME, parameters=properties)
+
+    from pm4py.util import pandas_utils
+
+    fea_df = extract_features_dataframe(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    log2 = pandas_utils.insert_case_arrival_finish_rate(log.copy(), timestamp_column=timestamp_key, case_id_column=case_id_key, start_timestamp_column=start_timestamp_key)
+    log2 = pandas_utils.insert_case_service_waiting_time(log2.copy(), timestamp_column=timestamp_key, case_id_column=case_id_key, start_timestamp_column=start_timestamp_key)
+
+    return log2.merge(fea_df, left_on=case_id_key, right_on=case_id_key)
+
+
 def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=None, num_tr_attr=None, str_ev_attr=None, num_ev_attr=None, str_evsucc_attr=None, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name", resource_key="org:resource", **kwargs) -> pd.DataFrame:
     """
     Extracts a dataframe containing the features of each case of the provided log object
