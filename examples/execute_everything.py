@@ -4,6 +4,84 @@ import sys
 import traceback
 
 
+def consecutive_act_case_grouping_filter():
+    from examples import consecutive_act_case_grouping_filter
+    print("\n\nconsecutive_act_case_grouping_filter")
+    consecutive_act_case_grouping_filter.execute_script()
+
+
+def cost_based_dfg():
+    from examples import cost_based_dfg
+    print("\n\ncost_based_dfg")
+    cost_based_dfg.execute_script()
+
+
+def df_to_log_postpro():
+    from examples import df_to_log_postpro
+    print("\n\ndf_to_log_postpro")
+    df_to_log_postpro.execute_script()
+
+
+def hybrid_ilp_miner():
+    from examples import hybrid_ilp_miner
+    print("\n\nhybrid_ilp_miner")
+    hybrid_ilp_miner.execute_script()
+
+
+def ml_insert_case_arrival_finish():
+    from examples import ml_insert_case_arrival_finish
+    print("\n\nml_insert_case_arrival_finish")
+    ml_insert_case_arrival_finish.execute_script()
+
+
+def ml_insert_waiting_service_time():
+    from examples import ml_insert_waiting_service_time
+    print("\n\nml_insert_waiting_service_time")
+    ml_insert_waiting_service_time.execute_script()
+
+
+def ml_log_to_target_vector():
+    from examples import ml_log_to_target_vectory
+    print("\n\nml_log_to_target_vector")
+    ml_log_to_target_vectory.execute_script()
+
+
+def ml_outcome_enriched():
+    from examples import ml_outcome_enriched
+    print("\n\nml_outcome_enriched")
+    ml_outcome_enriched.execute_script()
+
+
+def ocel20_import_export():
+    from examples import ocel20_import_export
+    print("\n\nocel20_import_export")
+    ocel20_import_export.execute_script()
+
+
+def revised_playout():
+    from examples import revised_playout
+    print("\n\nrevised_playout")
+    revised_playout.execute_script()
+
+
+def timestamp_case_grouping_filter():
+    from examples import timestamp_case_grouping_filter
+    print("\n\ntimestamp_case_grouping_filter")
+    timestamp_case_grouping_filter.execute_script()
+
+
+def trace_clustering():
+    from examples import trace_clustering
+    print("\n\ntrace_clustering")
+    trace_clustering.execute_script()
+
+
+def validation_ocel20_relational():
+    from examples import validation_ocel20_relational
+    print("\n\nvalidation_ocel20_relation")
+    validation_ocel20_relational.execute_script()
+
+
 def all_optimal_alignments():
     from examples import all_optimal_alignments
     print("\n\nall_optimal_alignments")
@@ -657,6 +735,19 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(consecutive_act_case_grouping_filter)
+    execute_script(cost_based_dfg)
+    execute_script(df_to_log_postpro)
+    execute_script(hybrid_ilp_miner)
+    execute_script(ml_insert_case_arrival_finish)
+    execute_script(ml_insert_waiting_service_time)
+    execute_script(ml_log_to_target_vector)
+    execute_script(ml_outcome_enriched)
+    execute_script(ocel20_import_export)
+    execute_script(revised_playout)
+    execute_script(timestamp_case_grouping_filter)
+    execute_script(trace_clustering)
+    execute_script(validation_ocel20_relational)
     execute_script(simplified_interface)
     execute_script(read_write_ocel)
     execute_script(discovery_data_petri_net)
