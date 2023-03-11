@@ -39,7 +39,7 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
 from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
     convert_to_petri_net, convert_to_process_tree, convert_to_reachability_graph, convert_log_to_ocel, convert_ocel_to_networkx, convert_log_to_networkx, \
     convert_petri_net_to_networkx, convert_petri_net_type
-from pm4py.analysis import check_soundness, compute_emd, solve_marking_equation, solve_extended_marking_equation, \
+from pm4py.analysis import cluster_log, check_soundness, compute_emd, solve_marking_equation, solve_extended_marking_equation, \
     construct_synchronous_product_net, insert_artificial_start_end, check_is_workflow_net, maximal_decomposition, generate_marking, \
     reduce_petri_net_invisibles, reduce_petri_net_implicit_places, insert_case_arrival_finish_rate, insert_case_service_waiting_time
 from pm4py.stats import get_start_activities, get_end_activities, get_event_attributes, get_event_attribute_values, get_variants, \
