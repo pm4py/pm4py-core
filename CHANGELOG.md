@@ -5,6 +5,9 @@
 ### Added
 * 73254a80b3430140fac2ff023a6e356edc48dd0f
   * ILP miner (process discovery in ILP)
+* 7016026a2a514d529fe5cf9a49b4aa607d30183c
+  * "timestamp grouping filter" and "consecutive activities"
+    filters for Pandas dataframe
 
 ### Changed
 * d6d2301dd0d2ea57cba76015eba124f726f4544e
