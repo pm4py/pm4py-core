@@ -3,6 +3,8 @@
 ## pm4py 2.5.4 (2023.03.XX)
 
 ### Added
+* 73254a80b3430140fac2ff023a6e356edc48dd0f
+  * ILP miner (process discovery in ILP)
 
 ### Changed
 * d6d2301dd0d2ea57cba76015eba124f726f4544e
