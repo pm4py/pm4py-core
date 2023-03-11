@@ -72,6 +72,10 @@ class SimplifiedInterface2Test(unittest.TestCase):
         lang2 = pm4py.get_stochastic_language(log2)
         pm4py.compute_emd(lang1, lang2)
 
+    def test_hybrid_ilp_miner(self):
+        log = pm4py.read_xes("input_data/running-example.xes")
+        pm4py.discover_petri_net_ilp(log)
+
 
 if __name__ == "__main__":
     unittest.main()

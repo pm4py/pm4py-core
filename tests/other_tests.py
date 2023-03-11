@@ -313,6 +313,24 @@ class OtherPartsTests(unittest.TestCase):
         self.assertTrue(compression_util.discover_dfg(cl))
         self.assertTrue(compression_util.get_variants(cl))
 
+    def test_log_to_target_rem_time(self):
+        import pm4py
+        from pm4py.algo.transformation.log_to_target import algorithm as log_to_target
+        log = pm4py.read_xes("input_data/running-example.xes")
+        rem_time_target, classes = log_to_target.apply(log, variant=log_to_target.Variants.REMAINING_TIME)
+
+    def test_log_to_target_next_time(self):
+        import pm4py
+        from pm4py.algo.transformation.log_to_target import algorithm as log_to_target
+        log = pm4py.read_xes("input_data/running-example.xes")
+        next_time_target, classes = log_to_target.apply(log, variant=log_to_target.Variants.NEXT_TIME)
+
+    def test_log_to_target_next_activity(self):
+        import pm4py
+        from pm4py.algo.transformation.log_to_target import algorithm as log_to_target
+        log = pm4py.read_xes("input_data/running-example.xes")
+        next_activity_target, next_activities = log_to_target.apply(log, variant=log_to_target.Variants.NEXT_ACTIVITY)
+
 
 if __name__ == "__main__":
     unittest.main()
