@@ -18,7 +18,7 @@ __doc__ = """
 The ``pm4py.ml`` module contains the machine learning features offered in ``pm4py``
 """
 
-from typing import Union, Tuple
+from typing import Union, Tuple, Any, List
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.util import constants
@@ -96,6 +96,44 @@ def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int, case_
     else:
         from pm4py.objects.log.util import get_prefixes
         return get_prefixes.get_prefixes_from_log(log, length)
+
+
+def extract_outcome_enriched_dataframe(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name",
+                                       timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name",
+                                       start_timestamp_key: str = "time:timestamp") -> pd.DataFrame:
+    """
+    Inserts additional columns in the dataframe which are computed on the overall case, so they model the
+    outcome of the case.
+
+    :param log: event log / Pandas dataframe
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :param start_timestamp_key: attribute to be used as start timestamp
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        enriched_df = pm4py.extract_outcome_enriched_dataframe(log, activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name', start_timestamp_key='time:timestamp')
+
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception(
+        "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME, parameters=properties)
+
+    from pm4py.util import pandas_utils
+
+    fea_df = extract_features_dataframe(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    log2 = pandas_utils.insert_case_arrival_finish_rate(log.copy(), timestamp_column=timestamp_key, case_id_column=case_id_key, start_timestamp_column=start_timestamp_key)
+    log2 = pandas_utils.insert_case_service_waiting_time(log2.copy(), timestamp_column=timestamp_key, case_id_column=case_id_key, start_timestamp_column=start_timestamp_key)
+
+    return log2.merge(fea_df, left_on=case_id_key, right_on=case_id_key)
 
 
 def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=None, num_tr_attr=None, str_ev_attr=None, num_ev_attr=None, str_evsucc_attr=None, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name", resource_key="org:resource", **kwargs) -> pd.DataFrame:
@@ -184,3 +222,42 @@ def extract_temporal_features_dataframe(log: Union[EventLog, pd.DataFrame], grou
     parameters[temporal.Parameters.RESOURCE_COLUMN] = resource_key
 
     return temporal.apply(log, parameters=parameters)
+
+
+def extract_target_vector(log: Union[EventLog, pd.DataFrame], variant: str, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name") -> Tuple[Any, List[str]]:
+    """
+    Extracts from a log object the target vector for a specific ML use case
+    (next activity, next time, remaining time)
+
+    :param log: log object (event log / Pandas dataframe)
+    :param variant: variant of the algorithm to be used: next_activity, next_time, remaining_time
+    :param activity_key: the attribute to be used as activity
+    :param timestamp_key: the attribute to be used as timestamp
+    :param case_id_key: the attribute to be used as case identifier
+    :rtype: ``Tuple[Any, List[str]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        vector_next_act, class_next_act = pm4py.extract_target_vector(log, 'next_activity', activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
+        vector_next_time, class_next_time = pm4py.extract_target_vector(log, 'next_time', activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
+        vector_rem_time, class_rem_time = pm4py.extract_target_vector(log, 'remaining_time', activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
+
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    from pm4py.algo.transformation.log_to_target import algorithm as log_to_target
+
+    var_map = {"next_activity": log_to_target.Variants.NEXT_ACTIVITY, "next_time": log_to_target.Variants.NEXT_TIME,
+               "remaining_time": log_to_target.Variants.REMAINING_TIME}
+
+    if variant not in var_map:
+        raise Exception(
+            "please provide the variant between: next_activity, next_time, remaining_time")
+
+    target, classes = log_to_target.apply(log, variant=var_map[variant], parameters=parameters)
+    return target, classes
