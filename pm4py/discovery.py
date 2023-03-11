@@ -213,6 +213,39 @@ def discover_petri_net_alpha(log: Union[EventLog, pd.DataFrame], activity_key: s
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
 
 
+def discover_petri_net_ilp(log: Union[EventLog, pd.DataFrame], alpha: float = 1.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[PetriNet, Marking, Marking]:
+    """
+    Discovers a Petri net using the ILP Miner.
+
+    :param log: event log / Pandas dataframe
+    :param alpha: noise threshold for the sequence encoding graph (1.0=no filtering, 0.0=greatest filtering)
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Tuple[PetriNet, Marking, Marking]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_ilp(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]:
+        raise Exception(
+            "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(
+            log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    parameters["alpha"] = alpha
+
+    from pm4py.algo.discovery.ilp import algorithm as ilp_miner
+    return ilp_miner.apply(log, variant=ilp_miner.Variants.CLASSIC, parameters=parameters)
+
+
 @deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="this method will be removed in a future release.")
 def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[PetriNet, Marking, Marking]:
     """
