@@ -48,7 +48,7 @@ from pm4py.stats import get_start_activities, get_end_activities, get_event_attr
     get_case_arrival_average, get_rework_cases_per_activity, get_case_overlap, get_cycle_time, \
     get_all_case_durations, get_case_duration, get_activity_position_summary, get_stochastic_language
 from pm4py.sim import play_out, generate_process_tree
-from pm4py.ml import split_train_test, get_prefixes_from_log, extract_features_dataframe, extract_temporal_features_dataframe, extract_outcome_enriched_dataframe
+from pm4py.ml import split_train_test, get_prefixes_from_log, extract_features_dataframe, extract_temporal_features_dataframe, extract_outcome_enriched_dataframe, extract_target_vector
 from pm4py.org import discover_handover_of_work_network, discover_activity_based_resource_similarity, discover_subcontracting_network, discover_working_together_network, discover_organizational_roles, discover_network_analysis
 from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
 from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
