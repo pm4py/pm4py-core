@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.5.4 (2023.03.XX)
+## pm4py 2.6.0 (2023.03.XX)
 
 ### Added
 * 73254a80b3430140fac2ff023a6e356edc48dd0f
@@ -18,6 +18,8 @@
     (Song, Minseok, Christian W. Günther, and Wil MP Van der Aalst.
     "Trace clustering in process mining."
     Business Process Management Workshops: BPM 2008. )
+* 690716015f2452702b8f045e35e2029659bbd226
+  * log to target vectors (for ML purposes): next_activity, next_time, remaining_time
 
 ### Changed
 * d6d2301dd0d2ea57cba76015eba124f726f4544e
