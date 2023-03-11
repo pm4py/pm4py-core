@@ -41,14 +41,14 @@ from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert
     convert_petri_net_to_networkx, convert_petri_net_type
 from pm4py.analysis import check_soundness, compute_emd, solve_marking_equation, solve_extended_marking_equation, \
     construct_synchronous_product_net, insert_artificial_start_end, check_is_workflow_net, maximal_decomposition, generate_marking, \
-    reduce_petri_net_invisibles, reduce_petri_net_implicit_places
+    reduce_petri_net_invisibles, reduce_petri_net_implicit_places, insert_case_arrival_finish_rate, insert_case_service_waiting_time
 from pm4py.stats import get_start_activities, get_end_activities, get_event_attributes, get_event_attribute_values, get_variants, \
     get_trace_attributes, get_variants_as_tuples, get_trace_attribute_values, get_case_arrival_average, \
     get_minimum_self_distances, get_minimum_self_distance_witnesses, \
     get_case_arrival_average, get_rework_cases_per_activity, get_case_overlap, get_cycle_time, \
     get_all_case_durations, get_case_duration, get_activity_position_summary, get_stochastic_language
 from pm4py.sim import play_out, generate_process_tree
-from pm4py.ml import split_train_test, get_prefixes_from_log, extract_features_dataframe, extract_temporal_features_dataframe
+from pm4py.ml import split_train_test, get_prefixes_from_log, extract_features_dataframe, extract_temporal_features_dataframe, extract_outcome_enriched_dataframe
 from pm4py.org import discover_handover_of_work_network, discover_activity_based_resource_similarity, discover_subcontracting_network, discover_working_together_network, discover_organizational_roles, discover_network_analysis
 from pm4py.hof import filter_log, filter_trace, sort_trace, sort_log
 from pm4py.meta import __name__, __version__, __doc__, __author__, __author_email__, \
