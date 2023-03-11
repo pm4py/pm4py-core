@@ -56,17 +56,16 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     from sklearn.cluster import KMeans
     clusterer = exec_utils.get_param_value(Parameters.SKLEARN_CLUSTERER, parameters, KMeans(n_clusters=2, random_state=0, n_init="auto"))
 
-    fea_ext_parameters = copy(parameters)
+    if "enable_activity_def_representation" not in parameters:
+        parameters["enable_activity_def_representation"] = True
 
-    if "enable_activity_def_representation" not in fea_ext_parameters:
-        fea_ext_parameters["enable_activity_def_representation"] = True
+    if "enable_succ_def_representation" not in parameters:
+        parameters["enable_succ_def_representation"] = True
 
-    if "enable_succ_def_representation" not in fea_ext_parameters:
-        fea_ext_parameters["enable_succ_def_representation"] = True
+    conv_parameters = copy(parameters)
+    conv_parameters["stream_postprocessing"] = True
 
-    fea_ext_parameters["stream_postprocessing"] = True
-
-    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=fea_ext_parameters)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=conv_parameters)
     data, feature_names = features_extractor.apply(log, parameters=parameters)
 
     clusters = clusterer.fit_predict(data)
