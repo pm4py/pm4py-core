@@ -7,7 +7,12 @@
   * ILP miner (process discovery in ILP)
 * 7016026a2a514d529fe5cf9a49b4aa607d30183c
   * "timestamp grouping filter" and "consecutive activities"
-    filters for Pandas dataframe
+    filters for Pandas dataframes
+* 4ba2a9e873c972c96fed8f3912f0dbaa8dfc96a1
+  * added pm4py.insert_case_arrival_finish_rate,
+    pm4py.insert_case_service_waiting_time,
+    pm4py.extract_outcome_enriched_dataframe
+    methods to the simplified interface (Pandas dataframes)
 
 ### Changed
 * d6d2301dd0d2ea57cba76015eba124f726f4544e
