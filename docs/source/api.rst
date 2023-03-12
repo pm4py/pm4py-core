@@ -53,6 +53,7 @@ The following conversions are currently available:
 * :meth:`pm4py.convert.convert_log_to_networkx` converts a traditional event log (dataframe) to a directed graph (NetworkX)
 * :meth:`pm4py.convert.convert_ocel_to_networkx` converts an object-centric event log to a directed graph (NetworkX)
 * :meth:`pm4py.convert.convert_petri_net_to_networkx` converts an accepting Petri net to a directed graph (NetworkX)
+* :meth:`pm4py.convert.convert_petri_net_type` change the Petri net internal type
 
 
 Process Discovery (:mod:`pm4py.discovery`)
@@ -70,6 +71,7 @@ Among *procedural process models*, ``pmp4py`` currently supports:
   * :meth:`pm4py.discovery.discover_petri_net_alpha`; discovers a *Petri net* using the Alpha Miner algorithm.
   * :meth:`pm4py.discovery.discover_petri_net_inductive`; discovers a *Petri net* using the Inductive Miner algorithm.
   * :meth:`pm4py.discovery.discover_petri_net_heuristics`; discovers a *Petri net* using the Heuristics Miner algorithm.
+  * :meth:`pm4py.discovery.discover_petri_net_ilp`; discovers a *Petri net* using the ILP Miner algorithm.
   * :meth:`pm4py.discovery.discover_process_tree_inductive`; discovers a *process tree* using the Inductive Miner algorithm.
   * :meth:`pm4py.discovery.discover_bpmn_inductive`; discovers a *BPMN model* using the Inductive Miner algorithm.
   * :meth:`pm4py.discovery.discover_heuristics_net`; discovers an *heuristics net* using the Heuristics Miner algorithm.
@@ -212,6 +214,9 @@ Among those:
   * :meth:`pm4py.ml.get_prefixes_from_log`; gets fixed-length prefixes for the cases of an event log.
   * :meth:`pm4py.ml.extract_features_dataframe`; extracts machine learning features from an event log.
   * :meth:`pm4py.ml.extract_temporal_features_dataframe`; extracts temporal features from an event log.
+  * :meth:`pm4py.ml.extract_target_vector`; extracts from a log object the target vector for a specific ML use case.
+  * :meth:`pm4py.ml.extract_outcome_enriched_dataframe`; inserts additional columns in the dataframe which are computed on the overall case, so they model the outcome of the case.
+
 
 Simulation (:mod:`pm4py.sim`)
 ------------------------------------------
@@ -285,6 +290,19 @@ Other algorithms, which do not belong to the aforementioned categories, are coll
   * :meth:`pm4py.utils.sample_events`; samples a traditional event log / OCEL returning the specified amount of events.
   * :meth:`pm4py.utils.serialize`; serializes mainstream pm4py objects as strings.
   * :meth:`pm4py.utils.deserialize`; de-serializes mainstream pm4py objects given their string representation.
+  * :meth:`pm4py.analysis.cluster_log`; cluster a log into sublogs using the provided clusterer.
+  * :meth:`pm4py.analysis.insert_case_service_waiting_time`; inserts for each case the service and waiting time.
+  * :meth:`pm4py.analysis.insert_case_arrival_finish_rate`; inserts the case arrival/finish rate.
+  * :meth:`pm4py.analysis.insert_artificial_start_end`; inserts artificial start/end activities in the event log.
+  * :meth:`pm4py.analysis.compute_emd`; computes the Earth-Mover Distance between two languages.
+  * :meth:`pm4py.analysis.check_is_workflow_net`; check if a Petri net is a workflow net.
+  * :meth:`pm4py.analysis.check_soundness`; checks if a Petri net is a sound workflow net (Woflan).
+  * :meth:`pm4py.analysis.solve_marking_equation`; solves the marking equation.
+  * :meth:`pm4py.analysis.maximal_decomposition`; performs the maximal decomposition of the given Petri net.
+  * :meth:`pm4py.analysis.generate_marking`; generates a Marking object from a textual representation.
+  * :meth:`pm4py.analysis.reduce_petri_net_invisibles`; reduces the invisible transitions of a Petri net when possible.
+  * :meth:`pm4py.analysis.reduce_petri_net_implicit_places`; reduces the implicit places in the Petri net (MURATA).
+
 
 Overall List of Methods
 ------------------------------------------
@@ -324,12 +342,14 @@ Overall List of Methods
    pm4py.convert.convert_log_to_networkx
    pm4py.convert.convert_ocel_to_networkx
    pm4py.convert.convert_petri_net_to_networkx
+   pm4py.convert.convert_petri_net_type
    pm4py.discovery
    pm4py.discovery.discover_dfg
    pm4py.discovery.discover_performance_dfg
    pm4py.discovery.discover_petri_net_alpha
    pm4py.discovery.discover_petri_net_inductive
    pm4py.discovery.discover_petri_net_heuristics
+   pm4py.discovery.discover_petri_net_ilp
    pm4py.discovery.discover_process_tree_inductive
    pm4py.discovery.discover_heuristics_net
    pm4py.discovery.derive_minimum_self_distance
@@ -446,6 +466,8 @@ Overall List of Methods
    pm4py.ml.get_prefixes_from_log
    pm4py.ml.extract_features_dataframe
    pm4py.ml.extract_temporal_features_dataframe
+   pm4py.ml.extract_target_vector
+   pm4py.ml.extract_outcome_enriched_dataframe
    pm4py.sim
    pm4py.sim.play_out
    pm4py.sim.generate_process_tree
@@ -472,6 +494,9 @@ Overall List of Methods
    pm4py.org.discover_organizational_roles
    pm4py.org.discover_network_analysis
    pm4py.analysis
+   pm4py.analysis.cluster_log
+   pm4py.analysis.insert_case_service_waiting_time
+   pm4py.analysis.insert_case_arrival_finish_rate
    pm4py.analysis.solve_marking_equation
    pm4py.analysis.check_soundness
    pm4py.analysis.insert_artificial_start_end
