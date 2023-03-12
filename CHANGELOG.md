@@ -31,8 +31,6 @@
 ### Fixed
 * 0a1c6f9c6e0ff45a0e732978589ed17513899be8
   * fixed dependency on Simpy in __init__.py
-* 9663a863cc342cfe16800a2893e7b0e6b9df48d2
-  * fixed bug in WOFLAN (crashing after LP solving)
 
 ### Removed
 
