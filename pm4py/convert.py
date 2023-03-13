@@ -247,7 +247,7 @@ def convert_to_reachability_graph(*args: Union[Tuple[PetriNet, Marking, Marking]
     return reachability_graph.construct_reachability_graph(net, im)
 
 
-def convert_log_to_ocel(log: Union[EventLog, EventStream, pd.DataFrame], activity_column: str = "concept:name", timestamp_column: str = "time:timestamp", object_types: Optional[Collection[str]] = None, obj_separator: str = " AND ") -> OCEL:
+def convert_log_to_ocel(log: Union[EventLog, EventStream, pd.DataFrame], activity_column: str = "concept:name", timestamp_column: str = "time:timestamp", object_types: Optional[Collection[str]] = None, obj_separator: str = " AND ", additional_event_attributes: Optional[Collection[str]] = None) -> OCEL:
     """
     Converts an event log to an object-centric event log with one or more than one
     object types.
@@ -257,6 +257,7 @@ def convert_log_to_ocel(log: Union[EventLog, EventStream, pd.DataFrame], activit
     :param timestamp_column: timestamp column
     :param object_types: list of columns to consider as object types
     :param obj_separator: separator between different objects in the same column
+    :param additional_event_attributes: additional attributes to be considered as event attributes in the OCEL
     :rtype: ``OCEL``
 
     .. code-block:: python3
@@ -277,7 +278,7 @@ def convert_log_to_ocel(log: Union[EventLog, EventStream, pd.DataFrame], activit
         object_types = list(set(x for x in log.columns if x == "case:concept:name" or x.startswith("ocel:type")))
 
     from pm4py.objects.ocel.util import log_ocel
-    return log_ocel.log_to_ocel_multiple_obj_types(log, activity_column, timestamp_column, object_types, obj_separator)
+    return log_ocel.log_to_ocel_multiple_obj_types(log, activity_column, timestamp_column, object_types, obj_separator, additional_event_attributes=additional_event_attributes)
 
 
 def convert_ocel_to_networkx(ocel: OCEL, variant: str = "ocel_to_nx") -> nx.DiGraph:
