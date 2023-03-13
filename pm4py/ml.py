@@ -18,8 +18,9 @@ __doc__ = """
 The ``pm4py.ml`` module contains the machine learning features offered in ``pm4py``
 """
 
-from typing import Union, Tuple, Any, List
+from typing import Union, Tuple, Any, List, Collection, Optional
 import pandas as pd
+from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.util import constants
 from pm4py.objects.conversion.log import converter as log_converter
@@ -182,6 +183,58 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
     data, feature_names = log_to_features.apply(log, parameters=parameters)
 
     return pd.DataFrame(data, columns=feature_names)
+
+
+def extract_ocel_features(ocel: OCEL, obj_type: str, enable_object_lifecycle_paths: bool = True, enable_object_work_in_progress: bool = False, object_str_attributes: Optional[Collection[str]] = None, object_num_attributes: Optional[Collection[str]] = None, include_obj_id: bool = False, debug: bool = False) -> pd.DataFrame:
+    """
+    Extracts from an object-centric event log a set of features (returned as dataframe) computed on the OCEL
+    for the objects of a given object type.
+
+    :param ocel: object-centric event log
+    :param obj_type: object type that should be considered
+    :param enable_object_lifecycle_paths: enables the "lifecycle paths" feature
+    :param enable_object_work_in_progress: enables the "work in progress" feature (which has an high computational cost)
+    :param object_str_attributes: string attributes at the object level to one-hot encode during the feature extraction
+    :param object_num_attributes: numeric attributes at the object level to one-hot encode during the feature extraction
+    :param include_obj_id: includes the object identifier as column of the "features" dataframe
+    :param debug: enables debugging mode (telling at which point of the feature extraction you are)
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('log.jsonocel')
+        fea_df = pm4py.extract_ocel_features(ocel, "item")
+    """
+    if object_str_attributes is None:
+        object_str_attributes = []
+
+    if object_num_attributes is None:
+        object_num_attributes = []
+
+    parameters = {}
+    parameters["filter_per_type"] = obj_type
+    parameters["enable_object_lifecycle_paths"] = enable_object_lifecycle_paths
+    parameters["enable_object_work_in_progress"] = enable_object_work_in_progress
+    parameters["enable_object_str_attributes"] = len(object_str_attributes) > 0
+    parameters["enable_object_num_attributes"] = len(object_num_attributes) > 0
+    parameters["str_obj_attr"] = object_str_attributes
+    parameters["num_obj_attr"] = object_num_attributes
+    parameters["debug"] = debug
+
+    from pm4py.algo.transformation.ocel.features.objects import algorithm as ocel_feature_extraction
+
+    data, feature_names = ocel_feature_extraction.apply(ocel, parameters=parameters)
+
+    dataframe = pd.DataFrame(data, columns=feature_names)
+
+    if include_obj_id:
+        objects_with_type = ocel.objects[[ocel.object_id_column, ocel.object_type_column]].to_dict("records")
+        objects_with_type = [x[ocel.object_id_column] for x in objects_with_type if x[ocel.object_type_column] == obj_type]
+        dataframe[ocel.object_id_column] = objects_with_type
+
+    return dataframe
 
 
 def extract_temporal_features_dataframe(log: Union[EventLog, pd.DataFrame], grouper_freq="W", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name", start_timestamp_key="time:timestamp", resource_key="org:resource") -> pd.DataFrame:

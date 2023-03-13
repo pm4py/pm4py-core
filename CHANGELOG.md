@@ -1,5 +1,27 @@
 # Changelog of pm4py
 
+## pm4py 2.6.1 (2023.03.XX)
+
+### Added
+* c9eac43f4b55883056a3540857b470ac18cc922e
+  * extract_ocel_features method in the simplified interface
+* d2744bf87b0ce80ddc8d42a5b935424c36ffb82f
+  * possibility to conisder additional event attributes in the convert_log_to_ocel method
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* e1b126c5adca8d5767375a6737a9d9378a9093c6
+  * bug fix object-centric Petri nets discovery
+
+### Removed
+
+### Other
+
+---
+
 ## pm4py 2.6.0 (2023.03.13)
 
 ### Added

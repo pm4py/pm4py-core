@@ -273,7 +273,7 @@ def from_interleavings(df1: pd.DataFrame, df2: pd.DataFrame, interleavings: pd.D
     return OCEL(events=events, objects=objects, relations=relations)
 
 
-def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.DataFrame], activity_column: str, timestamp_column: str, obj_types: Collection[str], obj_separator: str = " AND ") -> OCEL:
+def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.DataFrame], activity_column: str, timestamp_column: str, obj_types: Collection[str], obj_separator: str = " AND ", additional_event_attributes: Optional[Collection[str]] = None) -> OCEL:
     """
     Converts an event log to an object-centric event log with one or more than one
     object types.
@@ -290,6 +290,8 @@ def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.Data
         List of columns to consider as object types
     obj_separator
         Separator between different objects in the same column
+    additional_event_attributes
+        Additional attributes to be considered as event attributes in the OCEL
 
     Returns
     ----------------
@@ -297,6 +299,9 @@ def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.Data
         Object-centric event log
     """
     log_obj = log_converter.apply(log_obj, variant=log_converter.Variants.TO_DATA_FRAME)
+
+    if additional_event_attributes is None:
+        additional_event_attributes = {}
 
     events = []
     objects = []
@@ -308,6 +313,8 @@ def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.Data
 
     for index, eve in enumerate(stream):
         ocel_eve = {ocel_constants.DEFAULT_EVENT_ID: str(index), ocel_constants.DEFAULT_EVENT_ACTIVITY: eve[activity_column], ocel_constants.DEFAULT_EVENT_TIMESTAMP: eve[timestamp_column]}
+        for attr in additional_event_attributes:
+            ocel_eve[attr] = eve[attr]
         events.append(ocel_eve)
 
         for col in obj_types:

@@ -22,6 +22,7 @@ from pm4py.algo.transformation.ocel.features.objects import object_lifecycle_len
 
 
 class Parameters(Enum):
+    DEBUG = "debug"
     ENABLE_ALL = "enable_all"
     ENABLE_LIFECYCLE_METRICS = "enable_lifecycle_metrics"
     ENABLE_OBJECT_LIFECYCLE_LENGTH = "enable_object_lifecycle_length"
@@ -94,6 +95,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
+    debug = exec_utils.get_param_value(Parameters.DEBUG, parameters, False)
     enable_all = exec_utils.get_param_value(Parameters.ENABLE_ALL, parameters, True)
     enable_lifecycle_metrics = exec_utils.get_param_value(Parameters.ENABLE_LIFECYCLE_METRICS, parameters, enable_all)
     enable_object_lifecycle_length = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_LIFECYCLE_LENGTH, parameters, enable_lifecycle_metrics)
@@ -123,109 +125,181 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     feature_namess = []
 
     if enable_object_lifecycle_length:
+        if debug:
+            print("computing enable_object_lifecycle_length")
         data, feature_names = object_lifecycle_length.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_object_lifecycle_length")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_object_lifecycle_duration:
+        if debug:
+            print("computing enable_object_lifecycle_duration")
         data, feature_names = object_lifecycle_duration.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_object_lifecycle_duration")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_object_degree_centrality:
+        if debug:
+            print("computing enable_object_degree_centrality")
         data, feature_names = object_degree_centrality.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_object_degree_centrality")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_object_general_interaction_graph:
+        if debug:
+            print("computing enable_object_general_interaction_graph")
         data, feature_names = object_general_interaction_graph.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_object_general_interaction_graph")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_object_general_descendants_graph:
+        if debug:
+            print("computing enable_object_general_descendants_graph")
         data, feature_names = object_general_descendants_graph.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_object_general_descendants_graph")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_object_general_inheritance_graph:
+        if debug:
+            print("computing enable_object_general_inheritance_graph")
         data, feature_names = object_general_inheritance_graph.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_object_general_inheritance_graph")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_object_cobirth_graph:
+        if debug:
+            print("computing enable_object_cobirth_graph")
         data, feature_names = object_cobirth_graph.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_object_cobirth_graph")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_object_codeath_graph:
+        if debug:
+            print("computing enable_object_codeath_graph")
         data, feature_names = object_codeath_graph.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_object_codeath_graph")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_object_lifecycle_activities:
+        if debug:
+            print("computing enable_object_lifecycle_activities")
         data, feature_names = object_lifecycle_activities.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_object_lifecycle_activities")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_object_str_attributes:
+        if debug:
+            print("computing enable_object_str_attributes")
         data, feature_names = object_str_attributes.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_object_str_attributes")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_object_num_attributes:
+        if debug:
+            print("computing enable_object_num_attributes")
         data, feature_names = object_num_attributes.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_object_num_attributes")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_object_interaction_graph_ot:
+        if debug:
+            print("computing enable_object_interaction_graph_ot")
         data, feature_names = objects_interaction_graph_ot.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_object_interaction_graph_ot")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_work_in_progress:
+        if debug:
+            print("computing enable_work_in_progress")
         data, feature_names = object_work_in_progress.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_work_in_progress")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_object_lifecycle_unq_act:
+        if debug:
+            print("computing enable_object_lifecycle_unq_act")
         data, feature_names = object_lifecycle_unq_act.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_object_lifecycle_unq_act")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_related_events_features:
+        if debug:
+            print("computing enable_related_events_features")
         data, feature_names = related_events_features.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_related_events_features")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_related_activities_features:
+        if debug:
+            print("computing enable_related_activities_features")
         data, feature_names = related_activities_features.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_related_activities_features")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_obj_con_in_graph_features:
+        if debug:
+            print("computing enable_obj_con_in_graph_features")
         data, feature_names = obj_con_in_graph_features.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_obj_con_in_graph_features")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
 
     if enable_object_lifecycle_paths:
+        if debug:
+            print("computing enable_object_lifecycle_paths")
         data, feature_names = object_lifecycle_paths.apply(ocel, parameters=parameters)
+        if debug:
+            print("computed enable_object_lifecycle_paths")
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
