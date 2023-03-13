@@ -9,6 +9,8 @@ from pm4py.util import exec_utils
 
 class Parameters(Enum):
     USE_ID = "use_id"
+    ENABLE_REDUCTION = "enable_reduction"
+    RETURN_FLOW_TRANS_MAP = "return_flow_trans_map"
 
 
 def build_digraph_from_petri_net(net):
@@ -48,7 +50,14 @@ def apply(bpmn_graph, parameters=None):
     bpmn_graph
         BPMN graph
     parameters
-        Parameters of the algorithm
+        Parameters of the algorithm:
+        - Parameters.USE_ID => (default: False) uses the IDs of the objects instead of their labels in the conversion
+        - Parameters.ENABLE_REDUCTION => reduces the invisible transitions
+        - Parameters.RETURN_FLOW_TRANS_MAP => returns additional information on the conversion:
+                                                (iv) the places of the obtained Petri net that are corresponding to each
+                                                    BPMN flow.
+                                                (v) the transitions of the Petri net related to the nodes of the BPMN
+                                                    diagram.
 
     Returns
     --------------
@@ -66,6 +75,11 @@ def apply(bpmn_graph, parameters=None):
     from pm4py.objects.bpmn.obj import BPMN
 
     use_id = exec_utils.get_param_value(Parameters.USE_ID, parameters, False)
+    return_flow_trans_map = exec_utils.get_param_value(Parameters.RETURN_FLOW_TRANS_MAP, parameters, False)
+    enable_reduction = exec_utils.get_param_value(Parameters.ENABLE_REDUCTION, parameters, True)
+
+    if return_flow_trans_map:
+        enable_reduction = False
 
     net = PetriNet("")
     source_place = PetriNet.Place("source")
@@ -114,6 +128,8 @@ def apply(bpmn_graph, parameters=None):
 
     nodes_entering = {}
     nodes_exiting = {}
+    trans_map = {}
+
     for node in bpmn_graph.get_nodes():
         entry_place = PetriNet.Place("ent_" + str(node.get_id()))
         net.places.add(entry_place)
@@ -127,6 +143,7 @@ def apply(bpmn_graph, parameters=None):
                 label = None
         transition = PetriNet.Transition(name=str(node.get_id()), label=label)
         net.transitions.add(transition)
+        trans_map[node] = [transition]
         add_arc_from_to(entry_place, transition, net)
         add_arc_from_to(transition, exiting_place, net)
 
@@ -135,6 +152,7 @@ def apply(bpmn_graph, parameters=None):
                 exiting_object = PetriNet.Transition(str(uuid.uuid4()), None)
                 net.transitions.add(exiting_object)
                 add_arc_from_to(exiting_place, exiting_object, net)
+                trans_map[node].append(exiting_object)
             else:
                 exiting_object = exiting_place
 
@@ -142,6 +160,7 @@ def apply(bpmn_graph, parameters=None):
                 entering_object = PetriNet.Transition(str(uuid.uuid4()), None)
                 net.transitions.add(entering_object)
                 add_arc_from_to(entering_object, entry_place, net)
+                trans_map[node].append(entering_object)
             else:
                 entering_object = entry_place
             nodes_entering[node] = entering_object
@@ -155,11 +174,13 @@ def apply(bpmn_graph, parameters=None):
             net.transitions.add(start_transition)
             add_arc_from_to(source_place, start_transition, net)
             add_arc_from_to(start_transition, entry_place, net)
+            trans_map[node].append(start_transition)
         elif isinstance(node, BPMN.EndEvent):
             end_transition = PetriNet.Transition(str(uuid.uuid4()), None)
             net.transitions.add(end_transition)
             add_arc_from_to(exiting_place, end_transition, net)
             add_arc_from_to(end_transition, sink_place, net)
+            trans_map[node].append(end_transition)
 
     for flow in bpmn_graph.get_flows():
         source_object = nodes_exiting[flow.get_source()]
@@ -170,12 +191,14 @@ def apply(bpmn_graph, parameters=None):
             net.transitions.add(inv1)
             add_arc_from_to(source_object, inv1, net)
             source_object = inv1
+            trans_map[flow.source].append(inv1)
 
         if isinstance(target_object, PetriNet.Place):
             inv2 = PetriNet.Transition(str(uuid.uuid4()), None)
             net.transitions.add(inv2)
             add_arc_from_to(inv2, target_object, net)
             target_object = inv2
+            trans_map[flow.target].append(inv2)
 
         add_arc_from_to(source_object, flow_place[flow], net)
         add_arc_from_to(flow_place[flow], target_object, net)
@@ -201,6 +224,10 @@ def apply(bpmn_graph, parameters=None):
                     add_arc_from_to(inv_places[pl1], inv_trans, net)
                     add_arc_from_to(inv_trans, inv_places[output_places[0][0]], net)
 
-    reduction.apply_simple_reduction(net)
+    if enable_reduction:
+        reduction.apply_simple_reduction(net)
+
+    if return_flow_trans_map:
+        return net, im, fm, flow_place, trans_map
 
     return net, im, fm
