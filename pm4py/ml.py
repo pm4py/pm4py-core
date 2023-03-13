@@ -4,6 +4,7 @@ The ``pm4py.ml`` module contains the machine learning features offered in ``pm4p
 
 from typing import Union, Tuple, Any, List
 import pandas as pd
+from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.util import constants
 from pm4py.objects.conversion.log import converter as log_converter
@@ -164,6 +165,36 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
         check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
 
     data, feature_names = log_to_features.apply(log, parameters=parameters)
+
+    return pd.DataFrame(data, columns=feature_names)
+
+
+def extract_ocel_features(ocel: OCEL, obj_type: str, enable_object_lifecycle_paths: bool = True, enable_object_work_in_progress: bool = False) -> pd.DataFrame:
+    """
+    Extracts from an object-centric event log a set of features (returned as dataframe) computed on the OCEL
+    for the objects of a given object type.
+
+    :param ocel: object-centric event log
+    :param obj_type: object type that should be considered
+    :param enable_object_lifecycle_paths: enables the "lifecycle paths" feature
+    :param enable_object_work_in_progress: enables the "work in progress" feature (which has an high computational cost)
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('log.jsonocel')
+        fea_df = pm4py.extract_ocel_features(ocel, "item")
+    """
+    parameters = {}
+    parameters["filter_per_type"] = obj_type
+    parameters["enable_object_lifecycle_paths"] = enable_object_lifecycle_paths
+    parameters["enable_object_work_in_progress"] = enable_object_work_in_progress
+
+    from pm4py.algo.transformation.ocel.features.objects import algorithm as ocel_feature_extraction
+
+    data, feature_names = ocel_feature_extraction.apply(ocel, parameters=parameters)
 
     return pd.DataFrame(data, columns=feature_names)
 
