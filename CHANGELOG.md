@@ -11,6 +11,8 @@
 ### Deprecated
 
 ### Fixed
+* e1b126c5adca8d5767375a6737a9d9378a9093c6
+  * bug fix object-centric Petri nets discovery
 
 ### Removed
 
