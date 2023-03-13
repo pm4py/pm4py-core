@@ -169,7 +169,7 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
     return pd.DataFrame(data, columns=feature_names)
 
 
-def extract_ocel_features(ocel: OCEL, obj_type: str, enable_object_lifecycle_paths: bool = True, enable_object_work_in_progress: bool = False) -> pd.DataFrame:
+def extract_ocel_features(ocel: OCEL, obj_type: str, enable_object_lifecycle_paths: bool = True, enable_object_work_in_progress: bool = False, debug: bool = False) -> pd.DataFrame:
     """
     Extracts from an object-centric event log a set of features (returned as dataframe) computed on the OCEL
     for the objects of a given object type.
@@ -178,6 +178,7 @@ def extract_ocel_features(ocel: OCEL, obj_type: str, enable_object_lifecycle_pat
     :param obj_type: object type that should be considered
     :param enable_object_lifecycle_paths: enables the "lifecycle paths" feature
     :param enable_object_work_in_progress: enables the "work in progress" feature (which has an high computational cost)
+    :param debug: enables debugging mode (telling at which point of the feature extraction you are)
     :rtype: ``pd.DataFrame``
 
     .. code-block:: python3
@@ -191,6 +192,7 @@ def extract_ocel_features(ocel: OCEL, obj_type: str, enable_object_lifecycle_pat
     parameters["filter_per_type"] = obj_type
     parameters["enable_object_lifecycle_paths"] = enable_object_lifecycle_paths
     parameters["enable_object_work_in_progress"] = enable_object_work_in_progress
+    parameters["debug"] = debug
 
     from pm4py.algo.transformation.ocel.features.objects import algorithm as ocel_feature_extraction
 
