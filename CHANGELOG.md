@@ -5,6 +5,8 @@
 ### Added
 * c9eac43f4b55883056a3540857b470ac18cc922e
   * extract_ocel_features method in the simplified interface
+* d2744bf87b0ce80ddc8d42a5b935424c36ffb82f
+  * possibility to conisder additional event attributes in the convert_log_to_ocel method
 
 ### Changed
 
