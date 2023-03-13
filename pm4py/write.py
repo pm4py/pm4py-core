@@ -147,7 +147,6 @@ def write_bpmn(model: BPMN, file_path: str, auto_layout: bool = True):
     exporter.apply(model, file_path)
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the write_ocel function is deprecated and replaced by write_ocel_csv, write_ocel_json and write_ocel_xml, respectively")
 def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     """
     Writes an OCEL object to disk in the ``.bpmn`` format.
@@ -170,14 +169,11 @@ def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
         from pm4py.objects.ocel.exporter.csv import exporter as csv_exporter
         return csv_exporter.apply(ocel, file_path, objects_path=objects_path)
     elif file_path.lower().endswith("jsonocel"):
-        from pm4py.objects.ocel.exporter.jsonocel import exporter as jsonocel_exporter
-        return jsonocel_exporter.apply(ocel, file_path)
+        return write_ocel_json(ocel, file_path)
     elif file_path.lower().endswith("xmlocel"):
-        from pm4py.objects.ocel.exporter.xmlocel import exporter as xmlocel_exporter
-        return xmlocel_exporter.apply(ocel, file_path)
+        return write_ocel_xml(ocel, file_path)
     elif file_path.lower().endswith("sqlite"):
-        from pm4py.objects.ocel.exporter.sqlite import exporter as sqlite_exporter
-        return sqlite_exporter.apply(ocel, file_path)
+        return write_ocel_sqlite(ocel, file_path)
     raise Exception("unsupported file format")
 
 
