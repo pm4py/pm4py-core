@@ -6,7 +6,6 @@ from enum import Enum
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.bpmn.util.sorting import get_sorted_nodes_edges
 from pm4py.util import exec_utils
-from pm4py.visualization.common import svg_pos_parser
 import tempfile
 
 
@@ -75,6 +74,7 @@ def apply(bpmn_graph, parameters=None):
     """
     from graphviz import Digraph
     from pm4py.visualization.common import save as gsave
+    from pm4py.visualization.common import svg_pos_parser
 
     if parameters is None:
         parameters = {}
