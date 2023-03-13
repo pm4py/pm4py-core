@@ -49,6 +49,7 @@ DEFAULT_BGCOLOR = "white"
 DEFAULT_FORMAT_GVIZ_VIEW = "png"
 
 ENABLE_MULTIPROCESSING_DEFAULT = False
+DEFAULT_READ_XES_LEGACY_OBJECT = False
 
 # Default business hour slots: Mondays to Fridays, 7:00 - 17:00 (in seconds)
 DEFAULT_BUSINESS_HOUR_SLOTS = [
