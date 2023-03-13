@@ -9,6 +9,8 @@
   * possibility to conisder additional event attributes in the convert_log_to_ocel method
 
 ### Changed
+* 84e85c6e4715fe58159f6cfb83248d1cfa28bc8e
+  * possibility to return additional information during the conversion of BPMN to Petri net
 
 ### Deprecated
 
