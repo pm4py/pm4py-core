@@ -1,5 +1,4 @@
 from collections import Counter
-from multiprocessing import Pool, Manager
 from typing import Tuple, List, Optional, Dict, Any
 
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL, IMDataStructureDFG
@@ -9,10 +8,11 @@ from pm4py.objects.dfg.obj import DFG
 from pm4py.algo.discovery.inductive.dtypes.im_dfg import InductiveDFG
 from copy import copy
 
+
 class EmptyTracesUVCL(FallThrough[IMDataStructureUVCL]):
 
     @classmethod
-    def apply(cls, obj: IMDataStructureUVCL, pool: Pool = None, manager: Manager = None, parameters: Optional[Dict[str, Any]] = None) -> Optional[
+    def apply(cls, obj: IMDataStructureUVCL, pool=None, manager=None, parameters: Optional[Dict[str, Any]] = None) -> Optional[
         Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
         if cls.holds(obj, parameters):
             data_structure = copy(obj.data_structure)
@@ -29,7 +29,7 @@ class EmptyTracesUVCL(FallThrough[IMDataStructureUVCL]):
 
 class EmptyTracesDFG(FallThrough[IMDataStructureDFG]):
     @classmethod
-    def apply(cls, obj: IMDataStructureDFG, pool: Pool = None, manager: Manager = None, parameters: Optional[Dict[str, Any]] = None) -> Optional[
+    def apply(cls, obj: IMDataStructureDFG, pool=None, manager=None, parameters: Optional[Dict[str, Any]] = None) -> Optional[
         Tuple[ProcessTree, List[IMDataStructureDFG]]]:
         if cls.holds(obj, parameters):
             return ProcessTree(operator=Operator.XOR), [IMDataStructureDFG(InductiveDFG(DFG())),
