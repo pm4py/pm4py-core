@@ -24,6 +24,7 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log.util import dataframe_utils
+from pm4py.util import constants
 
 import os
 
@@ -39,7 +40,7 @@ The ``pm4py.read`` module contains all funcationality related to reading files/o
 """
 
 
-def read_xes(file_path: str, variant: str = "lxml", return_legacy_log_object: bool = False, **kwargs) -> Union[DataFrame, EventLog]:
+def read_xes(file_path: str, variant: str = "lxml", return_legacy_log_object: bool = constants.DEFAULT_READ_XES_LEGACY_OBJECT, **kwargs) -> Union[DataFrame, EventLog]:
     """
     Reads an event log stored in XES format (see `xes-standard <https://xes-standard.org/>`_)
     Returns a table (``pandas.DataFrame``) view of the event log.
