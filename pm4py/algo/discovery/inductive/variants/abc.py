@@ -16,7 +16,6 @@
 '''
 import os
 from abc import abstractmethod, ABC
-from multiprocessing import Pool, Manager
 from typing import Optional, Tuple, List, TypeVar, Generic, Dict, Any
 
 from pm4py.algo.discovery.inductive.base_case.factory import BaseCaseFactory
@@ -53,6 +52,8 @@ class InductiveMinerFramework(ABC, Generic[T]):
         enable_multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, constants.ENABLE_MULTIPROCESSING_DEFAULT)
 
         if enable_multiprocessing:
+            from multiprocessing import Pool, Manager
+
             self._pool = Pool(os.cpu_count() - 1)
             self._manager = Manager()
             self._manager.support_list = []
