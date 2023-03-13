@@ -55,10 +55,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
     for ot in ocdfg["object_types"]:
         activities_eo = ocdfg["activities_ot"]["total_objects"][ot]
 
-        activities = {x: len(y) for x, y in ocdfg["activities_ot"]["events"][ot].items()}
         start_activities = {x: len(y) for x, y in ocdfg["start_activities"]["events"][ot].items()}
         end_activities = {x: len(y) for x, y in ocdfg["end_activities"]["events"][ot].items()}
-        dfg = {x: len(y) for x, y in ocdfg["edges"]["event_couples"][ot].items()}
+        dfg = {}
+        if ot in ocdfg["edges"]["event_couples"]:
+            dfg = {x: len(y) for x, y in ocdfg["edges"]["event_couples"][ot].items()}
 
         is_activity_double = {}
         for act in activities_eo:
