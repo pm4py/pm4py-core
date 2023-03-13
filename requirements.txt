@@ -1,4 +1,4 @@
-cvxopt;python_version<'3.11'
+cvxopt;python_version<'3.12'
 deprecation
 graphviz
 intervaltree
