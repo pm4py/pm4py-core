@@ -1,4 +1,3 @@
-from multiprocessing import Pool, Manager
 from typing import List, TypeVar, Tuple, Optional, Dict, Any
 
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructure, IMDataStructureUVCL
@@ -29,7 +28,7 @@ class FallThroughFactory:
         return list()
 
     @classmethod
-    def fall_through(cls, obj: T, inst: IMInstance, pool: Pool, manager: Manager, parameters: Optional[Dict[str, Any]] = None) -> Tuple[ProcessTree, List[T]]:
+    def fall_through(cls, obj: T, inst: IMInstance, pool, manager, parameters: Optional[Dict[str, Any]] = None) -> Tuple[ProcessTree, List[T]]:
         for f in FallThroughFactory.get_fall_throughs(obj, inst):
             r = f.apply(obj, pool, manager, parameters)
             if r is not None:

@@ -1,4 +1,3 @@
-from multiprocessing import Pool, Manager
 from typing import Optional, Tuple, List, Dict, Any
 
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL, IMDataStructureDFG
@@ -18,7 +17,7 @@ class FlowerModelUVCL(FallThrough[IMDataStructureUVCL]):
         return not EmptyTracesUVCL.holds(obj, parameters)
 
     @classmethod
-    def apply(cls, obj: IMDataStructureUVCL, pool: Pool = None, manager: Manager = None, parameters: Optional[Dict[str, Any]] = None) -> Optional[
+    def apply(cls, obj: IMDataStructureUVCL, pool=None, manager=None, parameters: Optional[Dict[str, Any]] = None) -> Optional[
         Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
         log = obj.data_structure
         uvcl_do = UVCL()
@@ -36,7 +35,7 @@ class FlowerModelDFG(FallThrough[IMDataStructureDFG]):
         return True
 
     @classmethod
-    def apply(cls, obj: IMDataStructureDFG, pool: Pool = None, manager: Manager = None, parameters: Optional[Dict[str, Any]] = None) -> Optional[
+    def apply(cls, obj: IMDataStructureDFG, pool=None, manager=None, parameters: Optional[Dict[str, Any]] = None) -> Optional[
         Tuple[ProcessTree, List[IMDataStructureDFG]]]:
         activities = set(obj.dfg.start_activities).union(set(obj.dfg.end_activities)).union(set(x[0] for x in obj.dfg.graph)).union(set(x[1] for x in obj.dfg.graph))
         dfg_do = DFG()
