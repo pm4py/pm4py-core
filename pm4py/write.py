@@ -166,8 +166,7 @@ def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     file_path = str(file_path)
 
     if file_path.lower().endswith("csv"):
-        from pm4py.objects.ocel.exporter.csv import exporter as csv_exporter
-        return csv_exporter.apply(ocel, file_path, objects_path=objects_path)
+        return write_ocel_csv(ocel, file_path, objects_path)
     elif file_path.lower().endswith("jsonocel"):
         return write_ocel_json(ocel, file_path)
     elif file_path.lower().endswith("xmlocel"):
@@ -219,7 +218,7 @@ def write_ocel_json(ocel: OCEL, file_path: str):
         file_path = file_path + ".jsonocel"
 
     from pm4py.objects.ocel.exporter.jsonocel import exporter as jsonocel_exporter
-    return jsonocel_exporter.apply(ocel, file_path)
+    return jsonocel_exporter.apply(ocel, file_path, variant=jsonocel_exporter.Variants.CLASSIC)
 
 
 def write_ocel_xml(ocel: OCEL, file_path: str):
@@ -240,7 +239,7 @@ def write_ocel_xml(ocel: OCEL, file_path: str):
         file_path = file_path + ".xmlocel"
 
     from pm4py.objects.ocel.exporter.xmlocel import exporter as xmlocel_exporter
-    return xmlocel_exporter.apply(ocel, file_path)
+    return xmlocel_exporter.apply(ocel, file_path, variant=xmlocel_exporter.Variants.CLASSIC)
 
 
 def write_ocel_sqlite(ocel: OCEL, file_path: str):
@@ -254,11 +253,74 @@ def write_ocel_sqlite(ocel: OCEL, file_path: str):
 
         import pm4py
 
-        log = pm4py.v(ocel, '<path_to_export_to>')
+        log = pm4py.write_ocel_sqlite(ocel, '<path_to_export_to>')
     """
     file_path = str(file_path)
     if not file_path.lower().endswith("sqlite"):
-        file_path = file_path + ".v"
+        file_path = file_path + ".sqlite"
 
     from pm4py.objects.ocel.exporter.sqlite import exporter as sqlite_exporter
-    return sqlite_exporter.apply(ocel, file_path)
+    return sqlite_exporter.apply(ocel, file_path, variant=sqlite_exporter.Variants.PANDAS_EXPORTER)
+
+
+def write_ocel2(ocel: OCEL, file_path: str):
+    """
+    Writes an OCEL2.0 object to disk
+
+    :param ocel: OCEL object
+    :param file_path: target file path to the SQLite datbaase
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.write_ocel2(ocel, '<path_to_export_to>')
+    """
+    file_path = str(file_path)
+
+    if file_path.lower().endswith("sqlite"):
+        return write_ocel2_sqlite(ocel, file_path)
+    elif file_path.lower().endswith("xml") or file_path.lower().endswith("xmlocel"):
+        return write_ocel2_xml(ocel, file_path)
+
+
+def write_ocel2_sqlite(ocel: OCEL, file_path: str):
+    """
+    Writes an OCEL2.0 object to disk to a ``SQLite`` database (exported as ``.sqlite`` file).
+
+    :param ocel: OCEL object
+    :param file_path: target file path to the SQLite datbaase
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.write_ocel2_sqlite(ocel, '<path_to_export_to>')
+    """
+    file_path = str(file_path)
+    if not file_path.lower().endswith("sqlite"):
+        file_path = file_path + ".sqlite"
+
+    from pm4py.objects.ocel.exporter.sqlite import exporter as sqlite_exporter
+    return sqlite_exporter.apply(ocel, file_path, variant=sqlite_exporter.Variants.OCEL20)
+
+
+def write_ocel2_xml(ocel: OCEL, file_path: str):
+    """
+    Writes an OCEL2.0 object to disk to an ``XML`` file (exported as ``.xmlocel`` file).
+
+    :param ocel: OCEL object
+    :param file_path: target file path to the XML file
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.write_ocel2_sqlite(ocel, '<path_to_export_to>')
+    """
+    file_path = str(file_path)
+    if not file_path.lower().endswith("xml") and not file_path.lower().endswith("xmlocel"):
+        file_path = file_path + ".xmlocel"
+
+    from pm4py.objects.ocel.exporter.xmlocel import exporter as xml_exporter
+    return xml_exporter.apply(ocel, file_path, variant=xml_exporter.Variants.OCEL20)
