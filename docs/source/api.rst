@@ -6,48 +6,52 @@ Input (:mod:`pm4py.read`)
 ---------------------------------
 ``pm4py`` supports importing the following standardized *event data* format:
 
-* ``.xes`` files (`xes-standard <https://xes-standard.org/>`_); General interchange format for event data. :meth:`pm4py.read.read_xes`
+  * ``.xes`` files (`xes-standard <https://xes-standard.org/>`_); General interchange format for event data. :meth:`pm4py.read.read_xes`
 
 In case an event log is stored as a ``.csv`` file, ``pandas`` can be used to directly import the event log as a ``data frame`` (`docs <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html>`_).
 ``.xes`` files are internally converted to a ``pandas dataframe``, which is the default data structure used by all algorithms implemented in ``pm4py``.
 
 Additional file formats that are currently supported by pm4py are:
 
-* ``.bpmn`` files; File format specifying process models in the *BPMN* process modeling formalism :meth:`pm4py.read.read_bpmn`
-* ``.dfg`` files; File format specifying *directly follows graphs* (also referred to as *process maps*) :meth:`pm4py.read.read_dfg`
-* ``.pnml`` files; File format specifying *Petri net* models :meth:`pm4py.read.read_pnml`
-* ``.ptml`` files; File format specifying *Process Tree* models :meth:`pm4py.read.read_ptml`
+  * ``.bpmn`` files; File format specifying process models in the *BPMN* process modeling formalism :meth:`pm4py.read.read_bpmn`
+  * ``.dfg`` files; File format specifying *directly follows graphs* (also referred to as *process maps*) :meth:`pm4py.read.read_dfg`
+  * ``.pnml`` files; File format specifying *Petri net* models :meth:`pm4py.read.read_pnml`
+  * ``.ptml`` files; File format specifying *Process Tree* models :meth:`pm4py.read.read_ptml`
 
 Importing object-centric event logs is possible given the following formats:
-* ``.csv`` specification :meth:`pm4py.read.read_ocel_csv`
-* ``.jsonocel`` specification :meth:`pm4py.read.read_ocel_jsonocel`
-* ``.xmlocel`` specification :meth:`pm4py.read.read_ocel_xmlocel`
-* ``.sqlite`` specification :meth:`pm4py.read.read_ocel_sqlite`
+
+  * ``.csv`` specification :meth:`pm4py.read.read_ocel_csv`
+  * ``.jsonocel`` specification :meth:`pm4py.read.read_ocel_json`
+  * ``.xmlocel`` specification :meth:`pm4py.read.read_ocel_xml`
+  * ``.sqlite`` specification :meth:`pm4py.read.read_ocel_sqlite`
 
 Importing object-centric event logs (OCEL2.0) is possible given the following formats:
-* ``.xmlocel`` specification :meth:`pm4py.read.read_ocel2_xml`
-* ``.sqlite`` specification :meth:`pm4py.read.read_ocel2_sqlite`
+
+  * ``.xmlocel`` specification :meth:`pm4py.read.read_ocel2_xml`
+  * ``.sqlite`` specification :meth:`pm4py.read.read_ocel2_sqlite`
 
 
 Output (:mod:`pm4py.write`)
 -------------------------------------
 Similarly to event data importing, ``pm4py`` supports export functionalities to:
 
-* ``.bpmn`` files,  :meth:`pm4py.write.write_bpmn`
-* ``.dfg`` files,  :meth:`pm4py.write.write_dfg`
-* ``.pnml`` files, :meth:`pm4py.write.write_pnml`
-* ``.ptml`` files, :meth:`pm4py.write.write_ptml`
-* ``.xes`` files. :meth:`pm4py.write.write_xes`
+  * ``.bpmn`` files,  :meth:`pm4py.write.write_bpmn`
+  * ``.dfg`` files,  :meth:`pm4py.write.write_dfg`
+  * ``.pnml`` files, :meth:`pm4py.write.write_pnml`
+  * ``.ptml`` files, :meth:`pm4py.write.write_ptml`
+  * ``.xes`` files. :meth:`pm4py.write.write_xes`
 
 Exporting object-centric event logs is possible to the following formats:
-* ``.csv`` specification :meth:`pm4py.write.write_ocel_csv`
-* ``.jsonocel`` specification :meth:`pm4py.write.write_ocel_jsonocel`
-* ``.xmlocel`` specification :meth:`pm4py.write.write_ocel_xmlocel`
-* ``.sqlite`` specification :meth:`pm4py.write.write_ocel_sqlite`
+
+  * ``.csv`` specification :meth:`pm4py.write.write_ocel_csv`
+  * ``.jsonocel`` specification :meth:`pm4py.write.write_ocel_json`
+  * ``.xmlocel`` specification :meth:`pm4py.write.write_ocel_xml`
+  * ``.sqlite`` specification :meth:`pm4py.write.write_ocel_sqlite`
 
 Exporting object-centric event logs (OCEL2.0) is possible to the following formats:
-* ``.xmlocel`` specification :meth:`pm4py.write.write_ocel2_xml`
-* ``.sqlite`` specification :meth:`pm4py.write.write_ocel2_sqlite`
+
+  * ``.xmlocel`` specification :meth:`pm4py.write.write_ocel2_xml`
+  * ``.sqlite`` specification :meth:`pm4py.write.write_ocel2_sqlite`
 
 
 Conversion (:mod:`pm4py.convert`)
@@ -55,15 +59,15 @@ Conversion (:mod:`pm4py.convert`)
 Several conversions are available from/to different objects supported by ``pm4py``.
 The following conversions are currently available:
 
-* :meth:`pm4py.convert.convert_to_bpmn` converts a process model to BPMN
-* :meth:`pm4py.convert.convert_to_petri_net` converts a process model to Petri net
-* :meth:`pm4py.convert.convert_to_process_tree` converts a process model to a process tree
-* :meth:`pm4py.convert.convert_to_reachability_graph` converts a process model to a reachability graph
-* :meth:`pm4py.convert.convert_log_to_ocel` converts an event log to an object-centric event log
-* :meth:`pm4py.convert.convert_log_to_networkx` converts a traditional event log (dataframe) to a directed graph (NetworkX)
-* :meth:`pm4py.convert.convert_ocel_to_networkx` converts an object-centric event log to a directed graph (NetworkX)
-* :meth:`pm4py.convert.convert_petri_net_to_networkx` converts an accepting Petri net to a directed graph (NetworkX)
-* :meth:`pm4py.convert.convert_petri_net_type` change the Petri net internal type
+  * :meth:`pm4py.convert.convert_to_bpmn` converts a process model to BPMN
+  * :meth:`pm4py.convert.convert_to_petri_net` converts a process model to Petri net
+  * :meth:`pm4py.convert.convert_to_process_tree` converts a process model to a process tree
+  * :meth:`pm4py.convert.convert_to_reachability_graph` converts a process model to a reachability graph
+  * :meth:`pm4py.convert.convert_log_to_ocel` converts an event log to an object-centric event log
+  * :meth:`pm4py.convert.convert_log_to_networkx` converts a traditional event log (dataframe) to a directed graph (NetworkX)
+  * :meth:`pm4py.convert.convert_ocel_to_networkx` converts an object-centric event log to a directed graph (NetworkX)
+  * :meth:`pm4py.convert.convert_petri_net_to_networkx` converts an accepting Petri net to a directed graph (NetworkX)
+  * :meth:`pm4py.convert.convert_petri_net_type` change the Petri net internal type
 
 
 Process Discovery (:mod:`pm4py.discovery`)
