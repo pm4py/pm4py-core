@@ -24,6 +24,11 @@ Importing object-centric event logs is possible given the following formats:
 * ``.xmlocel`` specification :meth:`pm4py.read.read_ocel_xmlocel`
 * ``.sqlite`` specification :meth:`pm4py.read.read_ocel_sqlite`
 
+Importing object-centric event logs (OCEL2.0) is possible given the following formats:
+* ``.xmlocel`` specification :meth:`pm4py.read.read_ocel2_xml`
+* ``.sqlite`` specification :meth:`pm4py.read.read_ocel2_sqlite`
+
+
 Output (:mod:`pm4py.write`)
 -------------------------------------
 Similarly to event data importing, ``pm4py`` supports export functionalities to:
@@ -39,6 +44,11 @@ Exporting object-centric event logs is possible to the following formats:
 * ``.jsonocel`` specification :meth:`pm4py.write.write_ocel_jsonocel`
 * ``.xmlocel`` specification :meth:`pm4py.write.write_ocel_xmlocel`
 * ``.sqlite`` specification :meth:`pm4py.write.write_ocel_sqlite`
+
+Exporting object-centric event logs (OCEL2.0) is possible to the following formats:
+* ``.xmlocel`` specification :meth:`pm4py.write.write_ocel2_xml`
+* ``.sqlite`` specification :meth:`pm4py.write.write_ocel2_sqlite`
+
 
 Conversion (:mod:`pm4py.convert`)
 -------------------------------------
@@ -213,6 +223,7 @@ Among those:
   * :meth:`pm4py.ml.split_train_test`; splits an event log into a *training event log* (default 80% of the cases) and a *test event log* (default 20% of the cases).
   * :meth:`pm4py.ml.get_prefixes_from_log`; gets fixed-length prefixes for the cases of an event log.
   * :meth:`pm4py.ml.extract_features_dataframe`; extracts machine learning features from an event log.
+  * :meth:`pm4py.ml.extract_ocel_features`; extracts machine learning features from an object-centric event log.
   * :meth:`pm4py.ml.extract_temporal_features_dataframe`; extracts temporal features from an event log.
   * :meth:`pm4py.ml.extract_target_vector`; extracts from a log object the target vector for a specific ML use case.
   * :meth:`pm4py.ml.extract_outcome_enriched_dataframe`; inserts additional columns in the dataframe which are computed on the overall case, so they model the outcome of the case.

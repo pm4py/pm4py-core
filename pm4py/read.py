@@ -170,7 +170,6 @@ def read_bpmn(file_path: str) -> BPMN:
     return bpmn_graph
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the read_ocel function is deprecated and replaced by read_ocel_csv, read_ocel_json and read_ocel_xml, respectively")
 def read_ocel(file_path: str, objects_path: Optional[str] = None) -> OCEL:
     """
     Reads an object-centric event log from a file (see: http://www.ocel-standard.org/).
@@ -189,17 +188,13 @@ def read_ocel(file_path: str, objects_path: Optional[str] = None) -> OCEL:
     if not os.path.exists(file_path):
         raise Exception("File does not exist")
     if file_path.lower().endswith("csv"):
-        from pm4py.objects.ocel.importer.csv import importer as csv_importer
-        return csv_importer.apply(file_path, objects_path=objects_path)
+        return read_ocel_csv(file_path, objects_path)
     elif file_path.lower().endswith("jsonocel"):
-        from pm4py.objects.ocel.importer.jsonocel import importer as jsonocel_importer
-        return jsonocel_importer.apply(file_path)
+        return read_ocel_json(file_path)
     elif file_path.lower().endswith("xmlocel"):
-        from pm4py.objects.ocel.importer.xmlocel import importer as xmlocel_importer
-        return xmlocel_importer.apply(file_path)
+        return read_ocel_xml(file_path)
     elif file_path.lower().endswith(".sqlite"):
-        from pm4py.objects.ocel.importer.sqlite import importer as sqlite_importer
-        return sqlite_importer.apply(file_path)
+        return read_ocel_sqlite(file_path)
     raise Exception("unsupported file format")
 
 
@@ -243,7 +238,7 @@ def read_ocel_json(file_path: str) -> OCEL:
         raise Exception("File does not exist")
 
     from pm4py.objects.ocel.importer.jsonocel import importer as jsonocel_importer
-    return jsonocel_importer.apply(file_path)
+    return jsonocel_importer.apply(file_path, variant=jsonocel_importer.Variants.CLASSIC)
 
 
 def read_ocel_xml(file_path: str) -> OCEL:
@@ -264,7 +259,7 @@ def read_ocel_xml(file_path: str) -> OCEL:
         raise Exception("File does not exist")
 
     from pm4py.objects.ocel.importer.xmlocel import importer as xmlocel_importer
-    return xmlocel_importer.apply(file_path)
+    return xmlocel_importer.apply(file_path, variant=xmlocel_importer.Variants.CLASSIC)
 
 
 def read_ocel_sqlite(file_path: str) -> OCEL:
@@ -285,4 +280,64 @@ def read_ocel_sqlite(file_path: str) -> OCEL:
         raise Exception("File does not exist")
 
     from pm4py.objects.ocel.importer.sqlite import importer as sqlite_importer
-    return sqlite_importer.apply(file_path)
+    return sqlite_importer.apply(file_path, variant=sqlite_importer.Variants.PANDAS_IMPORTER)
+
+
+def read_ocel2(file_path: str) -> OCEL:
+    """
+    Reads an OCEL2.0 event log
+
+    :param file_path: path to the OCEL2.0 event log
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel2("<path_to_ocel_file>")
+    """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
+    if file_path.lower().endswith("sqlite"):
+        return read_ocel2_sqlite(file_path)
+    elif file_path.lower().endswith("xml") or file_path.lower().endswith("xmlocel"):
+        return read_ocel2_xml(file_path)
+
+def read_ocel2_sqlite(file_path: str) -> OCEL:
+    """
+    Reads an OCEL2.0 event log from a SQLite database
+
+    :param file_path: path to the OCEL2.0 database
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel2_sqlite("<path_to_ocel_file.sqlite>")
+    """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
+
+    from pm4py.objects.ocel.importer.sqlite import importer as sqlite_importer
+    return sqlite_importer.apply(file_path, variant=sqlite_importer.Variants.OCEL20)
+
+
+def read_ocel2_xml(file_path: str) -> OCEL:
+    """
+    Reads an OCEL2.0 event log from an XML file
+
+    :param file_path: path to the OCEL2.0 event log
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel2_xml("<path_to_ocel_file.xmlocel>")
+    """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
+
+    from pm4py.objects.ocel.importer.xmlocel import importer as xml_importer
+    return xml_importer.apply(file_path, variant=xml_importer.Variants.OCEL20)

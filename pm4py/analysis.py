@@ -179,7 +179,7 @@ def check_soundness(petri_net: PetriNet, initial_marking: Marking,
         is_sound = pm4py.check_soundness(net, im, fm)
     """
     from pm4py.algo.analysis.woflan import algorithm as woflan
-    return woflan.apply(petri_net, initial_marking, final_marking)
+    return woflan.apply(petri_net, initial_marking, final_marking, parameters={"return_asap_when_not_sound": True, "return_diagnostics": True})
 
 
 def cluster_log(log: Union[EventLog, EventStream, pd.DataFrame], sklearn_clusterer=None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Generator[EventLog, None, None]:
