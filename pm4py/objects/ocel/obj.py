@@ -29,10 +29,11 @@ class Parameters(Enum):
     OBJECT_ID = constants.PARAM_OBJECT_ID
     OBJECT_TYPE = constants.PARAM_OBJECT_TYPE
     QUALIFIER = constants.PARAM_QUALIFIER
+    CHANGED_FIELD = constants.PARAM_CHNGD_FIELD
 
 
 class OCEL(object):
-    def __init__(self, events=None, objects=None, relations=None, globals=None, parameters=None, o2o=None, e2e=None):
+    def __init__(self, events=None, objects=None, relations=None, globals=None, parameters=None, o2o=None, e2e=None, object_changes=None):
         if parameters is None:
             parameters = {}
 
@@ -47,6 +48,7 @@ class OCEL(object):
         self.event_timestamp = exec_utils.get_param_value(Parameters.EVENT_TIMESTAMP, parameters,
                                                           constants.DEFAULT_EVENT_TIMESTAMP)
         self.qualifier = exec_utils.get_param_value(Parameters.QUALIFIER, parameters, constants.DEFAULT_QUALIFIER)
+        self.changed_field = exec_utils.get_param_value(Parameters.CHANGED_FIELD, parameters, constants.DEFAULT_CHNGD_FIELD)
 
         if events is None:
             events = pd.DataFrame({self.event_id_column: [], self.event_activity: [], self.event_timestamp: []})
@@ -62,6 +64,8 @@ class OCEL(object):
             o2o = pd.DataFrame({self.object_id_column: [], self.object_id_column+"_2": [], self.qualifier: []})
         if e2e is None:
             e2e = pd.DataFrame({self.event_id_column: [], self.event_id_column+"_2": [], self.qualifier: []})
+        if object_changes is None:
+            object_changes = pd.DataFrame({self.object_id_column: [], self.object_type_column: [], self.event_timestamp: [], self.changed_field: []})
         if self.qualifier not in relations:
             relations[self.qualifier] = [None] * len(relations)
 
@@ -71,6 +75,7 @@ class OCEL(object):
         self.globals = globals
         self.o2o = o2o
         self.e2e = e2e
+        self.object_changes = object_changes
 
         self.parameters = parameters
 

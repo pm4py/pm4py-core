@@ -5,8 +5,6 @@ import pandas as pd
 
 import pm4py
 from pm4py.algo.discovery.inductive import algorithm as im_clean
-from pm4py.objects.conversion.process_tree import converter as process_tree_converter
-from pm4py.objects.process_tree.utils import bottomup as bottomup_disc
 from pm4py.statistics.variants.log import get as variants_get
 
 LOGS_FOLDER = "../compressed_input_data"
@@ -27,7 +25,7 @@ if __name__ == "__main__":
                 if "xes" in log_name:
                     from pm4py.statistics.attributes.log import get as attributes_get_log
 
-                    log = pm4py.read_xes(log_path)
+                    log = pm4py.read_xes(log_path, return_legacy_log_object=True)
                     for trace in log:
                         for event in trace:
                             if True and "lifecycle:transition" in event:
@@ -82,9 +80,5 @@ if __name__ == "__main__":
                 precision_im_clean = pm4py.algo.conformance.footprints.util.evaluation.fp_precision(fp_log, fp_tree_clean)
                 print("IMCLEAN fp-fitness=%.3f fp-precision=%.3f" % (fitness_im_clean, precision_im_clean))
             except:
-                bottomup_nodes = bottomup_disc.get_bottomup_nodes(tree_im_clean)
-                for node in bottomup_nodes:
-                    if node.parent is None:
-                        print(node, node.parent)
                 traceback.print_exc()
                 input()

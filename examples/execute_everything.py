@@ -4,6 +4,84 @@ import sys
 import traceback
 
 
+def consecutive_act_case_grouping_filter():
+    from examples import consecutive_act_case_grouping_filter
+    print("\n\nconsecutive_act_case_grouping_filter")
+    consecutive_act_case_grouping_filter.execute_script()
+
+
+def cost_based_dfg():
+    from examples import cost_based_dfg
+    print("\n\ncost_based_dfg")
+    cost_based_dfg.execute_script()
+
+
+def df_to_log_postpro():
+    from examples import df_to_log_postpro
+    print("\n\ndf_to_log_postpro")
+    df_to_log_postpro.execute_script()
+
+
+def hybrid_ilp_miner():
+    from examples import hybrid_ilp_miner
+    print("\n\nhybrid_ilp_miner")
+    hybrid_ilp_miner.execute_script()
+
+
+def ml_insert_case_arrival_finish():
+    from examples import ml_insert_case_arrival_finish
+    print("\n\nml_insert_case_arrival_finish")
+    ml_insert_case_arrival_finish.execute_script()
+
+
+def ml_insert_waiting_service_time():
+    from examples import ml_insert_waiting_service_time
+    print("\n\nml_insert_waiting_service_time")
+    ml_insert_waiting_service_time.execute_script()
+
+
+def ml_log_to_target_vector():
+    from examples import ml_log_to_target_vectory
+    print("\n\nml_log_to_target_vector")
+    ml_log_to_target_vectory.execute_script()
+
+
+def ml_outcome_enriched():
+    from examples import ml_outcome_enriched
+    print("\n\nml_outcome_enriched")
+    ml_outcome_enriched.execute_script()
+
+
+def ocel20_import_export():
+    from examples import ocel20_import_export
+    print("\n\nocel20_import_export")
+    ocel20_import_export.execute_script()
+
+
+def revised_playout():
+    from examples import revised_playout
+    print("\n\nrevised_playout")
+    revised_playout.execute_script()
+
+
+def timestamp_case_grouping_filter():
+    from examples import timestamp_case_grouping_filter
+    print("\n\ntimestamp_case_grouping_filter")
+    timestamp_case_grouping_filter.execute_script()
+
+
+def trace_clustering():
+    from examples import trace_clustering
+    print("\n\ntrace_clustering")
+    trace_clustering.execute_script()
+
+
+def validation_ocel20_relational():
+    from examples import validation_ocel20_relational
+    print("\n\nvalidation_ocel20_relation")
+    validation_ocel20_relational.execute_script()
+
+
 def all_optimal_alignments():
     from examples import all_optimal_alignments
     print("\n\nall_optimal_alignments")
@@ -657,10 +735,32 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(simplified_interface)
+    execute_script(read_write_ocel)
+    execute_script(discovery_data_petri_net)
+    execute_script(data_petri_nets)
+    execute_script(inhibitor_reset_arcs)
+    execute_script(logs_petri_visual_comparison)
+    execute_script(align_decomposition_example)
+    execute_script(ocdfg_discovery)
+    execute_script(woflan)
     execute_script(inductive_miner)
     execute_script(inductive_miner_dfg)
     execute_script(inductive_miner_variants)
     execute_script(heu_miner_plus_plus)
+    execute_script(consecutive_act_case_grouping_filter)
+    execute_script(cost_based_dfg)
+    execute_script(df_to_log_postpro)
+    execute_script(hybrid_ilp_miner)
+    execute_script(ml_insert_case_arrival_finish)
+    execute_script(ml_insert_waiting_service_time)
+    execute_script(ml_log_to_target_vector)
+    execute_script(ml_outcome_enriched)
+    execute_script(ocel20_import_export)
+    execute_script(revised_playout)
+    execute_script(timestamp_case_grouping_filter)
+    execute_script(trace_clustering)
+    execute_script(validation_ocel20_relational)
     execute_script(interval_events_overlap)
     execute_script(kneighb_regression)
     execute_script(log_to_int_tree_open_paths)
@@ -688,14 +788,9 @@ if __name__ == "__main__":
     execute_script(object_centric_petri_net_discovery)
     execute_script(trans_system_stochastic_view)
     execute_script(network_analysis)
-    execute_script(read_write_ocel)
-    execute_script(ocdfg_discovery)
     execute_script(enrich_log_with_align)
     execute_script(extended_marking_equation)
     execute_script(features_locally_linear_embedding)
-    execute_script(discovery_data_petri_net)
-    execute_script(data_petri_nets)
-    execute_script(inhibitor_reset_arcs)
     execute_script(dotted_chart)
     execute_script(performance_spectrum)
     execute_script(orgmining_local_diagn)
@@ -705,7 +800,6 @@ if __name__ == "__main__":
     execute_script(dataframe_prefix_and_fea_extraction)
     execute_script(logs_alignments)
     execute_script(visualization_serialization)
-    execute_script(woflan)
     execute_script(bpmn_from_pt)
     execute_script(bpmn_import_and_to_petri_net)
     execute_script(tree_playout)
@@ -717,7 +811,6 @@ if __name__ == "__main__":
     execute_script(roles_detection)
     execute_script(alignment_test)
     execute_script(dec_treplay_imdf)
-    execute_script(logs_petri_visual_comparison)
     execute_script(imdf_example)
     execute_script(test_evaluation)
     execute_script(sna_log)
@@ -726,7 +819,6 @@ if __name__ == "__main__":
     execute_script(token_replay_imdf)
     execute_script(decisiontree_trivial_example)
     execute_script(decisiontree_align_example)
-    execute_script(align_decomposition_example)
     execute_script(transition_system_test)
     execute_script(heu_miner_test)
     execute_script(dfg_min_ex_log)
@@ -735,17 +827,16 @@ if __name__ == "__main__":
     execute_script(backwards_token_replay)
     execute_script(transient_dfg)
     execute_script(transient_petri_net)
-    execute_script(monte_carlo_dfg)
-    execute_script(monte_carlo_petri_net)
+    execute_script(example_check_fitness)
+    execute_script(pn_to_pt)
+    execute_script(align_approx_pt)
     execute_script(visualization_processtree)
     execute_script(visualization_align_table)
-    execute_script(pn_to_pt)
-    execute_script(simplified_interface)
-    execute_script(align_approx_pt)
     execute_script(streaming_conformance_footprints)
     execute_script(streaming_conformance_tbr)
     execute_script(streaming_csv_reader_event_stream)
     execute_script(streaming_discovery_dfg)
     execute_script(streaming_xes_reader_event_stream)
     execute_script(streaming_xes_reader_trace_stream)
-    execute_script(example_check_fitness)
+    execute_script(monte_carlo_dfg)
+    execute_script(monte_carlo_petri_net)

@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from sqlite3 import paramstyle
+
 from pm4py import util as pmutil
 from pm4py.algo.discovery.dfg.variants import native, performance, freq_triples, case_attributes, clean
 from pm4py.objects.conversion.log import converter as log_conversion

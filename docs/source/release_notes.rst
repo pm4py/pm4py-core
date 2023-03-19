@@ -1,17 +1,38 @@
 Release Notes
 =============
+
+pm4py 2.6.0 - Release Notes
+---------------------------
+
+The major changes in pm4py 2.6.0 are as follows:
+
+1. We added the ILP Miner as process discovery algorithm
+
+2. We added two log filters: "timestamp grouping" and "consecutive activities"
+
+3. We added the insertion of the case arrival/finish rate and of the waiting/service/sojourn times
+in the simplified interface
+
+4. We added a baseline clustering algorithm, based on the pre-existing feature extraction
+
+5. We added the extraction of the "target vector" from event logs for machine learning purposes
+
+
 pm4py 2.5.0 - Release Notes
 ---------------------------
+
 The major changes in pm4py 2.5.0 are as follows:
 
-1. We added the cadoso and extended cardoso simplicity metrics to pm4py
+1. We added the Cardoso and extended Cardoso simplicity metrics to pm4py
 
 2. We added discovery of Stochastic Arc Weight nets based on OCEL logs.
 
 3. We added Murata-based Petri net simplification to the simplified interface (implicit place removal)   
 
+
 pm4py 2.4.0 - Release Notes
 ---------------------------
+
 Today, we released pm4py 2.4.0.
 We have adopted our release policy slightly, i.e., as of now, the pm4py versioning follows the MAJOR.MINOR.FIX pattern.
 We will also report all MAJOR and MINOR releases in the release notes.

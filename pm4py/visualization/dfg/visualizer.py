@@ -16,7 +16,7 @@
 '''
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
-from pm4py.visualization.dfg.variants import frequency, performance
+from pm4py.visualization.dfg.variants import frequency, performance, cost
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import deepcopy
@@ -31,6 +31,7 @@ from pm4py.objects.log.obj import EventLog
 class Variants(Enum):
     FREQUENCY = frequency
     PERFORMANCE = performance
+    COST = cost
 
 
 DEFAULT_VARIANT = Variants.FREQUENCY
