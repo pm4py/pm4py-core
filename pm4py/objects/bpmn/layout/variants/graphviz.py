@@ -91,6 +91,7 @@ def apply(bpmn_graph, parameters=None):
     """
     from graphviz import Digraph
     from pm4py.visualization.common import save as gsave
+    from pm4py.visualization.common import svg_pos_parser
 
     if parameters is None:
         parameters = {}
@@ -126,21 +127,18 @@ def apply(bpmn_graph, parameters=None):
 
     gsave.save(viz, filename_svg.name)
 
-    nodes_pos = {}
+    nodes_p, edges_p = svg_pos_parser.apply(filename_svg.name)
 
-    content = open(filename_svg.name, "r").read()
-    viz_nodes = content.split("class=\"node\">")[1:]
-    for node in viz_nodes:
-        this_id = node.split("<title>")[1].split("</title>")[0]
-        points = node.split("points=\"")[1].split("\"")[0]
-        nodes_pos[inv_nodes_dict[this_id]] = points
+    nodes_pos = {}
+    for node in nodes_p:
+        nodes_pos[inv_nodes_dict[node]] = nodes_p[node]["polygon"]
 
     endpoints_wh = exec_utils.get_param_value(Parameters.TASK_WH, parameters, 30)
     task_wh = exec_utils.get_param_value(Parameters.TASK_WH, parameters, 60)
 
     # add node positions to BPMN nodes
     for n in graph_nodes:
-        node_pos = nodes_pos[n].split(" ")[0].split(",")
+        node_pos = nodes_pos[n][0]
 
         pos_x = float(node_pos[0])
         pos_y = float(node_pos[1])

@@ -17,7 +17,6 @@
 
 from pm4py.objects.ocel.obj import OCEL
 from typing import Dict, Any, Optional
-import sqlite3
 import pandas as pd
 
 
@@ -39,6 +38,8 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     """
     if parameters is None:
         parameters = {}
+
+    import sqlite3
 
     conn = sqlite3.connect(file_path)
 
