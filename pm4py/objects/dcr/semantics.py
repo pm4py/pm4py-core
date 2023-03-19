@@ -21,10 +21,13 @@ def execute(e, dcr):
     if e in dcr['events']:
         if is_enabled(e, dcr):
             weak_execute(e, dcr)
+            return True
         else:
             print(f'[!] Event {e} not enabled!')
+            return False
     else:
         print(f'[!] Event {e} does not exist!')
+        return False
 
 
 def weak_execute(e, dcr):

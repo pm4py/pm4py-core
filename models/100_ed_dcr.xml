@@ -1,0 +1,997 @@
+<dcrgraph title="MIMIC IV Emergency Department">
+  <specification>
+    <resources>
+      <events>
+        <event id="pain_8"/>
+        <event id="ASSISTED LIVING"/>
+        <event id="Medicine recorded"/>
+        <event id="end_vit_sign_monitor"/>
+        <event id="chiefcom_cough"/>
+        <event id="chiefcom_other"/>
+        <event id="SKILLED NURSING FACILITY"/>
+        <event id="Diagnosis"/>
+        <event id="pain_4"/>
+        <event id="chiefcom_shortness_of_breath"/>
+        <event id="DIED"/>
+        <event id="UNKNOWN"/>
+        <event id="pain_10"/>
+        <event id="ADMITTED"/>
+        <event id="chiefcom_nausea_vomiting"/>
+        <event id="HELICOPTER"/>
+        <event id="pain_2"/>
+        <event id="TRANSFER"/>
+        <event id="pain_5"/>
+        <event id="HEALTHCARE FACILITY"/>
+        <event id="OTHER FACILITY"/>
+        <event id="pain_7"/>
+        <event id="WALK IN"/>
+        <event id="chiefcom_chest_pain"/>
+        <event id="LEFT AGAINST MEDICAL ADVICE"/>
+        <event id="ELOPED"/>
+        <event id="chiefcom_abdominal_pain"/>
+        <event id="chiefcom_syncope"/>
+        <event id="chiefcom_back_pain"/>
+        <event id="AGAINST ADVICE"/>
+        <event id="EXPIRED"/>
+        <event id="ACUTE HOSPITAL"/>
+        <event id="REHAB"/>
+        <event id="chiefcom_headache"/>
+        <event id="pain_9"/>
+        <event id="CHRONIC/LONG TERM ACUTE CARE"/>
+        <event id="HOME HEALTH CARE"/>
+        <event id="chiefcom_dizziness"/>
+        <event id="pain_6"/>
+        <event id="pain_1"/>
+        <event id="AMBULANCE"/>
+        <event id="start_vit_sign_monitor"/>
+        <event id="pain_3"/>
+        <event id="LEFT WITHOUT BEING SEEN"/>
+        <event id="pain_0"/>
+        <event id="PSYCH FACILITY"/>
+        <event id="OTHER"/>
+        <event id="HOME"/>
+        <event id="chiefcom_fever_chills"/>
+        <event id="Medicine given"/>
+        <event id="HOSPICE"/>
+      </events>
+      <labels>
+        <label id="pain_8"/>
+        <label id="ASSISTED LIVING"/>
+        <label id="Medicine recorded"/>
+        <label id="end_vit_sign_monitor"/>
+        <label id="chiefcom_cough"/>
+        <label id="chiefcom_other"/>
+        <label id="SKILLED NURSING FACILITY"/>
+        <label id="Diagnosis"/>
+        <label id="pain_4"/>
+        <label id="chiefcom_shortness_of_breath"/>
+        <label id="DIED"/>
+        <label id="UNKNOWN"/>
+        <label id="pain_10"/>
+        <label id="ADMITTED"/>
+        <label id="chiefcom_nausea_vomiting"/>
+        <label id="HELICOPTER"/>
+        <label id="pain_2"/>
+        <label id="TRANSFER"/>
+        <label id="pain_5"/>
+        <label id="HEALTHCARE FACILITY"/>
+        <label id="OTHER FACILITY"/>
+        <label id="pain_7"/>
+        <label id="WALK IN"/>
+        <label id="chiefcom_chest_pain"/>
+        <label id="LEFT AGAINST MEDICAL ADVICE"/>
+        <label id="ELOPED"/>
+        <label id="chiefcom_abdominal_pain"/>
+        <label id="chiefcom_syncope"/>
+        <label id="chiefcom_back_pain"/>
+        <label id="AGAINST ADVICE"/>
+        <label id="EXPIRED"/>
+        <label id="ACUTE HOSPITAL"/>
+        <label id="REHAB"/>
+        <label id="chiefcom_headache"/>
+        <label id="pain_9"/>
+        <label id="CHRONIC/LONG TERM ACUTE CARE"/>
+        <label id="HOME HEALTH CARE"/>
+        <label id="chiefcom_dizziness"/>
+        <label id="pain_6"/>
+        <label id="pain_1"/>
+        <label id="AMBULANCE"/>
+        <label id="start_vit_sign_monitor"/>
+        <label id="pain_3"/>
+        <label id="LEFT WITHOUT BEING SEEN"/>
+        <label id="pain_0"/>
+        <label id="PSYCH FACILITY"/>
+        <label id="OTHER"/>
+        <label id="HOME"/>
+        <label id="chiefcom_fever_chills"/>
+        <label id="Medicine given"/>
+        <label id="HOSPICE"/>
+      </labels>
+      <labelMappings>
+        <labelMapping eventId="pain_8" labelId="pain_8"/>
+        <labelMapping eventId="ASSISTED LIVING" labelId="ASSISTED LIVING"/>
+        <labelMapping eventId="Medicine recorded" labelId="Medicine recorded"/>
+        <labelMapping eventId="end_vit_sign_monitor" labelId="end_vit_sign_monitor"/>
+        <labelMapping eventId="chiefcom_cough" labelId="chiefcom_cough"/>
+        <labelMapping eventId="chiefcom_other" labelId="chiefcom_other"/>
+        <labelMapping eventId="SKILLED NURSING FACILITY" labelId="SKILLED NURSING FACILITY"/>
+        <labelMapping eventId="Diagnosis" labelId="Diagnosis"/>
+        <labelMapping eventId="pain_4" labelId="pain_4"/>
+        <labelMapping eventId="chiefcom_shortness_of_breath" labelId="chiefcom_shortness_of_breath"/>
+        <labelMapping eventId="DIED" labelId="DIED"/>
+        <labelMapping eventId="UNKNOWN" labelId="UNKNOWN"/>
+        <labelMapping eventId="pain_10" labelId="pain_10"/>
+        <labelMapping eventId="ADMITTED" labelId="ADMITTED"/>
+        <labelMapping eventId="chiefcom_nausea_vomiting" labelId="chiefcom_nausea_vomiting"/>
+        <labelMapping eventId="HELICOPTER" labelId="HELICOPTER"/>
+        <labelMapping eventId="pain_2" labelId="pain_2"/>
+        <labelMapping eventId="TRANSFER" labelId="TRANSFER"/>
+        <labelMapping eventId="pain_5" labelId="pain_5"/>
+        <labelMapping eventId="HEALTHCARE FACILITY" labelId="HEALTHCARE FACILITY"/>
+        <labelMapping eventId="OTHER FACILITY" labelId="OTHER FACILITY"/>
+        <labelMapping eventId="pain_7" labelId="pain_7"/>
+        <labelMapping eventId="WALK IN" labelId="WALK IN"/>
+        <labelMapping eventId="chiefcom_chest_pain" labelId="chiefcom_chest_pain"/>
+        <labelMapping eventId="LEFT AGAINST MEDICAL ADVICE" labelId="LEFT AGAINST MEDICAL ADVICE"/>
+        <labelMapping eventId="ELOPED" labelId="ELOPED"/>
+        <labelMapping eventId="chiefcom_abdominal_pain" labelId="chiefcom_abdominal_pain"/>
+        <labelMapping eventId="chiefcom_syncope" labelId="chiefcom_syncope"/>
+        <labelMapping eventId="chiefcom_back_pain" labelId="chiefcom_back_pain"/>
+        <labelMapping eventId="AGAINST ADVICE" labelId="AGAINST ADVICE"/>
+        <labelMapping eventId="EXPIRED" labelId="EXPIRED"/>
+        <labelMapping eventId="ACUTE HOSPITAL" labelId="ACUTE HOSPITAL"/>
+        <labelMapping eventId="REHAB" labelId="REHAB"/>
+        <labelMapping eventId="chiefcom_headache" labelId="chiefcom_headache"/>
+        <labelMapping eventId="pain_9" labelId="pain_9"/>
+        <labelMapping eventId="CHRONIC/LONG TERM ACUTE CARE" labelId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <labelMapping eventId="HOME HEALTH CARE" labelId="HOME HEALTH CARE"/>
+        <labelMapping eventId="chiefcom_dizziness" labelId="chiefcom_dizziness"/>
+        <labelMapping eventId="pain_6" labelId="pain_6"/>
+        <labelMapping eventId="pain_1" labelId="pain_1"/>
+        <labelMapping eventId="AMBULANCE" labelId="AMBULANCE"/>
+        <labelMapping eventId="start_vit_sign_monitor" labelId="start_vit_sign_monitor"/>
+        <labelMapping eventId="pain_3" labelId="pain_3"/>
+        <labelMapping eventId="LEFT WITHOUT BEING SEEN" labelId="LEFT WITHOUT BEING SEEN"/>
+        <labelMapping eventId="pain_0" labelId="pain_0"/>
+        <labelMapping eventId="PSYCH FACILITY" labelId="PSYCH FACILITY"/>
+        <labelMapping eventId="OTHER" labelId="OTHER"/>
+        <labelMapping eventId="HOME" labelId="HOME"/>
+        <labelMapping eventId="chiefcom_fever_chills" labelId="chiefcom_fever_chills"/>
+        <labelMapping eventId="Medicine given" labelId="Medicine given"/>
+        <labelMapping eventId="HOSPICE" labelId="HOSPICE"/>
+      </labelMappings>
+    </resources>
+    <constraints>
+      <conditions>
+        <condition sourceId="start_vit_sign_monitor" targetId="pain_8"/>
+        <condition sourceId="chiefcom_cough" targetId="ASSISTED LIVING"/>
+        <condition sourceId="chiefcom_other" targetId="ASSISTED LIVING"/>
+        <condition sourceId="chiefcom_shortness_of_breath" targetId="ASSISTED LIVING"/>
+        <condition sourceId="UNKNOWN" targetId="ASSISTED LIVING"/>
+        <condition sourceId="chiefcom_nausea_vomiting" targetId="ASSISTED LIVING"/>
+        <condition sourceId="WALK IN" targetId="ASSISTED LIVING"/>
+        <condition sourceId="chiefcom_chest_pain" targetId="ASSISTED LIVING"/>
+        <condition sourceId="chiefcom_abdominal_pain" targetId="ASSISTED LIVING"/>
+        <condition sourceId="chiefcom_syncope" targetId="ASSISTED LIVING"/>
+        <condition sourceId="chiefcom_back_pain" targetId="ASSISTED LIVING"/>
+        <condition sourceId="chiefcom_headache" targetId="ASSISTED LIVING"/>
+        <condition sourceId="chiefcom_dizziness" targetId="ASSISTED LIVING"/>
+        <condition sourceId="AMBULANCE" targetId="ASSISTED LIVING"/>
+        <condition sourceId="chiefcom_fever_chills" targetId="ASSISTED LIVING"/>
+        <condition sourceId="start_vit_sign_monitor" targetId="end_vit_sign_monitor"/>
+        <condition sourceId="start_vit_sign_monitor" targetId="pain_4"/>
+        <condition sourceId="start_vit_sign_monitor" targetId="pain_10"/>
+        <condition sourceId="start_vit_sign_monitor" targetId="pain_2"/>
+        <condition sourceId="chiefcom_cough" targetId="TRANSFER"/>
+        <condition sourceId="chiefcom_other" targetId="TRANSFER"/>
+        <condition sourceId="chiefcom_shortness_of_breath" targetId="TRANSFER"/>
+        <condition sourceId="chiefcom_nausea_vomiting" targetId="TRANSFER"/>
+        <condition sourceId="chiefcom_chest_pain" targetId="TRANSFER"/>
+        <condition sourceId="chiefcom_abdominal_pain" targetId="TRANSFER"/>
+        <condition sourceId="chiefcom_syncope" targetId="TRANSFER"/>
+        <condition sourceId="chiefcom_back_pain" targetId="TRANSFER"/>
+        <condition sourceId="chiefcom_headache" targetId="TRANSFER"/>
+        <condition sourceId="chiefcom_dizziness" targetId="TRANSFER"/>
+        <condition sourceId="chiefcom_fever_chills" targetId="TRANSFER"/>
+        <condition sourceId="start_vit_sign_monitor" targetId="pain_5"/>
+        <condition sourceId="pain_8" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="end_vit_sign_monitor" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="chiefcom_other" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="Diagnosis" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="pain_4" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="pain_10" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="pain_5" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="pain_7" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="chiefcom_chest_pain" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="chiefcom_abdominal_pain" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="chiefcom_headache" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="pain_9" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="pain_6" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="pain_3" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="pain_0" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="chiefcom_fever_chills" targetId="HEALTHCARE FACILITY"/>
+        <condition sourceId="chiefcom_cough" targetId="OTHER FACILITY"/>
+        <condition sourceId="chiefcom_other" targetId="OTHER FACILITY"/>
+        <condition sourceId="chiefcom_nausea_vomiting" targetId="OTHER FACILITY"/>
+        <condition sourceId="chiefcom_chest_pain" targetId="OTHER FACILITY"/>
+        <condition sourceId="chiefcom_abdominal_pain" targetId="OTHER FACILITY"/>
+        <condition sourceId="chiefcom_syncope" targetId="OTHER FACILITY"/>
+        <condition sourceId="chiefcom_back_pain" targetId="OTHER FACILITY"/>
+        <condition sourceId="chiefcom_headache" targetId="OTHER FACILITY"/>
+        <condition sourceId="chiefcom_dizziness" targetId="OTHER FACILITY"/>
+        <condition sourceId="chiefcom_fever_chills" targetId="OTHER FACILITY"/>
+        <condition sourceId="start_vit_sign_monitor" targetId="pain_7"/>
+        <condition sourceId="chiefcom_cough" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <condition sourceId="chiefcom_other" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <condition sourceId="chiefcom_shortness_of_breath" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <condition sourceId="chiefcom_nausea_vomiting" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <condition sourceId="chiefcom_chest_pain" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <condition sourceId="chiefcom_abdominal_pain" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <condition sourceId="chiefcom_syncope" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <condition sourceId="chiefcom_back_pain" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <condition sourceId="chiefcom_headache" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <condition sourceId="chiefcom_dizziness" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <condition sourceId="chiefcom_fever_chills" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <condition sourceId="chiefcom_cough" targetId="ELOPED"/>
+        <condition sourceId="chiefcom_other" targetId="ELOPED"/>
+        <condition sourceId="chiefcom_shortness_of_breath" targetId="ELOPED"/>
+        <condition sourceId="chiefcom_nausea_vomiting" targetId="ELOPED"/>
+        <condition sourceId="chiefcom_chest_pain" targetId="ELOPED"/>
+        <condition sourceId="chiefcom_abdominal_pain" targetId="ELOPED"/>
+        <condition sourceId="chiefcom_syncope" targetId="ELOPED"/>
+        <condition sourceId="chiefcom_back_pain" targetId="ELOPED"/>
+        <condition sourceId="chiefcom_headache" targetId="ELOPED"/>
+        <condition sourceId="chiefcom_dizziness" targetId="ELOPED"/>
+        <condition sourceId="chiefcom_fever_chills" targetId="ELOPED"/>
+        <condition sourceId="chiefcom_cough" targetId="AGAINST ADVICE"/>
+        <condition sourceId="chiefcom_other" targetId="AGAINST ADVICE"/>
+        <condition sourceId="chiefcom_shortness_of_breath" targetId="AGAINST ADVICE"/>
+        <condition sourceId="chiefcom_nausea_vomiting" targetId="AGAINST ADVICE"/>
+        <condition sourceId="chiefcom_chest_pain" targetId="AGAINST ADVICE"/>
+        <condition sourceId="chiefcom_abdominal_pain" targetId="AGAINST ADVICE"/>
+        <condition sourceId="chiefcom_syncope" targetId="AGAINST ADVICE"/>
+        <condition sourceId="chiefcom_back_pain" targetId="AGAINST ADVICE"/>
+        <condition sourceId="chiefcom_headache" targetId="AGAINST ADVICE"/>
+        <condition sourceId="chiefcom_dizziness" targetId="AGAINST ADVICE"/>
+        <condition sourceId="chiefcom_fever_chills" targetId="AGAINST ADVICE"/>
+        <condition sourceId="chiefcom_cough" targetId="EXPIRED"/>
+        <condition sourceId="chiefcom_other" targetId="EXPIRED"/>
+        <condition sourceId="UNKNOWN" targetId="EXPIRED"/>
+        <condition sourceId="chiefcom_nausea_vomiting" targetId="EXPIRED"/>
+        <condition sourceId="HELICOPTER" targetId="EXPIRED"/>
+        <condition sourceId="WALK IN" targetId="EXPIRED"/>
+        <condition sourceId="chiefcom_chest_pain" targetId="EXPIRED"/>
+        <condition sourceId="chiefcom_abdominal_pain" targetId="EXPIRED"/>
+        <condition sourceId="chiefcom_syncope" targetId="EXPIRED"/>
+        <condition sourceId="chiefcom_back_pain" targetId="EXPIRED"/>
+        <condition sourceId="chiefcom_headache" targetId="EXPIRED"/>
+        <condition sourceId="chiefcom_dizziness" targetId="EXPIRED"/>
+        <condition sourceId="AMBULANCE" targetId="EXPIRED"/>
+        <condition sourceId="chiefcom_fever_chills" targetId="EXPIRED"/>
+        <condition sourceId="chiefcom_cough" targetId="ACUTE HOSPITAL"/>
+        <condition sourceId="chiefcom_other" targetId="ACUTE HOSPITAL"/>
+        <condition sourceId="chiefcom_shortness_of_breath" targetId="ACUTE HOSPITAL"/>
+        <condition sourceId="chiefcom_nausea_vomiting" targetId="ACUTE HOSPITAL"/>
+        <condition sourceId="chiefcom_chest_pain" targetId="ACUTE HOSPITAL"/>
+        <condition sourceId="chiefcom_abdominal_pain" targetId="ACUTE HOSPITAL"/>
+        <condition sourceId="chiefcom_syncope" targetId="ACUTE HOSPITAL"/>
+        <condition sourceId="chiefcom_back_pain" targetId="ACUTE HOSPITAL"/>
+        <condition sourceId="chiefcom_headache" targetId="ACUTE HOSPITAL"/>
+        <condition sourceId="chiefcom_dizziness" targetId="ACUTE HOSPITAL"/>
+        <condition sourceId="chiefcom_fever_chills" targetId="ACUTE HOSPITAL"/>
+        <condition sourceId="start_vit_sign_monitor" targetId="pain_9"/>
+        <condition sourceId="chiefcom_cough" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <condition sourceId="chiefcom_other" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <condition sourceId="chiefcom_shortness_of_breath" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <condition sourceId="chiefcom_nausea_vomiting" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <condition sourceId="chiefcom_chest_pain" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <condition sourceId="chiefcom_abdominal_pain" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <condition sourceId="chiefcom_syncope" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <condition sourceId="chiefcom_back_pain" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <condition sourceId="chiefcom_headache" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <condition sourceId="chiefcom_dizziness" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <condition sourceId="chiefcom_fever_chills" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <condition sourceId="start_vit_sign_monitor" targetId="pain_6"/>
+        <condition sourceId="start_vit_sign_monitor" targetId="pain_1"/>
+        <condition sourceId="start_vit_sign_monitor" targetId="pain_3"/>
+        <condition sourceId="start_vit_sign_monitor" targetId="pain_0"/>
+        <condition sourceId="chiefcom_shortness_of_breath" targetId="HOSPICE"/>
+        <condition sourceId="EXPIRED" targetId="HOSPICE"/>
+      </conditions>
+      <responses>
+        <response sourceId="pain_8" targetId="end_vit_sign_monitor"/>
+        <response sourceId="pain_4" targetId="end_vit_sign_monitor"/>
+        <response sourceId="pain_10" targetId="end_vit_sign_monitor"/>
+        <response sourceId="pain_2" targetId="end_vit_sign_monitor"/>
+        <response sourceId="pain_5" targetId="end_vit_sign_monitor"/>
+        <response sourceId="pain_7" targetId="end_vit_sign_monitor"/>
+        <response sourceId="pain_9" targetId="end_vit_sign_monitor"/>
+        <response sourceId="pain_6" targetId="end_vit_sign_monitor"/>
+        <response sourceId="pain_1" targetId="end_vit_sign_monitor"/>
+        <response sourceId="start_vit_sign_monitor" targetId="end_vit_sign_monitor"/>
+        <response sourceId="pain_3" targetId="end_vit_sign_monitor"/>
+        <response sourceId="pain_0" targetId="end_vit_sign_monitor"/>
+      </responses>
+      <excludes>
+        <exclude sourceId="ASSISTED LIVING" targetId="pain_8"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="Medicine recorded"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="SKILLED NURSING FACILITY"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="pain_4"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="DIED"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="pain_10"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="HELICOPTER"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="pain_2"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="pain_5"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="OTHER FACILITY"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="pain_7"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="ELOPED"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="AGAINST ADVICE"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="EXPIRED"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="REHAB"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="pain_9"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="HOME HEALTH CARE"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="pain_6"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="pain_1"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="pain_3"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="LEFT WITHOUT BEING SEEN"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="pain_0"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="PSYCH FACILITY"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="OTHER"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="Medicine given"/>
+        <exclude sourceId="ASSISTED LIVING" targetId="HOSPICE"/>
+        <exclude sourceId="end_vit_sign_monitor" targetId="pain_8"/>
+        <exclude sourceId="end_vit_sign_monitor" targetId="end_vit_sign_monitor"/>
+        <exclude sourceId="end_vit_sign_monitor" targetId="pain_4"/>
+        <exclude sourceId="end_vit_sign_monitor" targetId="pain_10"/>
+        <exclude sourceId="end_vit_sign_monitor" targetId="pain_2"/>
+        <exclude sourceId="end_vit_sign_monitor" targetId="pain_5"/>
+        <exclude sourceId="end_vit_sign_monitor" targetId="pain_7"/>
+        <exclude sourceId="end_vit_sign_monitor" targetId="pain_9"/>
+        <exclude sourceId="end_vit_sign_monitor" targetId="pain_6"/>
+        <exclude sourceId="end_vit_sign_monitor" targetId="pain_1"/>
+        <exclude sourceId="end_vit_sign_monitor" targetId="pain_3"/>
+        <exclude sourceId="end_vit_sign_monitor" targetId="pain_0"/>
+        <exclude sourceId="chiefcom_cough" targetId="chiefcom_cough"/>
+        <exclude sourceId="chiefcom_cough" targetId="chiefcom_other"/>
+        <exclude sourceId="chiefcom_cough" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="chiefcom_cough" targetId="chiefcom_nausea_vomiting"/>
+        <exclude sourceId="chiefcom_cough" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="chiefcom_cough" targetId="chiefcom_chest_pain"/>
+        <exclude sourceId="chiefcom_cough" targetId="chiefcom_abdominal_pain"/>
+        <exclude sourceId="chiefcom_cough" targetId="chiefcom_syncope"/>
+        <exclude sourceId="chiefcom_cough" targetId="chiefcom_back_pain"/>
+        <exclude sourceId="chiefcom_cough" targetId="chiefcom_headache"/>
+        <exclude sourceId="chiefcom_cough" targetId="chiefcom_dizziness"/>
+        <exclude sourceId="chiefcom_cough" targetId="chiefcom_fever_chills"/>
+        <exclude sourceId="chiefcom_other" targetId="chiefcom_cough"/>
+        <exclude sourceId="chiefcom_other" targetId="chiefcom_other"/>
+        <exclude sourceId="chiefcom_other" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="chiefcom_other" targetId="chiefcom_nausea_vomiting"/>
+        <exclude sourceId="chiefcom_other" targetId="chiefcom_chest_pain"/>
+        <exclude sourceId="chiefcom_other" targetId="chiefcom_abdominal_pain"/>
+        <exclude sourceId="chiefcom_other" targetId="chiefcom_syncope"/>
+        <exclude sourceId="chiefcom_other" targetId="chiefcom_back_pain"/>
+        <exclude sourceId="chiefcom_other" targetId="chiefcom_headache"/>
+        <exclude sourceId="chiefcom_other" targetId="chiefcom_dizziness"/>
+        <exclude sourceId="chiefcom_other" targetId="chiefcom_fever_chills"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="pain_8"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="Medicine recorded"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="SKILLED NURSING FACILITY"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="pain_4"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="DIED"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="pain_10"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="pain_2"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="pain_5"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="OTHER FACILITY"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="pain_7"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="AGAINST ADVICE"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="EXPIRED"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="REHAB"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="pain_9"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="HOME HEALTH CARE"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="pain_6"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="pain_1"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="pain_3"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="pain_0"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="PSYCH FACILITY"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="OTHER"/>
+        <exclude sourceId="SKILLED NURSING FACILITY" targetId="HOSPICE"/>
+        <exclude sourceId="Diagnosis" targetId="Diagnosis"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="chiefcom_cough"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="chiefcom_other"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="chiefcom_nausea_vomiting"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="HELICOPTER"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="OTHER FACILITY"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="chiefcom_chest_pain"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="chiefcom_abdominal_pain"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="chiefcom_syncope"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="chiefcom_back_pain"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="EXPIRED"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="chiefcom_headache"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="chiefcom_dizziness"/>
+        <exclude sourceId="chiefcom_shortness_of_breath" targetId="chiefcom_fever_chills"/>
+        <exclude sourceId="DIED" targetId="pain_8"/>
+        <exclude sourceId="DIED" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="DIED" targetId="SKILLED NURSING FACILITY"/>
+        <exclude sourceId="DIED" targetId="DIED"/>
+        <exclude sourceId="DIED" targetId="pain_2"/>
+        <exclude sourceId="DIED" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="DIED" targetId="OTHER FACILITY"/>
+        <exclude sourceId="DIED" targetId="pain_7"/>
+        <exclude sourceId="DIED" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="DIED" targetId="ELOPED"/>
+        <exclude sourceId="DIED" targetId="AGAINST ADVICE"/>
+        <exclude sourceId="DIED" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="DIED" targetId="REHAB"/>
+        <exclude sourceId="DIED" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="DIED" targetId="HOME HEALTH CARE"/>
+        <exclude sourceId="DIED" targetId="pain_1"/>
+        <exclude sourceId="DIED" targetId="LEFT WITHOUT BEING SEEN"/>
+        <exclude sourceId="DIED" targetId="PSYCH FACILITY"/>
+        <exclude sourceId="DIED" targetId="OTHER"/>
+        <exclude sourceId="DIED" targetId="HOSPICE"/>
+        <exclude sourceId="UNKNOWN" targetId="UNKNOWN"/>
+        <exclude sourceId="UNKNOWN" targetId="HELICOPTER"/>
+        <exclude sourceId="UNKNOWN" targetId="WALK IN"/>
+        <exclude sourceId="UNKNOWN" targetId="AMBULANCE"/>
+        <exclude sourceId="ADMITTED" targetId="ADMITTED"/>
+        <exclude sourceId="ADMITTED" targetId="TRANSFER"/>
+        <exclude sourceId="ADMITTED" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="ADMITTED" targetId="ELOPED"/>
+        <exclude sourceId="ADMITTED" targetId="EXPIRED"/>
+        <exclude sourceId="ADMITTED" targetId="LEFT WITHOUT BEING SEEN"/>
+        <exclude sourceId="ADMITTED" targetId="OTHER"/>
+        <exclude sourceId="ADMITTED" targetId="HOME"/>
+        <exclude sourceId="chiefcom_nausea_vomiting" targetId="chiefcom_cough"/>
+        <exclude sourceId="chiefcom_nausea_vomiting" targetId="chiefcom_other"/>
+        <exclude sourceId="chiefcom_nausea_vomiting" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="chiefcom_nausea_vomiting" targetId="chiefcom_nausea_vomiting"/>
+        <exclude sourceId="chiefcom_nausea_vomiting" targetId="HELICOPTER"/>
+        <exclude sourceId="chiefcom_nausea_vomiting" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="chiefcom_nausea_vomiting" targetId="chiefcom_chest_pain"/>
+        <exclude sourceId="chiefcom_nausea_vomiting" targetId="chiefcom_abdominal_pain"/>
+        <exclude sourceId="chiefcom_nausea_vomiting" targetId="chiefcom_syncope"/>
+        <exclude sourceId="chiefcom_nausea_vomiting" targetId="chiefcom_back_pain"/>
+        <exclude sourceId="chiefcom_nausea_vomiting" targetId="chiefcom_headache"/>
+        <exclude sourceId="chiefcom_nausea_vomiting" targetId="chiefcom_dizziness"/>
+        <exclude sourceId="chiefcom_nausea_vomiting" targetId="chiefcom_fever_chills"/>
+        <exclude sourceId="HELICOPTER" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="HELICOPTER" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="HELICOPTER" targetId="UNKNOWN"/>
+        <exclude sourceId="HELICOPTER" targetId="chiefcom_nausea_vomiting"/>
+        <exclude sourceId="HELICOPTER" targetId="HELICOPTER"/>
+        <exclude sourceId="HELICOPTER" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="HELICOPTER" targetId="OTHER FACILITY"/>
+        <exclude sourceId="HELICOPTER" targetId="WALK IN"/>
+        <exclude sourceId="HELICOPTER" targetId="chiefcom_dizziness"/>
+        <exclude sourceId="HELICOPTER" targetId="AMBULANCE"/>
+        <exclude sourceId="HELICOPTER" targetId="LEFT WITHOUT BEING SEEN"/>
+        <exclude sourceId="pain_2" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="TRANSFER" targetId="ADMITTED"/>
+        <exclude sourceId="TRANSFER" targetId="TRANSFER"/>
+        <exclude sourceId="TRANSFER" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="TRANSFER" targetId="OTHER FACILITY"/>
+        <exclude sourceId="TRANSFER" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="TRANSFER" targetId="ELOPED"/>
+        <exclude sourceId="TRANSFER" targetId="EXPIRED"/>
+        <exclude sourceId="TRANSFER" targetId="LEFT WITHOUT BEING SEEN"/>
+        <exclude sourceId="TRANSFER" targetId="OTHER"/>
+        <exclude sourceId="TRANSFER" targetId="HOME"/>
+        <exclude sourceId="TRANSFER" targetId="HOSPICE"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="Medicine recorded"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="chiefcom_cough"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="SKILLED NURSING FACILITY"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="DIED"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="chiefcom_nausea_vomiting"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="HELICOPTER"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="TRANSFER"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="OTHER FACILITY"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="ELOPED"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="chiefcom_syncope"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="chiefcom_back_pain"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="AGAINST ADVICE"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="EXPIRED"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="REHAB"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="HOME HEALTH CARE"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="chiefcom_dizziness"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="LEFT WITHOUT BEING SEEN"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="PSYCH FACILITY"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="OTHER"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="HOME"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="Medicine given"/>
+        <exclude sourceId="HEALTHCARE FACILITY" targetId="HOSPICE"/>
+        <exclude sourceId="OTHER FACILITY" targetId="pain_8"/>
+        <exclude sourceId="OTHER FACILITY" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="OTHER FACILITY" targetId="Medicine recorded"/>
+        <exclude sourceId="OTHER FACILITY" targetId="SKILLED NURSING FACILITY"/>
+        <exclude sourceId="OTHER FACILITY" targetId="pain_4"/>
+        <exclude sourceId="OTHER FACILITY" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="OTHER FACILITY" targetId="DIED"/>
+        <exclude sourceId="OTHER FACILITY" targetId="pain_10"/>
+        <exclude sourceId="OTHER FACILITY" targetId="HELICOPTER"/>
+        <exclude sourceId="OTHER FACILITY" targetId="pain_2"/>
+        <exclude sourceId="OTHER FACILITY" targetId="TRANSFER"/>
+        <exclude sourceId="OTHER FACILITY" targetId="pain_5"/>
+        <exclude sourceId="OTHER FACILITY" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="OTHER FACILITY" targetId="OTHER FACILITY"/>
+        <exclude sourceId="OTHER FACILITY" targetId="pain_7"/>
+        <exclude sourceId="OTHER FACILITY" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="OTHER FACILITY" targetId="ELOPED"/>
+        <exclude sourceId="OTHER FACILITY" targetId="AGAINST ADVICE"/>
+        <exclude sourceId="OTHER FACILITY" targetId="EXPIRED"/>
+        <exclude sourceId="OTHER FACILITY" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="OTHER FACILITY" targetId="REHAB"/>
+        <exclude sourceId="OTHER FACILITY" targetId="pain_9"/>
+        <exclude sourceId="OTHER FACILITY" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="OTHER FACILITY" targetId="HOME HEALTH CARE"/>
+        <exclude sourceId="OTHER FACILITY" targetId="pain_6"/>
+        <exclude sourceId="OTHER FACILITY" targetId="pain_1"/>
+        <exclude sourceId="OTHER FACILITY" targetId="pain_3"/>
+        <exclude sourceId="OTHER FACILITY" targetId="pain_0"/>
+        <exclude sourceId="OTHER FACILITY" targetId="PSYCH FACILITY"/>
+        <exclude sourceId="OTHER FACILITY" targetId="OTHER"/>
+        <exclude sourceId="OTHER FACILITY" targetId="Medicine given"/>
+        <exclude sourceId="OTHER FACILITY" targetId="HOSPICE"/>
+        <exclude sourceId="WALK IN" targetId="UNKNOWN"/>
+        <exclude sourceId="WALK IN" targetId="HELICOPTER"/>
+        <exclude sourceId="WALK IN" targetId="WALK IN"/>
+        <exclude sourceId="WALK IN" targetId="AMBULANCE"/>
+        <exclude sourceId="chiefcom_chest_pain" targetId="chiefcom_cough"/>
+        <exclude sourceId="chiefcom_chest_pain" targetId="chiefcom_other"/>
+        <exclude sourceId="chiefcom_chest_pain" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="chiefcom_chest_pain" targetId="chiefcom_nausea_vomiting"/>
+        <exclude sourceId="chiefcom_chest_pain" targetId="chiefcom_chest_pain"/>
+        <exclude sourceId="chiefcom_chest_pain" targetId="chiefcom_abdominal_pain"/>
+        <exclude sourceId="chiefcom_chest_pain" targetId="chiefcom_syncope"/>
+        <exclude sourceId="chiefcom_chest_pain" targetId="chiefcom_back_pain"/>
+        <exclude sourceId="chiefcom_chest_pain" targetId="chiefcom_headache"/>
+        <exclude sourceId="chiefcom_chest_pain" targetId="chiefcom_dizziness"/>
+        <exclude sourceId="chiefcom_chest_pain" targetId="chiefcom_fever_chills"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="DIED"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="ADMITTED"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="TRANSFER"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="OTHER FACILITY"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="ELOPED"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="EXPIRED"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="pain_6"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="pain_1"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="LEFT WITHOUT BEING SEEN"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="PSYCH FACILITY"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="OTHER"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="HOME"/>
+        <exclude sourceId="LEFT AGAINST MEDICAL ADVICE" targetId="HOSPICE"/>
+        <exclude sourceId="ELOPED" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="ELOPED" targetId="DIED"/>
+        <exclude sourceId="ELOPED" targetId="pain_10"/>
+        <exclude sourceId="ELOPED" targetId="ADMITTED"/>
+        <exclude sourceId="ELOPED" targetId="pain_2"/>
+        <exclude sourceId="ELOPED" targetId="TRANSFER"/>
+        <exclude sourceId="ELOPED" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="ELOPED" targetId="OTHER FACILITY"/>
+        <exclude sourceId="ELOPED" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="ELOPED" targetId="ELOPED"/>
+        <exclude sourceId="ELOPED" targetId="EXPIRED"/>
+        <exclude sourceId="ELOPED" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="ELOPED" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="ELOPED" targetId="pain_6"/>
+        <exclude sourceId="ELOPED" targetId="LEFT WITHOUT BEING SEEN"/>
+        <exclude sourceId="ELOPED" targetId="OTHER"/>
+        <exclude sourceId="ELOPED" targetId="HOME"/>
+        <exclude sourceId="ELOPED" targetId="HOSPICE"/>
+        <exclude sourceId="chiefcom_abdominal_pain" targetId="chiefcom_cough"/>
+        <exclude sourceId="chiefcom_abdominal_pain" targetId="chiefcom_other"/>
+        <exclude sourceId="chiefcom_abdominal_pain" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="chiefcom_abdominal_pain" targetId="chiefcom_nausea_vomiting"/>
+        <exclude sourceId="chiefcom_abdominal_pain" targetId="chiefcom_chest_pain"/>
+        <exclude sourceId="chiefcom_abdominal_pain" targetId="chiefcom_abdominal_pain"/>
+        <exclude sourceId="chiefcom_abdominal_pain" targetId="chiefcom_syncope"/>
+        <exclude sourceId="chiefcom_abdominal_pain" targetId="chiefcom_back_pain"/>
+        <exclude sourceId="chiefcom_abdominal_pain" targetId="chiefcom_headache"/>
+        <exclude sourceId="chiefcom_abdominal_pain" targetId="chiefcom_dizziness"/>
+        <exclude sourceId="chiefcom_abdominal_pain" targetId="chiefcom_fever_chills"/>
+        <exclude sourceId="chiefcom_syncope" targetId="chiefcom_cough"/>
+        <exclude sourceId="chiefcom_syncope" targetId="chiefcom_other"/>
+        <exclude sourceId="chiefcom_syncope" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="chiefcom_syncope" targetId="chiefcom_nausea_vomiting"/>
+        <exclude sourceId="chiefcom_syncope" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="chiefcom_syncope" targetId="chiefcom_chest_pain"/>
+        <exclude sourceId="chiefcom_syncope" targetId="chiefcom_abdominal_pain"/>
+        <exclude sourceId="chiefcom_syncope" targetId="chiefcom_syncope"/>
+        <exclude sourceId="chiefcom_syncope" targetId="chiefcom_back_pain"/>
+        <exclude sourceId="chiefcom_syncope" targetId="chiefcom_headache"/>
+        <exclude sourceId="chiefcom_syncope" targetId="chiefcom_dizziness"/>
+        <exclude sourceId="chiefcom_syncope" targetId="chiefcom_fever_chills"/>
+        <exclude sourceId="chiefcom_back_pain" targetId="chiefcom_cough"/>
+        <exclude sourceId="chiefcom_back_pain" targetId="chiefcom_other"/>
+        <exclude sourceId="chiefcom_back_pain" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="chiefcom_back_pain" targetId="chiefcom_nausea_vomiting"/>
+        <exclude sourceId="chiefcom_back_pain" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="chiefcom_back_pain" targetId="chiefcom_chest_pain"/>
+        <exclude sourceId="chiefcom_back_pain" targetId="chiefcom_abdominal_pain"/>
+        <exclude sourceId="chiefcom_back_pain" targetId="chiefcom_syncope"/>
+        <exclude sourceId="chiefcom_back_pain" targetId="chiefcom_back_pain"/>
+        <exclude sourceId="chiefcom_back_pain" targetId="chiefcom_headache"/>
+        <exclude sourceId="chiefcom_back_pain" targetId="chiefcom_dizziness"/>
+        <exclude sourceId="chiefcom_back_pain" targetId="chiefcom_fever_chills"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="pain_8"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="Medicine recorded"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="SKILLED NURSING FACILITY"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="pain_4"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="DIED"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="pain_10"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="pain_2"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="pain_5"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="OTHER FACILITY"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="pain_7"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="AGAINST ADVICE"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="EXPIRED"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="REHAB"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="pain_9"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="HOME HEALTH CARE"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="pain_6"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="pain_1"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="pain_3"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="pain_0"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="PSYCH FACILITY"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="OTHER"/>
+        <exclude sourceId="AGAINST ADVICE" targetId="HOSPICE"/>
+        <exclude sourceId="EXPIRED" targetId="pain_8"/>
+        <exclude sourceId="EXPIRED" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="EXPIRED" targetId="SKILLED NURSING FACILITY"/>
+        <exclude sourceId="EXPIRED" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="EXPIRED" targetId="pain_10"/>
+        <exclude sourceId="EXPIRED" targetId="ADMITTED"/>
+        <exclude sourceId="EXPIRED" targetId="pain_2"/>
+        <exclude sourceId="EXPIRED" targetId="TRANSFER"/>
+        <exclude sourceId="EXPIRED" targetId="pain_5"/>
+        <exclude sourceId="EXPIRED" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="EXPIRED" targetId="OTHER FACILITY"/>
+        <exclude sourceId="EXPIRED" targetId="pain_7"/>
+        <exclude sourceId="EXPIRED" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="EXPIRED" targetId="ELOPED"/>
+        <exclude sourceId="EXPIRED" targetId="AGAINST ADVICE"/>
+        <exclude sourceId="EXPIRED" targetId="EXPIRED"/>
+        <exclude sourceId="EXPIRED" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="EXPIRED" targetId="REHAB"/>
+        <exclude sourceId="EXPIRED" targetId="pain_9"/>
+        <exclude sourceId="EXPIRED" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="EXPIRED" targetId="HOME HEALTH CARE"/>
+        <exclude sourceId="EXPIRED" targetId="pain_6"/>
+        <exclude sourceId="EXPIRED" targetId="pain_1"/>
+        <exclude sourceId="EXPIRED" targetId="pain_3"/>
+        <exclude sourceId="EXPIRED" targetId="LEFT WITHOUT BEING SEEN"/>
+        <exclude sourceId="EXPIRED" targetId="PSYCH FACILITY"/>
+        <exclude sourceId="EXPIRED" targetId="OTHER"/>
+        <exclude sourceId="EXPIRED" targetId="HOME"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="pain_8"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="Medicine recorded"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="SKILLED NURSING FACILITY"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="pain_4"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="DIED"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="pain_10"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="pain_2"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="pain_5"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="OTHER FACILITY"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="pain_7"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="ELOPED"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="AGAINST ADVICE"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="EXPIRED"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="REHAB"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="pain_9"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="HOME HEALTH CARE"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="pain_6"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="pain_1"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="pain_3"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="pain_0"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="PSYCH FACILITY"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="OTHER"/>
+        <exclude sourceId="ACUTE HOSPITAL" targetId="HOSPICE"/>
+        <exclude sourceId="REHAB" targetId="pain_8"/>
+        <exclude sourceId="REHAB" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="REHAB" targetId="Medicine recorded"/>
+        <exclude sourceId="REHAB" targetId="SKILLED NURSING FACILITY"/>
+        <exclude sourceId="REHAB" targetId="pain_4"/>
+        <exclude sourceId="REHAB" targetId="DIED"/>
+        <exclude sourceId="REHAB" targetId="pain_10"/>
+        <exclude sourceId="REHAB" targetId="pain_2"/>
+        <exclude sourceId="REHAB" targetId="pain_5"/>
+        <exclude sourceId="REHAB" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="REHAB" targetId="OTHER FACILITY"/>
+        <exclude sourceId="REHAB" targetId="pain_7"/>
+        <exclude sourceId="REHAB" targetId="AGAINST ADVICE"/>
+        <exclude sourceId="REHAB" targetId="EXPIRED"/>
+        <exclude sourceId="REHAB" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="REHAB" targetId="REHAB"/>
+        <exclude sourceId="REHAB" targetId="pain_9"/>
+        <exclude sourceId="REHAB" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="REHAB" targetId="HOME HEALTH CARE"/>
+        <exclude sourceId="REHAB" targetId="pain_6"/>
+        <exclude sourceId="REHAB" targetId="pain_1"/>
+        <exclude sourceId="REHAB" targetId="pain_3"/>
+        <exclude sourceId="REHAB" targetId="LEFT WITHOUT BEING SEEN"/>
+        <exclude sourceId="REHAB" targetId="pain_0"/>
+        <exclude sourceId="REHAB" targetId="PSYCH FACILITY"/>
+        <exclude sourceId="REHAB" targetId="OTHER"/>
+        <exclude sourceId="REHAB" targetId="HOSPICE"/>
+        <exclude sourceId="chiefcom_headache" targetId="chiefcom_cough"/>
+        <exclude sourceId="chiefcom_headache" targetId="chiefcom_other"/>
+        <exclude sourceId="chiefcom_headache" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="chiefcom_headache" targetId="chiefcom_nausea_vomiting"/>
+        <exclude sourceId="chiefcom_headache" targetId="chiefcom_chest_pain"/>
+        <exclude sourceId="chiefcom_headache" targetId="chiefcom_abdominal_pain"/>
+        <exclude sourceId="chiefcom_headache" targetId="chiefcom_syncope"/>
+        <exclude sourceId="chiefcom_headache" targetId="chiefcom_back_pain"/>
+        <exclude sourceId="chiefcom_headache" targetId="chiefcom_headache"/>
+        <exclude sourceId="chiefcom_headache" targetId="chiefcom_dizziness"/>
+        <exclude sourceId="chiefcom_headache" targetId="chiefcom_fever_chills"/>
+        <exclude sourceId="pain_9" targetId="EXPIRED"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="pain_8"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="Medicine recorded"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="SKILLED NURSING FACILITY"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="pain_4"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="DIED"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="pain_10"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="pain_2"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="pain_5"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="OTHER FACILITY"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="pain_7"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="ELOPED"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="AGAINST ADVICE"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="EXPIRED"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="REHAB"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="pain_9"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="HOME HEALTH CARE"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="pain_6"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="pain_1"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="pain_3"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="pain_0"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="PSYCH FACILITY"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="OTHER"/>
+        <exclude sourceId="CHRONIC/LONG TERM ACUTE CARE" targetId="HOSPICE"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="pain_8"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="Medicine recorded"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="SKILLED NURSING FACILITY"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="pain_4"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="DIED"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="pain_10"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="pain_2"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="pain_5"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="OTHER FACILITY"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="pain_7"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="AGAINST ADVICE"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="EXPIRED"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="REHAB"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="pain_9"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="HOME HEALTH CARE"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="pain_6"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="pain_1"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="pain_3"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="PSYCH FACILITY"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="OTHER"/>
+        <exclude sourceId="HOME HEALTH CARE" targetId="HOSPICE"/>
+        <exclude sourceId="chiefcom_dizziness" targetId="chiefcom_cough"/>
+        <exclude sourceId="chiefcom_dizziness" targetId="chiefcom_other"/>
+        <exclude sourceId="chiefcom_dizziness" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="chiefcom_dizziness" targetId="chiefcom_nausea_vomiting"/>
+        <exclude sourceId="chiefcom_dizziness" targetId="HELICOPTER"/>
+        <exclude sourceId="chiefcom_dizziness" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="chiefcom_dizziness" targetId="chiefcom_chest_pain"/>
+        <exclude sourceId="chiefcom_dizziness" targetId="chiefcom_abdominal_pain"/>
+        <exclude sourceId="chiefcom_dizziness" targetId="chiefcom_syncope"/>
+        <exclude sourceId="chiefcom_dizziness" targetId="chiefcom_back_pain"/>
+        <exclude sourceId="chiefcom_dizziness" targetId="chiefcom_headache"/>
+        <exclude sourceId="chiefcom_dizziness" targetId="chiefcom_dizziness"/>
+        <exclude sourceId="chiefcom_dizziness" targetId="chiefcom_fever_chills"/>
+        <exclude sourceId="pain_1" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="pain_1" targetId="EXPIRED"/>
+        <exclude sourceId="AMBULANCE" targetId="UNKNOWN"/>
+        <exclude sourceId="AMBULANCE" targetId="HELICOPTER"/>
+        <exclude sourceId="AMBULANCE" targetId="WALK IN"/>
+        <exclude sourceId="AMBULANCE" targetId="AMBULANCE"/>
+        <exclude sourceId="start_vit_sign_monitor" targetId="start_vit_sign_monitor"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="pain_8"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="Medicine recorded"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="DIED"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="pain_10"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="ADMITTED"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="HELICOPTER"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="pain_2"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="TRANSFER"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="pain_7"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="ELOPED"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="EXPIRED"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="REHAB"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="pain_9"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="pain_1"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="pain_3"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="LEFT WITHOUT BEING SEEN"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="OTHER"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="HOME"/>
+        <exclude sourceId="LEFT WITHOUT BEING SEEN" targetId="HOSPICE"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="pain_8"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="Medicine recorded"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="SKILLED NURSING FACILITY"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="pain_4"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="DIED"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="pain_10"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="pain_2"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="pain_5"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="OTHER FACILITY"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="pain_7"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="AGAINST ADVICE"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="EXPIRED"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="REHAB"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="pain_9"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="HOME HEALTH CARE"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="pain_6"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="pain_1"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="pain_3"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="pain_0"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="PSYCH FACILITY"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="OTHER"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="Medicine given"/>
+        <exclude sourceId="PSYCH FACILITY" targetId="HOSPICE"/>
+        <exclude sourceId="OTHER" targetId="EXPIRED"/>
+        <exclude sourceId="HOME" targetId="ADMITTED"/>
+        <exclude sourceId="HOME" targetId="TRANSFER"/>
+        <exclude sourceId="HOME" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="HOME" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="HOME" targetId="ELOPED"/>
+        <exclude sourceId="HOME" targetId="EXPIRED"/>
+        <exclude sourceId="HOME" targetId="LEFT WITHOUT BEING SEEN"/>
+        <exclude sourceId="HOME" targetId="OTHER"/>
+        <exclude sourceId="HOME" targetId="HOME"/>
+        <exclude sourceId="chiefcom_fever_chills" targetId="chiefcom_cough"/>
+        <exclude sourceId="chiefcom_fever_chills" targetId="chiefcom_other"/>
+        <exclude sourceId="chiefcom_fever_chills" targetId="chiefcom_shortness_of_breath"/>
+        <exclude sourceId="chiefcom_fever_chills" targetId="chiefcom_nausea_vomiting"/>
+        <exclude sourceId="chiefcom_fever_chills" targetId="chiefcom_chest_pain"/>
+        <exclude sourceId="chiefcom_fever_chills" targetId="chiefcom_abdominal_pain"/>
+        <exclude sourceId="chiefcom_fever_chills" targetId="chiefcom_syncope"/>
+        <exclude sourceId="chiefcom_fever_chills" targetId="chiefcom_back_pain"/>
+        <exclude sourceId="chiefcom_fever_chills" targetId="chiefcom_headache"/>
+        <exclude sourceId="chiefcom_fever_chills" targetId="chiefcom_dizziness"/>
+        <exclude sourceId="chiefcom_fever_chills" targetId="chiefcom_fever_chills"/>
+        <exclude sourceId="HOSPICE" targetId="pain_8"/>
+        <exclude sourceId="HOSPICE" targetId="ASSISTED LIVING"/>
+        <exclude sourceId="HOSPICE" targetId="Medicine recorded"/>
+        <exclude sourceId="HOSPICE" targetId="SKILLED NURSING FACILITY"/>
+        <exclude sourceId="HOSPICE" targetId="pain_4"/>
+        <exclude sourceId="HOSPICE" targetId="DIED"/>
+        <exclude sourceId="HOSPICE" targetId="pain_10"/>
+        <exclude sourceId="HOSPICE" targetId="pain_2"/>
+        <exclude sourceId="HOSPICE" targetId="TRANSFER"/>
+        <exclude sourceId="HOSPICE" targetId="pain_5"/>
+        <exclude sourceId="HOSPICE" targetId="HEALTHCARE FACILITY"/>
+        <exclude sourceId="HOSPICE" targetId="OTHER FACILITY"/>
+        <exclude sourceId="HOSPICE" targetId="pain_7"/>
+        <exclude sourceId="HOSPICE" targetId="LEFT AGAINST MEDICAL ADVICE"/>
+        <exclude sourceId="HOSPICE" targetId="ELOPED"/>
+        <exclude sourceId="HOSPICE" targetId="AGAINST ADVICE"/>
+        <exclude sourceId="HOSPICE" targetId="ACUTE HOSPITAL"/>
+        <exclude sourceId="HOSPICE" targetId="REHAB"/>
+        <exclude sourceId="HOSPICE" targetId="pain_9"/>
+        <exclude sourceId="HOSPICE" targetId="CHRONIC/LONG TERM ACUTE CARE"/>
+        <exclude sourceId="HOSPICE" targetId="HOME HEALTH CARE"/>
+        <exclude sourceId="HOSPICE" targetId="pain_6"/>
+        <exclude sourceId="HOSPICE" targetId="pain_1"/>
+        <exclude sourceId="HOSPICE" targetId="pain_3"/>
+        <exclude sourceId="HOSPICE" targetId="LEFT WITHOUT BEING SEEN"/>
+        <exclude sourceId="HOSPICE" targetId="pain_0"/>
+        <exclude sourceId="HOSPICE" targetId="PSYCH FACILITY"/>
+        <exclude sourceId="HOSPICE" targetId="OTHER"/>
+        <exclude sourceId="HOSPICE" targetId="HOSPICE"/>
+      </excludes>
+      <includes>
+        <include sourceId="Diagnosis" targetId="HEALTHCARE FACILITY"/>
+      </includes>
+    </constraints>
+  </specification>
+  <runtime>
+    <marking>
+      <executed/>
+      <included>
+        <event id="pain_8"/>
+        <event id="ASSISTED LIVING"/>
+        <event id="Medicine recorded"/>
+        <event id="end_vit_sign_monitor"/>
+        <event id="chiefcom_cough"/>
+        <event id="chiefcom_other"/>
+        <event id="SKILLED NURSING FACILITY"/>
+        <event id="Diagnosis"/>
+        <event id="pain_4"/>
+        <event id="chiefcom_shortness_of_breath"/>
+        <event id="DIED"/>
+        <event id="UNKNOWN"/>
+        <event id="pain_10"/>
+        <event id="ADMITTED"/>
+        <event id="chiefcom_nausea_vomiting"/>
+        <event id="HELICOPTER"/>
+        <event id="pain_2"/>
+        <event id="TRANSFER"/>
+        <event id="pain_5"/>
+        <event id="HEALTHCARE FACILITY"/>
+        <event id="OTHER FACILITY"/>
+        <event id="pain_7"/>
+        <event id="WALK IN"/>
+        <event id="chiefcom_chest_pain"/>
+        <event id="LEFT AGAINST MEDICAL ADVICE"/>
+        <event id="ELOPED"/>
+        <event id="chiefcom_abdominal_pain"/>
+        <event id="chiefcom_syncope"/>
+        <event id="chiefcom_back_pain"/>
+        <event id="AGAINST ADVICE"/>
+        <event id="EXPIRED"/>
+        <event id="ACUTE HOSPITAL"/>
+        <event id="REHAB"/>
+        <event id="chiefcom_headache"/>
+        <event id="pain_9"/>
+        <event id="CHRONIC/LONG TERM ACUTE CARE"/>
+        <event id="HOME HEALTH CARE"/>
+        <event id="chiefcom_dizziness"/>
+        <event id="pain_6"/>
+        <event id="pain_1"/>
+        <event id="AMBULANCE"/>
+        <event id="start_vit_sign_monitor"/>
+        <event id="pain_3"/>
+        <event id="LEFT WITHOUT BEING SEEN"/>
+        <event id="pain_0"/>
+        <event id="PSYCH FACILITY"/>
+        <event id="OTHER"/>
+        <event id="HOME"/>
+        <event id="chiefcom_fever_chills"/>
+        <event id="Medicine given"/>
+        <event id="HOSPICE"/>
+      </included>
+      <pendingResponses/>
+    </marking>
+  </runtime>
+</dcrgraph>

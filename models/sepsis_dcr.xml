@@ -1,183 +1,553 @@
-<dcrgraph title="Sepsis Cases DCR">
-  <specification>
-    <resources>
-      <events>
-        <event id="IV Liquid"/>
-        <event id="Admission NC"/>
-        <event id="ER Registration"/>
-        <event id="Admission IC"/>
-        <event id="Release B"/>
-        <event id="Leucocytes"/>
-        <event id="ER Sepsis Triage"/>
-        <event id="Release E"/>
-        <event id="IV Antibiotics"/>
-        <event id="ER Triage"/>
-        <event id="LacticAcid"/>
-        <event id="Return ER"/>
-        <event id="CRP"/>
-        <event id="Release A"/>
-        <event id="Release C"/>
-        <event id="Release D"/>
-      </events>
-      <labels>
-        <label id="IV Liquid"/>
-        <label id="Admission NC"/>
-        <label id="ER Registration"/>
-        <label id="Admission IC"/>
-        <label id="Release B"/>
-        <label id="Leucocytes"/>
-        <label id="ER Sepsis Triage"/>
-        <label id="Release E"/>
-        <label id="IV Antibiotics"/>
-        <label id="ER Triage"/>
-        <label id="LacticAcid"/>
-        <label id="Return ER"/>
-        <label id="CRP"/>
-        <label id="Release A"/>
-        <label id="Release C"/>
-        <label id="Release D"/>
-      </labels>
-      <labelMappings>
-        <labelMapping eventId="IV Liquid" labelId="IV Liquid"/>
-        <labelMapping eventId="Admission NC" labelId="Admission NC"/>
-        <labelMapping eventId="ER Registration" labelId="ER Registration"/>
-        <labelMapping eventId="Admission IC" labelId="Admission IC"/>
-        <labelMapping eventId="Release B" labelId="Release B"/>
-        <labelMapping eventId="Leucocytes" labelId="Leucocytes"/>
-        <labelMapping eventId="ER Sepsis Triage" labelId="ER Sepsis Triage"/>
-        <labelMapping eventId="Release E" labelId="Release E"/>
-        <labelMapping eventId="IV Antibiotics" labelId="IV Antibiotics"/>
-        <labelMapping eventId="ER Triage" labelId="ER Triage"/>
-        <labelMapping eventId="LacticAcid" labelId="LacticAcid"/>
-        <labelMapping eventId="Return ER" labelId="Return ER"/>
-        <labelMapping eventId="CRP" labelId="CRP"/>
-        <labelMapping eventId="Release A" labelId="Release A"/>
-        <labelMapping eventId="Release C" labelId="Release C"/>
-        <labelMapping eventId="Release D" labelId="Release D"/>
-      </labelMappings>
-    </resources>
-    <constraints>
-      <conditions>
-        <condition sourceId="ER Registration" targetId="Admission NC"/>
-        <condition sourceId="ER Triage" targetId="Admission NC"/>
-        <condition sourceId="ER Registration" targetId="Admission IC"/>
-        <condition sourceId="ER Triage" targetId="Admission IC"/>
-        <condition sourceId="ER Registration" targetId="Release B"/>
-        <condition sourceId="Leucocytes" targetId="Release B"/>
-        <condition sourceId="ER Sepsis Triage" targetId="Release B"/>
-        <condition sourceId="ER Triage" targetId="Release B"/>
-        <condition sourceId="CRP" targetId="Release B"/>
-        <condition sourceId="Admission NC" targetId="Release E"/>
-        <condition sourceId="Leucocytes" targetId="Release E"/>
-        <condition sourceId="ER Sepsis Triage" targetId="Release E"/>
-        <condition sourceId="CRP" targetId="Release E"/>
-        <condition sourceId="ER Sepsis Triage" targetId="IV Antibiotics"/>
-        <condition sourceId="Admission IC" targetId="Return ER"/>
-        <condition sourceId="Release E" targetId="Return ER"/>
-        <condition sourceId="Release A" targetId="Return ER"/>
-        <condition sourceId="Release C" targetId="Return ER"/>
-        <condition sourceId="Release D" targetId="Return ER"/>
-        <condition sourceId="ER Registration" targetId="Release A"/>
-        <condition sourceId="ER Triage" targetId="Release A"/>
-        <condition sourceId="Admission NC" targetId="Release C"/>
-        <condition sourceId="Leucocytes" targetId="Release C"/>
-        <condition sourceId="ER Sepsis Triage" targetId="Release C"/>
-        <condition sourceId="CRP" targetId="Release C"/>
-        <condition sourceId="Admission NC" targetId="Release D"/>
-        <condition sourceId="Leucocytes" targetId="Release D"/>
-        <condition sourceId="ER Sepsis Triage" targetId="Release D"/>
-        <condition sourceId="CRP" targetId="Release D"/>
-      </conditions>
-      <responses/>
-      <excludes>
-        <exclude sourceId="IV Liquid" targetId="IV Liquid"/>
-        <exclude sourceId="ER Registration" targetId="ER Registration"/>
-        <exclude sourceId="Admission IC" targetId="ER Triage"/>
-        <exclude sourceId="Release B" targetId="Admission IC"/>
-        <exclude sourceId="Release B" targetId="Release B"/>
-        <exclude sourceId="Release B" targetId="Leucocytes"/>
-        <exclude sourceId="Release B" targetId="Release E"/>
-        <exclude sourceId="Release B" targetId="ER Triage"/>
-        <exclude sourceId="Release B" targetId="LacticAcid"/>
-        <exclude sourceId="Release B" targetId="Return ER"/>
-        <exclude sourceId="Release B" targetId="CRP"/>
-        <exclude sourceId="Release B" targetId="Release A"/>
-        <exclude sourceId="Release B" targetId="Release C"/>
-        <exclude sourceId="Release B" targetId="Release D"/>
-        <exclude sourceId="ER Sepsis Triage" targetId="ER Sepsis Triage"/>
-        <exclude sourceId="Release E" targetId="Admission NC"/>
-        <exclude sourceId="Release E" targetId="Admission IC"/>
-        <exclude sourceId="Release E" targetId="Release B"/>
-        <exclude sourceId="Release E" targetId="Leucocytes"/>
-        <exclude sourceId="Release E" targetId="Release E"/>
-        <exclude sourceId="Release E" targetId="ER Triage"/>
-        <exclude sourceId="Release E" targetId="LacticAcid"/>
-        <exclude sourceId="Release E" targetId="CRP"/>
-        <exclude sourceId="Release E" targetId="Release A"/>
-        <exclude sourceId="Release E" targetId="Release C"/>
-        <exclude sourceId="Release E" targetId="Release D"/>
-        <exclude sourceId="IV Antibiotics" targetId="IV Antibiotics"/>
-        <exclude sourceId="Return ER" targetId="Admission NC"/>
-        <exclude sourceId="Return ER" targetId="Admission IC"/>
-        <exclude sourceId="Return ER" targetId="Release B"/>
-        <exclude sourceId="Return ER" targetId="ER Triage"/>
-        <exclude sourceId="Return ER" targetId="Return ER"/>
-        <exclude sourceId="Release A" targetId="Admission NC"/>
-        <exclude sourceId="Release A" targetId="Admission IC"/>
-        <exclude sourceId="Release A" targetId="Release B"/>
-        <exclude sourceId="Release A" targetId="Release E"/>
-        <exclude sourceId="Release A" targetId="ER Triage"/>
-        <exclude sourceId="Release A" targetId="Release A"/>
-        <exclude sourceId="Release A" targetId="Release C"/>
-        <exclude sourceId="Release A" targetId="Release D"/>
-        <exclude sourceId="Release C" targetId="Admission NC"/>
-        <exclude sourceId="Release C" targetId="Admission IC"/>
-        <exclude sourceId="Release C" targetId="Release B"/>
-        <exclude sourceId="Release C" targetId="Leucocytes"/>
-        <exclude sourceId="Release C" targetId="Release E"/>
-        <exclude sourceId="Release C" targetId="ER Triage"/>
-        <exclude sourceId="Release C" targetId="LacticAcid"/>
-        <exclude sourceId="Release C" targetId="CRP"/>
-        <exclude sourceId="Release C" targetId="Release A"/>
-        <exclude sourceId="Release C" targetId="Release C"/>
-        <exclude sourceId="Release C" targetId="Release D"/>
-        <exclude sourceId="Release D" targetId="Admission NC"/>
-        <exclude sourceId="Release D" targetId="Admission IC"/>
-        <exclude sourceId="Release D" targetId="Release B"/>
-        <exclude sourceId="Release D" targetId="Leucocytes"/>
-        <exclude sourceId="Release D" targetId="Release E"/>
-        <exclude sourceId="Release D" targetId="ER Triage"/>
-        <exclude sourceId="Release D" targetId="LacticAcid"/>
-        <exclude sourceId="Release D" targetId="CRP"/>
-        <exclude sourceId="Release D" targetId="Release A"/>
-        <exclude sourceId="Release D" targetId="Release C"/>
-        <exclude sourceId="Release D" targetId="Release D"/>
-      </excludes>
-      <includes/>
-    </constraints>
-  </specification>
-  <runtime>
-    <marking>
-      <executed/>
-      <included>
-        <event id="IV Liquid"/>
-        <event id="Admission NC"/>
-        <event id="ER Registration"/>
-        <event id="Admission IC"/>
-        <event id="Release B"/>
-        <event id="Leucocytes"/>
-        <event id="ER Sepsis Triage"/>
-        <event id="Release E"/>
-        <event id="IV Antibiotics"/>
-        <event id="ER Triage"/>
-        <event id="LacticAcid"/>
-        <event id="Return ER"/>
-        <event id="CRP"/>
-        <event id="Release A"/>
-        <event id="Release C"/>
-        <event id="Release D"/>
-      </included>
-      <pendingResponses/>
-    </marking>
-  </runtime>
-</dcrgraph>
+<DCRModel>
+  <id>1621743</id>
+  <title>Sepsis Cases</title>
+  <graphType>DCRModel</graphType>
+  <events>
+    <id>Admission NC</id>
+    <label>Admission NC</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>ER Triage</source>
+    <target>Admission NC</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>ER Registration</source>
+    <target>Admission NC</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <events>
+    <id>Admission IC</id>
+    <label>Admission IC</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>ER Triage</source>
+    <target>Admission IC</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Admission IC</source>
+    <target>ER Triage</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>ER Registration</source>
+    <target>Admission IC</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <events>
+    <id>Release E</id>
+    <label>Release E</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>Admission NC</source>
+    <target>Release E</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release E</source>
+    <target>Admission NC</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release E</source>
+    <target>Admission IC</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release E</source>
+    <target>Release E</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Leucocytes</source>
+    <target>Release E</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release E</source>
+    <target>Leucocytes</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release E</source>
+    <target>Release B</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>CRP</source>
+    <target>Release E</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release E</source>
+    <target>CRP</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release E</source>
+    <target>Release A</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release E</source>
+    <target>ER Triage</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release E</source>
+    <target>LacticAcid</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release E</source>
+    <target>Release C</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>ER Sepsis Triage</source>
+    <target>Release E</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release E</source>
+    <target>Release D</target>
+  </rules>
+  <events>
+    <id>IV Liquid</id>
+    <label>IV Liquid</label>
+  </events>
+  <rules>
+    <type>excludes</type>
+    <source>IV Liquid</source>
+    <target>IV Liquid</target>
+  </rules>
+  <events>
+    <id>Leucocytes</id>
+    <label>Leucocytes</label>
+  </events>
+  <events>
+    <id>Release B</id>
+    <label>Release B</label>
+  </events>
+  <rules>
+    <type>excludes</type>
+    <source>Release B</source>
+    <target>Admission IC</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release B</source>
+    <target>Release E</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Leucocytes</source>
+    <target>Release B</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release B</source>
+    <target>Leucocytes</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release B</source>
+    <target>Release B</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>CRP</source>
+    <target>Release B</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release B</source>
+    <target>CRP</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release B</source>
+    <target>Release A</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>ER Triage</source>
+    <target>Release B</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release B</source>
+    <target>ER Triage</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release B</source>
+    <target>LacticAcid</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release B</source>
+    <target>Release C</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release B</source>
+    <target>Return ER</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>ER Sepsis Triage</source>
+    <target>Release B</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release B</source>
+    <target>Release D</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>ER Registration</source>
+    <target>Release B</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <events>
+    <id>CRP</id>
+    <label>CRP</label>
+  </events>
+  <events>
+    <id>Release A</id>
+    <label>Release A</label>
+  </events>
+  <rules>
+    <type>excludes</type>
+    <source>Release A</source>
+    <target>Admission NC</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release A</source>
+    <target>Admission IC</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release A</source>
+    <target>Release E</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release A</source>
+    <target>Release B</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release A</source>
+    <target>Release A</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>ER Triage</source>
+    <target>Release A</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release A</source>
+    <target>ER Triage</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release A</source>
+    <target>Release C</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release A</source>
+    <target>Release D</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>ER Registration</source>
+    <target>Release A</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <events>
+    <id>ER Triage</id>
+    <label>ER Triage</label>
+  </events>
+  <events>
+    <id>LacticAcid</id>
+    <label>LacticAcid</label>
+  </events>
+  <events>
+    <id>IV Antibiotics</id>
+    <label>IV Antibiotics</label>
+  </events>
+  <rules>
+    <type>excludes</type>
+    <source>IV Antibiotics</source>
+    <target>IV Antibiotics</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>ER Sepsis Triage</source>
+    <target>IV Antibiotics</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <events>
+    <id>Release C</id>
+    <label>Release C</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>Admission NC</source>
+    <target>Release C</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release C</source>
+    <target>Admission NC</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release C</source>
+    <target>Admission IC</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release C</source>
+    <target>Release E</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Leucocytes</source>
+    <target>Release C</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release C</source>
+    <target>Leucocytes</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release C</source>
+    <target>Release B</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>CRP</source>
+    <target>Release C</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release C</source>
+    <target>CRP</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release C</source>
+    <target>Release A</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release C</source>
+    <target>ER Triage</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release C</source>
+    <target>LacticAcid</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release C</source>
+    <target>Release C</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>ER Sepsis Triage</source>
+    <target>Release C</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release C</source>
+    <target>Release D</target>
+  </rules>
+  <events>
+    <id>Return ER</id>
+    <label>Return ER</label>
+  </events>
+  <rules>
+    <type>excludes</type>
+    <source>Return ER</source>
+    <target>Admission NC</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Admission IC</source>
+    <target>Return ER</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Return ER</source>
+    <target>Admission IC</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Release E</source>
+    <target>Return ER</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Return ER</source>
+    <target>Release B</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Release A</source>
+    <target>Return ER</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Return ER</source>
+    <target>ER Triage</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Release C</source>
+    <target>Return ER</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Return ER</source>
+    <target>Return ER</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Release D</source>
+    <target>Return ER</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <events>
+    <id>ER Sepsis Triage</id>
+    <label>ER Sepsis Triage</label>
+  </events>
+  <rules>
+    <type>excludes</type>
+    <source>ER Sepsis Triage</source>
+    <target>ER Sepsis Triage</target>
+  </rules>
+  <events>
+    <id>Release D</id>
+    <label>Release D</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>Admission NC</source>
+    <target>Release D</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release D</source>
+    <target>Admission NC</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release D</source>
+    <target>Admission IC</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release D</source>
+    <target>Release E</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Leucocytes</source>
+    <target>Release D</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release D</source>
+    <target>Leucocytes</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release D</source>
+    <target>Release B</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>CRP</source>
+    <target>Release D</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release D</source>
+    <target>CRP</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release D</source>
+    <target>Release A</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release D</source>
+    <target>ER Triage</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release D</source>
+    <target>LacticAcid</target>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release D</source>
+    <target>Release C</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>ER Sepsis Triage</source>
+    <target>Release D</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>excludes</type>
+    <source>Release D</source>
+    <target>Release D</target>
+  </rules>
+  <events>
+    <id>ER Registration</id>
+    <label>ER Registration</label>
+  </events>
+  <rules>
+    <type>excludes</type>
+    <source>ER Registration</source>
+    <target>ER Registration</target>
+  </rules>
+</DCRModel>
