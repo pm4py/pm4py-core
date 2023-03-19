@@ -49,8 +49,8 @@ def generate_nx_graph_from_dfg(dfg, start_activities, end_activities, activities
         Identifier of the end node (connected to all the end activities)
     """
     import networkx as nx
-    start_node = str(uuid.uuid4())
-    end_node = str(uuid.uuid4())
+    start_node = '4d872045-8664-4e21-bd55-5da5edb096fe' # made static to avoid undeterminism
+    end_node = 'b8136db7-b162-4763-bd68-4d5ccbcdff87' # made static to avoid undeterminism
     G = nx.DiGraph()
     G.add_node(start_node)
     G.add_node(end_node)

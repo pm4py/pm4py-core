@@ -14,9 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-
-from pm4py.algo.analysis import extended_marking_equation, marking_equation, workflow_net
-
-import pkgutil
-if pkgutil.find_loader("simpy"):
-    from pm4py.algo.analysis import woflan
+from pm4py.algo.analysis import extended_marking_equation, marking_equation, workflow_net, woflan

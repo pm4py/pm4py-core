@@ -265,7 +265,7 @@ Consider the example code below, in which we provide various example application
 
         filtered = pm4py.filter_start_activities(log, {'register request TYPO!'})
 
-        filtered = pm4py.filter_end_activities(log, 'pay compensation')
+        filtered = pm4py.filter_end_activities(log, {'pay compensation'})
 
         filtered = pm4py.filter_event_attribute_values(log, 'org:resource', {'Pete', 'Mike'})
 
@@ -319,7 +319,7 @@ Interestingly, none of the algorithms implemented in PM4Py directly discovers a 
     if __name__ == "__main__":
         log = pm4py.read_xes('C:/Users/demo/Downloads/running-example.xes')
 
-        process_tree = pm4py.discover_tree_inductive(log)
+        process_tree = pm4py.discover_process_tree_inductive(log)
         bpmn_model = pm4py.convert_to_bpmn(process_tree)
         pm4py.view_bpmn(bpmn_model)
 
@@ -342,7 +342,7 @@ As indicated, the algorithm used in this example actually discovers a Process Tr
     if __name__ == "__main__":
         log = pm4py.read_xes('C:/Users/demo/Downloads/running-example.xes')
 
-        process_tree = pm4py.discover_tree_inductive(log)
+        process_tree = pm4py.discover_process_tree_inductive(log)
         pm4py.view_process_tree(process_tree)
 
 

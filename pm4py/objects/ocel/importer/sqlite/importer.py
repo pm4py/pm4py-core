@@ -19,12 +19,13 @@ from pm4py.objects.ocel.obj import OCEL
 from typing import Dict, Any
 from enum import Enum
 from typing import Optional
-from pm4py.objects.ocel.importer.sqlite.variants import pandas_importer
+from pm4py.objects.ocel.importer.sqlite.variants import pandas_importer, ocel20
 from pm4py.util import exec_utils
 
 
 class Variants(Enum):
     PANDAS_IMPORTER = pandas_importer
+    OCEL20 = ocel20
 
 
 def apply(file_path: str, variant=Variants.PANDAS_IMPORTER, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:

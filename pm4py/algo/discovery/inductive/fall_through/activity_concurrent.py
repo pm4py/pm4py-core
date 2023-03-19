@@ -15,7 +15,6 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from collections import Counter
-from multiprocessing import Pool, Queue, Manager, Event
 from typing import Optional, Tuple, List, Any, Dict
 
 from pm4py.algo.discovery.inductive.cuts.factory import CutFactory
@@ -37,7 +36,7 @@ class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
     MULTI_PROCESSING_LOWER_BOUND = 20
 
     @classmethod
-    def _process_candidate(cls, c: Any, log: UVCL, queue: Queue = None, ev: Event = None, parameters: Optional[Dict[str, Any]] = None):
+    def _process_candidate(cls, c: Any, log: UVCL, queue=None, ev=None, parameters: Optional[Dict[str, Any]] = None):
         l_alt = Counter()
         for t in log:
             l_alt[tuple(filter(lambda e: e != c, t))] = log[t]
@@ -47,7 +46,7 @@ class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
         return cut if cut is not None else None
 
     @classmethod
-    def _get_candidate(cls, obj: IMDataStructureUVCL, pool: Pool, manager: Manager, parameters: Optional[Dict[str, Any]] = None) -> Optional[Any]:
+    def _get_candidate(cls, obj: IMDataStructureUVCL, pool, manager, parameters: Optional[Dict[str, Any]] = None) -> Optional[Any]:
         if parameters is None:
             parameters = {}
 
@@ -81,7 +80,7 @@ class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
         return None
 
     @classmethod
-    def _find_cut(cls, obj: IMDataStructureUVCL, ev: Event, parameters: Optional[Dict[str, Any]] = None) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
+    def _find_cut(cls, obj: IMDataStructureUVCL, ev, parameters: Optional[Dict[str, Any]] = None) -> Optional[Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
         for c in CutFactory.get_cuts(obj, IMInstance.IM, parameters=parameters):
             if ev is not None and ev.is_set():
                 return None
@@ -95,7 +94,7 @@ class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
         return cls._get_candidate(obj, None, None, parameters) is not None
 
     @classmethod
-    def apply(cls, obj: IMDataStructureUVCL, pool: Pool = None, manager: Manager = None, parameters: Optional[Dict[str, Any]] = None) -> Optional[
+    def apply(cls, obj: IMDataStructureUVCL, pool=None, manager=None, parameters: Optional[Dict[str, Any]] = None) -> Optional[
         Tuple[ProcessTree, List[IMDataStructureUVCL]]]:
         candidate = cls._get_candidate(obj, pool, manager, parameters)
         if candidate is None:

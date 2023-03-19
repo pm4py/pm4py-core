@@ -146,17 +146,18 @@ def transform_basis(basis, style=None):
             # kind of problems.
             sol = solver.apply(c, Aub, bub, Aeq, beq, variant=solver.SCIPY)
             points = solver.get_points_from_sol(sol, variant=solver.SCIPY)
-            new_vector = np.zeros(len(vector))
+            if points is not None:
+                new_vector = np.zeros(len(vector))
 
-            if style == "weighted":
-                for i in range(len(new_vector)):
-                    new_vector[i] = points[len(set_B)] * vector[i]
-                    for j in range(len(modified_base)):
-                        new_vector[i] = new_vector[i] + modified_base[j][i] * points[j]
-            elif style == "uniform":
-                for i in range(len(new_vector)):
-                    new_vector[i] = points[len(set_B) + 1 + i]
-            modified_base.append(new_vector)
+                if style == "weighted":
+                    for i in range(len(new_vector)):
+                        new_vector[i] = points[len(set_B)] * vector[i]
+                        for j in range(len(modified_base)):
+                            new_vector[i] = new_vector[i] + modified_base[j][i] * points[j]
+                elif style == "uniform":
+                    for i in range(len(new_vector)):
+                        new_vector[i] = points[len(set_B) + 1 + i]
+                modified_base.append(new_vector)
 
     return modified_base
 

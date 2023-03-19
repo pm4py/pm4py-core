@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.5.3 (2023.02.XX)
+## pm4py 2.6.2 (2023.03.XX)
 
 ### Added
 
@@ -9,8 +9,100 @@
 ### Deprecated
 
 ### Fixed
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.6.1 (2023.03.14)
+
+### Added
+* c9eac43f4b55883056a3540857b470ac18cc922e
+  * extract_ocel_features method in the simplified interface
+* d2744bf87b0ce80ddc8d42a5b935424c36ffb82f
+  * possibility to conisder additional event attributes in the convert_log_to_ocel method
+
+### Changed
+* 84e85c6e4715fe58159f6cfb83248d1cfa28bc8e
+  * possibility to return additional information during the conversion of BPMN to Petri net
+
+### Deprecated
+
+### Fixed
+* e1b126c5adca8d5767375a6737a9d9378a9093c6
+  * bug fix object-centric Petri nets discovery
+
+### Removed
+
+### Other
+
+---
+
+## pm4py 2.6.0 (2023.03.13)
+
+### Added
+* 73254a80b3430140fac2ff023a6e356edc48dd0f
+  * ILP miner (process discovery in ILP)
+* 7016026a2a514d529fe5cf9a49b4aa607d30183c
+  * "timestamp grouping filter" and "consecutive activities"
+    filters for Pandas dataframes
+* 4ba2a9e873c972c96fed8f3912f0dbaa8dfc96a1
+  * added pm4py.insert_case_arrival_finish_rate,
+    pm4py.insert_case_service_waiting_time,
+    pm4py.extract_outcome_enriched_dataframe
+    methods to the simplified interface (Pandas dataframes)
+* 18b250e38bcfeb08cda549df94de98ce5c5b484e
+  * added baseline log clustering based on profiles
+    (Song, Minseok, Christian W. Günther, and Wil MP Van der Aalst.
+    "Trace clustering in process mining."
+    Business Process Management Workshops: BPM 2008. )
+* 690716015f2452702b8f045e35e2029659bbd226
+  * log to target vectors (for ML purposes): next_activity, next_time, remaining_time
+
+### Changed
+* d6d2301dd0d2ea57cba76015eba124f726f4544e
+  * introduced optional "lifecycle paths" feature
+    in OCEL feature extraction
+
+### Deprecated
+
+### Fixed
+* 0a1c6f9c6e0ff45a0e732978589ed17513899be8
+  * fixed dependency on Simpy in __init__.py
+
+### Removed
+
+### Other
+* a313db141148a960d7eb5126831bc1f8829a2ca4
+  * made fundamental and optional requirements clearer
+
+---
+
+## pm4py 2.5.3 (2023.03.05)
+
+### Added
+
+### Changed
+* ea0da47ff6faaddb087ffa2344c6139c30978dca
+  * SVG position parser utility (replacing text-based parsing in Graphviz BPMN-based layout)
+* 9ea35fe209982f87f478262e1398e8474b3be1ba
+  * working variant for generator of all optimal alignments
+* 3f07223236eb350a72db87c8a708dcea13c1a5a3
+  * refactored df_statistics.get_dfg_graph method and DFG visualization
+* 268311a99ee7d2df245026371ab7449538ffcff8
+  * support for object versioning in OCEL
+
+### Deprecated
+
+### Fixed
 * 5d4bbb60bf940f8c5d654de0c8ecaec8cbb44d48
   * fixes for Pandas 2.0
+* ea09b4910874dbb165277a4de93286c05ac0ba5c
+  * carefully performing SQLite3 import (DLL compatibility issues with Anaconda)
+* 06217786793dc7fa22706ecc143778d8ebbe3d2e
+  * fixed indeterminism in edges filtering during paths percentage filter
 
 ### Removed
 

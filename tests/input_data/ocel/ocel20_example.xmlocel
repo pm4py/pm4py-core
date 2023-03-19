@@ -1,0 +1,246 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<log>
+  <object-types>
+    <object-type name="Invoice">
+      <attributes>
+        <attribute name="is_blocked" type="string"/>
+      </attributes>
+    </object-type>
+    <object-type name="Payment">
+      <attributes/>
+    </object-type>
+    <object-type name="Purchase Order">
+      <attributes>
+        <attribute name="po_product" type="string"/>
+        <attribute name="po_quantity" type="string"/>
+      </attributes>
+    </object-type>
+    <object-type name="Purchase Requisition">
+      <attributes>
+        <attribute name="pr_product" type="string"/>
+        <attribute name="pr_quantity" type="string"/>
+      </attributes>
+    </object-type>
+  </object-types>
+  <event-types>
+    <event-type name="Approve Purchase Requisition">
+      <attributes>
+        <attribute name="pr_approver" type="string"/>
+      </attributes>
+    </event-type>
+    <event-type name="Change PO Quantity">
+      <attributes>
+        <attribute name="po_editor" type="string"/>
+      </attributes>
+    </event-type>
+    <event-type name="Create Purchase Order">
+      <attributes>
+        <attribute name="po_creator" type="string"/>
+      </attributes>
+    </event-type>
+    <event-type name="Create Purchase Requisition">
+      <attributes>
+        <attribute name="pr_creator" type="string"/>
+      </attributes>
+    </event-type>
+    <event-type name="Insert Invoice">
+      <attributes>
+        <attribute name="invoice_inserter" type="string"/>
+      </attributes>
+    </event-type>
+    <event-type name="Insert Payment">
+      <attributes>
+        <attribute name="payment_inserter" type="string"/>
+      </attributes>
+    </event-type>
+    <event-type name="Remove Payment Block">
+      <attributes>
+        <attribute name="invoice_block_rem" type="string"/>
+      </attributes>
+    </event-type>
+    <event-type name="Set Payment Block">
+      <attributes>
+        <attribute name="invoice_blocker" type="string"/>
+      </attributes>
+    </event-type>
+  </event-types>
+  <objects>
+    <object id="R1" type="Invoice">
+      <attributes>
+        <attribute name="is_blocked" time="0">No</attribute>
+      </attributes>
+      <objects>
+        <object object-id="P1" qualifier="Payment from invoice"/>
+      </objects>
+    </object>
+    <object id="R2" type="Invoice">
+      <attributes>
+        <attribute name="is_blocked" time="0">No</attribute>
+      </attributes>
+      <objects>
+        <object object-id="P2" qualifier="Payment from invoice"/>
+      </objects>
+    </object>
+    <object id="R3" type="Invoice">
+      <attributes>
+        <attribute name="is_blocked" time="0">No</attribute>
+        <attribute name="is_blocked" time="2022-02-03T07:30:00">Yes</attribute>
+        <attribute name="is_blocked" time="2022-02-03T23:30:00">No</attribute>
+      </attributes>
+      <objects>
+        <object object-id="P3" qualifier="Payment from invoice"/>
+      </objects>
+    </object>
+    <object id="P1" type="Payment">
+      <attributes/>
+    </object>
+    <object id="P2" type="Payment">
+      <attributes/>
+    </object>
+    <object id="P3" type="Payment">
+      <attributes/>
+    </object>
+    <object id="PO1" type="Purchase Order">
+      <attributes>
+        <attribute name="po_product" time="0">Cows</attribute>
+        <attribute name="po_quantity" time="0">500</attribute>
+        <attribute name="po_quantity" time="2022-01-13T12:00:00">600</attribute>
+      </attributes>
+      <objects>
+        <object object-id="R1" qualifier="Invoice from PO"/>
+        <object object-id="R2" qualifier="Invoice from PO"/>
+      </objects>
+    </object>
+    <object id="PO2" type="Purchase Order">
+      <attributes>
+        <attribute name="po_product" time="0">Notebooks</attribute>
+        <attribute name="po_quantity" time="0">1</attribute>
+      </attributes>
+      <objects>
+        <object object-id="R3" qualifier="Maverick buying"/>
+      </objects>
+    </object>
+    <object id="PR1" type="Purchase Requisition">
+      <attributes>
+        <attribute name="pr_product" time="0">Cows</attribute>
+        <attribute name="pr_quantity" time="0">500</attribute>
+      </attributes>
+      <objects>
+        <object object-id="PO1" qualifier="PO from PR"/>
+      </objects>
+    </object>
+  </objects>
+  <events>
+    <event id="e1" type="Create Purchase Requisition" time="2022-01-09T15:00:00">
+      <attributes>
+        <attribute name="pr_creator">Mike</attribute>
+      </attributes>
+      <objects>
+        <object object-id="PR1" qualifier="Regular placement of PR"/>
+      </objects>
+    </event>
+    <event id="e2" type="Approve Purchase Requisition" time="2022-01-09T16:30:00">
+      <attributes>
+        <attribute name="pr_approver">Tania</attribute>
+      </attributes>
+      <objects>
+        <object object-id="PR1" qualifier="Regular approval of PR"/>
+      </objects>
+    </event>
+    <event id="e3" type="Create Purchase Order" time="2022-01-10T09:15:00">
+      <attributes>
+        <attribute name="po_creator">Mike</attribute>
+      </attributes>
+      <objects>
+        <object object-id="PR1" qualifier="Created order from PR"/>
+        <object object-id="PO1" qualifier="Created order with identifier"/>
+      </objects>
+    </event>
+    <event id="e4" type="Change PO Quantity" time="2022-01-13T12:00:00">
+      <attributes>
+        <attribute name="po_editor">Mike</attribute>
+      </attributes>
+      <objects>
+        <object object-id="PO1" qualifier="Change of quantity"/>
+      </objects>
+    </event>
+    <event id="e5" type="Insert Invoice" time="2022-01-14T12:00:00">
+      <attributes>
+        <attribute name="invoice_inserter">Luke</attribute>
+      </attributes>
+      <objects>
+        <object object-id="PO1" qualifier="Invoice created starting from the PO"/>
+        <object object-id="R1" qualifier="Invoice created with identifier"/>
+      </objects>
+    </event>
+    <event id="e6" type="Insert Invoice" time="2022-01-16T11:00:00">
+      <attributes>
+        <attribute name="invoice_inserter">Luke</attribute>
+      </attributes>
+      <objects>
+        <object object-id="PO1" qualifier="Invoice created starting from the PO"/>
+        <object object-id="R2" qualifier="Invoice created with identifier"/>
+      </objects>
+    </event>
+    <event id="e7" type="Insert Payment" time="2022-01-30T23:00:00">
+      <attributes>
+        <attribute name="payment_inserter">Robot</attribute>
+      </attributes>
+      <objects>
+        <object object-id="R1" qualifier="Payment for the invoice"/>
+        <object object-id="P1" qualifier="Payment inserted with identifier"/>
+      </objects>
+    </event>
+    <event id="e8" type="Insert Payment" time="2022-01-31T22:00:00">
+      <attributes>
+        <attribute name="payment_inserter">Robot</attribute>
+      </attributes>
+      <objects>
+        <object object-id="R2" qualifier="Payment for the invoice"/>
+        <object object-id="P2" qualifier="Payment created with identifier"/>
+      </objects>
+    </event>
+    <event id="e9" type="Insert Invoice" time="2022-02-02T09:00:00">
+      <attributes>
+        <attribute name="invoice_inserter">Mario</attribute>
+      </attributes>
+      <objects>
+        <object object-id="R3" qualifier="Invoice created with identifier"/>
+      </objects>
+    </event>
+    <event id="e10" type="Create Purchase Order" time="2022-02-02T17:00:00">
+      <attributes>
+        <attribute name="po_creator">Mario</attribute>
+      </attributes>
+      <objects>
+        <object object-id="R3" qualifier="Purchase order created with maverick buying from"/>
+        <object object-id="PO2" qualifier="Purhcase order created with identifier"/>
+      </objects>
+    </event>
+    <event id="e11" type="Set Payment Block" time="2022-02-03T07:30:00">
+      <attributes>
+        <attribute name="invoice_blocker">Mario</attribute>
+      </attributes>
+      <objects>
+        <object object-id="R3" qualifier="Payment block due to unethical maverick buying"/>
+      </objects>
+    </event>
+    <event id="e12" type="Remove Payment Block" time="2022-02-03T23:30:00">
+      <attributes>
+        <attribute name="invoice_block_rem">Mario</attribute>
+      </attributes>
+      <objects>
+        <object object-id="R3" qualifier="Payment block removed ..."/>
+      </objects>
+    </event>
+    <event id="e13" type="Insert Payment" time="2022-02-28T23:00:00">
+      <attributes>
+        <attribute name="payment_inserter">Robot</attribute>
+      </attributes>
+      <objects>
+        <object object-id="R3" qualifier="Payment for the invoice"/>
+        <object object-id="P3" qualifier="Payment inserted with identifier"/>
+      </objects>
+    </event>
+  </events>
+</log>
