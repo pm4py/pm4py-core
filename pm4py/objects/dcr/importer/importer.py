@@ -1,13 +1,13 @@
 from enum import Enum
 
-from pm4py.objects.dcr.importer.variants import dcrxml, json, discover
+from pm4py.objects.dcr.importer.variants import dcrxml, dcr_json, text
 from pm4py.util import exec_utils
 
 
 class Variants(Enum):
     DCRXML = dcrxml
-    JSON = json
-    DISCOVER = discover
+    DCR_JSON = dcr_json
+    TEXT = text
 
 
 DEFAULT_VARIANT = Variants.DCRXML
