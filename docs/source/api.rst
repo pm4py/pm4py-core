@@ -75,12 +75,12 @@ Process Discovery (:mod:`pm4py.discovery`)
 Process Discovery algorithms discover a process model that describes the process execution, as stored in the event log.
 ``pm4py`` implements a variety of different process discovery algorithms.
 These different algorithms return different kinds of models, i.e., models with *imprecise execution semantics*, *procedural process models* and *declarative process models*.
-Among the models with *imprecise execution semantics*, ``pmp4py`` currently supports:
+Among the models with *imprecise execution semantics*, ``pm4py`` currently supports:
 
   * :meth:`pm4py.discovery.discover_dfg`; discovers a *directly follows graph* annotated with frequency information (based on the log).
   * :meth:`pm4py.discovery.discover_performance_dfg`; discovers a *directly follows graph* annotated with performance infomration (based on the log).
 
-Among *procedural process models*, ``pmp4py`` currently supports:
+Among *procedural process models*, ``pm4py`` currently supports:
 
   * :meth:`pm4py.discovery.discover_petri_net_alpha`; discovers a *Petri net* using the Alpha Miner algorithm.
   * :meth:`pm4py.discovery.discover_petri_net_inductive`; discovers a *Petri net* using the Inductive Miner algorithm.
@@ -90,15 +90,16 @@ Among *procedural process models*, ``pmp4py`` currently supports:
   * :meth:`pm4py.discovery.discover_bpmn_inductive`; discovers a *BPMN model* using the Inductive Miner algorithm.
   * :meth:`pm4py.discovery.discover_heuristics_net`; discovers an *heuristics net* using the Heuristics Miner algorithm.
 
-Among *declarative process models*, ``pmp4py`` currently supports:
+Among *declarative process models*, ``pm4py`` currently supports:
 
   * :meth:`pm4py.discovery.discover_log_skeleton`; discovers a *log skeleton*.
   * :meth:`pm4py.discovery.discover_temporal_profile`; discovers a *temporal profile*.
 
+
 Conformance Checking (:mod:`pm4py.conformance`)
 -----------------------------------------------
 Conformance checking techniques compare a process model with an event log of the same process. The goal is to check if the event log conforms to the model, and, vice versa.
-Among procedural process models, ``pmp4py`` currently supports:
+Among procedural process models, ``pm4py`` currently supports:
 
   * :meth:`pm4py.conformance.conformance_diagnostics_token_based_replay`; token-based replay between the event log and a *Petri net*.
   * :meth:`pm4py.conformance.conformance_diagnostics_alignments`; alignment-based replay between the event log and a *Petri net*.
@@ -107,15 +108,16 @@ Among procedural process models, ``pmp4py`` currently supports:
   * :meth:`pm4py.conformance.precision_token_based_replay`; evaluation of the precision between an event log and a *Petri net* using token-based replay.
   * :meth:`pm4py.conformance.precision_alignments`; evaluation of the precision between an event log and a *Petri net* using alignments.
 
-Among declarative process models, ``pmp4py`` currently supports:
+Among declarative process models, ``pm4py`` currently supports:
 
   * :meth:`pm4py.conformance.conformance_log_skeleton`; conformance checking using the *log skeleton*.
   * :meth:`pm4py.conformance.conformance_temporal_profile`; conformance checking using the *temporal profile*.
 
+
 Visualization (:mod:`pm4py.vis`)
 ------------------------------------------
 The ``pm4py`` library implements basic visualizations of process models and statistics.
-Among the on-screen visualizations, ``pmp4py`` currently supports:
+Among the on-screen visualizations, ``pm4py`` currently supports:
 
   * :meth:`pm4py.vis.view_petri_net`; views a *Petri net* model.
   * :meth:`pm4py.vis.view_dfg`; views a *directly-follows graph* annotated with the frequency.
@@ -180,6 +182,7 @@ Different statistics that could be computed on top of event logs are proposed, i
   * :meth:`pm4py.stats.get_case_duration`; gets the *case duration* of a specific case in the log.
   * :meth:`pm4py.stats.get_stochastic_language`; gets the *stochastic language* of an event log or a process model.
 
+
 Filtering (:mod:`pm4py.filtering`)
 ------------------------------------------
 Filtering is the restriction of the event log to a subset of the behavior.
@@ -219,6 +222,7 @@ Also, some filtering techniques are offered on top of object-centric event logs:
   * :meth:`pm4py.filtering.filter_ocel_objects`; filters a specified collection of object identifiers from the object-centric event log.
   * :meth:`pm4py.filtering.filter_ocel_cc_object`; filters a connected component from the object-centric event log to which the object with the provided identifier belongs.
 
+
 Machine Learning (:mod:`pm4py.ml`)
 ------------------------------------------
 PM4Py offers some features useful for the application of machine learning techniques.
@@ -240,6 +244,7 @@ Among those:
 
   * :meth:`pm4py.sim.play_out`; performs the play-out of a process model to obtain an event log.
   * :meth:`pm4py.sim.generate_process_tree`; generates a process tree with the desidered number of nodes.
+
 
 Object-Centric Process Mining (:mod:`pm4py.ocel`)
 --------------------------------------------------
@@ -282,6 +287,40 @@ Some object-centric process discovery algorithms are also offered:
   * :meth:`pm4py.ocel.discover_objects_graph`; discovers an object-based graph from the object-centric event log.
 
 
+OpenAI Integration (:mod:`pm4py.openai`)
+------------------------------------------
+
+We offer some integrations with OpenAI (e.g., ChatGPT) for automatically get insights:
+
+  * :meth:`pm4py.openai.describe_process`; provides domain knowledge about the process
+  * :meth:`pm4py.openai.describe_path`; provides domain knowledge about a path of the process
+  * :meth:`pm4py.openai.describe_activity`; provides domain knowledge about an activity of the process
+  * :meth:`pm4py.openai.describe_variant`; describes a given variant, providing insights on the anomalies
+  * :meth:`pm4py.openai.suggest_improvements`; suggests some improvements for the process starting from its event log
+  * :meth:`pm4py.openai.root_cause_analysis`; performs a root cause analysis of the conformance/performance issues
+  * :meth:`pm4py.openai.code_for_log_generation`; generates an event log given the name of a process (e.g., Purchase-to-Pay)
+  * :meth:`pm4py.openai.compare_logs`; describe the differences between two event logs
+
+
+Basic Connectors (:mod:`pm4py.connectors`)
+------------------------------------------
+
+We offer some basic connectors to get an event log for the processes supported by your workstation:
+
+  * :meth:`pm4py.connectors.extract_log_outlook_mails`; extracts a traditional Pandas dataframe representing the Outlook mails
+  * :meth:`pm4py.connectors.extract_log_outlook_calendar`; extracts a traditional Pandas dataframe representing the Outlook calendar
+  * :meth:`pm4py.connectors.extract_log_windows_events`; extracts a traditional Pandas dataframe containing the Windows events registry
+  * :meth:`pm4py.connectors.extract_log_chrome_history`; extracts a traditional Pandas dataframe containing the Chrome navigation history
+  * :meth:`pm4py.connectors.extract_log_firefox_history`; extracts a traditional Pandas dataframe containing the Firefox navigation history
+  * :meth:`pm4py.connectors.extract_log_github`; extracts a traditional Pandas dataframe of a Github repository (issues management)
+  * :meth:`pm4py.connectors.extract_ocel_outlook_mails`; extracts an object-centric event log representing the Outlook mails
+  * :meth:`pm4py.connectors.extract_ocel_outlook_calendar`; extracts an object-centric event log representing the Outlook calendar
+  * :meth:`pm4py.connectors.extract_ocel_windows_events`; extracts an object-centric event log representing the Windows events
+  * :meth:`pm4py.connectors.extract_ocel_chrome_history`; extracts an object-centric event log representing the Chrome history
+  * :meth:`pm4py.connectors.extract_ocel_firefox_history`; extracts an object-centric event log representing the Firefox history
+  * :meth:`pm4py.connectors.extract_ocel_github`; extracts an object-centric event log of a Github repository (issues management)
+
+
 Social Network Analysis (:mod:`pm4py.org`)
 ------------------------------------------
 We offer different algorithms for the analysis of the organizational networks starting from an event log:
@@ -293,11 +332,13 @@ We offer different algorithms for the analysis of the organizational networks st
   * :meth:`pm4py.org.discover_organizational_roles`; discovers the organizational roles from the event log.
   * :meth:`pm4py.org.discover_network_analysis`; discovers the network analysis from the event log.
 
+
 Privacy (:mod:`pm4py.privacy`)
 ------------------------------------------
 We offer the following algorithms for the anonymization of event logs:
 
   * :meth:`pm4py.privacy.anonymize_differential_privacy`; PRIPEL (Privacy-preserving event log publishing with contextual information) is a framework to publish event logs that fulfill differential privacy.
+
 
 Utilities (:mod:`pm4py.utils`)
 ------------------------------------------
@@ -341,6 +382,8 @@ Overall List of Methods
    pm4py.read.read_ocel_jsonocel
    pm4py.read.read_ocel_xmlocel
    pm4py.read.read_ocel_sqlite
+   pm4py.read.read_ocel2_xml
+   pm4py.read.read_ocel2_sqlite
    pm4py.write
    pm4py.write.write_bpmn
    pm4py.write.write_dfg
@@ -351,6 +394,8 @@ Overall List of Methods
    pm4py.write.write_ocel_jsonocel
    pm4py.write.write_ocel_xmlocel
    pm4py.write.write_ocel_sqlite
+   pm4py.write.write_ocel2_xml
+   pm4py.write.write_ocel2_sqlite
    pm4py.convert
    pm4py.convert.convert_to_event_log
    pm4py.convert.convert_to_event_stream
@@ -489,6 +534,7 @@ Overall List of Methods
    pm4py.ml.extract_temporal_features_dataframe
    pm4py.ml.extract_target_vector
    pm4py.ml.extract_outcome_enriched_dataframe
+   pm4py.ml.extract_ocel_features
    pm4py.sim
    pm4py.sim.play_out
    pm4py.sim.generate_process_tree
@@ -507,6 +553,27 @@ Overall List of Methods
    pm4py.ocel.sample_ocel_connected_components
    pm4py.ocel.ocel_drop_duplicates
    pm4py.ocel.ocel_merge_duplicates
+   pm4py.openai
+   pm4py.openai.describe_process
+   pm4py.openai.describe_path
+   pm4py.openai.describe_activity
+   pm4py.openai.suggest_improvements
+   pm4py.openai.code_for_log_generation
+   pm4py.openai.root_cause_analysis
+   pm4py.openai.describe_variant
+   pm4py.openai.compare_logs
+   pm4py.connectors.extract_log_outlook_mails
+   pm4py.connectors.extract_log_outlook_calendar
+   pm4py.connectors.extract_log_windows_events
+   pm4py.connectors.extract_log_chrome_history
+   pm4py.connectors.extract_log_firefox_history
+   pm4py.connectors.extract_log_github
+   pm4py.connectors.extract_ocel_outlook_mails
+   pm4py.connectors.extract_ocel_outlook_calendar
+   pm4py.connectors.extract_ocel_windows_events
+   pm4py.connectors.extract_ocel_chrome_history
+   pm4py.connectors.extract_ocel_firefox_history
+   pm4py.connectors.extract_ocel_github
    pm4py.org
    pm4py.org.discover_handover_of_work_network
    pm4py.org.discover_working_together_network

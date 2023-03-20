@@ -76,6 +76,8 @@ DEFAULT_BUSINESS_HOUR_SLOTS = [
     ((4 * 24 + 7) * 60 * 60, (4 * 24 + 17) * 60 * 60),
 ]
 
+OPENAI_API_KEY = None
+OPENAI_DEFAULT_MODEL = "gpt-3.5-turbo"
 
 from enum import Enum
 
