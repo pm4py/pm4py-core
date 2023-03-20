@@ -75,12 +75,12 @@ Process Discovery (:mod:`pm4py.discovery`)
 Process Discovery algorithms discover a process model that describes the process execution, as stored in the event log.
 ``pm4py`` implements a variety of different process discovery algorithms.
 These different algorithms return different kinds of models, i.e., models with *imprecise execution semantics*, *procedural process models* and *declarative process models*.
-Among the models with *imprecise execution semantics*, ``pmp4py`` currently supports:
+Among the models with *imprecise execution semantics*, ``pm4py`` currently supports:
 
   * :meth:`pm4py.discovery.discover_dfg`; discovers a *directly follows graph* annotated with frequency information (based on the log).
   * :meth:`pm4py.discovery.discover_performance_dfg`; discovers a *directly follows graph* annotated with performance infomration (based on the log).
 
-Among *procedural process models*, ``pmp4py`` currently supports:
+Among *procedural process models*, ``pm4py`` currently supports:
 
   * :meth:`pm4py.discovery.discover_petri_net_alpha`; discovers a *Petri net* using the Alpha Miner algorithm.
   * :meth:`pm4py.discovery.discover_petri_net_inductive`; discovers a *Petri net* using the Inductive Miner algorithm.
@@ -90,7 +90,7 @@ Among *procedural process models*, ``pmp4py`` currently supports:
   * :meth:`pm4py.discovery.discover_bpmn_inductive`; discovers a *BPMN model* using the Inductive Miner algorithm.
   * :meth:`pm4py.discovery.discover_heuristics_net`; discovers an *heuristics net* using the Heuristics Miner algorithm.
 
-Among *declarative process models*, ``pmp4py`` currently supports:
+Among *declarative process models*, ``pm4py`` currently supports:
 
   * :meth:`pm4py.discovery.discover_log_skeleton`; discovers a *log skeleton*.
   * :meth:`pm4py.discovery.discover_temporal_profile`; discovers a *temporal profile*.
@@ -98,7 +98,7 @@ Among *declarative process models*, ``pmp4py`` currently supports:
 Conformance Checking (:mod:`pm4py.conformance`)
 -----------------------------------------------
 Conformance checking techniques compare a process model with an event log of the same process. The goal is to check if the event log conforms to the model, and, vice versa.
-Among procedural process models, ``pmp4py`` currently supports:
+Among procedural process models, ``pm4py`` currently supports:
 
   * :meth:`pm4py.conformance.conformance_diagnostics_token_based_replay`; token-based replay between the event log and a *Petri net*.
   * :meth:`pm4py.conformance.conformance_diagnostics_alignments`; alignment-based replay between the event log and a *Petri net*.
@@ -107,7 +107,7 @@ Among procedural process models, ``pmp4py`` currently supports:
   * :meth:`pm4py.conformance.precision_token_based_replay`; evaluation of the precision between an event log and a *Petri net* using token-based replay.
   * :meth:`pm4py.conformance.precision_alignments`; evaluation of the precision between an event log and a *Petri net* using alignments.
 
-Among declarative process models, ``pmp4py`` currently supports:
+Among declarative process models, ``pm4py`` currently supports:
 
   * :meth:`pm4py.conformance.conformance_log_skeleton`; conformance checking using the *log skeleton*.
   * :meth:`pm4py.conformance.conformance_temporal_profile`; conformance checking using the *temporal profile*.
@@ -115,7 +115,7 @@ Among declarative process models, ``pmp4py`` currently supports:
 Visualization (:mod:`pm4py.vis`)
 ------------------------------------------
 The ``pm4py`` library implements basic visualizations of process models and statistics.
-Among the on-screen visualizations, ``pmp4py`` currently supports:
+Among the on-screen visualizations, ``pm4py`` currently supports:
 
   * :meth:`pm4py.vis.view_petri_net`; views a *Petri net* model.
   * :meth:`pm4py.vis.view_dfg`; views a *directly-follows graph* annotated with the frequency.
@@ -282,6 +282,20 @@ Some object-centric process discovery algorithms are also offered:
   * :meth:`pm4py.ocel.discover_objects_graph`; discovers an object-based graph from the object-centric event log.
 
 
+OpenAI Integration (:mod:`pm4py.openai`)
+
+We offer some integrations with OpenAI (e.g., ChatGPT) for automatically get insights:
+
+  * :meth:`pm4py.openai.describe_process`; provides domain knowledge about the process
+  * :meth:`pm4py.openai.describe_path`; provides domain knowledge about a path of the process
+  * :meth:`pm4py.openai.describe_activity`; provides domain knowledge about an activity of the process
+  * :meth:`pm4py.openai.describe_variant`; describes a given variant, providing insights on the anomalies
+  * :meth:`pm4py.openai.suggest_improvements`; suggests some improvements for the process starting from its event log
+  * :meth:`pm4py.openai.root_cause_analysis`; performs a root cause analysis of the conformance/performance issues
+  * :meth:`pm4py.openai.code_for_log_generation`; generates an event log given the name of a process (e.g., Purchase-to-Pay)
+  * :meth:`pm4py.openai.compare_logs`; describe the differences between two event logs
+
+
 Social Network Analysis (:mod:`pm4py.org`)
 ------------------------------------------
 We offer different algorithms for the analysis of the organizational networks starting from an event log:
@@ -335,6 +349,8 @@ Overall List of Methods
    pm4py.read.read_ocel_jsonocel
    pm4py.read.read_ocel_xmlocel
    pm4py.read.read_ocel_sqlite
+   pm4py.read.read_ocel2_xml
+   pm4py.read.read_ocel2_sqlite
    pm4py.write
    pm4py.write.write_bpmn
    pm4py.write.write_dfg
@@ -345,6 +361,8 @@ Overall List of Methods
    pm4py.write.write_ocel_jsonocel
    pm4py.write.write_ocel_xmlocel
    pm4py.write.write_ocel_sqlite
+   pm4py.write.write_ocel2_xml
+   pm4py.write.write_ocel2_sqlite
    pm4py.convert
    pm4py.convert.convert_to_event_log
    pm4py.convert.convert_to_event_stream
@@ -483,6 +501,7 @@ Overall List of Methods
    pm4py.ml.extract_temporal_features_dataframe
    pm4py.ml.extract_target_vector
    pm4py.ml.extract_outcome_enriched_dataframe
+   pm4py.ml.extract_ocel_features
    pm4py.sim
    pm4py.sim.play_out
    pm4py.sim.generate_process_tree
@@ -501,6 +520,15 @@ Overall List of Methods
    pm4py.ocel.sample_ocel_connected_components
    pm4py.ocel.ocel_drop_duplicates
    pm4py.ocel.ocel_merge_duplicates
+   pm4py.openai
+   pm4py.openai.describe_process
+   pm4py.openai.describe_path
+   pm4py.openai.describe_activity
+   pm4py.openai.suggest_improvements
+   pm4py.openai.code_for_log_generation
+   pm4py.openai.root_cause_analysis
+   pm4py.openai.describe_variant
+   pm4py.openai.compare_logs
    pm4py.org
    pm4py.org.discover_handover_of_work_network
    pm4py.org.discover_working_together_network
