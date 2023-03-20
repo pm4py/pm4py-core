@@ -1,8 +1,12 @@
 # Changelog of pm4py
 
-## pm4py 2.6.2 (2023.03.XX)
+## pm4py 2.7.0 (2023.03.23)
 
 ### Added
+* ba126d3f4211cb237dae4b09dec5574224666237
+  * initial OpenAI integration
+* 05b6425637768312bf4768a252ee410c3bd5a35c
+  * easy-to-use (local computer) log extractors for Outlook, Windows events registry, Mozilla Firefox and Google Chrome
 
 ### Changed
 
