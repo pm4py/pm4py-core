@@ -17,7 +17,7 @@
 from copy import deepcopy
 
 import pm4py.objects.log.obj
-from pm4py.algo.discovery.dcr_discover.variants import discover_basic, discover_subprocess_timed
+from pm4py.algo.discovery.dcr_discover.variants import discover_basic, discover_subprocess
 from pm4py.algo.discovery.dcr_discover import time_mining
 from enum import Enum
 from pm4py.util import exec_utils
@@ -26,13 +26,13 @@ from typing import Optional, Dict, Any, Union, Tuple
 
 class Variants(Enum):
     DCR_BASIC = discover_basic
-    DCR_SUBPROCESS_TIMED = discover_subprocess_timed
+    DCR_SUBPROCESS = discover_subprocess
 
 
 DCR_BASIC = Variants.DCR_BASIC
-DCR_SUBPROCESS_TIMED = Variants.DCR_SUBPROCESS_TIMED
+DCR_SUBPROCESS = Variants.DCR_SUBPROCESS
 
-VERSIONS = {DCR_BASIC, DCR_SUBPROCESS_TIMED}
+VERSIONS = {DCR_BASIC, DCR_SUBPROCESS}
 
 
 def apply(input_log, variant=DCR_BASIC, **parameters):
@@ -58,8 +58,8 @@ def apply(input_log, variant=DCR_BASIC, **parameters):
             log = pm4py.convert_to_event_log(log)
         disc_b = discover_basic.Discover()
         dcr_model = disc_b.mine(log, **parameters)
-    elif variant is Variants.DCR_SUBPROCESS_TIMED:
-        dcr_model = discover_subprocess_timed.apply(log, **parameters)
+    elif variant is Variants.DCR_SUBPROCESS:
+        dcr_model = discover_subprocess.apply(log, **parameters)
     if 'timed' in parameters.keys():
         if parameters['timed']:
             timings = time_mining.apply(dcr_model=dcr_model, event_log=log, method='standard')
