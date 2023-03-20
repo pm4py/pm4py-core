@@ -8,7 +8,7 @@ from pm4py.objects.dcr import semantics as dcr_semantics
 
 def apply(log, findAdditionalConditions=True, discardSelfInPredecessors=True,**kwargs):
     event_log = log
-    disc_sp_t = DiscoverSubprocessTimed()
+    disc_sp_t = DiscoverSubprocess()
     disc_sp_t.createLogAbstraction(event_log)
     log_abstraction = deepcopy(disc_sp_t.logAbstraction)
     events = log_abstraction['events']
@@ -88,7 +88,7 @@ def apply(log, findAdditionalConditions=True, discardSelfInPredecessors=True,**k
     return final_dcr
 
 
-class DiscoverSubprocessTimed:
+class DiscoverSubprocess:
 
     def __init__(self):
         self.graph = {
