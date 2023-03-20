@@ -95,6 +95,7 @@ Among *declarative process models*, ``pm4py`` currently supports:
   * :meth:`pm4py.discovery.discover_log_skeleton`; discovers a *log skeleton*.
   * :meth:`pm4py.discovery.discover_temporal_profile`; discovers a *temporal profile*.
 
+
 Conformance Checking (:mod:`pm4py.conformance`)
 -----------------------------------------------
 Conformance checking techniques compare a process model with an event log of the same process. The goal is to check if the event log conforms to the model, and, vice versa.
@@ -111,6 +112,7 @@ Among declarative process models, ``pm4py`` currently supports:
 
   * :meth:`pm4py.conformance.conformance_log_skeleton`; conformance checking using the *log skeleton*.
   * :meth:`pm4py.conformance.conformance_temporal_profile`; conformance checking using the *temporal profile*.
+
 
 Visualization (:mod:`pm4py.vis`)
 ------------------------------------------
@@ -180,6 +182,7 @@ Different statistics that could be computed on top of event logs are proposed, i
   * :meth:`pm4py.stats.get_case_duration`; gets the *case duration* of a specific case in the log.
   * :meth:`pm4py.stats.get_stochastic_language`; gets the *stochastic language* of an event log or a process model.
 
+
 Filtering (:mod:`pm4py.filtering`)
 ------------------------------------------
 Filtering is the restriction of the event log to a subset of the behavior.
@@ -219,6 +222,7 @@ Also, some filtering techniques are offered on top of object-centric event logs:
   * :meth:`pm4py.filtering.filter_ocel_objects`; filters a specified collection of object identifiers from the object-centric event log.
   * :meth:`pm4py.filtering.filter_ocel_cc_object`; filters a connected component from the object-centric event log to which the object with the provided identifier belongs.
 
+
 Machine Learning (:mod:`pm4py.ml`)
 ------------------------------------------
 PM4Py offers some features useful for the application of machine learning techniques.
@@ -240,6 +244,7 @@ Among those:
 
   * :meth:`pm4py.sim.play_out`; performs the play-out of a process model to obtain an event log.
   * :meth:`pm4py.sim.generate_process_tree`; generates a process tree with the desidered number of nodes.
+
 
 Object-Centric Process Mining (:mod:`pm4py.ocel`)
 --------------------------------------------------
@@ -283,6 +288,7 @@ Some object-centric process discovery algorithms are also offered:
 
 
 OpenAI Integration (:mod:`pm4py.openai`)
+------------------------------------------
 
 We offer some integrations with OpenAI (e.g., ChatGPT) for automatically get insights:
 
@@ -296,6 +302,25 @@ We offer some integrations with OpenAI (e.g., ChatGPT) for automatically get ins
   * :meth:`pm4py.openai.compare_logs`; describe the differences between two event logs
 
 
+Basic Connectors (:mod:`pm4py.connectors`)
+------------------------------------------
+
+We offer some basic connectors to get an event log for the processes supported by your workstation:
+
+  * :meth:`pm4py.connectors.extract_log_outlook_mails`; extracts a traditional Pandas dataframe representing the Outlook mails
+  * :meth:`pm4py.connectors.extract_log_outlook_calendar`; extracts a traditional Pandas dataframe representing the Outlook calendar
+  * :meth:`pm4py.connectors.extract_log_windows_events`; extracts a traditional Pandas dataframe containing the Windows events registry
+  * :meth:`pm4py.connectors.extract_log_chrome_history`; extracts a traditional Pandas dataframe containing the Chrome navigation history
+  * :meth:`pm4py.connectors.extract_log_firefox_history`; extracts a traditional Pandas dataframe containing the Firefox navigation history
+  * :meth:`pm4py.connectors.extract_log_github`; extracts a traditional Pandas dataframe of a Github repository (issues management)
+  * :meth:`pm4py.connectors.extract_ocel_outlook_mails`; extracts an object-centric event log representing the Outlook mails
+  * :meth:`pm4py.connectors.extract_ocel_outlook_calendar`; extracts an object-centric event log representing the Outlook calendar
+  * :meth:`pm4py.connectors.extract_ocel_windows_events`; extracts an object-centric event log representing the Windows events
+  * :meth:`pm4py.connectors.extract_ocel_chrome_history`; extracts an object-centric event log representing the Chrome history
+  * :meth:`pm4py.connectors.extract_ocel_firefox_history`; extracts an object-centric event log representing the Firefox history
+  * :meth:`pm4py.connectors.extract_ocel_github`; extracts an object-centric event log of a Github repository (issues management)
+
+
 Social Network Analysis (:mod:`pm4py.org`)
 ------------------------------------------
 We offer different algorithms for the analysis of the organizational networks starting from an event log:
@@ -306,6 +331,7 @@ We offer different algorithms for the analysis of the organizational networks st
   * :meth:`pm4py.org.discover_subcontracting_network`; calculates the Subcontracting metric from the event log.
   * :meth:`pm4py.org.discover_organizational_roles`; discovers the organizational roles from the event log.
   * :meth:`pm4py.org.discover_network_analysis`; discovers the network analysis from the event log.
+
 
 Utilities (:mod:`pm4py.utils`)
 ------------------------------------------
@@ -529,6 +555,18 @@ Overall List of Methods
    pm4py.openai.root_cause_analysis
    pm4py.openai.describe_variant
    pm4py.openai.compare_logs
+   pm4py.connectors.extract_log_outlook_mails
+   pm4py.connectors.extract_log_outlook_calendar
+   pm4py.connectors.extract_log_windows_events
+   pm4py.connectors.extract_log_chrome_history
+   pm4py.connectors.extract_log_firefox_history
+   pm4py.connectors.extract_log_github
+   pm4py.connectors.extract_ocel_outlook_mails
+   pm4py.connectors.extract_ocel_outlook_calendar
+   pm4py.connectors.extract_ocel_windows_events
+   pm4py.connectors.extract_ocel_chrome_history
+   pm4py.connectors.extract_ocel_firefox_history
+   pm4py.connectors.extract_ocel_github
    pm4py.org
    pm4py.org.discover_handover_of_work_network
    pm4py.org.discover_working_together_network
