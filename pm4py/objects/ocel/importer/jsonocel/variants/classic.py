@@ -116,7 +116,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     globals[constants.OCEL_GLOBAL_EVENT] = ocel[constants.OCEL_GLOBAL_EVENT]
     globals[constants.OCEL_GLOBAL_OBJECT] = ocel[constants.OCEL_GLOBAL_OBJECT]
 
-    ocel = OCEL(events, objects, relations, globals, parameters)
+    ocel = OCEL(events=events, objects=objects, relations=relations, globals=globals, parameters=parameters)
     ocel = filtering_utils.propagate_relations_filtering(ocel)
 
     return ocel

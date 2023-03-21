@@ -135,6 +135,6 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
         object_changes = object_changes.sort_values([event_timestamp, internal_index])
         del object_changes[internal_index]
 
-    ocel = OCEL(events=event_types_coll, objects=objects, relations=E2O, object_changes=object_changes, o2o=O2O)
+    ocel = OCEL(events=event_types_coll, objects=objects, relations=E2O, object_changes=object_changes, o2o=O2O, parameters=parameters)
 
     return ocel
