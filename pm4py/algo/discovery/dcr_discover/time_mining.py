@@ -4,12 +4,37 @@ import pandas as pd
 from copy import deepcopy
 from enum import Enum
 
+
 class AggregationMethod(Enum):
     STANDARD = 'standard'
     MEAN = 'mean'
     MEDIAN = 'median'
 
-def apply(dcr_model, event_log,method=AggregationMethod.STANDARD):
+
+def apply(dcr_model, event_log, method=AggregationMethod.STANDARD,sp_log=None):
+    #TODO: add a parameter for the time according to the desired output.
+    # Make sure it's in the ISO format in the DCR (then no need to worry in the export function about it)
+    timings = get_timing_values(dcr_model, event_log, sp_log)
+    result_dict = {}
+    for k, v in timings.items():
+        if method == AggregationMethod.MEAN:
+            result_dict[k] = np.mean(v)
+        elif method == AggregationMethod.MEDIAN:
+            result_dict[k] = np.median(v)
+        else:
+            try:
+                if k[0] == 'RESPONSE':
+                    # MAX Deadline
+                    result_dict[k] = np.max(v)
+                elif k[0] == 'CONDITION':
+                    # MIN Delay
+                    result_dict[k] = np.min(v)
+            except:
+                print(v)
+    return result_dict
+
+
+def get_timing_values(dcr_model, event_log, sp_log):
     timing_input_dict = {}
     timing_input_dict['RESPONSE'] = []
     timing_input_dict['CONDITION'] = []
@@ -19,21 +44,8 @@ def apply(dcr_model, event_log,method=AggregationMethod.STANDARD):
                 timing_input_dict['RESPONSE'].append([e1, e2])
             if e1 in dcr_model['conditionsFor'] and e2 in dcr_model['conditionsFor'][e1]:
                 timing_input_dict['CONDITION'].append([e2, e1])
-    timings = get_timings(event_log, timing_input_dict)
-    result_dict = {}
-    for k, v in timings.items():
-        if method == AggregationMethod.MEAN:
-            result_dict[k] = np.mean(v)
-        elif method == AggregationMethod.MEDIAN:
-            result_dict[k] = np.median(v)
-        else:
-            if k[0] == 'RESPONSE':
-                # MAX Deadline
-                result_dict[k] = np.max(v)
-            elif k[0] == 'CONDITION':
-                # MIN Delay
-                result_dict[k] = np.min(v)
-    return result_dict
+    return get_timings(timing_input_dict, event_log, sp_log)
+
 
 def get_delta_between_events(filtered_df, event_pair, rule):
     e1 = event_pair[0]
@@ -77,19 +89,29 @@ def get_log_with_pair(event_log, e1, e2):
     return event_log[event_log['case:concept:name'].isin(cids)].copy(deep=True)
 
 
-def get_timings(log, timing_input_dict):
+def get_timings(timing_input_dict,log,sp_log):
     if isinstance(log, pd.DataFrame):
         event_log = log
     else:
         event_log = pm4py.convert_to_dataframe(log)
     res = {}
-
+    el_events = event_log['concept:name'].unique()
+    sp_event_log = pm4py.convert_to_dataframe(sp_log)
+    sp_el_events = sp_event_log['concept:name'].unique()
     for rule, event_pairs in timing_input_dict.items():
         print(rule)
         for event_pair in event_pairs:
-            filtered_df = get_log_with_pair(event_log, event_pair[0], event_pair[1])
-            data = get_delta_between_events(filtered_df, event_pair, rule)
-            print(event_pair)
-            res[(rule, event_pair[0], event_pair[1])] = data
+            if event_pair[0] in el_events and event_pair[1] in el_events:
+                filtered_df = get_log_with_pair(event_log, event_pair[0], event_pair[1])
+                data = get_delta_between_events(filtered_df, event_pair, rule)
+                print(event_pair)
+                res[(rule, event_pair[0], event_pair[1])] = data
+            elif event_pair[0] in sp_el_events and event_pair[1] in sp_el_events:
+                filtered_df = get_log_with_pair(sp_event_log, event_pair[0], event_pair[1])
+                data = get_delta_between_events(filtered_df, event_pair, rule)
+                print(event_pair)
+                res[(rule, event_pair[0], event_pair[1])] = data
+            else:
+                print('[..|..] fuked')
 
     return res

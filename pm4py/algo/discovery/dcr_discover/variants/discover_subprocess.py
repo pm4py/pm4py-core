@@ -6,7 +6,112 @@ from pm4py.algo.discovery.dcr_discover import algorithm as alg
 from pm4py.objects.dcr import semantics as dcr_semantics
 
 
-def apply(log, findAdditionalConditions=True, discardSelfInPredecessors=True,**kwargs):
+def apply_mutual_exclusion(log, findAdditionalConditions=True, discardSelfInPredecessors=True, **kwargs):
+    event_log = log
+    basic_dcr = alg.apply(event_log, alg.DCR_BASIC, findAdditionalConditions=findAdditionalConditions)
+    cluster_dict = {}
+
+    # for event in basic_dcr['events']:
+    #     if event in basic_dcr['excludesTo'] and event in basic_dcr['excludesTo'][event]:
+    #         basic_dcr['excludesTo'][event].discard(event)
+
+    keys = sorted(basic_dcr['excludesTo'].keys())
+    for k in keys:
+        preds_set = frozenset(sorted(basic_dcr['excludesTo'][k]))
+        if preds_set in cluster_dict.keys():
+            cluster_dict[preds_set].add(k)
+        else:
+            cluster_dict[preds_set] = set([k])
+
+    subprocesses = {}
+    subprocess_notation = 'S'
+    i = 0
+    for k, v in cluster_dict.items():
+        if len(v) > 1:
+            subprocesses[f'{subprocess_notation}{i}'] = frozenset(v)
+            i = i + 1
+    # now mine the dcr graph inside the subprocess
+    sp_dcr_dict = {}
+    for name, subprocess in subprocesses.items():
+        sp_dcr_dict[name] = {'events': subprocess,
+                             'conditionsFor': {},
+                             'milestonesFor': {},
+                             'responseTo': {},
+                             'includesTo': {},
+                             'excludesTo': {},
+                             'marking': {'included': subprocess,
+                                         'pending': set(),
+                                         'executed': set()}
+                             }
+        # subset_log = subprocess_event_log[subprocess_event_log['concept:name'].isin(subprocess)]
+        # subprocess_dcr[name] = alg.apply(subset_log, alg.DCR_BASIC, findAdditionalConditions=findAdditionalConditions)
+
+    # now replay inside the dcr graph and replace with a subprocess
+    subprocess_log = pm4py.objects.log.obj.EventLog()
+    trace: pm4py.objects.log.obj.Trace
+    event: pm4py.objects.log.obj.Event
+    for trace in event_log:
+        # only replace with the subprocess when the subprocess is accepting
+        sp_trace = pm4py.objects.log.obj.Trace()
+        for event in trace:
+            # set all subprocess dcr graphs to their initial state
+            sp_dcr_instance = deepcopy(sp_dcr_dict)
+            sp_event = None
+            for name, sp in subprocesses.items():
+                if event['concept:name'] in sp:
+                    # if the event is in the subprocess then execute it within the subprocess model
+                    executed = dcr_semantics.execute(event['concept:name'],
+                                                     sp_dcr_instance[name])  # TODO: check if it always executes
+                    accepting = dcr_semantics.is_accepting(sp_dcr_instance[name])
+                    if accepting & executed:
+                        # if the event did execute and is accepting then reset the subprocess to its initial marking
+                        sp_dcr_instance[name] = deepcopy(sp_dcr_dict[name])
+                        # also replace the event with the subprocess in the new event log
+                        event['concept:name'] = name
+                        sp_event = event
+            if not sp_event:
+                sp_event = event
+            sp_trace.append(sp_event)
+        subprocess_log.append(sp_trace)
+    # now run the dcr graph with the subprocess events replaced as the subprocess
+    subprocess_dcr = alg.apply(subprocess_log, alg.DCR_BASIC, findAdditionalConditions=findAdditionalConditions)
+    for sp_name, internal_events in subprocesses.items():
+        external_events = basic_dcr['events'].difference(internal_events)
+        # external (outside sp) to internal (subprocess)
+        for external_event in external_events:
+            for rel in ['conditionsFor', 'responseTo', 'includesTo', 'excludesTo']:
+                # Given rel
+                # external events to internal events
+                # external events to internal events AND subprocesses
+                if external_event in basic_dcr[rel] and external_event in subprocess_dcr[rel]:
+                    e2i = basic_dcr[rel][external_event].intersection(internal_events)
+                    e2_sp = subprocess_dcr[rel][external_event].intersection(set([sp_name]))
+                    if len(e2_sp) == 0:
+                        if external_event not in subprocess_dcr[rel]:
+                            subprocess_dcr[rel][external_event] = set()
+                        subprocess_dcr[rel][external_event] = subprocess_dcr[rel][external_event].union(e2i)
+        # internal (subprocess) to external (outside sp)
+        for internal_event in internal_events:
+            for rel in ['conditionsFor', 'responseTo', 'includesTo', 'excludesTo']:
+                if internal_event in basic_dcr[rel] and sp_name in subprocess_dcr[rel]:
+                    i2e = basic_dcr[rel][internal_event].intersection(external_events)
+                    sp2e = subprocess_dcr[rel][sp_name].intersection(external_events)
+                    i2e_not_sp2e = i2e.difference(sp2e)
+                    if internal_event not in subprocess_dcr[rel]:
+                        subprocess_dcr[rel][internal_event] = set()
+                    subprocess_dcr[rel][internal_event] = subprocess_dcr[rel][internal_event].union(i2e_not_sp2e)
+    subprocess_dcr['events'] = subprocess_dcr['events'].union(basic_dcr['events'])
+    subprocess_dcr['marking']['included'] = subprocess_dcr['marking']['included'].union(
+        basic_dcr['marking']['included'])
+    subprocess_dcr['subprocesses'] = {}
+    for name, sp_dcr in sp_dcr_dict.items():
+        subprocess_dcr['subprocesses'][name] = sp_dcr
+        # TODO: add internal to external relations add external to internal relations
+        # filter whatever is already applied on the subprocess.
+    return subprocess_dcr, subprocess_log
+
+
+def apply(log, findAdditionalConditions=True, discardSelfInPredecessors=True, **kwargs):
     event_log = log
     disc_sp_t = DiscoverSubprocess()
     disc_sp_t.createLogAbstraction(event_log)
@@ -36,22 +141,20 @@ def apply(log, findAdditionalConditions=True, discardSelfInPredecessors=True,**k
             subprocesses[f'{subprocess_notation}{i}'] = frozenset(v)
             i = i + 1
     # now mine the dcr graph inside the subprocess
-    # subprocess_event_log = deepcopy(event_log)
-    # subprocess_event_log = pm4py.convert_to_dataframe(subprocess_event_log)
-    subprocess_dcr = {}
+    sp_dcr_dict = {}
     for name, subprocess in subprocesses.items():
-        subprocess_dcr[name] = {'events': subprocess,
-                                'conditionsFor': {},
-                                'milestonesFor': {},
-                                'responseTo': {},
-                                'includesTo': {},
-                                'excludesTo': {},
-                                'marking': {'executed': set(),
-                                            'included': subprocess,
-                                            'pending': set()}
-                                }
-        #subset_log = subprocess_event_log[subprocess_event_log['concept:name'].isin(subprocess)]
-        #subprocess_dcr[name] = alg.apply(subset_log, alg.DCR_BASIC, findAdditionalConditions=findAdditionalConditions)
+        sp_dcr_dict[name] = {'events': subprocess,
+                             'conditionsFor': {},
+                             'milestonesFor': {},
+                             'responseTo': {},
+                             'includesTo': {},
+                             'excludesTo': {},
+                             'marking': {'included': subprocess,
+                                         'pending': set(),
+                                         'executed': set()}
+                             }
+        # subset_log = subprocess_event_log[subprocess_event_log['concept:name'].isin(subprocess)]
+        # subprocess_dcr[name] = alg.apply(subset_log, alg.DCR_BASIC, findAdditionalConditions=findAdditionalConditions)
 
     # now replay inside the dcr graph and replace with a subprocess
     subprocess_log = pm4py.objects.log.obj.EventLog()
@@ -62,7 +165,7 @@ def apply(log, findAdditionalConditions=True, discardSelfInPredecessors=True,**k
         sp_trace = pm4py.objects.log.obj.Trace()
         for event in trace:
             # set all subprocess dcr graphs to their initial state
-            sp_dcr_instance = deepcopy(subprocess_dcr)
+            sp_dcr_instance = deepcopy(sp_dcr_dict)
             sp_event = None
             for name, sp in subprocesses.items():
                 if event['concept:name'] in sp:
@@ -70,9 +173,9 @@ def apply(log, findAdditionalConditions=True, discardSelfInPredecessors=True,**k
                     executed = dcr_semantics.execute(event['concept:name'],
                                                      sp_dcr_instance[name])  # TODO: check if it always executes
                     accepting = dcr_semantics.is_accepting(sp_dcr_instance[name])
-                    if accepting:
+                    if accepting & executed:
                         # if the event did execute and is accepting then reset the subprocess to its initial marking
-                        sp_dcr_instance[name] = deepcopy(subprocess_dcr[name])
+                        sp_dcr_instance[name] = deepcopy(sp_dcr_dict[name])
                         # also replace the event with the subprocess in the new event log
                         event['concept:name'] = name
                         sp_event = event
@@ -81,11 +184,41 @@ def apply(log, findAdditionalConditions=True, discardSelfInPredecessors=True,**k
             sp_trace.append(sp_event)
         subprocess_log.append(sp_trace)
     # now run the dcr graph with the subprocess events replaced as the subprocess
-    final_dcr = alg.apply(subprocess_log, alg.DCR_BASIC, findAdditionalConditions=findAdditionalConditions)
-    final_dcr['subprocesses'] = {}
-    for name, sp_dcr in subprocess_dcr.items():
-        final_dcr['subprocesses'][name] = sp_dcr
-    return final_dcr
+    subprocess_dcr = alg.apply(subprocess_log, alg.DCR_BASIC, findAdditionalConditions=findAdditionalConditions)
+    basic_dcr = alg.apply(event_log, alg.DCR_BASIC, findAdditionalConditions=findAdditionalConditions)
+    for sp_name, internal_events in subprocesses.items():
+        external_events = basic_dcr['events'].difference(internal_events)
+        # external (outside sp) to internal (subprocess)
+        for external_event in external_events:
+            for rel in ['conditionsFor', 'responseTo', 'includesTo', 'excludesTo']:
+                # Given rel
+                # external events to internal events
+                # external events to internal events AND subprocesses
+                if external_event in basic_dcr[rel] and external_event in subprocess_dcr[rel]:
+                    e2i = basic_dcr[rel][external_event].intersection(internal_events)
+                    e2_sp = subprocess_dcr[rel][external_event].intersection(set([sp_name]))
+                    if len(e2_sp) == 0:
+                        if external_event not in subprocess_dcr[rel]:
+                            subprocess_dcr[rel][external_event] = set()
+                        subprocess_dcr[rel][external_event].union(e2i)
+        # internal (subprocess) to external (outside sp)
+        for internal_event in internal_events:
+            for rel in ['conditionsFor', 'responseTo', 'includesTo', 'excludesTo']:
+                if internal_event in basic_dcr[rel] and sp_name in subprocess_dcr[rel]:
+                    i2e = basic_dcr[rel][internal_event].intersection(external_events)
+                    sp2e = subprocess_dcr[rel][sp_name].intersection(external_events)
+                    i2e_not_sp2e = i2e.difference(sp2e)
+                    if internal_event not in subprocess_dcr[rel]:
+                        subprocess_dcr[rel][internal_event] = set()
+                    subprocess_dcr[rel][internal_event].union(i2e_not_sp2e)
+
+    subprocess_dcr['subprocesses'] = {}
+    for name, sp_dcr in sp_dcr_dict.items():
+        subprocess_dcr['subprocesses'][name] = sp_dcr
+        # TODO: add internal to external relations add external to internal relations
+        # filter whatever is already applied on the subprocess.
+
+    return subprocess_dcr
 
 
 class DiscoverSubprocess:
