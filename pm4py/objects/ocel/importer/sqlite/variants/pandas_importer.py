@@ -30,4 +30,4 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     objects = pd.read_sql("SELECT * FROM OBJECTS", conn)
     relations = pd.read_sql("SELECT * FROM RELATIONS", conn)
 
-    return OCEL(events=events, objects=objects, relations=relations)
+    return OCEL(events=events, objects=objects, relations=relations, parameters=parameters)
