@@ -59,10 +59,10 @@ def apply(input_log, variant=DCR_BASIC, **parameters):
         disc_b = discover_basic.Discover()
         dcr_model = disc_b.mine(log, **parameters)
     elif variant is Variants.DCR_SUBPROCESS:
-        dcr_model = discover_subprocess.apply(log, **parameters)
+        dcr_model, sp_log = discover_subprocess.apply(log, **parameters)
     if 'timed' in parameters.keys():
         if parameters['timed']:
-            timings = time_mining.apply(dcr_model=dcr_model, event_log=log, method='standard')
+            timings = time_mining.apply(dcr_model=dcr_model, event_log=log, method='standard', sp_log=sp_log)
             # these should be a dict with events as keys and tuples as values
             if 'conditionsForDelays' not in dcr_model:
                 dcr_model['conditionsForDelays'] = {}

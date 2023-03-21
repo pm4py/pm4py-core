@@ -2,7 +2,7 @@ from copy import deepcopy
 from pm4py import get_event_attribute_values
 
 
-class Discover:
+class DiscoverImproved:
 
     def __init__(self):
         self.graph = {
@@ -28,7 +28,7 @@ class Discover:
             'successor': {}
         }
 
-    def mine(self, log, findAdditionalConditions=True, **kwargs):
+    def mine(self, log, findAdditionalConditions=True, optimize=True, **kwargs):
         '''
         Parameters
         ----------
@@ -40,7 +40,7 @@ class Discover:
         A mined dcr graph with the 4 basic relations: condition, response, include and exclude
         '''
         self.createLogAbstraction(log)
-        self.mineFromAbstraction(findAdditionalConditions=findAdditionalConditions)
+        self.mineFromAbstraction(findAdditionalConditions=findAdditionalConditions,optimize=optimize)
         # if graph_path:
         #     self.writeGraph(graph_path)
         return self.graph
@@ -139,7 +139,7 @@ class Discover:
             for eventB in relation[eventA]:
                 print('af')
 
-    def mineFromAbstraction(self, findAdditionalConditions:bool=True):
+    def mineFromAbstraction(self, findAdditionalConditions:bool=True, optimize:bool=True):
         '''
         :param findAttitionalConditions:
         :return: a dcr graph
@@ -163,12 +163,10 @@ class Discover:
 
         # Mine responses from logAbstraction
         self.graph['responseTo'] = deepcopy(self.logAbstraction['responseTo'])
-        # Remove redundant responses
-        self.graph['responseTo'] = self.optimizeRelation(self.graph['responseTo'])
         # Mine conditions from logAbstraction
         self.graph['conditionsFor'] = deepcopy(self.logAbstraction['precedenceFor'])
         # remove redundant conditions
-        self.graph['conditionsFor'] = self.optimizeRelation(self.graph['conditionsFor'])
+        # self.graph['conditionsFor'] = self.optimizeRelation(self.graph['conditionsFor'])
 
         # For each chainprecedence(i,j) we add: include(i,j) exclude(j,j)
         for j in self.logAbstraction['chainPrecedenceFor']:
@@ -187,8 +185,8 @@ class Discover:
             self.graph['excludesTo'][event] = self.graph['excludesTo'][event].union(nonCoExisters)
 
             # if s precedes (event) but never succeeds (event) add (event) -->% s if s -->% s does not exist
-            precedesButNeverSucceeds = self.logAbstraction['predecessor'][event].difference(self.logAbstraction['successor'][event])
-            for s in precedesButNeverSucceeds:
+            precedesButNeverSuceeds = self.logAbstraction['predecessor'][event].difference(self.logAbstraction['successor'][event])
+            for s in precedesButNeverSuceeds:
                 if not s in self.graph['excludesTo'][s]:
                     self.graph['excludesTo'][event].add(s)
 
@@ -227,7 +225,10 @@ class Discover:
             for key in self.graph['conditionsFor']:
                 self.graph['conditionsFor'][key] = self.graph['conditionsFor'][key].union(possibleConditions[key])
 
-            # Removing redundant conditions
-            self.graph['conditionsFor'] = self.optimizeRelation(self.graph['conditionsFor'])
+            if optimize:
+                # Remove redundant responses
+                self.graph['responseTo'] = self.optimizeRelation(self.graph['responseTo'])
+                # Removing redundant conditions
+                self.graph['conditionsFor'] = self.optimizeRelation(self.graph['conditionsFor'])
 
         return 0

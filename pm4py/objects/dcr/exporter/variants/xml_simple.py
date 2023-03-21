@@ -21,7 +21,7 @@ def export_dcr_graph(dcr, root, parent=None):
                 xml_source.text = event_prime
                 xml_target = etree.SubElement(xml_condition, "target")
                 xml_target.text = event
-                xml_target = etree.SubElement(xml_condition, "durationexpression")
+                xml_target = etree.SubElement(xml_condition, "duration")
                 if 'conditionsForDelays' in dcr.keys():
                     time = dcr['conditionsForDelays'][event][event_prime]
                     #TODO: to iso format automatically
@@ -36,7 +36,7 @@ def export_dcr_graph(dcr, root, parent=None):
                 xml_source.text = event
                 xml_target = etree.SubElement(xml_response, "target")
                 xml_target.text = event_prime
-                xml_target = etree.SubElement(xml_response, "durationexpression")
+                xml_target = etree.SubElement(xml_response, "duration")
                 if 'responseToDeadlines' in dcr.keys():
                     time = dcr['responseToDeadlines'][event][event_prime]
                     #TODO: to iso format automatically

@@ -1,0 +1,197 @@
+<DCRModel>
+  <title>Sepsis Cases</title>
+  <description>Sepsis Cases SpT-DisCoveR</description>
+  <graphType>DCRModel</graphType>
+  <roles>
+    <title>User</title>
+    <description>Dummy user</description>
+  </roles>
+  <events>
+    <id>CRP</id>
+    <label>CRP</label>
+  </events>
+  <events>
+    <id>Return ER</id>
+    <label>Return ER</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Return ER</source>
+    <target>Return ER</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Admission NC</source>
+    <target>Return ER</target>
+    <durationexpression>P2D</durationexpression>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Return ER</source>
+    <target>Admission NC</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>S0</source>
+    <target>Return ER</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Admission IC</source>
+    <target>Return ER</target>
+    <durationexpression>P7D</durationexpression>
+  </rules>
+  <events>
+    <id>Leucocytes</id>
+    <label>Leucocytes</label>
+  </events>
+  <events>
+    <id>ER Sepsis Triage</id>
+    <label>ER Sepsis Triage</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>ER Sepsis Triage</source>
+    <target>ER Sepsis Triage</target>
+  </rules>
+  <events>
+    <id>Admission NC</id>
+    <label>Admission NC</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>ER Registration</source>
+    <target>Admission NC</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>ER Triage</source>
+    <target>Admission NC</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <events>
+    <id>ER Registration</id>
+    <label>ER Registration</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>ER Registration</source>
+    <target>ER Registration</target>
+  </rules>
+  <events>
+    <id>ER Triage</id>
+    <label>ER Triage</label>
+  </events>
+  <events>
+    <id>IV Antibiotics</id>
+    <label>IV Antibiotics</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>ER Sepsis Triage</source>
+    <target>IV Antibiotics</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>IV Antibiotics</source>
+    <target>IV Antibiotics</target>
+  </rules>
+  <events>
+    <id>S0</id>
+    <label>S0</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>ER Registration</source>
+    <target>S0</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>ER Triage</source>
+    <target>S0</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>ER Triage</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>S0</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>Admission IC</target>
+  </rules>
+  <events>
+    <id>Admission IC</id>
+    <label>Admission IC</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>ER Registration</source>
+    <target>Admission IC</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>ER Triage</source>
+    <target>Admission IC</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Admission IC</source>
+    <target>ER Triage</target>
+  </rules>
+  <events>
+    <id>IV Liquid</id>
+    <label>IV Liquid</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>IV Liquid</source>
+    <target>IV Liquid</target>
+  </rules>
+  <events>
+    <id>LacticAcid</id>
+    <label>LacticAcid</label>
+  </events>
+  <events>
+    <id>S0</id>
+    <label>S0</label>
+    <type>subprocess</type>
+  </events>
+  <events>
+    <id>Release B</id>
+    <label>Release B</label>
+    <parent>S0</parent>
+  </events>
+  <events>
+    <id>Release D</id>
+    <label>Release D</label>
+    <parent>S0</parent>
+  </events>
+  <events>
+    <id>Release E</id>
+    <label>Release E</label>
+    <parent>S0</parent>
+  </events>
+  <events>
+    <id>Release C</id>
+    <label>Release C</label>
+    <parent>S0</parent>
+  </events>
+  <events>
+    <id>Release A</id>
+    <label>Release A</label>
+    <parent>S0</parent>
+  </events>
+</DCRModel>

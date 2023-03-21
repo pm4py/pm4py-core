@@ -7,48 +7,18 @@
     <description>Dummy user</description>
   </roles>
   <events>
-    <id>Insert Date Appeal to Prefecture</id>
-    <label>Insert Date Appeal to Prefecture</label>
+    <id>Add penalty</id>
+    <label>Add penalty</label>
   </events>
   <rules>
     <type>exclude</type>
-    <source>Insert Date Appeal to Prefecture</source>
-    <target>Insert Date Appeal to Prefecture</target>
+    <source>Add penalty</source>
+    <target>Add penalty</target>
   </rules>
   <rules>
     <type>condition</type>
-    <source>Create Fine</source>
-    <target>Insert Date Appeal to Prefecture</target>
-    <durationexpression>P0D</durationexpression>
-  </rules>
-  <events>
-    <id>Receive Result Appeal from Prefecture</id>
-    <label>Receive Result Appeal from Prefecture</label>
-  </events>
-  <rules>
-    <type>exclude</type>
-    <source>Receive Result Appeal from Prefecture</source>
-    <target>Receive Result Appeal from Prefecture</target>
-  </rules>
-  <rules>
-    <type>condition</type>
-    <source>Send Fine</source>
-    <target>Receive Result Appeal from Prefecture</target>
-    <durationexpression>P0D</durationexpression>
-  </rules>
-  <events>
-    <id>Send Appeal to Prefecture</id>
-    <label>Send Appeal to Prefecture</label>
-  </events>
-  <rules>
-    <type>exclude</type>
-    <source>Send Appeal to Prefecture</source>
-    <target>Send Appeal to Prefecture</target>
-  </rules>
-  <rules>
-    <type>condition</type>
-    <source>Create Fine</source>
-    <target>Send Appeal to Prefecture</target>
+    <source>Insert Fine Notification</source>
+    <target>Add penalty</target>
     <durationexpression>P0D</durationexpression>
   </rules>
   <events>
@@ -67,31 +37,6 @@
     <durationexpression>P0D</durationexpression>
   </rules>
   <events>
-    <id>Send Fine</id>
-    <label>Send Fine</label>
-  </events>
-  <rules>
-    <type>exclude</type>
-    <source>Send Fine</source>
-    <target>Send Fine</target>
-  </rules>
-  <rules>
-    <type>condition</type>
-    <source>Create Fine</source>
-    <target>Send Fine</target>
-    <durationexpression>P0D</durationexpression>
-  </rules>
-  <events>
-    <id>S0</id>
-    <label>S0</label>
-  </events>
-  <rules>
-    <type>condition</type>
-    <source>Create Fine</source>
-    <target>S0</target>
-    <durationexpression>P0D</durationexpression>
-  </rules>
-  <events>
     <id>Appeal to Judge</id>
     <label>Appeal to Judge</label>
   </events>
@@ -107,9 +52,49 @@
     <durationexpression>P0D</durationexpression>
   </rules>
   <events>
+    <id>Create Fine</id>
+    <label>Create Fine</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Create Fine</source>
+    <target>Create Fine</target>
+  </rules>
+  <events>
+    <id>Send Fine</id>
+    <label>Send Fine</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>Create Fine</source>
+    <target>Send Fine</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Send Fine</source>
+    <target>Send Fine</target>
+  </rules>
+  <events>
+    <id>S0</id>
+    <label>S0</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>Create Fine</source>
+    <target>S0</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <events>
     <id>Insert Fine Notification</id>
     <label>Insert Fine Notification</label>
   </events>
+  <rules>
+    <type>response</type>
+    <source>Insert Fine Notification</source>
+    <target>Add penalty</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
   <rules>
     <type>condition</type>
     <source>Send Fine</source>
@@ -121,35 +106,50 @@
     <source>Insert Fine Notification</source>
     <target>Insert Fine Notification</target>
   </rules>
-  <rules>
-    <type>response</type>
-    <source>Insert Fine Notification</source>
-    <target>Add penalty</target>
-    <durationexpression>P0D</durationexpression>
-  </rules>
   <events>
-    <id>Create Fine</id>
-    <label>Create Fine</label>
-  </events>
-  <rules>
-    <type>exclude</type>
-    <source>Create Fine</source>
-    <target>Create Fine</target>
-  </rules>
-  <events>
-    <id>Add penalty</id>
-    <label>Add penalty</label>
+    <id>Send Appeal to Prefecture</id>
+    <label>Send Appeal to Prefecture</label>
   </events>
   <rules>
     <type>condition</type>
-    <source>Insert Fine Notification</source>
-    <target>Add penalty</target>
+    <source>Create Fine</source>
+    <target>Send Appeal to Prefecture</target>
     <durationexpression>P0D</durationexpression>
   </rules>
   <rules>
     <type>exclude</type>
-    <source>Add penalty</source>
-    <target>Add penalty</target>
+    <source>Send Appeal to Prefecture</source>
+    <target>Send Appeal to Prefecture</target>
+  </rules>
+  <events>
+    <id>Insert Date Appeal to Prefecture</id>
+    <label>Insert Date Appeal to Prefecture</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>Create Fine</source>
+    <target>Insert Date Appeal to Prefecture</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Insert Date Appeal to Prefecture</source>
+    <target>Insert Date Appeal to Prefecture</target>
+  </rules>
+  <events>
+    <id>Receive Result Appeal from Prefecture</id>
+    <label>Receive Result Appeal from Prefecture</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>Send Fine</source>
+    <target>Receive Result Appeal from Prefecture</target>
+    <durationexpression>P0D</durationexpression>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Result Appeal from Prefecture</source>
+    <target>Receive Result Appeal from Prefecture</target>
   </rules>
   <events>
     <id>S0</id>

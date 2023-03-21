@@ -7,54 +7,55 @@
     <description>Dummy user</description>
   </roles>
   <events>
-    <id>S0</id>
-    <label>S0</label>
+    <id>O_Refused</id>
+    <label>O_Refused</label>
   </events>
-  <rules>
-    <type>exclude</type>
-    <source>S0</source>
-    <target>S0</target>
-  </rules>
-  <rules>
-    <type>condition</type>
-    <source>O_Created</source>
-    <target>S0</target>
-    <durationexpression>P0D</durationexpression>
-  </rules>
   <events>
-    <id>O_Created</id>
-    <label>O_Created</label>
+    <id>O_Sent (mail and online)</id>
+    <label>O_Sent (mail and online)</label>
+  </events>
+  <events>
+    <id>O_Sent (online only)</id>
+    <label>O_Sent (online only)</label>
+  </events>
+  <events>
+    <id>O_Create Offer</id>
+    <label>O_Create Offer</label>
   </events>
   <rules>
     <type>exclude</type>
-    <source>O_Created</source>
+    <source>O_Create Offer</source>
+    <target>O_Create Offer</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>O_Create Offer</source>
     <target>O_Created</target>
+    <duration>P0D</duration>
   </rules>
   <rules>
     <type>include</type>
-    <source>O_Created</source>
-    <target>S1</target>
-  </rules>
-  <rules>
-    <type>condition</type>
     <source>O_Create Offer</source>
     <target>O_Created</target>
-    <durationexpression>P0D</durationexpression>
   </rules>
+  <events>
+    <id>O_Cancelled</id>
+    <label>O_Cancelled</label>
+  </events>
   <events>
     <id>S1</id>
     <label>S1</label>
   </events>
   <rules>
-    <type>condition</type>
-    <source>O_Created</source>
-    <target>S1</target>
-    <durationexpression>P0D</durationexpression>
-  </rules>
-  <rules>
     <type>exclude</type>
     <source>S1</source>
     <target>S1</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Created</source>
+    <target>S1</target>
+    <duration>P0D</duration>
   </rules>
   <rules>
     <type>include</type>
@@ -62,24 +63,49 @@
     <target>O_Returned</target>
   </rules>
   <events>
-    <id>O_Create Offer</id>
-    <label>O_Create Offer</label>
+    <id>O_Created</id>
+    <label>O_Created</label>
   </events>
   <rules>
-    <type>response</type>
+    <type>condition</type>
     <source>O_Create Offer</source>
     <target>O_Created</target>
-    <durationexpression>P0D</durationexpression>
+    <duration>P0D</duration>
   </rules>
   <rules>
     <type>include</type>
-    <source>O_Create Offer</source>
-    <target>O_Created</target>
+    <source>O_Created</source>
+    <target>S1</target>
   </rules>
   <rules>
     <type>exclude</type>
-    <source>O_Create Offer</source>
-    <target>O_Create Offer</target>
+    <source>O_Created</source>
+    <target>O_Created</target>
+  </rules>
+  <events>
+    <id>S0</id>
+    <label>S0</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>O_Created</source>
+    <target>S0</target>
+    <duration>P0D</duration>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>S0</target>
+  </rules>
+  <events>
+    <id>O_Accepted</id>
+    <label>O_Accepted</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>O_Returned</source>
+    <target>O_Accepted</target>
+    <duration>P0D</duration>
   </rules>
   <events>
     <id>O_Returned</id>
@@ -89,7 +115,12 @@
     <type>condition</type>
     <source>S1</source>
     <target>O_Returned</target>
-    <durationexpression>P0D</durationexpression>
+    <duration>P0D</duration>
+  </rules>
+  <rules>
+    <type>include</type>
+    <source>O_Returned</source>
+    <target>O_Accepted</target>
   </rules>
   <rules>
     <type>exclude</type>
@@ -122,13 +153,13 @@
     <type>subprocess</type>
   </events>
   <events>
-    <id>O_Sent (mail and online)</id>
-    <label>O_Sent (mail and online)</label>
+    <id>O_Sent (online only)</id>
+    <label>O_Sent (online only)</label>
     <parent>S1</parent>
   </events>
   <events>
-    <id>O_Sent (online only)</id>
-    <label>O_Sent (online only)</label>
+    <id>O_Sent (mail and online)</id>
+    <label>O_Sent (mail and online)</label>
     <parent>S1</parent>
   </events>
 </DCRModel>
