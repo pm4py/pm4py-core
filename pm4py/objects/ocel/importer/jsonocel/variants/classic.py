@@ -63,7 +63,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     types_dict = {}
     for obj_id in ocel[constants.OCEL_OBJECTS_KEY]:
         obj = ocel[constants.OCEL_OBJECTS_KEY][obj_id]
-        obj_type = obj[constants.DEFAULT_OBJECT_TYPE]
+        obj_type = obj[object_type]
         types_dict[obj_id] = obj_type
         dct = {object_id: obj_id, object_type: obj_type}
         for k, v in obj[constants.OCEL_OVMAP_KEY].items():
@@ -72,13 +72,13 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
 
     for ev_id in ocel[constants.OCEL_EVENTS_KEY]:
         ev = ocel[constants.OCEL_EVENTS_KEY][ev_id]
-        dct = {event_id: ev_id, event_timestamp: parser.apply(ev[constants.DEFAULT_EVENT_TIMESTAMP]),
-               event_activity: ev[constants.DEFAULT_EVENT_ACTIVITY]}
+        dct = {event_id: ev_id, event_timestamp: parser.apply(ev[event_timestamp]),
+               event_activity: ev[event_activity]}
         for k, v in ev[constants.OCEL_VMAP_KEY].items():
             dct[k] = v
         for obj in ev[constants.OCEL_OMAP_KEY]:
-            relations.append({event_id: ev_id, event_activity: ev[constants.DEFAULT_EVENT_ACTIVITY],
-                              event_timestamp: parser.apply(ev[constants.DEFAULT_EVENT_TIMESTAMP]), object_id: obj,
+            relations.append({event_id: ev_id, event_activity: ev[event_activity],
+                              event_timestamp: parser.apply(ev[event_timestamp]), object_id: obj,
                               object_type: types_dict[obj]})
         events.append(dct)
 
@@ -100,7 +100,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     globals[constants.OCEL_GLOBAL_EVENT] = ocel[constants.OCEL_GLOBAL_EVENT]
     globals[constants.OCEL_GLOBAL_OBJECT] = ocel[constants.OCEL_GLOBAL_OBJECT]
 
-    ocel = OCEL(events, objects, relations, globals)
+    ocel = OCEL(events=events, objects=objects, relations=relations, globals=globals, parameters=parameters)
     ocel = filtering_utils.propagate_relations_filtering(ocel)
 
     return ocel
