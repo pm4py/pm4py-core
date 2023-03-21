@@ -85,4 +85,4 @@ def get_ocel_from_extended_table(df: pd.DataFrame, objects_df: Optional[Dict[Any
     del df[internal_index]
     del relations[internal_index]
 
-    return OCEL(df, objects_df, relations)
+    return OCEL(events=df, objects=objects_df, relations=relations, parameters=parameters)
