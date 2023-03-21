@@ -9,6 +9,8 @@
   * easy-to-use (local computer) log extractors for Outlook, Windows events registry, Mozilla Firefox and Google Chrome
 
 ### Changed
+* b3c17fe017bd57889845f398e08fa95d94a8c800
+  * add flow id to silent transitions in BPMN Petri net conversion
 
 ### Deprecated
 
