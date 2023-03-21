@@ -94,7 +94,7 @@ def suggest_improvements(log_obj: Union[pd.DataFrame, EventLog, EventStream], pa
     execute_query = exec_utils.get_param_value(Parameters.EXECUTE_QUERY, parameters, api_key is not None)
 
     query = log_to_dfg_descr.apply(log_obj, parameters=parameters)
-    query += "how to optimize the execution of the aforementioned process ?"
+    query += "how to optimize the execution of the aforementioned process ?  Please only data and process specific considerations, not general considerations. Also, if possible, tell me which steps can be parallelized to increase the performance of the process."
 
     if not execute_query:
         return query
@@ -126,7 +126,7 @@ def root_cause_analysis(log_obj: Union[pd.DataFrame, EventLog, EventStream], par
     execute_query = exec_utils.get_param_value(Parameters.EXECUTE_QUERY, parameters, api_key is not None)
 
     query = log_to_variants_descr.apply(log_obj, parameters=parameters)
-    query += "what are the root causes of the performance issues, given the considered process?"
+    query += "what are the root causes of the performance issues, given the considered process? Please only data and process specific considerations, not general considerations."
 
     if not execute_query:
         return query
