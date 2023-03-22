@@ -4,8 +4,18 @@
     <xs:complexType>
       <xs:simpleContent>
         <xs:extension base="xs:string">
-          <xs:attribute type="xs:string" name="name" use="optional"/>
-          <xs:attribute type="xs:string" name="type" use="optional"/>
+          <xs:attribute type="xs:string" name="name" use="required"/>
+          <xs:attribute name="type" use="optional">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="string"/>
+                <xs:enumeration value="time"/>
+                <xs:enumeration value="integer"/>
+                <xs:enumeration value="float"/>
+                <xs:enumeration value="boolean"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
           <xs:attribute type="xs:string" name="time" use="optional"/>
         </xs:extension>
       </xs:simpleContent>
