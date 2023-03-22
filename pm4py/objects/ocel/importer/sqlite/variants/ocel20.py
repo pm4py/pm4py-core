@@ -63,25 +63,25 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
     events_id_type = {x["ocel_id"]: x["ocel_type"] for x in EVENTS}
     objects_id_type = {x["ocel_id"]: x["ocel_type"] for x in OBJECTS}
 
-    EVENT_CORR_TYPE = pd.read_sql("SELECT * FROM event_corr_type", conn)
-    OBJECT_CORR_TYPE = pd.read_sql("SELECT * FROM object_corr_type", conn)
+    EVENT_CORR_TYPE = pd.read_sql("SELECT * FROM event_map_type", conn)
+    OBJECT_CORR_TYPE = pd.read_sql("SELECT * FROM object_map_type", conn)
     EVENT_CORR_TYPE = EVENT_CORR_TYPE.to_dict("records")
     OBJECT_CORR_TYPE = OBJECT_CORR_TYPE.to_dict("records")
 
-    events_type_corr = {x["ocel_type"]: x["ocel_type_corr"] for x in EVENT_CORR_TYPE}
-    objects_type_corr = {x["ocel_type"]: x["ocel_type_corr"] for x in OBJECT_CORR_TYPE}
+    events_type_map = {x["ocel_type"]: x["ocel_type_map"] for x in EVENT_CORR_TYPE}
+    objects_type_map = {x["ocel_type"]: x["ocel_type_map"] for x in OBJECT_CORR_TYPE}
 
     event_types_coll = []
     object_types_coll = []
 
     for act in etypes:
-        act_red = events_type_corr[act]
+        act_red = events_type_map[act]
         df = pd.read_sql("SELECT * FROM event_"+act_red, conn)
         df = df.rename(columns={"ocel_id": event_id, "ocel_time": event_timestamp})
         event_types_coll.append(df)
 
     for ot in otypes:
-        ot_red = objects_type_corr[ot]
+        ot_red = objects_type_map[ot]
         df = pd.read_sql("SELECT * FROM object_"+ot_red, conn)
         df = df.rename(columns={"ocel_id": object_id, "ocel_time": event_timestamp})
         object_types_coll.append(df)

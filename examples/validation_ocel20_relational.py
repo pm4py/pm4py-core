@@ -1,28 +1,28 @@
 def const_1_existence_type_independent_tables(curs):
-    query = """SELECT Count(*) FROM sqlite_master WHERE type = "table" AND tbl_name IN ("event_corr_type", "object_corr_type", "event", "object", "event_object", "object_object");"""
+    query = """SELECT Count(*) FROM sqlite_master WHERE type = "table" AND tbl_name IN ("event_map_type", "object_map_type", "event", "object", "event_object", "object_object");"""
     curs.execute(query)
     res = curs.fetchone()
     return res[0] == 6
 
 
-def const_2_existence_object_type_tables_corr_obj_types(curs):
-    query = """SELECT Count(*) FROM (SELECT a.ocel_type_corr, b.tbl_name FROM (SELECT ocel_type_corr FROM object_corr_type) a LEFT OUTER JOIN (SELECT tbl_name FROM sqlite_master WHERE type = "table" AND tbl_name LIKE "object_%") b ON b.tbl_name = "object_" || a.ocel_type_corr WHERE b.tbl_name IS NULL);"""
+def const_2_existence_object_type_tables_map_obj_types(curs):
+    query = """SELECT Count(*) FROM (SELECT a.ocel_type_map, b.tbl_name FROM (SELECT ocel_type_map FROM object_map_type) a LEFT OUTER JOIN (SELECT tbl_name FROM sqlite_master WHERE type = "table" AND tbl_name LIKE "object_%") b ON b.tbl_name = "object_" || a.ocel_type_map WHERE b.tbl_name IS NULL);"""
     curs.execute(query)
     res0 = curs.fetchone()
 
-    query = """SELECT Count(*) FROM (SELECT a.ocel_type_corr, b.tbl_name FROM (SELECT tbl_name FROM sqlite_master WHERE type = "table" AND tbl_name LIKE "object_%") b LEFT OUTER JOIN (SELECT ocel_type_corr FROM object_corr_type) a ON b.tbl_name = "object_" || a.ocel_type_corr WHERE a.ocel_type_corr IS NULL);"""
+    query = """SELECT Count(*) FROM (SELECT a.ocel_type_map, b.tbl_name FROM (SELECT tbl_name FROM sqlite_master WHERE type = "table" AND tbl_name LIKE "object_%") b LEFT OUTER JOIN (SELECT ocel_type_map FROM object_map_type) a ON b.tbl_name = "object_" || a.ocel_type_map WHERE a.ocel_type_map IS NULL);"""
     curs.execute(query)
     res1 = curs.fetchone()
 
     return res0[0] == 0 and res1[0] == 2
 
 
-def const_3_existence_event_type_tables_corr_ev_types(curs):
-    query = """SELECT Count(*) FROM (SELECT a.ocel_type_corr, b.tbl_name FROM (SELECT ocel_type_corr FROM event_corr_type) a LEFT OUTER JOIN (SELECT tbl_name FROM sqlite_master WHERE type = "table" AND tbl_name LIKE "event_%") b ON b.tbl_name = "event_" || a.ocel_type_corr WHERE b.tbl_name IS NULL);"""
+def const_3_existence_event_type_tables_map_ev_types(curs):
+    query = """SELECT Count(*) FROM (SELECT a.ocel_type_map, b.tbl_name FROM (SELECT ocel_type_map FROM event_map_type) a LEFT OUTER JOIN (SELECT tbl_name FROM sqlite_master WHERE type = "table" AND tbl_name LIKE "event_%") b ON b.tbl_name = "event_" || a.ocel_type_map WHERE b.tbl_name IS NULL);"""
     curs.execute(query)
     res0 = curs.fetchone()
 
-    query = """SELECT Count(*) FROM (SELECT a.ocel_type_corr, b.tbl_name FROM (SELECT tbl_name FROM sqlite_master WHERE type = "table" AND tbl_name LIKE "event_%") b LEFT OUTER JOIN (SELECT ocel_type_corr FROM event_corr_type) a ON b.tbl_name = "event_" || a.ocel_type_corr WHERE a.ocel_type_corr IS NULL);"""
+    query = """SELECT Count(*) FROM (SELECT a.ocel_type_map, b.tbl_name FROM (SELECT tbl_name FROM sqlite_master WHERE type = "table" AND tbl_name LIKE "event_%") b LEFT OUTER JOIN (SELECT ocel_type_map FROM event_map_type) a ON b.tbl_name = "event_" || a.ocel_type_map WHERE a.ocel_type_map IS NULL);"""
     curs.execute(query)
     res1 = curs.fetchone()
 
@@ -30,15 +30,15 @@ def const_3_existence_event_type_tables_corr_ev_types(curs):
 
 
 def const_4_ocel_type_column(curs):
-    query = """SELECT Count(*) FROM (SELECT m.tbl_name, p.* FROM sqlite_master m JOIN pragma_table_info(m.tbl_name) p WHERE m.tbl_name IN ("object_corr_type", "event_corr_type", "event", "object") AND m.type = "table" AND p.name = "ocel_type");"""
+    query = """SELECT Count(*) FROM (SELECT m.tbl_name, p.* FROM sqlite_master m JOIN pragma_table_info(m.tbl_name) p WHERE m.tbl_name IN ("object_map_type", "event_map_type", "event", "object") AND m.type = "table" AND p.name = "ocel_type");"""
     curs.execute(query)
     res0 = curs.fetchone()
 
     return res0[0] == 4
 
 
-def const_5_ocel_type_corr(curs):
-    query = """SELECT Count(*) FROM (SELECT m.tbl_name, p.* FROM sqlite_master m JOIN pragma_table_info(m.tbl_name) p WHERE m.tbl_name IN ("object_corr_type", "event_corr_type") AND m.type = "table" AND p.name = "ocel_type_corr");"""
+def const_5_ocel_type_map(curs):
+    query = """SELECT Count(*) FROM (SELECT m.tbl_name, p.* FROM sqlite_master m JOIN pragma_table_info(m.tbl_name) p WHERE m.tbl_name IN ("object_map_type", "event_map_type") AND m.type = "table" AND p.name = "ocel_type_map");"""
     curs.execute(query)
     res0 = curs.fetchone()
 
@@ -78,7 +78,7 @@ def const_9_object_object_fields(curs):
 
 
 def const_10_existence_ocel_id_obj_type_spec_tables(curs):
-    query = """SELECT m.tbl_name, Count(*) FROM sqlite_master m JOIN object_corr_type ty on m.tbl_name = "object_" || ty.ocel_type_corr JOIN pragma_table_info(m.tbl_name) p WHERE m.type = "table" AND p.name = "ocel_id" GROUP BY m.tbl_name;"""
+    query = """SELECT m.tbl_name, Count(*) FROM sqlite_master m JOIN object_map_type ty on m.tbl_name = "object_" || ty.ocel_type_map JOIN pragma_table_info(m.tbl_name) p WHERE m.type = "table" AND p.name = "ocel_id" GROUP BY m.tbl_name;"""
     curs.execute(query)
     res = curs.fetchall()
 
@@ -92,7 +92,7 @@ def const_10_existence_ocel_id_obj_type_spec_tables(curs):
 
 
 def const_11_existence_ocel_id_ev_type_spec_tables(curs):
-    query = """SELECT m.tbl_name, Count(*) FROM sqlite_master m JOIN event_corr_type ty on m.tbl_name = "event_" || ty.ocel_type_corr JOIN pragma_table_info(m.tbl_name) p WHERE m.type = "table" AND p.name = "ocel_id" GROUP BY m.tbl_name;"""
+    query = """SELECT m.tbl_name, Count(*) FROM sqlite_master m JOIN event_map_type ty on m.tbl_name = "event_" || ty.ocel_type_map JOIN pragma_table_info(m.tbl_name) p WHERE m.type = "table" AND p.name = "ocel_id" GROUP BY m.tbl_name;"""
     curs.execute(query)
     res = curs.fetchall()
 
@@ -106,7 +106,7 @@ def const_11_existence_ocel_id_ev_type_spec_tables(curs):
 
 
 def const_12_existence_type_ocel_time_obj_type_spec_tables(curs):
-    query = """SELECT m.tbl_name, Count(*) FROM sqlite_master m JOIN object_corr_type ty on m.tbl_name = "object_" || ty.ocel_type_corr JOIN pragma_table_info(m.tbl_name) p WHERE m.type = "table" AND p.name = "ocel_time" AND p.type = "TIMESTAMP" GROUP BY m.tbl_name;"""
+    query = """SELECT m.tbl_name, Count(*) FROM sqlite_master m JOIN object_map_type ty on m.tbl_name = "object_" || ty.ocel_type_map JOIN pragma_table_info(m.tbl_name) p WHERE m.type = "table" AND p.name = "ocel_time" AND p.type = "TIMESTAMP" GROUP BY m.tbl_name;"""
     curs.execute(query)
     res = curs.fetchall()
 
@@ -120,7 +120,7 @@ def const_12_existence_type_ocel_time_obj_type_spec_tables(curs):
 
 
 def const_13_existence_type_ocel_time_ev_type_spec_tables(curs):
-    query = """SELECT m.tbl_name, Count(*) FROM sqlite_master m JOIN event_corr_type ty on m.tbl_name = "event_" || ty.ocel_type_corr JOIN pragma_table_info(m.tbl_name) p WHERE m.type = "table" AND p.name = "ocel_time" AND p.type = "TIMESTAMP" GROUP BY m.tbl_name;"""
+    query = """SELECT m.tbl_name, Count(*) FROM sqlite_master m JOIN event_map_type ty on m.tbl_name = "event_" || ty.ocel_type_map JOIN pragma_table_info(m.tbl_name) p WHERE m.type = "table" AND p.name = "ocel_time" AND p.type = "TIMESTAMP" GROUP BY m.tbl_name;"""
     curs.execute(query)
     res = curs.fetchall()
 
@@ -133,8 +133,8 @@ def const_13_existence_type_ocel_time_ev_type_spec_tables(curs):
     return ret
 
 
-def const_14_primary_key_object_event_corr_type_tables(curs):
-    query = """SELECT Count(*) FROM (SELECT m.tbl_name, p.* FROM sqlite_master m JOIN pragma_table_info(m.tbl_name) p WHERE m.type = "table" AND m.tbl_name IN ("object_corr_type", "event_corr_type") AND p.name = "ocel_type" AND p.pk > 0);"""
+def const_14_primary_key_object_event_map_type_tables(curs):
+    query = """SELECT Count(*) FROM (SELECT m.tbl_name, p.* FROM sqlite_master m JOIN pragma_table_info(m.tbl_name) p WHERE m.type = "table" AND m.tbl_name IN ("object_map_type", "event_map_type") AND p.name = "ocel_type" AND p.pk > 0);"""
     curs.execute(query)
     res = curs.fetchall()
 
@@ -190,7 +190,7 @@ def const_17_primary_key_object_object_table(curs):
 
 
 def const_18_primary_key_event_type_spec_tables(curs):
-    query = """SELECT m.tbl_name, sum(p.pk) FROM sqlite_master m JOIN event_corr_type ty on m.tbl_name = "event_" || ty.ocel_type_corr JOIN pragma_table_info(m.tbl_name) p WHERE m.type = "table" AND p.name = "ocel_id" GROUP BY m.tbl_name;"""
+    query = """SELECT m.tbl_name, sum(p.pk) FROM sqlite_master m JOIN event_map_type ty on m.tbl_name = "event_" || ty.ocel_type_map JOIN pragma_table_info(m.tbl_name) p WHERE m.type = "table" AND p.name = "ocel_id" GROUP BY m.tbl_name;"""
     curs.execute(query)
     res = curs.fetchall()
 
@@ -204,7 +204,7 @@ def const_18_primary_key_event_type_spec_tables(curs):
 
 
 def const_19_foreign_key_event(curs):
-    query = """SELECT Count(*) FROM (SELECT * from pragma_foreign_key_list("event") p WHERE p."table" = "event_corr_type" AND p."from" = "ocel_type" AND p."to" = "ocel_type");"""
+    query = """SELECT Count(*) FROM (SELECT * from pragma_foreign_key_list("event") p WHERE p."table" = "event_map_type" AND p."from" = "ocel_type" AND p."to" = "ocel_type");"""
     curs.execute(query)
     res0 = curs.fetchone()
 
@@ -212,7 +212,7 @@ def const_19_foreign_key_event(curs):
 
 
 def const_20_foreign_key_object(curs):
-    query = """SELECT Count(*) FROM (SELECT * from pragma_foreign_key_list("object") p WHERE p."table" = "object_corr_type" AND p."from" = "ocel_type" AND p."to" = "ocel_type");"""
+    query = """SELECT Count(*) FROM (SELECT * from pragma_foreign_key_list("object") p WHERE p."table" = "object_map_type" AND p."from" = "ocel_type" AND p."to" = "ocel_type");"""
     curs.execute(query)
     res0 = curs.fetchone()
 
@@ -244,7 +244,7 @@ def const_22_foreign_key_object_object(curs):
 
 
 def const_23_foreign_key_event_type_specific(curs):
-    query = """SELECT Count(*) FROM (SELECT m.tbl_name, p.* FROM (SELECT tbl_name FROM sqlite_master WHERE type = "table") m JOIN event_corr_type ty on m.tbl_name = "event_" || ty.ocel_type_corr LEFT OUTER JOIN pragma_foreign_key_list(m.tbl_name) p ON p."table" = "event" AND p."from" = "ocel_id" AND p."to" = "ocel_id" WHERE p."table" IS NULL)"""
+    query = """SELECT Count(*) FROM (SELECT m.tbl_name, p.* FROM (SELECT tbl_name FROM sqlite_master WHERE type = "table") m JOIN event_map_type ty on m.tbl_name = "event_" || ty.ocel_type_map LEFT OUTER JOIN pragma_foreign_key_list(m.tbl_name) p ON p."table" = "event" AND p."from" = "ocel_id" AND p."to" = "ocel_id" WHERE p."table" IS NULL)"""
     curs.execute(query)
     res0 = curs.fetchone()
 
@@ -252,7 +252,7 @@ def const_23_foreign_key_event_type_specific(curs):
 
 
 def const_24_foreign_key_object_type_specific(curs):
-    query = """SELECT Count(*) FROM (SELECT m.tbl_name, p.* FROM (SELECT tbl_name FROM sqlite_master WHERE type = "table") m JOIN object_corr_type ty on m.tbl_name = "object_" || ty.ocel_type_corr LEFT OUTER JOIN pragma_foreign_key_list(m.tbl_name) p ON p."table" = "object" AND p."from" = "ocel_id" AND p."to" = "ocel_id" WHERE p."table" IS NULL)"""
+    query = """SELECT Count(*) FROM (SELECT m.tbl_name, p.* FROM (SELECT tbl_name FROM sqlite_master WHERE type = "table") m JOIN object_map_type ty on m.tbl_name = "object_" || ty.ocel_type_map LEFT OUTER JOIN pragma_foreign_key_list(m.tbl_name) p ON p."table" = "object" AND p."from" = "ocel_id" AND p."to" = "ocel_id" WHERE p."table" IS NULL)"""
     curs.execute(query)
     res0 = curs.fetchone()
 
@@ -261,10 +261,10 @@ def const_24_foreign_key_object_type_specific(curs):
 
 constraints = {
     "const_1_existence_type_independent_tables": const_1_existence_type_independent_tables,
-    "const_2_existence_object_type_tables_corr_obj_types": const_2_existence_object_type_tables_corr_obj_types,
-    "const_3_existence_event_type_tables_corr_ev_types": const_3_existence_event_type_tables_corr_ev_types,
+    "const_2_existence_object_type_tables_map_obj_types": const_2_existence_object_type_tables_map_obj_types,
+    "const_3_existence_event_type_tables_map_ev_types": const_3_existence_event_type_tables_map_ev_types,
     "const_4_ocel_type_column": const_4_ocel_type_column,
-    "const_5_ocel_type_corr": const_5_ocel_type_corr,
+    "const_5_ocel_type_map": const_5_ocel_type_map,
     "const_6_ocel_id": const_6_ocel_id,
     "const_7_ocel_qualifier": const_7_ocel_qualifier,
     "const_8_event_object_fields": const_8_event_object_fields,
@@ -273,7 +273,7 @@ constraints = {
     "const_11_existence_ocel_id_ev_type_spec_tables": const_11_existence_ocel_id_ev_type_spec_tables,
     "const_12_existence_type_ocel_time_obj_type_spec_tables": const_12_existence_type_ocel_time_obj_type_spec_tables,
     "const_13_existence_type_ocel_time_ev_type_spec_tables": const_13_existence_type_ocel_time_ev_type_spec_tables,
-    "const_14_primary_key_object_event_corr_type_tables": const_14_primary_key_object_event_corr_type_tables,
+    "const_14_primary_key_object_event_map_type_tables": const_14_primary_key_object_event_map_type_tables,
     "const_15_primary_key_object_event_tables": const_15_primary_key_object_event_tables,
     "const_16_primary_key_event_object_table": const_16_primary_key_event_object_table,
     "const_17_primary_key_object_object_table": const_17_primary_key_object_object_table,
@@ -291,6 +291,7 @@ def execute_script():
     import sqlite3
 
     conn = sqlite3.connect("../tests/input_data/ocel/ocel20_example.sqlite")
+    #conn = sqlite3.connect("../ocel20_example.sqlite")
     curs = conn.cursor()
 
     satisfied = []
