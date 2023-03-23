@@ -269,6 +269,28 @@ def discover_objects_graph(ocel: OCEL, graph_type: str = "object_interaction") -
         return object_codeath_graph.apply(ocel)
 
 
+def ocel_o2o_enrichment(ocel: OCEL, included_graphs: Optional[Collection[str]] = None) -> OCEL:
+    """
+    Inserts the information inferred from the graph computations (pm4py.discover_objects_graph)
+    in the list of O2O relations of the OCEL.
+
+    :param ocel: object-centric event log
+    :param included_graphs: types of graphs to include, provided as list/set of strings (object_interaction_graph, object_descendants_graph, object_inheritance_graph, object_cobirth_graph, object_codeath_graph)
+    :rtype: ``OCEL``
+
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        ocel = pm4py.ocel_o2o_enrichment(ocel)
+        print(ocel.o2o)
+    """
+    from pm4py.algo.transformation.ocel.graphs import ocel20_computation
+    return ocel20_computation.apply(ocel, parameters={"included_graphs": included_graphs})
+
+
 def sample_ocel_objects(ocel: OCEL, num_objects: int) -> OCEL:
     """
     Given an object-centric event log, returns a sampled event log with a subset of the objects
