@@ -1061,7 +1061,7 @@ def filter_ocel_cc_object(ocel: OCEL, object_id: str) -> OCEL:
         filtered_ocel = pm4py.filter_ocel_cc_object(ocel, 'order1')
     """
     from pm4py.algo.transformation.ocel.split_ocel import algorithm
-    ocel_splits = algorithm.apply(ocel)
+    ocel_splits = algorithm.apply(ocel, variant=algorithm.Variants.CONNECTED_COMPONENTS)
     for cc in ocel_splits:
         if object_id in cc.objects[ocel.object_id_column].unique():
             return cc
