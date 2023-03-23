@@ -7,6 +7,8 @@
   * insertion graph-based O2O relationships in the OCEL
 * 0bb0bad37311fd45113440d97f53a5c8255ce89c
   * insertion lifecycle-based E2O relations in the OCEL
+* e6076a50216de31fdbd4dd00edd631a01c9e1bb7
+  * another algorithm to split/sample OCELs (ancestors/descendants based)
 
 ### Changed
 
