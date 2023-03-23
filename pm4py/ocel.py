@@ -291,6 +291,29 @@ def ocel_o2o_enrichment(ocel: OCEL, included_graphs: Optional[Collection[str]] =
     return ocel20_computation.apply(ocel, parameters={"included_graphs": included_graphs})
 
 
+def ocel_e2o_lifecycle_enrichment(ocel: OCEL) -> OCEL:
+    """
+    Inserts lifecycle-based information (when an object is created/terminated or other types of relations)
+    in the list of E2O relations of the OCEL
+
+    :param ocel: object-centric event log
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        ocel = pm4py.ocel_e2o_lifecycle_enrichment(ocel)
+        print(ocel.relations)
+    """
+    from pm4py.objects.ocel.util import e2o_qualification
+    ocel = e2o_qualification.apply(ocel, "termination")
+    ocel = e2o_qualification.apply(ocel, "creation")
+    ocel = e2o_qualification.apply(ocel, "other")
+    return ocel
+
+
 def sample_ocel_objects(ocel: OCEL, num_objects: int) -> OCEL:
     """
     Given an object-centric event log, returns a sampled event log with a subset of the objects
