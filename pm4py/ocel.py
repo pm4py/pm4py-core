@@ -285,6 +285,51 @@ def discover_objects_graph(ocel: OCEL, graph_type: str = "object_interaction") -
         return object_codeath_graph.apply(ocel)
 
 
+def ocel_o2o_enrichment(ocel: OCEL, included_graphs: Optional[Collection[str]] = None) -> OCEL:
+    """
+    Inserts the information inferred from the graph computations (pm4py.discover_objects_graph)
+    in the list of O2O relations of the OCEL.
+
+    :param ocel: object-centric event log
+    :param included_graphs: types of graphs to include, provided as list/set of strings (object_interaction_graph, object_descendants_graph, object_inheritance_graph, object_cobirth_graph, object_codeath_graph)
+    :rtype: ``OCEL``
+
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        ocel = pm4py.ocel_o2o_enrichment(ocel)
+        print(ocel.o2o)
+    """
+    from pm4py.algo.transformation.ocel.graphs import ocel20_computation
+    return ocel20_computation.apply(ocel, parameters={"included_graphs": included_graphs})
+
+
+def ocel_e2o_lifecycle_enrichment(ocel: OCEL) -> OCEL:
+    """
+    Inserts lifecycle-based information (when an object is created/terminated or other types of relations)
+    in the list of E2O relations of the OCEL
+
+    :param ocel: object-centric event log
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        ocel = pm4py.ocel_e2o_lifecycle_enrichment(ocel)
+        print(ocel.relations)
+    """
+    from pm4py.objects.ocel.util import e2o_qualification
+    ocel = e2o_qualification.apply(ocel, "termination")
+    ocel = e2o_qualification.apply(ocel, "creation")
+    ocel = e2o_qualification.apply(ocel, "other")
+    return ocel
+
+
 def sample_ocel_objects(ocel: OCEL, num_objects: int) -> OCEL:
     """
     Given an object-centric event log, returns a sampled event log with a subset of the objects
@@ -325,7 +370,7 @@ def sample_ocel_connected_components(ocel: OCEL, connected_components: int = 1) 
         sampled_ocel = pm4py.sample_ocel_connected_components(ocel, 5) # keeps only 5 connected components
     """
     from pm4py.algo.transformation.ocel.split_ocel import algorithm
-    ocel_splits = algorithm.apply(ocel)
+    ocel_splits = algorithm.apply(ocel, variant=algorithm.Variants.CONNECTED_COMPONENTS)
     events = None
     objects = None
     relations = None
