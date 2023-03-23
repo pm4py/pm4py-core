@@ -5,6 +5,8 @@
 ### Added
 * af4f00bca1ec7a3b0acc0421efe4bf895b324995
   * insertion graph-based O2O relationships in the OCEL
+* 0bb0bad37311fd45113440d97f53a5c8255ce89c
+  * insertion lifecycle-based E2O relations in the OCEL
 
 ### Changed
 
