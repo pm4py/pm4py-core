@@ -36,35 +36,32 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     if included_graphs is None:
         included_graphs = {"object_interaction_graph", "object_descendants_graph", "object_inheritance_graph", "object_cobirth_graph", "object_codeath_graph"}
 
-    o2o = []
+    o2o = set()
 
     if "object_interaction_graph" in included_graphs:
         graph = object_interaction_graph.apply(ocel, parameters=parameters)
         for el in graph:
             if el[0] != el[1]:
-                o2o.append({ocel.object_id_column: el[0], ocel.object_id_column+"_2": el[1], ocel.qualifier: "object_interaction_graph"})
-                o2o.append({ocel.object_id_column: el[1], ocel.object_id_column+"_2": el[0], ocel.qualifier: "object_interaction_graph"})
+                o2o.add((el[0], el[1], "object_interaction_graph"))
+                o2o.add((el[1], el[0], "object_interaction_graph"))
     if "object_descendants_graph" in included_graphs:
         graph = object_descendants_graph.apply(ocel, parameters=parameters)
         for el in graph:
-            o2o.append({ocel.object_id_column: el[0], ocel.object_id_column + "_2": el[1],
-                        ocel.qualifier: "object_descendants_graph"})
+            o2o.add((el[0], el[1], "object_descendants_graph"))
     if "object_inheritance_graph" in included_graphs:
         graph = object_descendants_graph.apply(ocel, parameters=parameters)
         for el in graph:
-            o2o.append({ocel.object_id_column: el[0], ocel.object_id_column + "_2": el[1],
-                        ocel.qualifier: "object_inheritance_graph"})
+            o2o.add((el[0], el[1], "object_inheritance_graph"))
     if "object_cobirth_graph" in included_graphs:
         graph = object_cobirth_graph.apply(ocel, parameters=parameters)
         for el in graph:
-            o2o.append({ocel.object_id_column: el[0], ocel.object_id_column + "_2": el[1],
-                        ocel.qualifier: "object_cobirth_graph"})
+            o2o.add((el[0], el[1], "object_cobirth_graph"))
     if "object_codeath_graph" in included_graphs:
         graph = object_codeath_graph.apply(ocel, parameters=parameters)
         for el in graph:
-            o2o.append({ocel.object_id_column: el[0], ocel.object_id_column + "_2": el[1],
-                        ocel.qualifier: "object_codeath_graph"})
+            o2o.add((el[0], el[1], "object_codeath_graph"))
 
+    o2o = [{ocel.object_id_column: x[0], ocel.object_id_column+"_2": x[1], ocel.qualifier: x[2]} for x in o2o]
     ocel = copy(ocel)
     o2o = pd.DataFrame(o2o)
     ocel.o2o = pd.concat([ocel.o2o, o2o])
