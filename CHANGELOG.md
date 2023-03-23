@@ -3,6 +3,8 @@
 ## pm4py 2.7.1 (2023.XX.YY)
 
 ### Added
+* af4f00bca1ec7a3b0acc0421efe4bf895b324995
+  * insertion graph-based O2O relationships in the OCEL
 
 ### Changed
 
