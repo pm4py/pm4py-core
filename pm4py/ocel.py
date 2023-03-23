@@ -354,7 +354,7 @@ def sample_ocel_connected_components(ocel: OCEL, connected_components: int = 1) 
         sampled_ocel = pm4py.sample_ocel_connected_components(ocel, 5) # keeps only 5 connected components
     """
     from pm4py.algo.transformation.ocel.split_ocel import algorithm
-    ocel_splits = algorithm.apply(ocel)
+    ocel_splits = algorithm.apply(ocel, variant=algorithm.Variants.CONNECTED_COMPONENTS)
     events = None
     objects = None
     relations = None
