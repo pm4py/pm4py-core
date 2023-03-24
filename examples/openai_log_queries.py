@@ -3,6 +3,7 @@ import pm4py
 
 def execute_script():
     log = pm4py.read_xes("../tests/input_data/roadtraffic100traces.xes")
+    ocel = pm4py.read_ocel("../tests/input_data/ocel/example_log.jsonocel")
 
     print(pm4py.openai.describe_process(log))
 
@@ -24,6 +25,12 @@ def execute_script():
     log2 = log[log["case:concept:name"].isin(cases_tpa_100)]
 
     print(pm4py.openai.compare_logs(log1, log2))
+
+    print(pm4py.openai.abstract_dfg(log))
+
+    print(pm4py.openai.abstract_variants(log))
+
+    print(pm4py.openai.abstract_ocel(ocel))
 
 
 if __name__ == "__main__":

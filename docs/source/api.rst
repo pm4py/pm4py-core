@@ -278,6 +278,8 @@ In PM4Py, we offer object-centric process mining features:
   * :meth:`pm4py.ocel.sample_ocel_connected_components`; returns a sampled object-centric event log containing the provided number of connected components.
   * :meth:`pm4py.ocel.ocel_drop_duplicates`; drops relations between events and objects happening at the same time.
   * :meth:`pm4py.ocel.ocel_merge_duplicates`; merge events in the OCEL which are happening with the same activity at the same timestamp.
+  * :meth:`pm4py.ocel.ocel_o2o_enrichment`; enriches the O2O table of the OCEL with the grah-based relationships.
+  * :meth:`pm4py.ocel.ocel_e2o_lifecycle_enrichment`; enriches the relations table of the OCEL with lifecycle-based information.
 
 
 Some object-centric process discovery algorithms are also offered:
@@ -300,6 +302,11 @@ We offer some integrations with OpenAI (e.g., ChatGPT) for automatically get ins
   * :meth:`pm4py.openai.root_cause_analysis`; performs a root cause analysis of the conformance/performance issues
   * :meth:`pm4py.openai.code_for_log_generation`; generates an event log given the name of a process (e.g., Purchase-to-Pay)
   * :meth:`pm4py.openai.compare_logs`; describe the differences between two event logs
+
+The following methods provides just the abstractions of the given objects:
+  * :meth:`pm4py.openai.abstract_dfg`; provides the DFG abstraction of a traditional event log
+  * :meth:`pm4py.openai.abstract_variants`; provides the variants abstraction of a traditional event log
+  * :meth:`pm4py.openai.abstract_ocel`; describe the differences between two event logs
 
 
 Basic Connectors (:mod:`pm4py.connectors`)
@@ -553,6 +560,8 @@ Overall List of Methods
    pm4py.ocel.sample_ocel_connected_components
    pm4py.ocel.ocel_drop_duplicates
    pm4py.ocel.ocel_merge_duplicates
+   pm4py.ocel.ocel_o2o_enrichment
+   pm4py.ocel.ocel_e2o_lifecycle_enrichment
    pm4py.openai
    pm4py.openai.describe_process
    pm4py.openai.describe_path
@@ -562,6 +571,9 @@ Overall List of Methods
    pm4py.openai.root_cause_analysis
    pm4py.openai.describe_variant
    pm4py.openai.compare_logs
+   pm4py.openai.abstract_dfg
+   pm4py.openai.abstract_variants
+   pm4py.openai.abstract_ocel
    pm4py.connectors.extract_log_outlook_mails
    pm4py.connectors.extract_log_outlook_calendar
    pm4py.connectors.extract_log_windows_events
