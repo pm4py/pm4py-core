@@ -1,6 +1,6 @@
 <DCRModel>
   <title>Sepsis Cases</title>
-  <description>SP</description>
+  <description>SPME</description>
   <graphType>DCRModel</graphType>
   <roles>
     <title>User</title>
