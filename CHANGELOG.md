@@ -11,12 +11,18 @@
   * another algorithm to split/sample OCELs (ancestors/descendants based)
 * 564e2c0ec976291c283fc1b24c5ebc2b6e452f12
   * algorithm for textual representation of OCEL
+* 3e5164b72835aaa29051f4fd6ce4329253a17f95
+  * algorithm to cluster OCEL based on the lifecycle/interactions similarity
 
 ### Changed
+* 70198faa1b674c3a4e4351ff251a9af504e16a4e
+  * changing alignments interfacing in the simplified interface
 
 ### Deprecated
 
 ### Fixed
+* 8f5d5057f24bce7c3825e3f6d34b15e15bc15025
+  * wrong condition in the visualization of the alignments table
 
 ### Removed
 

@@ -280,6 +280,7 @@ In PM4Py, we offer object-centric process mining features:
   * :meth:`pm4py.ocel.ocel_merge_duplicates`; merge events in the OCEL which are happening with the same activity at the same timestamp.
   * :meth:`pm4py.ocel.ocel_o2o_enrichment`; enriches the O2O table of the OCEL with the grah-based relationships.
   * :meth:`pm4py.ocel.ocel_e2o_lifecycle_enrichment`; enriches the relations table of the OCEL with lifecycle-based information.
+  * :meth:`pm4py.ocel.cluster_equivalent_ocel`; perform a clustering of the objects of an OCEL based on lifecycle/interactions similarity.
 
 
 Some object-centric process discovery algorithms are also offered:
@@ -562,6 +563,7 @@ Overall List of Methods
    pm4py.ocel.ocel_merge_duplicates
    pm4py.ocel.ocel_o2o_enrichment
    pm4py.ocel.ocel_e2o_lifecycle_enrichment
+   pm4py.ocel.cluster_equivalent_ocel
    pm4py.openai
    pm4py.openai.describe_process
    pm4py.openai.describe_path
