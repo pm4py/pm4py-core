@@ -11,6 +11,8 @@
   * another algorithm to split/sample OCELs (ancestors/descendants based)
 * 564e2c0ec976291c283fc1b24c5ebc2b6e452f12
   * algorithm for textual representation of OCEL
+* 3e5164b72835aaa29051f4fd6ce4329253a17f95
+  * algorithm to cluster OCEL based on the lifecycle/interactions similarity
 
 ### Changed
 
