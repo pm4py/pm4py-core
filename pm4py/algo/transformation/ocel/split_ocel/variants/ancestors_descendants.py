@@ -5,10 +5,11 @@ import networkx as nx
 from pm4py.util import exec_utils
 from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any, Collection
-
+import sys
 
 class Parameters(Enum):
     OBJECT_TYPE = "object_type"
+    MAX_OBJS = "max_objs"
 
 
 def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Collection[OCEL]:
@@ -36,6 +37,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Collection
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, None)
     if object_type is None:
         raise Exception("the object type should be provided as parameter")
+    max_objs = exec_utils.get_param_value(Parameters.MAX_OBJS, parameters, sys.maxsize)
 
     import pm4py
     interaction_graph = pm4py.discover_objects_graph(ocel, "object_interaction")
@@ -58,7 +60,10 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Collection
 
     lst = []
 
-    for obj in objects:
+    for index, obj in enumerate(objects):
+        if index >= max_objs:
+            break
+
         ancestors = nx.ancestors(G, obj)
         descendants = nx.descendants(G, obj)
         overall_set = ancestors.union(descendants).union({obj})
