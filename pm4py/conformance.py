@@ -66,7 +66,7 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
     return token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=properties)
 
 
-def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[Dict[str, Any]]:
+def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", variant_str : Optional[str] = None) -> List[Dict[str, Any]]:
     """
     Apply the alignments algorithm between a log and a process model.
     The methods return the full alignment diagnostics.
@@ -91,6 +91,7 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+    :param variant_str: variant specification (for Petri net alignments)
     :rtype: ``List[Dict[str, Any]]``
 
     .. code-block:: python3
@@ -112,10 +113,13 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
         if type(args[0]) is PetriNet:
             # Petri net alignments
             from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
+            variant = alignments.DEFAULT_VARIANT
+            if variant_str is not None:
+                variant = variant_str
             if multi_processing:
-                return alignments.apply_multiprocessing(log, args[0], args[1], args[2], parameters=properties)
+                return alignments.apply_multiprocessing(log, args[0], args[1], args[2], parameters=properties, variant=variant)
             else:
-                return alignments.apply(log, args[0], args[1], args[2], parameters=properties)
+                return alignments.apply(log, args[0], args[1], args[2], parameters=properties, variant=variant)
         elif isinstance(args[0], dict):
             # DFG alignments
             from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
