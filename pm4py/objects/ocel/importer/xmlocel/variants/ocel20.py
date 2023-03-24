@@ -102,7 +102,11 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                         for attribute in child2:
                             attribute_name = attribute.get("name")
                             attribute_time = attribute.get("time")
-                            attribute_text = parse_xml(attribute.text, object_type_attributes[object_type][attribute_name], date_parser)
+                            try:
+                                attribute_type = object_type_attributes[object_type][attribute_name]
+                            except:
+                                attribute_type = "string"
+                            attribute_text = parse_xml(attribute.text, attribute_type, date_parser)
                             if attribute_time == "0":
                                 obj_dict[attribute_name] = attribute_text
                             else:
@@ -137,7 +141,11 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                         for attribute in child2:
                             attribute_name = attribute.get("name")
                             attribute_text = attribute.text
-                            ev_dict[attribute_name] = parse_xml(attribute_text, event_type_attributes[event_type][attribute_name], date_parser)
+                            try:
+                                attribute_type = event_type_attributes[event_type][attribute_name]
+                            except:
+                                attribute_type = "string"
+                            ev_dict[attribute_name] = parse_xml(attribute_text, attribute_type, date_parser)
 
                 events_list.append(ev_dict)
 

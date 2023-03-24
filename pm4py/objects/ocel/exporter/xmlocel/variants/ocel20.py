@@ -36,6 +36,16 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
 
     ets = {k: {x: str(v[x].dtype) for x in v.dropna(axis="columns", how="all").columns if not x.startswith("ocel:")} for k, v in ocel.events.groupby(event_activity_column)}
     ots = {k: {x: str(v[x].dtype) for x in v.dropna(axis="columns", how="all").columns if not x.startswith("ocel:")} for k, v in ocel.objects.groupby(object_type_column)}
+    ots2 = {k: {x: str(v[x].dtype) for x in v.dropna(axis="columns", how="all").columns if not x.startswith("ocel:")} for k, v in ocel.object_changes.groupby(object_type_column)}
+
+    for k in ots2:
+        if k not in ots:
+            ots[k] = ots2[k]
+        else:
+            for x in ots2[k]:
+                if x not in ots[k]:
+                    ots[k][x] = ots2[k][x]
+
     objects0 = ocel.objects.to_dict("records")
     events0 = ocel.events.to_dict("records")
     object_changes0 = ocel.object_changes.to_dict("records")
