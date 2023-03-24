@@ -15,36 +15,37 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
+from pm4py.algo.transformation.ocel.description.variants import variant1
 from pm4py.objects.ocel.obj import OCEL
-from typing import Dict, Any, Optional
-import pandas as pd
+from typing import Optional, Dict, Any
+from pm4py.util import exec_utils
+from enum import Enum
 
 
-def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
+class Variants(Enum):
+    VARIANT1 = variant1
+
+
+def apply(ocel: OCEL, variant=Variants.VARIANT1, parameters: Optional[Dict[Any, Any]] = None) -> str:
     """
-    Imports an OCEL from a SQLite database using Pandas
+    Gets a textual representation from an object-centric event log
 
     Parameters
     --------------
-    file_path
-        Path to the SQLite database
+    ocel
+        Object-centric event log
+    variant
+        Variant of the algorithm to be used, possible values:
+        - Variants.VARIANT1
     parameters
-        Parameters of the import
+        Variant-specific parameters
 
     Returns
     --------------
-    ocel
-        Object-centric event log
+    ocel_stri
+        A textual representation of the object-centric event log
     """
     if parameters is None:
         parameters = {}
 
-    import sqlite3
-
-    conn = sqlite3.connect(file_path)
-
-    events = pd.read_sql("SELECT * FROM EVENTS", conn)
-    objects = pd.read_sql("SELECT * FROM OBJECTS", conn)
-    relations = pd.read_sql("SELECT * FROM RELATIONS", conn)
-
-    return OCEL(events=events, objects=objects, relations=relations, parameters=parameters)
+    return exec_utils.get_variant(variant).apply(ocel, parameters=parameters)

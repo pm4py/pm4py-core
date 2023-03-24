@@ -60,15 +60,15 @@ def apply(ocel: OCEL, file_path: str, parameters: Optional[Dict[Any, Any]] = Non
     event_types = sorted(list(set(EVENTS["ocel_type"].unique())))
     object_types = sorted(list(set(OBJECTS["ocel_type"].unique())))
 
-    EVENT_CORR_TYPE = pd.DataFrame({"ocel_type": event_types, "ocel_type_corr": event_types})
-    OBJECT_CORR_TYPE = pd.DataFrame({"ocel_type": object_types, "ocel_type_corr": object_types})
+    EVENT_CORR_TYPE = pd.DataFrame({"ocel_type": event_types, "ocel_type_map": event_types})
+    OBJECT_CORR_TYPE = pd.DataFrame({"ocel_type": object_types, "ocel_type_map": object_types})
 
     if enable_names_stripping:
-        EVENT_CORR_TYPE["ocel_type_corr"] = EVENT_CORR_TYPE["ocel_type_corr"].apply(lambda x: names_stripping.apply(x))
-        OBJECT_CORR_TYPE["ocel_type_corr"] = OBJECT_CORR_TYPE["ocel_type_corr"].apply(lambda x: names_stripping.apply(x))
+        EVENT_CORR_TYPE["ocel_type_map"] = EVENT_CORR_TYPE["ocel_type_map"].apply(lambda x: names_stripping.apply(x))
+        OBJECT_CORR_TYPE["ocel_type_map"] = OBJECT_CORR_TYPE["ocel_type_map"].apply(lambda x: names_stripping.apply(x))
 
-    EVENT_CORR_TYPE.to_sql("event_corr_type", conn, index=False)
-    OBJECT_CORR_TYPE.to_sql("object_corr_type", conn, index=False)
+    EVENT_CORR_TYPE.to_sql("event_map_type", conn, index=False)
+    OBJECT_CORR_TYPE.to_sql("object_map_type", conn, index=False)
 
     E2O = ocel.relations[[event_id, object_id, qualifier]].rename(columns={event_id: "ocel_event_id", object_id: "ocel_object_id", qualifier: "ocel_qualifier"})
     E2O.to_sql("event_object", conn, index=False)

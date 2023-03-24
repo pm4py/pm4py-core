@@ -1,6 +1,17 @@
 Release Notes
 =============
 
+
+pm4py 2.7.0 - Release Notes
+---------------------------
+
+The major changes in pm4py 2.7.0 are as follows:
+
+1. We added an initial integration to ChatGPT
+
+2. We added some connectors for workstation-supported processes (Outlook mail and calendar; web browsers).
+
+
 pm4py 2.6.0 - Release Notes
 ---------------------------
 

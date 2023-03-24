@@ -78,6 +78,20 @@ VERSIONS = {Variants.VERSION_DIJKSTRA_NO_HEURISTICS, Variants.VERSION_DIJKSTRA_N
             Variants.VERSION_DIJKSTRA_LESS_MEMORY,VERSION_DISCOUNTED_A_STAR}
 
 
+def __variant_mapper(variant):
+    if type(variant) is str:
+        if variant == "Variants.VERSION_STATE_EQUATION_A_STAR":
+            variant = Variants.VERSION_STATE_EQUATION_A_STAR
+        elif variant == "Variants.VERSION_TWEAKED_STATE_EQUATION_A_STAR":
+            variant = Variants.VERSION_TWEAKED_STATE_EQUATION_A_STAR
+        elif variant == "Variants.VERSION_DIJKSTRA_NO_HEURISTICS":
+            variant = Variants.VERSION_DIJKSTRA_NO_HEURISTICS
+        elif variant == "Variants.VERSION_DIJKSTRA_LESS_MEMORY":
+            variant = Variants.VERSION_DIJKSTRA_LESS_MEMORY
+
+    return variant
+
+
 def apply(obj: Union[EventLog, EventStream, pd.DataFrame, Trace], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT) -> Union[typing.AlignmentResult, typing.ListAlignments]:
     if parameters is None:
         parameters = {}
@@ -124,6 +138,7 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
     if parameters is None:
         parameters = copy({PARAMETER_CONSTANT_ACTIVITY_KEY: DEFAULT_NAME_KEY})
 
+    variant = __variant_mapper(variant)
     parameters = copy(parameters)
     best_worst_cost = exec_utils.get_param_value(Parameters.BEST_WORST_COST_INTERNAL, parameters,
                                                  __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters))
@@ -198,6 +213,8 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         if not check_soundness.check_easy_soundness_net_in_fin_marking(petri_net, initial_marking, final_marking):
             raise Exception("trying to apply alignments on a Petri net that is not a easy sound net!!")
 
+    variant = __variant_mapper(variant)
+
     start_time = time.time()
     max_align_time = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME, parameters,
                                                 sys.maxsize)
@@ -251,6 +268,8 @@ def apply_multiprocessing(log, petri_net, initial_marking, final_marking, parame
 
     import multiprocessing
 
+    variant = __variant_mapper(variant)
+
     num_cores = exec_utils.get_param_value(Parameters.CORES, parameters, multiprocessing.cpu_count() - 2)
 
     best_worst_cost = __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters)
@@ -263,7 +282,7 @@ def apply_multiprocessing(log, petri_net, initial_marking, final_marking, parame
     with ProcessPoolExecutor(max_workers=num_cores) as executor:
         futures = []
         for trace in one_tr_per_var:
-            futures.append(executor.submit(apply_trace, trace, petri_net, initial_marking, final_marking, parameters))
+            futures.append(executor.submit(apply_trace, trace, petri_net, initial_marking, final_marking, parameters, str(variant)))
         progress = __get_progress_bar(len(one_tr_per_var), parameters)
         if progress is not None:
             alignments_ready = 0
