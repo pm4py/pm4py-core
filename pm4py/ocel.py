@@ -24,6 +24,8 @@ import pandas as pd
 
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants
+import sys
+
 
 def ocel_get_object_types(ocel: OCEL) -> List[str]:
     """
@@ -509,3 +511,34 @@ def ocel_add_index_based_timedelta(ocel: OCEL) -> OCEL:
     del ocel.events["@@timedelta"]
     del ocel.relations["@@timedelta"]
     return ocel
+
+
+def cluster_equivalent_ocel(ocel: OCEL, object_type: str, max_objs: int = sys.maxsize) -> Dict[str, Collection[OCEL]]:
+    """
+    Perform a clustering of the object-centric event log, based on the 'executions' of
+    a single object type. Equivalent 'executions' are grouped in the output dictionary.
+
+    :param ocel: object-centric event log
+    :param object_type: reference object type
+    :param max_objs: maximum number of objects (of the given object type)
+    :rtype: ``Dict[str, Collection[OCEL]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        clusters = pm4py.cluster_equivalent_ocel(ocel, "order")
+    """
+    from pm4py.algo.transformation.ocel.split_ocel import algorithm as split_ocel_algorithm
+    from pm4py.objects.ocel.util import rename_objs_ot_tim_lex
+    from pm4py.algo.transformation.ocel.description import algorithm as ocel_description
+    lst_ocels = split_ocel_algorithm.apply(ocel, variant=split_ocel_algorithm.Variants.ANCESTORS_DESCENDANTS, parameters={"object_type": object_type, "max_objs": max_objs})
+    ret = {}
+    for index, oc in enumerate(lst_ocels):
+        oc_ren = rename_objs_ot_tim_lex.apply(oc)
+        descr = ocel_description.apply(oc_ren, parameters={"include_timestamps": False})
+        if descr not in ret:
+            ret[descr] = []
+        ret[descr].append(oc)
+    return ret
