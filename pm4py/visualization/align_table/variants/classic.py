@@ -58,7 +58,7 @@ def apply(log: EventLog, aligned_traces: typing.ListAlignments, parameters: Opti
         table_alignments_list.append("<td><font point-size='6'><table border='0'><tr>")
         for move in al_tr['alignment']:
             move_descr = str(move[1]).replace(">", "&gt;")
-            if not move[0][0] == ">>" or move[0][1] == ">>":
+            if not (move[0][0] == ">>" or move[0][1] == ">>"):
                 table_alignments_list.append("<td bgcolor=\"green\">" + move_descr + "</td>")
             elif move[0][1] == ">>":
                 table_alignments_list.append("<td bgcolor=\"violet\">" + move_descr + "</td>")
