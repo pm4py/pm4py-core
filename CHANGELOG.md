@@ -19,6 +19,8 @@
 ### Deprecated
 
 ### Fixed
+* 8f5d5057f24bce7c3825e3f6d34b15e15bc15025
+  * wrong condition in the visualization of the alignments table
 
 ### Removed
 
