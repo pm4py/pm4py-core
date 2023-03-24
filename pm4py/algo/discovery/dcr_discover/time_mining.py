@@ -21,30 +21,30 @@ def apply(dcr_model, event_log, method=AggregationMethod.STANDARD,sp_log=None):
             result_dict[k] = np.mean(v)
         elif method == AggregationMethod.MEDIAN:
             result_dict[k] = np.median(v)
-        else:
-            try:
-                if k[0] == 'RESPONSE':
-                    # MAX Deadline
-                    result_dict[k] = np.max(v)
-                elif k[0] == 'CONDITION':
-                    # MIN Delay
-                    result_dict[k] = np.min(v)
-            except:
-                print(v)
+        elif len(v) > 0:
+            if k[0] == 'RESPONSE':
+                # MAX Deadline
+                result_dict[k] = np.max(v)
+            elif k[0] == 'CONDITION':
+                # MIN Delay
+                result_dict[k] = np.min(v)
     return result_dict
 
 
 def get_timing_values(dcr_model, event_log, sp_log):
     timing_input_dict = {}
-    timing_input_dict['RESPONSE'] = []
-    timing_input_dict['CONDITION'] = []
+    timing_input_dict['RESPONSE'] = set()
+    timing_input_dict['CONDITION'] = set()
     for e1 in dcr_model['events']:
         for e2 in dcr_model['events']:
             if e1 in dcr_model['responseTo'] and e2 in dcr_model['responseTo'][e1]:
-                timing_input_dict['RESPONSE'].append([e1, e2])
+                timing_input_dict['RESPONSE'].add((e1, e2))
             if e1 in dcr_model['conditionsFor'] and e2 in dcr_model['conditionsFor'][e1]:
-                timing_input_dict['CONDITION'].append([e2, e1])
-    return get_timings(timing_input_dict, event_log, sp_log)
+                timing_input_dict['CONDITION'].add((e2, e1))
+    if sp_log:
+        return get_timings_subprocess(timing_input_dict, event_log, sp_log, dcr_model['subprocesses'].keys())
+    else:
+        return get_timings(timing_input_dict, event_log)
 
 
 def get_delta_between_events(filtered_df, event_pair, rule):
@@ -88,16 +88,70 @@ def get_log_with_pair(event_log, e1, e2):
         'case:concept:name'].unique()
     return event_log[event_log['case:concept:name'].isin(cids)].copy(deep=True)
 
-
-def get_timings(timing_input_dict,log,sp_log):
+def get_timings(timing_input_dict, log):
     if isinstance(log, pd.DataFrame):
         event_log = log
     else:
         event_log = pm4py.convert_to_dataframe(log)
     res = {}
     el_events = event_log['concept:name'].unique()
-    sp_event_log = pm4py.convert_to_dataframe(sp_log)
+    for rule, event_pairs in timing_input_dict.items():
+        # print(rule)
+        for event_pair in event_pairs:
+            if event_pair[0] in el_events and event_pair[1] in el_events:
+                filtered_df = get_log_with_pair(event_log, event_pair[0], event_pair[1])
+                data = get_delta_between_events(filtered_df, event_pair, rule)
+                # print(event_pair)
+                res[(rule, event_pair[0], event_pair[1])] = data
+            # else:
+                # print(f'[fuked] {event_pair}')
+
+    return res
+def get_timings_subprocess(timing_input_dict, log, sp_log,sps):
+    if isinstance(log, pd.DataFrame):
+        event_log = log
+    else:
+        event_log = pm4py.convert_to_dataframe(log)
+    # el_events = event_log['concept:name'].unique()
+
+    if isinstance(sp_log, pd.DataFrame):
+        sp_event_log = sp_log
+    else:
+        sp_event_log = pm4py.convert_to_dataframe(sp_log)
+    # sp_el_events = sp_event_log['concept:name'].unique()
+
+    res = {}
+    for rule, event_pairs in timing_input_dict.items():
+        # print(rule)
+        for event_pair in event_pairs:
+            if event_pair[0] in sps or event_pair[1] in sps:
+                filtered_df = get_log_with_pair(sp_event_log, event_pair[0], event_pair[1])
+                data = get_delta_between_events(filtered_df, event_pair, rule)
+                # print(event_pair)
+                res[(rule, event_pair[0], event_pair[1])] = data
+            else:
+                filtered_df = get_log_with_pair(event_log, event_pair[0], event_pair[1])
+                data = get_delta_between_events(filtered_df, event_pair, rule)
+                # print(event_pair)
+                res[(rule, event_pair[0], event_pair[1])] = data
+
+    return res
+
+
+def get_timings_subprocess_old(timing_input_dict, log, sp_log):
+    if isinstance(log, pd.DataFrame):
+        event_log = log
+    else:
+        event_log = pm4py.convert_to_dataframe(log)
+    el_events = event_log['concept:name'].unique()
+
+    if isinstance(sp_log, pd.DataFrame):
+        sp_event_log = sp_log
+    else:
+        sp_event_log = pm4py.convert_to_dataframe(sp_log)
     sp_el_events = sp_event_log['concept:name'].unique()
+
+    res = {}
     for rule, event_pairs in timing_input_dict.items():
         print(rule)
         for event_pair in event_pairs:
@@ -111,7 +165,13 @@ def get_timings(timing_input_dict,log,sp_log):
                 data = get_delta_between_events(filtered_df, event_pair, rule)
                 print(event_pair)
                 res[(rule, event_pair[0], event_pair[1])] = data
+            # elif len(event_pair) >= 2: # in here the in between events end up
+            #     print(f'[inbetween] {event_pair}')
+            #     filtered_df = get_log_with_pair(event_log, event_pair[0], event_pair[1])
+            #     data = get_delta_between_events(filtered_df, event_pair, rule)
+            #     print(event_pair)
+            #     res[(rule, event_pair[0], event_pair[1])] = data
             else:
-                print('[..|..] fuked')
+                print(f'[fuked_sp] {event_pair}')
 
     return res

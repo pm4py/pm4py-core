@@ -1,16 +1,16 @@
 from lxml import etree
 
 
-def export_dcr_graph(dcr, root, parent=None):
+def export_dcr_graph(dcr, root, parents_dict=None):
     for event in dcr['events']:
         xml_event = etree.SubElement(root, "events")
         xml_event_id = etree.SubElement(xml_event, "id")
         xml_event_id.text = event
         xml_event_label = etree.SubElement(xml_event, "label")
         xml_event_label.text = event
-        if parent:
+        if parents_dict and event in parents_dict:
             xml_event_parent = etree.SubElement(xml_event, "parent")
-            xml_event_parent.text = parent
+            xml_event_parent.text = parents_dict[event]
 
         for event_prime in dcr['events']:
             if event in dcr["conditionsFor"] and event_prime in dcr["conditionsFor"][event]:
@@ -21,13 +21,13 @@ def export_dcr_graph(dcr, root, parent=None):
                 xml_source.text = event_prime
                 xml_target = etree.SubElement(xml_condition, "target")
                 xml_target.text = event
-                xml_target = etree.SubElement(xml_condition, "duration")
-                if 'conditionsForDelays' in dcr.keys():
+                if 'conditionsForDelays' in dcr.keys() and event in dcr['conditionsForDelays']\
+                        and event_prime in dcr['conditionsForDelays'][event]:
                     time = dcr['conditionsForDelays'][event][event_prime]
-                    #TODO: to iso format automatically
-                    xml_target.text = f"P{time}D"
-                else:
-                    xml_target.text = "P0D"
+                    if time>0:
+                        xml_target = etree.SubElement(xml_condition, "duration")
+                        #TODO: to iso format automatically
+                        xml_target.text = f"P{time}D"
             if event in dcr["responseTo"] and event_prime in dcr["responseTo"][event]:
                 xml_response = etree.SubElement(root, "rules")
                 xml_type = etree.SubElement(xml_response, "type")
@@ -36,13 +36,13 @@ def export_dcr_graph(dcr, root, parent=None):
                 xml_source.text = event
                 xml_target = etree.SubElement(xml_response, "target")
                 xml_target.text = event_prime
-                xml_target = etree.SubElement(xml_response, "duration")
-                if 'responseToDeadlines' in dcr.keys():
+                if 'responseToDeadlines' in dcr.keys() and event in dcr['responseToDeadlines']\
+                        and event_prime in dcr['responseToDeadlines'][event]:
                     time = dcr['responseToDeadlines'][event][event_prime]
-                    #TODO: to iso format automatically
-                    xml_target.text = f"P{time}D"
-                else:
-                    xml_target.text = "P0D"
+                    if time > 0:
+                        xml_target = etree.SubElement(xml_response, "duration")
+                        #TODO: to iso format automatically
+                        xml_target.text = f"P{time}D"
             if event in dcr["includesTo"] and event_prime in dcr["includesTo"][event]:
                 xml_include = etree.SubElement(root, "rules")
                 xml_type = etree.SubElement(xml_include, "type")
@@ -93,10 +93,9 @@ def export_dcr_xml(dcr, output_file_name, dcr_title, dcr_description=None):
     role_description.text = "Dummy user"
 
 
-    export_dcr_graph(dcr, root)
-
     if 'subprocesses' in dcr:
-        for sp_name, sp_dcr in dcr['subprocesses'].items():
+        parents_dict = {}
+        for sp_name, sp_events in dcr['subprocesses'].items():
             xml_event = etree.SubElement(root, "events")
             xml_event_id = etree.SubElement(xml_event, "id")
             xml_event_id.text = sp_name
@@ -104,8 +103,11 @@ def export_dcr_xml(dcr, output_file_name, dcr_title, dcr_description=None):
             xml_event_label.text = sp_name
             xml_event_type = etree.SubElement(xml_event, "type")
             xml_event_type.text = "subprocess"  # TODO: try "nesting" if subprocess doesn't work
-
-            export_dcr_graph(sp_dcr, root, sp_name)
+            for sp_event in sp_events:
+                parents_dict[sp_event] = sp_name
+        export_dcr_graph(dcr, root, parents_dict)
+    else:
+        export_dcr_graph(dcr, root, None)
 
     tree = etree.ElementTree(root)
     tree.write(output_file_name, pretty_print=True)
