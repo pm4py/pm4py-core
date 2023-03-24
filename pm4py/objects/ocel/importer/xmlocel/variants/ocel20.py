@@ -173,7 +173,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     del events_list[internal_index_column]
     del relations_list[internal_index_column]
 
-    ocel = OCEL(events_list, objects_list, relations_list, globals, o2o=o2o_list, object_changes=object_changes_list)
+    ocel = OCEL(events=events_list, objects=objects_list, relations=relations_list, globals=globals, o2o=o2o_list, object_changes=object_changes_list, parameters=parameters)
     ocel = filtering_utils.propagate_relations_filtering(ocel)
 
     return ocel
