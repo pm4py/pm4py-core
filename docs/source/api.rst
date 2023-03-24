@@ -278,6 +278,8 @@ In PM4Py, we offer object-centric process mining features:
   * :meth:`pm4py.ocel.sample_ocel_connected_components`; returns a sampled object-centric event log containing the provided number of connected components.
   * :meth:`pm4py.ocel.ocel_drop_duplicates`; drops relations between events and objects happening at the same time.
   * :meth:`pm4py.ocel.ocel_merge_duplicates`; merge events in the OCEL which are happening with the same activity at the same timestamp.
+  * :meth:`pm4py.ocel.ocel_o2o_enrichment`; enriches the O2O table of the OCEL with the grah-based relationships.
+  * :meth:`pm4py.ocel.ocel_e2o_lifecycle_enrichment`; enriches the relations table of the OCEL with lifecycle-based information.
 
 
 Some object-centric process discovery algorithms are also offered:
@@ -546,6 +548,8 @@ Overall List of Methods
    pm4py.ocel.sample_ocel_connected_components
    pm4py.ocel.ocel_drop_duplicates
    pm4py.ocel.ocel_merge_duplicates
+   pm4py.ocel.ocel_o2o_enrichment
+   pm4py.ocel.ocel_e2o_lifecycle_enrichment
    pm4py.openai
    pm4py.openai.describe_process
    pm4py.openai.describe_path
