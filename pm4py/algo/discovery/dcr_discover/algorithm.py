@@ -52,35 +52,39 @@ def apply(input_log, variant=DCR_BASIC, **parameters):
     dcr graph
     """
     log = deepcopy(input_log)
-    dcr_model = None
     if variant is Variants.DCR_BASIC:
         if not isinstance(log, pm4py.objects.log.obj.EventLog):
             log = pm4py.convert_to_event_log(log)
         disc_b = discover_basic.Discover()
-        dcr_model = disc_b.mine(log, **parameters)
+        dcr_model, la = disc_b.mine(log, **parameters)
+        if 'timed' in parameters.keys() and parameters['timed']:
+            dcr_model = apply_timed(dcr_model, log, None)
+        return dcr_model, la
     elif variant is Variants.DCR_SUBPROCESS:
         dcr_model, sp_log = discover_subprocess.apply(log, **parameters)
-    if 'timed' in parameters.keys():
-        if parameters['timed']:
-            timings = time_mining.apply(dcr_model=dcr_model, event_log=log, method='standard', sp_log=sp_log)
-            # these should be a dict with events as keys and tuples as values
-            if 'conditionsForDelays' not in dcr_model:
-                dcr_model['conditionsForDelays'] = {}
-            if 'responseToDeadlines' not in dcr_model:
-                dcr_model['responseToDeadlines'] = {}
-            for timing, value in timings.items():
-                if timing[0] == 'CONDITION':
-                    e1 = timing[2]
-                    e2 = timing[1]
-                    if e1 not in dcr_model['conditionsForDelays']:
-                        dcr_model['conditionsForDelays'][e1] = {}
-                    dcr_model['conditionsForDelays'][e1][e2] = value
-                elif timing[0] == 'RESPONSE':
-                    e1 = timing[1]
-                    e2 = timing[2]
-                    if e1 not in dcr_model['responseToDeadlines']:
-                        dcr_model['responseToDeadlines'][e1] = {}
-                    dcr_model['responseToDeadlines'][e1][e2] = value
+        if 'timed' in parameters.keys() and parameters['timed']:
+            dcr_model = apply_timed(dcr_model, log, sp_log)
+        return dcr_model, sp_log
 
+
+def apply_timed(dcr_model, log, sp_log):
+    timings = time_mining.apply(dcr_model=dcr_model, event_log=log, method='standard', sp_log=sp_log)
+    # these should be a dict with events as keys and tuples as values
+    if 'conditionsForDelays' not in dcr_model:
+        dcr_model['conditionsForDelays'] = {}
+    if 'responseToDeadlines' not in dcr_model:
+        dcr_model['responseToDeadlines'] = {}
+    for timing, value in timings.items():
+        if timing[0] == 'CONDITION':
+            e1 = timing[2]
+            e2 = timing[1]
+            if e1 not in dcr_model['conditionsForDelays']:
+                dcr_model['conditionsForDelays'][e1] = {}
+            dcr_model['conditionsForDelays'][e1][e2] = value
+        elif timing[0] == 'RESPONSE':
+            e1 = timing[1]
+            e2 = timing[2]
+            if e1 not in dcr_model['responseToDeadlines']:
+                dcr_model['responseToDeadlines'][e1] = {}
+            dcr_model['responseToDeadlines'][e1][e2] = value
     return dcr_model
-

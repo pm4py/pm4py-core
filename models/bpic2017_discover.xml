@@ -7,28 +7,29 @@
     <description>Dummy user</description>
   </roles>
   <events>
-    <id>O_Refused</id>
-    <label>O_Refused</label>
+    <id>O_Returned</id>
+    <label>O_Returned</label>
   </events>
   <rules>
     <type>exclude</type>
-    <source>O_Refused</source>
-    <target>O_Refused</target>
-  </rules>
-  <rules>
-    <type>exclude</type>
-    <source>O_Refused</source>
-    <target>O_Cancelled</target>
+    <source>O_Returned</source>
+    <target>O_Returned</target>
   </rules>
   <rules>
     <type>condition</type>
-    <source>O_Created</source>
-    <target>O_Refused</target>
+    <source>O_Sent (mail and online)</source>
+    <target>O_Returned</target>
     <duration>P0D</duration>
   </rules>
   <rules>
-    <type>exclude</type>
-    <source>O_Refused</source>
+    <type>condition</type>
+    <source>O_Sent (online only)</source>
+    <target>O_Returned</target>
+    <duration>P0D</duration>
+  </rules>
+  <rules>
+    <type>include</type>
+    <source>O_Returned</source>
     <target>O_Accepted</target>
   </rules>
   <events>
@@ -41,80 +42,15 @@
     <target>O_Sent (mail and online)</target>
   </rules>
   <rules>
+    <type>condition</type>
+    <source>O_Created</source>
+    <target>O_Sent (mail and online)</target>
+    <duration>P0D</duration>
+  </rules>
+  <rules>
     <type>exclude</type>
     <source>O_Sent (mail and online)</source>
     <target>O_Sent (online only)</target>
-  </rules>
-  <rules>
-    <type>condition</type>
-    <source>O_Created</source>
-    <target>O_Sent (mail and online)</target>
-    <duration>P0D</duration>
-  </rules>
-  <events>
-    <id>O_Sent (online only)</id>
-    <label>O_Sent (online only)</label>
-  </events>
-  <rules>
-    <type>exclude</type>
-    <source>O_Sent (online only)</source>
-    <target>O_Sent (mail and online)</target>
-  </rules>
-  <rules>
-    <type>exclude</type>
-    <source>O_Sent (online only)</source>
-    <target>O_Sent (online only)</target>
-  </rules>
-  <rules>
-    <type>condition</type>
-    <source>O_Created</source>
-    <target>O_Sent (online only)</target>
-    <duration>P0D</duration>
-  </rules>
-  <events>
-    <id>O_Create Offer</id>
-    <label>O_Create Offer</label>
-  </events>
-  <rules>
-    <type>exclude</type>
-    <source>O_Create Offer</source>
-    <target>O_Create Offer</target>
-  </rules>
-  <rules>
-    <type>response</type>
-    <source>O_Create Offer</source>
-    <target>O_Created</target>
-    <duration>P0D</duration>
-  </rules>
-  <rules>
-    <type>include</type>
-    <source>O_Create Offer</source>
-    <target>O_Created</target>
-  </rules>
-  <events>
-    <id>O_Cancelled</id>
-    <label>O_Cancelled</label>
-  </events>
-  <rules>
-    <type>exclude</type>
-    <source>O_Cancelled</source>
-    <target>O_Refused</target>
-  </rules>
-  <rules>
-    <type>exclude</type>
-    <source>O_Cancelled</source>
-    <target>O_Cancelled</target>
-  </rules>
-  <rules>
-    <type>condition</type>
-    <source>O_Created</source>
-    <target>O_Cancelled</target>
-    <duration>P0D</duration>
-  </rules>
-  <rules>
-    <type>exclude</type>
-    <source>O_Cancelled</source>
-    <target>O_Accepted</target>
   </rules>
   <events>
     <id>O_Created</id>
@@ -126,9 +62,9 @@
     <target>O_Sent (mail and online)</target>
   </rules>
   <rules>
-    <type>include</type>
+    <type>exclude</type>
     <source>O_Created</source>
-    <target>O_Sent (online only)</target>
+    <target>O_Created</target>
   </rules>
   <rules>
     <type>condition</type>
@@ -137,14 +73,110 @@
     <duration>P0D</duration>
   </rules>
   <rules>
-    <type>exclude</type>
+    <type>include</type>
     <source>O_Created</source>
+    <target>O_Sent (online only)</target>
+  </rules>
+  <events>
+    <id>O_Refused</id>
+    <label>O_Refused</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>O_Created</source>
+    <target>O_Refused</target>
+    <duration>P0D</duration>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_Refused</source>
+    <target>O_Refused</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_Refused</source>
+    <target>O_Cancelled</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_Refused</source>
+    <target>O_Accepted</target>
+  </rules>
+  <events>
+    <id>O_Create Offer</id>
+    <label>O_Create Offer</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>O_Create Offer</source>
     <target>O_Created</target>
+    <duration>P0D</duration>
+  </rules>
+  <rules>
+    <type>include</type>
+    <source>O_Create Offer</source>
+    <target>O_Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_Create Offer</source>
+    <target>O_Create Offer</target>
+  </rules>
+  <events>
+    <id>O_Cancelled</id>
+    <label>O_Cancelled</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>O_Created</source>
+    <target>O_Cancelled</target>
+    <duration>P0D</duration>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_Cancelled</source>
+    <target>O_Refused</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_Cancelled</source>
+    <target>O_Cancelled</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_Cancelled</source>
+    <target>O_Accepted</target>
+  </rules>
+  <events>
+    <id>O_Sent (online only)</id>
+    <label>O_Sent (online only)</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>O_Sent (online only)</source>
+    <target>O_Sent (mail and online)</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Created</source>
+    <target>O_Sent (online only)</target>
+    <duration>P0D</duration>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_Sent (online only)</source>
+    <target>O_Sent (online only)</target>
   </rules>
   <events>
     <id>O_Accepted</id>
     <label>O_Accepted</label>
   </events>
+  <rules>
+    <type>condition</type>
+    <source>O_Returned</source>
+    <target>O_Accepted</target>
+    <duration>P0D</duration>
+  </rules>
   <rules>
     <type>exclude</type>
     <source>O_Accepted</source>
@@ -159,37 +191,5 @@
     <type>exclude</type>
     <source>O_Accepted</source>
     <target>O_Accepted</target>
-  </rules>
-  <rules>
-    <type>condition</type>
-    <source>O_Returned</source>
-    <target>O_Accepted</target>
-    <duration>P0D</duration>
-  </rules>
-  <events>
-    <id>O_Returned</id>
-    <label>O_Returned</label>
-  </events>
-  <rules>
-    <type>condition</type>
-    <source>O_Sent (mail and online)</source>
-    <target>O_Returned</target>
-    <duration>P0D</duration>
-  </rules>
-  <rules>
-    <type>condition</type>
-    <source>O_Sent (online only)</source>
-    <target>O_Returned</target>
-    <duration>P0D</duration>
-  </rules>
-  <rules>
-    <type>include</type>
-    <source>O_Returned</source>
-    <target>O_Accepted</target>
-  </rules>
-  <rules>
-    <type>exclude</type>
-    <source>O_Returned</source>
-    <target>O_Returned</target>
   </rules>
 </DCRModel>

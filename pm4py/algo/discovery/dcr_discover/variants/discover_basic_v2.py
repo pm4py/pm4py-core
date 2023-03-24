@@ -2,7 +2,7 @@ from copy import deepcopy
 from pm4py import get_event_attribute_values
 
 
-class DiscoverImproved:
+class DiscoverV2:
 
     def __init__(self):
         self.graph = {
@@ -165,8 +165,6 @@ class DiscoverImproved:
         self.graph['responseTo'] = deepcopy(self.logAbstraction['responseTo'])
         # Mine conditions from logAbstraction
         self.graph['conditionsFor'] = deepcopy(self.logAbstraction['precedenceFor'])
-        # remove redundant conditions
-        # self.graph['conditionsFor'] = self.optimizeRelation(self.graph['conditionsFor'])
 
         # For each chainprecedence(i,j) we add: include(i,j) exclude(j,j)
         for j in self.logAbstraction['chainPrecedenceFor']:
