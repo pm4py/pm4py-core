@@ -15,6 +15,8 @@
   * algorithm to cluster OCEL based on the lifecycle/interactions similarity
 
 ### Changed
+* 70198faa1b674c3a4e4351ff251a9af504e16a4e
+  * changing alignments interfacing in the simplified interface
 
 ### Deprecated
 
