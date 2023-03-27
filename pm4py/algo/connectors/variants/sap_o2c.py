@@ -91,7 +91,7 @@ FROM
     (
     SELECT
     VBFA.VBELN AS "case:concept:name",
-    TSTCT.TCODET AS "concept:name",
+    TSTCT.TTEXT AS "concept:name",
     CDHDR.UDATE || ' ' || CDHDR.UTIME AS "time:timestamp",
     CDHDR.USERNAME AS "org:resource"
 FROM
