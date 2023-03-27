@@ -89,7 +89,7 @@ FROM
 ORDER BY
     T1.VBELN, T1.TIMESTAMP;
     """
-    columns = ["case:concept:name", "concept:name", "time:timestamp", "org:resource", "BLART"]
+    columns = ["case:concept:name", "concept:name", "time:timestamp", "org:resource"]
 
     curs.execute(query)
     dataframe = curs.fetchall()
