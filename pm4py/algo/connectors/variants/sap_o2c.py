@@ -43,7 +43,8 @@ def apply(conn, parameters: Optional[Dict[Any, Any]] = None) -> pd.DataFrame:
     curs = conn.cursor()
 
     query = """
-SELECT
+SELECT * FROM
+(SELECT
     T1.VBELN AS "case:concept:name",
     DECODE(T1.TYPE, 'C', 'Create Sales Document', 'D', 'Create Delivery') AS "concept:name",
     T1.TIMESTAMP AS "time:timestamp",
@@ -68,9 +69,24 @@ FROM
         JOIN """+prefix+"""VBFA ON LIKP.VBELN = VBFA.VBELN
         WHERE
             VBFA.VBTYP_N = 'J'
-    ) T1
-ORDER BY
-    T1.VBELN, T1.TIMESTAMP;
+    ) T1 )
+    UNION
+    (
+    SELECT
+    VBFA.VBELN AS "case:concept:name",
+    TSTCT.TCODET AS "concept:name",
+    CDHDR.UDATE || ' ' || CDHDR.UTIME AS "time:timestamp",
+    CDHDR.USERNAME AS "org:resource"
+FROM
+    """+prefix+"""VBFA VBFA
+    JOIN """+prefix+"""VBAK VBAK ON VBFA.VBELN = VBAK.VBELN
+    JOIN """+prefix+"""VBAP VBAP ON VBAK.VBELN = VBAP.VBELN
+    JOIN """+prefix+"""CDHDR CDHDR ON VBFA.VBELN = CDHDR.OBJECTID
+    JOIN """+prefix+"""TSTCT TSTCT ON CDHDR.TCODE = TSTCT.TCODE
+WHERE
+    VBFA.VBTYP_N = 'C'
+    AND TSTCT.SPRSL = 'E'
+    )
     """
     columns = ["case:concept:name", "concept:name", "time:timestamp", "org:resource"]
 
