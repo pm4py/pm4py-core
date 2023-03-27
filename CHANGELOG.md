@@ -13,6 +13,8 @@
   * algorithm for textual representation of OCEL
 * 3e5164b72835aaa29051f4fd6ce4329253a17f95
   * algorithm to cluster OCEL based on the lifecycle/interactions similarity
+* 70131091d88e5e8f2627b4ff7f70f8d479bd7738
+  * new GPT-4 queries
 
 ### Changed
 * 70198faa1b674c3a4e4351ff251a9af504e16a4e

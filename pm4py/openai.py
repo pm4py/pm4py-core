@@ -356,3 +356,101 @@ def abstract_ocel(ocel: OCEL, include_timestamps: bool = True) -> str:
 
     from pm4py.algo.transformation.ocel.description import algorithm as ocel_description
     return ocel_description.apply(ocel, parameters=parameters)
+
+
+def anomaly_detection(log_obj: Union[pd.DataFrame, EventLog, EventStream], api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+    """
+    Given an event log, identifies the main anomalous variants in the process,
+    using an OpenAI model.
+    If no API key is provided, a query to be manually executed is returned.
+
+    :param log_obj: event log
+    :param api_key: API key (optional, to provide only if the query needs to be executed against the API)
+    :param openai_model: OpenAI model (optional, to provide only if the query needs to be executed against the API)
+    :param activity_key: the column to be used as activity
+    :param timestamp_key: the column to be used as timestamp
+    :param case_id_key: the column to be used as case identifier
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
+        print(pm4py.openai.anomaly_detection(log))
+    """
+    if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log_obj)
+
+    parameters = get_properties(
+        log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    parameters["api_key"] = api_key
+    parameters["openai_model"] = openai_model
+
+    from pm4py.algo.querying.openai import log_queries
+    return log_queries.anomaly_detection(log_obj, parameters=parameters)
+
+
+def suggest_clusters(log_obj: Union[pd.DataFrame, EventLog, EventStream], api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+    """
+    Given an event log, identifies the main clusters of variants in the process.
+    If no API key is provided, a query to be manually executed is returned.
+
+    :param log_obj: event log
+    :param api_key: API key (optional, to provide only if the query needs to be executed against the API)
+    :param openai_model: OpenAI model (optional, to provide only if the query needs to be executed against the API)
+    :param activity_key: the column to be used as activity
+    :param timestamp_key: the column to be used as timestamp
+    :param case_id_key: the column to be used as case identifier
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
+        print(pm4py.openai.suggest_clusters(log))
+    """
+    if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log_obj)
+
+    parameters = get_properties(
+        log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    parameters["api_key"] = api_key
+    parameters["openai_model"] = openai_model
+
+    from pm4py.algo.querying.openai import log_queries
+    return log_queries.suggest_clusters(log_obj, parameters=parameters)
+
+
+def conformance_checking(log_obj: Union[pd.DataFrame, EventLog, EventStream], rule: str, api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+    """
+    Given an event log and a conformance rule, measures the level of fitness of the log
+    against the rule, and identify violating variants.
+
+    :param log_obj: event log
+    :param rule: conformance checking rule
+    :param api_key: API key (optional, to provide only if the query needs to be executed against the API)
+    :param openai_model: OpenAI model (optional, to provide only if the query needs to be executed against the API)
+    :param activity_key: the column to be used as activity
+    :param timestamp_key: the column to be used as timestamp
+    :param case_id_key: the column to be used as case identifier
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
+        print(pm4py.openai.conformance_checking(log, 'all traces should have a single payment'))
+    """
+    if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log_obj)
+
+    parameters = get_properties(
+        log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    parameters["api_key"] = api_key
+    parameters["openai_model"] = openai_model
+
+    from pm4py.algo.querying.openai import log_queries
+    return log_queries.conformance_checking(log_obj, rule, parameters=parameters)
