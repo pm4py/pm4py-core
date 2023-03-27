@@ -16,11 +16,9 @@
 '''
 
 from typing import Optional, Dict, Any
-import win32com.client
 import pandas as pd
 from datetime import datetime
 import pkgutil
-import traceback
 
 
 def apply(parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
@@ -40,6 +38,8 @@ def apply(parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
     """
     if parameters is None:
         parameters = {}
+
+    import win32com.client
 
     print(":: executing SQL query against the Windows registry. this can take time.")
 
