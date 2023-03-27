@@ -20,6 +20,9 @@ def connect(email_user: Optional[str], mailbox_id: int):
     mailbox_obj
         Mailbox object
     """
+    import pythoncom
+    pythoncom.CoInitialize()
+
     import win32com.client
 
     outlook = win32com.client.Dispatch('Outlook.Application').GetNamespace('MAPI')
