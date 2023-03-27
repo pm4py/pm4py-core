@@ -167,6 +167,63 @@ def extract_log_github(owner: str = "pm4py", repo: str = "pm4py-core", auth_toke
     return github_repo.apply(parameters)
 
 
+def extract_log_camunda_workflow(connection_string: str) -> pd.DataFrame:
+    """
+    Extracts a dataframe from the Camunda workflow system. Aside from the traditional columns,
+    the processID of the process in Camunda is returned.
+
+    :param connection_string: ODBC connection string to the Camunda database
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+        import pm4py
+
+        dataframe = pm4py.connectors.extract_log_camunda_workflow('Driver={PostgreSQL Unicode(x64)};SERVER=127.0.0.3;DATABASE=process-engine;UID=xx;PWD=yy')
+    """
+    from pm4py.algo.connectors.variants import camunda_workflow
+    parameters = {}
+    parameters[camunda_workflow.Parameters.CONNECTION_STRING] = connection_string
+    return camunda_workflow.apply(None, parameters=parameters)
+
+
+def extract_log_sap_o2c(connection_string: str, prefix: str = "") -> pd.DataFrame:
+    """
+    Extracts a dataframe for the SAP O2C process.
+
+    :param connection_string: ODBC connection string to the SAP database
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+        import pm4py
+
+        dataframe = pm4py.connectors.extract_log_sap_o2c('Driver={Oracle in instantclient_21_6};DBQ=127.0.0.3:1521/ZIB;UID=xx;PWD=yy')
+    """
+    from pm4py.algo.connectors.variants import sap_o2c
+    parameters = {}
+    parameters[sap_o2c.Parameters.CONNECTION_STRING] = connection_string
+    parameters[sap_o2c.Parameters.PREFIX] = prefix
+    return sap_o2c.apply(None, parameters=parameters)
+
+
+def extract_log_sap_accounting(connection_string: str, prefix: str = "") -> pd.DataFrame:
+    """
+    Extracts a dataframe for the SAP Accounting process.
+
+    :param connection_string: ODBC connection string to the SAP database
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+        import pm4py
+
+        dataframe = pm4py.connectors.extract_log_sap_accounting('Driver={Oracle in instantclient_21_6};DBQ=127.0.0.3:1521/ZIB;UID=xx;PWD=yy')
+    """
+    from pm4py.algo.connectors.variants import sap_accounting
+    parameters = {}
+    parameters[sap_accounting.Parameters.CONNECTION_STRING] = connection_string
+    parameters[sap_accounting.Parameters.PREFIX] = prefix
+    return sap_accounting.apply(None, parameters=parameters)
+
+
 def extract_ocel_outlook_mails() -> OCEL:
     """
     Extracts the history of the conversations from the local instance of Microsoft Outlook
@@ -335,3 +392,54 @@ def extract_ocel_github(owner: str = "pm4py", repo: str = "pm4py-core", auth_tok
     import pm4py
     dataframe = pm4py.connectors.extract_log_github(owner, repo, auth_token)
     return pm4py.convert_log_to_ocel(dataframe, "concept:name", "time:timestamp", ["case:concept:name", "org:resource", "case:repo"])
+
+
+def extract_ocel_camunda_workflow(connection_string: str) -> OCEL:
+    """
+    Extracts an object-centric event log from the Camunda workflow system.
+
+    :param connection_string: ODBC connection string to the Camunda database
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+        import pm4py
+
+        ocel = pm4py.connectors.extract_ocel_camunda_workflow('Driver={PostgreSQL Unicode(x64)};SERVER=127.0.0.3;DATABASE=process-engine;UID=xx;PWD=yy')
+    """
+    import pm4py
+    dataframe = pm4py.connectors.extract_log_camunda_workflow(connection_string)
+    return pm4py.convert_log_to_ocel(dataframe, "concept:name", "time:timestamp", ["case:concept:name", "processID", "org:resource"])
+
+
+def extract_ocel_sap_o2c(connection_string: str, prefix: str = '') -> OCEL:
+    """
+    Extracts an object-centric event log for the SAP O2C process.
+
+    :param connection_string: ODBC connection string to the SAP database
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+        import pm4py
+
+        dataframe = pm4py.connectors.extract_ocel_sap_o2c('Driver={Oracle in instantclient_21_6};DBQ=127.0.0.3:1521/ZIB;UID=xx;PWD=yy')
+    """
+    import pm4py
+    dataframe = pm4py.connectors.extract_log_sap_o2c(connection_string, prefix=prefix)
+    return pm4py.convert_log_to_ocel(dataframe, "concept:name", "time:timestamp", ["case:concept:name", "org:resource"])
+
+
+def extract_ocel_sap_accounting(connection_string: str, prefix: str = '') -> OCEL:
+    """
+    Extracts an object-centric event log for the SAP Accounting process.
+
+    :param connection_string: ODBC connection string to the SAP database
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+        import pm4py
+
+        dataframe = pm4py.connectors.extract_ocel_sap_accounting('Driver={Oracle in instantclient_21_6};DBQ=127.0.0.3:1521/ZIB;UID=xx;PWD=yy')
+    """
+    import pm4py
+    dataframe = pm4py.connectors.extract_log_sap_accounting(connection_string, prefix=prefix)
+    return pm4py.convert_log_to_ocel(dataframe, "concept:name", "time:timestamp", ["case:concept:name", "org:resource"])
