@@ -174,6 +174,7 @@ def extract_log_sap_o2c(connection_string: str, prefix: str = "") -> pd.DataFram
     Extracts a dataframe for the SAP O2C process.
 
     :param connection_string: ODBC connection string to the SAP database
+    :param prefix: prefix for the tables (example: SAPSR3.)
     :rtype: ``pd.DataFrame``
 
     .. code-block:: python3
@@ -193,6 +194,7 @@ def extract_log_sap_accounting(connection_string: str, prefix: str = "") -> pd.D
     Extracts a dataframe for the SAP Accounting process.
 
     :param connection_string: ODBC connection string to the SAP database
+    :param prefix: prefix for the tables (example: SAPSR3.)
     :rtype: ``pd.DataFrame``
 
     .. code-block:: python3
@@ -399,6 +401,7 @@ def extract_ocel_sap_o2c(connection_string: str, prefix: str = '') -> OCEL:
     Extracts an object-centric event log for the SAP O2C process.
 
     :param connection_string: ODBC connection string to the SAP database
+    :param prefix: prefix for the tables (example: SAPSR3.)
     :rtype: ``pd.DataFrame``
 
     .. code-block:: python3
@@ -416,6 +419,7 @@ def extract_ocel_sap_accounting(connection_string: str, prefix: str = '') -> OCE
     Extracts an object-centric event log for the SAP Accounting process.
 
     :param connection_string: ODBC connection string to the SAP database
+    :param prefix: prefix for the tables (example: SAPSR3.)
     :rtype: ``pd.DataFrame``
 
     .. code-block:: python3
