@@ -302,7 +302,12 @@ We offer some integrations with OpenAI (e.g., ChatGPT) for automatically get ins
   * :meth:`pm4py.openai.suggest_improvements`; suggests some improvements for the process starting from its event log
   * :meth:`pm4py.openai.root_cause_analysis`; performs a root cause analysis of the conformance/performance issues
   * :meth:`pm4py.openai.code_for_log_generation`; generates an event log given the name of a process (e.g., Purchase-to-Pay)
-  * :meth:`pm4py.openai.compare_logs`; describe the differences between two event logs
+  * :meth:`pm4py.openai.compare_logs`; describes the differences between two event logs
+  * :meth:`pm4py.openai.anomaly_detection`; describes the main anomalies of the provided event log
+  * :meth:`pm4py.openai.suggest_clusters`; suggest groups of variants based on the behavior
+  * :meth:`pm4py.openai.conformance_checking`; performs conformance checking against the provided log and rule
+
+
 
 The following methods provides just the abstractions of the given objects:
   * :meth:`pm4py.openai.abstract_dfg`; provides the DFG abstraction of a traditional event log
