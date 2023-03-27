@@ -73,7 +73,7 @@ FROM
             VBAK.ERDAT || ' ' || VBAK.ERZET AS TIMESTAMP,
             VBAK.ERNAM AS USERNAME
         FROM
-            SAPSR3.VBAK
+            """+prefix+"""VBAK
         UNION ALL
         SELECT
             'D' AS TYPE,
@@ -81,8 +81,8 @@ FROM
             LIKP.ERDAT || ' ' || LIKP.ERZET AS TIMESTAMP,
             LIKP.ERNAM AS USERNAME
         FROM
-            SAPSR3.LIKP
-        JOIN SAPSR3.VBFA ON LIKP.VBELN = VBFA.VBELN
+            """+prefix+"""LIKP
+        JOIN """+prefix+"""VBFA ON LIKP.VBELN = VBFA.VBELN
         WHERE
             VBFA.VBTYP_N = 'J'
     ) T1
