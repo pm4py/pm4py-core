@@ -15,6 +15,8 @@
   * algorithm to cluster OCEL based on the lifecycle/interactions similarity
 * 70131091d88e5e8f2627b4ff7f70f8d479bd7738
   * new GPT-4 queries
+* f584641df13504f71c796752da1befc963f3ce3b
+  * included some simplified single-SQL-query extractors
 
 ### Changed
 * 70198faa1b674c3a4e4351ff251a9af504e16a4e
