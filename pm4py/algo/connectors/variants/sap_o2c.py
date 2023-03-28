@@ -87,6 +87,18 @@ WHERE
     VBFA.VBTYP_N = 'C'
     AND TSTCT.SPRSL = 'E'
     )
+    UNION
+    (
+        SELECT
+        C.VBELN AS "case:concept:name",
+        'Create Billing' AS "concept:name",
+        C.FKDAT AS "time:timestamp",
+        C.ERNAM AS "org:resource"
+    FROM
+        """+prefix+"""VBRK C
+    JOIN
+        """+prefix+"""VBAK A ON A.VBELN = C.VBELN
+    )
     """
     columns = ["case:concept:name", "concept:name", "time:timestamp", "org:resource"]
 
