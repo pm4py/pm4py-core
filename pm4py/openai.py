@@ -456,11 +456,12 @@ def conformance_checking(log_obj: Union[pd.DataFrame, EventLog, EventStream], ru
     return log_queries.conformance_checking(log_obj, rule, parameters=parameters)
 
 
-def suggest_verify_hypotheses(log_obj: Union[pd.DataFrame, EventLog, EventStream], api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+def suggest_verify_hypotheses(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = 5000, api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
     """
     Given an event log, identifies some hypotheses to verify against the data.
 
     :param log_obj: event log
+    :param max_len: maximum length of the (string) abstraction
     :param api_key: API key (optional, to provide only if the query needs to be executed against the API)
     :param openai_model: OpenAI model (optional, to provide only if the query needs to be executed against the API)
     :param activity_key: the column to be used as activity
@@ -482,6 +483,7 @@ def suggest_verify_hypotheses(log_obj: Union[pd.DataFrame, EventLog, EventStream
         log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters["api_key"] = api_key
     parameters["openai_model"] = openai_model
+    parameters["max_len"] = max_len
 
     from pm4py.algo.querying.openai import log_queries
     return log_queries.suggest_verify_hypotheses(log_obj, parameters=parameters)
