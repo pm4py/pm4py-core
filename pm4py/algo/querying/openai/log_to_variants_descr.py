@@ -30,7 +30,7 @@ def apply(log_obj: Union[EventLog, EventStream, pd.DataFrame], parameters: Optio
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     relative_frequency = exec_utils.get_param_value(Parameters.RELATIVE_FREQUENCY, parameters, False)
-    max_len = exec_utils.get_param_value(Parameters.MAX_LEN, parameters, 10000)
+    max_len = exec_utils.get_param_value(Parameters.MAX_LEN, parameters, constants.OPENAI_MAX_LEN)
     response_header = exec_utils.get_param_value(Parameters.RESPONSE_HEADER, parameters, True)
 
     log_obj = log_converter.apply(log_obj, variant=log_converter.Variants.TO_DATA_FRAME, parameters=parameters)

@@ -16,7 +16,7 @@ def apply(log_obj: Union[EventLog, EventStream, pd.DataFrame], parameters: Optio
         parameters = {}
 
     log_obj = log_converter.apply(log_obj, variant=log_converter.Variants.TO_DATA_FRAME, parameters=parameters)
-    max_len = exec_utils.get_param_value(Parameters.MAX_LEN, parameters, 10000)
+    max_len = exec_utils.get_param_value(Parameters.MAX_LEN, parameters, constants.OPENAI_MAX_LEN)
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
 
     log_obj = log_obj[[x for x in log_obj.columns if x != case_id_key]]
