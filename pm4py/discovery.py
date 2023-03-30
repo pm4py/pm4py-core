@@ -142,6 +142,15 @@ def discover_dfg_typed(log: pd.DataFrame, case_id_key: str = "case:concept:name"
         raise TypeError('pm4py.discover_dfg_typed is only defined for pandas/polars DataFrames')
         
 
+def discover_timeline_dfg(log: pd.DataFrame, case_id_key: str = "case:concept:name", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp"):
+    from pm4py.algo.discovery.dfg.variants import clean_time
+    absolute_timestamp_key = 'absolute:timestamp'
+    parameters = get_properties(
+        log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, absolute_time_key=absolute_timestamp_key)
+    if type(log) is pd.DataFrame:
+        return clean_time.apply(log, parameters)
+
+
 def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, business_hour_slots=constants.DEFAULT_BUSINESS_HOUR_SLOTS, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
     """
     Discovers a performance directly-follows graph from an event log.
