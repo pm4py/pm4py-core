@@ -18,7 +18,7 @@
 from typing import Optional, Dict, Any, Collection
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream
-from pm4py.algo.querying.openai import log_to_dfg_descr, log_to_variants_descr
+from pm4py.algo.querying.openai import log_to_dfg_descr, log_to_variants_descr, log_to_cols_descr
 from pm4py.algo.querying.openai import perform_query
 from typing import Union, Tuple
 from enum import Enum
@@ -243,6 +243,24 @@ def conformance_checking(log_obj: Union[pd.DataFrame, EventLog, EventStream], ru
     query += "given the following conformance rule:\n"
     query += rule
     query += "\nwhat is the fitness level of the variants? can you identify some variants that violate such rule?"
+
+    if not execute_query:
+        return query
+
+    return perform_query.apply(query, parameters=parameters)
+
+
+def suggest_verify_hypotheses(log_obj: Union[pd.DataFrame, EventLog, EventStream], parameters: Optional[Dict[Any, Any]] = None) -> str:
+    if parameters is None:
+        parameters = {}
+
+    api_key = exec_utils.get_param_value(Parameters.API_KEY, parameters, constants.OPENAI_API_KEY)
+    execute_query = exec_utils.get_param_value(Parameters.EXECUTE_QUERY, parameters, api_key is not None)
+
+    query = log_to_variants_descr.apply(log_obj, parameters=parameters)
+    query += "\n\nand the log of the process contains the following attributes:\n\n"
+    query += log_to_cols_descr.apply(log_obj, parameters=parameters)
+    query += "\n\ncan you make some hyphothesis between the execution of the process and its attributes? I mean, can you provide me a DuckDB SQL query that I can execute, and return the results to you, in order for you to evaluate such hyphothesis about the process? More in detail, the data is stored in a Pandas dataframe where each row is an event having the provided attributes (so there are no separate table containing the variant). Can you tell me in advance which hyphothesis you want to verify?"
 
     if not execute_query:
         return query
