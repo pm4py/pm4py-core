@@ -10,7 +10,6 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 def apply(log : DataFrame, parameters):
-    print("YOYO")
     print("the clean_time variant is executed.\n")
     print(log)
     parameters = {} if parameters is None else parameters
