@@ -306,7 +306,7 @@ We offer some integrations with OpenAI (e.g., ChatGPT) for automatically get ins
   * :meth:`pm4py.openai.anomaly_detection`; describes the main anomalies of the provided event log
   * :meth:`pm4py.openai.suggest_clusters`; suggest groups of variants based on the behavior
   * :meth:`pm4py.openai.conformance_checking`; performs conformance checking against the provided log and rule
-
+  * :meth:`pm4py.openai.suggest_verify_hypotheses`; given an event log, provides some hyphotesis for the analysis and allows to verify them
 
 
 The following methods provides just the abstractions of the given objects:
@@ -590,6 +590,7 @@ Overall List of Methods
    pm4py.openai.anomaly_detection
    pm4py.openai.suggest_clusters
    pm4py.openai.conformance_checking
+   pm4py.openai.suggest_verify_hypotheses
    pm4py.connectors.extract_log_outlook_mails
    pm4py.connectors.extract_log_outlook_calendar
    pm4py.connectors.extract_log_windows_events
