@@ -1,8 +1,6 @@
 #import pandas as pd
 import pm4py
 
-def println():
-    print()
 
 file1 = "C:/Users/harleenkaur/Documents/thesis/event logs/Artificial - Loan Process.xes"
 log = pm4py.read_xes(file1)
