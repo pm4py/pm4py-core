@@ -45,6 +45,9 @@ DEFAULT_BUSINESS_HOURS_WORKCALENDAR = None
 SHOW_EVENT_LOG_DEPRECATION = True
 TRIGGERED_DT_PARSING_WARNING = False
 
+JQUERY_LINK = "https://code.jquery.com/jquery-3.6.3.min.js"
+GRAPHVIZJS_LINK = "http://viz-js.com/bower_components/viz.js/viz.js"
+
 DEFAULT_BGCOLOR = "white"
 DEFAULT_FORMAT_GVIZ_VIEW = "png"
 
