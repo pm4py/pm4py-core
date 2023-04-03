@@ -2,7 +2,30 @@ from copy import deepcopy
 
 rels = ['conditionsFor', 'responseTo', 'includesTo', 'excludesTo']
 
+#TODO: add subprocess and timed execution semantics
 
+
+def execute(e, dcr, cmd_print=False):
+    if e in dcr['events']:
+        if is_enabled(e, dcr):
+            weak_execute(e, dcr)
+            return True
+        else:
+            print(f'[!] Event {e} not enabled!') if cmd_print else None
+            return False
+    else:
+        # TODO: make time pass x duration
+        print(f'[!] Event {e} does not exist!') if cmd_print else None
+        return False
+
+
+def is_accepting(dcr):
+    pend_incl = dcr['marking']['pending'].intersection(dcr['marking']['included'])
+    return len(pend_incl) == 0
+
+
+def is_enabled(e, dcr):
+    return e in enabled(dcr)
 def enabled(dcr):
     res = deepcopy(dcr['marking']['included'])
     for e in dcr['conditionsFor']:
@@ -10,29 +33,12 @@ def enabled(dcr):
             for e_prime in dcr['conditionsFor'][e]:
                 if e_prime in dcr['marking']['included'] and e_prime not in dcr['marking']['executed']:
                     res.discard(e)
+    # TODO: extend with milestones
     return res
-
-
-def is_enabled(e, dcr):
-    return e in enabled(dcr)
-
-
-def execute(e, dcr):
-    if e in dcr['events']:
-        if is_enabled(e, dcr):
-            weak_execute(e, dcr)
-            return True
-        else:
-            print(f'[!] Event {e} not enabled!')
-            return False
-    else:
-        print(f'[!] Event {e} does not exist!')
-        return False
-
 
 def weak_execute(e, dcr):
     '''
-    Executes events even if not enabled. This will break the condition constraint.
+    Executes events even if not enabled. This will break the condition (TODO: in the future the milestone) constraint.
     :param e:
     :param dcr:
     :return:
@@ -48,8 +54,6 @@ def weak_execute(e, dcr):
     if e in dcr['responseTo']:
         for e_prime in dcr['responseTo'][e]:
             dcr['marking']['pending'].add(e_prime)
+    # TODO: extend with milestones
 
 
-def is_accepting(dcr):
-    pend_incl = dcr['marking']['pending'].intersection(dcr['marking']['included'])
-    return len(pend_incl) == 0

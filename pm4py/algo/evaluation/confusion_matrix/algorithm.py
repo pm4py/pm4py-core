@@ -1,6 +1,16 @@
 import os
 from pm4py.objects.log.importer.xes import importer
 
+import numpy as np
+import os
+import pm4py
+import csv
+from math import sqrt
+from copy import deepcopy
+from pm4py.objects.log.importer.xes import importer
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.dcr import sp_semantics
+
 minerPath = "./DisCoveR.jar"
 testDir = "../logs/PDC2020/TestLogs/"
 truthDir = "../logs/PDC2020/GroundTruthLogs/"
@@ -8,18 +18,91 @@ classifiedDir = "../__generated/classified-logs/"
 modelDir = "../__generated/models/"
 exportPath = "../results/results-fuzzy-abs"
 
-import numpy as np
-import os
-import csv
-from math import sqrt
-from pm4py.objects.log.importer.xes import importer
-from pm4py.objects.log.obj import EventLog
+def fitness(event_log, dcr_model, cmd_print=False):
+    no_traces = len(event_log)
+    no_accepting = 0
+    for trace in event_log:
+        trace_to_print = []
+        can_execute = True
+        dcr = deepcopy(dcr_model)
+        for event in trace:
+            executed = sp_semantics.sp_execute(event['concept:name'], dcr)
+            trace_to_print.append(event['concept:name'])
+            if executed is False:
+                can_execute = False
+                break
+        accepting = sp_semantics.is_sp_accepting(dcr)
+        if can_execute and accepting:
+            no_accepting = no_accepting + 1
+        else:
+            print(f'[x] Failing trace: {trace_to_print}') if cmd_print else None
+    return no_accepting, no_traces
 
+def confusion_matrix_from_dcr(dcr, test_log, truthLog):
+    # log = list(importer.apply(classifiedDir + filename))
+    log = test_log
+    # truthLog = importer.apply(truthDir + filename)
+    tp = 0
+    fp = 0
+    tn = 0
+    fn = 0
+    log.sort(key=(lambda x: int(x.attributes["concept:name"])))
+    log = EventLog(log)
+    for i, trace in enumerate(log):
+        trace = log[i].attributes
+        truthTrace = truthLog[i].attributes
+        if str(trace["concept:name"]) != str(truthTrace["concept:name"]):
+            # print(filename)
+            print(trace["concept:name"])
+            print(truthTrace["concept:name"])
+            raise Exception("Trace ID mismatch! Aborting.")
+        traceIsPos = trace["pdc:isPos"]
+        truthTraceIsPos = truthTrace["pdc:isPos"] == "True"
+        if traceIsPos:
+            if truthTraceIsPos:
+                tp += 1
+            else:
+                fp += 1
+        else:
+            if truthTraceIsPos:
+                fn += 1
+            else:
+                tn += 1
+    print(f'tp: {tp}| fp: {fp} | tn: {tn} | fn: {fn}')
+    return tp, fp, tn, fn
+def confusion_matrix(log, truthLog):
+    # log = list(importer.apply(classifiedDir + filename))
+    # truthLog = importer.apply(truthDir + filename)
+    tp = 0
+    fp = 0
+    tn = 0
+    fn = 0
+    log.sort(key=(lambda x: int(x.attributes["concept:name"])))
+    log = EventLog(log)
+    for i, trace in enumerate(log):
+        trace = log[i].attributes
+        truthTrace = truthLog[i].attributes
+        if str(trace["concept:name"]) != str(truthTrace["concept:name"]):
+            # print(filename)
+            print(trace["concept:name"])
+            print(truthTrace["concept:name"])
+            raise Exception("Trace ID mismatch! Aborting.")
+        traceIsPos = trace["pdc:isPos"]
+        truthTraceIsPos = truthTrace["pdc:isPos"] == "True"
+        if traceIsPos:
+            if truthTraceIsPos:
+                tp += 1
+            else:
+                fp += 1
+        else:
+            if truthTraceIsPos:
+                fn += 1
+            else:
+                tn += 1
+    print(f'tp: {tp}| fp: {fp} | tn: {tn} | fn: {fn}')
+    return tp, fp, tn, fn
 
 def confusionMatrix(trainingDir, genDir, root, exportPath, showPrint=False):
-    def _print(str):
-        if showPrint:
-            print(str)
 
     minerPath = root + "DisCoveR.jar"
     testDir = root + "DataSet/PDC2019/test-logs/"
@@ -39,14 +122,14 @@ def confusionMatrix(trainingDir, genDir, root, exportPath, showPrint=False):
         if filename.endswith(".xes"):
             cmd = "java -jar " + minerPath + " -PDC " + trainingDir + filename + " " + modelDir + filename[:-4]
             stream = os.popen(cmd)
-            _print(stream.read())
+            print(stream.read()) if showPrint else None
 
     # Classify testDir based on model
     for filename in os.listdir(modelDir):
         cmd = "java -jar " + minerPath + " -classifyPDC " + testDir + filename + ".xes " + modelDir + filename + " " + classifiedDir + filename + ".xes true"
         # print(cmd)
         stream = os.popen(cmd)
-        _print(stream.read())
+        print(stream.read()) if showPrint else None
 
     f = open(exportPath, "w")
     header = "log_name;tp;fp;tn;fn\n"

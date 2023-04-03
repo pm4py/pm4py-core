@@ -8,15 +8,23 @@ R = Relations.R.value
 N = Relations.N.value
 C = Relations.C.value
 M = Relations.M.value
+
 def parse_element(curr_el, parent, dcr):
     tag = curr_el.tag.lower()
     match tag:
         case 'event':
             id = curr_el.get('id')
             if id:
+                dcr['events'].add(id)
+                event_type = curr_el.get('type')
+                match event_type:
+                    case 'subprocess':
+                        dcr['subprocesses'][id] = {}
+                    case _:
+                        pass
                 match parent.tag:
-                    case 'events':
-                        dcr['events'].add(id)
+                    # case 'events':
+                    #     dcr['events'].add(id)
                     case 'included' | 'executed':
                         dcr['marking'][parent.tag].add(id)
                     case 'pendingResponses':
@@ -26,10 +34,12 @@ def parse_element(curr_el, parent, dcr):
         case 'label':
             id = curr_el.get('id')
             dcr['labels'].add(id)
-        case 'labelMapping':
+        case 'labelmapping':
             eventId = curr_el.get('eventId')
             labelId = curr_el.get('labelId')
-            dcr['labelMapping'].add((eventId, labelId))
+            if labelId not in dcr['labelMapping']:
+                dcr['labelMapping'][labelId] = set()
+            dcr['labelMapping'][labelId].add(eventId)
         case 'condition':
             event = curr_el.get('sourceId')
             event_prime = curr_el.get('targetId')
@@ -105,44 +115,51 @@ def parse_element(curr_el, parent, dcr):
 
     return dcr
 
-
-def import_xml_tree_from_root(root):
+def import_xml_tree_from_root(root, white_space_replacement=None):
     dcr = {
         'events': set(),
         'labels': set(),
-        'labelMapping': set(),
-        'conditionsFor': {},  # this should be a dict with events as keys and sets as values
+        'labelMapping': {},  # this is a dictionary with one label and 1 to many events
+        'conditionsFor': {},# this should be a dict with events as keys and sets as values
         'milestonesFor': {},
         'responseTo': {},
         'noResponseTo': {},
         'includesTo': {},
         'excludesTo': {},
-        'conditionsForDelays': {}, # this should be a dict with events as keys and tuples as values
+        'conditionsForDelays': {},  # this should be a dict with events as keys and tuples as values
         'responseToDeadlines': {},
         'marking': {'executed': set(),
                     'included': set(),
                     'pending': set()
-                    }
+                    },
+        'subprocesses': {}
     }
     dcr = parse_element(root, None, dcr)
-    dcr = clean_input(dcr)
+    dcr = clean_input(dcr, white_space_replacement)
     return dcr
 
 
-def clean_input(dcr):
+def clean_input(dcr, white_space_replacement=None):
+    if white_space_replacement is None:
+        white_space_replacement = ' '
     # remove all space characters and put conditions an milestones in the correct order (according to the actual arrows)
     for k, v in deepcopy(dcr).items():
         if k in [I, E, C, R, M]:
             v_new = {}
             for k2, v2 in v.items():
-                v_new[k2.strip().replace(' ', '')] = set([v3.strip().replace(' ', '') for v3 in v2])
+                v_new[k2.strip().replace(' ', '')] = set([v3.strip().replace(' ', white_space_replacement) for v3 in v2])
             dcr[k] = v_new
         elif k == 'marking':
             for k2 in ['executed', 'included', 'pending']:
-                new_v = set([v2.strip().replace(' ', '') for v2 in dcr[k][k2]])
+                new_v = set([v2.strip().replace(' ', white_space_replacement) for v2 in dcr[k][k2]])
                 dcr[k][k2] = new_v
+        elif k in ['subprocesses', 'labelMapping']:
+            v_new = {}
+            for k2, v2 in v.items():
+                v_new[k2.strip().replace(' ', '')] = set([v3.strip().replace(' ', white_space_replacement) for v3 in v2])
+            dcr[k] = v_new
         else:
-            new_v = set([v2.strip().replace(' ', '') for v2 in dcr[k]])
+            new_v = set([v2.strip().replace(' ', white_space_replacement) for v2 in dcr[k]])
             dcr[k] = new_v
     return dcr
 
