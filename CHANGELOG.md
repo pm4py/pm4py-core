@@ -5,6 +5,8 @@
 ### Added
 
 ### Changed
+* c617471c12c1f07c092e32ccf6d76d5aa6c4ec2a
+  * change X Axis in pm4py.view_events_distribution_graph
 
 ### Deprecated
 
