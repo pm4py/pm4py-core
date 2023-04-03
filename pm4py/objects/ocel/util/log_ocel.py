@@ -23,6 +23,7 @@ from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel import constants as ocel_constants
 from pm4py.objects.conversion.log import converter as log_converter
 from copy import copy
+import traceback
 
 
 class Parameters(Enum):

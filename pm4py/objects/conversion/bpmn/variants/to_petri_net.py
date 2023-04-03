@@ -203,14 +203,14 @@ def apply(bpmn_graph, parameters=None):
         target_object = nodes_entering[flow.get_target()]
 
         if isinstance(source_object, PetriNet.Place):
-            inv1 = PetriNet.Transition(str(uuid.uuid4()), None)
+            inv1 = PetriNet.Transition(f"sfl_{flow.get_id()}", None)
             net.transitions.add(inv1)
             add_arc_from_to(source_object, inv1, net)
             source_object = inv1
             trans_map[flow.source].append(inv1)
 
         if isinstance(target_object, PetriNet.Place):
-            inv2 = PetriNet.Transition(str(uuid.uuid4()), None)
+            inv2 = PetriNet.Transition(f"tfl_{flow.get_id()}", None)
             net.transitions.add(inv2)
             add_arc_from_to(inv2, target_object, net)
             target_object = inv2

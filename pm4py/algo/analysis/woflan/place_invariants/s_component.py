@@ -46,7 +46,7 @@ def compute_s_components(net, p_invariants):
         return counter
 
     s_components = []
-    place_list = list(net.places)
+    place_list = sorted(list(net.places), key=lambda x: x.name)
     for invariant in p_invariants:
         i = 0
         s_component = []
@@ -64,11 +64,13 @@ def compute_s_components(net, p_invariants):
             for el in s_component:
                 if el in net.transitions:
                     places_before = [arc.source for arc in el.in_arcs]
-                    if compare_lists(s_component, places_before) != 1:
+                    comparison_before = compare_lists(s_component, places_before)
+                    places_after = [arc.target for arc in el.out_arcs]
+                    comparison_after = compare_lists(s_component, places_after)
+                    if comparison_before != 1:
                         is_s_component = False
                         break
-                    places_after = [arc.target for arc in el.out_arcs]
-                    if compare_lists(s_component, places_after) != 1:
+                    if comparison_after != 1:
                         is_s_component = False
                         break
             if is_s_component:
@@ -82,7 +84,7 @@ def compute_uncovered_places_in_component(s_components, net):
     :param net: Petri Net representation of PM4Py
     :return: List of uncovered places
     """
-    place_list=list(net.places)
+    place_list=sorted(list(net.places), key=lambda x: x.name)
     for component in s_components:
         for el in component:
             if el in place_list:

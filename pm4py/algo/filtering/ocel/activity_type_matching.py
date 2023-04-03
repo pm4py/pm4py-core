@@ -17,7 +17,7 @@
 from enum import Enum
 from pm4py.util import exec_utils, constants
 from pm4py.objects.ocel.util import filtering_utils
-from copy import copy
+from copy import deepcopy
 from typing import Dict, Any, Optional, Collection
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel import constants as ocel_constants
@@ -67,7 +67,7 @@ def apply(ocel: OCEL, correspondence_dict: Dict[str, Collection[str]],
     temp_column = exec_utils.get_param_value(Parameters.TEMP_COLUMN, parameters, "@@temp_column")
     temp_separator = exec_utils.get_param_value(Parameters.TEMP_SEPARATOR, parameters, "@#@#")
 
-    ocel = copy(ocel)
+    ocel = deepcopy(ocel)
 
     inv_dict = set()
     for ot in correspondence_dict:

@@ -24,8 +24,8 @@ def create_network_graph(net):
     :return: networkx.DiGraph(), bookkeeping dictionary
     """
     graph = nx.DiGraph()
-    places = list(net.places)
-    transitions = list(net.transitions)
+    places = sorted(list(net.places), key=lambda x: x.name)
+    transitions = sorted(list(net.transitions), key=lambda x: x.name)
     nodes=set(places) | set(transitions)
     bookkeeping={}
     for index,el in enumerate(nodes):
