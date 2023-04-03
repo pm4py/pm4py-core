@@ -1,6 +1,50 @@
 # Changelog of pm4py
 
-## pm4py 2.7.1 (2023.XX.YY)
+## pm4py 2.7.3 (2023.04.XX)
+
+### Added
+* e561089945951e91b2ecfe0f223b35bd2d351630
+  * other NLP/LLM abstractions
+
+### Changed
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
+## pm4py 2.7.2 (2023.04.03)
+
+### Added
+
+### Changed
+* c617471c12c1f07c092e32ccf6d76d5aa6c4ec2a
+  * change X Axis in pm4py.view_events_distribution_graph
+* cf744cb22cd6affb0a8d7ce26b9827c3e8b0b903
+  * changes/fixes to the alignments table representation
+
+### Deprecated
+
+### Fixed
+* d0ee4a8c8db76900444bc3e0026b0ea54581e9e7
+  * fixed OCEL deepcopy
+* 5fd45bdf5d3cf17f364669cba7a5fab549236e7a
+  * major fix WOFLAN
+
+### Removed
+
+### Other
+
+
+---
+
+## pm4py 2.7.1 (2023.03.28)
 
 ### Added
 * af4f00bca1ec7a3b0acc0421efe4bf895b324995
@@ -13,6 +57,10 @@
   * algorithm for textual representation of OCEL
 * 3e5164b72835aaa29051f4fd6ce4329253a17f95
   * algorithm to cluster OCEL based on the lifecycle/interactions similarity
+* 70131091d88e5e8f2627b4ff7f70f8d479bd7738
+  * new GPT-4 queries
+* f584641df13504f71c796752da1befc963f3ce3b
+  * included some simplified single-SQL-query extractors
 
 ### Changed
 * 70198faa1b674c3a4e4351ff251a9af504e16a4e

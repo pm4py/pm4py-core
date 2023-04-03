@@ -302,18 +302,28 @@ We offer some integrations with OpenAI (e.g., ChatGPT) for automatically get ins
   * :meth:`pm4py.openai.suggest_improvements`; suggests some improvements for the process starting from its event log
   * :meth:`pm4py.openai.root_cause_analysis`; performs a root cause analysis of the conformance/performance issues
   * :meth:`pm4py.openai.code_for_log_generation`; generates an event log given the name of a process (e.g., Purchase-to-Pay)
-  * :meth:`pm4py.openai.compare_logs`; describe the differences between two event logs
+  * :meth:`pm4py.openai.compare_logs`; describes the differences between two event logs
+  * :meth:`pm4py.openai.anomaly_detection`; describes the main anomalies of the provided event log
+  * :meth:`pm4py.openai.suggest_clusters`; suggest groups of variants based on the behavior
+  * :meth:`pm4py.openai.conformance_checking`; performs conformance checking against the provided log and rule
+  * :meth:`pm4py.openai.suggest_verify_hypotheses`; given an event log, provides some hypotheses for the analysis and allows to verify them
+  * :meth:`pm4py.openai.filtering_query`; given an event log and a natural language query, translates that to a SQL query
+
 
 The following methods provides just the abstractions of the given objects:
+
   * :meth:`pm4py.openai.abstract_dfg`; provides the DFG abstraction of a traditional event log
   * :meth:`pm4py.openai.abstract_variants`; provides the variants abstraction of a traditional event log
-  * :meth:`pm4py.openai.abstract_ocel`; describe the differences between two event logs
+  * :meth:`pm4py.openai.abstract_ocel`; provides the abstraction of an object-centric event log
+  * :meth:`pm4py.openai.abstract_event_stream`; provides an abstraction of the (last) events of the stream related to a traditional event log
+  * :meth:`pm4py.openai.abstract_petri_net`; provides the abstraction of a Petri net
+
 
 
 Basic Connectors (:mod:`pm4py.connectors`)
 ------------------------------------------
 
-We offer some basic connectors to get an event log for the processes supported by your workstation:
+We offer some basic connectors to get an event log for some processes:
 
   * :meth:`pm4py.connectors.extract_log_outlook_mails`; extracts a traditional Pandas dataframe representing the Outlook mails
   * :meth:`pm4py.connectors.extract_log_outlook_calendar`; extracts a traditional Pandas dataframe representing the Outlook calendar
@@ -321,12 +331,18 @@ We offer some basic connectors to get an event log for the processes supported b
   * :meth:`pm4py.connectors.extract_log_chrome_history`; extracts a traditional Pandas dataframe containing the Chrome navigation history
   * :meth:`pm4py.connectors.extract_log_firefox_history`; extracts a traditional Pandas dataframe containing the Firefox navigation history
   * :meth:`pm4py.connectors.extract_log_github`; extracts a traditional Pandas dataframe of a Github repository (issues management)
+  * :meth:`pm4py.connectors.extract_log_camunda_workflow`; extracts a traditional Pandas dataframe from the database supporting Camunda
+  * :meth:`pm4py.connectors.extract_log_sap_o2c`; extracts a traditional Pandas dataframe from the database supporting SAP (O2C process)
+  * :meth:`pm4py.connectors.extract_log_sap_accounting`; extracts a traditional Pandas dataframe from the database supporting SAP (Accounting process)
   * :meth:`pm4py.connectors.extract_ocel_outlook_mails`; extracts an object-centric event log representing the Outlook mails
   * :meth:`pm4py.connectors.extract_ocel_outlook_calendar`; extracts an object-centric event log representing the Outlook calendar
   * :meth:`pm4py.connectors.extract_ocel_windows_events`; extracts an object-centric event log representing the Windows events
   * :meth:`pm4py.connectors.extract_ocel_chrome_history`; extracts an object-centric event log representing the Chrome history
   * :meth:`pm4py.connectors.extract_ocel_firefox_history`; extracts an object-centric event log representing the Firefox history
   * :meth:`pm4py.connectors.extract_ocel_github`; extracts an object-centric event log of a Github repository (issues management)
+  * :meth:`pm4py.connectors.extract_ocel_camunda_workflow`; extracts an object-centric event log from the database supporting Camunda
+  * :meth:`pm4py.connectors.extract_ocel_sap_o2c`; extracts an object-centric event log from the database supporting SAP (O2C process)
+  * :meth:`pm4py.connectors.extract_ocel_sap_accounting`; extracts an object-centric event log from the database supporting SAP (Accounting process)
 
 
 Social Network Analysis (:mod:`pm4py.org`)
@@ -576,18 +592,31 @@ Overall List of Methods
    pm4py.openai.abstract_dfg
    pm4py.openai.abstract_variants
    pm4py.openai.abstract_ocel
+   pm4py.openai.anomaly_detection
+   pm4py.openai.suggest_clusters
+   pm4py.openai.conformance_checking
+   pm4py.openai.suggest_verify_hypotheses
+   pm4py.openai.abstract_event_stream
+   pm4py.openai.abstract_petri_net
+   pm4py.openai.filtering_query
    pm4py.connectors.extract_log_outlook_mails
    pm4py.connectors.extract_log_outlook_calendar
    pm4py.connectors.extract_log_windows_events
    pm4py.connectors.extract_log_chrome_history
    pm4py.connectors.extract_log_firefox_history
    pm4py.connectors.extract_log_github
+   pm4py.connectors.extract_log_camunda_workflow
+   pm4py.connectors.extract_log_sap_o2c
+   pm4py.connectors.extract_log_sap_accounting
    pm4py.connectors.extract_ocel_outlook_mails
    pm4py.connectors.extract_ocel_outlook_calendar
    pm4py.connectors.extract_ocel_windows_events
    pm4py.connectors.extract_ocel_chrome_history
    pm4py.connectors.extract_ocel_firefox_history
    pm4py.connectors.extract_ocel_github
+   pm4py.connectors.extract_ocel_camunda_workflow
+   pm4py.connectors.extract_ocel_sap_o2c
+   pm4py.connectors.extract_ocel_sap_accounting
    pm4py.org
    pm4py.org.discover_handover_of_work_network
    pm4py.org.discover_working_together_network

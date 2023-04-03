@@ -32,6 +32,12 @@ def execute_script():
 
     print(pm4py.openai.abstract_ocel(ocel))
 
+    print(pm4py.openai.anomaly_detection(log))
+
+    print(pm4py.openai.suggest_clusters(log))
+
+    print(pm4py.openai.conformance_checking(log, "all traces should contain a single payment"))
+
 
 if __name__ == "__main__":
     execute_script()
