@@ -28,8 +28,8 @@ def compute_incidence_matrix(net):
     m = len(net.places)
     C = np.zeros((m, n))
     i = 0
-    transition_list = list(net.transitions)
-    place_list = list(net.places)
+    transition_list = sorted(list(net.transitions), key=lambda x: x.name)
+    place_list = sorted(list(net.places), key=lambda x: x.name)
     while i < n:
         t = transition_list[i]
         for in_arc in t.in_arcs:
@@ -51,14 +51,15 @@ def split_incidence_matrix(matrix, net):
     of the transition
     """
     transition_dict = {}
+    lst_transitions = sorted(list(net.transitions), key=lambda x: x.name)
     i = 0
     while i < len(net.transitions):
-        transition_dict[list(net.transitions)[i]] = np.hsplit(np.transpose(matrix), 1)[0][i]
+        transition_dict[lst_transitions[i]] = np.hsplit(np.transpose(matrix), 1)[0][i]
         i += 1
     return transition_dict
 
 def compute_firing_requirement(net):
-    place_list=list(net.places)
+    place_list=sorted(list(net.places), key=lambda x: x.name)
     transition_dict={}
     for transition in net.transitions:
         temp_array=np.zeros(len(place_list))
@@ -86,8 +87,11 @@ def convert_marking(net, marking, original_net=None):
     :param original_net: PM4Py Petri Net object without short-circuited transition
     :return: Numpy array representation
     """
-    marking_list=list(el.name for el in marking.keys())
-    place_list = list(el.name for el in net.places)
+    #marking_list=list(el.name for el in marking.keys())
+    #
+    marking_list = sorted([el.name for el in marking.keys()])
+    place_list = sorted(list(el.name for el in net.places))
+
     mark = np.zeros(len(place_list))
     for index, value in enumerate(mark):
         if place_list[index] in marking_list:
@@ -103,7 +107,8 @@ def check_for_dead_tasks(net, graph):
     :return: list of dead tasks
     """
     tasks=[]
-    for transition in list(net.transitions):
+    lst_transitions = sorted(list(net.transitions), key=lambda x: x.name)
+    for transition in lst_transitions:
         if transition.label != None:
             tasks.append(transition)
     for node,targets in graph.edges()._adjdict.items():

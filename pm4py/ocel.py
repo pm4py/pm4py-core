@@ -24,6 +24,8 @@ import pandas as pd
 
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants
+import sys
+
 
 def ocel_get_object_types(ocel: OCEL) -> List[str]:
     """
@@ -285,6 +287,51 @@ def discover_objects_graph(ocel: OCEL, graph_type: str = "object_interaction") -
         return object_codeath_graph.apply(ocel)
 
 
+def ocel_o2o_enrichment(ocel: OCEL, included_graphs: Optional[Collection[str]] = None) -> OCEL:
+    """
+    Inserts the information inferred from the graph computations (pm4py.discover_objects_graph)
+    in the list of O2O relations of the OCEL.
+
+    :param ocel: object-centric event log
+    :param included_graphs: types of graphs to include, provided as list/set of strings (object_interaction_graph, object_descendants_graph, object_inheritance_graph, object_cobirth_graph, object_codeath_graph)
+    :rtype: ``OCEL``
+
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        ocel = pm4py.ocel_o2o_enrichment(ocel)
+        print(ocel.o2o)
+    """
+    from pm4py.algo.transformation.ocel.graphs import ocel20_computation
+    return ocel20_computation.apply(ocel, parameters={"included_graphs": included_graphs})
+
+
+def ocel_e2o_lifecycle_enrichment(ocel: OCEL) -> OCEL:
+    """
+    Inserts lifecycle-based information (when an object is created/terminated or other types of relations)
+    in the list of E2O relations of the OCEL
+
+    :param ocel: object-centric event log
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        ocel = pm4py.ocel_e2o_lifecycle_enrichment(ocel)
+        print(ocel.relations)
+    """
+    from pm4py.objects.ocel.util import e2o_qualification
+    ocel = e2o_qualification.apply(ocel, "termination")
+    ocel = e2o_qualification.apply(ocel, "creation")
+    ocel = e2o_qualification.apply(ocel, "other")
+    return ocel
+
+
 def sample_ocel_objects(ocel: OCEL, num_objects: int) -> OCEL:
     """
     Given an object-centric event log, returns a sampled event log with a subset of the objects
@@ -325,7 +372,7 @@ def sample_ocel_connected_components(ocel: OCEL, connected_components: int = 1) 
         sampled_ocel = pm4py.sample_ocel_connected_components(ocel, 5) # keeps only 5 connected components
     """
     from pm4py.algo.transformation.ocel.split_ocel import algorithm
-    ocel_splits = algorithm.apply(ocel)
+    ocel_splits = algorithm.apply(ocel, variant=algorithm.Variants.CONNECTED_COMPONENTS)
     events = None
     objects = None
     relations = None
@@ -464,3 +511,34 @@ def ocel_add_index_based_timedelta(ocel: OCEL) -> OCEL:
     del ocel.events["@@timedelta"]
     del ocel.relations["@@timedelta"]
     return ocel
+
+
+def cluster_equivalent_ocel(ocel: OCEL, object_type: str, max_objs: int = sys.maxsize) -> Dict[str, Collection[OCEL]]:
+    """
+    Perform a clustering of the object-centric event log, based on the 'executions' of
+    a single object type. Equivalent 'executions' are grouped in the output dictionary.
+
+    :param ocel: object-centric event log
+    :param object_type: reference object type
+    :param max_objs: maximum number of objects (of the given object type)
+    :rtype: ``Dict[str, Collection[OCEL]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('trial.ocel')
+        clusters = pm4py.cluster_equivalent_ocel(ocel, "order")
+    """
+    from pm4py.algo.transformation.ocel.split_ocel import algorithm as split_ocel_algorithm
+    from pm4py.objects.ocel.util import rename_objs_ot_tim_lex
+    from pm4py.algo.transformation.ocel.description import algorithm as ocel_description
+    lst_ocels = split_ocel_algorithm.apply(ocel, variant=split_ocel_algorithm.Variants.ANCESTORS_DESCENDANTS, parameters={"object_type": object_type, "max_objs": max_objs})
+    ret = {}
+    for index, oc in enumerate(lst_ocels):
+        oc_ren = rename_objs_ot_tim_lex.apply(oc)
+        descr = ocel_description.apply(oc_ren, parameters={"include_timestamps": False})
+        if descr not in ret:
+            ret[descr] = []
+        ret[descr].append(oc)
+    return ret

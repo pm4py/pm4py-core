@@ -4,6 +4,30 @@ import sys
 import traceback
 
 
+def ocel_clustering():
+    from examples import ocel_clustering
+    print("\n\nocel_clustering")
+    ocel_clustering.execute_script()
+
+
+def ocel_enrichment():
+    from examples import ocel_enrichment
+    print("\n\nocel_enrichment")
+    ocel_enrichment.execute_script()
+
+
+def openai_log_queries():
+    from examples import openai_log_queries
+    print("\n\nopenai_log_queries")
+    openai_log_queries.execute_script()
+
+
+def validation_ocel20_xml():
+    from examples import validation_ocel20_xml
+    print("\n\nvalidation_ocel20_xml")
+    validation_ocel20_xml.execute_script()
+
+
 def consecutive_act_case_grouping_filter():
     from examples import consecutive_act_case_grouping_filter
     print("\n\nconsecutive_act_case_grouping_filter")
@@ -748,6 +772,10 @@ if __name__ == "__main__":
     execute_script(inductive_miner_dfg)
     execute_script(inductive_miner_variants)
     execute_script(heu_miner_plus_plus)
+    execute_script(ocel_clustering)
+    execute_script(ocel_enrichment)
+    execute_script(openai_log_queries)
+    execute_script(validation_ocel20_xml)
     execute_script(consecutive_act_case_grouping_filter)
     execute_script(cost_based_dfg)
     execute_script(df_to_log_postpro)

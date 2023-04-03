@@ -1,10 +1,95 @@
 # Changelog of pm4py
 
-## pm4py 2.6.2 (2023.03.XX)
+## pm4py 2.7.3 (2023.04.XX)
+
+### Added
+* e561089945951e91b2ecfe0f223b35bd2d351630
+  * other NLP/LLM abstractions
+
+### Changed
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
+## pm4py 2.7.2 (2023.04.03)
 
 ### Added
 
 ### Changed
+* c617471c12c1f07c092e32ccf6d76d5aa6c4ec2a
+  * change X Axis in pm4py.view_events_distribution_graph
+* cf744cb22cd6affb0a8d7ce26b9827c3e8b0b903
+  * changes/fixes to the alignments table representation
+
+### Deprecated
+
+### Fixed
+* d0ee4a8c8db76900444bc3e0026b0ea54581e9e7
+  * fixed OCEL deepcopy
+* 5fd45bdf5d3cf17f364669cba7a5fab549236e7a
+  * major fix WOFLAN
+
+### Removed
+
+### Other
+
+
+---
+
+## pm4py 2.7.1 (2023.03.28)
+
+### Added
+* af4f00bca1ec7a3b0acc0421efe4bf895b324995
+  * insertion graph-based O2O relationships in the OCEL
+* 0bb0bad37311fd45113440d97f53a5c8255ce89c
+  * insertion lifecycle-based E2O relations in the OCEL
+* e6076a50216de31fdbd4dd00edd631a01c9e1bb7
+  * another algorithm to split/sample OCELs (ancestors/descendants based)
+* 564e2c0ec976291c283fc1b24c5ebc2b6e452f12
+  * algorithm for textual representation of OCEL
+* 3e5164b72835aaa29051f4fd6ce4329253a17f95
+  * algorithm to cluster OCEL based on the lifecycle/interactions similarity
+* 70131091d88e5e8f2627b4ff7f70f8d479bd7738
+  * new GPT-4 queries
+* f584641df13504f71c796752da1befc963f3ce3b
+  * included some simplified single-SQL-query extractors
+
+### Changed
+* 70198faa1b674c3a4e4351ff251a9af504e16a4e
+  * changing alignments interfacing in the simplified interface
+
+### Deprecated
+
+### Fixed
+* 8f5d5057f24bce7c3825e3f6d34b15e15bc15025
+  * wrong condition in the visualization of the alignments table
+
+### Removed
+
+### Other
+
+
+---
+
+## pm4py 2.7.0 (2023.03.23) -- Million Edition --
+
+### Added
+* ba126d3f4211cb237dae4b09dec5574224666237
+  * initial OpenAI integration
+* 05b6425637768312bf4768a252ee410c3bd5a35c
+  * easy-to-use (local computer) log extractors for Outlook, Windows events registry, Mozilla Firefox and Google Chrome
+
+### Changed
+* b3c17fe017bd57889845f398e08fa95d94a8c800
+  * add flow id to silent transitions in BPMN Petri net conversion
 
 ### Deprecated
 
