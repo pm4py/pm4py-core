@@ -5,10 +5,16 @@
 ### Added
 
 ### Changed
+* c617471c12c1f07c092e32ccf6d76d5aa6c4ec2a
+  * change X Axis in pm4py.view_events_distribution_graph
+* cf744cb22cd6affb0a8d7ce26b9827c3e8b0b903
+  * changes/fixes to the alignments table representation
 
 ### Deprecated
 
 ### Fixed
+* d0ee4a8c8db76900444bc3e0026b0ea54581e9e7
+  * fixed OCEL deepcopy
 
 ### Removed
 

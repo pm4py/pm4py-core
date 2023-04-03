@@ -58,12 +58,13 @@ def construct_tree(net, initial_marking):
                 if new_arc:
                     break
         if new_arc:
-            m3 = np.zeros(len(list(net.places)))
-            for place in list(net.places):
-                if check_for_smaller_marking(m2, coverability_graph, list(net.places).index(place), m, look_up_indices):
-                    m3[list(net.places).index(place)] = np.inf
+            lplaces = sorted(list(net.places), key=lambda x: x.name)
+            m3 = np.zeros(len(lplaces))
+            for place in lplaces:
+                if check_for_smaller_marking(m2, coverability_graph, lplaces.index(place), m, look_up_indices):
+                    m3[lplaces.index(place)] = np.inf
                 else:
-                    m3[list(net.places).index(place)] = m2[0][list(net.places).index(place)]
+                    m3[lplaces.index(place)] = m2[0][lplaces.index(place)]
             coverability_graph.add_node(j, marking=m3)
             coverability_graph.add_edge(m, j, transition=m2[1])
             look_up_indices[np.array2string(m3)] = j
