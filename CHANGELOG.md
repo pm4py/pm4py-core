@@ -9,6 +9,8 @@
 ### Deprecated
 
 ### Fixed
+* d0ee4a8c8db76900444bc3e0026b0ea54581e9e7
+  * fixed OCEL deepcopy
 
 ### Removed
 
