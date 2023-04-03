@@ -56,6 +56,7 @@ def apply_plot(x: List[float], y: List[float], parameters: Optional[Dict[Union[s
     ax = fig.add_axes([0, 0, 1, 1])
     ax.bar(x, y)
     pyplot.xlabel(x_axis)
+    pyplot.xticks(rotation=90, fontsize=8)
     pyplot.ylabel(y_axis)
     pyplot.title(title)
     pyplot.savefig(filename, bbox_inches="tight", transparent=is_transp)
