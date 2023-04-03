@@ -19,8 +19,8 @@ def compute_place_invariants(net):
         m = len(net.places)
         C = np.zeros((m, n))
         i = 0
-        transition_list = list(net.transitions)
-        place_list = list(net.places)
+        transition_list = sorted(list(net.transitions), key=lambda x: x.name)
+        place_list = sorted(list(net.places), key=lambda x: x.name)
         while i < n:
             t = transition_list[i]
             for in_arc in t.in_arcs:
