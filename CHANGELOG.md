@@ -1,5 +1,24 @@
 # Changelog of pm4py
 
+## pm4py 2.7.3 (2023.04.XX)
+
+### Added
+* e561089945951e91b2ecfe0f223b35bd2d351630
+  * other NLP/LLM abstractions
+
+### Changed
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
 ## pm4py 2.7.2 (2023.04.03)
 
 ### Added

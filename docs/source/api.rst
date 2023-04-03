@@ -306,13 +306,18 @@ We offer some integrations with OpenAI (e.g., ChatGPT) for automatically get ins
   * :meth:`pm4py.openai.anomaly_detection`; describes the main anomalies of the provided event log
   * :meth:`pm4py.openai.suggest_clusters`; suggest groups of variants based on the behavior
   * :meth:`pm4py.openai.conformance_checking`; performs conformance checking against the provided log and rule
-  * :meth:`pm4py.openai.suggest_verify_hypotheses`; given an event log, provides some hyphotesis for the analysis and allows to verify them
+  * :meth:`pm4py.openai.suggest_verify_hypotheses`; given an event log, provides some hypotheses for the analysis and allows to verify them
+  * :meth:`pm4py.openai.filtering_query`; given an event log and a natural language query, translates that to a SQL query
 
 
 The following methods provides just the abstractions of the given objects:
+
   * :meth:`pm4py.openai.abstract_dfg`; provides the DFG abstraction of a traditional event log
   * :meth:`pm4py.openai.abstract_variants`; provides the variants abstraction of a traditional event log
-  * :meth:`pm4py.openai.abstract_ocel`; describe the differences between two event logs
+  * :meth:`pm4py.openai.abstract_ocel`; provides the abstraction of an object-centric event log
+  * :meth:`pm4py.openai.abstract_event_stream`; provides an abstraction of the (last) events of the stream related to a traditional event log
+  * :meth:`pm4py.openai.abstract_petri_net`; provides the abstraction of a Petri net
+
 
 
 Basic Connectors (:mod:`pm4py.connectors`)
@@ -591,6 +596,9 @@ Overall List of Methods
    pm4py.openai.suggest_clusters
    pm4py.openai.conformance_checking
    pm4py.openai.suggest_verify_hypotheses
+   pm4py.openai.abstract_event_stream
+   pm4py.openai.abstract_petri_net
+   pm4py.openai.filtering_query
    pm4py.connectors.extract_log_outlook_mails
    pm4py.connectors.extract_log_outlook_calendar
    pm4py.connectors.extract_log_windows_events
