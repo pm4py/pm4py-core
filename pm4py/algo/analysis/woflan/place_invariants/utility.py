@@ -17,6 +17,7 @@
 import numpy as np
 from copy import copy
 from pm4py.util.lp import solver
+import pkgutil
 
 
 def removearray(L, arr):
@@ -63,6 +64,7 @@ def transform_basis(basis, style=None):
     #For uniform variants, it is necessary that the weight for a place is either 0 or 1. We collect the variants for
     #which this condition does not hold. We also collect the variants for the weighted invariants the entry is <0.
     to_modify = []
+
     for vector in modified_base:
         for entry in vector:
             if ((entry < 0 or entry > 1) and style=='uniform') or ( entry < 0 and style=='weighted'):
@@ -105,18 +107,17 @@ def transform_basis(basis, style=None):
                 this_row = copy(zeros)
                 this_row[len(set_B)] = list(vector[i])[0]
                 for j in range(len(modified_base)):
-                    if type(modified_base[j][i]) is np.float64:
-                        this_row[j] = float(modified_base[j][i])
-                    else:
-                        this_row[j] = list(modified_base[j][i])[0]
+                    this_row[j] = list(modified_base[j][i])[0]
 
-                    if style == "uniform":
-                        this_row[len(set_B) + 1 + i] = -1
-                        Aeq.append(this_row)
-                        beq.append(0)
-                    elif style == "weighted":
-                        Aub.append([-x for x in this_row])
-                        bub.append(0)
+                if style == "uniform":
+                    this_row[len(set_B) + 1 + i] = -1
+
+                if style == "uniform":
+                    Aeq.append(this_row)
+                    beq.append(0)
+                elif style == "weighted":
+                    Aub.append([-x for x in this_row])
+                    bub.append(0)
             for i in range(len(vector)):
                 last_constraint_1 = copy(zeros)
                 last_constraint_1[len(set_B) + 1 + i] = 1
@@ -140,12 +141,19 @@ def transform_basis(basis, style=None):
                 Aub = np.zeros((1, len(c))).astype(np.float64)
                 bub = np.zeros(1).transpose().astype(np.float64)
 
-            # solution provided by cvxopt seems uncorrect/unstable sometime.
-            # still looking for causes. for this small linear problem,
-            # let's just use SCIPY as default solver which is stable with this
-            # kind of problems.
-            sol = solver.apply(c, Aub, bub, Aeq, beq, variant=solver.SCIPY)
-            points = solver.get_points_from_sol(sol, variant=solver.SCIPY)
+            # this is highly critical and LP solutions are not always correct :(
+
+            proposed_solver = solver.SCIPY
+            if pkgutil.find_loader("pulp"):
+                proposed_solver = solver.PULP
+            else:
+                import warnings
+                warnings.warn("solution from scipy may be unstable. Please install PuLP (pip install pulp) for fully reliable results.")
+
+            sol = solver.apply(c, Aub, bub, Aeq, beq, variant=proposed_solver, parameters={"method": "revised simplex", "require_ilp": True})
+            points = solver.get_points_from_sol(sol, variant=proposed_solver)
+            val = solver.get_prim_obj_from_sol(sol, variant=proposed_solver)
+
             if points is not None:
                 new_vector = np.zeros(len(vector))
 
@@ -157,6 +165,8 @@ def transform_basis(basis, style=None):
                 elif style == "uniform":
                     for i in range(len(new_vector)):
                         new_vector[i] = points[len(set_B) + 1 + i]
+
+                new_vector = np.array([new_vector]).T
                 modified_base.append(new_vector)
 
     return modified_base
@@ -170,7 +180,7 @@ def compute_uncovered_places(invariants, net):
     :param net: Petri Net object of PM4Py
     :return: List of uncovered place over all invariants
     """
-    place_list=list(net.places)
+    place_list=sorted(list(net.places), key=lambda x: x.name)
     unncovered_list=place_list.copy()
     for invariant in invariants:
         for index, value in enumerate(invariant):
