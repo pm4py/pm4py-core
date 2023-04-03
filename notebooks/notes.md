@@ -1,5 +1,15 @@
 # Subprocess mining
 
+## Simple relation based
+
+If two or more events have relations from the same event or
+If two or more events have relation to the same event
+then they become subprocesses
+
+## Condition based
+
+## Exclusion based
+
 0: ER Registration
 1: Leucocytes
 2: CRP

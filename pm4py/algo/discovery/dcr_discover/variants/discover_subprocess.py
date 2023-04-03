@@ -116,7 +116,6 @@ def get_final_dcr(basic_dcr, sp_dcr, subprocesses, inBetweenRels=True):
                     final_dcr[k] = deepcopy(sp_dcr[k])
                     # in between the internal to external and external to internal
                     if inBetweenRels:
-                        # print(k)
                         for sp_name, internal_events in subprocesses.items():
                             # print('e2i')
                             external_events = basic_dcr['events'].difference(internal_events)

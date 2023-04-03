@@ -1,0 +1,237 @@
+{
+    "events": [
+        "CRP",
+        "IV Liquid",
+        "Leucocytes",
+        "S1",
+        "Release B",
+        "S4",
+        "ER Sepsis Triage",
+        "LacticAcid",
+        "S0",
+        "Release E",
+        "ER Triage",
+        "S3",
+        "Admission NC",
+        "Release D",
+        "Release C",
+        "S2",
+        "IV Antibiotics",
+        "Return ER",
+        "Admission IC",
+        "ER Registration",
+        "Release A"
+    ],
+    "labels": [
+        "CRP",
+        "IV Liquid",
+        "Leucocytes",
+        "S1",
+        "Release B",
+        "S4",
+        "ER Sepsis Triage",
+        "LacticAcid",
+        "S0",
+        "Release E",
+        "ER Triage",
+        "S3",
+        "Admission NC",
+        "Release D",
+        "Release C",
+        "S2",
+        "IV Antibiotics",
+        "Return ER",
+        "Admission IC",
+        "ER Registration",
+        "Release A"
+    ],
+    "labelMapping": {
+        "S0": [
+            "S0"
+        ],
+        "ReleaseA": [
+            "Release A"
+        ],
+        "S4": [
+            "S4"
+        ],
+        "S3": [
+            "S3"
+        ],
+        "ReleaseC": [
+            "Release C"
+        ],
+        "ReleaseE": [
+            "Release E"
+        ],
+        "ReleaseD": [
+            "Release D"
+        ],
+        "ReleaseB": [
+            "Release B"
+        ],
+        "ReturnER": [
+            "Return ER"
+        ],
+        "IVLiquid": [
+            "IV Liquid"
+        ],
+        "ERTriage": [
+            "ER Triage"
+        ],
+        "AdmissionIC": [
+            "Admission IC"
+        ],
+        "ERSepsisTriage": [
+            "ER Sepsis Triage"
+        ],
+        "ERRegistration": [
+            "ER Registration"
+        ],
+        "AdmissionNC": [
+            "Admission NC"
+        ],
+        "IVAntibiotics": [
+            "IV Antibiotics"
+        ],
+        "S2": [
+            "S2"
+        ],
+        "S1": [
+            "S1"
+        ],
+        "CRP": [
+            "CRP"
+        ],
+        "Leucocytes": [
+            "Leucocytes"
+        ],
+        "LacticAcid": [
+            "LacticAcid"
+        ]
+    },
+    "conditionsFor": {
+        "ReturnER": [
+            "S0",
+            "Admission NC",
+            "Admission IC"
+        ],
+        "AdmissionIC": [
+            "ER Registration",
+            "ER Triage"
+        ],
+        "AdmissionNC": [
+            "ER Registration",
+            "ER Triage"
+        ],
+        "S0": [
+            "ER Registration",
+            "ER Triage"
+        ],
+        "IVAntibiotics": [
+            "ER Sepsis Triage"
+        ],
+        "S4": [
+            "S1",
+            "ER Sepsis Triage"
+        ],
+        "S3": [
+            "Admission NC"
+        ]
+    },
+    "milestonesFor": {},
+    "responseTo": {},
+    "noResponseTo": [],
+    "includesTo": {},
+    "excludesTo": {
+        "ReturnER": [
+            "Return ER",
+            "Release B",
+            "Admission NC"
+        ],
+        "IVLiquid": [
+            "IV Liquid"
+        ],
+        "AdmissionIC": [
+            "ER Triage"
+        ],
+        "ERSepsisTriage": [
+            "ER Sepsis Triage"
+        ],
+        "ERRegistration": [
+            "ER Registration"
+        ],
+        "ReleaseB": [
+            "Return ER"
+        ],
+        "S0": [
+            "S0",
+            "ER Triage",
+            "Admission IC"
+        ],
+        "IVAntibiotics": [
+            "IV Antibiotics"
+        ],
+        "S4": [
+            "S2"
+        ],
+        "S3": [
+            "Admission NC"
+        ],
+        "ReleaseA": [
+            "Admission NC"
+        ]
+    },
+    "conditionsForDelays": [],
+    "responseToDeadlines": [],
+    "marking": {
+        "executed": [],
+        "included": [
+            "CRP",
+            "IV Liquid",
+            "Leucocytes",
+            "S1",
+            "Release B",
+            "S4",
+            "ER Sepsis Triage",
+            "LacticAcid",
+            "S0",
+            "Release E",
+            "ER Triage",
+            "S3",
+            "Admission NC",
+            "Release D",
+            "Release C",
+            "S2",
+            "IV Antibiotics",
+            "Return ER",
+            "Admission IC",
+            "ER Registration",
+            "Release A"
+        ],
+        "pending": []
+    },
+    "subprocesses": {
+        "S0": [
+            "Release A",
+            "S4"
+        ],
+        "S4": [
+            "S3",
+            "Release B"
+        ],
+        "S3": [
+            "Release D",
+            "Release C",
+            "Release E"
+        ],
+        "S1": [
+            "CRP",
+            "Leucocytes"
+        ],
+        "S2": [
+            "S1",
+            "LacticAcid"
+        ]
+    }
+}

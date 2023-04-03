@@ -1,0 +1,857 @@
+<dcrgraph title="Sepsis - manual optimization" dataTypesStatus="hide" filterLevel="-1" insightFilter="false" zoomLevel="0" formGroupStyle="Normal" formLayoutStyle="Horizontal" formShowPendingCount="true" graphBG="#f1f6fe" graphType="0" exercise="false">
+    <meta>
+        <graph id="1622482" hash="B7706076D1F8970C8F5082535D14D880" guid="6351C74C-1B3F-47B5-91B6-1AE13FBDE872" OwnerName="Vlad Paul Cosma" OwnerId="2275" categoryId="3862" categoryTitle="Default" Keywords=""/>
+        <revision id="3149415" type="minor" date="2023-03-25T14:54:49.353"/>
+        <organization id="1" name="Community"/>
+    </meta>
+    <specification>
+        <resources>
+            <events>
+                <event id="S0" type="subprocess">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="25" yLoc="425"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role/>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>1</level>
+                        <sequence>1</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                    <event id="Release A">
+                        <precondition message=""/>
+                        <custom>
+                            <visualization>
+                                <location xLoc="50" yLoc="475"/>
+                                <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                            </visualization>
+                            <roles>
+                                <role/>
+                            </roles>
+                            <readRoles>
+                                <readRole/>
+                            </readRoles>
+                            <groups>
+                                <group/>
+                            </groups>
+                            <phases>
+                                <phase/>
+                            </phases>
+                            <eventType/>
+                            <eventScope>private</eventScope>
+                            <eventTypeData/>
+                            <eventDescription/>
+                            <purpose/>
+                            <guide/>
+                            <insight use="false"/>
+                            <level>1</level>
+                            <sequence>9</sequence>
+                            <costs>0</costs>
+                            <eventData/>
+                            <interfaces/>
+                        </custom>
+                    </event>
+                    <event id="S4" type="subprocess">
+                        <precondition message=""/>
+                        <custom>
+                            <visualization>
+                                <location xLoc="175" yLoc="475"/>
+                                <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                            </visualization>
+                            <roles>
+                                <role/>
+                            </roles>
+                            <readRoles>
+                                <readRole/>
+                            </readRoles>
+                            <groups>
+                                <group/>
+                            </groups>
+                            <phases>
+                                <phase/>
+                            </phases>
+                            <eventType/>
+                            <eventScope>private</eventScope>
+                            <eventTypeData/>
+                            <eventDescription/>
+                            <purpose/>
+                            <guide/>
+                            <insight use="false"/>
+                            <level>1</level>
+                            <sequence>20</sequence>
+                            <costs>0</costs>
+                            <eventData/>
+                            <interfaces/>
+                        </custom>
+                        <event id="S3" type="subprocess">
+                            <precondition message=""/>
+                            <custom>
+                                <visualization>
+                                    <location xLoc="350" yLoc="525"/>
+                                    <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                                </visualization>
+                                <roles>
+                                    <role/>
+                                </roles>
+                                <readRoles>
+                                    <readRole/>
+                                </readRoles>
+                                <groups>
+                                    <group/>
+                                </groups>
+                                <phases>
+                                    <phase/>
+                                </phases>
+                                <eventType/>
+                                <eventScope>private</eventScope>
+                                <eventTypeData/>
+                                <eventDescription/>
+                                <purpose/>
+                                <guide/>
+                                <insight use="false"/>
+                                <level>1</level>
+                                <sequence>21</sequence>
+                                <costs>0</costs>
+                                <eventData/>
+                                <interfaces/>
+                            </custom>
+                            <event id="Release C">
+                                <precondition message=""/>
+                                <custom>
+                                    <visualization>
+                                        <location xLoc="375" yLoc="575"/>
+                                        <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                                    </visualization>
+                                    <roles>
+                                        <role/>
+                                    </roles>
+                                    <readRoles>
+                                        <readRole/>
+                                    </readRoles>
+                                    <groups>
+                                        <group/>
+                                    </groups>
+                                    <phases>
+                                        <phase/>
+                                    </phases>
+                                    <eventType/>
+                                    <eventScope>private</eventScope>
+                                    <eventTypeData/>
+                                    <eventDescription/>
+                                    <purpose/>
+                                    <guide/>
+                                    <insight use="false"/>
+                                    <level>1</level>
+                                    <sequence>7</sequence>
+                                    <costs>0</costs>
+                                    <eventData/>
+                                    <interfaces/>
+                                </custom>
+                            </event>
+                            <event id="Release E">
+                                <precondition message=""/>
+                                <custom>
+                                    <visualization>
+                                        <location xLoc="650" yLoc="575"/>
+                                        <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                                    </visualization>
+                                    <roles>
+                                        <role/>
+                                    </roles>
+                                    <readRoles>
+                                        <readRole/>
+                                    </readRoles>
+                                    <groups>
+                                        <group/>
+                                    </groups>
+                                    <phases>
+                                        <phase/>
+                                    </phases>
+                                    <eventType/>
+                                    <eventScope>private</eventScope>
+                                    <eventTypeData/>
+                                    <eventDescription/>
+                                    <purpose/>
+                                    <guide/>
+                                    <insight use="false"/>
+                                    <level>1</level>
+                                    <sequence>6</sequence>
+                                    <costs>0</costs>
+                                    <eventData/>
+                                    <interfaces/>
+                                </custom>
+                            </event>
+                            <event id="Release D">
+                                <precondition message=""/>
+                                <custom>
+                                    <visualization>
+                                        <location xLoc="500" yLoc="575"/>
+                                        <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                                    </visualization>
+                                    <roles>
+                                        <role/>
+                                    </roles>
+                                    <readRoles>
+                                        <readRole/>
+                                    </readRoles>
+                                    <groups>
+                                        <group/>
+                                    </groups>
+                                    <phases>
+                                        <phase/>
+                                    </phases>
+                                    <eventType/>
+                                    <eventScope>private</eventScope>
+                                    <eventTypeData/>
+                                    <eventDescription/>
+                                    <purpose/>
+                                    <guide/>
+                                    <insight use="false"/>
+                                    <level>1</level>
+                                    <sequence>15</sequence>
+                                    <costs>0</costs>
+                                    <eventData/>
+                                    <interfaces/>
+                                </custom>
+                            </event>
+                        </event>
+                        <event id="Release B">
+                            <precondition message=""/>
+                            <custom>
+                                <visualization>
+                                    <location xLoc="200" yLoc="525"/>
+                                    <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                                </visualization>
+                                <roles>
+                                    <role/>
+                                </roles>
+                                <readRoles>
+                                    <readRole/>
+                                </readRoles>
+                                <groups>
+                                    <group/>
+                                </groups>
+                                <phases>
+                                    <phase/>
+                                </phases>
+                                <eventType/>
+                                <eventScope>private</eventScope>
+                                <eventTypeData/>
+                                <eventDescription/>
+                                <purpose/>
+                                <guide/>
+                                <insight use="false"/>
+                                <level>1</level>
+                                <sequence>12</sequence>
+                                <costs>0</costs>
+                                <eventData/>
+                                <interfaces/>
+                            </custom>
+                        </event>
+                    </event>
+                </event>
+                <event id="Return ER">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="200" yLoc="275"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role/>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>1</level>
+                        <sequence>3</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="IV Liquid">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="1100" yLoc="75"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role/>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>1</level>
+                        <sequence>4</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="ER Triage">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="100" yLoc="75"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role/>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>1</level>
+                        <sequence>5</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="Admission IC">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="650" yLoc="75"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role/>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>1</level>
+                        <sequence>8</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="ER Sepsis Triage">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="900" yLoc="225"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role/>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>1</level>
+                        <sequence>10</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="ER Registration">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="800" yLoc="75"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role/>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>1</level>
+                        <sequence>11</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="Admission NC">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="450" yLoc="275"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role/>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>1</level>
+                        <sequence>13</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="IV Antibiotics">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="1100" yLoc="225"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role/>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>1</level>
+                        <sequence>17</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="S2">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="900" yLoc="375"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role/>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>1</level>
+                        <sequence>19</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                    <event id="S1" type="subprocess">
+                        <precondition message=""/>
+                        <custom>
+                            <visualization>
+                                <location xLoc="1050" yLoc="425"/>
+                                <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                            </visualization>
+                            <roles>
+                                <role/>
+                            </roles>
+                            <readRoles>
+                                <readRole/>
+                            </readRoles>
+                            <groups>
+                                <group/>
+                            </groups>
+                            <phases>
+                                <phase/>
+                            </phases>
+                            <eventType/>
+                            <eventScope>private</eventScope>
+                            <eventTypeData/>
+                            <eventDescription/>
+                            <purpose/>
+                            <guide/>
+                            <insight use="false"/>
+                            <level>1</level>
+                            <sequence>18</sequence>
+                            <costs>0</costs>
+                            <eventData/>
+                            <interfaces/>
+                        </custom>
+                        <event id="CRP">
+                            <precondition message=""/>
+                            <custom>
+                                <visualization>
+                                    <location xLoc="1075" yLoc="625"/>
+                                    <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                                </visualization>
+                                <roles>
+                                    <role/>
+                                </roles>
+                                <readRoles>
+                                    <readRole/>
+                                </readRoles>
+                                <groups>
+                                    <group/>
+                                </groups>
+                                <phases>
+                                    <phase/>
+                                </phases>
+                                <eventType/>
+                                <eventScope>private</eventScope>
+                                <eventTypeData/>
+                                <eventDescription/>
+                                <purpose/>
+                                <guide/>
+                                <insight use="false"/>
+                                <level>1</level>
+                                <sequence>16</sequence>
+                                <costs>0</costs>
+                                <eventData/>
+                                <interfaces/>
+                            </custom>
+                        </event>
+                        <event id="Leucocytes">
+                            <precondition message=""/>
+                            <custom>
+                                <visualization>
+                                    <location xLoc="1075" yLoc="475"/>
+                                    <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                                </visualization>
+                                <roles>
+                                    <role/>
+                                </roles>
+                                <readRoles>
+                                    <readRole/>
+                                </readRoles>
+                                <groups>
+                                    <group/>
+                                </groups>
+                                <phases>
+                                    <phase/>
+                                </phases>
+                                <eventType/>
+                                <eventScope>private</eventScope>
+                                <eventTypeData/>
+                                <eventDescription/>
+                                <purpose/>
+                                <guide/>
+                                <insight use="false"/>
+                                <level>1</level>
+                                <sequence>2</sequence>
+                                <costs>0</costs>
+                                <eventData/>
+                                <interfaces/>
+                            </custom>
+                        </event>
+                    </event>
+                    <event id="LacticAcid">
+                        <precondition message=""/>
+                        <custom>
+                            <visualization>
+                                <location xLoc="925" yLoc="475"/>
+                                <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                            </visualization>
+                            <roles>
+                                <role/>
+                            </roles>
+                            <readRoles>
+                                <readRole/>
+                            </readRoles>
+                            <groups>
+                                <group/>
+                            </groups>
+                            <phases>
+                                <phase/>
+                            </phases>
+                            <eventType/>
+                            <eventScope>private</eventScope>
+                            <eventTypeData/>
+                            <eventDescription/>
+                            <purpose/>
+                            <guide/>
+                            <insight use="false"/>
+                            <level>1</level>
+                            <sequence>14</sequence>
+                            <costs>0</costs>
+                            <eventData/>
+                            <interfaces/>
+                        </custom>
+                    </event>
+                </event>
+            </events>
+            <subProcesses/>
+            <distribution/>
+            <labels>
+                <label id="S0"/>
+                <label id="Release A"/>
+                <label id="S4"/>
+                <label id="S3"/>
+                <label id="Release C"/>
+                <label id="Release E"/>
+                <label id="Release D"/>
+                <label id="Release B"/>
+                <label id="Return ER"/>
+                <label id="IV Liquid"/>
+                <label id="ER Triage"/>
+                <label id="Admission IC"/>
+                <label id="ER Sepsis Triage"/>
+                <label id="ER Registration"/>
+                <label id="Admission NC"/>
+                <label id="IV Antibiotics"/>
+                <label id="S2"/>
+                <label id="S1"/>
+                <label id="CRP"/>
+                <label id="Leucocytes"/>
+                <label id="LacticAcid"/>
+            </labels>
+            <labelMappings>
+                <labelMapping eventId="S0" labelId="S0"/>
+                <labelMapping eventId="Release A" labelId="Release A"/>
+                <labelMapping eventId="S4" labelId="S4"/>
+                <labelMapping eventId="S3" labelId="S3"/>
+                <labelMapping eventId="Release C" labelId="Release C"/>
+                <labelMapping eventId="Release E" labelId="Release E"/>
+                <labelMapping eventId="Release D" labelId="Release D"/>
+                <labelMapping eventId="Release B" labelId="Release B"/>
+                <labelMapping eventId="Return ER" labelId="Return ER"/>
+                <labelMapping eventId="IV Liquid" labelId="IV Liquid"/>
+                <labelMapping eventId="ER Triage" labelId="ER Triage"/>
+                <labelMapping eventId="Admission IC" labelId="Admission IC"/>
+                <labelMapping eventId="ER Sepsis Triage" labelId="ER Sepsis Triage"/>
+                <labelMapping eventId="ER Registration" labelId="ER Registration"/>
+                <labelMapping eventId="Admission NC" labelId="Admission NC"/>
+                <labelMapping eventId="IV Antibiotics" labelId="IV Antibiotics"/>
+                <labelMapping eventId="S2" labelId="S2"/>
+                <labelMapping eventId="S1" labelId="S1"/>
+                <labelMapping eventId="CRP" labelId="CRP"/>
+                <labelMapping eventId="Leucocytes" labelId="Leucocytes"/>
+                <labelMapping eventId="LacticAcid" labelId="LacticAcid"/>
+            </labelMappings>
+            <expressions/>
+            <variables/>
+            <variableAccesses>
+                <writeAccesses/>
+            </variableAccesses>
+            <custom>
+                <keywords/>
+                <roles/>
+                <groups/>
+                <phases/>
+                <eventTypes/>
+                <eventParameters/>
+                <graphDetails>DCR Process</graphDetails>
+                <graphDocumentation/>
+                <graphLanguage>en-US</graphLanguage>
+                <graphDomain>process</graphDomain>
+                <graphFilters>
+                    <filteredGroups/>
+                    <filteredRoles/>
+                    <filteredPhases/>
+                </graphFilters>
+                <hightlighterMarkup id="HLM"/>
+                <highlighterMarkup>
+                    <highlightLayers>
+                        <highlightLayer default="true" name="description">DCR Process</highlightLayer>
+                    </highlightLayers>
+                    <highlights/>
+                </highlighterMarkup>
+            </custom>
+        </resources>
+        <constraints>
+            <conditions>
+                <condition sourceId="Admission IC" targetId="Return ER" filterLevel="1" description="" time="" groups=""/>
+                <condition sourceId="Admission NC" targetId="Return ER" filterLevel="1" description="" time="" groups=""/>
+                <condition sourceId="S0" targetId="Return ER" filterLevel="1" description="" time="" groups=""/>
+                <condition sourceId="ER Triage" targetId="Admission IC" filterLevel="1" description="" time="" groups=""/>
+                <condition sourceId="ER Registration" targetId="Admission IC" filterLevel="1" description="" time="" groups=""/>
+                <condition sourceId="ER Triage" targetId="Admission NC" filterLevel="1" description="" time="" groups=""/>
+                <condition sourceId="ER Registration" targetId="Admission NC" filterLevel="1" description="" time="" groups=""/>
+                <condition sourceId="ER Triage" targetId="S0" filterLevel="1" description="" time="" groups=""/>
+                <condition sourceId="ER Registration" targetId="S0" filterLevel="1" description="" time="" groups=""/>
+                <condition sourceId="ER Sepsis Triage" targetId="IV Antibiotics" filterLevel="1" description="" time="" groups=""/>
+                <condition sourceId="S1" targetId="S4" filterLevel="1" description="" time="" groups=""/>
+                <condition sourceId="Admission NC" targetId="S3" filterLevel="1" description="" time="" groups=""/>
+                <condition sourceId="ER Sepsis Triage" targetId="S4" filterLevel="1" description="" time="" groups=""/>
+            </conditions>
+            <responses/>
+            <coresponses/>
+            <excludes>
+                <exclude sourceId="Return ER" targetId="Return ER" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="Return ER" targetId="Release B" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="Return ER" targetId="Admission NC" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="IV Liquid" targetId="IV Liquid" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="Admission IC" targetId="ER Triage" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="ER Sepsis Triage" targetId="ER Sepsis Triage" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="ER Registration" targetId="ER Registration" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="Release B" targetId="Return ER" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="S0" targetId="ER Triage" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="S0" targetId="Admission IC" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="S0" targetId="S0" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="IV Antibiotics" targetId="IV Antibiotics" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="S4" targetId="S2" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="S3" targetId="Admission NC" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="Release A" targetId="Admission NC" filterLevel="1" description="" time="" groups=""/>
+            </excludes>
+            <includes/>
+            <milestones/>
+            <updates/>
+            <spawns/>
+            <templateSpawns/>
+        </constraints>
+    </specification>
+    <runtime>
+        <custom>
+            <globalMarking/>
+        </custom>
+        <marking>
+            <globalStore/>
+            <executed/>
+            <included>
+                <event id="S0"/>
+                <event id="Release A"/>
+                <event id="S4"/>
+                <event id="S3"/>
+                <event id="Release C"/>
+                <event id="Release E"/>
+                <event id="Release D"/>
+                <event id="Release B"/>
+                <event id="Return ER"/>
+                <event id="IV Liquid"/>
+                <event id="ER Triage"/>
+                <event id="Admission IC"/>
+                <event id="ER Sepsis Triage"/>
+                <event id="ER Registration"/>
+                <event id="Admission NC"/>
+                <event id="IV Antibiotics"/>
+                <event id="S2"/>
+                <event id="S1"/>
+                <event id="CRP"/>
+                <event id="Leucocytes"/>
+                <event id="LacticAcid"/>
+            </included>
+            <pendingResponses/>
+        </marking>
+    </runtime>
+</dcrgraph>
