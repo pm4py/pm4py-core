@@ -22,6 +22,7 @@ from typing import Union, Tuple
 from pm4py.utils import get_properties
 from pm4py.utils import __event_log_deprecation_warning
 from pm4py.objects.ocel.obj import OCEL
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 
 
 def describe_process(log_obj: Union[pd.DataFrame, EventLog, EventStream], api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
@@ -375,6 +376,61 @@ def abstract_ocel(ocel: OCEL, include_timestamps: bool = True) -> str:
     return ocel_description.apply(ocel, parameters=parameters)
 
 
+def abstract_event_stream(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = 10000, response_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+    """
+    Obtains the event stream abstraction of a traditional event log
+
+    :param log_obj: log object
+    :param max_len: maximum length of the (string) abstraction
+    :param response_header: includes a short header before the variants, pointing to the description of the abstraction
+    :param activity_key: the column to be used as activity
+    :param timestamp_key: the column to be used as timestamp
+    :param case_id_key: the column to be used as case identifier
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
+        print(pm4py.abstract_event_stream(log_obj))
+    """
+    if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log_obj)
+
+    parameters = get_properties(
+        log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    parameters["max_len"] = max_len
+    parameters["response_header"] = response_header
+
+    from pm4py.algo.querying.openai import stream_to_descr
+    return stream_to_descr.apply(log_obj, parameters=parameters)
+
+
+def abstract_petri_net(net: PetriNet, im: Marking, fm: Marking, response_header: bool = True) -> str:
+    """
+    Obtain an abstraction of a Petri net
+
+    :param net: Petri net
+    :param im: Initial marking
+    :param fm: Final marking
+    :param response_header: includes the header of the response
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('tests/input_data/running-example.pnml')
+        print(pm4py.openai.abstract_petri_net(net, im, fm))
+    """
+    parameters = {}
+    parameters["response_header"] = response_header
+
+    from pm4py.algo.querying.openai import net_to_descr
+    return net_to_descr.apply(net, im, fm, parameters=parameters)
+
+
 def anomaly_detection(log_obj: Union[pd.DataFrame, EventLog, EventStream], api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
     """
     Given an event log, identifies the main anomalous variants in the process,
@@ -504,3 +560,37 @@ def suggest_verify_hypotheses(log_obj: Union[pd.DataFrame, EventLog, EventStream
 
     from pm4py.algo.querying.openai import log_queries
     return log_queries.suggest_verify_hypotheses(log_obj, parameters=parameters)
+
+
+def filtering_query(log_obj: Union[pd.DataFrame, EventLog, EventStream], filtering_query: str,  max_len: int = 5000, api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+    """
+    Given an event log, performs a query to filter the event data
+
+    :param log_obj: event log
+    :param filtering_query: query to filter the event data
+    :param max_len: maximum length of the (string) abstraction
+    :param api_key: API key (optional, to provide only if the query needs to be executed against the API)
+    :param openai_model: OpenAI model (optional, to provide only if the query needs to be executed against the API)
+    :param activity_key: the column to be used as activity
+    :param timestamp_key: the column to be used as timestamp
+    :param case_id_key: the column to be used as case identifier
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
+        print(pm4py.openai.filtering_query(log, 'filter the events where the amount is greater than 100'))
+    """
+    if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log_obj)
+
+    parameters = get_properties(
+        log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    parameters["api_key"] = api_key
+    parameters["openai_model"] = openai_model
+    parameters["max_len"] = max_len
+
+    from pm4py.algo.querying.openai import log_queries
+    return log_queries.filtering_query(log_obj, filtering_query, parameters=parameters)
