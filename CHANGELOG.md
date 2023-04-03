@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.7.2 (2023.XX.YY)
+## pm4py 2.7.2 (2023.04.03)
 
 ### Added
 
@@ -15,6 +15,8 @@
 ### Fixed
 * d0ee4a8c8db76900444bc3e0026b0ea54581e9e7
   * fixed OCEL deepcopy
+* 5fd45bdf5d3cf17f364669cba7a5fab549236e7a
+  * major fix WOFLAN
 
 ### Removed
 
