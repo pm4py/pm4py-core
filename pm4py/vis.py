@@ -456,6 +456,7 @@ def view_sna(sna_metric: SNA, variant_str: str = "pyvis"):
     Represents a SNA metric (.html)
 
     :param sna_metric: Values of the metric
+    :param variant_str: variant to be used (default: pyvis)
 
     .. code-block:: python3
 
