@@ -1,14 +1,43 @@
 # Changelog of pm4py
 
-## pm4py 2.7.2 (2023.XX.YY)
+## pm4py 2.7.3 (2023.04.XX)
 
 ### Added
+* e561089945951e91b2ecfe0f223b35bd2d351630
+  * other NLP/LLM abstractions
 
 ### Changed
+* 44fc2aecd0885534dd2083a4011be9e031c3a04a
+  * improved integration possibilities with PowerBI
 
 ### Deprecated
 
 ### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
+## pm4py 2.7.2 (2023.04.03)
+
+### Added
+
+### Changed
+* c617471c12c1f07c092e32ccf6d76d5aa6c4ec2a
+  * change X Axis in pm4py.view_events_distribution_graph
+* cf744cb22cd6affb0a8d7ce26b9827c3e8b0b903
+  * changes/fixes to the alignments table representation
+
+### Deprecated
+
+### Fixed
+* d0ee4a8c8db76900444bc3e0026b0ea54581e9e7
+  * fixed OCEL deepcopy
+* 5fd45bdf5d3cf17f364669cba7a5fab549236e7a
+  * major fix WOFLAN
 
 ### Removed
 

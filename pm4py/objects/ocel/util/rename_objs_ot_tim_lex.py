@@ -1,5 +1,5 @@
 from pm4py.objects.ocel.obj import OCEL
-from copy import copy
+from copy import deepcopy
 
 
 def apply(ocel: OCEL) -> OCEL:
@@ -35,7 +35,7 @@ def apply(ocel: OCEL) -> OCEL:
         objects = {objects[i]: ot + "_" + str(i+1) for i in range(len(objects))}
         overall_objects.update(objects)
 
-    ocel = copy(ocel)
+    ocel = deepcopy(ocel)
     ocel.objects[ocel.object_id_column] = ocel.objects[ocel.object_id_column].map(overall_objects)
     ocel.relations[ocel.object_id_column] = ocel.relations[ocel.object_id_column].map(overall_objects)
     ocel.o2o[ocel.object_id_column] = ocel.o2o[ocel.object_id_column].map(overall_objects)

@@ -57,13 +57,15 @@ def apply(log: EventLog, aligned_traces: typing.ListAlignments, parameters: Opti
                 len(variant[1])) + " occurrences)</font></td>")
         table_alignments_list.append("<td><font point-size='6'><table border='0'><tr>")
         for move in al_tr['alignment']:
-            move_descr = str(move[1]).replace(">", "&gt;")
-            if not (move[0][0] == ">>" or move[0][1] == ">>"):
-                table_alignments_list.append("<td bgcolor=\"green\">" + move_descr + "</td>")
-            elif move[0][1] == ">>":
-                table_alignments_list.append("<td bgcolor=\"violet\">" + move_descr + "</td>")
-            elif move[0][0] == ">>":
-                table_alignments_list.append("<td bgcolor=\"gray\">" + move_descr + "</td>")
+            if not (move[0] == ">>" or move[1] == ">>"):
+                # sync move
+                table_alignments_list.append("<td bgcolor=\"lightgreen\">" + str(move[1]).replace(">", "&gt;") + "</td>")
+            elif move[1] == ">>":
+                # move on log
+                table_alignments_list.append("<td bgcolor=\"orange\"><b>(LM)</b>" + str(move[0]).replace(">", "&gt;") + "</td>")
+            elif move[0] == ">>":
+                # move on model
+                table_alignments_list.append("<td bgcolor=\"violet\"><b>(MM)</b>" + str(move[1]).replace(">", "&gt;") + "</td>")
         table_alignments_list.append("</tr></table></font></td>")
         table_alignments_list.append("</tr>")
 

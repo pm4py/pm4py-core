@@ -451,11 +451,12 @@ def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, at
     dotted_chart_visualizer.save(gviz, file_path)
 
 
-def view_sna(sna_metric: SNA):
+def view_sna(sna_metric: SNA, variant_str: str = "pyvis"):
     """
     Represents a SNA metric (.html)
 
     :param sna_metric: Values of the metric
+    :param variant_str: variant to be used (default: pyvis)
 
     .. code-block:: python3
 
@@ -465,8 +466,11 @@ def view_sna(sna_metric: SNA):
         pm4py.view_sna(metric)
     """
     from pm4py.visualization.sna import visualizer as sna_visualizer
-    gviz = sna_visualizer.apply(sna_metric, variant=sna_visualizer.Variants.PYVIS)
-    sna_visualizer.view(gviz, variant=sna_visualizer.Variants.PYVIS)
+    variant = sna_visualizer.Variants.PYVIS
+    if variant_str == "networkx":
+        variant = sna_visualizer.Variants.NETWORKX
+    gviz = sna_visualizer.apply(sna_metric, variant=variant)
+    sna_visualizer.view(gviz, variant=variant)
 
 
 def save_vis_sna(sna_metric: SNA, file_path: str):
