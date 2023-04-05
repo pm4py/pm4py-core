@@ -7,6 +7,7 @@ import matplotlib
 
 from pm4py.util import exec_utils, vis_utils
 from pm4py.objects.org.sna.obj import SNA
+from pm4py.util import constants
 
 
 class Parameters(Enum):
@@ -95,6 +96,16 @@ def view(temp_file_name, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    if constants.DEFAULT_GVIZ_VIEW == "matplotlib_view":
+        import matplotlib.pyplot as plt
+        import matplotlib.image as mpimg
+        img = mpimg.imread(temp_file_name)
+        plt.axis('off')
+        plt.tight_layout(pad=0, w_pad=0, h_pad=0)
+        plt.imshow(img)
+        plt.show()
+        return
 
     if vis_utils.check_visualization_inside_jupyter():
         vis_utils.view_image_in_jupyter(temp_file_name)
