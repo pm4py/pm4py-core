@@ -7,6 +7,8 @@
   * other NLP/LLM abstractions
 
 ### Changed
+* 44fc2aecd0885534dd2083a4011be9e031c3a04a
+  * improved integration possibilities with PowerBI
 
 ### Deprecated
 

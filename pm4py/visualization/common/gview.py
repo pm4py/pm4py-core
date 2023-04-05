@@ -31,6 +31,9 @@ def view(gviz, parameters=None):
     gviz
         GraphViz diagram
     """
+    if constants.DEFAULT_GVIZ_VIEW == "matplotlib_view":
+        return matplotlib_view(gviz, parameters=parameters)
+
     format = str(gviz.format).lower()
     is_dot_installed = dot_util.check_dot_installed()
 
@@ -62,6 +65,8 @@ def matplotlib_view(gviz, parameters=None):
     save.save(gviz, file_name.name)
 
     img = mpimg.imread(file_name.name)
+    plt.axis('off')
+    plt.tight_layout(pad=0, w_pad=0, h_pad=0)
     plt.imshow(img)
     plt.show()
 

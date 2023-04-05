@@ -23,6 +23,7 @@ from pm4py.visualization.heuristics_net.variants import pydotplus_vis
 import tempfile
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.util import constants
 
 
 class Variants(Enum):
@@ -93,6 +94,16 @@ def view(figure):
     except AttributeError:
         # continue without problems, a proper path has been provided
         pass
+
+    if constants.DEFAULT_GVIZ_VIEW == "matplotlib_view":
+        import matplotlib.pyplot as plt
+        import matplotlib.image as mpimg
+        img = mpimg.imread(figure)
+        plt.axis('off')
+        plt.tight_layout(pad=0, w_pad=0, h_pad=0)
+        plt.imshow(img)
+        plt.show()
+        return
 
     if vis_utils.check_visualization_inside_jupyter():
         vis_utils.view_image_in_jupyter(figure)

@@ -79,6 +79,18 @@ DEFAULT_BUSINESS_HOUR_SLOTS = [
 OPENAI_MAX_LEN = 10000
 OPENAI_API_KEY = None
 OPENAI_DEFAULT_MODEL = "gpt-3.5-turbo"
+DEFAULT_GVIZ_VIEW = "view"
+
+import pkgutil
+if pkgutil.find_loader("psutil"):
+    import os
+    import psutil
+
+    parent_pid = os.getppid()
+    parent_name = str(psutil.Process(parent_pid).name())
+
+    if "PBIDesktop" in parent_name:
+        DEFAULT_GVIZ_VIEW = "matplotlib_view"
 
 from enum import Enum
 

@@ -17,7 +17,7 @@
 import shutil
 import tempfile
 
-from pm4py.util import vis_utils
+from pm4py.util import vis_utils, constants
 
 
 def get_temp_file_name(format):
@@ -57,6 +57,15 @@ def view(temp_file_name):
     temp_file_name
         Path to the temporary file hosting the graph
     """
+    if constants.DEFAULT_GVIZ_VIEW == "matplotlib_view":
+        import matplotlib.pyplot as plt
+        import matplotlib.image as mpimg
+        img = mpimg.imread(temp_file_name)
+        plt.axis('off')
+        plt.tight_layout(pad=0, w_pad=0, h_pad=0)
+        plt.imshow(img)
+        plt.show()
+        return
     if vis_utils.check_visualization_inside_jupyter():
         vis_utils.view_image_in_jupyter(temp_file_name)
     else:
