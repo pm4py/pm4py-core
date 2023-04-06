@@ -85,7 +85,7 @@ def apply(log : pd.DataFrame, parameters):
         mean = avg_relative_time(aux_df, relative_time)
         time_dictionary[act] = mean
     
-    return dfg, time_dictionary
+    return time_dictionary
 
 
 def avg_relative_time(df : pd.DataFrame, relative_time) -> Timestamp:
@@ -98,6 +98,7 @@ def get_cid_wise_start_time(df : pd.DataFrame, act_key,cid_key, time_key, all_ci
     for cid in all_cid:
         aux_df = df[df[cid_key] == cid]
         time_value = aux_df.loc[aux_df[act_key] == start_activity, time_key]
+        start_time = 0
         for i in time_value:
             start_time = i
         cid_time_dic[cid] = start_time

@@ -144,9 +144,8 @@ def discover_dfg_typed(log: pd.DataFrame, case_id_key: str = "case:concept:name"
 
 def discover_timeline_dfg(log: pd.DataFrame, case_id_key: str = "case:concept:name", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp"):
     from pm4py.algo.discovery.dfg.variants import clean_time
-    absolute_timestamp_key = 'absolute:timestamp'
     parameters = get_properties(
-        log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, absolute_time_key=absolute_timestamp_key)
+        log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     if type(log) is pd.DataFrame:
         return clean_time.apply(log, parameters)
 

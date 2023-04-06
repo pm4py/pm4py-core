@@ -1,23 +1,9 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
 import tempfile
+import re
 from copy import copy
 
 from graphviz import Digraph
+from graphviz.dot import node
 
 from pm4py.statistics.attributes.log import get as attr_get
 from pm4py.objects.dfg.utils import dfg_utils
@@ -27,7 +13,7 @@ from pm4py.util import exec_utils
 from pm4py.statistics.sojourn_time.log import get as soj_time_get
 from enum import Enum
 from pm4py.util import constants
-from typing import Optional, Dict, Any, Tuple
+from typing import Optional, Dict, Any, Tuple, no_type_check_decorator
 from pm4py.objects.log.obj import EventLog
 from collections import Counter
 
@@ -46,22 +32,6 @@ class Parameters(Enum):
 
 
 def get_min_max_value(dfg):
-    """
-    Gets min and max value assigned to edges
-    in DFG graph
-
-    Parameters
-    -----------
-    dfg
-        Directly follows graph
-
-    Returns
-    -----------
-    min_value
-        Minimum value in directly follows graph
-    max_value
-        Maximum value in directly follows graph
-    """
     min_value = 9999999999
     max_value = -1
 
@@ -75,19 +45,7 @@ def get_min_max_value(dfg):
 
 
 def assign_penwidth_edges(dfg):
-    """
-    Assign penwidth to edges in directly-follows graph
 
-    Parameters
-    -----------
-    dfg
-        Direcly follows graph
-
-    Returns
-    -----------
-    penwidth
-        Graph penwidth that edges should have in the direcly follows graph
-    """
     penwidth = {}
     min_value, max_value = get_min_max_value(dfg)
     for edge in dfg:
@@ -99,19 +57,7 @@ def assign_penwidth_edges(dfg):
 
 
 def get_activities_color(activities_count):
-    """
-    Get frequency color for attributes
 
-    Parameters
-    -----------
-    activities_count
-        Count of attributes in the log
-
-    Returns
-    -----------
-    activities_color
-        Color assigned to attributes in the graph
-    """
     activities_color = {}
 
     min_value, max_value = get_min_max_value(activities_count)
@@ -130,38 +76,9 @@ def get_activities_color(activities_count):
     return activities_color
 
 
-def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
+def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format="png", measure="timeline",
                            max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, soj_time=None,
                             font_size="12", bgcolor=constants.DEFAULT_BGCOLOR, stat_locale=None):
-    """
-    Do GraphViz visualization of a DFG graph
-
-    Parameters
-    -----------
-    activities_count
-        Count of attributes in the log (may include attributes that are not in the DFG graph)
-    dfg
-        DFG graph
-    image_format
-        GraphViz should be represented in this format
-    measure
-        Describes which measure is assigned to edges in direcly follows graph (frequency/performance)
-    max_no_of_edges_in_diagram
-        Maximum number of edges in the diagram allowed for visualization
-    start_activities
-        Start activities of the log
-    end_activities
-        End activities of the log
-    soj_time
-        For each activity, the sojourn time in the log
-    stat_locale
-        Dict to locale the stat strings
-    
-    Returns
-    -----------
-    viz
-        Digraph object
-    """
     if start_activities is None:
         start_activities = {}
     if end_activities is None:
@@ -176,14 +93,11 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     dfg_key_value_list = []
     for edge in dfg:
         dfg_key_value_list.append([edge, dfg[edge]])
-    
     # more fine grained sorting to avoid that edges that are below the threshold are
     # undeterministically removed
     dfg_key_value_list = sorted(dfg_key_value_list, key=lambda x: (x[1], x[0][0], x[0][1]), reverse=True)
     dfg_key_value_list = dfg_key_value_list[0:min(len(dfg_key_value_list), max_no_of_edges_in_diagram)]
-
     dfg_allowed_keys = [x[0] for x in dfg_key_value_list]
-    print(dfg_allowed_keys)
     dfg_keys = list(dfg.keys())
     for edge in dfg_keys:
         if edge not in dfg_allowed_keys:
@@ -192,9 +106,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     # calculate edges penwidth
     penwidth = assign_penwidth_edges(dfg)
     activities_in_dfg = set()
-    print(activities_count)
     activities_count_int = copy(activities_count)
-    print(activities_count_int)
 
     for edge in dfg:
         activities_in_dfg.add(edge[0])
@@ -204,18 +116,92 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     activities_color = get_activities_color(activities_count_int)
 
     # represent nodes
-    viz.attr('node', shape='rect', style='filled', fillcolor='green')
+    viz.attr('node', shape='rect')
 
     if len(activities_in_dfg) == 0:
         activities_to_include = sorted(list(set(activities_count_int)))
     else:
         # take unique elements as a list not as a set (in this way, nodes are added in the same order to the graph)
         activities_to_include = sorted(list(set(activities_in_dfg)))
-    print(activities_to_include)
+
+
+
+
+#############################################TIMELINE
+
+#TIMELINE SPECIFIC CODE--------: 
+    #get the timestamps needed as nodes
+    #timestamp_list = sorted(list(dfg_time.values()))
+    
+    timestamp_list = sorted(dfg_time.items(), key = lambda x:x[1])
+    print(timestamp_list)
+    timestamp_dict  = dict(timestamp_list)
+    print(timestamp_dict)
+
+    #timestamp_list = sorted([x.total_seconds() for x in timestamp_list])
+    #print(timestamp_list)
+
+    #sort the dfg_time according to time 
+    order_act_by_time = sorted(dfg_time.items(), key=lambda x:x[1])
+    time_map = {}
+
+
+    timestamps_to_include = []
+    for timestamp in timestamp_list:
+        a = human_readable_stat(timestamp[1].total_seconds())
+        timestamps_to_include.append(a)
+
+    print(timestamps_to_include)
+
+    
+    edges_in_timeline = []
+    for i, t in enumerate(timestamp_list[:-1]):
+        #edge = (t, timestamp_list[i+1])
+        edge = (t[1], timestamp_list[i+1][1])
+        edges_in_timeline.append(edge)
+
+    #print(edges_in_timeline)
+
+
+    #create nodes for timestamps 
+    '''for i, timestamp in enumerate(timestamp_list):
+        viz.node(str(hash(timestamp)), str(timestamps_to_include[i]))'''
+
+    map_act_to_time = {}
+    #print(activities_to_include)
+    for i, timestamp in enumerate(timestamp_list):
+        activity = timestamp[0]
+        #print(timestamp[1])
+        viz.node(str(hash(timestamp[1])), str(timestamps_to_include[i]))
+        map_act_to_time[activity] = str(hash(timestamp[1]))
+
+    print(map_act_to_time)
+
+    
+    #get the minlen value to include in edges
+    minlen_list = []
+    for i, t in enumerate(timestamps_to_include[:-1]):
+        int1 = int(re.search(r'\d+', timestamps_to_include[i]).group())
+        int2 = int(re.search(r'\d+', timestamps_to_include[i+1]).group())
+        minlen = int2 - int1
+        minlen_list.append(minlen)
+
+
+    #create edges for timeline
+    for i, edge in enumerate(edges_in_timeline):
+        minlen = str(minlen_list[i])
+        #print(edge)
+        viz.edge(str(hash(edge[0])), str(hash(edge[1])), minlen=minlen)
+
+    
+
+################################# Timeline ####################
+
+
+
     activities_map = {}
 
-
-    #declaring main nodes with label. (purple name label)
+    #nodes get defined here 
     for act in activities_to_include:
         if "frequency" in measure and act in activities_count_int:
             viz.node(str(hash(act)), act + " (" + str(activities_count_int[act]) + ")", style='filled',
@@ -226,11 +212,9 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
             viz.node(str(hash(act)), act + f" ({stat_string})", fontsize=font_size)
             activities_map[act] = str(hash(act))
 
-    
     # make edges addition always in the same order
     dfg_edges = sorted(list(dfg.keys()))
 
-    #label for the edges 
     # represent edges
     for edge in dfg_edges:
         if "frequency" in measure:
@@ -238,8 +222,6 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         else:
             label = human_readable_stat(dfg[edge], stat_locale)
         viz.edge(str(hash(edge[0])), str(hash(edge[1])), label=label, penwidth=str(penwidth[edge]), fontsize=font_size)
-        print(label)
-
 
     start_activities_to_include = [act for act in start_activities if act in activities_map]
     end_activities_to_include = [act for act in end_activities if act in activities_map]
@@ -257,35 +239,55 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
             label = str(end_activities[act]) if isinstance(end_activities, dict) else ""
             viz.edge(activities_map[act], "@@endnode", label=label, fontsize=font_size)
 
-    viz.attr(overlap='false')
 
+
+    
+
+    ################################# time line ##################
+    print(activities_map)
+    print(map_act_to_time)
+    print()
+    ds = [map_act_to_time, activities_map]
+    merge_act_time_dict = {}
+    for k in map_act_to_time.keys():
+        merge_act_time_dict[k] = tuple(d[k] for d in ds)
+    
+    print(merge_act_time_dict)
+
+    #CREATE SUBGRAPHS TO ORDER ACTIVITIES IN RIGHT RANK 
+    no_subgraphs = len(timestamps_to_include)
+    #viz.subgraph(name=timestamp_list[0], graph_attr={'rank':'same', 'node_attr':'N'})
+
+    ''' 
+    c = Digraph('child')
+    c.attr(rank='same')
+    c.node(merge_act_time_dict['accept'][0])
+    c.node(merge_act_time_dict['accept'][1])
+    viz.subgraph(c)
+
+    c = Digraph('b')
+    c.attr(rank='same')
+    c.node(merge_act_time_dict['register application'][0])
+    c.node(merge_act_time_dict['register application'][1])
+    viz.subgraph(c)
+    '''
+    
+    for activity in activities_to_include:
+        s = Digraph(str(activity))
+        s.attr(rank='same')
+        s.node(merge_act_time_dict[activity][0])
+        s.node(merge_act_time_dict[activity][1])
+        viz.subgraph(s)
+
+
+    viz.attr(overlap='false')
     viz.format = image_format
     print(viz)
     return viz
 
 
-def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Optional[Dict[Any, Any]] = None, activities_count : Dict[str, int] = None, soj_time: Dict[str, float] = None) -> Digraph:
-    """
-    Visualize a frequency directly-follows graph
+def apply(dfg: Dict[Tuple[str, str], int], dfg_time : Dict, log: EventLog = None, parameters: Optional[Dict[Any, Any]] = None, activities_count : Dict[str, int] = None, soj_time: Dict[str, float] = None) -> Digraph: 
 
-    Parameters
-    -----------------
-    dfg
-        Frequency Directly-follows graph
-    log
-        (if provided) Event log for the calculation of statistics
-    activities_count
-        (if provided) Dictionary associating to each activity the number of occurrences in the log.
-    soj_time
-        (if provided) Dictionary associating to each activity the average sojourn time
-    parameters
-        Variant-specific parameters
-
-    Returns
-    -----------------
-    gviz
-        Graphviz digraph
-    """
     if parameters is None:
         parameters = {}
 
@@ -301,31 +303,22 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, {})
     if activities_count is None:
         if log is not None:
-            #print("First ")
             activities_count = attr_get.get_attribute_values(log, activity_key, parameters=parameters)
         else:
-            #print("SEcond")
             activities_count = Counter({key: 0 for key in activities})
             for el in dfg:
                 activities_count[el[1]] += dfg[el]
             if isinstance(start_activities, dict):
-                #print("Third")
                 for act in start_activities:
                     activities_count[act] += start_activities[act]
 
-    if soj_time is None:
-        if log is not None:
-            print("NEVER")
-            soj_time = soj_time_get.apply(log, parameters=parameters)
-        else:
-            #print("NEVERb")
-            soj_time = {key: 0 for key in activities}
+
 
     #write dict as soj time for relative time and pass it as a parameter
     #print(activities_count)
     #print(soj_time)
     #print(stat_locale)
-    return graphviz_visualization(activities_count, dfg, image_format=image_format, measure="frequency",
+    return graphviz_visualization(activities_count, dfg, dfg_time, image_format=image_format, measure="frequency",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
                                   start_activities=start_activities, end_activities=end_activities, 
-                                  soj_time=soj_time, font_size=font_size, bgcolor=bgcolor, stat_locale=stat_locale)
+                                  font_size=font_size, bgcolor=bgcolor, stat_locale=stat_locale)

@@ -158,6 +158,23 @@ def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: 
     dfg_visualizer.save(gviz, file_path)
 
 
+def view_timeline_dfg(dfg: dict, start_activities: dict, end_activities: dict, dfg_time, format: str = "png", bgcolor: str = "white"):
+    #print(dfg_time)
+    from pm4py.visualization.dfg import visualizer as dfg_visualizer
+    from pm4py.visualization.dfg.variants import timeline as dfg_time_visualizer
+    #from pm4py.visualization.dfg.variants import performance as dfg_perf_visualizer
+    dfg_parameters = dfg_time_visualizer.Parameters
+    parameters = {}
+    parameters[dfg_parameters.FORMAT] = format
+    parameters[dfg_parameters.START_ACTIVITIES] = start_activities
+    parameters[dfg_parameters.END_ACTIVITIES] = end_activities
+    #parameters[dfg_parameters.AGGREGATION_MEASURE] = aggregation_measure
+    parameters["bgcolor"] = bgcolor
+    gviz = dfg_time_visualizer.apply(dfg, parameters=parameters, dfg_time=dfg_time)
+    dfg_visualizer.view(gviz)
+
+
+
 def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = "png", bgcolor: str = "white"):
     """
     Views a (composite) DFG
