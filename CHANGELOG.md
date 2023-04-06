@@ -15,7 +15,9 @@
 ### Deprecated
 
 ### Fixed
-
+* 7dfeac5ddc4f4f6a8b5410fc2e04016590b6f22a
+  * fixed OCEL2 XML importer
+  
 ### Removed
 
 ### Other
