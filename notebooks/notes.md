@@ -8,6 +8,10 @@ then they become subprocesses
 
 ## Condition based
 
+Having a chain of conditions means things happen sequentially. 
+
+Look at chain precedence or the other declare constraint.
+
 ## Exclusion based
 
 0: ER Registration

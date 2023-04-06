@@ -79,6 +79,57 @@ class Marking(Counter):
         return marking
 
 
+class TimeMarking(dict):
+    # TODO: figure out what is wrong here
+    # for each place there is a set of tokens with an age
+
+    def __init__(self) -> None:
+        super().__init__()
+
+    def __setitem__(self, k: PetriNet.Place, v: Any) -> None:
+        if not k in self.keys():
+            self[k] = set()
+        if isinstance(v, Token):
+            self[k].add(v)
+        elif isinstance(v,int):
+            self[k].add(Token(k,v))
+        elif isinstance(v,(int,int)):
+            for i in v[0]:
+                self[k].add(Token(k,v[1]))
+
+    def __getitem__(self, k: PetriNet.Place) -> set():
+        return super().__getitem__(k)
+
+    def add_token_with_age(self,t:Token,place:PetriNet.Place,age=0):
+        if t:
+            token = t
+            place = t.place
+        else:
+            token = Token(place,age)
+        if not place in self.keys():
+            self[place] = set()
+        self[place].add(token)
+        return token
+
+    def add_delay(self,duration=1):
+        for places in self.keys():
+            for k in self[places]:
+                self[k].age += duration
+
+    def remove_token_from_place(self,place,token):
+        self[place].remove(token)
+        return token
+
+    def move_token(self,place_from,place_to,token,transport=False):
+        t = self.remove_token_from_place(place_from,token)
+        if transport:
+            t.place = place_to
+        else:
+            t.place = place_to
+            t.age = 0
+        self.add_token_with_age(t)
+
+
 class PetriNet(object):
     class Place(object):
 
@@ -264,6 +315,10 @@ class PetriNet(object):
         self.__transitions = set() if transitions is None else transitions
         self.__arcs = set() if arcs is None else arcs
         self.__properties = dict() if properties is None else properties
+        self.__arc_matrix = {}
+
+    def __get_arc_matrix(self):
+        return self.__arc_matrix
 
     def __get_name(self) -> str:
         return self.__name
@@ -343,6 +398,7 @@ class PetriNet(object):
     transitions = property(__get_transitions)
     arcs = property(__get_arcs)
     properties = property(__get_properties)
+    arc_matrix = property(__get_arc_matrix)
 
 
 class InhibitorNet(PetriNet):
@@ -366,3 +422,5 @@ class ResetNet(PetriNet):
 class ResetInhibitorNet(InhibitorNet, ResetNet):
     def __init__(self, name=None, places=None, transitions=None, arcs=None, properties=None):
         PetriNet.__init__(self, name=name, places=places, transitions=transitions, arcs=arcs, properties=properties)
+
+#TODO: Whatever is above do for Transport

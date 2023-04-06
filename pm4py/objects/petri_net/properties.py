@@ -26,6 +26,13 @@ ARCTYPE = "arctype"
 INHIBITOR_ARC = "inhibitor"
 RESET_ARC = "reset"
 STOCHASTIC_ARC = "stochastic_arc"
+TRANSPORT_ARC = "transport"
+
+AGE_GUARD = "ageguard" #or TIME_GUARD we only consider inclusive [ ] intervals
+AGE_MIN = "agemin" # we only consider inclusive [ ] intervals
+AGE_MAX = "agemax" # we only consider inclusive [ ] intervals
+AGE_INVARIANT = "ageinvariant"
+TRANSPORT_INDEX = "transportindex"
 
 TRANS_GUARD = "guard"
 WRITE_VARIABLE = "writeVariable"
