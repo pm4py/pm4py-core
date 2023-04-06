@@ -60,7 +60,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     event_type_attributes = {}
 
     for child in root:
-        if child.tag == "object-types":
+        if child.tag.endswith("object-types"):
             for object_type in child:
                 object_type_name = object_type.get("name")
                 object_type_attributes[object_type_name] = {}
@@ -69,7 +69,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                         attribute_name = attribute.get("name")
                         attribute_type = attribute.get("type")
                         object_type_attributes[object_type_name][attribute_name] = attribute_type
-        elif child.tag == "event-types":
+        elif child.tag.endswith("event-types"):
             for event_type in child:
                 event_type_name = event_type.get("name")
                 event_type_attributes[event_type_name] = {}
@@ -78,7 +78,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                         attribute_name = attribute.get("name")
                         attribute_type = attribute.get("type")
                         event_type_attributes[event_type_name][attribute_name] = attribute_type
-        elif child.tag == "objects":
+        elif child.tag.endswith("objects"):
             object_id = None
             object_type = None
 
@@ -90,7 +90,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                 obj_type_dict[object_id] = object_type
 
                 for child2 in object:
-                    if child2.tag == "objects":
+                    if child2.tag.endswith("objects"):
                         for target_object in child2:
                             target_object_id = target_object.get("object-id")
                             qualifier = target_object.get("qualifier")
@@ -98,7 +98,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                             o2o_dict = {object_id_column: object_id, object_id_column+"_2": target_object_id, qualifier_field: qualifier}
                             o2o_list.append(o2o_dict)
 
-                    elif child2.tag == "attributes":
+                    elif child2.tag.endswith("attributes"):
                         for attribute in child2:
                             attribute_name = attribute.get("name")
                             attribute_time = attribute.get("time")
@@ -116,7 +116,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
 
                 objects_list.append(obj_dict)
 
-        elif child.tag == "events":
+        elif child.tag.endswith("events"):
             event_id = None
             event_type = None
             event_time = None
@@ -129,7 +129,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                 ev_dict = {event_id_column: event_id, event_activity_column: event_type, event_timestamp_column: event_time}
 
                 for child2 in event:
-                    if child2.tag == "objects":
+                    if child2.tag.endswith("objects"):
                         for target_object in child2:
                             target_object_id = target_object.get("object-id")
                             qualifier = target_object.get("qualifier")
@@ -137,7 +137,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                             rel_dict = {event_id_column: event_id, event_activity_column: event_type, event_timestamp_column: event_time, object_id_column: target_object_id, object_type_column: obj_type_dict[target_object_id], qualifier_field: qualifier}
 
                             relations_list.append(rel_dict)
-                    elif child2.tag == "attributes":
+                    elif child2.tag.endswith("attributes"):
                         for attribute in child2:
                             attribute_name = attribute.get("name")
                             attribute_text = attribute.text
