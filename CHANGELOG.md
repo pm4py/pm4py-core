@@ -5,15 +5,25 @@
 ### Added
 * e561089945951e91b2ecfe0f223b35bd2d351630
   * other NLP/LLM abstractions
+* 42b0d2a6f6fe7430d382117bf0ce54e8fd60ce23
+  * return diagnostics dataframe in pm4py.conformance methods
 
 ### Changed
 * 44fc2aecd0885534dd2083a4011be9e031c3a04a
   * improved integration possibilities with PowerBI
+* f805fd46673be291584ce489bf9def73df1dba71
+  * read constants from environment variables
+* 6737019a6de4e15d6063506e5a7ea2e571fc167d
+  * added DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME option in constants
+* 0ba6b34c19587357425cb27cccb23b12d70978a7
+  * workaround for inconsistencies in pm4py.stats.get_trace_attribute_values
 
 ### Deprecated
 
 ### Fixed
-
+* 7dfeac5ddc4f4f6a8b5410fc2e04016590b6f22a
+  * fixed OCEL2 XML importer
+  
 ### Removed
 
 ### Other

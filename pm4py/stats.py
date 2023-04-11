@@ -180,10 +180,23 @@ def get_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, case_id_key=case_id_key)
         from pm4py.statistics.attributes.pandas import get
-        return get.get_attribute_values(log, attribute, parameters=parameters)
+        if attribute not in log and constants.CASE_ATTRIBUTE_PREFIX + attribute in log:
+            # if "attribute" does not exist as column, but "case:attribute" exists, then use that
+            attribute = constants.CASE_ATTRIBUTE_PREFIX + attribute
+        ret = get.get_attribute_values(log, attribute, parameters=parameters)
+        return ret
     else:
         from pm4py.statistics.attributes.log import get
-        return get.get_trace_attribute_values(log, attribute, parameters=parameters)
+        ret = get.get_trace_attribute_values(log, attribute, parameters=parameters)
+
+        if not ret:
+            # if the provided attribute does not exist, but starts with "case:", try to get the attribute values
+            # removing the "case:" at the beginning
+            if attribute.startswith(constants.CASE_ATTRIBUTE_PREFIX):
+                attribute = attribute.split(constants.CASE_ATTRIBUTE_PREFIX)[-1]
+            ret = get.get_trace_attribute_values(log, attribute, parameters=parameters)
+
+        return ret
 
 
 def get_variants(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[Tuple[str], List[Trace]]:

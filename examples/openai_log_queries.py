@@ -38,6 +38,16 @@ def execute_script():
 
     print(pm4py.openai.conformance_checking(log, "all traces should contain a single payment"))
 
+    print(pm4py.openai.suggest_verify_hypotheses(log))
+
+    print(pm4py.openai.filtering_query(log, "the amount should be greater than 100"))
+
+    print(pm4py.openai.abstract_event_stream(log))
+
+    net, im, fm = pm4py.read_pnml("../tests/input_data/running-example.pnml")
+
+    print(pm4py.openai.abstract_petri_net(net, im, fm))
+
 
 if __name__ == "__main__":
     execute_script()
