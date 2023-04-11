@@ -488,14 +488,14 @@ def __check_is_fit_process_tree(trace, tree) -> bool:
     else:
         from pm4py.convert import convert_to_petri_net
         net, im, fm = convert_to_petri_net(tree)
-        tbr_conf_res = conformance_diagnostics_token_based_replay(log, net, im, fm)[0]
+        tbr_conf_res = conformance_diagnostics_token_based_replay(log, net, im, fm, return_diagnostics_dataframe=False)[0]
         # CHECK 2) if TBR says that is fit, then return True
         # (if they say False, it might be a false negative)
         if tbr_conf_res["trace_is_fit"]:
             return True
         else:
             # CHECK 3) alignments definitely say if the trace is fit or not if the previous methods fail
-            align_conf_res = conformance_diagnostics_alignments(log, tree)[0]
+            align_conf_res = conformance_diagnostics_alignments(log, tree, return_diagnostics_dataframe=False)[0]
             return align_conf_res["fitness"] == 1.0
 
 
@@ -523,14 +523,14 @@ def __check_is_fit_petri_net(trace, net, im, fm, activity_key=xes_constants.DEFA
     else:
         log = EventLog()
         log.append(trace)
-        tbr_conf_res = conformance_diagnostics_token_based_replay(log, net, im, fm)[0]
+        tbr_conf_res = conformance_diagnostics_token_based_replay(log, net, im, fm, return_diagnostics_dataframe=False)[0]
         # CHECK 2) if TBR says that is fit, then return True
         # (if they say False, it might be a false negative)
         if tbr_conf_res["trace_is_fit"]:
             return True
         else:
             # CHECK 3) alignments definitely say if the trace is fit or not if the previous methods fail
-            align_conf_res = conformance_diagnostics_alignments(log, net, im, fm)[0]
+            align_conf_res = conformance_diagnostics_alignments(log, net, im, fm, return_diagnostics_dataframe=False)[0]
             return align_conf_res["fitness"] == 1.0
 
 
