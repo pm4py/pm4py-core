@@ -18,7 +18,7 @@ import deprecation
 
 
 def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking,
-                                               final_marking: Marking, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", return_diagnostics_dataframe: bool = False) -> List[Dict[str, Any]]:
+                                               final_marking: Marking, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> List[Dict[str, Any]]:
     """
     Apply token-based replay for conformance checking analysis.
     The methods return the full token-based-replay diagnostics.
@@ -77,7 +77,7 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
     return result
 
 
-def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", variant_str : Optional[str] = None, return_diagnostics_dataframe: bool = False) -> List[Dict[str, Any]]:
+def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", variant_str : Optional[str] = None, return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> List[Dict[str, Any]]:
     """
     Apply the alignments algorithm between a log and a process model.
     The methods return the full alignment diagnostics.
@@ -607,7 +607,7 @@ def conformance_temporal_profile(log: Union[EventLog, pd.DataFrame], temporal_pr
     return result
 
 
-def conformance_log_skeleton(log: Union[EventLog, pd.DataFrame], log_skeleton: Dict[str, Any], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", return_diagnostics_dataframe: bool = False) -> List[Set[Any]]:
+def conformance_log_skeleton(log: Union[EventLog, pd.DataFrame], log_skeleton: Dict[str, Any], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> List[Set[Any]]:
     """
     Performs conformance checking using the log skeleton
 
