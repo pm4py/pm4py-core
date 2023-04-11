@@ -15,6 +15,8 @@
   * read constants from environment variables
 * 6737019a6de4e15d6063506e5a7ea2e571fc167d
   * added DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME option in constants
+* 0ba6b34c19587357425cb27cccb23b12d70978a7
+  * workaround for inconsistencies in pm4py.stats.get_trace_attribute_values
 
 ### Deprecated
 
