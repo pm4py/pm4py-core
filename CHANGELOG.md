@@ -11,6 +11,8 @@
 ### Changed
 * 44fc2aecd0885534dd2083a4011be9e031c3a04a
   * improved integration possibilities with PowerBI
+* f805fd46673be291584ce489bf9def73df1dba71
+  * read constants from environment variables
 
 ### Deprecated
 
