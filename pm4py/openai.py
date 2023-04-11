@@ -50,8 +50,10 @@ def describe_process(log_obj: Union[pd.DataFrame, EventLog, EventStream], api_ke
 
     parameters = get_properties(
         log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    parameters["api_key"] = api_key
-    parameters["openai_model"] = openai_model
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
 
     from pm4py.algo.querying.openai import log_queries
     return log_queries.describe_process(log_obj, parameters=parameters)
@@ -84,8 +86,10 @@ def describe_path(log_obj: Union[pd.DataFrame, EventLog, EventStream], path: Tup
 
     parameters = get_properties(
         log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    parameters["api_key"] = api_key
-    parameters["openai_model"] = openai_model
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
 
     from pm4py.algo.querying.openai import log_queries
     return log_queries.describe_path(log_obj, path, parameters=parameters)
@@ -117,8 +121,10 @@ def describe_activity(log_obj: Union[pd.DataFrame, EventLog, EventStream], activ
 
     parameters = get_properties(
         log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    parameters["api_key"] = api_key
-    parameters["openai_model"] = openai_model
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
 
     from pm4py.algo.querying.openai import log_queries
     return log_queries.describe_activity(log_obj, activity, parameters=parameters)
@@ -149,8 +155,10 @@ def suggest_improvements(log_obj: Union[pd.DataFrame, EventLog, EventStream], ap
 
     parameters = get_properties(
         log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    parameters["api_key"] = api_key
-    parameters["openai_model"] = openai_model
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
 
     from pm4py.algo.querying.openai import log_queries
     return log_queries.suggest_improvements(log_obj, parameters=parameters)
@@ -176,8 +184,14 @@ def code_for_log_generation(desired_process: str, api_key: Optional[str] = None,
 
         print(pm4py.openai.code_for_log_generation('fast food'))
     """
+    parameters = {}
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
+
     from pm4py.algo.querying.openai import log_queries
-    return log_queries.code_for_log_generation(desired_process, parameters={"api_key": api_key, "openai_model": openai_model})
+    return log_queries.code_for_log_generation(desired_process, parameters=parameters)
 
 
 def root_cause_analysis(log_obj: Union[pd.DataFrame, EventLog, EventStream], api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
@@ -206,8 +220,10 @@ def root_cause_analysis(log_obj: Union[pd.DataFrame, EventLog, EventStream], api
 
     parameters = get_properties(
         log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    parameters["api_key"] = api_key
-    parameters["openai_model"] = openai_model
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
 
     from pm4py.algo.querying.openai import log_queries
     return log_queries.root_cause_analysis(log_obj, parameters=parameters)
@@ -240,11 +256,13 @@ def describe_variant(log_obj: Union[pd.DataFrame, EventLog, EventStream], varian
 
     parameters = get_properties(
         log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    parameters["api_key"] = api_key
-    parameters["openai_model"] = openai_model
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
 
     from pm4py.algo.querying.openai import log_queries
-    return log_queries.describe_variant(log_obj, variant, parameters={"api_key": api_key, "openai_model": openai_model})
+    return log_queries.describe_variant(log_obj, variant, parameters=parameters)
 
 
 def compare_logs(log1: Union[pd.DataFrame, EventLog, EventStream], log2: Union[pd.DataFrame, EventLog, EventStream], api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
@@ -277,8 +295,10 @@ def compare_logs(log1: Union[pd.DataFrame, EventLog, EventStream], log2: Union[p
 
     parameters = get_properties(
         log1, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    parameters["api_key"] = api_key
-    parameters["openai_model"] = openai_model
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
 
     from pm4py.algo.querying.openai import log_queries
     return log_queries.compare_logs(log1, log2, parameters=parameters)
@@ -457,8 +477,10 @@ def anomaly_detection(log_obj: Union[pd.DataFrame, EventLog, EventStream], api_k
 
     parameters = get_properties(
         log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    parameters["api_key"] = api_key
-    parameters["openai_model"] = openai_model
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
 
     from pm4py.algo.querying.openai import log_queries
     return log_queries.anomaly_detection(log_obj, parameters=parameters)
@@ -489,8 +511,10 @@ def suggest_clusters(log_obj: Union[pd.DataFrame, EventLog, EventStream], api_ke
 
     parameters = get_properties(
         log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    parameters["api_key"] = api_key
-    parameters["openai_model"] = openai_model
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
 
     from pm4py.algo.querying.openai import log_queries
     return log_queries.suggest_clusters(log_obj, parameters=parameters)
@@ -522,8 +546,10 @@ def conformance_checking(log_obj: Union[pd.DataFrame, EventLog, EventStream], ru
 
     parameters = get_properties(
         log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    parameters["api_key"] = api_key
-    parameters["openai_model"] = openai_model
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
 
     from pm4py.algo.querying.openai import log_queries
     return log_queries.conformance_checking(log_obj, rule, parameters=parameters)
@@ -554,9 +580,11 @@ def suggest_verify_hypotheses(log_obj: Union[pd.DataFrame, EventLog, EventStream
 
     parameters = get_properties(
         log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    parameters["api_key"] = api_key
-    parameters["openai_model"] = openai_model
     parameters["max_len"] = max_len
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
 
     from pm4py.algo.querying.openai import log_queries
     return log_queries.suggest_verify_hypotheses(log_obj, parameters=parameters)
@@ -588,8 +616,10 @@ def filtering_query(log_obj: Union[pd.DataFrame, EventLog, EventStream], filteri
 
     parameters = get_properties(
         log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    parameters["api_key"] = api_key
-    parameters["openai_model"] = openai_model
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
     parameters["max_len"] = max_len
 
     from pm4py.algo.querying.openai import log_queries
