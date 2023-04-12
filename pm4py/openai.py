@@ -19,7 +19,7 @@ from typing import Optional, Collection
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream
 from typing import Union, Tuple
-from pm4py.utils import get_properties
+from pm4py.utils import get_properties, constants
 from pm4py.utils import __event_log_deprecation_warning
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.petri_net.obj import PetriNet, Marking
@@ -304,7 +304,7 @@ def compare_logs(log1: Union[pd.DataFrame, EventLog, EventStream], log2: Union[p
     return log_queries.compare_logs(log1, log2, parameters=parameters)
 
 
-def abstract_dfg(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = 10000, include_performance: bool = True, relative_frequency: bool = False, response_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+def abstract_dfg(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = constants.OPENAI_MAX_LEN, include_performance: bool = True, relative_frequency: bool = False, response_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
     """
     Obtains the DFG abstraction of a traditional event log
 
@@ -339,7 +339,7 @@ def abstract_dfg(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: i
     return log_to_dfg_descr.apply(log_obj, parameters=parameters)
 
 
-def abstract_variants(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = 10000, include_performance: bool = True, relative_frequency: bool = False, response_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+def abstract_variants(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = constants.OPENAI_MAX_LEN, include_performance: bool = True, relative_frequency: bool = False, response_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
     """
     Obtains the variants abstraction of a traditional event log
 
@@ -396,7 +396,7 @@ def abstract_ocel(ocel: OCEL, include_timestamps: bool = True) -> str:
     return ocel_description.apply(ocel, parameters=parameters)
 
 
-def abstract_event_stream(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = 10000, response_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+def abstract_event_stream(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = constants.OPENAI_MAX_LEN, response_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
     """
     Obtains the event stream abstraction of a traditional event log
 
@@ -555,7 +555,7 @@ def conformance_checking(log_obj: Union[pd.DataFrame, EventLog, EventStream], ru
     return log_queries.conformance_checking(log_obj, rule, parameters=parameters)
 
 
-def suggest_verify_hypotheses(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = 5000, api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+def suggest_verify_hypotheses(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = constants.OPENAI_MAX_LEN // 2, api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
     """
     Given an event log, identifies some hypotheses to verify against the data.
 
@@ -590,7 +590,7 @@ def suggest_verify_hypotheses(log_obj: Union[pd.DataFrame, EventLog, EventStream
     return log_queries.suggest_verify_hypotheses(log_obj, parameters=parameters)
 
 
-def filtering_query(log_obj: Union[pd.DataFrame, EventLog, EventStream], filtering_query: str,  max_len: int = 5000, api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+def filtering_query(log_obj: Union[pd.DataFrame, EventLog, EventStream], filtering_query: str,  max_len: int = constants.OPENAI_MAX_LEN // 2, api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
     """
     Given an event log, performs a query to filter the event data
 
