@@ -451,7 +451,7 @@ def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, at
     dotted_chart_visualizer.save(gviz, file_path)
 
 
-def view_sna(sna_metric: SNA, variant_str: str = "pyvis"):
+def view_sna(sna_metric: SNA, variant_str: Optional[str] = None):
     """
     Represents a SNA metric (.html)
 
@@ -465,6 +465,12 @@ def view_sna(sna_metric: SNA, variant_str: str = "pyvis"):
         metric = pm4py.discover_subcontracting_network(dataframe, resource_key='org:resource', timestamp_key='time:timestamp', case_id_key='case:concept:name')
         pm4py.view_sna(metric)
     """
+    if variant_str is None:
+        if constants.DEFAULT_GVIZ_VIEW == "matplotlib_view":
+            variant_str = "networkx"
+        else:
+            variant_str = "pyvis"
+
     from pm4py.visualization.sna import visualizer as sna_visualizer
     variant = sna_visualizer.Variants.PYVIS
     if variant_str == "networkx":
@@ -473,12 +479,13 @@ def view_sna(sna_metric: SNA, variant_str: str = "pyvis"):
     sna_visualizer.view(gviz, variant=variant)
 
 
-def save_vis_sna(sna_metric: SNA, file_path: str):
+def save_vis_sna(sna_metric: SNA, file_path: str, variant_str: Optional[str] = None):
     """
     Saves the visualization of a SNA metric in a .html file
 
     :param sna_metric: Values of the metric
     :param file_path: Destination path
+    :param variant_str: variant to be used (default: pyvis)
 
     .. code-block:: python3
 
@@ -488,9 +495,20 @@ def save_vis_sna(sna_metric: SNA, file_path: str):
         pm4py.save_vis_sna(metric, 'sna.png')
     """
     file_path = str(file_path)
+
+    if variant_str is None:
+        if constants.DEFAULT_GVIZ_VIEW == "matplotlib_view":
+            variant_str = "networkx"
+        else:
+            variant_str = "pyvis"
+
     from pm4py.visualization.sna import visualizer as sna_visualizer
-    gviz = sna_visualizer.apply(sna_metric, variant=sna_visualizer.Variants.PYVIS)
-    sna_visualizer.save(gviz, file_path, variant=sna_visualizer.Variants.PYVIS)
+    variant = sna_visualizer.Variants.PYVIS
+    if variant_str == "networkx":
+        variant = sna_visualizer.Variants.NETWORKX
+
+    gviz = sna_visualizer.apply(sna_metric, variant=variant)
+    sna_visualizer.save(gviz, file_path, variant=variant)
 
 
 def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "png", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
