@@ -18,7 +18,7 @@ import shutil
 from enum import Enum
 from typing import Optional, Dict, Any
 
-from pm4py.util import exec_utils, vis_utils
+from pm4py.util import exec_utils, vis_utils, constants
 from pm4py.visualization.performance_spectrum.variants import neato
 
 
@@ -57,6 +57,16 @@ def view(figure: str):
     figure
         Path containing the visualization
     """
+    if constants.DEFAULT_GVIZ_VIEW == "matplotlib_view":
+        import matplotlib.pyplot as plt
+        import matplotlib.image as mpimg
+        img = mpimg.imread(figure)
+        plt.axis('off')
+        plt.tight_layout(pad=0, w_pad=0, h_pad=0)
+        plt.imshow(img)
+        plt.show()
+        return
+
     if vis_utils.check_visualization_inside_jupyter():
         vis_utils.view_image_in_jupyter(figure)
     else:
