@@ -15,9 +15,11 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import gzip
+import numbers
 import pkgutil
 from enum import Enum
 from io import BytesIO
+from math import isnan
 
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.util import exec_utils, constants
@@ -187,6 +189,8 @@ def export_trace_line_by_line(trace, fp_obj, encoding):
     for event in trace:
         fp_obj.write((get_tab_indent(2) + "<event>\n").encode(encoding))
         for attr_name, attr_value in event.items():
+            if isinstance(attr_value, numbers.Number) and isnan(attr_value):
+                continue
             fp_obj.write(export_attribute(attr_name, attr_value, 3).encode(encoding))
         fp_obj.write((get_tab_indent(2) + "</event>\n").encode(encoding))
     fp_obj.write((get_tab_indent(1) + "</trace>\n").encode(encoding))
