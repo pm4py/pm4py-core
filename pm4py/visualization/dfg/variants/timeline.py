@@ -134,16 +134,12 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
     #timestamp_list = sorted(list(dfg_time.values()))
     
     timestamp_list = sorted(dfg_time.items(), key = lambda x:x[1])
-    print(timestamp_list)
+    #print(timestamp_list)
     timestamp_dict  = dict(timestamp_list)
-    print(timestamp_dict)
+    #print(timestamp_dict)
 
     #timestamp_list = sorted([x.total_seconds() for x in timestamp_list])
-    #print(timestamp_list)
-
-    #sort the dfg_time according to time 
-    order_act_by_time = sorted(dfg_time.items(), key=lambda x:x[1])
-    time_map = {}
+    ##print(timestamp_list)
 
 
     timestamps_to_include = []
@@ -151,16 +147,26 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
         a = human_readable_stat(timestamp[1].total_seconds())
         timestamps_to_include.append(a)
 
-    print(timestamps_to_include)
 
-    
+
+    #print('################')
+    print(len(timestamp_list))
+    print(len(timestamps_to_include))
+
+    #convert timestamps to include to a set to remove repeated ones
+    #timestamps_to_include = list(set(timestamps_to_include))
+    #print(timestamps_to_include)
+    print(len(timestamp_list))
+    print(len(timestamps_to_include))
+
+    #print(timestamp_list)
     edges_in_timeline = []
     for i, t in enumerate(timestamp_list[:-1]):
         #edge = (t, timestamp_list[i+1])
         edge = (t[1], timestamp_list[i+1][1])
         edges_in_timeline.append(edge)
 
-    #print(edges_in_timeline)
+    ##print(edges_in_timeline)
 
 
     #create nodes for timestamps 
@@ -168,14 +174,16 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
         viz.node(str(hash(timestamp)), str(timestamps_to_include[i]))'''
 
     map_act_to_time = {}
-    #print(activities_to_include)
+    ##print(activities_to_include)
     for i, timestamp in enumerate(timestamp_list):
         activity = timestamp[0]
-        #print(timestamp[1])
-        viz.node(str(hash(timestamp[1])), str(timestamps_to_include[i]))
+        print(activity)
+        print(timestamps_to_include[i])
+        #convert strtimestamps_to_include[i] to a non-indice based thing like a dictionary where access is acc to name (more reliable).
+        viz.node(str(hash(timestamp[1])), str(timestamps_to_include[i]), shape='circle', style='filled', fillcolor='pink')
         map_act_to_time[activity] = str(hash(timestamp[1]))
 
-    print(map_act_to_time)
+    #print(map_act_to_time)
 
     
     #get the minlen value to include in edges
@@ -190,7 +198,7 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
     #create edges for timeline
     for i, edge in enumerate(edges_in_timeline):
         minlen = str(minlen_list[i])
-        #print(edge)
+        ##print(edge)
         viz.edge(str(hash(edge[0])), str(hash(edge[1])), minlen=minlen)
 
     
@@ -244,15 +252,15 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
     
 
     ################################# time line ##################
-    print(activities_map)
-    print(map_act_to_time)
-    print()
+    #print(activities_map)
+    #print(map_act_to_time)
+    #print()
     ds = [map_act_to_time, activities_map]
     merge_act_time_dict = {}
     for k in map_act_to_time.keys():
         merge_act_time_dict[k] = tuple(d[k] for d in ds)
     
-    print(merge_act_time_dict)
+    #print(merge_act_time_dict)
 
     #CREATE SUBGRAPHS TO ORDER ACTIVITIES IN RIGHT RANK 
     no_subgraphs = len(timestamps_to_include)
@@ -315,9 +323,9 @@ def apply(dfg: Dict[Tuple[str, str], int], dfg_time : Dict, log: EventLog = None
 
 
     #write dict as soj time for relative time and pass it as a parameter
-    #print(activities_count)
-    #print(soj_time)
-    #print(stat_locale)
+    ##print(activities_count)
+    ##print(soj_time)
+    ##print(stat_locale)
     return graphviz_visualization(activities_count, dfg, dfg_time, image_format=image_format, measure="frequency",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
                                   start_activities=start_activities, end_activities=end_activities, 

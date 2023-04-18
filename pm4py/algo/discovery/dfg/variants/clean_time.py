@@ -62,6 +62,8 @@ def apply(log : pd.DataFrame, parameters):
             [act_key]).size().reset_index().itertuples(index=False, name=None)):
         dfg.end_activities[a] += f
 
+    #print("Finished old clean_code")
+    
 
     #Realtive Time Specific Code 
     df = log.sort_values([cid_key, time_key]).loc[:, [cid_key, act_key, time_key]].reset_index()
@@ -72,18 +74,33 @@ def apply(log : pd.DataFrame, parameters):
     for key, value in start_activities.items():
         start_activity = key 
     
+    #print("Starting to get all activities")
+
     all_act = get_all_activities(df, act_key)
+    #print("Starting to get all traces")
     all_cid = get_all_traces(df, cid_key)
+    #print("Starting to get cid_wise_start_time activities")
     cid_wise_start_time = get_cid_wise_start_time( df, act_key, cid_key, time_key, all_cid, start_activity)
+    #print("Starting to map keys")
     df[cid_timestamp] = df[cid_key].map(cid_wise_start_time)
+    #print(df)
+    ##print(df[time_key][1] ,type(df[time_key][1]), df[cid_timestamp][1] ,type(df[cid_timestamp][1]))
+    ##print(df[time_key], df[cid_timestamp] )
+
     df[relative_time] = df[time_key] - df[cid_timestamp]
+    #print(df[0:6])
+
+    print(df[:6].to_markdown()) 
 
     time_dictionary = {}
-
+    #print("Starting to get average relative time activities")
     for act in all_act:  
         aux_df = df[df[act_key] == act] 
+        #print("inside for to get avg to get all activities")
         mean = avg_relative_time(aux_df, relative_time)
         time_dictionary[act] = mean
+
+    #print("finished clean_time")
     
     return time_dictionary
 
@@ -95,13 +112,27 @@ def avg_relative_time(df : pd.DataFrame, relative_time) -> Timestamp:
 
 def get_cid_wise_start_time(df : pd.DataFrame, act_key,cid_key, time_key, all_cid : List, start_activity) -> Dict:
     cid_time_dic = {}
+    #print("Starting for loops")
+    #print(len(all_cid))
     for cid in all_cid:
+        ##print(f"{cid} in {all_cid}")
         aux_df = df[df[cid_key] == cid]
+        #print(aux_df)
+        
         time_value = aux_df.loc[aux_df[act_key] == start_activity, time_key]
-        start_time = 0
+        ##print("time value is : ",time_value)
+        #start_time = 0
+        start_time = pd.Timestamp(0)
+        ##print( "start time : ",start_time)
         for i in time_value:
             start_time = i
+            ##print("start time : ",start_time)
         cid_time_dic[cid] = start_time
+        ##print()
+        
+        
+        
+    #print("finished get_cid_wise_start")
     return cid_time_dic
         
 
