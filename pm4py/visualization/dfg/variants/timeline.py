@@ -124,6 +124,8 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
         # take unique elements as a list not as a set (in this way, nodes are added in the same order to the graph)
         activities_to_include = sorted(list(set(activities_in_dfg)))
 
+    #print(activities_to_include) 
+
 
 
 
@@ -131,75 +133,111 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
 
 #TIMELINE SPECIFIC CODE--------: 
     #get the timestamps needed as nodes
-    #timestamp_list = sorted(list(dfg_time.values()))
-    
-    timestamp_list = sorted(dfg_time.items(), key = lambda x:x[1])
-    #print(timestamp_list)
-    timestamp_dict  = dict(timestamp_list)
-    #print(timestamp_dict)
 
-    #timestamp_list = sorted([x.total_seconds() for x in timestamp_list])
-    ##print(timestamp_list)
-
-
+    dfg_timestamps = sorted(dfg_time.items(), key = lambda x:x[1])
+    act_time_map = {}
     timestamps_to_include = []
-    for timestamp in timestamp_list:
-        a = human_readable_stat(timestamp[1].total_seconds())
-        timestamps_to_include.append(a)
+    timestamp_hash = {}
+    hash_timestamps_to_include = []
 
+    for dfg_timestamp in dfg_timestamps:
+        act = dfg_timestamp[0]
+        timestamp = dfg_timestamp[1].total_seconds()
+        stat = human_readable_stat(timestamp)
+        if stat not in timestamps_to_include:
+            viz.node(str(hash(stat)), str(stat), shape='circle', style='filled', fillcolor='pink')
+            hash_timestamps_to_include.append(str(hash(stat)))
+        timestamps_to_include.append(stat)
+        act_time_map[act] = str(hash(stat))
+        #timestamp_hash[str(hash(stat))] = []
 
-
-    #print('################')
-    print(len(timestamp_list))
-    print(len(timestamps_to_include))
-
-    #convert timestamps to include to a set to remove repeated ones
-    #timestamps_to_include = list(set(timestamps_to_include))
-    #print(timestamps_to_include)
-    print(len(timestamp_list))
-    print(len(timestamps_to_include))
-
-    #print(timestamp_list)
-    edges_in_timeline = []
-    for i, t in enumerate(timestamp_list[:-1]):
-        #edge = (t, timestamp_list[i+1])
-        edge = (t[1], timestamp_list[i+1][1])
-        edges_in_timeline.append(edge)
-
-    ##print(edges_in_timeline)
-
-
-    #create nodes for timestamps 
-    '''for i, timestamp in enumerate(timestamp_list):
-        viz.node(str(hash(timestamp)), str(timestamps_to_include[i]))'''
-
-    map_act_to_time = {}
-    ##print(activities_to_include)
-    for i, timestamp in enumerate(timestamp_list):
-        activity = timestamp[0]
-        print(activity)
-        print(timestamps_to_include[i])
-        #convert strtimestamps_to_include[i] to a non-indice based thing like a dictionary where access is acc to name (more reliable).
-        viz.node(str(hash(timestamp[1])), str(timestamps_to_include[i]), shape='circle', style='filled', fillcolor='pink')
-        map_act_to_time[activity] = str(hash(timestamp[1]))
-
-    #print(map_act_to_time)
+    print(act_time_map)
+    #print(timestamp_hash)
 
     
-    #get the minlen value to include in edges
+
+    inv_map = {v: k for k, v in act_time_map.items()}
+    print()
+    #print(inv_map)
+
+    '''so far, I have created nodes for each timeline. Each node gets a unique value of the readable statistics
+    a dictioarny (act_time_map) is crated having keys as activity and value as the hash of the stat (human readable time).
+    i have nother dictionary (timestamp_hash) that has the hash value of the stat as key and an empty list as the value.
+    In the enxt step, I will fill this empty list by those activities that are repeated having the same roudned time value.
+    the goal is to have a dictionary having the timestamps as keys and a list of activities as values. 
+    '''
+
+    #the following code meets the goal. We will use the time_Act_dict later on while making subgraphs
+    time_act_dict = {}
+    for key, value in act_time_map.items():
+        if value in time_act_dict:
+            time_act_dict[value].append(key)
+        else:
+            time_act_dict[value] = [ key ]
+    
+    print(time_act_dict)
+    print()
+    print(hash_timestamps_to_include)
+
+
+    ''' calculate how long each edge should be to make the edges proportional alomg the timeilne axis..'''
     minlen_list = []
-    for i, t in enumerate(timestamps_to_include[:-1]):
-        int1 = int(re.search(r'\d+', timestamps_to_include[i]).group())
-        int2 = int(re.search(r'\d+', timestamps_to_include[i+1]).group())
+
+    minlen_aux =[]
+    [minlen_aux.append(item) for item in timestamps_to_include if item not in minlen_aux]
+    print(minlen_aux)
+
+    for i, t in enumerate(minlen_aux[:-1]):
+        int1 = int(re.search(r'\d+', minlen_aux[i]).group())
+        int2 = int(re.search(r'\d+', minlen_aux[i+1]).group())
         minlen = int2 - int1
         minlen_list.append(minlen)
+        print(minlen)
 
 
-    #create edges for timeline
-    for i, edge in enumerate(edges_in_timeline):
-        minlen = str(minlen_list[i])
-        ##print(edge)
-        viz.edge(str(hash(edge[0])), str(hash(edge[1])), minlen=minlen)
+
+    '''timestamps_to_include only have timestamps. So we can use it to create edges for the timeline'''
+    #craete edges for the timeline now
+    edges_in_timeline = []
+    for i, t in enumerate(hash_timestamps_to_include[:-1]):
+        #edge = (str(hash(t)), str(hash(timestamps_to_include[i+1])))
+        minlen = str(minlen_aux[i])
+        edge = (t, hash_timestamps_to_include[i+1])
+        edges_in_timeline.append(edge)
+        viz.edge(edge[0],edge[1], minlen=minlen)
+        #print(edge)
+
+
+    '''Now we have the values that need to go on timeline and we have what activities are supposed to be aligned with what timestamp.
+    Next step is to calculate how long each edge should be to make the edges proportional alomg the timeilne axis..'''
+
+
+
+
+
+
+
+
+    #timestamp_hash[act_time_map['accept']].append('Jai ho')
+    #timestamp_hash[act_time_map['accept']].append('rock')
+    #print(timestamp_hash)
+
+
+
+
+
+
+
+
+   
+    
+    
+
+    #for i, t in enumerate(timestamps_to_include[:-1]):
+     #   int1 = int(re.search(r'\d+', timestamps_to_include[i]).group())
+      #  int2 = int(re.search(r'\d+', timestamps_to_include[i+1]).group())
+       # minlen = int2 - int1
+       # minlen_list.append(minlen)
 
     
 
@@ -219,6 +257,8 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
             stat_string = human_readable_stat(soj_time[act], stat_locale)
             viz.node(str(hash(act)), act + f" ({stat_string})", fontsize=font_size)
             activities_map[act] = str(hash(act))
+
+    print(activities_map)
 
     # make edges addition always in the same order
     dfg_edges = sorted(list(dfg.keys()))
@@ -248,44 +288,55 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
             viz.edge(activities_map[act], "@@endnode", label=label, fontsize=font_size)
 
 
-
-    
-
     ################################# time line ##################
-    #print(activities_map)
-    #print(map_act_to_time)
-    #print()
-    ds = [map_act_to_time, activities_map]
-    merge_act_time_dict = {}
-    for k in map_act_to_time.keys():
-        merge_act_time_dict[k] = tuple(d[k] for d in ds)
+
+
+
+    ''' Here, we create subgraphs include those nodes who are supposed to be aligned on teh same rank / level. Here, we include
+    one node from the timeline axis and 1 or more nodes from the dfg. We use the information of what activities are supposed to go on
+    same level from previous caluclation (i.e. we use time_Act_dict)'''
+
+
+    '''we merge the dictiomaries of act_time_map with activities_map to ensure the alignment i s done on the activity node referencing
+    to the same object.'''
+    merge_map = {}
+    ds = [act_time_map, activities_map]
+    merge_map = {}
+    for k in act_time_map.keys():
+        merge_map[k] = tuple(d[k] for d in ds)
+
+    print(merge_map)
+
+
+    for hash_time in hash_timestamps_to_include:
+        #print()
+        s = Digraph(str(hash_time))
+        #print(hash_time)
+        s.attr(rank='same')
+        s.node(hash_time)
+        #print(time_act_dict)
+        for values in time_act_dict[hash_time]:
+            #print('*****')
+            #print(merge_map[values][0])
+            #print(merge_map[values][1])
+            s.node(merge_map[values][0])
+            s.node(merge_map[values][1])
+
+
+        viz.subgraph(s)
+        
+    print(activities_map)
+    print(act_time_map)
+
     
-    #print(merge_act_time_dict)
 
-    #CREATE SUBGRAPHS TO ORDER ACTIVITIES IN RIGHT RANK 
-    no_subgraphs = len(timestamps_to_include)
-    #viz.subgraph(name=timestamp_list[0], graph_attr={'rank':'same', 'node_attr':'N'})
 
-    ''' 
-    c = Digraph('child')
-    c.attr(rank='same')
-    c.node(merge_act_time_dict['accept'][0])
-    c.node(merge_act_time_dict['accept'][1])
-    viz.subgraph(c)
-
-    c = Digraph('b')
-    c.attr(rank='same')
-    c.node(merge_act_time_dict['register application'][0])
-    c.node(merge_act_time_dict['register application'][1])
-    viz.subgraph(c)
-    '''
-    
     for activity in activities_to_include:
         s = Digraph(str(activity))
         s.attr(rank='same')
-        s.node(merge_act_time_dict[activity][0])
-        s.node(merge_act_time_dict[activity][1])
-        viz.subgraph(s)
+        #s.node(merge_act_time_dict[activity][0])
+        #s.node(merge_act_time_dict[activity][1])
+        #viz.subgraph(s)
 
 
     viz.attr(overlap='false')
