@@ -5,6 +5,8 @@
 ### Added
 
 ### Changed
+* 047452b36bf0df0fb6f59caa321296c4dc544a8f
+  * consistency (IDs, types) checks when importing/exporting OCELs
 
 ### Deprecated
 
