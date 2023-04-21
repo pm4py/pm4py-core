@@ -137,7 +137,6 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
     dfg_timestamps = sorted(dfg_time.items(), key = lambda x:x[1])
     act_time_map = {}
     timestamps_to_include = []
-    timestamp_hash = {}
     hash_timestamps_to_include = []
 
     for dfg_timestamp in dfg_timestamps:
@@ -149,6 +148,7 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
             hash_timestamps_to_include.append(str(hash(stat)))
         timestamps_to_include.append(stat)
         act_time_map[act] = str(hash(stat))
+        print(act, dfg_timestamp[1], " ----- > ", stat)
         #timestamp_hash[str(hash(stat))] = []
 
     print(act_time_map)
@@ -156,9 +156,7 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
 
     
 
-    inv_map = {v: k for k, v in act_time_map.items()}
     print()
-    #print(inv_map)
 
     '''so far, I have created nodes for each timeline. Each node gets a unique value of the readable statistics
     a dictioarny (act_time_map) is crated having keys as activity and value as the hash of the stat (human readable time).
@@ -190,9 +188,11 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
     for i, t in enumerate(minlen_aux[:-1]):
         int1 = int(re.search(r'\d+', minlen_aux[i]).group())
         int2 = int(re.search(r'\d+', minlen_aux[i+1]).group())
+        print(int1, int2)
         minlen = int2 - int1
         minlen_list.append(minlen)
         print(minlen)
+    print(minlen_list)
 
 
 
@@ -201,7 +201,7 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
     edges_in_timeline = []
     for i, t in enumerate(hash_timestamps_to_include[:-1]):
         #edge = (str(hash(t)), str(hash(timestamps_to_include[i+1])))
-        minlen = str(minlen_aux[i])
+        minlen = str(minlen_list[i])
         edge = (t, hash_timestamps_to_include[i+1])
         edges_in_timeline.append(edge)
         viz.edge(edge[0],edge[1], minlen=minlen)
@@ -212,32 +212,6 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
     Next step is to calculate how long each edge should be to make the edges proportional alomg the timeilne axis..'''
 
 
-
-
-
-
-
-
-    #timestamp_hash[act_time_map['accept']].append('Jai ho')
-    #timestamp_hash[act_time_map['accept']].append('rock')
-    #print(timestamp_hash)
-
-
-
-
-
-
-
-
-   
-    
-    
-
-    #for i, t in enumerate(timestamps_to_include[:-1]):
-     #   int1 = int(re.search(r'\d+', timestamps_to_include[i]).group())
-      #  int2 = int(re.search(r'\d+', timestamps_to_include[i+1]).group())
-       # minlen = int2 - int1
-       # minlen_list.append(minlen)
 
     
 
@@ -328,18 +302,8 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
     print(activities_map)
     print(act_time_map)
 
-    
 
-
-    for activity in activities_to_include:
-        s = Digraph(str(activity))
-        s.attr(rank='same')
-        #s.node(merge_act_time_dict[activity][0])
-        #s.node(merge_act_time_dict[activity][1])
-        #viz.subgraph(s)
-
-
-    viz.attr(overlap='false')
+    viz.attr(overlap='true')
     viz.format = image_format
     print(viz)
     return viz
