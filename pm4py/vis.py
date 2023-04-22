@@ -1173,7 +1173,7 @@ def save_vis_alignments(log: Union[EventLog, pd.DataFrame], aligned_traces: List
     visualizer.save(gviz, file_path)
 
 
-def view_footprints(footprints: Union[List[Dict[str, Any]], Dict[str, Any]], format: str = "png"):
+def view_footprints(footprints: Union[Tuple[Dict[str, Any], Dict[str, Any]], Dict[str, Any]], format: str = "png"):
     """
     Views the footprints as a figure
 
@@ -1191,11 +1191,16 @@ def view_footprints(footprints: Union[List[Dict[str, Any]], Dict[str, Any]], for
     format = str(format).lower()
 
     from pm4py.visualization.footprints import visualizer as fps_visualizer
-    gviz = fps_visualizer.apply(footprints, parameters={"format": format})
+
+    if isinstance(footprints, dict):
+        gviz = fps_visualizer.apply(footprints, parameters={"format": format})
+    else:
+        gviz = fps_visualizer.apply(footprints[0], footprints[1], variant=fps_visualizer.Variants.COMPARISON_SYMMETRIC, parameters={"format": format})
+
     fps_visualizer.view(gviz)
 
 
-def save_vis_footprints(footprints: Union[List[Dict[str, Any]], Dict[str, Any]], file_path: str):
+def save_vis_footprints(footprints: Union[Tuple[Dict[str, Any], Dict[str, Any]], Dict[str, Any]], file_path: str):
     """
     Saves the footprints' visualization on disk
 
@@ -1214,7 +1219,12 @@ def save_vis_footprints(footprints: Union[List[Dict[str, Any]], Dict[str, Any]],
     format = os.path.splitext(file_path)[1][1:].lower()
 
     from pm4py.visualization.footprints import visualizer as fps_visualizer
-    gviz = fps_visualizer.apply(footprints, parameters={"format": format})
+
+    if isinstance(footprints, dict):
+        gviz = fps_visualizer.apply(footprints, parameters={"format": format})
+    else:
+        gviz = fps_visualizer.apply(footprints[0], footprints[1], variant=fps_visualizer.Variants.COMPARISON_SYMMETRIC, parameters={"format": format})
+
     fps_visualizer.save(gviz, file_path)
 
 
