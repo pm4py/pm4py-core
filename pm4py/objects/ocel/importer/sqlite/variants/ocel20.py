@@ -21,6 +21,8 @@ from pm4py.objects.ocel import constants
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import exec_utils
 import pandas as pd
+from pm4py.objects.ocel.util import ocel_consistency
+from pm4py.objects.ocel.util import filtering_utils
 
 
 class Parameters(Enum):
@@ -136,5 +138,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
         del object_changes[internal_index]
 
     ocel = OCEL(events=event_types_coll, objects=objects, relations=E2O, object_changes=object_changes, o2o=O2O, parameters=parameters)
+    ocel = ocel_consistency.apply(ocel, parameters=parameters)
+    ocel = filtering_utils.propagate_relations_filtering(ocel, parameters=parameters)
 
     return ocel

@@ -22,6 +22,7 @@ from datetime import datetime
 from pm4py.objects.ocel.util import names_stripping
 from enum import Enum
 from pm4py.util import exec_utils
+from pm4py.objects.ocel.util import ocel_consistency
 
 
 class Parameters(Enum):
@@ -38,6 +39,8 @@ def apply(ocel: OCEL, file_path: str, parameters: Optional[Dict[Any, Any]] = Non
 
     if os.path.exists(file_path):
         os.remove(file_path)
+
+    ocel = ocel_consistency.apply(ocel, parameters=parameters)
 
     event_id = ocel.event_id_column
     event_activity = ocel.event_activity
@@ -83,6 +86,7 @@ def apply(ocel: OCEL, file_path: str, parameters: Optional[Dict[Any, Any]] = Non
         df = ocel.events[ocel.events[event_activity] == act].dropna(how="all", axis="columns")
         del df[event_activity]
         df = df.rename(columns={event_id: "ocel_id", event_timestamp: "ocel_time"})
+        df["ocel_id"] = df["ocel_id"].astype("string")
 
         act_red = names_stripping.apply(act) if enable_names_stripping else act
 
@@ -100,6 +104,8 @@ def apply(ocel: OCEL, file_path: str, parameters: Optional[Dict[Any, Any]] = Non
             del df2[object_type]
             df2 = df2.rename(columns={object_id: "ocel_id", event_timestamp: "ocel_time", changed_field: "ocel_changed_field"})
             df = pd.concat([df, df2], axis=0)
+
+        df["ocel_id"] = df["ocel_id"].astype("string")
 
         ot_red = names_stripping.apply(ot) if enable_names_stripping else ot
 
