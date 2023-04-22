@@ -1,5 +1,6 @@
 from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any
+from pm4py.objects.ocel.util import ocel_consistency
 
 
 def apply(ocel: OCEL, output_path: str, objects_path=None, parameters: Optional[Dict[Any, Any]] = None):
@@ -19,6 +20,8 @@ def apply(ocel: OCEL, output_path: str, objects_path=None, parameters: Optional[
     """
     if parameters is None:
         parameters = {}
+
+    ocel = ocel_consistency.apply(ocel, parameters=parameters)
 
     ocel.get_extended_table().to_csv(output_path, index=False, na_rep="")
 
