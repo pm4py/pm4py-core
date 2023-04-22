@@ -363,7 +363,7 @@ def __dotted_attribute_selection(log: Union[EventLog, pd.DataFrame], attributes)
 
 
 @deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the dotted chart visualization will be removed in a future release.")
-def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", attributes=None, bgcolor: str = "white"):
+def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", attributes=None, bgcolor: str = "white", show_legend: bool = True):
     """
     Displays the dotted chart
 
@@ -386,6 +386,8 @@ def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", a
     :param log: Event log
     :param format: Image format
     :param attributes: Attributes that should be used to construct the dotted chart. If None, the default dotted chart will be shown: x-axis: time y-axis: cases (in order of occurrence in the event log) color: activity. For custom attributes, use a list of attributes of the form [x-axis attribute, y-axis attribute, color attribute], e.g., ["concept:name", "org:resource", "concept:name"])
+    :param bgcolor: background color to be used in the dotted chart
+    :param show_legend: boolean (enables/disables showing the legend)
 
     .. code-block:: python3
 
@@ -402,13 +404,19 @@ def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", a
         check_pandas_dataframe_columns(log)
 
     log, attributes = __dotted_attribute_selection(log, attributes)
+
+    parameters = {}
+    parameters["format"] = format
+    parameters["bgcolor"] = bgcolor
+    parameters["show_legend"] = show_legend
+
     from pm4py.visualization.dotted_chart import visualizer as dotted_chart_visualizer
-    gviz = dotted_chart_visualizer.apply(log, attributes, parameters={"format": format, "bgcolor": bgcolor})
+    gviz = dotted_chart_visualizer.apply(log, attributes, parameters=parameters)
     dotted_chart_visualizer.view(gviz)
 
 
 @deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the dotted chart visualization will be removed in a future release.")
-def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, attributes=None, bgcolor: str = "white"):
+def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, attributes=None, bgcolor: str = "white", show_legend: bool = True):
     """
     Saves the visualization of the dotted chart
 
@@ -431,6 +439,8 @@ def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, at
     :param log: Event log
     :param file_path: Destination path
     :param attributes: Attributes that should be used to construct the dotted chart (for example, ["concept:name", "org:resource"])
+    :param bgcolor: background color to be used in the dotted chart
+    :param show_legend: boolean (enables/disables showing the legend)
 
     .. code-block:: python3
 
@@ -446,12 +456,18 @@ def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, at
 
     format = os.path.splitext(file_path)[1][1:].lower()
     log, attributes = __dotted_attribute_selection(log, attributes)
+
+    parameters = {}
+    parameters["format"] = format
+    parameters["bgcolor"] = bgcolor
+    parameters["show_legend"] = show_legend
+
     from pm4py.visualization.dotted_chart import visualizer as dotted_chart_visualizer
-    gviz = dotted_chart_visualizer.apply(log, attributes, parameters={"format": format, "bgcolor": bgcolor})
+    gviz = dotted_chart_visualizer.apply(log, attributes, parameters=parameters)
     dotted_chart_visualizer.save(gviz, file_path)
 
 
-def view_sna(sna_metric: SNA, variant_str: str = "pyvis"):
+def view_sna(sna_metric: SNA, variant_str: Optional[str] = None):
     """
     Represents a SNA metric (.html)
 
@@ -465,6 +481,12 @@ def view_sna(sna_metric: SNA, variant_str: str = "pyvis"):
         metric = pm4py.discover_subcontracting_network(dataframe, resource_key='org:resource', timestamp_key='time:timestamp', case_id_key='case:concept:name')
         pm4py.view_sna(metric)
     """
+    if variant_str is None:
+        if constants.DEFAULT_GVIZ_VIEW == "matplotlib_view":
+            variant_str = "networkx"
+        else:
+            variant_str = "pyvis"
+
     from pm4py.visualization.sna import visualizer as sna_visualizer
     variant = sna_visualizer.Variants.PYVIS
     if variant_str == "networkx":
@@ -473,12 +495,13 @@ def view_sna(sna_metric: SNA, variant_str: str = "pyvis"):
     sna_visualizer.view(gviz, variant=variant)
 
 
-def save_vis_sna(sna_metric: SNA, file_path: str):
+def save_vis_sna(sna_metric: SNA, file_path: str, variant_str: Optional[str] = None):
     """
     Saves the visualization of a SNA metric in a .html file
 
     :param sna_metric: Values of the metric
     :param file_path: Destination path
+    :param variant_str: variant to be used (default: pyvis)
 
     .. code-block:: python3
 
@@ -488,9 +511,20 @@ def save_vis_sna(sna_metric: SNA, file_path: str):
         pm4py.save_vis_sna(metric, 'sna.png')
     """
     file_path = str(file_path)
+
+    if variant_str is None:
+        if constants.DEFAULT_GVIZ_VIEW == "matplotlib_view":
+            variant_str = "networkx"
+        else:
+            variant_str = "pyvis"
+
     from pm4py.visualization.sna import visualizer as sna_visualizer
-    gviz = sna_visualizer.apply(sna_metric, variant=sna_visualizer.Variants.PYVIS)
-    sna_visualizer.save(gviz, file_path, variant=sna_visualizer.Variants.PYVIS)
+    variant = sna_visualizer.Variants.PYVIS
+    if variant_str == "networkx":
+        variant = sna_visualizer.Variants.NETWORKX
+
+    gviz = sna_visualizer.apply(sna_metric, variant=variant)
+    sna_visualizer.save(gviz, file_path, variant=variant)
 
 
 def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "png", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
@@ -1139,7 +1173,7 @@ def save_vis_alignments(log: Union[EventLog, pd.DataFrame], aligned_traces: List
     visualizer.save(gviz, file_path)
 
 
-def view_footprints(footprints: Union[List[Dict[str, Any]], Dict[str, Any]], format: str = "png"):
+def view_footprints(footprints: Union[Tuple[Dict[str, Any], Dict[str, Any]], Dict[str, Any]], format: str = "png"):
     """
     Views the footprints as a figure
 
@@ -1157,11 +1191,16 @@ def view_footprints(footprints: Union[List[Dict[str, Any]], Dict[str, Any]], for
     format = str(format).lower()
 
     from pm4py.visualization.footprints import visualizer as fps_visualizer
-    gviz = fps_visualizer.apply(footprints, parameters={"format": format})
+
+    if isinstance(footprints, dict):
+        gviz = fps_visualizer.apply(footprints, parameters={"format": format})
+    else:
+        gviz = fps_visualizer.apply(footprints[0], footprints[1], variant=fps_visualizer.Variants.COMPARISON_SYMMETRIC, parameters={"format": format})
+
     fps_visualizer.view(gviz)
 
 
-def save_vis_footprints(footprints: Union[List[Dict[str, Any]], Dict[str, Any]], file_path: str):
+def save_vis_footprints(footprints: Union[Tuple[Dict[str, Any], Dict[str, Any]], Dict[str, Any]], file_path: str):
     """
     Saves the footprints' visualization on disk
 
@@ -1180,7 +1219,12 @@ def save_vis_footprints(footprints: Union[List[Dict[str, Any]], Dict[str, Any]],
     format = os.path.splitext(file_path)[1][1:].lower()
 
     from pm4py.visualization.footprints import visualizer as fps_visualizer
-    gviz = fps_visualizer.apply(footprints, parameters={"format": format})
+
+    if isinstance(footprints, dict):
+        gviz = fps_visualizer.apply(footprints, parameters={"format": format})
+    else:
+        gviz = fps_visualizer.apply(footprints[0], footprints[1], variant=fps_visualizer.Variants.COMPARISON_SYMMETRIC, parameters={"format": format})
+
     fps_visualizer.save(gviz, file_path)
 
 

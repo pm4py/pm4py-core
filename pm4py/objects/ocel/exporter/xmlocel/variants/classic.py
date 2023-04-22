@@ -10,6 +10,7 @@ from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel.util import attributes_names
 from pm4py.objects.ocel.util import related_objects
 from pm4py.util import exec_utils
+from pm4py.objects.ocel.util import ocel_consistency
 
 
 class Parameters(Enum):
@@ -51,6 +52,8 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
     event_id = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, ocel.event_id_column)
     object_id = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, ocel.object_id_column)
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
+
+    ocel = ocel_consistency.apply(ocel, parameters=parameters)
 
     all_object_types = list(ocel.objects[object_type].unique())
     all_attribute_names = attributes_names.get_attribute_names(ocel, parameters=parameters)
