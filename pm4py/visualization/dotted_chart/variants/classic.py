@@ -13,6 +13,7 @@ class Parameters(Enum):
     FORMAT = "format"
     DOT_SIZE = "dot_size"
     LAYOUT_EXT_MULTIPLIER = "layout_ext_multiplier"
+    SHOW_LEGEND = "show_legend"
 
 
 def __build_unique_values(points_list: List[Any]) -> List[Any]:
@@ -130,6 +131,7 @@ def apply(points_list: List[Any], attributes: List[str], parameters: Optional[Di
     format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     dot_size = exec_utils.get_param_value(Parameters.DOT_SIZE, parameters, 0.07)
     layout_ext_multiplier = exec_utils.get_param_value(Parameters.LAYOUT_EXT_MULTIPLIER, parameters, 50)
+    show_legend = exec_utils.get_param_value(Parameters.SHOW_LEGEND, parameters, True)
 
     unique_values = __build_unique_values(points_list)
     corr_dict, attr_type = __build_corr_dict(unique_values)
@@ -184,7 +186,7 @@ def apply(points_list: List[Any], attributes: List[str], parameters: Optional[Di
             "%s [label=\"\", shape=circle,  width=\"%.10fpx\", height=\"%.10fpx\", pos=\"%.10f,%.10f!\", fontsize=\"6pt\", style=\"filled\", fillcolor=\"%s\"];" % (
                 n_id, dot_size, dot_size, coord_x * x_length, coord_y * y_length, color))
 
-    if color_dict is not None:
+    if color_dict is not None and show_legend:
         lines.append(
             "Legend [label=\"legend (attribute: %s)\", shape=none, width=\"0px\", height=\"0px\", pos=\"0,-%d!\"]" % (
                 attributes[2], 1*layout_ext_multiplier))
