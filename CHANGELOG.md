@@ -11,6 +11,8 @@
   * footprints visualization in the simplified interface - comparison
 * 45dcc3de2ddf4348f8a7e31bae54529ec2ab9ad7
   * consistency checks when importing/exporting OCELs
+* 69d50384784f67a74823a4a0af99a1ebf9f0c302
+  * minor improvement log2ocel conversion
 
 ### Deprecated
 
