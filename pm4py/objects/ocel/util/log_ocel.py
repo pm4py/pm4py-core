@@ -22,6 +22,7 @@ from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel import constants as ocel_constants
 from pm4py.objects.conversion.log import converter as log_converter
+from pm4py.objects.ocel.util import ocel_consistency
 from copy import copy
 import traceback
 
@@ -342,4 +343,7 @@ def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.Data
     relations = pd.DataFrame(relations)
     relations.drop_duplicates(subset=[ocel_constants.DEFAULT_EVENT_ID, ocel_constants.DEFAULT_OBJECT_ID], inplace=True)
 
-    return OCEL(events=events, objects=objects, relations=relations)
+    ocel = OCEL(events=events, objects=objects, relations=relations)
+    ocel = ocel_consistency.apply(ocel)
+
+    return ocel

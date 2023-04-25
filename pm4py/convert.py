@@ -36,7 +36,7 @@ from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_data
 import networkx as nx
 
 
-def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: str = "case:concept:name") -> EventLog:
+def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: str = "case:concept:name", **kwargs) -> EventLog:
     """
     Converts a DataFrame/EventStream object to an event log object
 
@@ -58,15 +58,19 @@ def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: str
     if check_is_pandas_dataframe(obj):
         check_pandas_dataframe_columns(obj, case_id_key=case_id_key)
 
+    parameters = get_properties(obj, case_id_key=case_id_key)
+    for k, v in kwargs.items():
+        parameters[k] = v
+
     from pm4py.objects.conversion.log import converter
-    log = converter.apply(obj, variant=converter.Variants.TO_EVENT_LOG, parameters=get_properties(obj, case_id_key=case_id_key))
+    log = converter.apply(obj, variant=converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     __event_log_deprecation_warning(log)
 
     return log
 
 
-def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: str = "case:concept:name") -> EventStream:
+def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: str = "case:concept:name", **kwargs) -> EventStream:
     """
     Converts a log object to an event stream
 
@@ -87,15 +91,19 @@ def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: str
     if check_is_pandas_dataframe(obj):
         check_pandas_dataframe_columns(obj, case_id_key=case_id_key)
 
+    parameters = get_properties(obj, case_id_key=case_id_key)
+    for k, v in kwargs.items():
+        parameters[k] = v
+
     from pm4py.objects.conversion.log import converter
-    stream = converter.apply(obj, variant=converter.Variants.TO_EVENT_STREAM, parameters=get_properties(obj, case_id_key=case_id_key))
+    stream = converter.apply(obj, variant=converter.Variants.TO_EVENT_STREAM, parameters=parameters)
 
     __event_log_deprecation_warning(stream)
 
     return stream
 
 
-def convert_to_dataframe(obj: Union[EventStream, EventLog]) -> pd.DataFrame:
+def convert_to_dataframe(obj: Union[EventStream, EventLog], **kwargs) -> pd.DataFrame:
     """
     Converts a log object to a dataframe
 
@@ -114,8 +122,12 @@ def convert_to_dataframe(obj: Union[EventStream, EventLog]) -> pd.DataFrame:
     if check_is_pandas_dataframe(obj):
         check_pandas_dataframe_columns(obj)
 
+    parameters = get_properties(obj)
+    for k, v in kwargs.items():
+        parameters[k] = v
+    
     from pm4py.objects.conversion.log import converter
-    df = converter.apply(obj, variant=converter.Variants.TO_DATA_FRAME, parameters=get_properties(obj))
+    df = converter.apply(obj, variant=converter.Variants.TO_DATA_FRAME, parameters=parameters)
     return df
 
 
