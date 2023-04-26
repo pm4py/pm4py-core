@@ -3,6 +3,8 @@
 ## pm4py 2.7.4 (2023.04.XX)
 
 ### Added
+* 546cff5c7d91810b068777870ae20dab2b110150
+  * pm4py.openai.abstract_log_attributes method in the simplified interface
 
 ### Changed
 * 047452b36bf0df0fb6f59caa321296c4dc544a8f
