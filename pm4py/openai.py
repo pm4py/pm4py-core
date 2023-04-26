@@ -306,7 +306,7 @@ def abstract_dfg(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: i
         import pm4py
 
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
-        print(pm4py.abstract_dfg(log_obj))
+        print(pm4py.openai.abstract_dfg(log))
     """
     if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
@@ -341,7 +341,7 @@ def abstract_variants(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_l
         import pm4py
 
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
-        print(pm4py.abstract_variants(log_obj))
+        print(pm4py.openai.abstract_variants(log))
     """
     if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
@@ -370,7 +370,7 @@ def abstract_ocel(ocel: OCEL, include_timestamps: bool = True) -> str:
         import pm4py
 
         ocel = pm4py.read_ocel("tests/input_data/ocel/example_log.jsonocel")
-        print(pm4py.abstract_ocel(ocel))
+        print(pm4py.openai.abstract_ocel(ocel))
     """
     parameters = {}
     parameters["include_timestamps"] = include_timestamps
@@ -396,7 +396,7 @@ def abstract_event_stream(log_obj: Union[pd.DataFrame, EventLog, EventStream], m
         import pm4py
 
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
-        print(pm4py.abstract_event_stream(log_obj))
+        print(pm4py.openai.abstract_event_stream(log))
     """
     if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
