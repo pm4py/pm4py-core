@@ -5,6 +5,8 @@
 ### Added
 * 546cff5c7d91810b068777870ae20dab2b110150
   * pm4py.openai.abstract_log_attributes method in the simplified interface
+* e9ee619300f59713c481d9fd592b3eeefc489175
+  * added get_diagnostics_dataframe method for temporal profile-based conformance checking
 
 ### Changed
 * 047452b36bf0df0fb6f59caa321296c4dc544a8f
