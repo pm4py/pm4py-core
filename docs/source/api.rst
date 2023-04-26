@@ -314,6 +314,7 @@ The following methods provides just the abstractions of the given objects:
 
   * :meth:`pm4py.openai.abstract_dfg`; provides the DFG abstraction of a traditional event log
   * :meth:`pm4py.openai.abstract_variants`; provides the variants abstraction of a traditional event log
+  * :meth:`pm4py.openai.abstract_log_attributes`; provides the abstraction of the attributes/columns of the event log
   * :meth:`pm4py.openai.abstract_ocel`; provides the abstraction of an object-centric event log
   * :meth:`pm4py.openai.abstract_event_stream`; provides an abstraction of the (last) events of the stream related to a traditional event log
   * :meth:`pm4py.openai.abstract_petri_net`; provides the abstraction of a Petri net
@@ -598,6 +599,7 @@ Overall List of Methods
    pm4py.openai.suggest_verify_hypotheses
    pm4py.openai.abstract_event_stream
    pm4py.openai.abstract_petri_net
+   pm4py.openai.abstract_log_attributes
    pm4py.openai.filtering_query
    pm4py.connectors.extract_log_outlook_mails
    pm4py.connectors.extract_log_outlook_calendar

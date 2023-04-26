@@ -4,6 +4,12 @@ import sys
 import traceback
 
 
+def ocel_occm_example():
+    from examples import ocel_occm_example
+    print("\n\nocel_occm_example")
+    ocel_occm_example.execute_script()
+
+
 def ocel_clustering():
     from examples import ocel_clustering
     print("\n\nocel_clustering")
@@ -772,6 +778,7 @@ if __name__ == "__main__":
     execute_script(inductive_miner_dfg)
     execute_script(inductive_miner_variants)
     execute_script(heu_miner_plus_plus)
+    execute_script(ocel_occm_example)
     execute_script(ocel_clustering)
     execute_script(ocel_enrichment)
     execute_script(openai_log_queries)
