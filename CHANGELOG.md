@@ -9,12 +9,12 @@
   * added get_diagnostics_dataframe method for temporal profile-based conformance checking
 
 ### Changed
-* 047452b36bf0df0fb6f59caa321296c4dc544a8f
-  * consistency (IDs, types) checks when importing/exporting OCELs
-* 091908c11a62b6708bb64adafa7a4168099b140d
-  * footprints visualization in the simplified interface - comparison
 * 45dcc3de2ddf4348f8a7e31bae54529ec2ab9ad7
   * consistency checks when importing/exporting OCELs
+* 9c4eb3a8512fbd20f7352341131ec2855b108b95
+  * consistency checks OCEL feature extraction
+* 091908c11a62b6708bb64adafa7a4168099b140d
+  * footprints visualization in the simplified interface - comparison
 * 69d50384784f67a74823a4a0af99a1ebf9f0c302
   * minor improvement log2ocel conversion
 
