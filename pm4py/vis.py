@@ -163,6 +163,9 @@ def view_timeline_dfg(dfg: dict, start_activities: dict, end_activities: dict, d
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     from pm4py.visualization.dfg.variants import timeline as dfg_time_visualizer
     #from pm4py.visualization.dfg.variants import performance as dfg_perf_visualizer
+    #if(len(start_activities)>1):
+     #   print("Not supported for more than one start activity yet")
+      #  return
     dfg_parameters = dfg_time_visualizer.Parameters
     parameters = {}
     parameters[dfg_parameters.FORMAT] = format

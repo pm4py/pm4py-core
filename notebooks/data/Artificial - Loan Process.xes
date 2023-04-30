@@ -1,0 +1,3446 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file has been generated with the OpenXES library. It conforms -->
+<!-- to the XML serialization of the XES standard for log storage and -->
+<!-- management. -->
+<!-- XES standard version: 1.0 -->
+<!-- OpenXES library version: 1.0RC7 -->
+<!-- OpenXES is available from http://www.openxes.org/ -->
+<log xes.version="1.0" xes.features="nested-attributes" openxes.version="1.0RC7" xmlns="http://www.xes-standard.org/">
+	<extension name="Metadata_Time" prefix="meta_time" uri="http://www.xes-standard.org/meta_time.xesext"/>
+	<extension name="Lifecycle" prefix="lifecycle" uri="http://www.xes-standard.org/lifecycle.xesext"/>
+	<extension name="Metadata_Lifecycle" prefix="meta_life" uri="http://www.xes-standard.org/meta_life.xesext"/>
+	<extension name="Time" prefix="time" uri="http://www.xes-standard.org/time.xesext"/>
+	<extension name="Metadata_Concept" prefix="meta_concept" uri="http://www.xes-standard.org/meta_concept.xesext"/>
+	<extension name="Completeness metadata" prefix="meta_completeness" uri="http://www.xes-standard.org/meta_completeness.xesext"/>
+	<extension name="3TU metadata" prefix="meta_3TU" uri="http://www.xes-standard.org/meta_3TU.xesext"/>
+	<extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext"/>
+	<extension name="General metadata" prefix="meta_general" uri="http://www.xes-standard.org/meta_general.xesext"/>
+	<global scope="trace">
+		<string key="concept:name" value="UNKNOWN"/>
+	</global>
+	<global scope="event">
+		<string key="lifecycle:transition" value="UNKNOWN"/>
+		<string key="concept:name" value="UNKNOWN"/>
+		<date key="time:timestamp" value="1970-01-01T01:00:00+01:00"/>
+	</global>
+	<classifier name="MXML Legacy Classifier" keys="concept:name lifecycle:transition"/>
+	<float key="meta_time:duration_max" value="2433.443"/>
+	<string key="meta_3TU:language" value="eng"/>
+	<string key="meta_3TU:log_type" value="Synthetic model"/>
+	<float key="meta_life:transition_events_standard_deviation" value="0.302">
+		<float key="complete" value="0.302"/>
+	</float>
+	<string key="meta_3TU:description" value="Loan application example, configuration 1"/>
+	<string key="meta_3TU:process_type" value="Explicitly structured"/>
+	<int key="meta_general:events_min" value="5"/>
+	<int key="meta_life:different_transitions_total" value="1"/>
+	<float key="meta_concept:different_names_average" value="5.9"/>
+	<int key="meta_life:different_transitions_min" value="1"/>
+	<string key="meta_3TU:creation_place" value="Eindhoven"/>
+	<int key="meta_general:events_max" value="6"/>
+	<int key="meta_general:traces_total" value="100"/>
+	<int key="meta_concept:named_events_total" value="590">
+		<int key="check system" value="90"/>
+		<int key="accept" value="20"/>
+		<int key="reject" value="80"/>
+		<int key="send decision e-mail" value="100"/>
+		<int key="register application" value="100"/>
+		<int key="check credit" value="100"/>
+		<int key="calculate capacity" value="100"/>
+	</int>
+	<float key="meta_concept:different_names_standard_deviation" value="0.302"/>
+	<float key="meta_life:transition_events_average" value="5.9">
+		<float key="complete" value="5.9"/>
+	</float>
+	<string key="meta_3TU:source_institute_type" value="University"/>
+	<string key="meta_3TU:creation_person" value="Joos Buijs"/>
+	<float key="meta_time:duration_standard_deviation" value="403.88"/>
+	<string key="concept:name" value="Artificial - Loan Process"/>
+	<int key="meta_concept:named_events_max" value="6">
+		<int key="check system" value="1"/>
+		<int key="accept" value="1"/>
+		<int key="reject" value="1"/>
+		<int key="send decision e-mail" value="1"/>
+		<int key="register application" value="1"/>
+		<int key="check credit" value="1"/>
+		<int key="calculate capacity" value="1"/>
+	</int>
+	<float key="meta_general:events_standard_deviation" value="0.302"/>
+	<string key="meta_3TU:doi" value="doi:10.4121/cdf3ba31-291d-468d-9712-3a58ac6da3fc"/>
+	<float key="meta_time:log_duration" value="31652.426"/>
+	<float key="meta_concept:named_events_average" value="5.9">
+		<float key="check system" value="0.9"/>
+		<float key="accept" value="0.2"/>
+		<float key="reject" value="0.8"/>
+		<float key="send decision e-mail" value="1.0"/>
+		<float key="register application" value="1.0"/>
+		<float key="check credit" value="1.0"/>
+		<float key="calculate capacity" value="1.0"/>
+	</float>
+	<date key="meta_3TU:creation_time" value="2013-04-16T00:00:00+02:00"/>
+	<date key="meta_time:log_start_time" value="2013-04-16T10:08:01.821+02:00"/>
+	<int key="meta_life:different_transitions_max" value="1"/>
+	<float key="meta_time:duration_average" value="1454.437"/>
+	<int key="meta_life:transition_events_min" value="5">
+		<int key="complete" value="5"/>
+	</int>
+	<int key="meta_general:events_total" value="590"/>
+	<float key="meta_time:duration_total" value="145443.659"/>
+	<string key="meta_3TU:rights" value="Public"/>
+	<date key="meta_time:log_end_time" value="2013-04-16T18:55:34.247+02:00"/>
+	<float key="meta_concept:named_events_standard_deviation" value="0.302">
+		<float key="check system" value="0.302"/>
+		<float key="accept" value="0.402"/>
+		<float key="reject" value="0.402"/>
+		<float key="send decision e-mail" value="0.0"/>
+		<float key="register application" value="0.0"/>
+		<float key="check credit" value="0.0"/>
+		<float key="calculate capacity" value="0.0"/>
+	</float>
+	<string key="meta_3TU:source_institute" value="Eindhoven University of Technology"/>
+	<float key="meta_life:different_transitions_standard_deviation" value="0.0"/>
+	<int key="meta_concept:different_names_min" value="5"/>
+	<float key="meta_life:different_transitions_average" value="1.0"/>
+	<int key="meta_concept:different_names_max" value="6"/>
+	<int key="meta_concept:different_names_total" value="7"/>
+	<int key="meta_life:transition_events_max" value="6">
+		<int key="complete" value="6"/>
+	</int>
+	<string key="meta_3TU:source_model" value="SEQ( LEAF: A+complete , AND( LEAF: B+complete , LEAF: C+complete , XOR( LEAF: D+complete , LEAF: tau ) ) , XOR( LEAF: E+complete , LEAF: F+complete ) , LEAF: G+complete )"/>
+	<string key="meta_3TU:source_program" value="Process Tree Simulator (ProM)"/>
+	<int key="meta_concept:named_events_min" value="5">
+		<int key="check system" value="0"/>
+		<int key="accept" value="0"/>
+		<int key="reject" value="0"/>
+		<int key="send decision e-mail" value="1"/>
+		<int key="register application" value="1"/>
+		<int key="check credit" value="1"/>
+		<int key="calculate capacity" value="1"/>
+	</int>
+	<int key="meta_general:classifiers" value="1">
+		<string key="MXML Legacy Classifier" value="concept:name lifecycle:transition">
+			<float key="meta_general:classified_events_average" value="5.9">
+				<float key="A+complete" value="1.0"/>
+				<float key="B+complete" value="1.0"/>
+				<float key="C+complete" value="1.0"/>
+				<float key="F+complete" value="0.8"/>
+				<float key="E+complete" value="0.2"/>
+				<float key="G+complete" value="1.0"/>
+				<float key="D+complete" value="0.9"/>
+			</float>
+			<int key="meta_general:classified_events_total" value="590">
+				<int key="A+complete" value="100"/>
+				<int key="B+complete" value="100"/>
+				<int key="C+complete" value="100"/>
+				<int key="F+complete" value="80"/>
+				<int key="E+complete" value="20"/>
+				<int key="G+complete" value="100"/>
+				<int key="D+complete" value="90"/>
+			</int>
+			<int key="meta_general:classified_events_max" value="6">
+				<int key="A+complete" value="1"/>
+				<int key="B+complete" value="1"/>
+				<int key="C+complete" value="1"/>
+				<int key="F+complete" value="1"/>
+				<int key="E+complete" value="1"/>
+				<int key="G+complete" value="1"/>
+				<int key="D+complete" value="1"/>
+			</int>
+			<int key="meta_general:different_classified_max" value="6"/>
+			<float key="meta_general:different_classified_average" value="5.9"/>
+			<float key="meta_general:different_classified_standard_deviation" value="0.302"/>
+			<float key="meta_general:classified_events_standard_deviation" value="0.302">
+				<float key="A+complete" value="0.0"/>
+				<float key="B+complete" value="0.0"/>
+				<float key="C+complete" value="0.0"/>
+				<float key="F+complete" value="0.402"/>
+				<float key="E+complete" value="0.402"/>
+				<float key="G+complete" value="0.0"/>
+				<float key="D+complete" value="0.302"/>
+			</float>
+			<int key="meta_general:classified_events_min" value="5">
+				<int key="A+complete" value="1"/>
+				<int key="B+complete" value="1"/>
+				<int key="C+complete" value="1"/>
+				<int key="F+complete" value="0"/>
+				<int key="E+complete" value="0"/>
+				<int key="G+complete" value="1"/>
+				<int key="D+complete" value="0"/>
+			</int>
+			<int key="meta_general:different_classified_total" value="7"/>
+			<int key="meta_general:different_traces" value="11">
+				<int key="A+complete;D+complete;B+complete;C+complete;E+complete;G+complete" value="1"/>
+				<int key="A+complete;B+complete;D+complete;C+complete;E+complete;G+complete" value="12"/>
+				<int key="A+complete;B+complete;C+complete;F+complete;G+complete" value="8"/>
+				<int key="A+complete;B+complete;D+complete;C+complete;F+complete;G+complete" value="26"/>
+				<int key="A+complete;B+complete;C+complete;D+complete;E+complete;G+complete" value="6"/>
+				<int key="A+complete;C+complete;B+complete;F+complete;G+complete" value="1"/>
+				<int key="A+complete;C+complete;B+complete;E+complete;G+complete" value="1"/>
+				<int key="A+complete;D+complete;C+complete;B+complete;F+complete;G+complete" value="4"/>
+				<int key="A+complete;B+complete;C+complete;D+complete;F+complete;G+complete" value="38"/>
+				<int key="A+complete;D+complete;B+complete;C+complete;F+complete;G+complete" value="1"/>
+				<int key="A+complete;C+complete;D+complete;B+complete;F+complete;G+complete" value="2"/>
+			</int>
+			<int key="meta_general:different_classified_min" value="5"/>
+		</string>
+	</int>
+	<string key="meta_3TU:creation_institute" value="Eindhoven University of Technology"/>
+	<float key="meta_general:events_average" value="5.9"/>
+	<string key="meta_completeness:completeness" value="MULTIPLE">
+		<float key="10-fold_cross-validation.completeness" value="0.6949587634405404"/>
+	</string>
+	<int key="meta_life:transition_events_total" value="590">
+		<int key="complete" value="590"/>
+	</int>
+	<float key="meta_time:duration_min" value="435.516"/>
+	<trace>
+		<string key="concept:name" value="trace 0"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:08:01.821+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:16:02.889+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:16:27.858+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:20:25.117+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:21:29.939+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T10:26:53.166+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 1"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:10:01.759+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:16:06.994+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:16:20.704+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:20:11.161+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:24:16.248+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T10:29:58.106+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 2"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:15:42.073+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:22:41.437+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:23:36.594+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:29:17.910+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:37:53.559+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T10:44:03.407+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 3"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:19:56.373+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:23:07.051+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:28:41.103+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:33:32.848+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:42:51.144+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T10:50:47.012+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 4"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:28:42.873+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:32:07.886+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:37:11.076+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:40:46.617+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:45:33.048+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T10:48:13.206+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 5"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:33:27.692+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:36:29.282+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:38:51.958+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:43:57.511+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:44:26.383+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T10:45:09.462+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 6"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:35:06.762+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:42:10.506+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:42:46.670+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:51:32.897+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:54:35.262+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T11:04:08.577+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 7"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:38:26.323+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:40:56.983+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:42:55.267+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:46:32.557+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:51:08.901+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T10:58:05.146+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 8"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:47:23.199+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:51:25.512+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:52:53.923+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:56:31.633+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:01:17.541+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T11:03:48.986+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 9"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:47:29.077+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:53:17.578+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:03:14.685+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:11:26.597+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:17:51.741+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T11:23:18.750+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 10"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:49:31.979+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:53:09.677+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:55:22.535+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:58:19.700+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:06:03.460+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T11:08:12.952+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 11"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:51:05.996+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:00:32.201+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:05:19.652+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:11:06.324+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:19:56.670+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T11:24:15.163+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 12"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:54:24.745+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T10:59:26.636+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:07:55.606+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:12:10.243+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:17:28.061+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T11:20:11.872+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 13"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:02:13.660+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:07:16.671+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:14:50.718+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:16:18.270+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:20:26.745+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T11:22:36.038+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 14"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:05:27.054+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:05:36.541+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:09:40.217+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:14:08.623+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:18:06.580+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T11:20:09.496+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 15"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:09:36.725+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:13:57.289+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:16:26.072+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:17:24.539+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:26:04.112+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T11:33:37.776+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 16"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:17:31.257+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:23:37.875+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:28:35.492+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:32:01.508+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:37:03.621+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T11:46:12.917+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 17"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:19:12.924+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:22:52.585+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:29:55.522+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:33:18.526+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:42:30.663+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T11:52:01.051+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 18"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:25:29.853+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:35:01.236+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:40:08.641+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:42:31.889+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:46:24.185+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T11:48:48.741+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 19"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:34:06.149+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:34:46.406+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:39:13.193+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:46:38.908+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:55:03.443+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T12:04:09.920+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 20"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:39:10.252+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:47:45.837+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:52:42.070+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:53:14.718+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:53:48.831+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T11:56:22.509+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 21"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:41:33.683+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:46:00.271+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:52:12.546+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:01:34.061+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:02:33.644+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T12:04:07.127+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 22"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:43:53.624+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:51:17.148+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:53:01.961+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:55:32.974+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:57:56.072+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T12:02:28.230+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 23"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:53:52.474+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:00:56.362+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:03:48.493+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:09:24.223+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:14:43.848+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T12:15:35.925+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 24"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:56:22.809+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:57:30.059+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:07:18.347+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:09:02.676+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:10:15.913+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T12:13:20.420+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 25"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T11:58:54.365+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:06:41.384+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:13:20.034+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:15:42.971+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:23:54.158+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T12:30:23.934+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 26"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:08:22.874+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:09:40.208+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:18:59.399+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:21:08.275+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:29:37.646+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T12:37:12.230+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 27"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:15:02.179+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:17:28.530+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:19:36.311+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:25:00.649+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:31:40.238+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T12:40:20.057+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 28"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:22:20.984+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:22:58.151+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:24:27.926+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:32:52.732+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:38:14.808+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T12:38:23.523+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 29"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:23:17.801+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:27:51.320+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:28:21.198+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:29:53.098+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:38:03.988+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T12:44:14.747+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 30"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:23:58.653+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:33:21.427+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:35:49.653+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:38:37.153+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:39:43.384+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T12:48:31.636+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 31"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:31:36.365+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:34:39.372+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:36:54.276+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:44:11.686+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:53:01.486+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T13:01:35.635+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 32"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:33:42.797+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:43:38.234+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:49:45.273+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:59:16.264+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:00:15.775+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T13:09:04.204+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 33"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:39:48.447+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:44:30.028+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:47:47.812+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:50:11.719+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:51:42.583+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T12:53:58.577+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 34"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:42:57.581+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:51:31.546+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:52:41.169+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:58:08.665+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:05:28.147+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T13:09:46.521+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 35"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:45:12.311+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:48:27.507+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:49:41.942+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:56:26.721+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:59:17.314+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T13:06:29.882+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 36"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:53:20.574+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:57:49.909+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:03:04.147+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:13:00.083+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:18:09.560+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T13:23:13.192+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 37"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T12:59:22.794+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:08:04.167+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:09:53.406+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:12:11.904+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:19:27.306+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T13:26:01.537+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 38"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:02:29.412+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:02:54.077+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:07:54.871+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:12:59.575+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:18:14.798+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T13:21:22+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 39"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:03:47.319+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:05:57.349+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:09:24.986+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:13:11.465+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:16:42.134+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T13:20:42.630+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 40"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:05:55.217+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:08:33.348+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:13:06.475+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:18:12.763+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:21:31.006+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T13:27:06.534+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 41"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:07:53.486+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:17:48.307+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:22:25.939+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:29:46.036+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:34:51.335+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T13:40:09.362+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 42"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:17:43.081+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:18:37.708+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:24:44.680+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:34:27.936+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:41:02.075+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T13:45:35.804+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 43"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:25:51.071+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:26:55.577+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:32:18.741+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:37:33.246+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:44:31.395+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T13:46:21.624+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 44"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:28:54.993+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:35:13.660+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:42:33.843+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:46:50.813+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:47:43.652+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T13:52:21.821+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 45"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:35:16.384+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:45:10.617+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:53:42.538+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:59:44.822+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:04:04.991+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T14:10:02.692+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 46"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:37:27.863+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:41:19.215+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:47:35.604+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:50:21.748+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:53:22.444+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T13:55:11.740+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 47"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:47:01.867+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:52:34.709+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:54:05.649+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:01:38.936+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:05:34.710+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T14:13:46.577+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 48"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:52:52.125+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:02:07.248+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:10:48.099+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:20:01.158+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:28:54.985+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T14:33:25.568+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 49"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T13:58:53.774+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:04:50.725+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:14:09.005+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:22:39.114+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:28:48.597+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T14:33:34.179+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 50"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:06:14.680+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:08:35.441+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:08:55.961+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:16:29.489+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:18:57.798+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T14:21:04.628+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 51"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:07:13.791+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:08:38.430+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:11:08.068+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:13:37.649+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:21:39.076+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T14:23:34.926+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 52"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:14:32.732+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:21:33.991+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:28:55.493+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:30:15.797+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:31:58.548+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T14:35:05.348+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 53"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:21:53.702+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:28:18.636+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:33:00.689+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:38:03.231+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:42:54.441+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T14:44:58.518+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 54"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:30:39.826+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:37:53.674+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:41:23.824+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:49:59.079+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:50:54.274+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T14:53:19.170+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 55"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:36:38.395+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:45:02.203+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:45:57.318+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:49:10.066+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:49:49.852+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T14:51:32.847+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 56"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:45:08.890+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:49:59.298+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:51:04.609+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:01:03.645+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:09:10.517+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T15:12:04.870+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 57"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:55:01.933+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:57:09.316+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:06:55.510+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:14:55.224+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:23:03.641+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T15:31:27.032+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 58"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T14:57:39.858+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:01:45.084+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:06:08.361+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:12:26.937+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:17:26.555+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T15:26:09.477+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 59"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:07:23.567+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:11:59.539+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:20:45.190+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:29:06.349+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:32:38.085+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T15:39:35.553+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 60"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:11:05.680+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:18:04.493+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:25:54.021+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:31:39.776+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:35:59.102+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T15:39:44.038+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 61"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:16:07.800+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:21:01.972+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:27:43.640+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:32:55.409+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:35:19.995+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T15:36:23.574+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 62"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:21:08.147+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:28:43.567+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:32:46.880+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:33:28.728+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:35:20.568+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T15:40:58.652+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 63"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:28:19.908+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:36:22.311+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:43:10.940+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:52:40.458+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:53:53.812+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T16:01:32.542+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 64"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:36:26.064+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:44:20.520+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:47:57.972+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:57:45.433+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:07:12.395+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T16:16:45.151+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 65"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:42:11.538+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:51:25.375+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:51:37.798+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:59:29.537+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:01:44.887+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T16:06:32.931+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 66"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:44:21.676+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:49:34.616+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:54:57.033+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:59:48.504+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:08:41.171+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T16:14:28.802+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 67"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:45:12.497+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:54:38.676+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:02:53.537+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:06:24.541+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:11:14.055+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T16:19:00.059+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 68"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:47:57.272+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:51:12.523+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:56:54.010+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:06:49.284+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:13:47.304+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T16:14:27.078+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 69"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T15:55:00.707+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:02:52.869+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:10:42.152+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:19:02.797+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:22:43.278+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T16:29:44.766+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 70"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:04:04.397+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:11:08.073+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:12:37.750+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:16:14.391+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:17:08.420+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T16:26:38.734+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 71"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:04:50.816+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:06:50.437+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:11:26.226+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:12:39.622+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:16:40.490+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T16:25:19.738+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 72"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:12:28.499+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:19:17.604+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:28:10.492+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:29:58.818+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:30:39.700+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T16:37:50.110+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 73"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:21:58.954+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:24:25.501+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:25:21.275+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:28:18.036+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:28:19.323+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T16:37:46.546+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 74"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:27:26.239+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:36:21.324+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:41:13.432+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:42:25.097+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:50:47.910+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T16:58:30.259+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 75"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:34:36.051+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:44:34.473+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:49:20.355+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:49:24.611+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:58:08.654+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T17:02:25.292+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 76"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:36:31.550+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:42:52.871+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:43:14.643+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:47:07.916+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:47:10.512+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T16:53:07.176+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 77"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:39:44.498+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:49:30.629+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:57:33.258+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:02:41.716+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:04:13.843+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T17:10:29.456+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 78"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:49:13.361+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:49:34.878+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:53:07.153+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:02:56.011+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:08:47.666+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T17:10:32.459+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 79"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:50:26.484+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:52:16.911+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:00:35.019+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:04:21.341+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:07:08.865+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T17:10:41.562+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 80"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:52:36.790+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:58:49.569+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:03:26.698+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:07:31.656+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:07:42.037+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T17:12:37.181+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 81"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:53:50.043+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:56:12.687+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T16:59:04.930+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:00:01.870+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:01:46.040+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T17:11:45.416+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 82"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:02:12.163+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:05:50.137+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:14:23.424+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:23:29.498+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T17:29:50.435+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 83"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:08:36.894+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:08:58.952+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:11:18.949+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:14:34.494+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T17:15:52.410+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 84"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:13:44.131+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:19:10.434+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:28:43.808+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:31:43.076+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T17:31:48.126+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 85"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:23:01.384+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:23:57.166+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:33:45.913+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:35:24.722+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T17:41:53.806+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 86"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:30:13.001+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:33:08.248+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:42:03.294+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:46:21.749+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T17:55:11.224+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 87"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:30:18.293+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:38:23.913+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:42:35.710+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:46:43.119+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T17:50:51.779+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 88"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:34:02.064+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:39:03.447+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:43:44.585+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:47:42.378+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T17:52:05.670+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 89"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:37:54.281+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:43:38.354+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:49:50.996+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:57:53.244+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T18:02:18.662+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 90"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:47:34.406+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:51:43.424+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:56:36.973+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:00:39.006+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T18:08:15.941+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 91"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:50:09.187+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:56:06.920+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:05:06.954+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:12:20.054+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:16:24.884+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T18:21:55.628+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 92"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T17:57:38.821+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:00:46.255+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:02:11.263+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:10:18.710+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:15:02.330+02:00"/>
+			<string key="concept:name" value="accept"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T18:17:02.818+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 93"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:02:43.583+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:05:39.810+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:11:04.928+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:20:57.141+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:23:08.957+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T18:24:20.164+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 94"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:07:58.115+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:13:19.447+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:21:06.212+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:26:04.383+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:33:35.561+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T18:33:47.119+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 95"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:08:52.130+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:15:23.041+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:16:38.755+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:17:33.528+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:18:20.460+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T18:19:08.054+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 96"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:12:22.161+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:16:43.729+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:25:09.435+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:33:54.811+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:35:45.478+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T18:35:50.293+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 97"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:17:38.721+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:23:46.370+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:27:37.162+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:33:38.914+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:43:18.060+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T18:51:36.196+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 98"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:22:48.475+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:29:05.120+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:34:09.853+02:00"/>
+			<string key="concept:name" value="check system"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:37:09.259+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:43:56.756+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T18:50:46.611+02:00"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="trace 99"/>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:30:01.968+02:00"/>
+			<string key="concept:name" value="register application"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:39:07.206+02:00"/>
+			<string key="concept:name" value="calculate capacity"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:48:13.183+02:00"/>
+			<string key="concept:name" value="check credit"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<date key="time:timestamp" value="2013-04-16T18:50:59.050+02:00"/>
+			<string key="concept:name" value="reject"/>
+			<string key="lifecycle:transition" value="complete"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="concept:name" value="send decision e-mail"/>
+			<date key="time:timestamp" value="2013-04-16T18:55:34.247+02:00"/>
+		</event>
+	</trace>
+</log>

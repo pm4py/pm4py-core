@@ -183,7 +183,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     dfg_key_value_list = dfg_key_value_list[0:min(len(dfg_key_value_list), max_no_of_edges_in_diagram)]
 
     dfg_allowed_keys = [x[0] for x in dfg_key_value_list]
-    print(dfg_allowed_keys)
+    #print(dfg_allowed_keys)
     dfg_keys = list(dfg.keys())
     for edge in dfg_keys:
         if edge not in dfg_allowed_keys:
@@ -192,9 +192,9 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     # calculate edges penwidth
     penwidth = assign_penwidth_edges(dfg)
     activities_in_dfg = set()
-    print(activities_count)
+    #print(activities_count)
     activities_count_int = copy(activities_count)
-    print(activities_count_int)
+    #print(activities_count_int)
 
     for edge in dfg:
         activities_in_dfg.add(edge[0])
@@ -211,7 +211,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     else:
         # take unique elements as a list not as a set (in this way, nodes are added in the same order to the graph)
         activities_to_include = sorted(list(set(activities_in_dfg)))
-    print(activities_to_include)
+    #print(activities_to_include)
     activities_map = {}
 
 
@@ -238,7 +238,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         else:
             label = human_readable_stat(dfg[edge], stat_locale)
         viz.edge(str(hash(edge[0])), str(hash(edge[1])), label=label, penwidth=str(penwidth[edge]), fontsize=font_size)
-        print(label)
+        #print(label)
 
 
     start_activities_to_include = [act for act in start_activities if act in activities_map]
@@ -260,7 +260,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     viz.attr(overlap='false')
 
     viz.format = image_format
-    print(viz)
+    #print(viz)
     return viz
 
 
@@ -301,30 +301,30 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, {})
     if activities_count is None:
         if log is not None:
-            #print("First ")
+            ##print("First ")
             activities_count = attr_get.get_attribute_values(log, activity_key, parameters=parameters)
         else:
-            #print("SEcond")
+            ##print("SEcond")
             activities_count = Counter({key: 0 for key in activities})
             for el in dfg:
                 activities_count[el[1]] += dfg[el]
             if isinstance(start_activities, dict):
-                #print("Third")
+                ##print("Third")
                 for act in start_activities:
                     activities_count[act] += start_activities[act]
 
     if soj_time is None:
         if log is not None:
-            print("NEVER")
+            #print("NEVER")
             soj_time = soj_time_get.apply(log, parameters=parameters)
         else:
-            #print("NEVERb")
+            ##print("NEVERb")
             soj_time = {key: 0 for key in activities}
 
     #write dict as soj time for relative time and pass it as a parameter
-    #print(activities_count)
-    #print(soj_time)
-    #print(stat_locale)
+    ##print(activities_count)
+    ##print(soj_time)
+    ##print(stat_locale)
     return graphviz_visualization(activities_count, dfg, image_format=image_format, measure="frequency",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
                                   start_activities=start_activities, end_activities=end_activities, 

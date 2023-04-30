@@ -142,6 +142,8 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
     for dfg_timestamp in dfg_timestamps:
         act = dfg_timestamp[0]
         timestamp = dfg_timestamp[1].total_seconds()
+        print(dfg_timestamp)
+        print(timestamp)
         stat = human_readable_stat(timestamp)
         if stat not in timestamps_to_include:
             viz.node(str(hash(stat)), str(stat), shape='circle', style='filled', fillcolor='pink')
@@ -190,6 +192,7 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
         int2 = int(re.search(r'\d+', minlen_aux[i+1]).group())
         print(int1, int2)
         minlen = int2 - int1
+        
         minlen_list.append(minlen)
         print(minlen)
     print(minlen_list)
@@ -305,7 +308,7 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
 
     viz.attr(overlap='true')
     viz.format = image_format
-    print(viz)
+    #print(viz)
     return viz
 
 

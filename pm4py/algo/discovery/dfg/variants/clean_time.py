@@ -24,7 +24,109 @@ CONST_AUX_CASE = 'aux_case_'
 CONST_COUNT = 'count_'
 
 
-def apply(log : pd.DataFrame, parameters):
+from pm4py.discovery import discover_dfg_typed
+
+def apply(log: pd.DataFrame, parameters):
+    #print("new function")
+    #dfg, start_act, end_act = discover_dfg_typed(log)
+    ##print(log[:20])
+
+    act_key = exec_utils.get_param_value(
+        Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
+    cid_key = exec_utils.get_param_value(
+        Parameters.CASE_ID_KEY, parameters, constants.CASE_ATTRIBUTE_GLUE)
+    time_key = exec_utils.get_param_value(
+        Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)
+
+    #sort the values according to cid and timekey
+    df = log.sort_values([cid_key, time_key]).loc[:, [cid_key, act_key, time_key]].reset_index()
+    #print(df[:20])
+
+    #mapping each case ID to the first time stamp of that case.
+    case_starttime_map ={}
+    grouped = df.groupby(cid_key)
+    #print(grouped)
+    all_cases = df[cid_key].unique()
+    #print(all_cases)
+
+    '''
+    1. get each group of cid
+    2. save variables - first row's activity and first row's timestamp(init_timestamp)
+    3. get all act in this case as a list
+    4. for each act in this case, calculate the average timestmaps (This is for loops)
+        - average out the timestamp for this activity (loop_act_timestamp)
+        - 
+    
+    5.. use the init_timestamp to calculate the relative time  
+    '''
+
+    time_dictionary_list = {}
+
+    for case in all_cases:
+        ##print(case)
+        current_group = grouped.get_group(case)
+        current_group = current_group.sort_values([cid_key, time_key]).loc[:, [cid_key, act_key, time_key]].reset_index()
+        #print(current_group)
+       
+        ##print(f"First row's activity of this group\n{current_group[act_key][0]}")
+        ##print(f"First row's timestamp of this group\n{current_group[time_key][0]}")
+        
+        all_act = current_group[act_key].unique()
+        #print(all_act)
+        init_timestamp = current_group[time_key][0]
+        #deal with loops in a case
+        for act in all_act:
+            #print(act)
+            curr_act = act
+            df1 = current_group[current_group[act_key] == act]
+            #print(df1)
+            mean_time = df1[time_key].mean()
+            #print(f"Mean time for this df is {mean_time}")
+            average_time = mean_time - init_timestamp
+            
+            #print(f"Start timestamp is {init_timestamp}")
+            #print(f"Average timestamp is {average_time}")
+            #print()
+
+            if act not in time_dictionary_list.keys():
+                time_dictionary_list[act] = []
+                time_dictionary_list[act].append(average_time)
+            else:
+                time_dictionary_list[act].append(average_time)
+            
+        #print()
+        #print()
+        #print()
+
+    print(time_dictionary_list.keys())
+    print(time_dictionary_list)
+    keys = time_dictionary_list.keys()
+
+    time_dictionary = {}
+    for key in keys:
+        print(key)
+        #print(time_dictionary_list[key])
+        #average = sum(time_dictionary_list[key]) / len(time_dictionary_list[key])
+        #print(average)
+        avg=pd.to_timedelta(pd.Series(time_dictionary_list[key])).mean()
+        print(avg)
+        time_dictionary[key] = avg 
+        print()
+
+    print(time_dictionary)
+
+        
+
+    #df_time = pd.DataFrame(data=time_dictionary_list)
+    #print(df_time)
+    return time_dictionary
+
+
+
+
+
+
+def apply1(log : pd.DataFrame, parameters):
     parameters = {} if parameters is None else parameters
     act_key = exec_utils.get_param_value(
         Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
@@ -63,6 +165,9 @@ def apply(log : pd.DataFrame, parameters):
         dfg.end_activities[a] += f
 
     #print("Finished old clean_code")
+    if(len(dfg.start_activities)>1):
+        #print("Not possible for more than one start activity")
+        return
     
 
     #Realtive Time Specific Code 
@@ -90,7 +195,7 @@ def apply(log : pd.DataFrame, parameters):
     df[relative_time] = df[time_key] - df[cid_timestamp]
     #print(df[0:6])
 
-    print(df[:6].to_markdown()) 
+    #print(df[:6].to_markdown()) 
 
     time_dictionary = {}
     #print("Starting to get average relative time activities")
@@ -101,7 +206,6 @@ def apply(log : pd.DataFrame, parameters):
         time_dictionary[act] = mean
 
     #print("finished clean_time")
-    
     return time_dictionary
 
 
@@ -115,19 +219,20 @@ def get_cid_wise_start_time(df : pd.DataFrame, act_key,cid_key, time_key, all_ci
     #print("Starting for loops")
     #print(len(all_cid))
     for cid in all_cid:
-        ##print(f"{cid} in {all_cid}")
+        #print(f"{cid} in {all_cid}")
         aux_df = df[df[cid_key] == cid]
         #print(aux_df)
         
         time_value = aux_df.loc[aux_df[act_key] == start_activity, time_key]
-        ##print("time value is : ",time_value)
+        #print("time value is : ",time_value)
         #start_time = 0
         start_time = pd.Timestamp(0)
-        ##print( "start time : ",start_time)
+        #print( "start time : ",start_time)
         for i in time_value:
             start_time = i
-            ##print("start time : ",start_time)
+            #print("start time : ",start_time)
         cid_time_dic[cid] = start_time
+        break
         ##print()
         
         
