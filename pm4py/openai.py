@@ -418,7 +418,9 @@ def abstract_ocel_ocdfg(ocel: OCEL, include_header: bool = True, include_timesta
     graph
 
     :param ocel: object-centric event log
+    :param include_header: (boolean) includes the header in the abstraction
     :param include_timestamps: (boolean) includes the timestamp information in the abstraction
+    :param max_len: maximum length of the abstraction
     :rtype: ``str``
 
     .. code-block:: python3
@@ -435,6 +437,31 @@ def abstract_ocel_ocdfg(ocel: OCEL, include_header: bool = True, include_timesta
 
     from pm4py.algo.querying.openai import ocel_ocdfg_descr
     return ocel_ocdfg_descr.apply(ocel, parameters=parameters)
+
+
+def abstract_ocel_features(ocel: OCEL, obj_type: str, include_header: bool = True, max_len: int = constants.OPENAI_MAX_LEN) -> str:
+    """
+    Obtains the abstraction of an object-centric event log, representing in text the features and their values.
+
+    :param ocel: object-centric event log
+    :param obj_type: the object type that should be considered in the feature extraction
+    :param include_header: (boolean) includes the header in the abstraction
+    :param max_len: maximum length of the abstraction
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel("tests/input_data/ocel/example_log.jsonocel")
+        print(pm4py.openai.abstract_ocel_ocdfg(ocel))
+    """
+    parameters = {}
+    parameters["include_header"] = include_header
+    parameters["max_len"] = max_len
+
+    from pm4py.algo.querying.openai import ocel_fea_descr
+    return ocel_fea_descr.apply(ocel, obj_type, parameters=parameters)
 
 
 def abstract_event_stream(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = constants.OPENAI_MAX_LEN, response_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
