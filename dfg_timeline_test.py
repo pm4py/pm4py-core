@@ -17,7 +17,7 @@ file13 = "tests/input_data/interval_event_log.xes"
 file14 = "C:/Users/harleenkaur/Downloads/34c3f44b-3101-4ea9-8281-e38905c68b8d_1_all/BPI Challenge 2017.xes.gz"
 
 #File 3 and File 4 are important ones in debugging
-log = pm4py.read_xes(file14)
+log = pm4py.read_xes(file10)
 #print(log[:20])
 
 dfg, start_act, end_act = pm4py.discover_dfg_typed(log) 

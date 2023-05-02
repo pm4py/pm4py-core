@@ -192,7 +192,8 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
         int2 = int(re.search(r'\d+', minlen_aux[i+1]).group())
         print(int1, int2)
         minlen = int2 - int1
-        
+        if(minlen<1):
+            minlen = 1
         minlen_list.append(minlen)
         print(minlen)
     print(minlen_list)
@@ -278,11 +279,26 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
     to the same object.'''
     merge_map = {}
     ds = [act_time_map, activities_map]
+    print(f"Here is ds\n{ds}\n")
     merge_map = {}
-    for k in act_time_map.keys():
-        merge_map[k] = tuple(d[k] for d in ds)
+    
+    '''for k in act_time_map.keys():
+        merge_map[k] = tuple(d[k] for d in ds)'''
 
+    #TRY MERGING MAP in different way!
+    from collections import defaultdict
+    dd = defaultdict(list)
+
+    for d in (activities_map, act_time_map): # you can list as many input dicts as you want here
+        for key, value in d.items():
+            dd[key].append(value)
+    
+    print(f"Here is the result after merging: \n{dd}\n") # result: defaultdict(<type 'list'>, {1: [2, 6], 3: [4, 7]})
+
+
+    print(act_time_map)
     print(merge_map)
+    print()
 
 
     for hash_time in hash_timestamps_to_include:
@@ -293,22 +309,26 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
         s.node(hash_time)
         #print(time_act_dict)
         for values in time_act_dict[hash_time]:
-            #print('*****')
-            #print(merge_map[values][0])
-            #print(merge_map[values][1])
+            print('*****')
+            '''print(merge_map[values][0])
+            print(merge_map[values][1])
             s.node(merge_map[values][0])
-            s.node(merge_map[values][1])
+            s.node(merge_map[values][1])'''
+            print(dd[values][0])
+            print(dd[values][1])
+            s.node(dd[values][0])
+            s.node(dd[values][1])
 
 
         viz.subgraph(s)
         
     print(activities_map)
     print(act_time_map)
-
+    print(f"\n\n\n\n")
 
     viz.attr(overlap='true')
     viz.format = image_format
-    #print(viz)
+    print(viz)
     return viz
 
 
