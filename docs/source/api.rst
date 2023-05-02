@@ -300,6 +300,7 @@ We offer some integrations with OpenAI (e.g., ChatGPT) for automatically get ins
   * :meth:`pm4py.openai.describe_activity`; provides domain knowledge about an activity of the process
   * :meth:`pm4py.openai.describe_variant`; describes a given variant, providing insights on the anomalies
   * :meth:`pm4py.openai.suggest_improvements`; suggests some improvements for the process starting from its event log
+  * :meth:`pm4py.openai.anomalous_paths`; finds the most anomalous paths in the DFG
   * :meth:`pm4py.openai.root_cause_analysis`; performs a root cause analysis of the conformance/performance issues
   * :meth:`pm4py.openai.code_for_log_generation`; generates an event log given the name of a process (e.g., Purchase-to-Pay)
   * :meth:`pm4py.openai.compare_logs`; describes the differences between two event logs
@@ -308,6 +309,8 @@ We offer some integrations with OpenAI (e.g., ChatGPT) for automatically get ins
   * :meth:`pm4py.openai.conformance_checking`; performs conformance checking against the provided log and rule
   * :meth:`pm4py.openai.suggest_verify_hypotheses`; given an event log, provides some hypotheses for the analysis and allows to verify them
   * :meth:`pm4py.openai.filtering_query`; given an event log and a natural language query, translates that to a SQL query
+  * :meth:`pm4py.openai.petri_diff_with_de_jure`; finds the differences between the Petri net and a de-jure model for the same process
+  * :meth:`pm4py.openai.petri_describe_process`; describes the process contained in the Petri net
 
 
 The following methods provides just the abstractions of the given objects:
@@ -594,6 +597,9 @@ Overall List of Methods
    pm4py.openai.abstract_petri_net
    pm4py.openai.abstract_log_attributes
    pm4py.openai.filtering_query
+   pm4py.openai.anomalous_paths
+   pm4py.openai.petri_diff_with_de_jure
+   pm4py.openai.petri_describe_process
    pm4py.connectors.extract_log_outlook_mails
    pm4py.connectors.extract_log_outlook_calendar
    pm4py.connectors.extract_log_windows_events

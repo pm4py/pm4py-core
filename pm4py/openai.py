@@ -715,7 +715,7 @@ def petri_describe_process(net: PetriNet, im: Marking, fm: Marking, api_key: Opt
         import pm4py
 
         net, im, fm = pm4py.read_pnml('tests/input_data/running-example.pnml')
-        print(pm4py.openai.v(net, im, fm)
+        print(pm4py.openai.petri_describe_process(net, im, fm)
     """
     parameters = {}
     if api_key is not None:
