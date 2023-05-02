@@ -147,6 +147,39 @@ def suggest_improvements(log_obj: Union[pd.DataFrame, EventLog, EventStream], ap
     return log_queries.suggest_improvements(log_obj, parameters=parameters)
 
 
+def anomalous_paths(log_obj: Union[pd.DataFrame, EventLog, EventStream], api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+    """
+    Given an event log, finds the most anomalous paths included in the DFG.
+
+    :param log_obj: event log
+    :param api_key: API key (optional, to provide only if the query needs to be executed against the API)
+    :param openai_model: OpenAI model (optional, to provide only if the query needs to be executed against the API)
+    :param activity_key: the column to be used as activity
+    :param timestamp_key: the column to be used as timestamp
+    :param case_id_key: the column to be used as case identifier
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
+        print(pm4py.openai.anomalous_paths(log))
+    """
+    if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log_obj)
+
+    parameters = get_properties(
+        log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
+
+    from pm4py.algo.querying.openai import log_queries
+    return log_queries.anomalous_paths(log_obj, parameters=parameters)
+
+
 def code_for_log_generation(desired_process: str, api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
     """
     Given the name of a desired process (for example, fast food, Purchase-to-Pay) provide code for the generation
@@ -636,3 +669,59 @@ def filtering_query(log_obj: Union[pd.DataFrame, EventLog, EventStream], filteri
 
     from pm4py.algo.querying.openai import log_queries
     return log_queries.filtering_query(log_obj, filtering_query, parameters=parameters)
+
+
+def petri_diff_with_de_jure(net: PetriNet, im: Marking, fm: Marking, api_key: Optional[str] = None, openai_model: Optional[str] = None) -> str:
+    """
+    Finds possible differences between a de-jure model for the same process and the current process
+
+    :param net: Petri net
+    :param im: initial marking
+    :param fm: final marking
+    :param api_key: API key (optional, to provide only if the query needs to be executed against the API)
+    :param openai_model: OpenAI model (optional, to provide only if the query needs to be executed against the API)
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('tests/input_data/running-example.pnml')
+        print(pm4py.openai.petri_diff_with_de_jure(net, im, fm)
+    """
+    parameters = {}
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
+
+    from pm4py.algo.querying.openai import net_queries
+    return net_queries.petri_diff_with_de_jure(net, im, fm, parameters=parameters)
+
+
+def petri_describe_process(net: PetriNet, im: Marking, fm: Marking, api_key: Optional[str] = None, openai_model: Optional[str] = None) -> str:
+    """
+    Describes the process provided as a Petri net
+
+    :param net: Petri net
+    :param im: initial marking
+    :param fm: final marking
+    :param api_key: API key (optional, to provide only if the query needs to be executed against the API)
+    :param openai_model: OpenAI model (optional, to provide only if the query needs to be executed against the API)
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('tests/input_data/running-example.pnml')
+        print(pm4py.openai.v(net, im, fm)
+    """
+    parameters = {}
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
+
+    from pm4py.algo.querying.openai import net_queries
+    return net_queries.petri_describe_process(net, im, fm, parameters=parameters)

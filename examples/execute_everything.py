@@ -22,10 +22,10 @@ def ocel_enrichment():
     ocel_enrichment.execute_script()
 
 
-def openai_log_queries():
-    from examples import openai_log_queries
-    print("\n\nopenai_log_queries")
-    openai_log_queries.execute_script()
+def openai_queries():
+    from examples import openai_queries
+    print("\n\nopenai_queries")
+    openai_queries.execute_script()
 
 
 def validation_ocel20_xml():
@@ -781,7 +781,7 @@ if __name__ == "__main__":
     execute_script(ocel_occm_example)
     execute_script(ocel_clustering)
     execute_script(ocel_enrichment)
-    execute_script(openai_log_queries)
+    execute_script(openai_queries)
     execute_script(validation_ocel20_xml)
     execute_script(consecutive_act_case_grouping_filter)
     execute_script(cost_based_dfg)
