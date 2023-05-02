@@ -5,6 +5,7 @@ from pm4py.objects.ocel.obj import OCEL
 from pm4py.algo.querying.openai import log_to_dfg_descr, log_to_variants_descr, log_to_cols_descr
 from pm4py.algo.querying.openai import stream_to_descr
 from pm4py.algo.transformation.ocel.description import algorithm as ocel_description
+from pm4py.algo.querying.openai import ocel_ocdfg_descr
 from pm4py.algo.querying.openai import perform_query
 from pm4py.objects.conversion.log import converter as log_converter
 from typing import Union, Tuple
@@ -22,7 +23,7 @@ class Parameters(Enum):
 AVAILABLE_LOG_QUERIES = ["describe_process", "describe_path", "describe_activity", "suggest_improvements", "code_for_log_generation",
                          "root_cause_analysis", "describe_variant", "compare_logs", "anomaly_detection", "suggest_clusters",
                          "conformance_checking", "suggest_verify_hypotheses", "filtering_query",
-                         "abstract_dfg", "abstract_variants", "abstract_columns", "abstract_ocel", "abstract_stream"]
+                         "abstract_dfg", "abstract_variants", "abstract_columns", "abstract_ocel", "abstract_stream", "abstract_ocel_ocdfg"]
 
 
 def query_wrapper(log_obj: Union[pd.DataFrame, EventLog, EventStream, OCEL], type: str, args: Optional[Dict[Any, Any]] = None, parameters: Optional[Dict[Any, Any]] = None) -> str:
@@ -70,6 +71,8 @@ def query_wrapper(log_obj: Union[pd.DataFrame, EventLog, EventStream, OCEL], typ
         return ocel_description.apply(log_obj, parameters=parameters)
     elif type == "abstract_stream":
         return stream_to_descr.apply(log_obj, parameters=parameters)
+    elif type == "abstract_ocel_ocdfg":
+        return ocel_ocdfg_descr.apply(log_obj, parameters=parameters)
 
 
 def describe_process(log_obj: Union[pd.DataFrame, EventLog, EventStream], parameters: Optional[Dict[Any, Any]] = None) -> str:

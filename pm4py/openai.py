@@ -392,7 +392,7 @@ def abstract_variants(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_l
 
 def abstract_ocel(ocel: OCEL, include_timestamps: bool = True) -> str:
     """
-    Obtains the abstraction of an object-centric event log
+    Obtains the abstraction of an object-centric event log, including the list of events and the objects of the OCEL
 
     :param ocel: object-centric event log
     :param include_timestamps: (boolean) includes the timestamp information in the abstraction
@@ -410,6 +410,31 @@ def abstract_ocel(ocel: OCEL, include_timestamps: bool = True) -> str:
 
     from pm4py.algo.transformation.ocel.description import algorithm as ocel_description
     return ocel_description.apply(ocel, parameters=parameters)
+
+
+def abstract_ocel_ocdfg(ocel: OCEL, include_header: bool = True, include_timestamps: bool = True, max_len: int = constants.OPENAI_MAX_LEN) -> str:
+    """
+    Obtains the abstraction of an object-centric event log, representing in text the object-centric directly-follows
+    graph
+
+    :param ocel: object-centric event log
+    :param include_timestamps: (boolean) includes the timestamp information in the abstraction
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel("tests/input_data/ocel/example_log.jsonocel")
+        print(pm4py.openai.abstract_ocel_ocdfg(ocel))
+    """
+    parameters = {}
+    parameters["include_header"] = include_header
+    parameters["include_timestamps"] = include_timestamps
+    parameters["max_len"] = max_len
+
+    from pm4py.algo.querying.openai import ocel_ocdfg_descr
+    return ocel_ocdfg_descr.apply(ocel, parameters=parameters)
 
 
 def abstract_event_stream(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = constants.OPENAI_MAX_LEN, response_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
