@@ -44,4 +44,6 @@ push-release-branch:
     - chmod 700 ~/.ssh
     - 'mv "$SSH_PUBLIC_KEY" ~/.ssh/id_rsa.pub'
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - git push target release
+    # We force-push the release branch, because we want to overwrite the history of the target repository
+    # In certain cases the target repo might be out of sync with the source repo, in that case a normal push would fail -> force-push
+    - git push target release --force
