@@ -566,7 +566,7 @@ def check_is_fitting(*args, activity_key=xes_constants.DEFAULT_NAME_KEY) -> bool
         return __check_is_fit_petri_net(trace, model[0], model[1], model[2], activity_key=activity_key)
 
 
-def conformance_temporal_profile(log: Union[EventLog, pd.DataFrame], temporal_profile: Dict[Tuple[str, str], Tuple[float, float]], zeta: float = 1.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[List[Tuple[float, float, float, float]]]:
+def conformance_temporal_profile(log: Union[EventLog, pd.DataFrame], temporal_profile: Dict[Tuple[str, str], Tuple[float, float]], zeta: float = 1.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> List[List[Tuple[float, float, float, float]]]:
     """
     Performs conformance checking on the provided log with the provided temporal profile.
     The result is a list of time-based deviations for every case.
@@ -583,6 +583,7 @@ def conformance_temporal_profile(log: Union[EventLog, pd.DataFrame], temporal_pr
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+    :param return_diagnostics_dataframe: if possible, returns a dataframe with the diagnostics (instead of the usual output)
     :rtype: ``List[List[Tuple[float, float, float, float]]]``
 
     .. code-block:: python3
@@ -603,6 +604,9 @@ def conformance_temporal_profile(log: Union[EventLog, pd.DataFrame], temporal_pr
 
     from pm4py.algo.conformance.temporal_profile import algorithm as temporal_profile_conformance
     result = temporal_profile_conformance.apply(log, temporal_profile, parameters=properties)
+
+    if return_diagnostics_dataframe:
+        return temporal_profile_conformance.get_diagnostics_dataframe(log, result, parameters=properties)
 
     return result
 

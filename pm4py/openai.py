@@ -306,7 +306,7 @@ def abstract_dfg(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: i
         import pm4py
 
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
-        print(pm4py.abstract_dfg(log_obj))
+        print(pm4py.openai.abstract_dfg(log))
     """
     if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
@@ -341,7 +341,7 @@ def abstract_variants(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_l
         import pm4py
 
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
-        print(pm4py.abstract_variants(log_obj))
+        print(pm4py.openai.abstract_variants(log))
     """
     if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
@@ -370,7 +370,7 @@ def abstract_ocel(ocel: OCEL, include_timestamps: bool = True) -> str:
         import pm4py
 
         ocel = pm4py.read_ocel("tests/input_data/ocel/example_log.jsonocel")
-        print(pm4py.abstract_ocel(ocel))
+        print(pm4py.openai.abstract_ocel(ocel))
     """
     parameters = {}
     parameters["include_timestamps"] = include_timestamps
@@ -396,7 +396,7 @@ def abstract_event_stream(log_obj: Union[pd.DataFrame, EventLog, EventStream], m
         import pm4py
 
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
-        print(pm4py.abstract_event_stream(log_obj))
+        print(pm4py.openai.abstract_event_stream(log))
     """
     if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
@@ -432,6 +432,35 @@ def abstract_petri_net(net: PetriNet, im: Marking, fm: Marking, response_header:
 
     from pm4py.algo.querying.openai import net_to_descr
     return net_to_descr.apply(net, im, fm, parameters=parameters)
+
+
+def abstract_log_attributes(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = constants.OPENAI_MAX_LEN, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+    """
+    Abstracts the attributes of a log (reporting their name, their type, and the top values)
+
+    :param log_obj: log object
+    :param max_len: maximum length of the (string) abstraction
+    :param activity_key: the column to be used as activity
+    :param timestamp_key: the column to be used as timestamp
+    :param case_id_key: the column to be used as case identifier
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
+        print(pm4py.openai.abstract_log_attributes(log))
+    """
+    if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log_obj)
+
+    parameters = get_properties(
+        log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    parameters["max_len"] = max_len
+
+    from pm4py.algo.querying.openai import log_to_cols_descr
+    return log_to_cols_descr.apply(log_obj, parameters=parameters)
 
 
 def anomaly_detection(log_obj: Union[pd.DataFrame, EventLog, EventStream], api_key: Optional[str] = None, openai_model: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:

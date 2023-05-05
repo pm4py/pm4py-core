@@ -3,14 +3,20 @@
 ## pm4py 2.7.4 (2023.04.XX)
 
 ### Added
+* 546cff5c7d91810b068777870ae20dab2b110150
+  * pm4py.openai.abstract_log_attributes method in the simplified interface
+* e9ee619300f59713c481d9fd592b3eeefc489175
+  * added get_diagnostics_dataframe method for temporal profile-based conformance checking
 
 ### Changed
-* 047452b36bf0df0fb6f59caa321296c4dc544a8f
-  * consistency (IDs, types) checks when importing/exporting OCELs
-* 091908c11a62b6708bb64adafa7a4168099b140d
-  * footprints visualization in the simplified interface - comparison
 * 45dcc3de2ddf4348f8a7e31bae54529ec2ab9ad7
   * consistency checks when importing/exporting OCELs
+* 9c4eb3a8512fbd20f7352341131ec2855b108b95
+  * consistency checks OCEL feature extraction
+* 091908c11a62b6708bb64adafa7a4168099b140d
+  * footprints visualization in the simplified interface - comparison
+* 69d50384784f67a74823a4a0af99a1ebf9f0c302
+  * minor improvement log2ocel conversion
 
 ### Deprecated
 
