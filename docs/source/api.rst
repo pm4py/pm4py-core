@@ -560,30 +560,14 @@ Overall List of Methods
    pm4py.ocel.ocel_e2o_lifecycle_enrichment
    pm4py.ocel.cluster_equivalent_ocel
    pm4py.openai
-   pm4py.openai.describe_process
-   pm4py.openai.describe_path
-   pm4py.openai.describe_activity
-   pm4py.openai.suggest_improvements
-   pm4py.openai.code_for_log_generation
-   pm4py.openai.root_cause_analysis
-   pm4py.openai.describe_variant
-   pm4py.openai.compare_logs
    pm4py.openai.abstract_dfg
    pm4py.openai.abstract_variants
    pm4py.openai.abstract_ocel
    pm4py.openai.abstract_ocel_ocdfg
    pm4py.openai.abstract_ocel_features
-   pm4py.openai.anomaly_detection
-   pm4py.openai.suggest_clusters
-   pm4py.openai.conformance_checking
-   pm4py.openai.suggest_verify_hypotheses
    pm4py.openai.abstract_event_stream
    pm4py.openai.abstract_petri_net
    pm4py.openai.abstract_log_attributes
-   pm4py.openai.filtering_query
-   pm4py.openai.anomalous_paths
-   pm4py.openai.petri_diff_with_de_jure
-   pm4py.openai.petri_describe_process
    pm4py.connectors.extract_log_outlook_mails
    pm4py.connectors.extract_log_outlook_calendar
    pm4py.connectors.extract_log_windows_events
