@@ -293,26 +293,6 @@ Some object-centric process discovery algorithms are also offered:
 OpenAI Integration (:mod:`pm4py.openai`)
 ------------------------------------------
 
-We offer some integrations with OpenAI (e.g., ChatGPT) for automatically get insights:
-
-  * :meth:`pm4py.openai.describe_process`; provides domain knowledge about the process
-  * :meth:`pm4py.openai.describe_path`; provides domain knowledge about a path of the process
-  * :meth:`pm4py.openai.describe_activity`; provides domain knowledge about an activity of the process
-  * :meth:`pm4py.openai.describe_variant`; describes a given variant, providing insights on the anomalies
-  * :meth:`pm4py.openai.suggest_improvements`; suggests some improvements for the process starting from its event log
-  * :meth:`pm4py.openai.anomalous_paths`; finds the most anomalous paths in the DFG
-  * :meth:`pm4py.openai.root_cause_analysis`; performs a root cause analysis of the conformance/performance issues
-  * :meth:`pm4py.openai.code_for_log_generation`; generates an event log given the name of a process (e.g., Purchase-to-Pay)
-  * :meth:`pm4py.openai.compare_logs`; describes the differences between two event logs
-  * :meth:`pm4py.openai.anomaly_detection`; describes the main anomalies of the provided event log
-  * :meth:`pm4py.openai.suggest_clusters`; suggest groups of variants based on the behavior
-  * :meth:`pm4py.openai.conformance_checking`; performs conformance checking against the provided log and rule
-  * :meth:`pm4py.openai.suggest_verify_hypotheses`; given an event log, provides some hypotheses for the analysis and allows to verify them
-  * :meth:`pm4py.openai.filtering_query`; given an event log and a natural language query, translates that to a SQL query
-  * :meth:`pm4py.openai.petri_diff_with_de_jure`; finds the differences between the Petri net and a de-jure model for the same process
-  * :meth:`pm4py.openai.petri_describe_process`; describes the process contained in the Petri net
-
-
 The following methods provides just the abstractions of the given objects:
 
   * :meth:`pm4py.openai.abstract_dfg`; provides the DFG abstraction of a traditional event log

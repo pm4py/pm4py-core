@@ -22,12 +22,6 @@ def ocel_enrichment():
     ocel_enrichment.execute_script()
 
 
-def openai_queries():
-    from examples import openai_queries
-    print("\n\nopenai_queries")
-    openai_queries.execute_script()
-
-
 def validation_ocel20_xml():
     from examples import validation_ocel20_xml
     print("\n\nvalidation_ocel20_xml")
