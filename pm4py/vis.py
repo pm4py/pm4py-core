@@ -33,7 +33,7 @@ def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = Non
     :param petri_net: Petri net
     :param initial_marking: Initial marking
     :param final_marking: Final marking
-    :param format: Format of the output picture
+    :param format: Format of the output picture (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param bgcolor: Background color of the visualization (default: white)
     :param decorations: Decorations (color, label) associated to the elements of the Petri net
 
@@ -86,7 +86,7 @@ def view_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict
     :param dfg: DFG object
     :param start_activities: Start activities
     :param end_activities: End activities
-    :param format: Format of the output picture
+    :param format: Format of the output picture (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param aggregation_measure: Aggregation measure (default: mean): mean, median, min, max, sum, stdev
     :param bgcolor: Background color of the visualization (default: white)
 
@@ -152,7 +152,7 @@ def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: st
     :param dfg: DFG object
     :param start_activities: Start activities
     :param end_activities: End activities
-    :param format: Format of the output picture
+    :param format: Format of the output picture (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -211,7 +211,7 @@ def view_process_tree(tree: ProcessTree, format: str = constants.DEFAULT_FORMAT_
     Views a process tree
 
     :param tree: Process tree
-    :param format: Format of the visualization
+    :param format: Format of the visualization (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -279,7 +279,7 @@ def view_bpmn(bpmn_graph: BPMN, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW
     Views a BPMN graph
 
     :param bpmn_graph: BPMN graph
-    :param format: Format of the visualization
+    :param format: Format of the visualization (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -873,7 +873,7 @@ def view_ocdfg(ocdfg: Dict[str, Any], annotation: str = "frequency", act_metric:
     :param act_threshold: The threshold to apply on the activities frequency (default: 0). Only activities having a frequency >= than this are kept in the graph.
     :param edge_threshold: The threshold to apply on the edges frequency (default 0). Only edges having a frequency >= than this are kept in the graph.
     :param performance_aggregation: The aggregation measure to use for the performance: mean, median, min, max, sum
-    :param format: The format of the output visualization
+    :param format: The format of the output visualization (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -945,7 +945,7 @@ def view_ocpn(ocpn: Dict[str, Any], format: str = constants.DEFAULT_FORMAT_GVIZ_
     Visualizes on the screen the object-centric Petri net
 
     :param ocpn: Object-centric Petri net
-    :param format: Format of the visualization
+    :param format: Format of the visualization (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -990,7 +990,7 @@ def view_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, Any]
 
     :param network_analysis: Network analysis
     :param variant: Variant of the visualization: - frequency (if the discovered network analysis contains the frequency of the interactions) - performance (if the discovered network analysis contains the performance of the interactions)
-    :param format: Format of the visualization
+    :param format: Format of the visualization (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param activity_threshold: The minimum number of occurrences for an activity to be included (default: 1)
     :param edge_threshold: The minimum number of occurrences for an edge to be included (default: 1)
     :param bgcolor: Background color of the visualization (default: white)
@@ -1041,7 +1041,7 @@ def view_transition_system(transition_system: TransitionSystem, format: str = co
     Views a transition system
 
     :param transition_system: Transition system
-    :param format: Format of the visualization
+    :param format: Format of the visualization (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -1085,7 +1085,7 @@ def view_prefix_tree(trie: Trie, format: str = constants.DEFAULT_FORMAT_GVIZ_VIE
     Views a prefix tree
 
     :param prefix_tree: Prefix tree
-    :param format: Format of the visualization
+    :param format: Format of the visualization (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
@@ -1234,7 +1234,7 @@ def view_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], format: str = con
 
     :param ocel: object-centric event log
     :param graph: object graph
-    :param format: format of the visualization
+    :param format: format of the visualization (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param bgcolor: Background color of the visualization (default: white)
 
     .. code-block:: python3
