@@ -34,6 +34,8 @@ push-release-branch:
   script:
     # The runner checks out a detached(!) head, which we cannot push -> we need to switch to "release" explicitly
     - git checkout release
+    # GitLab does a shallow clone, which we cannot push -> we need to unshallow the repo to be able to push to another repo
+    - git fetch --unshallow
     - git remote add target "$REMOTE_REPO"
     # Install SSH agent, but only if necessary
     - which ssh-agent || ( apt-get update -qy && apt-get install openssh-client -qqy )
@@ -44,6 +46,5 @@ push-release-branch:
     - chmod 700 ~/.ssh
     - 'mv "$SSH_PUBLIC_KEY" ~/.ssh/id_rsa.pub'
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    # We force-push the release branch, because we want to overwrite the history of the target repository
-    # In certain cases the target repo might be out of sync with the source repo, in that case a normal push would fail -> force-push
     - git push target release
+
