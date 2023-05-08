@@ -57,5 +57,6 @@ def apply(net: PetriNet, im: Marking, fm: Marking, parameters: Optional[Dict[Any
     ret.append(repr(net))
     ret.append("\ninitial marking: "+repr(im))
     ret.append("final marking: "+repr(fm))
+    ret.append("\n")
 
     return "\n".join(ret)
