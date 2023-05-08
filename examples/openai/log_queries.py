@@ -1,7 +1,11 @@
 from typing import Optional, Dict, Any, Collection
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.ocel.obj import OCEL
 from pm4py.algo.querying.openai import log_to_dfg_descr, log_to_variants_descr, log_to_cols_descr
+from pm4py.algo.querying.openai import stream_to_descr
+from pm4py.algo.transformation.ocel.description import algorithm as ocel_description
+from pm4py.algo.querying.openai import ocel_ocdfg_descr, ocel_fea_descr
 from pm4py.algo.querying.openai import perform_query
 from pm4py.objects.conversion.log import converter as log_converter
 from typing import Union, Tuple
@@ -18,10 +22,12 @@ class Parameters(Enum):
 
 AVAILABLE_LOG_QUERIES = ["describe_process", "describe_path", "describe_activity", "suggest_improvements", "code_for_log_generation",
                          "root_cause_analysis", "describe_variant", "compare_logs", "anomaly_detection", "suggest_clusters",
-                         "conformance_checking", "suggest_verify_hypotheses", "filtering_query"]
+                         "conformance_checking", "suggest_verify_hypotheses", "filtering_query",
+                         "abstract_dfg", "abstract_variants", "abstract_columns", "abstract_ocel", "abstract_stream",
+                         "abstract_ocel_ocdfg", "abstract_ocel_features"]
 
 
-def query_wrapper(log_obj: Union[pd.DataFrame, EventLog, EventStream], type: str, args: Optional[Dict[Any, Any]] = None, parameters: Optional[Dict[Any, Any]] = None) -> str:
+def query_wrapper(log_obj: Union[pd.DataFrame, EventLog, EventStream, OCEL], type: str, args: Optional[Dict[Any, Any]] = None, parameters: Optional[Dict[Any, Any]] = None) -> str:
     if parameters is None:
         parameters = {}
 
@@ -36,6 +42,8 @@ def query_wrapper(log_obj: Union[pd.DataFrame, EventLog, EventStream], type: str
         return describe_activity(log_obj, args["activity"], parameters=parameters)
     elif type == "suggest_improvements":
         return suggest_improvements(log_obj, parameters=parameters)
+    elif type == "anomalous_paths":
+        return anomalous_paths(log_obj, parameters=parameters)
     elif type == "code_for_log_generation":
         return code_for_log_generation(args["desired_process"], parameters=parameters)
     elif type == "root_cause_analysis":
@@ -54,6 +62,20 @@ def query_wrapper(log_obj: Union[pd.DataFrame, EventLog, EventStream], type: str
         return suggest_verify_hypotheses(log_obj, parameters=parameters)
     elif type == "filtering_query":
         return filtering_query(log_obj, args["query"], parameters=parameters)
+    elif type == "abstract_dfg":
+        return log_to_dfg_descr.apply(log_obj, parameters=parameters)
+    elif type == "abstract_variants":
+        return log_to_variants_descr.apply(log_obj, parameters=parameters)
+    elif type == "abstract_columns":
+        return log_to_cols_descr.apply(log_obj, parameters=parameters)
+    elif type == "abstract_ocel":
+        return ocel_description.apply(log_obj, parameters=parameters)
+    elif type == "abstract_stream":
+        return stream_to_descr.apply(log_obj, parameters=parameters)
+    elif type == "abstract_ocel_ocdfg":
+        return ocel_ocdfg_descr.apply(log_obj, parameters=parameters)
+    elif type == "abstract_ocel_features":
+        return ocel_fea_descr.apply(log_obj, args["type"], parameters=parameters)
 
 
 def describe_process(log_obj: Union[pd.DataFrame, EventLog, EventStream], parameters: Optional[Dict[Any, Any]] = None) -> str:
@@ -125,6 +147,25 @@ def suggest_improvements(log_obj: Union[pd.DataFrame, EventLog, EventStream], pa
 
     query = log_to_dfg_descr.apply(log_obj, parameters=parameters)
     query += "how to optimize the execution of the aforementioned process ?  Please only data and process specific considerations, not general considerations. Also, if possible, tell me which steps can be parallelized to increase the performance of the process."
+
+    if not execute_query:
+        return query
+
+    return perform_query.apply(query, parameters=parameters)
+
+
+def anomalous_paths(log_obj: Union[pd.DataFrame, EventLog, EventStream], parameters: Optional[Dict[Any, Any]] = None) -> str:
+    if parameters is None:
+        parameters = {}
+
+    log_obj = log_converter.apply(log_obj, variant=log_converter.Variants.TO_DATA_FRAME, parameters=parameters)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+
+    api_key = exec_utils.get_param_value(Parameters.API_KEY, parameters, constants.OPENAI_API_KEY)
+    execute_query = exec_utils.get_param_value(Parameters.EXECUTE_QUERY, parameters, api_key is not None)
+
+    query = log_to_dfg_descr.apply(log_obj, parameters=parameters)
+    query += "which are the paths, included in the directly-follows graph, that looks more anomalous? Could you also explain why they are anomalous? Please only data and process specific considerations, not general considerations."
 
     if not execute_query:
         return query

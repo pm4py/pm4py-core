@@ -293,29 +293,14 @@ Some object-centric process discovery algorithms are also offered:
 OpenAI Integration (:mod:`pm4py.openai`)
 ------------------------------------------
 
-We offer some integrations with OpenAI (e.g., ChatGPT) for automatically get insights:
-
-  * :meth:`pm4py.openai.describe_process`; provides domain knowledge about the process
-  * :meth:`pm4py.openai.describe_path`; provides domain knowledge about a path of the process
-  * :meth:`pm4py.openai.describe_activity`; provides domain knowledge about an activity of the process
-  * :meth:`pm4py.openai.describe_variant`; describes a given variant, providing insights on the anomalies
-  * :meth:`pm4py.openai.suggest_improvements`; suggests some improvements for the process starting from its event log
-  * :meth:`pm4py.openai.root_cause_analysis`; performs a root cause analysis of the conformance/performance issues
-  * :meth:`pm4py.openai.code_for_log_generation`; generates an event log given the name of a process (e.g., Purchase-to-Pay)
-  * :meth:`pm4py.openai.compare_logs`; describes the differences between two event logs
-  * :meth:`pm4py.openai.anomaly_detection`; describes the main anomalies of the provided event log
-  * :meth:`pm4py.openai.suggest_clusters`; suggest groups of variants based on the behavior
-  * :meth:`pm4py.openai.conformance_checking`; performs conformance checking against the provided log and rule
-  * :meth:`pm4py.openai.suggest_verify_hypotheses`; given an event log, provides some hypotheses for the analysis and allows to verify them
-  * :meth:`pm4py.openai.filtering_query`; given an event log and a natural language query, translates that to a SQL query
-
-
 The following methods provides just the abstractions of the given objects:
 
   * :meth:`pm4py.openai.abstract_dfg`; provides the DFG abstraction of a traditional event log
   * :meth:`pm4py.openai.abstract_variants`; provides the variants abstraction of a traditional event log
   * :meth:`pm4py.openai.abstract_log_attributes`; provides the abstraction of the attributes/columns of the event log
-  * :meth:`pm4py.openai.abstract_ocel`; provides the abstraction of an object-centric event log
+  * :meth:`pm4py.openai.abstract_ocel`; provides the abstraction of an object-centric event log (list of events and objects)
+  * :meth:`pm4py.openai.abstract_ocel_ocdfg`; provides the abstraction of an object-centric event log (OC-DFG)
+  * :meth:`pm4py.openai.abstract_ocel_features`; provides the abstraction of an object-centric event log (features for ML)
   * :meth:`pm4py.openai.abstract_event_stream`; provides an abstraction of the (last) events of the stream related to a traditional event log
   * :meth:`pm4py.openai.abstract_petri_net`; provides the abstraction of a Petri net
 
@@ -575,25 +560,14 @@ Overall List of Methods
    pm4py.ocel.ocel_e2o_lifecycle_enrichment
    pm4py.ocel.cluster_equivalent_ocel
    pm4py.openai
-   pm4py.openai.describe_process
-   pm4py.openai.describe_path
-   pm4py.openai.describe_activity
-   pm4py.openai.suggest_improvements
-   pm4py.openai.code_for_log_generation
-   pm4py.openai.root_cause_analysis
-   pm4py.openai.describe_variant
-   pm4py.openai.compare_logs
    pm4py.openai.abstract_dfg
    pm4py.openai.abstract_variants
    pm4py.openai.abstract_ocel
-   pm4py.openai.anomaly_detection
-   pm4py.openai.suggest_clusters
-   pm4py.openai.conformance_checking
-   pm4py.openai.suggest_verify_hypotheses
+   pm4py.openai.abstract_ocel_ocdfg
+   pm4py.openai.abstract_ocel_features
    pm4py.openai.abstract_event_stream
    pm4py.openai.abstract_petri_net
    pm4py.openai.abstract_log_attributes
-   pm4py.openai.filtering_query
    pm4py.connectors.extract_log_outlook_mails
    pm4py.connectors.extract_log_outlook_calendar
    pm4py.connectors.extract_log_windows_events
