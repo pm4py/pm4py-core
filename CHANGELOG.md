@@ -1,12 +1,14 @@
 # Changelog of pm4py
 
-## pm4py 2.7.4 (2023.04.XX)
+## pm4py 2.7.4 (2023.05.08)
 
 ### Added
 * 546cff5c7d91810b068777870ae20dab2b110150
   * pm4py.openai.abstract_log_attributes method in the simplified interface
 * e9ee619300f59713c481d9fd592b3eeefc489175
   * added get_diagnostics_dataframe method for temporal profile-based conformance checking
+* 7a410f6cb33773cb218c5ce7df37ded4844df7b9
+  * possibility to get GraphvizJS HTML output
 
 ### Changed
 * 45dcc3de2ddf4348f8a7e31bae54529ec2ab9ad7
@@ -17,6 +19,9 @@
   * footprints visualization in the simplified interface - comparison
 * 69d50384784f67a74823a4a0af99a1ebf9f0c302
   * minor improvement log2ocel conversion
+* 3e88d920caf8d0dc902af2dcc2c3dcb3d752bfe8
+  * removed hard-coded prompts from OpenAI API
+  * added abstract_ocel_ocdfg and abstract_ocel_variants abstractions
 
 ### Deprecated
 
