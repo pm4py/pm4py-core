@@ -1,0 +1,47 @@
++==============================================================================+
+
+                               /$$$$$$            /$$
+                              /$$__  $$          | $$
+           /$$$$$$$  /$$$$$$ | $$  \__//$$$$$$  /$$$$$$   /$$   /$$
+          /$$_____/ |____  $$| $$$$   /$$__  $$|_  $$_/  | $$  | $$
+         |  $$$$$$   /$$$$$$$| $$_/  | $$$$$$$$  | $$    | $$  | $$
+          \____  $$ /$$__  $$| $$    | $$_____/  | $$ /$$| $$  | $$
+          /$$$$$$$/|  $$$$$$$| $$    |  $$$$$$$  |  $$$$/|  $$$$$$$
+         |_______/  \_______/|__/     \_______/   \___/   \____  $$
+                                                          /$$  | $$
+                                                         |  $$$$$$/
+  by pyup.io                                              \______/
+
++==============================================================================+
+
+ [1mREPORT[0m 
+
+[31m[22m  Safety is using PyUp's free open-source vulnerability database. This
+data is 30 days old and limited. [0m
+[31m  For real-time enhanced vulnerability data, fix recommendations, severity
+reporting, cybersecurity support, team and project policy management and more
+sign up at https://pyup.io or email sales@pyup.io[0m
+
+  Safety [1mv2.3.5[0m is scanning for [1mVulnerabilities[0m[1m...[0m
+[1m  Scanning dependencies[0m in your [1mfiles:[0m
+
+  -> requirements_stable.txt
+
+  Using [1mnon-commercial database[0m
+[1m  Found and scanned 24 packages[0m
+  Timestamp [1m2023-04-12 12:22:23[0m
+[1m  0[0m[1m vulnerabilities found[0m
+[1m  0[0m[1m vulnerabilities ignored[0m
++==============================================================================+
+
+ [32m[1mNo known security vulnerabilities found.[0m 
+
++==============================================================================+
+
+[31m[22m  Safety is using PyUp's free open-source vulnerability database. This
+data is 30 days old and limited. [0m
+[31m  For real-time enhanced vulnerability data, fix recommendations, severity
+reporting, cybersecurity support, team and project policy management and more
+sign up at https://pyup.io or email sales@pyup.io[0m
+
++==============================================================================+[0m

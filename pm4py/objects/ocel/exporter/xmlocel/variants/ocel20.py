@@ -26,6 +26,7 @@ from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel.util import attributes_names
 from pm4py.objects.ocel.util import related_objects
 from pm4py.util import exec_utils
+from pm4py.objects.ocel.util import ocel_consistency
 
 
 class Parameters(Enum):
@@ -49,6 +50,8 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
     object_type_column = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
     qualifier_column = exec_utils.get_param_value(Parameters.QUALIFIER, parameters, ocel.qualifier)
     changed_field_column = exec_utils.get_param_value(Parameters.CHANGED_FIELD, parameters, ocel.changed_field)
+
+    ocel = ocel_consistency.apply(ocel, parameters=parameters)
 
     ets = {k: {x: str(v[x].dtype) for x in v.dropna(axis="columns", how="all").columns if not x.startswith("ocel:")} for k, v in ocel.events.groupby(event_activity_column)}
     ots = {k: {x: str(v[x].dtype) for x in v.dropna(axis="columns", how="all").columns if not x.startswith("ocel:")} for k, v in ocel.objects.groupby(object_type_column)}

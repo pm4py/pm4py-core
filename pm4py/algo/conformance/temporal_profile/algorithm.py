@@ -14,14 +14,20 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import pkgutil
+
 from typing import Optional, Dict, Any, Union
 
 import pandas as pd
 
-from pm4py.algo.conformance.temporal_profile.variants import log
+from pm4py.algo.conformance.temporal_profile.variants import log, dataframe
 from pm4py.objects.log.obj import EventLog
-from pm4py.util import typing
+from pm4py.util import typing, exec_utils, constants, xes_constants
+from pm4py.objects.conversion.log import converter as log_converter
+from enum import Enum
+
+
+class Parameters(Enum):
+    CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
 
 def apply(elog: Union[EventLog, pd.DataFrame], temporal_profile: typing.TemporalProfile,
@@ -56,10 +62,55 @@ def apply(elog: Union[EventLog, pd.DataFrame], temporal_profile: typing.Temporal
         - 3) The time passed between the occurrence of the source activity and the target activity
         - 4) The value of (time passed - mean)/std for this occurrence (zeta).
     """
-    if pkgutil.find_loader("pandas"):
-        import pandas as pd
-        from pm4py.algo.conformance.temporal_profile.variants import dataframe
+    if type(elog) is pd.DataFrame:
+        return dataframe.apply(elog, temporal_profile, parameters=parameters)
+    else:
+        elog = log_converter.apply(elog, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+        return log.apply(elog, temporal_profile, parameters=parameters)
 
-        if type(elog) is pd.DataFrame:
-            return dataframe.apply(elog, temporal_profile, parameters=parameters)
-    return log.apply(elog, temporal_profile, parameters=parameters)
+
+def get_diagnostics_dataframe(elog: Union[EventLog, pd.DataFrame], conf_result: typing.TemporalProfileConformanceResults, parameters: Optional[Dict[Any, Any]] = None) -> pd.DataFrame:
+    """
+    Gets the diagnostics dataframe from a log and the results
+    of temporal profle-based conformance checking
+
+    Parameters
+    --------------
+    log
+        Event log
+    conf_result
+        Results of conformance checking
+
+    Returns
+    --------------
+    diagn_dataframe
+        Diagnostics dataframe
+    """
+    if parameters is None:
+        parameters = {}
+
+    if type(elog) is pd.DataFrame:
+        case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+        cases = list(elog[case_id_key].unique())
+    else:
+        elog = log_converter.apply(elog, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+        case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, xes_constants.DEFAULT_TRACEID_KEY)
+        cases = [x.attributes[case_id_key] for x in elog]
+
+    case = []
+    source_activities = []
+    target_activities = []
+    throughput = []
+    num_st_devs = []
+
+    for i in range(len(conf_result)):
+        for el in conf_result[i]:
+            case.append(cases[i])
+            source_activities.append(el[0])
+            target_activities.append(el[1])
+            throughput.append(el[2])
+            num_st_devs.append(el[3])
+
+    dataframe = pd.DataFrame({"case": case, "source_activity": source_activities, "target_activity": target_activities, "throughput": throughput, "num_st_devs": num_st_devs})
+
+    return dataframe

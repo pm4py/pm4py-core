@@ -24,6 +24,7 @@ from pm4py.objects.ocel import constants
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel.util import filtering_utils
 from pm4py.util import exec_utils, dt_parsing
+from pm4py.objects.ocel.util import ocel_consistency
 
 
 class Parameters(Enum):
@@ -186,6 +187,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     globals = {}
 
     ocel = OCEL(events=events, objects=objects, relations=relations, globals=globals, o2o=o2o, object_changes=object_changes, parameters=parameters)
+    ocel = ocel_consistency.apply(ocel, parameters=parameters)
     ocel = filtering_utils.propagate_relations_filtering(ocel)
 
     return ocel

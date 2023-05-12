@@ -20,8 +20,7 @@ from pm4py.util import constants
 from pm4py.util import exec_utils, pandas_utils
 from pm4py.util import xes_constants as xes
 from pm4py.util.constants import CASE_CONCEPT_NAME
-from typing import Optional, Dict, Any, Union, Tuple, List
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any, Union, List
 import pandas as pd
 
 
@@ -70,6 +69,7 @@ def apply(dataframe: pd.DataFrame, list_activities: List[str], sample_size: int,
     sort_log_required = exec_utils.get_param_value(Parameters.SORT_LOG_REQUIRED, parameters, True)
 
     dataframe = dataframe[[case_id_glue, activity_key, timestamp_key]]
+    dataframe[activity_key] = dataframe[activity_key].astype("string")
     dataframe = dataframe[dataframe[activity_key].isin(list_activities)]
     dataframe = pandas_utils.insert_index(dataframe, constants.DEFAULT_EVENT_INDEX_KEY)
     if sort_log_required:
@@ -89,7 +89,8 @@ def apply(dataframe: pd.DataFrame, list_activities: List[str], sample_size: int,
     column_list = [key(activity_key, i) for i in range(len(list_activities))]
     pattern = "".join(list_activities)
     # keep only rows that have the desired activities pattern
-    matches = dataframe[np.equal(dataframe[column_list].sum(axis=1), pattern)]
+
+    matches = dataframe[np.equal(dataframe[column_list].agg(''.join, axis=1), pattern)]
     if len(matches) > sample_size:
         matches = matches.sample(n=sample_size)
 

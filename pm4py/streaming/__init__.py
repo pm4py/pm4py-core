@@ -15,7 +15,3 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.streaming import algo, stream, importer, util, conversion
-
-import warnings
-
-warnings.warn("The streaming package will be removed in a future release.")

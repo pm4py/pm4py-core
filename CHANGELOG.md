@@ -1,17 +1,65 @@
 # Changelog of pm4py
 
-## pm4py 2.7.3 (2023.04.XX)
+## pm4py 2.7.4 (2023.05.08)
 
 ### Added
-* e561089945951e91b2ecfe0f223b35bd2d351630
-  * other NLP/LLM abstractions
+* 546cff5c7d91810b068777870ae20dab2b110150
+  * pm4py.openai.abstract_log_attributes method in the simplified interface
+* e9ee619300f59713c481d9fd592b3eeefc489175
+  * added get_diagnostics_dataframe method for temporal profile-based conformance checking
+* 7a410f6cb33773cb218c5ce7df37ded4844df7b9
+  * possibility to get GraphvizJS HTML output
 
 ### Changed
+* 45dcc3de2ddf4348f8a7e31bae54529ec2ab9ad7
+  * consistency checks when importing/exporting OCELs
+* 9c4eb3a8512fbd20f7352341131ec2855b108b95
+  * consistency checks OCEL feature extraction
+* 091908c11a62b6708bb64adafa7a4168099b140d
+  * footprints visualization in the simplified interface - comparison
+* 69d50384784f67a74823a4a0af99a1ebf9f0c302
+  * minor improvement log2ocel conversion
+* 3e88d920caf8d0dc902af2dcc2c3dcb3d752bfe8
+  * removed hard-coded prompts from OpenAI API
+  * added abstract_ocel_ocdfg and abstract_ocel_variants abstractions
 
 ### Deprecated
 
 ### Fixed
+* f8b77348b47c782a709cb6ee5646715c20e35710
+  * fixed performance spectrum computation on Pandas dataframes
 
+### Removed
+
+### Other
+
+
+--
+
+## pm4py 2.7.3 (2023.04.12)
+
+### Added
+* e561089945951e91b2ecfe0f223b35bd2d351630
+  * other NLP/LLM abstractions
+* 42b0d2a6f6fe7430d382117bf0ce54e8fd60ce23
+  * return diagnostics dataframe in pm4py.conformance methods
+
+### Changed
+* 44fc2aecd0885534dd2083a4011be9e031c3a04a
+  * improved integration possibilities with PowerBI
+* f805fd46673be291584ce489bf9def73df1dba71
+  * read constants from environment variables
+* 6737019a6de4e15d6063506e5a7ea2e571fc167d
+  * added DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME option in constants
+* 0ba6b34c19587357425cb27cccb23b12d70978a7
+  * workaround for inconsistencies in pm4py.stats.get_trace_attribute_values
+
+### Deprecated
+
+### Fixed
+* 7dfeac5ddc4f4f6a8b5410fc2e04016590b6f22a
+  * fixed OCEL2 XML importer
+  
 ### Removed
 
 ### Other

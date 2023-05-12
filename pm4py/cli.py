@@ -69,11 +69,11 @@ methods = {
     "ConformanceDiagnosticsTBR": {"inputs": [".xes", ".pnml"], "output_extension": ".txt",
                                   "method": lambda x: open(x[2], "w").write(str(
                                       pm4py.conformance_diagnostics_token_based_replay(__read_log(x[0]),
-                                                                                       *pm4py.read_pnml(x[1]))))},
+                                                                                       *pm4py.read_pnml(x[1]), return_diagnostics_dataframe=False)))},
     "ConformanceDiagnosticsAlignments": {"inputs": [".xes", ".pnml"], "output_extension": ".txt",
                                          "method": lambda x: open(x[2], "w").write(str(
                                              pm4py.conformance_diagnostics_alignments(__read_log(x[0]),
-                                                                                      *pm4py.read_pnml(x[1]))))},
+                                                                                      *pm4py.read_pnml(x[1]), return_diagnostics_dataframe=False)))},
     "FitnessTBR": {"inputs": [".xes", ".pnml"], "output_extension": ".txt",
                    "method": lambda x: open(x[2], "w").write(str(
                        pm4py.fitness_token_based_replay(__read_log(x[0]),
