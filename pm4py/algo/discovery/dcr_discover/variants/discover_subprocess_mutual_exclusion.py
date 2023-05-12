@@ -20,7 +20,7 @@ def apply(log, findAdditionalConditions=True, inBetweenRels=False, **kwargs):
 
 
 # dfs approach for mutual exclusion: find_largest
-def find_largest(event,E_stack,graph,S=None):
+def find_largest(event, E_stack, graph, S=None):
     # remove e from E
     if event in E_stack:
         E_stack.remove(event)
@@ -29,7 +29,7 @@ def find_largest(event,E_stack,graph,S=None):
         S = set()
     S.add(event)
     # loop through the events in E using e_prime
-    while len(E_stack)>0:
+    while len(E_stack) > 0:
         e_prime = E_stack.pop()
         # check if e_prime is mutually excluded by all events in S
         is_mutually_exclusive = True
@@ -41,10 +41,11 @@ def find_largest(event,E_stack,graph,S=None):
                 is_mutually_exclusive = is_mutually_exclusive and False
         # if yes then GOTO begin function (add e_prime to the set S and remove e_prime from E)
         if is_mutually_exclusive:
-            find_largest(e_prime,E_stack,graph,S)
+            find_largest(e_prime, E_stack, graph, S)
 
     # return S
     return S
+
 
 # dfs approach for mutual exclusion: get_subprocesses
 def get_subprocesses(dcr):
@@ -54,17 +55,19 @@ def get_subprocesses(dcr):
     # keep only the mutually excluded events E and the related graph
     graph = dcr['excludesTo']
     E = set()
-    for k,v in graph.items():
-        E.add(k)
-        E = E.union(v)
-    for e in E:
+    for k, v in graph.items():
+        if k in v:  # they are self excluding
+            E.add(k)
+            # E = E.union(v)
+    for e in E: #TODO: double check it can be found in the exclusions
         E_stack = []
         for j in E:
             E_stack.append(j)
         # call function1 with e E graph return S
-        s = find_largest(e,E_stack,graph)
+        s = find_largest(e, E_stack, graph)
         # if S > 1 add to subprocess list
         if len(s) > 1:
+            print(f'[subprocess] {s}')
             already_there = False
             intersecting_events = False
             new_subprocesses = []
@@ -76,18 +79,18 @@ def get_subprocesses(dcr):
                         # the set is intersecting and |s| > |v|
                         sp[k] = s
                         s_minus_v = s.difference(v)
-                        if len(s_minus_v)>1 and not s_minus_v.issubset(s):
+                        if len(s_minus_v) > 1 and not s_minus_v.issubset(s):
                             # all the remaining
                             print(s_minus_v)
                             new_subprocesses.append(s_minus_v)
                     elif len(s) < len(v):
                         # the set is intersecting and |s| < |v|
                         v_minus_s = v.difference(s)
-                        if len(v_minus_s)>1 and not v_minus_s.issubset(v):
+                        if len(v_minus_s) > 1 and not v_minus_s.issubset(v):
                             # all the remaining
                             print(v_minus_s)
                             new_subprocesses.append(v_minus_s)
-                    elif len(common_events)==len(s):
+                    elif len(common_events) == len(s):
                         # s == v
                         pass
                     else:
@@ -135,6 +138,7 @@ def get_subprocess_log(event_log, subprocesses):
             sp_dcr_instance = deepcopy(sp_dcr_dict)
             sp_event = None
             for name, sp in subprocesses.items():
+                #TODO: fix whatever is wrong here when executing the dcr graph
                 if event['concept:name'] in sp:
                     # if the event is in the subprocess then execute it within the subprocess model
                     executed = dcr_semantics.execute(event['concept:name'],

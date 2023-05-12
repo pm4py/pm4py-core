@@ -31,7 +31,7 @@ def run_discover_config(event_log_file, variant, result_file_prefix, dcr_title, 
                        path=export_path,
                        variant=dcr_exporter.DCR_XML_SIMPLE,
                        dcr_title=dcr_title,
-                       dcr_description=f"{t}")
+                       dcr_description=dcr_title)
     print(f'[!] Model saved in {export_path}')
     return dcr_model, la if la is not None else sp_log
 
@@ -63,6 +63,40 @@ def benchmark_subprocess_no_i2e_e2i(event_log_file, result_file_prefix, dcr_titl
                        dcr_description=f"Sp{t}-no i2e oe e21")
     print(f'[!] Model saved in {export_path}')
     return sp_no_i2e_e2i_dcr, sp_no_i2e_e2i_log
+
+def benchmark_event_log_from_configs(event_log_file, result_file_prefix, dcr_title, configs=[]):
+    """
+    example of configs:
+        configs = [{
+            'inBetweenRels': True,
+            'timed': True,
+            'variant': DCR_SUBPROCESS_ME
+        }]
+    """
+    if isinstance(event_log_file, pm4py.objects.log.obj.EventLog):
+        event_log = event_log_file
+    else:
+        event_log = pm4py.read_xes(event_log_file, return_legacy_log_object=True)
+    rfp = result_file_prefix
+    i = 0
+    res = []
+    for config in configs:
+        print(f'[i] Started with config: {config}')
+        el = deepcopy(event_log)
+        t = ''
+        if config['timed'] == True:
+            t = 'T'
+        export_path = f'models/{rfp}_{t}_config{i}.xml'
+        dcr, log = alg.apply(el, **config)
+        dcr_exporter.apply(dcr_graph=dcr,
+                           path=export_path,
+                           variant=dcr_exporter.DCR_XML_SIMPLE,
+                           dcr_title=dcr_title,
+                           dcr_description=dcr_title)
+        i = i + 1
+        res.append(dcr)
+        print(f'[!] Model saved in {export_path}')
+    return res
 
 def benchmark_event_log(event_log_file, result_file_prefix, dcr_title, config=None):
     if config is None:
@@ -104,7 +138,7 @@ def benchmark_event_log(event_log_file, result_file_prefix, dcr_title, config=No
     if config['usePredecessors']:
         print('[i] Mining with SpT-DisCoveR - predecessors!')
         export_path = f'models/{rfp}_Sp{t}_preds.xml'
-        sp_dcr, sp_log = alg.apply(event_log,alg.DCR_SUBPROCESS, **config)
+        sp_dcr, sp_log = alg.apply(event_log, alg.DCR_SUBPROCESS, **config)
         dcr_exporter.apply(dcr_graph=sp_dcr,
                            path=export_path,
                            variant=dcr_exporter.DCR_XML_SIMPLE,

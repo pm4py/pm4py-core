@@ -1,0 +1,188 @@
+<dcrgraph title="e-shop DCR nocancel nomilestone" dataTypesStatus="hide" filterLevel="-1" insightFilter="false" zoomLevel="0" formGroupStyle="Normal" formLayoutStyle="Horizontal" formShowPendingCount="true" graphBG="#ffffff" graphType="0" exercise="false">
+    <meta>
+        <graph id="1327680" hash="10A00E94DB5E6E7CD41A59A6E72171AF" guid="B436DCD1-71E7-43F7-A51D-1DD07ACC81F4" OwnerName="Thomas Hildebrandt" OwnerId="248" categoryId="343" categoryTitle="Default" Keywords=""/>
+        <revision id="3054183" type="minor" date="2023-01-11T13:48:02.833"/>
+        <organization id="1" name="Community"/>
+    </meta>
+    <specification>
+        <resources>
+            <events>
+                <event id="EditPayment">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="400" yLoc="75"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role/>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>1</level>
+                        <sequence>1</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="MakePayment">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="625" yLoc="250"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role/>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>1</level>
+                        <sequence>2</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="AddOrder">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="400" yLoc="250"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role/>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>1</level>
+                        <sequence>4</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+            </events>
+            <subProcesses/>
+            <distribution/>
+            <labels>
+                <label id="EditPaymentinfo"/>
+                <label id="MakePayment"/>
+                <label id="AddOrder"/>
+            </labels>
+            <labelMappings>
+                <labelMapping eventId="EditPayment" labelId="EditPaymentinfo"/>
+                <labelMapping eventId="MakePayment" labelId="MakePayment"/>
+                <labelMapping eventId="AddOrder" labelId="AddOrder"/>
+            </labelMappings>
+            <expressions/>
+            <variables/>
+            <variableAccesses>
+                <writeAccesses/>
+            </variableAccesses>
+            <custom>
+                <keywords/>
+                <roles/>
+                <groups/>
+                <phases/>
+                <eventTypes/>
+                <eventParameters/>
+                <graphDetails>DCR Process describing a simple e-shop example</graphDetails>
+                <graphDocumentation/>
+                <graphLanguage>en-US</graphLanguage>
+                <graphDomain>process</graphDomain>
+                <graphFilters>
+                    <filteredGroups/>
+                    <filteredRoles/>
+                    <filteredPhases/>
+                </graphFilters>
+                <hightlighterMarkup id="HLM"/>
+                <highlighterMarkup>
+                    <highlightLayers>
+                        <highlightLayer default="true" name="description">DCR Process describing a simple e-shop example</highlightLayer>
+                    </highlightLayers>
+                    <highlights/>
+                </highlighterMarkup>
+            </custom>
+        </resources>
+        <constraints>
+            <conditions>
+                <condition sourceId="EditPayment" targetId="MakePayment" filterLevel="1" description="" time="" groups=""/>
+            </conditions>
+            <responses>
+                <response sourceId="AddOrder" targetId="MakePayment" filterLevel="1" description="" time="" groups=""/>
+            </responses>
+            <coresponses/>
+            <excludes>
+                <exclude sourceId="MakePayment" targetId="MakePayment" filterLevel="1" description="" time="" groups=""/>
+                <exclude sourceId="AddOrder" targetId="AddOrder" filterLevel="1" description="" time="" groups=""/>
+            </excludes>
+            <includes>
+                <include sourceId="AddOrder" targetId="MakePayment" filterLevel="1" description="" time="" groups=""/>
+                <include sourceId="MakePayment" targetId="AddOrder" filterLevel="1" description="" time="" groups=""/>
+            </includes>
+            <milestones/>
+            <updates/>
+            <spawns/>
+            <templateSpawns/>
+        </constraints>
+    </specification>
+    <runtime>
+        <custom>
+            <globalMarking/>
+        </custom>
+        <marking>
+            <globalStore/>
+            <executed/>
+            <included>
+                <event id="EditPayment"/>
+                <event id="AddOrder"/>
+            </included>
+            <pendingResponses/>
+        </marking>
+    </runtime>
+</dcrgraph>

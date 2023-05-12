@@ -4,7 +4,7 @@ from pm4py.objects.dcr.obj import Relations
 
 from itertools import combinations
 
-from pm4py.objects.conversion.dcr.variants import util
+from pm4py.objects.conversion.dcr.variants import dcr_to_pn_utils
 
 I = Relations.I.value
 E = Relations.E.value
@@ -174,10 +174,10 @@ class ExceptionalCases(object):
             copies = [1, 2] if pend_excl_place_e_prime else [1]
             for i in copies:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
                         pn_utils.add_arc_from_to(t, pend_excl_place_e_prime, tapn)
@@ -215,10 +215,10 @@ class ExceptionalCases(object):
             copies = [1, 2] if pend_excl_place_e_prime else [1]
             for i in copies:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
                         if i == 1:
@@ -253,10 +253,10 @@ class ExceptionalCases(object):
             copies = [1, 2] if pend_excl_place_e_prime else [1]
             for i in copies:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
@@ -295,10 +295,10 @@ class ExceptionalCases(object):
             copies = [1, 2] if pend_excl_place_e_prime else [1]
             for i in copies:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
@@ -335,10 +335,10 @@ class ExceptionalCases(object):
             copies = [1, 2] if pend_excl_place_e_prime else [1]
             for i in copies:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
                         pn_utils.add_arc_from_to(t, pend_excl_place_e_prime, tapn)
@@ -376,10 +376,10 @@ class ExceptionalCases(object):
             copies = [1, 2] if pend_excl_place_e_prime else [1]
             for i in copies:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
                         if i == 1:
@@ -415,10 +415,10 @@ class ExceptionalCases(object):
             copies = [1, 2] if pend_excl_place_e_prime else [1]
             for i in copies:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
@@ -454,10 +454,10 @@ class ExceptionalCases(object):
             # copy 1
             if inc_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
@@ -486,10 +486,10 @@ class ExceptionalCases(object):
             # copy 1
             if inc_place_e_prime and pend_excl_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
@@ -498,10 +498,10 @@ class ExceptionalCases(object):
             # copy 2
             if inc_place_e_prime and pend_excl_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
@@ -531,10 +531,10 @@ class ExceptionalCases(object):
             # copy 1
             if inc_place_e_prime and pend_excl_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn, type='inhibitor')
@@ -542,10 +542,10 @@ class ExceptionalCases(object):
             # copy 2
             if inc_place_e_prime and pend_excl_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn)
@@ -573,10 +573,10 @@ class ExceptionalCases(object):
             # copy 1
             if inc_place_e_prime and pend_excluded_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
@@ -589,10 +589,10 @@ class ExceptionalCases(object):
             # copy 2
             if inc_place_e_prime and pend_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
@@ -625,10 +625,10 @@ class ExceptionalCases(object):
             # copy 1
             if inc_place_e_prime and pend_excluded_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
@@ -638,10 +638,10 @@ class ExceptionalCases(object):
             # copy 2
             if inc_place_e_prime and pend_excluded_place_e_prime and pend_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
@@ -675,10 +675,10 @@ class ExceptionalCases(object):
             # copy 1
             if pend_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
@@ -690,10 +690,10 @@ class ExceptionalCases(object):
             for i in [1, 2]:
                 if inc_place_e_prime and pend_excl_place_e_prime:
                     for delta in range(len_delta):
-                        tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                        tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                         new_transitions.extend(ts)
                         for t in ts:
-                            tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                            tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                             pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
                             pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
 
@@ -708,10 +708,10 @@ class ExceptionalCases(object):
             for i in [1, 2]:
                 if inc_place_e_prime and pend_excl_place_e_prime:
                     for delta in range(len_delta):
-                        tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                        tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                         new_transitions.extend(ts)
                         for t in ts:
-                            tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                            tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                             pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
                             pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
 
@@ -751,10 +751,10 @@ class ExceptionalCases(object):
             # copy 1
             if pend_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
                         pn_utils.add_arc_from_to(pend_place_e_prime, t, tapn)
@@ -765,10 +765,10 @@ class ExceptionalCases(object):
             for i in [1, 2]:
                 if inc_place_e_prime and pend_excl_place_e_prime:
                     for delta in range(len_delta):
-                        tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                        tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                         new_transitions.extend(ts)
                         for t in ts:
-                            tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                            tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                             pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                             pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn, type='inhibitor')
@@ -782,10 +782,10 @@ class ExceptionalCases(object):
             for i in [1, 2]:
                 if inc_place_e_prime and pend_excl_place_e_prime:
                     for delta in range(len_delta):
-                        tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                        tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                         new_transitions.extend(ts)
                         for t in ts:
-                            tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                            tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                             pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                             pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn)
@@ -828,10 +828,10 @@ class ExceptionalCases(object):
             new_transitions = []
             # copy 1
             for delta in range(len_delta):
-                tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
@@ -843,10 +843,10 @@ class ExceptionalCases(object):
             # copy 2 and 3
             for i in [1, 2]:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(exec_place_e_prime, t, tapn, type='inhibitor')
@@ -863,10 +863,10 @@ class ExceptionalCases(object):
             # copy 4 and 5
             for i in [1, 2]:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
@@ -916,10 +916,10 @@ class ExceptionalCases(object):
             new_transitions = []
             # copy 1
             for delta in range(len_delta):
-                tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
                     pn_utils.add_arc_from_to(t, exec_place_e_prime, tapn)
@@ -930,10 +930,10 @@ class ExceptionalCases(object):
             # copy 2 and 3
             for i in [1, 2]:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(exec_place_e_prime, t, tapn, type='inhibitor')
@@ -948,10 +948,10 @@ class ExceptionalCases(object):
             # copy 4 and 5
             for i in [1, 2]:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(t, exec_place_e_prime, tapn)
@@ -1000,11 +1000,11 @@ class ExceptionalCases(object):
                 for i in [1, 2]:
                     if pend_place_e_prime or i == 1:
                         for delta in range(len_delta):
-                            tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct,
+                            tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct,
                                                                                       self)
                             new_transitions.extend(ts)
                             for t in ts:
-                                tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                                tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                                 pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
                                 pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
@@ -1022,11 +1022,11 @@ class ExceptionalCases(object):
                 for i in [1, 2]:
                     if pend_place_e_prime or i == 1:
                         for delta in range(len_delta):
-                            tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct,
+                            tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct,
                                                                                       self)
                             new_transitions.extend(ts)
                             for t in ts:
-                                tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                                tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                                 pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
                                 pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
@@ -1072,10 +1072,10 @@ class ExceptionalCases(object):
             # copy 1
             if pend_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
@@ -1087,20 +1087,20 @@ class ExceptionalCases(object):
 
             # copy 2
             for delta in range(len_delta):
-                tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                     pn_utils.add_arc_from_to(exec_place_e_prime, t, tapn, type='inhibitor')
 
             # copy 3
             for delta in range(len_delta):
-                tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                     pn_utils.add_arc_from_to(t, exec_place_e_prime, tapn)
@@ -1139,10 +1139,10 @@ class ExceptionalCases(object):
             # copy 1
             if inc_place_e_prime or pend_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
@@ -1157,11 +1157,11 @@ class ExceptionalCases(object):
                 for i in [1, 2]:
                     if i == 2 and pend_excl_place_e_prime:
                         for delta in range(len_delta):
-                            tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct,
+                            tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct,
                                                                                       self)
                             new_transitions.extend(ts)
                             for t in ts:
-                                tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                                tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                                 pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                                 pn_utils.add_arc_from_to(exec_place_e_prime, t, tapn, type='inhibitor')
@@ -1180,11 +1180,11 @@ class ExceptionalCases(object):
                 for i in [1, 2]:
                     if i == 2 and pend_excl_place_e_prime:
                         for delta in range(len_delta):
-                            tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct,
+                            tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct,
                                                                                       self)
                             new_transitions.extend(ts)
                             for t in ts:
-                                tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                                tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                                 pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                                 pn_utils.add_arc_from_to(t, exec_place_e_prime, tapn)
@@ -1233,10 +1233,10 @@ class ExceptionalCases(object):
             # copy 1
             if pend_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
@@ -1245,10 +1245,10 @@ class ExceptionalCases(object):
             # copy 2
             if inc_place_e_prime and pend_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
@@ -1261,10 +1261,10 @@ class ExceptionalCases(object):
             # copy 3
             if pend_excl_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
@@ -1302,10 +1302,10 @@ class ExceptionalCases(object):
             # copy 1
             if pend_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
                         pn_utils.add_arc_from_to(pend_place_e_prime, t, tapn)
@@ -1314,10 +1314,10 @@ class ExceptionalCases(object):
             # copy 2
             if pend_excl_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(t, pend_excl_place_e_prime, tapn)
@@ -1326,10 +1326,10 @@ class ExceptionalCases(object):
             # copy 3
             if pend_excl_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(t, pend_excl_place_e_prime, tapn)
@@ -1361,10 +1361,10 @@ class ExceptionalCases(object):
             # copy 1
             if pend_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
@@ -1376,10 +1376,10 @@ class ExceptionalCases(object):
             for i in [1, 2]:
                 if inc_place_e_prime and pend_excl_place_e_prime:
                     for delta in range(len_delta):
-                        tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                        tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                         new_transitions.extend(ts)
                         for t in ts:
-                            tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                            tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                             pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                             pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn, type='inhibitor')
@@ -1393,10 +1393,10 @@ class ExceptionalCases(object):
             for i in [1, 2]:
                 if inc_place_e_prime and pend_excl_place_e_prime:
                     for delta in range(len_delta):
-                        tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                        tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                         new_transitions.extend(ts)
                         for t in ts:
-                            tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                            tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                             pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                             pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn)
@@ -1434,20 +1434,20 @@ class ExceptionalCases(object):
             # copy 1
             if pend_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
                         pn_utils.add_arc_from_to(pend_place_e_prime, t, tapn)
             # copy 2
             if inc_place_e_prime and pend_excl_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn, type='inhibitor')
@@ -1455,10 +1455,10 @@ class ExceptionalCases(object):
             # copy 3
             if inc_place_e_prime and pend_excl_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn)
@@ -1486,10 +1486,10 @@ class ExceptionalCases(object):
             # copy 1
             if inc_place_e_prime and pend_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
 
@@ -1497,10 +1497,10 @@ class ExceptionalCases(object):
             # copy 2
             if inc_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
 
@@ -1509,10 +1509,10 @@ class ExceptionalCases(object):
             # copy 3
             if inc_place_e_prime and pend_excl_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
 
@@ -1542,10 +1542,10 @@ class ExceptionalCases(object):
             # copy 1
             if inc_place_e_prime and pend_excl_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn, type='inhibitor')
@@ -1553,10 +1553,10 @@ class ExceptionalCases(object):
             # copy 2
             if inc_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn)
@@ -1585,10 +1585,10 @@ class ExceptionalCases(object):
             # copy 1
             if inc_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
@@ -1618,10 +1618,10 @@ class ExceptionalCases(object):
             # copy 1
             if inc_place_e_prime and pend_excluded_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
@@ -1630,10 +1630,10 @@ class ExceptionalCases(object):
             # copy 2
             if inc_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
@@ -1662,10 +1662,10 @@ class ExceptionalCases(object):
             # copy 1
             if inc_place_e_prime and pend_place_e_prime and pend_excl_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
@@ -1674,10 +1674,10 @@ class ExceptionalCases(object):
             # copy 2
             if inc_place_e_prime and pend_excl_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
@@ -1707,10 +1707,10 @@ class ExceptionalCases(object):
             # copy 1
             if pend_excluded_place_e_prime or inc_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
@@ -1720,10 +1720,10 @@ class ExceptionalCases(object):
             # copy 2
             if pend_excluded_place_e_prime or inc_place_e_prime:
                 for delta in range(len_delta):
-                    tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+                    tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                     new_transitions.extend(ts)
                     for t in ts:
-                        tapn, t = util.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                        tapn, t = dcr_to_pn_utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
 
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 

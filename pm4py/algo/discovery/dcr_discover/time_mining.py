@@ -65,17 +65,17 @@ def get_delta_between_events(filtered_df, event_pair, rule):
                 g_e1 = g_e1.reset_index(drop=False)
                 g_e1['index_below'] = g_e1['index'].shift(-1)
                 g_e1 = g_e1[((g_e1['index_below'] - g_e1['index']) == 1)]
-                g_e1['delta'] = (g_e1['time:timestamp:to'] - g_e1['time:timestamp']).dt.days
-                deltas.extend(g_e1['delta'].to_numpy())
+                g_e1['delta'] = g_e1['time:timestamp:to'] - g_e1['time:timestamp']
+                deltas.extend(g_e1['delta'])#.to_numpy())
             temp_df = temp_df[
                 (temp_df['concept:name'] == event_pair[0]) & (temp_df['concept:name:to'] == event_pair[1])]
-            temp_df['delta'] = (temp_df['time:timestamp:to'] - temp_df['time:timestamp']).dt.days
-            deltas.extend(temp_df['delta'].to_numpy())
+            temp_df['delta'] = temp_df['time:timestamp:to'] - temp_df['time:timestamp']
+            deltas.extend(temp_df['delta'])#.to_numpy())
         elif rule == 'CONDITION':
             temp_df = temp_df[
                 (temp_df['concept:name'] == event_pair[0]) & (temp_df['concept:name:to'] == event_pair[1])]
-            temp_df['delta'] = (temp_df['time:timestamp:to'] - temp_df['time:timestamp']).dt.days
-            deltas.extend(temp_df['delta'].to_numpy())
+            temp_df['delta'] = temp_df['time:timestamp:to'] - temp_df['time:timestamp']
+            deltas.extend(temp_df['delta'])#.to_numpy())
     return deltas
 
 

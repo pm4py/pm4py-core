@@ -1,12 +1,11 @@
 import os
-import util
 
 from pm4py.objects.petri_net.obj import *
 from pm4py.objects.petri_net.utils import petri_utils as pn_utils
 from pm4py.objects.petri_net.exporter import exporter as pnml_exporter
 
-from mappings import exceptional_cases, single_relations, preoptimizer
-
+from pm4py.objects.conversion.dcr.variants.mappings import exceptional_cases, single_relations, preoptimizer
+from pm4py.objects.conversion.dcr.variants import dcr_to_pn_utils
 class Dcr2PetriTransport(object):
 
     def __init__(self, preoptimize=True, postoptimize=True, map_unexecutable_events=False,debug=False) -> None:
@@ -95,7 +94,7 @@ class Dcr2PetriTransport(object):
 
     def create_event_pattern(self, event, G, tapn, m) -> (PetriNet, Marking):
         tapn, m = self.create_event_pattern_places(event, G, tapn, m)
-        tapn, ts = util.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct,
+        tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct,
                                                                   self.mapping_exceptions)
         self.helper_struct[event]['transitions'].extend(ts)
         return tapn, m

@@ -1,4 +1,4 @@
-from pm4py.objects.conversion.dcr.variants.util import Relations
+from pm4py.objects.conversion.dcr.variants.dcr_to_pn_utils import Relations
 
 class Preoptimizer(object):
     need_included_place = set()

@@ -1,7 +1,7 @@
 import unittest
 
 from pm4py.objects.conversion.dcr.variants.to_petri_net import Dcr2PetriTransport
-from pm4py.objects.conversion.dcr.variants import util
+from pm4py.objects.conversion.dcr.variants import dcr_to_pn_utils
 
 class FaseTestCase(unittest.TestCase):
 
