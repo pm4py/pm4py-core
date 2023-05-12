@@ -9,7 +9,7 @@ import os
 
 
 def execute_script():
-    conn = sqlite3.connect("..\\tests\\input_data\\db\\northwind.sqlite")
+    conn = sqlite3.connect("../tests/input_data/db/northwind.sqlite")
     employees = pd.read_sql("SELECT EmployeeID, BirthDate, HireDate FROM Employees", conn)
     employees = employees.to_dict("records")
     orders = pd.read_sql("SELECT OrderID, CustomerID, EmployeeID, OrderDate, RequiredDate, ShippedDate FROM Orders", conn)

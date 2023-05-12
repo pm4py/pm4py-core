@@ -16,41 +16,43 @@
 '''
 
 from pm4py.objects.ocel.obj import OCEL
-from typing import Dict, Any, Optional
-import pandas as pd
-from pm4py.objects.ocel.util import ocel_consistency
-from pm4py.objects.ocel.util import filtering_utils
+from typing import Optional, Dict, Any
 
 
-def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
+def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     """
-    Imports an OCEL from a SQLite database using Pandas
+    Forces the consistency of the OCEL, ensuring that the event/object identifier,
+    event/object type are of type string and non-empty.
 
     Parameters
     --------------
-    file_path
-        Path to the SQLite database
+    ocel
+        OCEL
     parameters
-        Parameters of the import
+        Possible parameters of the method
 
     Returns
     --------------
     ocel
-        Object-centric event log
+        Consistent OCEL
     """
     if parameters is None:
         parameters = {}
 
-    import sqlite3
+    fields = {
+        "events": ["ocel:eid", "ocel:activity"],
+        "objects": ["ocel:oid", "ocel:type"],
+        "relations": ["ocel:eid", "ocel:oid", "ocel:activity", "ocel:type"],
+        "o2o": ["ocel:oid", "ocel:oid_2"],
+        "e2e": ["ocel:eid", "ocel:eid_2"],
+        "object_changes": ["ocel:oid"]
+    }
 
-    conn = sqlite3.connect(file_path)
-
-    events = pd.read_sql("SELECT * FROM EVENTS", conn)
-    objects = pd.read_sql("SELECT * FROM OBJECTS", conn)
-    relations = pd.read_sql("SELECT * FROM RELATIONS", conn)
-
-    ocel = OCEL(events=events, objects=objects, relations=relations, parameters=parameters)
-    ocel = ocel_consistency.apply(ocel, parameters=parameters)
-    ocel = filtering_utils.propagate_relations_filtering(ocel, parameters=parameters)
+    for tab in fields:
+        df = getattr(ocel, tab)
+        for fie in fields[tab]:
+            df.dropna(subset=[fie], how="any", inplace=True)
+            df[fie] = df[fie].astype("string")
+            df = df[df[fie].str.len() > 0]
 
     return ocel

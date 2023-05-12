@@ -54,13 +54,13 @@ class AlignmentTest(unittest.TestCase):
         import pm4py
         log = pm4py.read_xes("input_data/receipt.xes")
         tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.2)
-        al = pm4py.conformance_diagnostics_alignments(log, tree)
+        al = pm4py.conformance_diagnostics_alignments(log, tree, return_diagnostics_dataframe=False)
 
     def test_tree_align_reviewing(self):
         import pm4py
         log = pm4py.read_xes("compressed_input_data/04_reviewing.xes.gz")
         tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.2)
-        al = pm4py.conformance_diagnostics_alignments(log, tree)
+        al = pm4py.conformance_diagnostics_alignments(log, tree, return_diagnostics_dataframe=False)
 
     def test_tree_align_reviewing_classifier(self):
         import pm4py
@@ -69,7 +69,7 @@ class AlignmentTest(unittest.TestCase):
             for event in trace:
                 event["concept:name"] = event["concept:name"] + "+" + event["lifecycle:transition"]
         tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.2)
-        al = pm4py.conformance_diagnostics_alignments(log, tree)
+        al = pm4py.conformance_diagnostics_alignments(log, tree, return_diagnostics_dataframe=False)
 
     def test_tree_align_reviewing_classifier_different_key(self):
         import pm4py

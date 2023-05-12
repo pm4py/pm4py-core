@@ -20,6 +20,7 @@ The ``pm4py.ml`` module contains the machine learning features offered in ``pm4p
 
 from typing import Union, Tuple, Any, List, Collection, Optional
 import pandas as pd
+import numpy as np
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.util import constants
@@ -228,6 +229,8 @@ def extract_ocel_features(ocel: OCEL, obj_type: str, enable_object_lifecycle_pat
     data, feature_names = ocel_feature_extraction.apply(ocel, parameters=parameters)
 
     dataframe = pd.DataFrame(data, columns=feature_names)
+    dataframe.dropna(how="any", axis=1, inplace=True)
+    dataframe = dataframe.select_dtypes(include=np.number)
 
     if include_obj_id:
         objects_with_type = ocel.objects[[ocel.object_id_column, ocel.object_type_column]].to_dict("records")

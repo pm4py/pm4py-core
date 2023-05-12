@@ -20,6 +20,7 @@ import pandas as pd
 
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel.util import extended_table
+from pm4py.objects.ocel.util import ocel_consistency
 
 
 def apply(file_path: str, objects_path: str = None, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
@@ -49,4 +50,7 @@ def apply(file_path: str, objects_path: str = None, parameters: Optional[Dict[An
     if objects_path is not None:
         objects = pd.read_csv(objects_path, index_col=False)
 
-    return extended_table.get_ocel_from_extended_table(table, objects, parameters=parameters)
+    ocel = extended_table.get_ocel_from_extended_table(table, objects, parameters=parameters)
+    ocel = ocel_consistency.apply(ocel, parameters=parameters)
+
+    return ocel
