@@ -1,0 +1,380 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<log>
+  <string key="creator" value="Fluxicon Nitro"/>
+  <extension name="Concept" prefix="concept" uri="http://code.deckfour.org/xes/concept.xesext"/>
+  <extension name="Time" prefix="time" uri="http://code.deckfour.org/xes/time.xesext"/>
+  <extension name="Organizational" prefix="org" uri="http://code.deckfour.org/xes/org.xesext"/>
+  <global scope="trace">
+    <string key="concept:name" value="name"/>
+  </global>
+  <global scope="event">
+    <string key="concept:name" value="name"/>
+    <string key="org:resource" value="resource"/>
+    <date key="time:timestamp" value="2011-04-13T14:02:31.199+02:00"/>
+    <string key="Activity" value="string"/>
+    <string key="Resource" value="string"/>
+    <string key="Costs" value="string"/>
+  </global>
+  <classifier name="Activity" keys="Activity"/>
+  <classifier name="activity classifier" keys="Activity"/>
+  <trace>
+    <string key="concept:name" value="3"/>
+    <string key="creator" value="Fluxicon Nitro"/>
+    <event>
+      <string key="concept:name" value="register request"/>
+      <string key="org:resource" value="Pete"/>
+      <date key="time:timestamp" value="2010-12-30T14:32:00.000+01:00"/>
+      <string key="Activity" value="register request"/>
+      <string key="Resource" value="Pete"/>
+      <string key="Costs" value="50"/>
+    </event>
+    <event>
+      <string key="concept:name" value="examine casually"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2010-12-30T15:06:00.000+01:00"/>
+      <string key="Activity" value="examine casually"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="400"/>
+    </event>
+    <event>
+      <string key="concept:name" value="check ticket"/>
+      <string key="org:resource" value="Ellen"/>
+      <date key="time:timestamp" value="2010-12-30T16:34:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Ellen"/>
+      <string key="Costs" value="100"/>
+    </event>
+    <event>
+      <string key="concept:name" value="decide"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-06T09:18:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+    </event>
+    <event>
+      <string key="concept:name" value="reinitiate request"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-06T12:18:00.000+01:00"/>
+      <string key="Activity" value="reinitiate request"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+    </event>
+    <event>
+      <string key="concept:name" value="examine thoroughly"/>
+      <string key="org:resource" value="Sean"/>
+      <date key="time:timestamp" value="2011-01-06T13:06:00.000+01:00"/>
+      <string key="Activity" value="examine thoroughly"/>
+      <string key="Resource" value="Sean"/>
+      <string key="Costs" value="400"/>
+    </event>
+    <event>
+      <string key="concept:name" value="check ticket"/>
+      <string key="org:resource" value="Pete"/>
+      <date key="time:timestamp" value="2011-01-08T11:43:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Pete"/>
+      <string key="Costs" value="100"/>
+    </event>
+    <event>
+      <string key="concept:name" value="decide"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-09T09:55:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+    </event>
+    <event>
+      <string key="concept:name" value="pay compensation"/>
+      <string key="org:resource" value="Ellen"/>
+      <date key="time:timestamp" value="2011-01-15T10:45:00.000+01:00"/>
+      <string key="Activity" value="pay compensation"/>
+      <string key="Resource" value="Ellen"/>
+      <string key="Costs" value="200"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="2"/>
+    <string key="creator" value="Fluxicon Nitro"/>
+    <event>
+      <string key="concept:name" value="register request"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2010-12-30T11:32:00.000+01:00"/>
+      <string key="Activity" value="register request"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="50"/>
+    </event>
+    <event>
+      <string key="concept:name" value="check ticket"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2010-12-30T12:12:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="100"/>
+    </event>
+    <event>
+      <string key="concept:name" value="examine casually"/>
+      <string key="org:resource" value="Sean"/>
+      <date key="time:timestamp" value="2010-12-30T14:16:00.000+01:00"/>
+      <string key="Activity" value="examine casually"/>
+      <string key="Resource" value="Sean"/>
+      <string key="Costs" value="400"/>
+    </event>
+    <event>
+      <string key="concept:name" value="decide"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-05T11:22:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+    </event>
+    <event>
+      <string key="concept:name" value="pay compensation"/>
+      <string key="org:resource" value="Ellen"/>
+      <date key="time:timestamp" value="2011-01-08T12:05:00.000+01:00"/>
+      <string key="Activity" value="pay compensation"/>
+      <string key="Resource" value="Ellen"/>
+      <string key="Costs" value="200"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="1"/>
+    <string key="creator" value="Fluxicon Nitro"/>
+    <event>
+      <string key="concept:name" value="register request"/>
+      <string key="org:resource" value="Pete"/>
+      <date key="time:timestamp" value="2010-12-30T11:02:00.000+01:00"/>
+      <string key="Activity" value="register request"/>
+      <string key="Resource" value="Pete"/>
+      <string key="Costs" value="50"/>
+    </event>
+    <event>
+      <string key="concept:name" value="examine thoroughly"/>
+      <string key="org:resource" value="Sue"/>
+      <date key="time:timestamp" value="2010-12-31T10:06:00.000+01:00"/>
+      <string key="Activity" value="examine thoroughly"/>
+      <string key="Resource" value="Sue"/>
+      <string key="Costs" value="400"/>
+    </event>
+    <event>
+      <string key="concept:name" value="check ticket"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-05T15:12:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="100"/>
+    </event>
+    <event>
+      <string key="concept:name" value="decide"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-06T11:18:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+    </event>
+    <event>
+      <string key="concept:name" value="reject request"/>
+      <string key="org:resource" value="Pete"/>
+      <date key="time:timestamp" value="2011-01-07T14:24:00.000+01:00"/>
+      <string key="Activity" value="reject request"/>
+      <string key="Resource" value="Pete"/>
+      <string key="Costs" value="200"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="6"/>
+    <string key="creator" value="Fluxicon Nitro"/>
+    <event>
+      <string key="concept:name" value="register request"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-06T15:02:00.000+01:00"/>
+      <string key="Activity" value="register request"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="50"/>
+    </event>
+    <event>
+      <string key="concept:name" value="examine casually"/>
+      <string key="org:resource" value="Ellen"/>
+      <date key="time:timestamp" value="2011-01-06T16:06:00.000+01:00"/>
+      <string key="Activity" value="examine casually"/>
+      <string key="Resource" value="Ellen"/>
+      <string key="Costs" value="400"/>
+    </event>
+    <event>
+      <string key="concept:name" value="check ticket"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-07T16:22:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="100"/>
+    </event>
+    <event>
+      <string key="concept:name" value="decide"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-07T16:52:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+    </event>
+    <event>
+      <string key="concept:name" value="pay compensation"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-16T11:47:00.000+01:00"/>
+      <string key="Activity" value="pay compensation"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="200"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="5"/>
+    <string key="creator" value="Fluxicon Nitro"/>
+    <event>
+      <string key="concept:name" value="register request"/>
+      <string key="org:resource" value="Ellen"/>
+      <date key="time:timestamp" value="2011-01-06T09:02:00.000+01:00"/>
+      <string key="Activity" value="register request"/>
+      <string key="Resource" value="Ellen"/>
+      <string key="Costs" value="50"/>
+    </event>
+    <event>
+      <string key="concept:name" value="examine casually"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-07T10:16:00.000+01:00"/>
+      <string key="Activity" value="examine casually"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="400"/>
+    </event>
+    <event>
+      <string key="concept:name" value="check ticket"/>
+      <string key="org:resource" value="Pete"/>
+      <date key="time:timestamp" value="2011-01-08T11:22:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Pete"/>
+      <string key="Costs" value="100"/>
+    </event>
+    <event>
+      <string key="concept:name" value="decide"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-10T13:28:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+    </event>
+    <event>
+      <string key="concept:name" value="reinitiate request"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-11T16:18:00.000+01:00"/>
+      <string key="Activity" value="reinitiate request"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+    </event>
+    <event>
+      <string key="concept:name" value="check ticket"/>
+      <string key="org:resource" value="Ellen"/>
+      <date key="time:timestamp" value="2011-01-14T14:33:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Ellen"/>
+      <string key="Costs" value="100"/>
+    </event>
+    <event>
+      <string key="concept:name" value="examine casually"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-16T15:50:00.000+01:00"/>
+      <string key="Activity" value="examine casually"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="400"/>
+    </event>
+    <event>
+      <string key="concept:name" value="decide"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-19T11:18:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+    </event>
+    <event>
+      <string key="concept:name" value="reinitiate request"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-20T12:48:00.000+01:00"/>
+      <string key="Activity" value="reinitiate request"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+    </event>
+    <event>
+      <string key="concept:name" value="examine casually"/>
+      <string key="org:resource" value="Sue"/>
+      <date key="time:timestamp" value="2011-01-21T09:06:00.000+01:00"/>
+      <string key="Activity" value="examine casually"/>
+      <string key="Resource" value="Sue"/>
+      <string key="Costs" value="400"/>
+    </event>
+    <event>
+      <string key="concept:name" value="check ticket"/>
+      <string key="org:resource" value="Pete"/>
+      <date key="time:timestamp" value="2011-01-21T11:34:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Pete"/>
+      <string key="Costs" value="100"/>
+    </event>
+    <event>
+      <string key="concept:name" value="decide"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-23T13:12:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+    </event>
+    <event>
+      <string key="concept:name" value="reject request"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-24T14:56:00.000+01:00"/>
+      <string key="Activity" value="reject request"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="200"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="4"/>
+    <string key="creator" value="Fluxicon Nitro"/>
+    <event>
+      <string key="concept:name" value="register request"/>
+      <string key="org:resource" value="Pete"/>
+      <date key="time:timestamp" value="2011-01-06T15:02:00.000+01:00"/>
+      <string key="Activity" value="register request"/>
+      <string key="Resource" value="Pete"/>
+      <string key="Costs" value="50"/>
+    </event>
+    <event>
+      <string key="concept:name" value="check ticket"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-07T12:06:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="100"/>
+    </event>
+    <event>
+      <string key="concept:name" value="examine thoroughly"/>
+      <string key="org:resource" value="Sean"/>
+      <date key="time:timestamp" value="2011-01-08T14:43:00.000+01:00"/>
+      <string key="Activity" value="examine thoroughly"/>
+      <string key="Resource" value="Sean"/>
+      <string key="Costs" value="400"/>
+    </event>
+    <event>
+      <string key="concept:name" value="decide"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-09T12:02:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+    </event>
+    <event>
+      <string key="concept:name" value="reject request"/>
+      <string key="org:resource" value="Ellen"/>
+      <date key="time:timestamp" value="2011-01-12T15:44:00.000+01:00"/>
+      <string key="Activity" value="reject request"/>
+      <string key="Resource" value="Ellen"/>
+      <string key="Costs" value="200"/>
+    </event>
+  </trace>
+</log>

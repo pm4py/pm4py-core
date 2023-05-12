@@ -1,0 +1,57 @@
+
+
+Fitness on Alpha and Inductive models - measured by token-based replay and alignments
+----
+log                          	fitness_token_alpha          	times_tokenreplay_alpha      	fitness_token_imdf           	times_tokenreplay_imdf       	fitness_align_imdf           	times_alignments_imdf        
+03_repairExample.xes.gz      	0.000                        	0.061                        	99.819                       	0.107                        	99.819                       	0.450                        
+07_bpic2013_problems.xes.gz  	0.000                        	0.185                        	69.065                       	0.357                        	69.065                       	21.773                       
+04_reviewing.xes.gz          	100.000                      	0.164                        	0.000                        	0.201                        	0.000                        	12.864                       
+09_a32f0n00.xes.gz           	69.100                       	1.547                        	100.000                      	1.764                        	100.000                      	11.980                       
+06_bpic2013_incidents.xes.gz 	0.013                        	2.268                        	26.225                       	5.302                        	26.225                       	356.901                      
+05_bpic2017.xes.gz           	0.000                        	0.371                        	100.000                      	0.323                        	100.000                      	0.219                        
+02_teleclaims.xes.gz         	5.552                        	0.068                        	43.736                       	0.063                        	43.736                       	0.189                        
+01_running-example.xes.gz    	100.000                      	0.003                        	100.000                      	0.004                        	100.000                      	0.011                        
+08_receipt.xes.gz            	0.000                        	0.196                        	99.791                       	0.166                        	99.791                       	1.709                        
+
+
+Precision measured by ETConformance where activated transitions are retrieved using token replay
+----
+log                          	precision_alpha              	precision_imdf               
+03_repairExample.xes.gz      	0.983                        	0.246                        
+07_bpic2013_problems.xes.gz  	0.000                        	0.836                        
+04_reviewing.xes.gz          	0.738                        	0.680                        
+09_a32f0n00.xes.gz           	0.603                        	0.480                        
+06_bpic2013_incidents.xes.gz 	0.000                        	0.405                        
+05_bpic2017.xes.gz           	0.641                        	0.760                        
+02_teleclaims.xes.gz         	0.327                        	0.164                        
+01_running-example.xes.gz    	0.733                        	0.733                        
+08_receipt.xes.gz            	0.999                        	0.156                        
+
+
+Generalization based on token replay transition recall
+----
+log                          	generalization_alpha         	generalization_imdf          
+03_repairExample.xes.gz      	0.967                        	0.966                        
+07_bpic2013_problems.xes.gz  	0.849                        	0.861                        
+04_reviewing.xes.gz          	0.895                        	0.829                        
+09_a32f0n00.xes.gz           	0.963                        	0.945                        
+06_bpic2013_incidents.xes.gz 	0.864                        	0.894                        
+05_bpic2017.xes.gz           	0.991                        	0.985                        
+02_teleclaims.xes.gz         	0.978                        	0.951                        
+01_running-example.xes.gz    	0.526                        	0.550                        
+08_receipt.xes.gz            	0.755                        	0.853                        
+
+
+Simplicity based on inverse arc degree
+----
+log                          	simplicity_alpha             	simplicity_imdf              
+03_repairExample.xes.gz      	0.667                        	0.667                        
+07_bpic2013_problems.xes.gz  	1.000                        	0.778                        
+04_reviewing.xes.gz          	0.725                        	0.750                        
+09_a32f0n00.xes.gz           	0.800                        	0.778                        
+06_bpic2013_incidents.xes.gz 	0.789                        	0.649                        
+05_bpic2017.xes.gz           	0.267                        	0.655                        
+02_teleclaims.xes.gz         	0.339                        	0.642                        
+01_running-example.xes.gz    	0.652                        	0.806                        
+08_receipt.xes.gz            	0.160                        	0.606                        
+

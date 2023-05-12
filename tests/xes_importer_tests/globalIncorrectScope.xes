@@ -1,0 +1,4 @@
+<log xes.version="1849.2016" xes.features="">
+	<extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext" />
+	<global scope="incorrect" />
+</log>

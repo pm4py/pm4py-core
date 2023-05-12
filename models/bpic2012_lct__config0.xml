@@ -1,0 +1,1161 @@
+<DCRModel>
+  <title>BPIC2012_lct</title>
+  <description>BPIC2012_lct</description>
+  <graphType>DCRModel</graphType>
+  <roles>
+    <title>User</title>
+    <description>Dummy user</description>
+  </roles>
+  <events>
+    <id>S0</id>
+    <label>S0</label>
+    <type>subprocess</type>
+  </events>
+  <events>
+    <id>S1</id>
+    <label>S1</label>
+    <type>subprocess</type>
+  </events>
+  <events>
+    <id>W_Change contract details_SCHEDULE</id>
+    <label>W_Change contract details_SCHEDULE</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>W_Change contract details_SCHEDULE</source>
+    <target>A_DECLINED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Change contract details_SCHEDULE</source>
+    <target>O_DECLINED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Change contract details_SCHEDULE</source>
+    <target>W_Add information to application_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Change contract details_SCHEDULE</source>
+    <target>W_Assess fraud_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on quotes_COMPLETE</source>
+    <target>W_Change contract details_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Change contract details_SCHEDULE</source>
+    <target>W_Assess fraud_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Change contract details_SCHEDULE</source>
+    <target>A_CANCELLED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Change contract details_SCHEDULE</source>
+    <target>W_Assess fraud_START</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on quotes_START</source>
+    <target>W_Change contract details_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Change contract details_SCHEDULE</source>
+    <target>W_Add information to application_START</target>
+  </rules>
+  <events>
+    <id>A_APPROVED_COMPLETE</id>
+    <label>A_APPROVED_COMPLETE</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>A_APPROVED_COMPLETE</source>
+    <target>A_APPROVED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_APPROVED_COMPLETE</source>
+    <target>W_Follow up by phone on incomplete case files_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_APPROVED_COMPLETE</source>
+    <target>A_DECLINED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_APPROVED_COMPLETE</source>
+    <target>O_DECLINED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_APPROVED_COMPLETE</source>
+    <target>O_CREATED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_APPROVED_COMPLETE</source>
+    <target>W_Assess fraud_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_APPROVED_COMPLETE</source>
+    <target>O_SENT_BACK_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_APPROVED_COMPLETE</source>
+    <target>W_Validate application_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_APPROVED_COMPLETE</source>
+    <target>O_SELECTED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_APPROVED_COMPLETE</source>
+    <target>W_Assess fraud_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_APPROVED_COMPLETE</source>
+    <target>A_CANCELLED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Validate application_START</source>
+    <target>A_APPROVED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_APPROVED_COMPLETE</source>
+    <target>O_CANCELLED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_APPROVED_COMPLETE</source>
+    <target>W_Assess fraud_START</target>
+  </rules>
+  <events>
+    <id>W_Follow up on leads_SCHEDULE</id>
+    <label>W_Follow up on leads_SCHEDULE</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>W_Follow up on leads_SCHEDULE</source>
+    <target>W_Follow up on leads_START</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_PARTLYSUBMITTED_COMPLETE</source>
+    <target>W_Follow up on leads_SCHEDULE</target>
+  </rules>
+  <events>
+    <id>W_Follow up by phone on incomplete case files_SCHEDULE</id>
+    <label>W_Follow up by phone on incomplete case files_SCHEDULE</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>W_Follow up by phone on incomplete case files_SCHEDULE</source>
+    <target>W_Assess fraud_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Follow up by phone on incomplete case files_SCHEDULE</source>
+    <target>W_Follow up by phone on quotes_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>W_Follow up by phone on incomplete case files_SCHEDULE</source>
+    <target>W_Follow up by phone on incomplete case files_START</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Follow up by phone on incomplete case files_SCHEDULE</source>
+    <target>W_Assess fraud_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Validate application_START</source>
+    <target>W_Follow up by phone on incomplete case files_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Follow up by phone on incomplete case files_SCHEDULE</source>
+    <target>W_Assess fraud_START</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Follow up by phone on incomplete case files_SCHEDULE</source>
+    <target>W_Follow up by phone on quotes_START</target>
+  </rules>
+  <events>
+    <id>A_DECLINED_COMPLETE</id>
+    <label>A_DECLINED_COMPLETE</label>
+    <parent>S0</parent>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>A_DECLINED_COMPLETE</source>
+    <target>W_Change contract details_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_DECLINED_COMPLETE</source>
+    <target>A_APPROVED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_DECLINED_COMPLETE</source>
+    <target>W_Follow up by phone on incomplete case files_START</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_DECLINED_COMPLETE</source>
+    <target>O_ACCEPTED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_DECLINED_COMPLETE</source>
+    <target>W_Validate application_START</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_DECLINED_COMPLETE</source>
+    <target>O_CANCELLED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_DECLINED_COMPLETE</source>
+    <target>A_REGISTERED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_DECLINED_COMPLETE</source>
+    <target>W_Follow up by phone on quotes_START</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_DECLINED_COMPLETE</source>
+    <target>W_Add information to application_START</target>
+  </rules>
+  <events>
+    <id>O_DECLINED_COMPLETE</id>
+    <label>O_DECLINED_COMPLETE</label>
+    <parent>S1</parent>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>O_DECLINED_COMPLETE</source>
+    <target>W_Change contract details_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_DECLINED_COMPLETE</source>
+    <target>A_APPROVED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_DECLINED_COMPLETE</source>
+    <target>A_CANCELLED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_DECLINED_COMPLETE</source>
+    <target>W_Validate application_START</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_DECLINED_COMPLETE</source>
+    <target>A_REGISTERED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_DECLINED_COMPLETE</source>
+    <target>W_Follow up by phone on quotes_START</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_DECLINED_COMPLETE</source>
+    <target>A_ACTIVATED_COMPLETE</target>
+  </rules>
+  <events>
+    <id>W_Follow up by phone on incomplete case files_COMPLETE</id>
+    <label>W_Follow up by phone on incomplete case files_COMPLETE</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on incomplete case files_START</source>
+    <target>W_Follow up by phone on incomplete case files_COMPLETE</target>
+  </rules>
+  <events>
+    <id>A_FINALIZED_COMPLETE</id>
+    <label>A_FINALIZED_COMPLETE</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>A_FINALIZED_COMPLETE</source>
+    <target>A_FINALIZED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>A_FINALIZED_COMPLETE</source>
+    <target>O_CREATED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>A_FINALIZED_COMPLETE</source>
+    <target>W_Add information to application_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Add information to application_SCHEDULE</source>
+    <target>A_FINALIZED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>A_FINALIZED_COMPLETE</source>
+    <target>W_Follow up by phone on quotes_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_ACCEPTED_COMPLETE</source>
+    <target>A_FINALIZED_COMPLETE</target>
+  </rules>
+  <events>
+    <id>S0</id>
+    <label>S0</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>W_Follow up on leads_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>W_Follow up by phone on incomplete case files_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>S0</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>W_Follow up on leads_START</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>O_CREATED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>O_SENT_BACK_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>W_Validate application_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>W_Add information to application_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>O_SELECTED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>W_Assess fraud_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>W_Follow up by phone on quotes_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_PARTLYSUBMITTED_COMPLETE</source>
+    <target>S0</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>W_Assess fraud_START</target>
+  </rules>
+  <events>
+    <id>W_Follow up on leads_START</id>
+    <label>W_Follow up on leads_START</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up on leads_SCHEDULE</source>
+    <target>W_Follow up on leads_START</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>W_Follow up on leads_START</source>
+    <target>W_Follow up on leads_COMPLETE</target>
+  </rules>
+  <events>
+    <id>W_Validate application_COMPLETE</id>
+    <label>W_Validate application_COMPLETE</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>W_Validate application_SCHEDULE</source>
+    <target>W_Validate application_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on quotes_COMPLETE</source>
+    <target>W_Validate application_COMPLETE</target>
+  </rules>
+  <events>
+    <id>O_CREATED_COMPLETE</id>
+    <label>O_CREATED_COMPLETE</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>A_FINALIZED_COMPLETE</source>
+    <target>O_CREATED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_SELECTED_COMPLETE</source>
+    <target>O_CREATED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>O_CREATED_COMPLETE</source>
+    <target>O_SENT_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>include</type>
+    <source>O_CREATED_COMPLETE</source>
+    <target>O_SENT_COMPLETE</target>
+  </rules>
+  <events>
+    <id>W_Add information to application_COMPLETE</id>
+    <label>W_Add information to application_COMPLETE</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up on leads_START</source>
+    <target>W_Add information to application_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Add information to application_SCHEDULE</source>
+    <target>W_Add information to application_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_PREACCEPTED_COMPLETE</source>
+    <target>W_Add information to application_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Add information to application_COMPLETE</source>
+    <target>W_Follow up on leads_COMPLETE</target>
+  </rules>
+  <events>
+    <id>W_Assess fraud_COMPLETE</id>
+    <label>W_Assess fraud_COMPLETE</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>W_Assess fraud_START</source>
+    <target>W_Assess fraud_COMPLETE</target>
+  </rules>
+  <events>
+    <id>O_SENT_BACK_COMPLETE</id>
+    <label>O_SENT_BACK_COMPLETE</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>O_SENT_BACK_COMPLETE</source>
+    <target>W_Add information to application_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>O_SENT_BACK_COMPLETE</source>
+    <target>W_Validate application_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_SENT_BACK_COMPLETE</source>
+    <target>W_Follow up by phone on quotes_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on quotes_START</source>
+    <target>O_SENT_BACK_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_SENT_BACK_COMPLETE</source>
+    <target>W_Add information to application_START</target>
+  </rules>
+  <events>
+    <id>W_Validate application_SCHEDULE</id>
+    <label>W_Validate application_SCHEDULE</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>W_Add information to application_COMPLETE</source>
+    <target>W_Validate application_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_SENT_BACK_COMPLETE</source>
+    <target>W_Validate application_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on quotes_SCHEDULE</source>
+    <target>W_Validate application_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_SENT_COMPLETE</source>
+    <target>W_Validate application_SCHEDULE</target>
+  </rules>
+  <events>
+    <id>W_Follow up by phone on quotes_COMPLETE</id>
+    <label>W_Follow up by phone on quotes_COMPLETE</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>W_Add information to application_COMPLETE</source>
+    <target>W_Follow up by phone on quotes_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on quotes_SCHEDULE</source>
+    <target>W_Follow up by phone on quotes_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_SENT_COMPLETE</source>
+    <target>W_Follow up by phone on quotes_COMPLETE</target>
+  </rules>
+  <events>
+    <id>W_Add information to application_SCHEDULE</id>
+    <label>W_Add information to application_SCHEDULE</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>W_Add information to application_SCHEDULE</source>
+    <target>W_Follow up on leads_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>W_Add information to application_SCHEDULE</source>
+    <target>W_Add information to application_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_PARTLYSUBMITTED_COMPLETE</source>
+    <target>W_Add information to application_SCHEDULE</target>
+  </rules>
+  <events>
+    <id>O_SELECTED_COMPLETE</id>
+    <label>O_SELECTED_COMPLETE</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>O_SELECTED_COMPLETE</source>
+    <target>O_CREATED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Add information to application_SCHEDULE</source>
+    <target>O_SELECTED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_ACCEPTED_COMPLETE</source>
+    <target>O_SELECTED_COMPLETE</target>
+  </rules>
+  <events>
+    <id>W_Follow up by phone on incomplete case files_START</id>
+    <label>W_Follow up by phone on incomplete case files_START</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on incomplete case files_SCHEDULE</source>
+    <target>W_Follow up by phone on incomplete case files_START</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>W_Follow up by phone on incomplete case files_START</source>
+    <target>W_Follow up by phone on incomplete case files_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Validate application_COMPLETE</source>
+    <target>W_Follow up by phone on incomplete case files_START</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Assess fraud_COMPLETE</source>
+    <target>W_Follow up by phone on incomplete case files_START</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on quotes_START</source>
+    <target>W_Follow up by phone on incomplete case files_START</target>
+  </rules>
+  <events>
+    <id>O_ACCEPTED_COMPLETE</id>
+    <label>O_ACCEPTED_COMPLETE</label>
+    <parent>S1</parent>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>O_ACCEPTED_COMPLETE</source>
+    <target>A_DECLINED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_ACCEPTED_COMPLETE</source>
+    <target>A_CANCELLED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Validate application_START</source>
+    <target>O_ACCEPTED_COMPLETE</target>
+  </rules>
+  <events>
+    <id>A_PREACCEPTED_COMPLETE</id>
+    <label>A_PREACCEPTED_COMPLETE</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>A_PREACCEPTED_COMPLETE</source>
+    <target>W_Follow up on leads_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_PREACCEPTED_COMPLETE</source>
+    <target>W_Follow up on leads_START</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>A_PREACCEPTED_COMPLETE</source>
+    <target>W_Add information to application_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_PREACCEPTED_COMPLETE</source>
+    <target>A_PREACCEPTED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_PARTLYSUBMITTED_COMPLETE</source>
+    <target>A_PREACCEPTED_COMPLETE</target>
+  </rules>
+  <events>
+    <id>W_Assess fraud_SCHEDULE</id>
+    <label>W_Assess fraud_SCHEDULE</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>W_Assess fraud_SCHEDULE</source>
+    <target>W_Change contract details_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_PARTLYSUBMITTED_COMPLETE</source>
+    <target>W_Assess fraud_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>W_Assess fraud_SCHEDULE</source>
+    <target>W_Assess fraud_START</target>
+  </rules>
+  <events>
+    <id>A_CANCELLED_COMPLETE</id>
+    <label>A_CANCELLED_COMPLETE</label>
+    <parent>S0</parent>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>A_CANCELLED_COMPLETE</source>
+    <target>W_Change contract details_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_CANCELLED_COMPLETE</source>
+    <target>A_APPROVED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_CANCELLED_COMPLETE</source>
+    <target>O_DECLINED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_CANCELLED_COMPLETE</source>
+    <target>W_Assess fraud_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_CANCELLED_COMPLETE</source>
+    <target>W_Follow up by phone on incomplete case files_START</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_CANCELLED_COMPLETE</source>
+    <target>O_ACCEPTED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_CANCELLED_COMPLETE</source>
+    <target>W_Follow up on leads_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_CANCELLED_COMPLETE</source>
+    <target>W_Validate application_START</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_CANCELLED_COMPLETE</source>
+    <target>A_REGISTERED_COMPLETE</target>
+  </rules>
+  <events>
+    <id>W_Follow up by phone on quotes_SCHEDULE</id>
+    <label>W_Follow up by phone on quotes_SCHEDULE</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>A_FINALIZED_COMPLETE</source>
+    <target>W_Follow up by phone on quotes_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_SELECTED_COMPLETE</source>
+    <target>W_Follow up by phone on quotes_SCHEDULE</target>
+  </rules>
+  <events>
+    <id>W_Follow up on leads_COMPLETE</id>
+    <label>W_Follow up on leads_COMPLETE</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up on leads_START</source>
+    <target>W_Follow up on leads_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_PARTLYSUBMITTED_COMPLETE</source>
+    <target>W_Follow up on leads_COMPLETE</target>
+  </rules>
+  <events>
+    <id>A_PARTLYSUBMITTED_COMPLETE</id>
+    <label>A_PARTLYSUBMITTED_COMPLETE</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>A_PARTLYSUBMITTED_COMPLETE</source>
+    <target>A_PARTLYSUBMITTED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_SUBMITTED_COMPLETE</source>
+    <target>A_PARTLYSUBMITTED_COMPLETE</target>
+  </rules>
+  <events>
+    <id>W_Validate application_START</id>
+    <label>W_Validate application_START</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>W_Validate application_SCHEDULE</source>
+    <target>W_Validate application_START</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on quotes_COMPLETE</source>
+    <target>W_Validate application_START</target>
+  </rules>
+  <events>
+    <id>O_CANCELLED_COMPLETE</id>
+    <label>O_CANCELLED_COMPLETE</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>W_Add information to application_COMPLETE</source>
+    <target>O_CANCELLED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_CANCELLED_COMPLETE</source>
+    <target>W_Add information to application_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on quotes_SCHEDULE</source>
+    <target>O_CANCELLED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_SENT_COMPLETE</source>
+    <target>O_CANCELLED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_CANCELLED_COMPLETE</source>
+    <target>W_Add information to application_START</target>
+  </rules>
+  <events>
+    <id>A_REGISTERED_COMPLETE</id>
+    <label>A_REGISTERED_COMPLETE</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>A_REGISTERED_COMPLETE</source>
+    <target>W_Follow up by phone on incomplete case files_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_REGISTERED_COMPLETE</source>
+    <target>A_DECLINED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_REGISTERED_COMPLETE</source>
+    <target>O_DECLINED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_REGISTERED_COMPLETE</source>
+    <target>O_CREATED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Add information to application_COMPLETE</source>
+    <target>A_REGISTERED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_REGISTERED_COMPLETE</source>
+    <target>W_Assess fraud_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_REGISTERED_COMPLETE</source>
+    <target>O_SENT_BACK_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_REGISTERED_COMPLETE</source>
+    <target>W_Validate application_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_REGISTERED_COMPLETE</source>
+    <target>O_SELECTED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_REGISTERED_COMPLETE</source>
+    <target>W_Assess fraud_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_REGISTERED_COMPLETE</source>
+    <target>A_CANCELLED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on quotes_SCHEDULE</source>
+    <target>A_REGISTERED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Validate application_START</source>
+    <target>A_REGISTERED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_REGISTERED_COMPLETE</source>
+    <target>O_CANCELLED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_REGISTERED_COMPLETE</source>
+    <target>A_REGISTERED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_REGISTERED_COMPLETE</source>
+    <target>W_Assess fraud_START</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_SENT_COMPLETE</source>
+    <target>A_REGISTERED_COMPLETE</target>
+  </rules>
+  <events>
+    <id>W_Assess fraud_START</id>
+    <label>W_Assess fraud_START</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>W_Assess fraud_START</source>
+    <target>W_Assess fraud_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Assess fraud_SCHEDULE</source>
+    <target>W_Assess fraud_START</target>
+  </rules>
+  <events>
+    <id>O_SENT_COMPLETE</id>
+    <label>O_SENT_COMPLETE</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>O_CREATED_COMPLETE</source>
+    <target>O_SENT_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_SENT_COMPLETE</source>
+    <target>O_SENT_COMPLETE</target>
+  </rules>
+  <events>
+    <id>S1</id>
+    <label>S1</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>S1</source>
+    <target>W_Follow up by phone on incomplete case files_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S1</source>
+    <target>O_CREATED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S1</source>
+    <target>W_Add information to application_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S1</source>
+    <target>W_Assess fraud_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S1</source>
+    <target>O_SENT_BACK_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S1</source>
+    <target>W_Validate application_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S1</source>
+    <target>O_SELECTED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S1</source>
+    <target>W_Follow up by phone on incomplete case files_START</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S1</source>
+    <target>W_Assess fraud_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S1</source>
+    <target>W_Follow up by phone on quotes_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S1</source>
+    <target>O_CANCELLED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S1</source>
+    <target>W_Assess fraud_START</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S1</source>
+    <target>S1</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on quotes_START</source>
+    <target>S1</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S1</source>
+    <target>W_Add information to application_START</target>
+  </rules>
+  <events>
+    <id>W_Follow up by phone on quotes_START</id>
+    <label>W_Follow up by phone on quotes_START</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>W_Add information to application_COMPLETE</source>
+    <target>W_Follow up by phone on quotes_START</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on quotes_SCHEDULE</source>
+    <target>W_Follow up by phone on quotes_START</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_SENT_COMPLETE</source>
+    <target>W_Follow up by phone on quotes_START</target>
+  </rules>
+  <events>
+    <id>A_ACCEPTED_COMPLETE</id>
+    <label>A_ACCEPTED_COMPLETE</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>A_ACCEPTED_COMPLETE</source>
+    <target>W_Add information to application_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_ACCEPTED_COMPLETE</source>
+    <target>W_Add information to application_SCHEDULE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up on leads_COMPLETE</source>
+    <target>A_ACCEPTED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_ACCEPTED_COMPLETE</source>
+    <target>A_ACCEPTED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Add information to application_START</source>
+    <target>A_ACCEPTED_COMPLETE</target>
+  </rules>
+  <events>
+    <id>A_SUBMITTED_COMPLETE</id>
+    <label>A_SUBMITTED_COMPLETE</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>A_SUBMITTED_COMPLETE</source>
+    <target>A_PARTLYSUBMITTED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>include</type>
+    <source>A_SUBMITTED_COMPLETE</source>
+    <target>A_PARTLYSUBMITTED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_SUBMITTED_COMPLETE</source>
+    <target>A_SUBMITTED_COMPLETE</target>
+  </rules>
+  <events>
+    <id>A_ACTIVATED_COMPLETE</id>
+    <label>A_ACTIVATED_COMPLETE</label>
+    <parent>S0</parent>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>A_ACTIVATED_COMPLETE</source>
+    <target>O_DECLINED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Add information to application_COMPLETE</source>
+    <target>A_ACTIVATED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_ACTIVATED_COMPLETE</source>
+    <target>W_Assess fraud_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up by phone on quotes_SCHEDULE</source>
+    <target>A_ACTIVATED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Validate application_START</source>
+    <target>A_ACTIVATED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_ACTIVATED_COMPLETE</source>
+    <target>O_CANCELLED_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_SENT_COMPLETE</source>
+    <target>A_ACTIVATED_COMPLETE</target>
+  </rules>
+  <events>
+    <id>W_Add information to application_START</id>
+    <label>W_Add information to application_START</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>W_Follow up on leads_START</source>
+    <target>W_Add information to application_START</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>W_Add information to application_START</source>
+    <target>W_Add information to application_COMPLETE</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Add information to application_SCHEDULE</source>
+    <target>W_Add information to application_START</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_PREACCEPTED_COMPLETE</source>
+    <target>W_Add information to application_START</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Add information to application_START</source>
+    <target>W_Follow up on leads_COMPLETE</target>
+  </rules>
+</DCRModel>

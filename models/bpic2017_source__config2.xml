@@ -1,0 +1,644 @@
+<DCRModel>
+  <title>BPIC2017_source</title>
+  <description>BPIC2017_source</description>
+  <graphType>DCRModel</graphType>
+  <roles>
+    <title>User</title>
+    <description>Dummy user</description>
+  </roles>
+  <events>
+    <id>S0</id>
+    <label>S0</label>
+    <type>subprocess</type>
+  </events>
+  <events>
+    <id>S0</id>
+    <label>S0</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>S0</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>W_Assess potential fraud</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>O_Returned</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Created</source>
+    <target>S0</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>A_Denied</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Accepted</source>
+    <target>S0</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>O_Create Offer</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>O_Sent (mail and online)</target>
+  </rules>
+  <rules>
+    <type>include</type>
+    <source>S0</source>
+    <target>A_Pending</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>O_Refused</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>S0</source>
+    <target>O_Sent (online only)</target>
+  </rules>
+  <events>
+    <id>W_Assess potential fraud</id>
+    <label>W_Assess potential fraud</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>W_Assess potential fraud</source>
+    <target>W_Shortened completion </target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Create Application</source>
+    <target>W_Assess potential fraud</target>
+  </rules>
+  <events>
+    <id>O_Returned</id>
+    <label>O_Returned</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>A_Validating</source>
+    <target>O_Returned</target>
+  </rules>
+  <events>
+    <id>A_Incomplete</id>
+    <label>A_Incomplete</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>A_Incomplete</source>
+    <target>A_Incomplete</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Call incomplete files</source>
+    <target>A_Incomplete</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>A_Incomplete</source>
+    <target>W_Call incomplete files</target>
+  </rules>
+  <events>
+    <id>W_Call incomplete files</id>
+    <label>W_Call incomplete files</label>
+  </events>
+  <rules>
+    <type>include</type>
+    <source>W_Call incomplete files</source>
+    <target>A_Incomplete</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Validating</source>
+    <target>W_Call incomplete files</target>
+  </rules>
+  <events>
+    <id>W_Personal Loan collection</id>
+    <label>W_Personal Loan collection</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>W_Personal Loan collection</source>
+    <target>W_Assess potential fraud</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Returned</source>
+    <target>W_Personal Loan collection</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Personal Loan collection</source>
+    <target>O_Returned</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Personal Loan collection</source>
+    <target>W_Call incomplete files</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Personal Loan collection</source>
+    <target>W_Call after offers</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Personal Loan collection</source>
+    <target>W_Shortened completion </target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Personal Loan collection</source>
+    <target>O_Create Offer</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Sent (mail and online)</source>
+    <target>W_Personal Loan collection</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Personal Loan collection</source>
+    <target>O_Sent (mail and online)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Personal Loan collection</source>
+    <target>O_Cancelled</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Personal Loan collection</source>
+    <target>O_Sent (online only)</target>
+  </rules>
+  <events>
+    <id>O_Created</id>
+    <label>O_Created</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>O_Created</source>
+    <target>O_Created</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Create Offer</source>
+    <target>O_Created</target>
+  </rules>
+  <events>
+    <id>O_Accepted</id>
+    <label>O_Accepted</label>
+    <parent>S0</parent>
+  </events>
+  <events>
+    <id>W_Call after offers</id>
+    <label>W_Call after offers</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>O_Created</source>
+    <target>W_Call after offers</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Accepted</source>
+    <target>W_Call after offers</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Call after offers</source>
+    <target>W_Complete application</target>
+  </rules>
+  <rules>
+    <type>include</type>
+    <source>W_Call after offers</source>
+    <target>A_Complete</target>
+  </rules>
+  <events>
+    <id>A_Validating</id>
+    <label>A_Validating</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>O_Created</source>
+    <target>A_Validating</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_Validating</source>
+    <target>A_Validating</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Validate application</source>
+    <target>A_Validating</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>A_Validating</source>
+    <target>W_Validate application</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Accepted</source>
+    <target>A_Validating</target>
+  </rules>
+  <events>
+    <id>W_Validate application</id>
+    <label>W_Validate application</label>
+  </events>
+  <rules>
+    <type>include</type>
+    <source>W_Validate application</source>
+    <target>A_Validating</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Complete</source>
+    <target>W_Validate application</target>
+  </rules>
+  <events>
+    <id>A_Denied</id>
+    <label>A_Denied</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>A_Denied</source>
+    <target>S0</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_Denied</source>
+    <target>O_Returned</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Created</source>
+    <target>A_Denied</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_Denied</source>
+    <target>W_Shortened completion </target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_Denied</source>
+    <target>O_Create Offer</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_Denied</source>
+    <target>O_Sent (mail and online)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_Denied</source>
+    <target>A_Pending</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_Denied</source>
+    <target>O_Cancelled</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_Denied</source>
+    <target>O_Sent (online only)</target>
+  </rules>
+  <events>
+    <id>W_Shortened completion </id>
+    <label>W_Shortened completion </label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>W_Shortened completion </source>
+    <target>W_Assess potential fraud</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Shortened completion </source>
+    <target>W_Personal Loan collection</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Concept</source>
+    <target>W_Shortened completion </target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Handle leads</source>
+    <target>W_Shortened completion </target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Complete application</source>
+    <target>W_Shortened completion </target>
+  </rules>
+  <events>
+    <id>A_Accepted</id>
+    <label>A_Accepted</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>A_Accepted</source>
+    <target>A_Accepted</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Concept</source>
+    <target>A_Accepted</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>A_Accepted</source>
+    <target>O_Create Offer</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Handle leads</source>
+    <target>A_Accepted</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Complete application</source>
+    <target>A_Accepted</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>A_Accepted</source>
+    <target>W_Complete application</target>
+  </rules>
+  <events>
+    <id>A_Concept</id>
+    <label>A_Concept</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>A_Concept</source>
+    <target>A_Accepted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_Concept</source>
+    <target>A_Concept</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Create Application</source>
+    <target>A_Concept</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_Concept</source>
+    <target>W_Handle leads</target>
+  </rules>
+  <events>
+    <id>O_Create Offer</id>
+    <label>O_Create Offer</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>O_Create Offer</source>
+    <target>O_Created</target>
+  </rules>
+  <rules>
+    <type>include</type>
+    <source>O_Create Offer</source>
+    <target>O_Created</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Accepted</source>
+    <target>O_Create Offer</target>
+  </rules>
+  <events>
+    <id>O_Sent (mail and online)</id>
+    <label>O_Sent (mail and online)</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>O_Created</source>
+    <target>O_Sent (mail and online)</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Accepted</source>
+    <target>O_Sent (mail and online)</target>
+  </rules>
+  <events>
+    <id>A_Submitted</id>
+    <label>A_Submitted</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>A_Submitted</source>
+    <target>A_Submitted</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Create Application</source>
+    <target>A_Submitted</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>A_Submitted</source>
+    <target>W_Handle leads</target>
+  </rules>
+  <events>
+    <id>A_Pending</id>
+    <label>A_Pending</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>S0</source>
+    <target>A_Pending</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Assess potential fraud</source>
+    <target>A_Pending</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Returned</source>
+    <target>A_Pending</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Sent (mail and online)</source>
+    <target>A_Pending</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_Pending</source>
+    <target>A_Pending</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Sent (online only)</source>
+    <target>A_Pending</target>
+  </rules>
+  <events>
+    <id>A_Create Application</id>
+    <label>A_Create Application</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>A_Create Application</source>
+    <target>A_Concept</target>
+  </rules>
+  <rules>
+    <type>include</type>
+    <source>A_Create Application</source>
+    <target>A_Submitted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_Create Application</source>
+    <target>A_Create Application</target>
+  </rules>
+  <events>
+    <id>W_Handle leads</id>
+    <label>W_Handle leads</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>W_Handle leads</source>
+    <target>A_Concept</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Submitted</source>
+    <target>W_Handle leads</target>
+  </rules>
+  <events>
+    <id>O_Refused</id>
+    <label>O_Refused</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>O_Returned</source>
+    <target>O_Refused</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Denied</source>
+    <target>O_Refused</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>W_Shortened completion </source>
+    <target>O_Refused</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Sent (mail and online)</source>
+    <target>O_Refused</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Cancelled</source>
+    <target>O_Refused</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Sent (online only)</source>
+    <target>O_Refused</target>
+  </rules>
+  <events>
+    <id>O_Cancelled</id>
+    <label>O_Cancelled</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>O_Cancelled</source>
+    <target>W_Personal Loan collection</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Created</source>
+    <target>O_Cancelled</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Accepted</source>
+    <target>O_Cancelled</target>
+  </rules>
+  <events>
+    <id>W_Complete application</id>
+    <label>W_Complete application</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>A_Create Application</source>
+    <target>W_Complete application</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>W_Complete application</source>
+    <target>W_Handle leads</target>
+  </rules>
+  <events>
+    <id>A_Cancelled</id>
+    <label>A_Cancelled</label>
+    <parent>S0</parent>
+  </events>
+  <events>
+    <id>A_Complete</id>
+    <label>A_Complete</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>W_Call after offers</source>
+    <target>A_Complete</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>A_Complete</source>
+    <target>W_Call after offers</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>A_Complete</source>
+    <target>A_Complete</target>
+  </rules>
+  <events>
+    <id>O_Sent (online only)</id>
+    <label>O_Sent (online only)</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>O_Sent (online only)</source>
+    <target>W_Personal Loan collection</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>O_Created</source>
+    <target>O_Sent (online only)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>O_Sent (online only)</source>
+    <target>W_Shortened completion </target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>A_Accepted</source>
+    <target>O_Sent (online only)</target>
+  </rules>
+</DCRModel>

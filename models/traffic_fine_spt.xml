@@ -1,0 +1,29 @@
+<DCRModel>
+  <title>Traffic Fine</title>
+  <description>Traffic Fine SpT-DisCoveR</description>
+  <graphType>DCRModel</graphType>
+  <roles>
+    <title>User</title>
+    <description>Dummy user</description>
+  </roles>
+  <events>
+    <id>Add penalty</id>
+    <label>Add penalty</label>
+  </events>
+  <events>
+    <id>Insert Fine Notification</id>
+    <label>Insert Fine Notification</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>Insert Fine Notification</source>
+    <target>Add penalty</target>
+    <duration>P60D</duration>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Insert Fine Notification</source>
+    <target>Add penalty</target>
+    <duration>P59D</duration>
+  </rules>
+</DCRModel>

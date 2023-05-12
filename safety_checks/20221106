@@ -1,0 +1,39 @@
++======================================================================================================================+
+                               /$$$$$$            /$$
+                              /$$__  $$          | $$
+           /$$$$$$$  /$$$$$$ | $$  \__//$$$$$$  /$$$$$$   /$$   /$$
+          /$$_____/ |____  $$| $$$$   /$$__  $$|_  $$_/  | $$  | $$
+         |  $$$$$$   /$$$$$$$| $$_/  | $$$$$$$$  | $$    | $$  | $$
+          \____  $$ /$$__  $$| $$    | $$_____/  | $$ /$$| $$  | $$
+          /$$$$$$$/|  $$$$$$$| $$    |  $$$$$$$  |  $$$$/|  $$$$$$$
+         |_______/  \_______/|__/     \_______/   \___/   \____  $$
+                                                          /$$  | $$
+                                                         |  $$$$$$/
+  by pyup.io                                              \______/
+
++======================================================================================================================+
+ REPORT
+
+  You are using Safety's free vulnerability database. This data is outdated, limited, and
+  licensed for non-commercial use only.
+  All commercial projects must sign up and get an API key at https://pyup.io
+
+  Safety v2.3.1 is scanning for Vulnerabilities...
+  Scanning dependencies in your files:
+
+  -> requirements_stable.txt
+
+  Using non-commercial database
+  Found and scanned 44 packages
+  Timestamp 2022-11-06 09:11:46
+  0 vulnerabilities found
+  0 vulnerabilities ignored
++======================================================================================================================+
+ No known security vulnerabilities found.
+
++======================================================================================================================+
+  You are using Safety's free vulnerability database. This data is outdated, limited, and
+  licensed for non-commercial use only.
+  All commercial projects must sign up and get an API key at https://pyup.io
+
++======================================================================================================================+
