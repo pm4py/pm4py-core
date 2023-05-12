@@ -137,3 +137,5 @@ dmypy.json
 
 # Renovate bot
 renovate.json5
+# project specific
+datasets/
