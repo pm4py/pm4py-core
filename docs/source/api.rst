@@ -304,6 +304,9 @@ The following methods provides just the abstractions of the given objects:
   * :meth:`pm4py.openai.abstract_event_stream`; provides an abstraction of the (last) events of the stream related to a traditional event log
   * :meth:`pm4py.openai.abstract_petri_net`; provides the abstraction of a Petri net
 
+The following methods can be executed directly against the OpenAI APIs:
+
+  * :meth:`pm4py.openai.execute_prompt`; executes a prompt against OpenAI, returning the response as string
 
 
 Basic Connectors (:mod:`pm4py.connectors`)
@@ -568,6 +571,7 @@ Overall List of Methods
    pm4py.openai.abstract_event_stream
    pm4py.openai.abstract_petri_net
    pm4py.openai.abstract_log_attributes
+   pm4py.openai.execute_prompt
    pm4py.connectors.extract_log_outlook_mails
    pm4py.connectors.extract_log_outlook_calendar
    pm4py.connectors.extract_log_windows_events
