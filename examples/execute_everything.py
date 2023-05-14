@@ -775,7 +775,6 @@ if __name__ == "__main__":
     execute_script(ocel_occm_example)
     execute_script(ocel_clustering)
     execute_script(ocel_enrichment)
-    execute_script(openai_queries)
     execute_script(validation_ocel20_xml)
     execute_script(consecutive_act_case_grouping_filter)
     execute_script(cost_based_dfg)
