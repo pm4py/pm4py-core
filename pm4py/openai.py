@@ -1,10 +1,36 @@
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream
-from typing import Union
+from typing import Union, Optional
 from pm4py.utils import get_properties, constants
 from pm4py.utils import __event_log_deprecation_warning
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.petri_net.obj import PetriNet, Marking
+
+
+def execute_prompt(prompt: str, api_key: Optional[str] = None, openai_model: Optional[str] = None) -> str:
+    """
+    Executes the provided prompt, obtaining the answer from the OpenAI APIs.
+
+    :param prompt: prompt that should be executed
+    :param api_key: OpenAI API key
+    :param openai_model: OpenAI model to be used (default: gpt-3.5-turbo)
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        resp = pm4py.openai.execute_prompt('what is the result of 3+3?', api_key="sk-382393", openai_model="gpt-3.5-turbo")
+        print(resp)
+    """
+    parameters = {}
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
+
+    from pm4py.algo.querying.openai import perform_query
+    return perform_query.apply(prompt, parameters=parameters)
 
 
 def abstract_dfg(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = constants.OPENAI_MAX_LEN, include_performance: bool = True, relative_frequency: bool = False, response_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
