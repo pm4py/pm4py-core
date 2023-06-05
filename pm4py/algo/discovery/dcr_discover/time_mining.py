@@ -104,7 +104,7 @@ def get_timings(timing_input_dict, log):
                 # print(event_pair)
                 res[(rule, event_pair[0], event_pair[1])] = data
             # else:
-                # print(f'[fuked] {event_pair}')
+                # print(f'[error] {event_pair}')
 
     return res
 def get_timings_subprocess(timing_input_dict, log, sp_log,sps):

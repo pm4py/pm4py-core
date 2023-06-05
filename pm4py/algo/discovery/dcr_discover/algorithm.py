@@ -72,24 +72,24 @@ def apply(input_log, variant=DCR_BASIC, **parameters):
         print('[i] Mining with Sp-DisCoveR (ME)')
         dcr_model, sp_log = discover_subprocess_mutual_exclusion.apply(log, **parameters)
         if 'timed' in parameters.keys() and parameters['timed']:
-            dcr_model = apply_timed(dcr_model, log, sp_log)
+            dcr_model = apply_timed(dcr_model, deepcopy(input_log), sp_log)
         if 'pending' in parameters.keys() and parameters['pending']:
-            dcr_model = initial_pending.apply(dcr_model, log)
+            dcr_model = initial_pending.apply(dcr_model, sp_log)
         return dcr_model, sp_log
     elif variant.value == Variants.DCR_SUBPROCESS_DK.value:
         print('[i] Mining with Sp-DisCoveR (DK)')
         dcr_model, sp_log = discover_subprocess_given_domain_knowledge.apply(log, **parameters)
         if 'timed' in parameters.keys() and parameters['timed']:
-            dcr_model = apply_timed(dcr_model, log, sp_log)
+            dcr_model = apply_timed(dcr_model, deepcopy(input_log), sp_log)
         if 'pending' in parameters.keys() and parameters['pending']:
-            dcr_model = initial_pending.apply(dcr_model, log)
+            dcr_model = initial_pending.apply(dcr_model, sp_log)
         return dcr_model, sp_log
     elif variant.value == Variants.DCR_SUBPROCESS_PRE.value:
         dcr_model, sp_log = discover_subprocess_predecessors.apply(log, **parameters)
         if 'timed' in parameters.keys() and parameters['timed']:
-            dcr_model = apply_timed(dcr_model, log, sp_log)
+            dcr_model = apply_timed(dcr_model, deepcopy(input_log), sp_log)
         if 'pending' in parameters.keys() and parameters['pending']:
-            dcr_model = initial_pending.apply(dcr_model, log)
+            dcr_model = initial_pending.apply(dcr_model, sp_log)
         return dcr_model, sp_log
 
 

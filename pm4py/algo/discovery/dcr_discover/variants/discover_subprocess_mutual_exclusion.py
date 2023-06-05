@@ -132,7 +132,7 @@ def get_subprocess_log(event_log, subprocesses):
     event: pm4py.objects.log.obj.Event
     for trace in event_log:
         # only replace with the subprocess when the subprocess is accepting
-        sp_trace = pm4py.objects.log.obj.Trace()
+        sp_trace = pm4py.objects.log.obj.Trace(attributes=trace.attributes, properties=trace.properties)
         for event in trace:
             # set all subprocess dcr graphs to their initial state
             sp_dcr_instance = deepcopy(sp_dcr_dict)
@@ -188,6 +188,10 @@ def get_final_dcr(basic_dcr, sp_dcr, subprocesses, inBetweenRels=True):
                     final_dcr[k] = deepcopy(sp_dcr[k])
                     # in between the internal to external and external to internal
                     if inBetweenRels:
+                        event_subprocesses = {}
+                        for m, n in subprocesses.items():
+                            for l in n:
+                                event_subprocesses[l] = m
                         # print(k)
                         for sp_name, internal_events in subprocesses.items():
                             # print('e2i')
@@ -195,6 +199,12 @@ def get_final_dcr(basic_dcr, sp_dcr, subprocesses, inBetweenRels=True):
                             for external_event in external_events:
                                 if external_event in basic_dcr[k] and external_event in sp_dcr[k]:
                                     e2i = basic_dcr[k][external_event].intersection(internal_events)
+                                    # TODO: if e2i has internal events of another subprocess and that subprocess has the same relation to the subprocess then we remove that external event from e2i
+                                    e2i_to_remove = set()
+                                    for e in e2i:
+                                        if e in event_subprocesses.keys() and event_subprocesses[e] in sp_dcr[k]:
+                                            e2i_to_remove.add(e)
+                                    e2i = e2i.difference(e2i_to_remove)
                                     e2_sp = sp_dcr[k][external_event].intersection({sp_name})
                                     if len(e2_sp) == 0 and len(e2i) > 0:
                                         # print(f'{k} {external_event}')
@@ -206,6 +216,12 @@ def get_final_dcr(basic_dcr, sp_dcr, subprocesses, inBetweenRels=True):
                             for internal_event in internal_events:
                                 if internal_event in basic_dcr[k] and sp_name in sp_dcr[k]:
                                     i2e = basic_dcr[k][internal_event].intersection(external_events)
+                                    # TODO: if i2e has internal events of another subprocess and that subprocess has the same relation to the subprocess then we remove that external event from i2e
+                                    i2e_to_remove = set()
+                                    for e in i2e:
+                                        if e in event_subprocesses.keys() and event_subprocesses[e] in sp_dcr[k]:
+                                            i2e_to_remove.add(e)
+                                    i2e = i2e.difference(i2e_to_remove)
                                     sp2e = sp_dcr[k][sp_name].intersection(external_events)
                                     i2e_not_sp2e = i2e.difference(sp2e)
                                     if len(i2e_not_sp2e) > 0:
