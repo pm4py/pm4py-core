@@ -1,5 +1,6 @@
 import tempfile
 import re
+import warnings
 from copy import copy
 
 from graphviz import Digraph
@@ -252,12 +253,6 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
 
     '''we merge the dictiomaries of act_time_map with activities_map to ensure the alignment i s done on the activity node referencing
     to the same object.'''
-    merge_map = {}
-    ds = [act_time_map, activities_map]
-    merge_map = {}
-    
-    '''for k in act_time_map.keys():
-        merge_map[k] = tuple(d[k] for d in ds)'''
 
     #TRY MERGING MAP in different way!
     from collections import defaultdict
@@ -274,7 +269,10 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
         s.node(hash_time)
         for values in time_act_dict[hash_time]:
             s.node(dd[values][0])
-            s.node(dd[values][1])
+            try:
+                s.node(dd[values][1])
+            except:
+                warnings.warn(dd[values])
 
 
         viz.subgraph(s)
