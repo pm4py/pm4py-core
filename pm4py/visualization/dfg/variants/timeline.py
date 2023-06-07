@@ -124,8 +124,6 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
         # take unique elements as a list not as a set (in this way, nodes are added in the same order to the graph)
         activities_to_include = sorted(list(set(activities_in_dfg)))
 
-    #print(activities_to_include) 
-
 
 
 
@@ -142,25 +140,14 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
     for dfg_timestamp in dfg_timestamps:
         act = dfg_timestamp[0]
         timestamp = dfg_timestamp[1].total_seconds()
-        print(dfg_timestamp)
-        print(timestamp)
         stat = human_readable_stat(timestamp)
         if stat not in timestamps_to_include:
             viz.node(str(hash(stat)), str(stat), shape='circle', style='filled', fillcolor='pink')
             hash_timestamps_to_include.append(str(hash(stat)))
         timestamps_to_include.append(stat)
         act_time_map[act] = str(hash(stat))
-        print(act, dfg_timestamp[1], " ----- > ", stat)
-        #timestamp_hash[str(hash(stat))] = []
 
-    print(act_time_map)
-    #print(timestamp_hash)
-
-    
-
-    print()
-
-    '''so far, I have created nodes for each timeline. Each node gets a unique value of the readable statistics
+    '''so far, we have created nodes for each timeline. Each node gets a unique value of the readable statistics
     a dictioarny (act_time_map) is crated having keys as activity and value as the hash of the stat (human readable time).
     i have nother dictionary (timestamp_hash) that has the hash value of the stat as key and an empty list as the value.
     In the enxt step, I will fill this empty list by those activities that are repeated having the same roudned time value.
@@ -174,10 +161,6 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
             time_act_dict[value].append(key)
         else:
             time_act_dict[value] = [ key ]
-    
-    print(time_act_dict)
-    print()
-    print(hash_timestamps_to_include)
 
 
     ''' calculate how long each edge should be to make the edges proportional alomg the timeilne axis..'''
@@ -185,31 +168,25 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
 
     minlen_aux =[]
     [minlen_aux.append(item) for item in timestamps_to_include if item not in minlen_aux]
-    print(minlen_aux)
 
     for i, t in enumerate(minlen_aux[:-1]):
         int1 = int(re.search(r'\d+', minlen_aux[i]).group())
         int2 = int(re.search(r'\d+', minlen_aux[i+1]).group())
-        print(int1, int2)
         minlen = int2 - int1
         if(minlen<1):
             minlen = 1
         minlen_list.append(minlen)
-        print(minlen)
-    print(minlen_list)
 
 
 
     '''timestamps_to_include only have timestamps. So we can use it to create edges for the timeline'''
-    #craete edges for the timeline now
+    #create edges for the timeline
     edges_in_timeline = []
     for i, t in enumerate(hash_timestamps_to_include[:-1]):
-        #edge = (str(hash(t)), str(hash(timestamps_to_include[i+1])))
         minlen = str(minlen_list[i])
         edge = (t, hash_timestamps_to_include[i+1])
         edges_in_timeline.append(edge)
         viz.edge(edge[0],edge[1], minlen=minlen)
-        #print(edge)
 
 
     '''Now we have the values that need to go on timeline and we have what activities are supposed to be aligned with what timestamp.
@@ -235,8 +212,6 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
             stat_string = human_readable_stat(soj_time[act], stat_locale)
             viz.node(str(hash(act)), act + f" ({stat_string})", fontsize=font_size)
             activities_map[act] = str(hash(act))
-
-    print(activities_map)
 
     # make edges addition always in the same order
     dfg_edges = sorted(list(dfg.keys()))
@@ -279,7 +254,6 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
     to the same object.'''
     merge_map = {}
     ds = [act_time_map, activities_map]
-    print(f"Here is ds\n{ds}\n")
     merge_map = {}
     
     '''for k in act_time_map.keys():
@@ -292,43 +266,21 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
     for d in (activities_map, act_time_map): # you can list as many input dicts as you want here
         for key, value in d.items():
             dd[key].append(value)
-    
-    print(f"Here is the result after merging: \n{dd}\n") # result: defaultdict(<type 'list'>, {1: [2, 6], 3: [4, 7]})
-
-
-    print(act_time_map)
-    print(merge_map)
-    print()
 
 
     for hash_time in hash_timestamps_to_include:
-        #print()
         s = Digraph(str(hash_time))
-        #print(hash_time)
         s.attr(rank='same')
         s.node(hash_time)
-        #print(time_act_dict)
         for values in time_act_dict[hash_time]:
-            print('*****')
-            '''print(merge_map[values][0])
-            print(merge_map[values][1])
-            s.node(merge_map[values][0])
-            s.node(merge_map[values][1])'''
-            print(dd[values][0])
-            print(dd[values][1])
             s.node(dd[values][0])
             s.node(dd[values][1])
 
 
         viz.subgraph(s)
-        
-    print(activities_map)
-    print(act_time_map)
-    print(f"\n\n\n\n")
 
     viz.attr(overlap='true')
     viz.format = image_format
-    print(viz)
     return viz
 
 
@@ -361,9 +313,6 @@ def apply(dfg: Dict[Tuple[str, str], int], dfg_time : Dict, log: EventLog = None
 
 
     #write dict as soj time for relative time and pass it as a parameter
-    ##print(activities_count)
-    ##print(soj_time)
-    ##print(stat_locale)
     return graphviz_visualization(activities_count, dfg, dfg_time, image_format=image_format, measure="frequency",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
                                   start_activities=start_activities, end_activities=end_activities, 
