@@ -12,6 +12,10 @@ Check out and run the jupyter notebook from notebooks/pm4py_dcr_example.ipynb
 
 The running example is on the sepsis event log.
 
+### Contributors on the dcr extension
+
+[paul-cvp](https://github.com/paul-cvp),[Timmovich](https://github.com/Timmovich)
+
 ## From pm4py:
 
 ## Installation
