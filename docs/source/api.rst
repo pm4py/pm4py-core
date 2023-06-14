@@ -367,6 +367,7 @@ Other algorithms, which do not belong to the aforementioned categories, are coll
   * :meth:`pm4py.analysis.generate_marking`; generates a Marking object from a textual representation.
   * :meth:`pm4py.analysis.reduce_petri_net_invisibles`; reduces the invisible transitions of a Petri net when possible.
   * :meth:`pm4py.analysis.reduce_petri_net_implicit_places`; reduces the implicit places in the Petri net (MURATA).
+  * :meth:`pm4py.analysis.get_enabled_transitions`; gets the transitions enabled in a given marking.
 
 
 Overall List of Methods
@@ -606,6 +607,7 @@ Overall List of Methods
    pm4py.analysis.compute_emd
    pm4py.analysis.reduce_petri_net_invisibles
    pm4py.analysis.reduce_petri_net_implicit_places
+   pm4py.analysis.get_enabled_transitions
    pm4py.utils
    pm4py.utils.rebase
    pm4py.utils.parse_process_tree
