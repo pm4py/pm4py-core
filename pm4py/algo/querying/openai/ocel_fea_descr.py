@@ -47,8 +47,7 @@ def __transform_to_string(stru: str) -> str:
         act2 = path.split("##")[1]
         return "Frequency of the path \""+act1+"\" -> \""+act2+"\" in the lifecycle of the object"
 
-    print(stru)
-    return None
+    return stru
 
 
 def apply(ocel: OCEL, obj_type: str, parameters: Optional[Dict[Any, Any]] = None) -> str:
@@ -66,7 +65,7 @@ def apply(ocel: OCEL, obj_type: str, parameters: Optional[Dict[Any, Any]] = None
 
     for c in fea_df.columns:
         ser = fea_df[c]
-        ser1 = ser[ser != 0]
+        ser1 = ser[ser > 0]
         if len(ser1) > 0:
             desc = __transform_to_string(c)
             avg = np.average(ser1)
