@@ -21,7 +21,8 @@ import pandas as pd
 import networkx as nx
 
 import pm4py.objects.log.obj
-from pm4py.algo.discovery.dcr_discover.variants import discover_basic, discover_subprocess_mutual_exclusion#, discover_subprocess_predecessors, discover_subprocess_given_domain_knowledge
+from pm4py.algo.discovery.dcr_discover.variants import discover_basic, \
+    discover_subprocess_mutual_exclusion  # , discover_subprocess_predecessors, discover_subprocess_given_domain_knowledge
 from pm4py.algo.discovery.dcr_discover import time_mining, initial_pending
 from enum import Enum
 from pm4py.util import exec_utils
@@ -40,7 +41,7 @@ DCR_BASIC = Variants.DCR_BASIC
 DCR_SUBPROCESS_ME = Variants.DCR_SUBPROCESS_ME
 # DCR_SUBPROCESS_DK = Variants.DCR_SUBPROCESS_DK
 
-VERSIONS = {DCR_BASIC, DCR_SUBPROCESS_ME}#, DCR_SUBPROCESS_PRE, DCR_SUBPROCESS_DK}
+VERSIONS = {DCR_BASIC, DCR_SUBPROCESS_ME}  # , DCR_SUBPROCESS_PRE, DCR_SUBPROCESS_DK}
 
 
 def apply(input_log, variant=DCR_BASIC, **parameters):
@@ -78,30 +79,18 @@ def apply(input_log, variant=DCR_BASIC, **parameters):
             dcr_model = apply_timed(dcr_model, deepcopy(input_log), sp_log)
         if 'pending' in parameters.keys() and parameters['pending']:
             dcr_model = initial_pending.apply(dcr_model, sp_log)
-        dcr_model = post_processing(dcr_model,**parameters)
+        dcr_model = post_processing(dcr_model, **parameters)
         return dcr_model, sp_log
-    # elif variant.value == Variants.DCR_SUBPROCESS_DK.value:
-    #     print('[i] Mining with Sp-DisCoveR (DK)')
-    #     dcr_model, sp_log = discover_subprocess_given_domain_knowledge.apply(log, **parameters)
-    #     if 'timed' in parameters.keys() and parameters['timed']:
-    #         dcr_model = apply_timed(dcr_model, deepcopy(input_log), sp_log)
-    #     if 'pending' in parameters.keys() and parameters['pending']:
-    #         dcr_model = initial_pending.apply(dcr_model, sp_log)
-    #     return dcr_model, sp_log
-    # elif variant.value == Variants.DCR_SUBPROCESS_PRE.value:
-    #     dcr_model, sp_log = discover_subprocess_predecessors.apply(log, **parameters)
-    #     if 'timed' in parameters.keys() and parameters['timed']:
-    #         dcr_model = apply_timed(dcr_model, deepcopy(input_log), sp_log)
-    #     if 'pending' in parameters.keys() and parameters['pending']:
-    #         dcr_model = initial_pending.apply(dcr_model, sp_log)
-    #     return dcr_model, sp_log
 
-def post_processing(dcr,nestings = False, timed = True, **parameters):
-    # if nestings:
-    #     dcr = post_processing_nestings(dcr)
+
+def post_processing(dcr, timed=True, nestings=False,  **parameters):
     if timed:
         dcr = post_processing_timed(dcr)
+    # future work on nestings
+    # if nestings:
+    #     dcr = post_processing_nestings(dcr)
     return dcr
+
 
 def post_processing_timed(dcr):
     # if there is a timed condition wrap it in a subprocess to still enforce the time
@@ -120,11 +109,12 @@ def post_processing_timed(dcr):
     # group that subprocess based on the same rule.
     return dcr
 
+
 def post_processing_nestings(dcr):
     events = deepcopy(dcr['events'])
     rel_matrices = {}
     ind = pd.Index(sorted(events), dtype=str)
-    rels = []#['conditionsFor','responseTo', 'excludesTo', 'includesTo']  # , 'milestonesFor',]
+    rels = []  # ['conditionsFor','responseTo', 'excludesTo', 'includesTo']  # , 'milestonesFor',]
     # edge_weights = pd.DataFrame(0, columns=ind, index=ind, dtype=int)
     for rel in rels:
         rel_matrix = pd.DataFrame(0, columns=ind, index=ind, dtype=int)
@@ -195,7 +185,7 @@ def post_processing_nestings(dcr):
                     replace_in = None
                     for k, v in nestings.items():
                         intersect = v.intersection(suc_e)
-                        if len(intersect)>0 and len(intersect)<len(suc_e):
+                        if len(intersect) > 0 and len(intersect) < len(suc_e):
                             for s in intersect:
                                 arrows_to_remove.add((e, s))
                             proceed = False
@@ -224,9 +214,9 @@ def post_processing_nestings(dcr):
                     proceed = True
                     for v in nestings.values():
                         intersect = v.intersection(pred_e)
-                        if len(intersect)>0 and len(intersect)<len(pred_e):
+                        if len(intersect) > 0 and len(intersect) < len(pred_e):
                             for p in intersect:
-                                arrows_to_remove.add((p,e))
+                                arrows_to_remove.add((p, e))
                             proceed = False
                     if proceed:
                         if pred_e not in nestings.values():
@@ -280,34 +270,16 @@ def post_processing_nestings(dcr):
     # or create a subprocess to highlight this as an activity
     # return dcr
 
+
 def common_out_neighbors(g, i, j):
     return set(g.successors(i)).intersection(g.successors(j))
+
 
 def common_in_neighbors(g, i, j):
     return set(g.predecessors(i)).intersection(g.predecessors(j))
 
-def replace_events_ne(dcr,e0,new_sp):
-    # new_dcr = {
-    #     'events': set(),
-    #     'conditionsFor': {},
-    #     'milestonesFor': {},
-    #     'responseTo': {},
-    #     'includesTo': {},
-    #     'excludesTo': {},
-    #     'marking': {'executed': set(),
-    #                 'included': set(),
-    #                 'pending': set(),
-    #                 'executedTime': {},  # Gives the time since a event was executed
-    #                 'pendingDeadline': {}  # The deadline until an event must be executed
-    #                 },
-    #     'conditionsForDelays': {},
-    #     'responseToDeadlines': {},
-    #     'subprocesses': {},
-    #     'labels': set(),
-    #     'labelMapping': {},
-    #     'roles': set(),
-    #     'roleAssignments': set()
-    # }
+
+def replace_events_ne(dcr, e0, new_sp):
     new_dcr = deepcopy(dcr)
     new_dcr['events'].add(new_sp)
     for m in ['executed', 'included', 'pending']:
@@ -321,6 +293,7 @@ def replace_events_ne(dcr,e0,new_sp):
         if e0 in v.keys():
             new_dcr['conditionsForDelays'][k][new_sp] = new_dcr['conditionsForDelays'][k].pop(e0)
     return new_dcr
+
 
 def apply_timed(dcr_model, log, sp_log):
     timings = time_mining.apply(dcr_model=dcr_model, event_log=log, method='standard', sp_log=sp_log)
