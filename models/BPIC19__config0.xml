@@ -1,0 +1,3177 @@
+<DCRModel>
+  <title>BPIC19</title>
+  <description>BPIC19</description>
+  <graphType>DCRModel</graphType>
+  <roles>
+    <title>User</title>
+    <description>Dummy user</description>
+  </roles>
+  <events>
+    <id>Delete Purchase Order Item</id>
+    <label>Delete Purchase Order Item</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Delete Purchase Order Item</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Delete Purchase Order Item</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Delete Purchase Order Item</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Delete Purchase Order Item</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Delete Purchase Order Item</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Delete Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Delete Purchase Order Item</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Delete Purchase Order Item</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Delete Purchase Order Item</source>
+    <target>Set Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Delete Purchase Order Item</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Delete Purchase Order Item</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Delete Purchase Order Item</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Delete Purchase Order Item</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Delete Purchase Order Item</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <events>
+    <id>Record Service Entry Sheet</id>
+    <label>Record Service Entry Sheet</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Record Service Entry Sheet</source>
+    <target>Block Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Service Entry Sheet</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Service Entry Sheet</source>
+    <target>Change Approval for Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Service Entry Sheet</source>
+    <target>Reactivate Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Service Entry Sheet</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Service Entry Sheet</source>
+    <target>Create Purchase Requisition Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Service Entry Sheet</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Service Entry Sheet</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Service Entry Sheet</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Service Entry Sheet</source>
+    <target>Change Storage Location</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Service Entry Sheet</source>
+    <target>Receive Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Service Entry Sheet</source>
+    <target>Release Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Service Entry Sheet</source>
+    <target>Change Quantity</target>
+  </rules>
+  <events>
+    <id>Block Purchase Order Item</id>
+    <label>Block Purchase Order Item</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Change Approval for Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Create Purchase Requisition Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Cancel Goods Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Block Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Set Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Change Storage Location</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Receive Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Release Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Block Purchase Order Item</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <events>
+    <id>Change payment term</id>
+    <label>Change payment term</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Delete Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Block Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Change Approval for Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Reactivate Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Cancel Goods Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Cancel Invoice Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Vendor creates debit memo</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Set Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Remove Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Receive Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Release Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Change Quantity</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change payment term</source>
+    <target>Change Delivery Indicator</target>
+  </rules>
+  <events>
+    <id>Change Approval for Purchase Order</id>
+    <label>Change Approval for Purchase Order</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Approval for Purchase Order</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <events>
+    <id>Reactivate Purchase Order Item</id>
+    <label>Reactivate Purchase Order Item</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Update Order Confirmation</source>
+    <target>Reactivate Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>Set Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Reactivate Purchase Order Item</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <events>
+    <id>Change Currency</id>
+    <label>Change Currency</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Block Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Reactivate Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Create Purchase Requisition Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Cancel Goods Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Set Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Change Storage Location</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Receive Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Release Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Currency</source>
+    <target>Change Delivery Indicator</target>
+  </rules>
+  <events>
+    <id>Create Purchase Requisition Item</id>
+    <label>Create Purchase Requisition Item</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>Block Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>Create Purchase Requisition Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>Create Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <events>
+    <id>Update Order Confirmation</id>
+    <label>Update Order Confirmation</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>Block Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>Change Approval for Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>Change Storage Location</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>Release Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Update Order Confirmation</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <events>
+    <id>Cancel Subsequent Invoice</id>
+    <label>Cancel Subsequent Invoice</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>Delete Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>Change Approval for Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Vendor creates invoice</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Record Invoice Receipt</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>Change Storage Location</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>Receive Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>Release Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Subsequent Invoice</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <events>
+    <id>Cancel Goods Receipt</id>
+    <label>Cancel Goods Receipt</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Goods Receipt</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Goods Receipt</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Goods Receipt</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Goods Receipt</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Cancel Goods Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Goods Receipt</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Goods Receipt</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Goods Receipt</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Goods Receipt</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Goods Receipt</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <events>
+    <id>SRM: Transfer Failed (E.Sys.)</id>
+    <label>SRM: Transfer Failed (E.Sys.)</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>Delete Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Record Service Entry Sheet</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>Cancel Goods Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Vendor creates invoice</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Record Invoice Receipt</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>Record Invoice Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>Cancel Invoice Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>Change Price</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>Remove Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Clear Invoice</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>Clear Invoice</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>SRM: Ordered</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>SRM: Change was Transmitted</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Record Goods Receipt</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>Record Goods Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>SRM: In Transfer to Execution Syst.</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transfer Failed (E.Sys.)</source>
+    <target>Change Delivery Indicator</target>
+  </rules>
+  <events>
+    <id>Vendor creates invoice</id>
+    <label>Vendor creates invoice</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Vendor creates invoice</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <events>
+    <id>Record Invoice Receipt</id>
+    <label>Record Invoice Receipt</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Record Invoice Receipt</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Record Invoice Receipt</target>
+  </rules>
+  <events>
+    <id>Change Rejection Indicator</id>
+    <label>Change Rejection Indicator</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>Delete Purchase Order Item</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Delete Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Block Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Change Approval for Purchase Order</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>Change Rejection Indicator</source>
+    <target>Reactivate Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Create Purchase Requisition Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Cancel Goods Receipt</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>Change Rejection Indicator</source>
+    <target>Vendor creates invoice</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>Change Rejection Indicator</source>
+    <target>Record Invoice Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Cancel Invoice Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Change Price</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Vendor creates debit memo</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Change Storage Location</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Remove Payment Block</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>Change Rejection Indicator</source>
+    <target>Clear Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Receive Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>Change Rejection Indicator</source>
+    <target>Record Goods Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Release Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Change Quantity</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Rejection Indicator</source>
+    <target>Change Delivery Indicator</target>
+  </rules>
+  <events>
+    <id>Cancel Invoice Receipt</id>
+    <label>Cancel Invoice Receipt</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Invoice Receipt</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Invoice Receipt</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Invoice Receipt</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Cancel Invoice Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Invoice Receipt</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Invoice Receipt</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Invoice Receipt</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Invoice Receipt</source>
+    <target>Change Storage Location</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Invoice Receipt</source>
+    <target>Receive Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Invoice Receipt</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Invoice Receipt</source>
+    <target>Release Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Cancel Invoice Receipt</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <events>
+    <id>SRM: Deleted</id>
+    <label>SRM: Deleted</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Deleted</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Deleted</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>SRM: Ordered</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>SRM: Change was Transmitted</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>SRM: In Transfer to Execution Syst.</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <events>
+    <id>Create Purchase Order Item</id>
+    <label>Create Purchase Order Item</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Create Purchase Order Item</source>
+    <target>Create Purchase Order Item</target>
+  </rules>
+  <events>
+    <id>Change Price</id>
+    <label>Change Price</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Change Price</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Change Price</target>
+  </rules>
+  <events>
+    <id>Record Subsequent Invoice</id>
+    <label>Record Subsequent Invoice</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Delete Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Block Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Change Approval for Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Reactivate Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Cancel Goods Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Vendor creates invoice</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Record Invoice Receipt</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Set Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Change Storage Location</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Receive Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Release Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Change Quantity</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Record Subsequent Invoice</source>
+    <target>Change Delivery Indicator</target>
+  </rules>
+  <events>
+    <id>Vendor creates debit memo</id>
+    <label>Vendor creates debit memo</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Vendor creates debit memo</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Vendor creates debit memo</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Vendor creates debit memo</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Vendor creates debit memo</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Vendor creates debit memo</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Vendor creates debit memo</source>
+    <target>Change Storage Location</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Vendor creates debit memo</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Vendor creates debit memo</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <events>
+    <id>SRM: Held</id>
+    <label>SRM: Held</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>SRM: Held</source>
+    <target>Vendor creates invoice</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>SRM: Held</source>
+    <target>Record Invoice Receipt</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>SRM: Held</source>
+    <target>Create Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Held</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>SRM: Held</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>SRM: Held</source>
+    <target>Clear Invoice</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>SRM: Incomplete</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>SRM: Held</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>SRM: Held</source>
+    <target>Record Goods Receipt</target>
+  </rules>
+  <events>
+    <id>Release Purchase Requisition</id>
+    <label>Release Purchase Requisition</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Requisition</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Requisition</source>
+    <target>Change Approval for Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Requisition</source>
+    <target>Reactivate Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Requisition Item</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Requisition</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Requisition</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Requisition</source>
+    <target>Cancel Invoice Receipt</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>Release Purchase Requisition</source>
+    <target>Create Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Requisition</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Requisition</source>
+    <target>Vendor creates debit memo</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Requisition</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Requisition</source>
+    <target>Set Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Requisition</source>
+    <target>Change Storage Location</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Requisition</source>
+    <target>Clear Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Requisition</source>
+    <target>Release Purchase Order</target>
+  </rules>
+  <events>
+    <id>Set Payment Block</id>
+    <label>Set Payment Block</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>Delete Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>Block Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>Reactivate Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Vendor creates invoice</source>
+    <target>Set Payment Block</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Record Invoice Receipt</source>
+    <target>Set Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>Change Storage Location</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>Receive Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>Release Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Set Payment Block</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <events>
+    <id>SRM: Transaction Completed</id>
+    <label>SRM: Transaction Completed</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>Delete Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>Cancel Goods Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>Vendor creates invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>Cancel Invoice Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>Change Price</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>Vendor creates debit memo</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>Remove Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>SRM: Ordered</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>SRM: Change was Transmitted</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>Record Goods Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>SRM: In Transfer to Execution Syst.</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Transaction Completed</source>
+    <target>Change Quantity</target>
+  </rules>
+  <events>
+    <id>Change Storage Location</id>
+    <label>Change Storage Location</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Change Storage Location</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Storage Location</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <events>
+    <id>SRM: Document Completed</id>
+    <label>SRM: Document Completed</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>SRM: Awaiting Approval</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <events>
+    <id>Remove Payment Block</id>
+    <label>Remove Payment Block</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Remove Payment Block</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Remove Payment Block</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Remove Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Remove Payment Block</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Remove Payment Block</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Remove Payment Block</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Remove Payment Block</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <events>
+    <id>SRM: Created</id>
+    <label>SRM: Created</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Created</source>
+    <target>Block Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Created</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Created</source>
+    <target>Change Approval for Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Created</source>
+    <target>Reactivate Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Created</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Created</source>
+    <target>Create Purchase Requisition Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Created</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Created</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Created</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Created</source>
+    <target>Set Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Created</source>
+    <target>Change Storage Location</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>SRM: Created</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Created</source>
+    <target>Receive Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Created</source>
+    <target>Release Purchase Order</target>
+  </rules>
+  <events>
+    <id>SRM: Complete</id>
+    <label>SRM: Complete</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>SRM: Created</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>SRM: Complete</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>include</type>
+    <source>SRM: Complete</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <events>
+    <id>Clear Invoice</id>
+    <label>Clear Invoice</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Clear Invoice</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Change Rejection Indicator</source>
+    <target>Clear Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Clear Invoice</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Clear Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Clear Invoice</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Clear Invoice</source>
+    <target>Receive Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Clear Invoice</source>
+    <target>Release Purchase Order</target>
+  </rules>
+  <events>
+    <id>Receive Order Confirmation</id>
+    <label>Receive Order Confirmation</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>Block Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Receive Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Receive Order Confirmation</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <events>
+    <id>SRM: Ordered</id>
+    <label>SRM: Ordered</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>SRM: Awaiting Approval</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <events>
+    <id>SRM: Incomplete</id>
+    <label>SRM: Incomplete</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Incomplete</source>
+    <target>Delete Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Incomplete</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Incomplete</source>
+    <target>Cancel Goods Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Incomplete</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Incomplete</source>
+    <target>Cancel Invoice Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Incomplete</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Incomplete</source>
+    <target>Vendor creates debit memo</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>SRM: Incomplete</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Incomplete</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Incomplete</source>
+    <target>Remove Payment Block</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>SRM: Created</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Incomplete</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Incomplete</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Incomplete</source>
+    <target>Change Quantity</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Incomplete</source>
+    <target>Change Delivery Indicator</target>
+  </rules>
+  <events>
+    <id>SRM: Change was Transmitted</id>
+    <label>SRM: Change was Transmitted</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>SRM: Document Completed</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Change was Transmitted</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <events>
+    <id>Record Goods Receipt</id>
+    <label>Record Goods Receipt</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Record Goods Receipt</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Record Goods Receipt</target>
+  </rules>
+  <events>
+    <id>Release Purchase Order</id>
+    <label>Release Purchase Order</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>Set Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>SRM: Change was Transmitted</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Release Purchase Order</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <events>
+    <id>SRM: Awaiting Approval</id>
+    <label>SRM: Awaiting Approval</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>SRM: Awaiting Approval</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>SRM: Complete</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>SRM: Awaiting Approval</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>SRM: Awaiting Approval</source>
+    <target>SRM: Awaiting Approval</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>SRM: Awaiting Approval</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <events>
+    <id>Change Final Invoice Indicator</id>
+    <label>Change Final Invoice Indicator</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Block Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Change Approval for Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Reactivate Purchase Order Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Create Purchase Requisition Item</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Cancel Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Cancel Goods Receipt</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Vendor creates invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Cancel Invoice Receipt</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Change Price</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Record Subsequent Invoice</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Vendor creates debit memo</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Release Purchase Requisition</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Set Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Change Storage Location</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Remove Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Receive Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Release Purchase Order</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Change Quantity</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Final Invoice Indicator</source>
+    <target>Change Delivery Indicator</target>
+  </rules>
+  <events>
+    <id>SRM: In Transfer to Execution Syst.</id>
+    <label>SRM: In Transfer to Execution Syst.</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>SRM: Awaiting Approval</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <events>
+    <id>Change Quantity</id>
+    <label>Change Quantity</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Change Quantity</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Quantity</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Quantity</source>
+    <target>SRM: Transfer Failed (E.Sys.)</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Quantity</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Quantity</source>
+    <target>SRM: Deleted</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Change Quantity</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Quantity</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Quantity</source>
+    <target>SRM: Transaction Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Quantity</source>
+    <target>SRM: Document Completed</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Quantity</source>
+    <target>SRM: Created</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Quantity</source>
+    <target>SRM: Complete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Quantity</source>
+    <target>SRM: Ordered</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Quantity</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Quantity</source>
+    <target>Change Final Invoice Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Quantity</source>
+    <target>SRM: In Transfer to Execution Syst.</target>
+  </rules>
+  <events>
+    <id>Change Delivery Indicator</id>
+    <label>Change Delivery Indicator</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>Change Delivery Indicator</source>
+    <target>Record Service Entry Sheet</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Delivery Indicator</source>
+    <target>Change payment term</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Delivery Indicator</source>
+    <target>Change Currency</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Delivery Indicator</source>
+    <target>Update Order Confirmation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Delivery Indicator</source>
+    <target>Change Rejection Indicator</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>Create Purchase Order Item</source>
+    <target>Change Delivery Indicator</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Delivery Indicator</source>
+    <target>SRM: Held</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Delivery Indicator</source>
+    <target>Set Payment Block</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>Change Delivery Indicator</source>
+    <target>SRM: Incomplete</target>
+  </rules>
+</DCRModel>

@@ -12,23 +12,23 @@
     <type>subprocess</type>
   </events>
   <events>
-    <id>Family Doctor 2_ne</id>
-    <label>Family Doctor 2_ne</label>
+    <id>S1</id>
+    <label>S1</label>
     <type>subprocess</type>
   </events>
   <events>
-    <id>Family Doctor 1_ne</id>
-    <label>Family Doctor 1_ne</label>
-    <type>subprocess</type>
-  </events>
-  <events>
-    <id>Consent to transfer medical history_ne</id>
-    <label>Consent to transfer medical history_ne</label>
+    <id>S1_ne</id>
+    <label>S1_ne</label>
     <type>subprocess</type>
   </events>
   <events>
     <id>S0_ne</id>
     <label>S0_ne</label>
+    <type>subprocess</type>
+  </events>
+  <events>
+    <id>Consent to transfer medical history_ne</id>
+    <label>Consent to transfer medical history_ne</label>
     <type>subprocess</type>
   </events>
   <events>
@@ -42,7 +42,7 @@
   </rules>
   <rules>
     <type>condition</type>
-    <source>Family Doctor 1_ne</source>
+    <source>S1_ne</source>
     <target>Send mail to citizen</target>
     <duration>P1DT0H0M0S</duration>
   </rules>
@@ -51,12 +51,6 @@
     <source>Send mail to citizen</source>
     <target>Consent to transfer medical history</target>
     <duration>P82DT0H0M0S</duration>
-  </rules>
-  <rules>
-    <type>condition</type>
-    <source>Family Doctor 2_ne</source>
-    <target>Send mail to citizen</target>
-    <duration>P1DT0H0M0S</duration>
   </rules>
   <events>
     <id>S0_ne</id>
@@ -75,39 +69,45 @@
   <rules>
     <type>response</type>
     <source>S0</source>
+    <target>S1</target>
+    <duration>P7DT0H0M0S</duration>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>S0</source>
     <target>Consent to transfer medical history</target>
     <duration>P90DT0H0M0S</duration>
   </rules>
   <events>
-    <id>Family Doctor 1</id>
-    <label>Family Doctor 1</label>
-    <parent>Family Doctor 1_ne</parent>
+    <id>S1</id>
+    <label>S1</label>
+    <parent>S1_ne</parent>
   </events>
   <rules>
     <type>condition</type>
     <source>S0_ne</source>
-    <target>Family Doctor 1</target>
+    <target>S1</target>
     <duration>P3DT0H0M0S</duration>
   </rules>
   <rules>
     <type>exclude</type>
-    <source>Family Doctor 1</source>
-    <target>Family Doctor 1</target>
+    <source>S1</source>
+    <target>S1</target>
   </rules>
   <rules>
     <type>response</type>
-    <source>Family Doctor 1</source>
+    <source>S1</source>
     <target>Transfer medical history</target>
-    <duration>P3DT0H0M0S</duration>
-  </rules>
-  <rules>
-    <type>exclude</type>
-    <source>Family Doctor 1</source>
-    <target>Family Doctor 2</target>
+    <duration>P84DT0H0M0S</duration>
   </rules>
   <events>
-    <id>Family Doctor 1_ne</id>
-    <label>Family Doctor 1_ne</label>
+    <id>Family Doctor 1</id>
+    <label>Family Doctor 1</label>
+    <parent>S1</parent>
+  </events>
+  <events>
+    <id>S1_ne</id>
+    <label>S1_ne</label>
   </events>
   <events>
     <id>System Choose doctor</id>
@@ -140,7 +140,7 @@
   </events>
   <rules>
     <type>condition</type>
-    <source>Family Doctor 1_ne</source>
+    <source>S1_ne</source>
     <target>Transfer medical history</target>
     <duration>P1DT0H0M0S</duration>
   </rules>
@@ -154,12 +154,6 @@
     <type>exclude</type>
     <source>Transfer medical history</source>
     <target>Transfer medical history</target>
-  </rules>
-  <rules>
-    <type>condition</type>
-    <source>Family Doctor 2_ne</source>
-    <target>Transfer medical history</target>
-    <duration>P1DT0H0M0S</duration>
   </rules>
   <events>
     <id>Consent to transfer medical history</id>
@@ -184,34 +178,8 @@
     <target>Consent to transfer medical history</target>
   </rules>
   <events>
-    <id>Family Doctor 2_ne</id>
-    <label>Family Doctor 2_ne</label>
-  </events>
-  <events>
     <id>Family Doctor 2</id>
     <label>Family Doctor 2</label>
-    <parent>Family Doctor 2_ne</parent>
+    <parent>S1</parent>
   </events>
-  <rules>
-    <type>condition</type>
-    <source>S0_ne</source>
-    <target>Family Doctor 2</target>
-    <duration>P6DT0H0M0S</duration>
-  </rules>
-  <rules>
-    <type>exclude</type>
-    <source>Family Doctor 2</source>
-    <target>Family Doctor 1</target>
-  </rules>
-  <rules>
-    <type>response</type>
-    <source>Family Doctor 2</source>
-    <target>Transfer medical history</target>
-    <duration>P84DT0H0M0S</duration>
-  </rules>
-  <rules>
-    <type>exclude</type>
-    <source>Family Doctor 2</source>
-    <target>Family Doctor 2</target>
-  </rules>
 </DCRModel>

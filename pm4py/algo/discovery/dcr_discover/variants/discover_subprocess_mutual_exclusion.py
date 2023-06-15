@@ -54,11 +54,11 @@ def get_subprocesses(dcr, i=0):
     while max_sp > 1:
         cliques_at_len = set(frozenset(s) for s in nx.enumerate_all_cliques(G) if len(s) == max_sp)
         if len(cliques_at_len) > 0:
-            sp = list(cliques_at_len)[0]
-            sps[f'S{i}'] = set(sp)
-            i += 1
-            for e in sp:
-                G.remove_node(e)
+            for sp in list(cliques_at_len):
+                sps[f'S{i}'] = set(sp)
+                i += 1
+                for e in sp:
+                    G.remove_node(e)
         max_sp -= 1
     return sps
 
