@@ -90,7 +90,7 @@ def export_dcr_graph(dcr, root, parents_dict=None):
         #     marking_pend.set("id",event)
 
 
-def export_dcr_xml(dcr, output_file_name, dcr_title, dcr_description=None):
+def export_dcr_xml(dcr, output_file_name, dcr_title='DCR from pm4py', dcr_description=None):
     '''
     dcr : the mined graph
     output_file_name: dcrxml file name without extension

@@ -1,21 +1,22 @@
 from copy import deepcopy
 from datetime import timedelta
 
-rels = ['conditionsFor', 'responseTo', 'includesTo', 'excludesTo']
+rels = ['conditionsFor', 'responseTo', 'includesTo', 'excludesTo', 'milestonesFor']
 
 
 class DcrSemantics(object):
 
-    def __init__(self, dcr) -> None:
-        self.dcr = dcr
+    def __init__(self, dcr, cmd_print=True) -> None:
+        self.dcr = deepcopy(dcr)
         self.dict_exe = self.__create_max_executed_time_dict()
         self.parents_dict = {}
-        all_events = set(dcr['events'])
-        if 'subprocesses' in dcr.keys():
-            self.sp_events = set(dcr['subprocesses'].keys())
+        self.cmd_print = cmd_print
+        all_events = set(self.dcr['events'])
+        if 'subprocesses' in self.dcr.keys():
+            self.sp_events = set(self.dcr['subprocesses'].keys())
             self.atomic_events = all_events.difference(self.sp_events)
             in_sp_events = set()
-            for k, v in dcr['subprocesses'].items():
+            for k, v in self.dcr['subprocesses'].items():
                 in_sp_events = in_sp_events.union(v)
                 for event in v:
                     self.parents_dict[event] = k
@@ -30,12 +31,15 @@ class DcrSemantics(object):
     def is_accepting(self):
         pend_incl = self.dcr['marking']['pending'].intersection(self.dcr['marking']['included'])
         tle_pend_incl = pend_incl.intersection(self.tl_events)
-        return len(tle_pend_incl) == 0
+        res = len(tle_pend_incl) == 0
+        if not res and self.cmd_print:
+            print(f'[!] Not accepting there are pending included events {pend_incl}')
+        return res
 
-    def execute(self, e, cmd_print=False):
+    def execute(self, e):
         if isinstance(e, timedelta):
             return self.time_step(e)
-        elif e in self.dcr['events']:
+        elif e in self.dcr['events']:  # only atomic events are executable
             if self.is_enabled(e):
                 self.__weak_execute(e)
                 ancs = self.__get_ancestors(e)
@@ -43,14 +47,14 @@ class DcrSemantics(object):
                     if self.is_enabled(anc):
                         self.__weak_execute(anc)
                     else:
-                        return False
-                return True
+                        return False, timedelta(0)
+                return True, timedelta(0)
             else:
-                print(f'[!] Event {e} not enabled!') if cmd_print else None
-                return False
+                print(f'[!] Event {e} not enabled!') if self.cmd_print else None
+                return False, timedelta(0)
         else:
-            print(f'[!] Event {e} does not exist!') if cmd_print else None
-            return False
+            print(f'[!] Event {e} {" does not exist" if e not in self.dcr["events"] else " is not an atomic event"}!') if self.cmd_print else None
+            return False, timedelta(0)
 
     def enabled_atomic_events(self):
         return self.enabled().intersection(self.atomic_events)
@@ -66,34 +70,36 @@ class DcrSemantics(object):
 
     def enabled(self):
         res = deepcopy(self.dcr['marking']['included'])
-        for e in self.dcr['conditionsFor']:
-            if e in res:
-                for e_prime in self.dcr['conditionsFor'][e]:
-                    if e_prime in self.dcr['marking']['included'] and e_prime not in self.dcr['marking']['executed']:
-                        res.discard(e)
-                        if e in self.parents_dict.keys():
-                            res.discard(self.parents_dict[e])
+        for e in set(self.dcr['conditionsFor'].keys()).intersection(res):
+            if len(self.dcr['conditionsFor'][e].intersection(self.dcr['marking']['included']).difference(self.dcr['marking']['executed'])) > 0:
+                res.discard(e)
+                if e in self.dcr['subprocesses'].keys():
+                    for e_in_sp in self.dcr['subprocesses'][e]:
+                        res.discard(e_in_sp)
 
-        for e in self.dcr['conditionsForDelays']:
-            if e in res:
-                for (e_prime, k) in self.dcr['conditionsForDelays'][e].items():
-                    if e_prime in self.dcr['marking']['included'] and e_prime not in self.dcr['marking']['executed']:
+        for e in set(self.dcr['conditionsForDelays'].keys()).intersection(res):
+            for (e_prime, k) in self.dcr['conditionsForDelays'][e].items():
+                if e_prime in self.dcr['marking']['included'] and e_prime not in self.dcr['marking']['executed']:
+                    res.discard(e)
+                elif e_prime in self.dcr['marking']['included'] and e_prime in self.dcr['marking']['executed']:
+                    if self.dcr['marking']['executedTime'][e_prime] < k:
                         res.discard(e)
-                    elif e_prime in self.dcr['marking']['included'] and e_prime in self.dcr['marking']['executed']:
-                        if self.dcr['marking']['executedTime'][e_prime] < k:
-                            res.discard(e)
-                            if e in self.parents_dict.keys():
-                                res.discard(self.parents_dict[e])
+                        # if e in self.parents_dict.keys():
+                        #     res.discard(self.parents_dict[e])
+                        if e in self.dcr['subprocesses'].keys():
+                            for e_in_sp in self.dcr['subprocesses'][e]:
+                                res.discard(e_in_sp)
 
-        for e in self.dcr['milestonesFor']:
-            if e in res:
-                for e_prime in self.dcr['milestonesFor'][e]:
-                    if e_prime in self.dcr['marking']['included'] and e_prime in self.dcr['marking']['pending']:
-                        res.discard(e)
-                        if e in self.parents_dict.keys():
-                            res.discard(self.parents_dict[e])
+        for e in set(self.dcr['milestonesFor'].keys()).intersection(res):
+            if len(self.dcr['milestonesFor'][e].intersection(self.dcr['marking']['included'].union(self.dcr['marking']['pending'])))>0:
+                res.discard(e)
+                # if e in self.parents_dict.keys():
+                #     res.discard(self.parents_dict[e])
+                if e in self.dcr['subprocesses'].keys():
+                    for e_in_sp in self.dcr['subprocesses'][e]:
+                        res.discard(e_in_sp)
 
-        enabled_sps = self.sp_events.intersection(res)
+        enabled_sps = self.sp_events.intersection(self.dcr['marking']['included'])
         for s in self.sp_events.difference(enabled_sps):
             res = res.difference(self.dcr['subprocesses'][s])
         return res
@@ -162,7 +168,7 @@ class DcrSemantics(object):
     def __get_effectively_pending(self, e, ancestors_dict):
         return ancestors_dict[e].issubset(self.dcr['marking']['pending'])
 
-    def __execute(self, e, cmd_print=False):
+    def __execute(self, e):
         if isinstance(e, timedelta):
             return self.time_step(e)
         elif e in self.dcr['events']:
@@ -170,10 +176,10 @@ class DcrSemantics(object):
                 self.__weak_execute(e)
                 return (True, timedelta(0))
             else:
-                print(f'[!] Event {e} not enabled!') if cmd_print else None
+                print(f'[!] Event {e} not enabled!') if self.cmd_print else None
                 return (False, timedelta(0))
         else:
-            print(f'[!] Event {e} does not exist!') if cmd_print else None
+            print(f'[!] Event {e} does not exist!') if self.cmd_print else None
             return (False, timedelta(0))
 
     def __create_max_executed_time_dict(self):
@@ -184,16 +190,22 @@ class DcrSemantics(object):
 
     def __max_executed_time(self, event):
         maxDelay = timedelta(0)
-        for e in self.dcr['conditionsForDelays']:
-            for (e_prime, k) in self.dcr['conditionsForDelays'][e].items():
-                if e_prime == event:
-                    if k > maxDelay:
-                        maxDelay = k
+        if 'conditionsForDelays' in self.dcr:
+            for e in self.dcr['conditionsForDelays']:
+                for (e_prime, k) in self.dcr['conditionsForDelays'][e].items():
+                    if e_prime == event:
+                        if k > maxDelay:
+                            maxDelay = k
+        else:
+            self.dcr['conditionsForDelays'] = {}
         return maxDelay
 
-    def __is_accepting(self):
-        pend_incl = self.dcr['marking']['pending'].intersection(self.dcr['marking']['included'])
-        return len(pend_incl) == 0
+    # def __is_accepting(self):
+    #     pend_incl = self.dcr['marking']['pending'].intersection(self.dcr['marking']['included'])
+    #     res = len(pend_incl) == 0
+    #     if not res and self.cmd_print:
+    #         print(f'[!] Not accepting there are pending included events {pend_incl}')
+    #     return res
 
     def __weak_execute(self, e):
         '''

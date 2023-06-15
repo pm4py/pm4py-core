@@ -95,11 +95,17 @@ def get_final_dcr(basic_dcr, sp_dcr, subprocesses, inBetweenRels=True):
         'excludesTo': {},
         'marking': {'executed': set(),
                     'included': set(),
-                    'pending': set()
+                    'pending': set(),
+                    'executedTime': {}, # Gives the time since a event was executed
+                    'pendingDeadline': {} # The deadline until an event must be executed
                     },
         'conditionsForDelays': {},
         'responseToDeadlines': {},
-        'subprocesses': {}
+        'subprocesses': {},
+        'labels': set(),
+        'labelMapping': set(),
+        'roles': set(),
+        'roleAssignments': set()
     }
     rels = ['conditionsFor', 'responseTo', 'includesTo', 'excludesTo']
     for k in sp_dcr.keys():

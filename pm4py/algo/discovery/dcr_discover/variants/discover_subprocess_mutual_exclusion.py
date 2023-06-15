@@ -1,9 +1,11 @@
 import pm4py
+import pandas as pd
+import networkx as nx
 
 from copy import deepcopy
 from pm4py.algo.discovery.dcr_discover.variants import discover_basic as alg
-from pm4py.objects.dcr import semantics as dcr_semantics
-
+from pm4py.objects.dcr.semantics_obj import DcrSemantics
+from pm4py.objects.dcr.obj import dcr_template
 
 def apply(log, findAdditionalConditions=True, inBetweenRels=False, **kwargs):
     event_log = log
@@ -18,6 +20,47 @@ def apply(log, findAdditionalConditions=True, inBetweenRels=False, **kwargs):
     final_dcr = get_final_dcr(basic_dcr, subprocess_dcr, subprocesses, inBetweenRels=inBetweenRels)
     return final_dcr, subprocess_log
 
+
+def get_subprocesses(dcr, i=0):
+    rel_matrices = {}
+    for rel in ['excludesTo']:  #'conditionsFor', 'responseTo', 'includesTo', 'milestonesFor',]:
+        ind = pd.Index(sorted(dcr['events']), dtype=str)
+        rel_matrix = pd.DataFrame(0, columns=ind, index=ind, dtype=int)
+        for e in dcr['events']:
+            for e_prime in dcr['events']:
+                if e in dcr[rel] and e_prime in dcr[rel][e]:
+                    rel_matrix.at[e, e_prime] = 1
+                    # print(e, rel, e_prime)
+        rel_matrices[rel] = rel_matrix
+
+    self_excluding = set()
+    for e in dcr['events']:
+        if rel_matrices['excludesTo'].at[e, e] == 1:
+            self_excluding.add(e)
+    mutually_excluding = []
+    for e in self_excluding:
+        for e_prime in self_excluding:
+            if e != e_prime and \
+                    rel_matrices['excludesTo'].at[e, e_prime] == 1 and \
+                    rel_matrices['excludesTo'].at[e_prime, e] == 1:
+                if (e, e_prime) not in mutually_excluding and (e_prime, e) not in mutually_excluding:
+                    mutually_excluding.append((e, e_prime))
+
+    G = nx.from_edgelist(mutually_excluding)
+    max_sp = len(self_excluding)
+    # cliques = set(frozenset(s) for s in nx.enumerate_all_cliques(G) if len(s) > 1)
+    sps = {}
+    # i = 0
+    while max_sp > 1:
+        cliques_at_len = set(frozenset(s) for s in nx.enumerate_all_cliques(G) if len(s) == max_sp)
+        if len(cliques_at_len) > 0:
+            sp = list(cliques_at_len)[0]
+            sps[f'S{i}'] = set(sp)
+            i += 1
+            for e in sp:
+                G.remove_node(e)
+        max_sp -= 1
+    return sps
 
 # dfs approach for mutual exclusion: find_largest
 def find_largest(event, E_stack, graph, S=None):
@@ -48,7 +91,7 @@ def find_largest(event, E_stack, graph, S=None):
 
 
 # dfs approach for mutual exclusion: get_subprocesses
-def get_subprocesses(dcr):
+def get_subprocesses_old(dcr):
     # initialize an empty dict of subprocesses
     sp = {}
     i = 0
@@ -67,7 +110,7 @@ def get_subprocesses(dcr):
         s = find_largest(e, E_stack, graph)
         # if S > 1 add to subprocess list
         if len(s) > 1:
-            print(f'[subprocess] {s}')
+            # print(f'[subprocess] {s}')
             already_there = False
             intersecting_events = False
             new_subprocesses = []
@@ -112,20 +155,37 @@ def get_subprocesses(dcr):
     # return subprocess list
     return sp
 
-
 def get_subprocess_log(event_log, subprocesses):
-    sp_dcr_dict = {}
-    for name, subprocess in subprocesses.items():
-        sp_dcr_dict[name] = {'events': subprocess,
-                             'conditionsFor': {},
-                             'milestonesFor': {},
-                             'responseTo': {},
-                             'includesTo': {},
-                             'excludesTo': {},
-                             'marking': {'included': subprocess,
-                                         'pending': set(),
-                                         'executed': set()}
-                             }
+    subprocess_log = pm4py.objects.log.obj.EventLog()
+    trace: pm4py.objects.log.obj.Trace
+    event: pm4py.objects.log.obj.Event
+    for trace in event_log:
+        sp_trace = pm4py.objects.log.obj.Trace(attributes=trace.attributes, properties=trace.properties)
+        for event in trace:
+            sp_event = None
+            for name, sp in subprocesses.items():
+                if event['concept:name'] in sp:
+                    # if the event is in the subprocess then replace it with the subprocess name
+                    event['concept:name'] = name
+                    sp_event = event
+            if not sp_event:
+                sp_event = event
+            sp_trace.append(sp_event)
+        subprocess_log.append(sp_trace)
+    return subprocess_log
+def get_subprocess_log_old(event_log, subprocesses):
+    # sp_dcr_dict = {}
+    # for n, subprocess in subprocesses.items():
+    #     sp_dcr_dict[n] = {'events': subprocess,
+    #                          'conditionsFor': {},
+    #                          'milestonesFor': {},
+    #                          'responseTo': {},
+    #                          'includesTo': {},
+    #                          'excludesTo': {},
+    #                          'marking': {'included': subprocess,
+    #                                      'pending': set(),
+    #                                      'executed': set()}
+    #                          }
 
     subprocess_log = pm4py.objects.log.obj.EventLog()
     trace: pm4py.objects.log.obj.Trace
@@ -133,20 +193,20 @@ def get_subprocess_log(event_log, subprocesses):
     for trace in event_log:
         # only replace with the subprocess when the subprocess is accepting
         sp_trace = pm4py.objects.log.obj.Trace(attributes=trace.attributes, properties=trace.properties)
+        # dcr_semantics = DcrSemantics(sp_dcr_instance[name])
         for event in trace:
             # set all subprocess dcr graphs to their initial state
-            sp_dcr_instance = deepcopy(sp_dcr_dict)
+            # sp_dcr_instance = deepcopy(sp_dcr_dict)
             sp_event = None
             for name, sp in subprocesses.items():
                 #TODO: fix whatever is wrong here when executing the dcr graph
                 if event['concept:name'] in sp:
                     # if the event is in the subprocess then execute it within the subprocess model
-                    executed = dcr_semantics.execute(event['concept:name'],
-                                                     sp_dcr_instance[name])  # TODO: check if it always executes
-                    accepting = dcr_semantics.is_accepting(sp_dcr_instance[name])
-                    if accepting & executed:
+                    # executed = dcr_semantics.execute(event['concept:name'], sp_dcr_instance[name])  # TODO: check if it always executes
+                    # accepting = dcr_semantics.is_accepting(sp_dcr_instance[name])
+                    # if accepting & executed:
                         # if the event did execute and is accepting then reset the subprocess to its initial marking
-                        sp_dcr_instance[name] = deepcopy(sp_dcr_dict[name])
+                        # sp_dcr_instance[name] = deepcopy(sp_dcr_dict[name])
                         # also replace the event with the subprocess in the new event log
                         event['concept:name'] = name
                         sp_event = event
@@ -158,21 +218,28 @@ def get_subprocess_log(event_log, subprocesses):
 
 
 def get_final_dcr(basic_dcr, sp_dcr, subprocesses, inBetweenRels=True):
-    final_dcr = {
-        'events': {},
-        'conditionsFor': {},
-        'milestonesFor': {},
-        'responseTo': {},
-        'includesTo': {},
-        'excludesTo': {},
-        'marking': {'executed': set(),
-                    'included': set(),
-                    'pending': set()
-                    },
-        'conditionsForDelays': {},
-        'responseToDeadlines': {},
-        'subprocesses': {}
-    }
+    final_dcr = deepcopy(dcr_template)
+    #     {
+    #     'events': {},
+    #     'conditionsFor': {},
+    #     'milestonesFor': {},
+    #     'responseTo': {},
+    #     'includesTo': {},
+    #     'excludesTo': {},
+    #     'marking': {'executed': set(),
+    #                 'included': set(),
+    #                 'pending': set(),
+    #                 'executedTime': {}, # Gives the time since a event was executed
+    #                 'pendingDeadline': {} # The deadline until an event must be executed
+    #                 },
+    #     'conditionsForDelays': {},
+    #     'responseToDeadlines': {},
+    #     'subprocesses': {},
+    #     'labels': set(),
+    #     'labelMapping': set(),
+    #     'roles': set(),
+    #     'roleAssignments': set()
+    # }
     rels = ['conditionsFor', 'responseTo', 'includesTo', 'excludesTo']
     for k in sp_dcr.keys():
         if k in basic_dcr.keys():

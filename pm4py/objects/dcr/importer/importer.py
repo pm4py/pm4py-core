@@ -1,12 +1,12 @@
 from enum import Enum
 
-from pm4py.objects.dcr.importer.variants import dcrxml, dcr_json, text
+from pm4py.objects.dcr.importer.variants import dcrxml, text
 from pm4py.util import exec_utils
 
 
 class Variants(Enum):
     DCRXML = dcrxml
-    DCR_JSON = dcr_json
+    # DCR_JSON = dcr_json
     TEXT = text
 
 

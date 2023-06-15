@@ -1,12 +1,10 @@
 from copy import deepcopy
+import semantics as sem
 
 rels = ['conditionsFor', 'responseTo', 'includesTo', 'excludesTo']
 
 
-# TODO: add subprocess and timed execution semantics
-
-
-def get_atomic_sp_top_level_events(dcr):
+def get_atomic_sp_and_top_level_events(dcr):
     all_events = set(dcr['events'])
     if 'subprocesses' in dcr.keys():
         sp_events = set(dcr['subprocesses'].keys())
@@ -55,69 +53,33 @@ def get_effectively_pending(dcr, e, ancestors_dict):
     return ancestors_dict[e].issubset(dcr['marking']['pending'])
 
 
-def is_sp_enabled(e, dcr):
-    at_e, sp_e, tl_e = get_atomic_sp_top_level_events(dcr)
-    e_enabled = is_enabled(e, dcr)
+def is_enabled(e, dcr):
+    at_e, sp_e, tl_e = get_atomic_sp_and_top_level_events(dcr)
+    e_enabled = sem.is_enabled(e, dcr)
     if e_enabled is True:
         es_ancestors = get_ancestors(dcr, e, tl_e)
         for anc in es_ancestors:
-            e_enabled = e_enabled and is_enabled(anc, dcr)
+            e_enabled = e_enabled and sem.is_enabled(anc, dcr)
 
     return e_enabled
 
 
-def sp_execute_old(e, dcr, cmd_print=False):
-    projection_dict = {}
-    if 'subprocesses' in dcr.keys():
-        for k, v in dcr['subprocesses'].items():
-            for temp_e in v:
-                projection_dict[temp_e] = k
-
-    if e in dcr['events']:
-        if is_sp_enabled(e, dcr):
-            weak_execute(e, dcr)
-            if e in projection_dict.items():
-                if is_sp_enabled(projection_dict[e], dcr):
-                    weak_execute(projection_dict[e], dcr)
-            return True
-        else:
-            print(f'[!] Event {e} not enabled!') if cmd_print else None
-            return False
-    else:
-        print(f'[!] Event {e} does not exist!') if cmd_print else None
-        return False
-
-
-def is_sp_accepting(dcr):
-    at_e, sp_e, tl_e = get_atomic_sp_top_level_events(dcr)
+def is_accepting(dcr):
+    at_e, sp_e, tl_e = get_atomic_sp_and_top_level_events(dcr)
     pend_incl = dcr['marking']['pending'].intersection(dcr['marking']['included'])
     tle_pend_incl = pend_incl.intersection(tl_e)
     return len(tle_pend_incl) == 0
 
 
-def enabled(dcr):
-    res = deepcopy(dcr['marking']['included'])
-    for e in dcr['conditionsFor']:
-        if e in res:
-            for e_prime in dcr['conditionsFor'][e]:
-                if e_prime in dcr['marking']['included'] and e_prime not in dcr['marking']['executed']:
-                    res.discard(e)
-    return res
-
-
-def is_enabled(e, dcr):
-    return e in enabled(dcr)
-
-
-def sp_execute(e, dcr, cmd_print=False):
-    at_e, sp_e, tl_e = get_atomic_sp_top_level_events(dcr)
+def execute(e, dcr, cmd_print=False):
+    at_e, sp_e, tl_e = get_atomic_sp_and_top_level_events(dcr)
     if e in dcr['events']:
-        if is_enabled(e, dcr):
-            weak_execute(e, dcr)
+        if sem.is_enabled(e, dcr):
+            sem.weak_execute(e, dcr)
             ancs = get_ancestors(dcr, e, tl_e)
             for anc in ancs:
-                if is_enabled(anc, dcr):
-                    weak_execute(anc, dcr)
+                if sem.is_enabled(anc, dcr):
+                    sem.weak_execute(anc, dcr)
                 else:
                     return False
             return True
@@ -129,39 +91,51 @@ def sp_execute(e, dcr, cmd_print=False):
         return False
 
 
-def execute(e, dcr, cmd_print=False):
-    if e in dcr['events']:
-        if is_enabled(e, dcr):
-            weak_execute(e, dcr)
-            return True
-        else:
-            print(f'[!] Event {e} not enabled!') if cmd_print else None
-            return False
-    else:
-        print(f'[!] Event {e} does not exist!') if cmd_print else None
-        return False
-
-
-def weak_execute(e, dcr):
-    '''
-    Executes events even if not enabled. This will break the condition constraint.
-    :param e:
-    :param dcr:
-    :return:
-    '''
-    dcr['marking']['pending'].discard(e)
-    dcr['marking']['executed'].add(e)
-    if e in dcr['excludesTo']:
-        for e_prime in dcr['excludesTo'][e]:
-            dcr['marking']['included'].discard(e_prime)
-    if e in dcr['includesTo']:
-        for e_prime in dcr['includesTo'][e]:
-            dcr['marking']['included'].add(e_prime)
-    if e in dcr['responseTo']:
-        for e_prime in dcr['responseTo'][e]:
-            dcr['marking']['pending'].add(e_prime)
-
-
-def is_accepting(dcr):
-    pend_incl = dcr['marking']['pending'].intersection(dcr['marking']['included'])
-    return len(pend_incl) == 0
+# def enabled(dcr):
+#     res = deepcopy(dcr['marking']['included'])
+#     for e in dcr['conditionsFor']:
+#         if e in res:
+#             for e_prime in dcr['conditionsFor'][e]:
+#                 if e_prime in dcr['marking']['included'] and e_prime not in dcr['marking']['executed']:
+#                     res.discard(e)
+#     return res
+#
+#
+# def is_enabled(e, dcr):
+#     return e in enabled(dcr)
+#
+# def is_accepting(dcr):
+#     pend_incl = dcr['marking']['pending'].intersection(dcr['marking']['included'])
+#     return len(pend_incl) == 0
+#
+# def execute(e, dcr, cmd_print=False):
+#     if e in dcr['events']:
+#         if is_enabled(e, dcr):
+#             weak_execute(e, dcr)
+#             return True
+#         else:
+#             print(f'[!] Event {e} not enabled!') if cmd_print else None
+#             return False
+#     else:
+#         print(f'[!] Event {e} does not exist!') if cmd_print else None
+#         return False
+#
+#
+# def weak_execute(e, dcr):
+#     '''
+#     Executes events even if not enabled. This will break the condition constraint.
+#     :param e:
+#     :param dcr:
+#     :return:
+#     '''
+#     dcr['marking']['pending'].discard(e)
+#     dcr['marking']['executed'].add(e)
+#     if e in dcr['excludesTo']:
+#         for e_prime in dcr['excludesTo'][e]:
+#             dcr['marking']['included'].discard(e_prime)
+#     if e in dcr['includesTo']:
+#         for e_prime in dcr['includesTo'][e]:
+#             dcr['marking']['included'].add(e_prime)
+#     if e in dcr['responseTo']:
+#         for e_prime in dcr['responseTo'][e]:
+#             dcr['marking']['pending'].add(e_prime)

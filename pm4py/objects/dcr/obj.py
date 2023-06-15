@@ -9,22 +9,26 @@ class Relations(Enum):
     C = 'conditionsFor'
     M = 'milestonesFor'
 
-dcr = {
+dcr_template = {
     'events': set(),
-    'labels': set(),
-    'labelMapping': set(),
-    'conditionsFor': {},  # this should be a dict with events as keys and sets as values
+    'conditionsFor': {},
     'milestonesFor': {},
     'responseTo': {},
-    'noResponseTo': {},
     'includesTo': {},
     'excludesTo': {},
-    'conditionsForDelays': {},  # this should be a dict with events as keys and tuples as values
-    'responseToDeadlines': {},
     'marking': {'executed': set(),
                 'included': set(),
-                'pending': set()
-                }
+                'pending': set(),
+                'executedTime': {},  # Gives the time since a event was executed
+                'pendingDeadline': {}  # The deadline until an event must be executed
+                },
+    'conditionsForDelays': {},
+    'responseToDeadlines': {},
+    'subprocesses': {},
+    'labels': set(),
+    'labelMapping': {},
+    'roles': set(),
+    'roleAssignments': set()
 }
 
 

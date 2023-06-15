@@ -85,7 +85,7 @@ def get_subprocesses(dcr):
         s = find_largest(e, E_stack, graph)
         # if S > 1 add to subprocess list
         if len(s) > 1:
-            print(f'[subprocess] {s}')
+            # print(f'[subprocess] {s}')
             already_there = False
             intersecting_events = False
             new_subprocesses = []

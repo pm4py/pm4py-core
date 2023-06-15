@@ -9,7 +9,7 @@ from math import sqrt
 from copy import deepcopy
 from pm4py.objects.log.importer.xes import importer
 from pm4py.objects.log.obj import EventLog
-from pm4py.objects.dcr import sp_semantics
+from pm4py.objects.dcr import semantics_obj as dcr_semantics
 
 minerPath = "./DisCoveR.jar"
 testDir = "../logs/PDC2020/TestLogs/"
@@ -25,13 +25,14 @@ def fitness(event_log, dcr_model, cmd_print=False):
         trace_to_print = []
         can_execute = True
         dcr = deepcopy(dcr_model)
+        semantics = dcr_semantics.DcrSemantics(dcr, cmd_print=False)
         for event in trace:
-            executed = sp_semantics.sp_execute(event['concept:name'], dcr)
+            (executed, _) = semantics.execute(event['concept:name'])
             trace_to_print.append(event['concept:name'])
             if executed is False:
                 can_execute = False
                 break
-        accepting = sp_semantics.is_sp_accepting(dcr)
+        accepting = semantics.is_accepting()
         if can_execute and accepting:
             no_accepting = no_accepting + 1
         else:

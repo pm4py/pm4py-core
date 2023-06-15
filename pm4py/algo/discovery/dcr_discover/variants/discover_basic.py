@@ -1,5 +1,6 @@
 from copy import deepcopy
 from pm4py import get_event_attribute_values
+from pm4py.objects.dcr.obj import dcr_template
 
 def apply(log, findAdditionalConditions=True, **kwargs):
     disc = Discover()
@@ -8,18 +9,19 @@ def apply(log, findAdditionalConditions=True, **kwargs):
 class Discover:
 
     def __init__(self):
-        self.graph = {
-        'events': {},
-        'conditionsFor': {},
-        'milestonesFor': {},
-        'responseTo': {},
-        'includesTo': {},
-        'excludesTo': {},
-        'marking': {'executed': set(),
-                    'included':set(),
-                    'pending': set()
-                    }
-        }
+        self.graph = deepcopy(dcr_template)
+        #     {
+        # 'events': {},
+        # 'conditionsFor': {},
+        # 'milestonesFor': {},
+        # 'responseTo': {},
+        # 'includesTo': {},
+        # 'excludesTo': {},
+        # 'marking': {'executed': set(),
+        #             'included':set(),
+        #             'pending': set()
+        #             }
+        # }
         self.logAbstraction = {
             'events': set(),
             'traces': [[]],
@@ -92,11 +94,9 @@ class Discover:
             if event in localAtLeastOnce:
                 self.logAbstraction['atMostOnce'].discard(event)
             localAtLeastOnce.add(event)
-            # Precedence for (event): All events that occured
-            # before (event) are kept in the precedenceFor set
+            # Precedence for (event): All events that occurred before (event) are kept in the precedenceFor set
             self.logAbstraction['precedenceFor'][event] = self.logAbstraction['precedenceFor'][event].intersection(localAtLeastOnce)
-            # Chain-Precedence for (event): Some event must occur
-            # immediately before (event) in all traces
+            # Chain-Precedence for (event): Some event must occur immediately before (event) in all traces
             if lastEvent != '': #TODO: objects vs strings in sets
                 # If first time this clause is encountered - leaves lastEvent in chain-precedence set.
                 # The intersect is empty if this clause is encountered again with another lastEvent.
@@ -109,7 +109,7 @@ class Discover:
                 # Save all events seen before (event)
                 localSeenOnlyBefore[event] = localAtLeastOnce.copy()
 
-            # Clear (event) from all localSeenOnlyBefore, since (event) has now occured after
+            # Clear (event) from all localSeenOnlyBefore, since (event) has now occurred after
             for key in localSeenOnlyBefore:
                 localSeenOnlyBefore[key].discard(event)
             lastEvent = event
@@ -125,7 +125,7 @@ class Discover:
         return 0
 
     # Removes redundant relations based on transitive closure
-    def optimizeRelation(self,relation):
+    def optimizeRelation(self, relation):
         '''
         if cond and resp A -> B, B -> C then you can remove an existing relation A -> C
         :param relation:
@@ -176,7 +176,8 @@ class Discover:
         # For each chainprecedence(i,j) we add: include(i,j) exclude(j,j)
         for j in self.logAbstraction['chainPrecedenceFor']:
             for i in self.logAbstraction['chainPrecedenceFor'][j]:
-                self.graph['includesTo'][i].add(j)
+                if j not in self.logAbstraction['atMostOnce']:
+                    self.graph['includesTo'][i].add(j)
                 self.graph['excludesTo'][j].add(j)
 
         # Additional excludes based on predecessors / successors
