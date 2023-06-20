@@ -41,7 +41,7 @@ TOKEN_BASED = Variants.TOKEN_BASED
 VERSIONS = {ALIGNMENT_BASED, TOKEN_BASED}
 
 
-def apply(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None, variant=None) -> Dict[str, Any]:
+def apply(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None, variant=None, align_variant=None) -> Dict[str, Any]:
     """
     Apply fitness evaluation starting from an event log and a marked Petri net,
     by using one of the replay techniques provided by PM4Py
@@ -62,6 +62,8 @@ def apply(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marki
         Chosen variant:
             - Variants.ALIGNMENT_BASED
             - Variants.TOKEN_BASED
+    align_variant
+        Alignments variant (for alignment-based replay)
 
     Returns
     ----------
@@ -89,8 +91,8 @@ def apply(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marki
                                                      initial_marking, final_marking, parameters=parameters)
     else:
         # execute the alignments based variant, with the specification of the alignments variant
-        align_variant = exec_utils.get_param_value(Parameters.ALIGN_VARIANT, parameters,
-                                                   alignments.petri_net.algorithm.DEFAULT_VARIANT)
+        if align_variant is None:
+            align_variant = alignments.petri_net.algorithm.DEFAULT_VARIANT
         return exec_utils.get_variant(variant).apply(log,
                                                      petri_net,
                                                      initial_marking, final_marking, align_variant=align_variant,
