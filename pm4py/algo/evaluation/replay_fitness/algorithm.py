@@ -62,6 +62,8 @@ def apply(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marki
         Chosen variant:
             - Variants.ALIGNMENT_BASED
             - Variants.TOKEN_BASED
+    align_variant
+        Alignments variant (for alignment-based replay)
 
     Returns
     ----------

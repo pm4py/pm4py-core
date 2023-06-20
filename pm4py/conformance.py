@@ -261,6 +261,7 @@ def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, 
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+    :param variant_str: variant specification
     :rtype: ``Dict[str, float]``
 
     .. code-block:: python3
