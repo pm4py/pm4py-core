@@ -3,6 +3,7 @@ The ``pm4py.vis`` module contains the visualizations offered in ``pm4py``
 """
 
 import os
+import sys
 from typing import Optional
 from typing import Union, List, Dict, Any, Tuple, Set
 
@@ -145,7 +146,7 @@ def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: 
     dfg_visualizer.save(gviz, file_path)
 
 
-def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", max_num_edges: int = 100000):
+def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", max_num_edges: int = sys.maxsize):
     """
     Views a (composite) DFG
 
@@ -177,7 +178,7 @@ def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: st
     dfg_visualizer.view(gviz)
 
 
-def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str, bgcolor: str = "white", max_num_edges: int = 100000):
+def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str, bgcolor: str = "white", max_num_edges: int = sys.maxsize):
     """
     Saves a DFG visualization to a file
 
