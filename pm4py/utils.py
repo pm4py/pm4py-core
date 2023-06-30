@@ -69,8 +69,13 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=timest_format)
     # drop NaN(s) in the main columns (case ID, activity, timestamp) to ensure functioning of the
     # algorithms
+    prev_length = len(df)
     df = df.dropna(subset={constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_NAME_KEY,
                            xes_constants.DEFAULT_TIMESTAMP_KEY}, how="any")
+
+    if len(df) < prev_length:
+        warnings.warn("Some rows of the Pandas data frame have been removed because of empty case IDs, activity labels, or timestamps to ensure the correct functioning of PM4Py's algorithms.")
+
     # make sure the case ID column is of string type
     df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype("string")
     # make sure the activity column is of string type
