@@ -4,6 +4,8 @@ from enum import Enum
 from pm4py import util as pmutil
 from pm4py.algo.discovery.alpha import variants
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
+from pm4py.statistics.start_activities.pandas import get as start_activities_get
+from pm4py.statistics.end_activities.pandas import get as end_activities_get
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes_util
@@ -66,13 +68,14 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
                                                      None)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)
 
-    if pkgutil.find_loader("pandas"):
-        import pandas
-        if isinstance(log, pandas.core.frame.DataFrame) and variant == ALPHA_VERSION_CLASSIC:
-            dfg = df_statistics.get_dfg_graph(log, case_id_glue=case_id_glue,
-                                              activity_key=activity_key,
-                                              timestamp_key=timestamp_key, start_timestamp_key=start_timestamp_key)
-            return exec_utils.get_variant(variant).apply_dfg(dfg, parameters=parameters)
+    if isinstance(log, pd.core.frame.DataFrame) and variant == ALPHA_VERSION_CLASSIC:
+        dfg = df_statistics.get_dfg_graph(log, case_id_glue=case_id_glue,
+                                          activity_key=activity_key,
+                                          timestamp_key=timestamp_key, start_timestamp_key=start_timestamp_key)
+        start_activities = start_activities_get.get_start_activities(log, parameters=parameters)
+        end_activities = end_activities_get.get_end_activities(log, parameters=parameters)
+        return exec_utils.get_variant(variant).apply_dfg_sa_ea(dfg, start_activities, end_activities, parameters=parameters)
+
     return exec_utils.get_variant(variant).apply(log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG),
                                                  parameters)
 
