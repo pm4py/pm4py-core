@@ -29,7 +29,7 @@ def openai_query(prompt: str, api_key: Optional[str] = None, openai_model: Optio
     if openai_model is not None:
         parameters["openai_model"] = openai_model
 
-    from pm4py.algo.querying.openai import perform_query
+    from pm4py.algo.querying.llm.connectors import openai as perform_query
     return perform_query.apply(prompt, parameters=parameters)
 
 
