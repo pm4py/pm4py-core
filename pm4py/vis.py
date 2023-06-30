@@ -26,7 +26,7 @@ import deprecation
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = None,
                    final_marking: Optional[Marking] = None, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white",
-                   decorations: Dict[Any, Any] = None):
+                   decorations: Dict[Any, Any] = None, debug: bool = False):
     """
     Views a (composite) Petri net
 
@@ -36,6 +36,7 @@ def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = Non
     :param format: Format of the output picture (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param bgcolor: Background color of the visualization (default: white)
     :param decorations: Decorations (color, label) associated to the elements of the Petri net
+    :param debug: Boolean enabling/disabling the debug mode (show place and transition's names)
 
     .. code-block:: python3
 
@@ -47,12 +48,12 @@ def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = Non
     format = str(format).lower()
     from pm4py.visualization.petri_net import visualizer as pn_visualizer
     gviz = pn_visualizer.apply(petri_net, initial_marking, final_marking,
-                               parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format, "bgcolor": bgcolor, "decorations": decorations})
+                               parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format, "bgcolor": bgcolor, "decorations": decorations, "debug": debug})
     pn_visualizer.view(gviz)
 
 
 def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, file_path: str, bgcolor: str = "white",
-                   decorations: Dict[Any, Any] = None):
+                   decorations: Dict[Any, Any] = None, debug: bool = False):
     """
     Saves a Petri net visualization to a file
 
@@ -62,6 +63,7 @@ def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_mark
     :param file_path: Destination path
     :param bgcolor: Background color of the visualization (default: white)
     :param decorations: Decorations (color, label) associated to the elements of the Petri net
+    :param debug: Boolean enabling/disabling the debug mode (show place and transition's names)
 
     .. code-block:: python3
 
@@ -74,7 +76,7 @@ def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_mark
     format = os.path.splitext(file_path)[1][1:].lower()
     from pm4py.visualization.petri_net import visualizer as pn_visualizer
     gviz = pn_visualizer.apply(petri_net, initial_marking, final_marking,
-                               parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format, "bgcolor": bgcolor, "decorations": decorations})
+                               parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format, "bgcolor": bgcolor, "decorations": decorations, "debug": debug})
     pn_visualizer.save(gviz, file_path)
 
 
