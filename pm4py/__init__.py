@@ -25,7 +25,7 @@ from pm4py.conformance import conformance_diagnostics_token_based_replay, confor
     fitness_alignments, precision_token_based_replay, \
     precision_alignments, conformance_diagnostics_footprints, \
     fitness_footprints, precision_footprints, check_is_fitting, conformance_temporal_profile, \
-    conformance_log_skeleton
+    conformance_log_skeleton, replay_prefix_tbr
 from pm4py.ocel import ocel_objects_interactions_summary, ocel_temporal_summary, ocel_objects_summary, ocel_get_object_types, ocel_get_attribute_names, ocel_flattening, ocel_object_type_activities, ocel_objects_ot_count, \
                         discover_ocdfg, discover_oc_petri_net, discover_objects_graph, sample_ocel_objects, ocel_drop_duplicates, ocel_merge_duplicates, ocel_sort_by_additional_column, \
                         ocel_add_index_based_timedelta, sample_ocel_connected_components, ocel_o2o_enrichment, ocel_e2o_lifecycle_enrichment, cluster_equivalent_ocel

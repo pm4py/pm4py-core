@@ -107,6 +107,7 @@ Among procedural process models, ``pm4py`` currently supports:
   * :meth:`pm4py.conformance.fitness_alignments`; evaluation of the fitness between an event log and a *Petri net* using alignments.
   * :meth:`pm4py.conformance.precision_token_based_replay`; evaluation of the precision between an event log and a *Petri net* using token-based replay.
   * :meth:`pm4py.conformance.precision_alignments`; evaluation of the precision between an event log and a *Petri net* using alignments.
+  * :meth:`pm4py.conformance.replay_prefix_tbr`; replays a prefix (list of activities) on a given *Petri net*, using Token-Based Replay.
 
 Among declarative process models, ``pm4py`` currently supports:
 
@@ -440,6 +441,7 @@ Overall List of Methods
    pm4py.conformance.fitness_alignments
    pm4py.conformance.precision_token_based_replay
    pm4py.conformance.precision_alignments
+   pm4py.conformance.replay_prefix_tbr
    pm4py.conformance.conformance_temporal_profile
    pm4py.conformance.conformance_log_skeleton
    pm4py.vis

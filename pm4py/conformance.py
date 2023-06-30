@@ -368,6 +368,42 @@ def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet
     return result
 
 
+def replay_prefix_tbr(prefix: List[str], net: PetriNet, im: Marking, fm: Marking, activity_key: str = "concept:name") -> Marking:
+    """
+    Replays a prefix (list of activities) on a given accepting Petri net, using Token-Based Replay.
+
+    :param prefix: list of activities
+    :param net: Petri net
+    :param im: initial marking
+    :param fm: final marking
+    :param activity_key: attribute to be used as activity
+    :rtype:  ``Marking``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('tests/input_data/running-example.pnml')
+        marking = pm4py.replay_prefix_tbr(['register request', 'check ticket'], net, im, fm)
+    """
+    purpose_log = EventLog()
+    trace = Trace()
+    for act in prefix:
+        trace.append(Event({activity_key: act}))
+    purpose_log.append(trace)
+
+    from pm4py.algo.conformance.tokenreplay.variants import token_replay
+    parameters_tr = {
+        token_replay.Parameters.CONSIDER_REMAINING_IN_FITNESS: False,
+        token_replay.Parameters.TRY_TO_REACH_FINAL_MARKING_THROUGH_HIDDEN: False,
+        token_replay.Parameters.STOP_IMMEDIATELY_UNFIT: True,
+        token_replay.Parameters.WALK_THROUGH_HIDDEN_TRANS: True,
+        token_replay.Parameters.ACTIVITY_KEY: activity_key
+    }
+    res = token_replay.apply(purpose_log, net, im, fm, parameters=parameters_tr)[0]
+    return res["reached_marking"]
+
+
 @deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="conformance checking using footprints will not be exposed in a future release")
 def __convert_to_fp(*args) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
     """
