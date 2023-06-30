@@ -291,23 +291,26 @@ Some object-centric process discovery algorithms are also offered:
   * :meth:`pm4py.ocel.discover_objects_graph`; discovers an object-based graph from the object-centric event log.
 
 
-OpenAI Integration (:mod:`pm4py.openai`)
+LLM Integration (:mod:`pm4py.llm`)
 ------------------------------------------
 
 The following methods provides just the abstractions of the given objects:
 
-  * :meth:`pm4py.openai.abstract_dfg`; provides the DFG abstraction of a traditional event log
-  * :meth:`pm4py.openai.abstract_variants`; provides the variants abstraction of a traditional event log
-  * :meth:`pm4py.openai.abstract_log_attributes`; provides the abstraction of the attributes/columns of the event log
-  * :meth:`pm4py.openai.abstract_ocel`; provides the abstraction of an object-centric event log (list of events and objects)
-  * :meth:`pm4py.openai.abstract_ocel_ocdfg`; provides the abstraction of an object-centric event log (OC-DFG)
-  * :meth:`pm4py.openai.abstract_ocel_features`; provides the abstraction of an object-centric event log (features for ML)
-  * :meth:`pm4py.openai.abstract_event_stream`; provides an abstraction of the (last) events of the stream related to a traditional event log
-  * :meth:`pm4py.openai.abstract_petri_net`; provides the abstraction of a Petri net
+  * :meth:`pm4py.llm.abstract_dfg`; provides the DFG abstraction of a traditional event log
+  * :meth:`pm4py.llm.abstract_variants`; provides the variants abstraction of a traditional event log
+  * :meth:`pm4py.llm.abstract_log_attributes`; provides the abstraction of the attributes/columns of the event log
+  * :meth:`pm4py.llm.abstract_log_features`; provides the abstraction of the machine learning features obtained from an event log
+  * :meth:`pm4py.llm.abstract_case`; provides the abstraction of a case (collection of events)
+  * :meth:`pm4py.llm.abstract_ocel`; provides the abstraction of an object-centric event log (list of events and objects)
+  * :meth:`pm4py.llm.abstract_ocel_ocdfg`; provides the abstraction of an object-centric event log (OC-DFG)
+  * :meth:`pm4py.llm.abstract_ocel_features`; provides the abstraction of an object-centric event log (features for ML)
+  * :meth:`pm4py.llm.abstract_event_stream`; provides an abstraction of the (last) events of the stream related to a traditional event log
+  * :meth:`pm4py.llm.abstract_petri_net`; provides the abstraction of a Petri net
+  * :meth:`pm4py.llm.abstract_log_skeleton`; provides the abstraction of a log skeleton model
 
-The following methods can be executed directly against the OpenAI APIs:
+The following methods can be executed directly against the LLM APIs:
 
-  * :meth:`pm4py.openai.execute_prompt`; executes a prompt against OpenAI, returning the response as string
+  * :meth:`pm4py.llm.openai_query`; executes a prompt against OpenAI, returning the response as string
 
 
 Basic Connectors (:mod:`pm4py.connectors`)
@@ -572,16 +575,19 @@ Overall List of Methods
    pm4py.ocel.ocel_o2o_enrichment
    pm4py.ocel.ocel_e2o_lifecycle_enrichment
    pm4py.ocel.cluster_equivalent_ocel
-   pm4py.openai
-   pm4py.openai.abstract_dfg
-   pm4py.openai.abstract_variants
-   pm4py.openai.abstract_ocel
-   pm4py.openai.abstract_ocel_ocdfg
-   pm4py.openai.abstract_ocel_features
-   pm4py.openai.abstract_event_stream
-   pm4py.openai.abstract_petri_net
-   pm4py.openai.abstract_log_attributes
-   pm4py.openai.execute_prompt
+   pm4py.llm
+   pm4py.llm.abstract_dfg
+   pm4py.llm.abstract_variants
+   pm4py.llm.abstract_ocel
+   pm4py.llm.abstract_ocel_ocdfg
+   pm4py.llm.abstract_ocel_features
+   pm4py.llm.abstract_event_stream
+   pm4py.llm.abstract_petri_net
+   pm4py.llm.abstract_log_attributes
+   pm4py.llm.abstract_log_features
+   pm4py.llm.abstract_case
+   pm4py.llm.abstract_log_skeleton
+   pm4py.llm.openai_query
    pm4py.connectors.extract_log_outlook_mails
    pm4py.connectors.extract_log_outlook_calendar
    pm4py.connectors.extract_log_windows_events

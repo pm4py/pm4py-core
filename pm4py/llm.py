@@ -16,7 +16,7 @@
 '''
 
 import pandas as pd
-from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.log.obj import EventLog, EventStream, Trace
 from typing import Union, Optional
 from pm4py.utils import get_properties, constants
 from pm4py.utils import __event_log_deprecation_warning
@@ -276,3 +276,87 @@ def abstract_log_attributes(log_obj: Union[pd.DataFrame, EventLog, EventStream],
 
     from pm4py.algo.querying.llm.abstractions import log_to_cols_descr
     return log_to_cols_descr.apply(log_obj, parameters=parameters)
+
+
+def abstract_log_features(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = constants.OPENAI_MAX_LEN, include_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+    """
+    Abstracts the machine learning features obtained from a log (reporting the top features until the desired length is obtained)
+
+    :param log_obj: log object
+    :param max_len: maximum length of the (string) abstraction
+    :param activity_key: the column to be used as activity
+    :param timestamp_key: the column to be used as timestamp
+    :param case_id_key: the column to be used as case identifier
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
+        print(pm4py.llm.abstract_log_features(log))
+    """
+    if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log_obj)
+
+    parameters = get_properties(
+        log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    parameters["max_len"] = max_len
+    parameters["include_header"] = include_header
+
+    from pm4py.algo.querying.llm.abstractions import log_to_fea_descr
+    return log_to_fea_descr.apply(log_obj, parameters=parameters)
+
+
+def abstract_case(case: Trace, include_case_attributes: bool = True, include_event_attributes: bool = True, include_timestamp: bool = True, include_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp") -> str:
+    """
+    Textually abstracts a case
+
+    :param case: case object
+    :param include_case_attributes: (boolean) include or not the attributes at the case level
+    :param include_event_attributes: (boolean) include or not the attributes at the event level
+    :param include_timestamp: (boolean) include or not the event timestamp in the abstraction
+    :param include_header: (boolean) includes the header of the response
+    :param activity_key: the column to be used as activity
+    :param timestamp_key: the column to be used as timestamp
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes", return_legacy_log_object=True)
+        print(pm4py.llm.abstract_case(log[0]))
+    """
+    parameters = {}
+    parameters["include_case_attributes"] = include_case_attributes
+    parameters["include_event_attributes"] = include_event_attributes
+    parameters["include_timestamp"] = include_timestamp
+    parameters["include_header"] = include_header
+    parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = activity_key
+    parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = timestamp_key
+
+    from pm4py.algo.querying.llm.abstractions import case_to_descr
+    return case_to_descr.apply(case, parameters=parameters)
+
+
+def abstract_log_skeleton(log_skeleton, include_header: bool = True) -> str:
+    """
+    Textually abstracts a log skeleton process model
+
+    :param log_skeleton: log skeleton
+    :param include_header: (boolean) includes the header of the response
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes", return_legacy_log_object=True)
+        log_ske = pm4py.discover_log_skeleton(log)
+        print(pm4py.llm.abstract_log_skeleton(log_ske))
+    """
+    parameters = {}
+
+    from pm4py.algo.querying.llm.abstractions import logske_to_descr
+    return logske_to_descr.apply(log_skeleton, parameters=parameters)
