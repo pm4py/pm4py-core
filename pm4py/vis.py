@@ -36,7 +36,7 @@ def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = Non
     :param format: Format of the output picture (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param bgcolor: Background color of the visualization (default: white)
     :param decorations: Decorations (color, label) associated to the elements of the Petri net
-    :param debug: debug mode (show place and transition's names)
+    :param debug: Boolean enabling/disabling the debug mode (show place and transition's names)
 
     .. code-block:: python3
 
@@ -63,7 +63,7 @@ def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_mark
     :param file_path: Destination path
     :param bgcolor: Background color of the visualization (default: white)
     :param decorations: Decorations (color, label) associated to the elements of the Petri net
-    :param debug: debug mode (show place and transition's names)
+    :param debug: Boolean enabling/disabling the debug mode (show place and transition's names)
 
     .. code-block:: python3
 
