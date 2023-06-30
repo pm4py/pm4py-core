@@ -17,11 +17,37 @@
 
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream
-from typing import Union
+from typing import Union, Optional
 from pm4py.utils import get_properties, constants
 from pm4py.utils import __event_log_deprecation_warning
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.petri_net.obj import PetriNet, Marking
+
+
+def openai_query(prompt: str, api_key: Optional[str] = None, openai_model: Optional[str] = None) -> str:
+    """
+    Executes the provided prompt, obtaining the answer from the OpenAI APIs.
+
+    :param prompt: prompt that should be executed
+    :param api_key: OpenAI API key
+    :param openai_model: OpenAI model to be used (default: gpt-3.5-turbo)
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        resp = pm4py.llm.openai_query('what is the result of 3+3?', api_key="sk-382393", openai_model="gpt-3.5-turbo")
+        print(resp)
+    """
+    parameters = {}
+    if api_key is not None:
+        parameters["api_key"] = api_key
+    if openai_model is not None:
+        parameters["openai_model"] = openai_model
+
+    from pm4py.algo.querying.llm.connectors import openai as perform_query
+    return perform_query.apply(prompt, parameters=parameters)
 
 
 def abstract_dfg(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = constants.OPENAI_MAX_LEN, include_performance: bool = True, relative_frequency: bool = False, response_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
@@ -43,7 +69,7 @@ def abstract_dfg(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: i
         import pm4py
 
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
-        print(pm4py.openai.abstract_dfg(log))
+        print(pm4py.llm.abstract_dfg(log))
     """
     if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
@@ -55,7 +81,7 @@ def abstract_dfg(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: i
     parameters["relative_frequency"] = relative_frequency
     parameters["response_header"] = response_header
 
-    from pm4py.algo.querying.openai import log_to_dfg_descr
+    from pm4py.algo.querying.llm.abstractions import log_to_dfg_descr
     return log_to_dfg_descr.apply(log_obj, parameters=parameters)
 
 
@@ -78,7 +104,7 @@ def abstract_variants(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_l
         import pm4py
 
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
-        print(pm4py.openai.abstract_variants(log))
+        print(pm4py.llm.abstract_variants(log))
     """
     if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
@@ -90,7 +116,7 @@ def abstract_variants(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_l
     parameters["relative_frequency"] = relative_frequency
     parameters["response_header"] = response_header
 
-    from pm4py.algo.querying.openai import log_to_variants_descr
+    from pm4py.algo.querying.llm.abstractions import log_to_variants_descr
     return log_to_variants_descr.apply(log_obj, parameters=parameters)
 
 
@@ -107,7 +133,7 @@ def abstract_ocel(ocel: OCEL, include_timestamps: bool = True) -> str:
         import pm4py
 
         ocel = pm4py.read_ocel("tests/input_data/ocel/example_log.jsonocel")
-        print(pm4py.openai.abstract_ocel(ocel))
+        print(pm4py.llm.abstract_ocel(ocel))
     """
     parameters = {}
     parameters["include_timestamps"] = include_timestamps
@@ -132,14 +158,14 @@ def abstract_ocel_ocdfg(ocel: OCEL, include_header: bool = True, include_timesta
         import pm4py
 
         ocel = pm4py.read_ocel("tests/input_data/ocel/example_log.jsonocel")
-        print(pm4py.openai.abstract_ocel_ocdfg(ocel))
+        print(pm4py.llm.abstract_ocel_ocdfg(ocel))
     """
     parameters = {}
     parameters["include_header"] = include_header
     parameters["include_timestamps"] = include_timestamps
     parameters["max_len"] = max_len
 
-    from pm4py.algo.querying.openai import ocel_ocdfg_descr
+    from pm4py.algo.querying.llm.abstractions import ocel_ocdfg_descr
     return ocel_ocdfg_descr.apply(ocel, parameters=parameters)
 
 
@@ -158,13 +184,13 @@ def abstract_ocel_features(ocel: OCEL, obj_type: str, include_header: bool = Tru
         import pm4py
 
         ocel = pm4py.read_ocel("tests/input_data/ocel/example_log.jsonocel")
-        print(pm4py.openai.abstract_ocel_ocdfg(ocel))
+        print(pm4py.llm.abstract_ocel_ocdfg(ocel))
     """
     parameters = {}
     parameters["include_header"] = include_header
     parameters["max_len"] = max_len
 
-    from pm4py.algo.querying.openai import ocel_fea_descr
+    from pm4py.algo.querying.llm.abstractions import ocel_fea_descr
     return ocel_fea_descr.apply(ocel, obj_type, parameters=parameters)
 
 
@@ -185,7 +211,7 @@ def abstract_event_stream(log_obj: Union[pd.DataFrame, EventLog, EventStream], m
         import pm4py
 
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
-        print(pm4py.openai.abstract_event_stream(log))
+        print(pm4py.llm.abstract_event_stream(log))
     """
     if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
@@ -195,7 +221,7 @@ def abstract_event_stream(log_obj: Union[pd.DataFrame, EventLog, EventStream], m
     parameters["max_len"] = max_len
     parameters["response_header"] = response_header
 
-    from pm4py.algo.querying.openai import stream_to_descr
+    from pm4py.algo.querying.llm.abstractions import stream_to_descr
     return stream_to_descr.apply(log_obj, parameters=parameters)
 
 
@@ -214,12 +240,12 @@ def abstract_petri_net(net: PetriNet, im: Marking, fm: Marking, response_header:
         import pm4py
 
         net, im, fm = pm4py.read_pnml('tests/input_data/running-example.pnml')
-        print(pm4py.openai.abstract_petri_net(net, im, fm))
+        print(pm4py.llm.abstract_petri_net(net, im, fm))
     """
     parameters = {}
     parameters["response_header"] = response_header
 
-    from pm4py.algo.querying.openai import net_to_descr
+    from pm4py.algo.querying.llm.abstractions import net_to_descr
     return net_to_descr.apply(net, im, fm, parameters=parameters)
 
 
@@ -239,7 +265,7 @@ def abstract_log_attributes(log_obj: Union[pd.DataFrame, EventLog, EventStream],
         import pm4py
 
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
-        print(pm4py.openai.abstract_log_attributes(log))
+        print(pm4py.llm.abstract_log_attributes(log))
     """
     if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
@@ -248,5 +274,5 @@ def abstract_log_attributes(log_obj: Union[pd.DataFrame, EventLog, EventStream],
         log_obj, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters["max_len"] = max_len
 
-    from pm4py.algo.querying.openai import log_to_cols_descr
+    from pm4py.algo.querying.llm.abstractions import log_to_cols_descr
     return log_to_cols_descr.apply(log_obj, parameters=parameters)

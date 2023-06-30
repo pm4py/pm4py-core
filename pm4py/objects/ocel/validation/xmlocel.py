@@ -18,10 +18,10 @@ import pkgutil
 
 
 def apply(input_path, validation_path, parameters=None):
-    import lxml.etree
-
     if not pkgutil.find_loader("lxml"):
         raise Exception("please install lxml in order to validate an XMLOCEL file.")
+
+    import lxml.etree
 
     if parameters is None:
         parameters = {}

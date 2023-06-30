@@ -19,11 +19,10 @@ from typing import Optional, Dict, Any, Collection
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.ocel.obj import OCEL
-from pm4py.algo.querying.openai import log_to_dfg_descr, log_to_variants_descr, log_to_cols_descr
-from pm4py.algo.querying.openai import stream_to_descr
+from pm4py.algo.querying.llm.abstractions import log_to_cols_descr, log_to_dfg_descr, log_to_variants_descr, \
+    ocel_fea_descr, ocel_ocdfg_descr, stream_to_descr
 from pm4py.algo.transformation.ocel.description import algorithm as ocel_description
-from pm4py.algo.querying.openai import ocel_ocdfg_descr, ocel_fea_descr
-from pm4py.algo.querying.openai import perform_query
+from pm4py.algo.querying.llm.connectors import openai as perform_query
 from pm4py.objects.conversion.log import converter as log_converter
 from typing import Union, Tuple
 from enum import Enum

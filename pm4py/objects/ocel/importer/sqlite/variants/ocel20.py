@@ -23,6 +23,8 @@ from pm4py.util import exec_utils
 import pandas as pd
 from pm4py.objects.ocel.util import ocel_consistency
 from pm4py.objects.ocel.util import filtering_utils
+from pm4py.objects.ocel.validation import ocel20_rel_validation
+import warnings
 
 
 class Parameters(Enum):
@@ -34,6 +36,8 @@ class Parameters(Enum):
     INTERNAL_INDEX = constants.PARAM_INTERNAL_INDEX
     QUALIFIER = constants.PARAM_QUALIFIER
     CHANGED_FIELD = constants.PARAM_CHNGD_FIELD
+    VALIDATION = "validation"
+    EXCEPT_IF_INVALID = "except_if_invalid"
 
 
 def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
@@ -41,6 +45,9 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
         parameters = {}
 
     import sqlite3
+
+    validation = exec_utils.get_param_value(Parameters.VALIDATION, parameters, True)
+    except_if_invalid = exec_utils.get_param_value(Parameters.EXCEPT_IF_INVALID, parameters, False)
 
     event_id = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, constants.DEFAULT_EVENT_ID)
     event_activity = exec_utils.get_param_value(Parameters.EVENT_ACTIVITY, parameters, constants.DEFAULT_EVENT_ACTIVITY)
@@ -51,6 +58,14 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
     internal_index = exec_utils.get_param_value(Parameters.INTERNAL_INDEX, parameters, constants.DEFAULT_INTERNAL_INDEX)
     qualifier_field = exec_utils.get_param_value(Parameters.QUALIFIER, parameters, constants.DEFAULT_QUALIFIER)
     changed_field = exec_utils.get_param_value(Parameters.CHANGED_FIELD, parameters, constants.DEFAULT_CHNGD_FIELD)
+
+    if validation:
+        satisfied, unsatisfied = ocel20_rel_validation.apply(file_path)
+        if unsatisfied:
+            warnings.warn("There are unsatisfied OCEL 2.0 constraints in the given relational database: "+str(unsatisfied))
+
+            if except_if_invalid:
+                raise Exception("OCEL 2.0 validation failed.")
 
     conn = sqlite3.connect(file_path)
 
