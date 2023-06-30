@@ -74,7 +74,7 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
                            xes_constants.DEFAULT_TIMESTAMP_KEY}, how="any")
 
     if len(df) < prev_length:
-        warnings.warn("Some rows of the Pandas dataframe have been removed, because of empty case ID, activity or timestamp. This ensures the correct functioning of PM4Py's algorithms.")
+        warnings.warn("Some rows of the Pandas data frame have been removed because of empty case IDs, activity labels, or timestamps to ensure the correct functioning of PM4Py's algorithms.")
 
     # make sure the case ID column is of string type
     df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype("string")
