@@ -281,7 +281,7 @@ def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, 
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters["multiprocessing"] = multi_processing
     result = replay_fitness.apply(log, petri_net, initial_marking, final_marking,
-                                  variant=replay_fitness.Variants.ALIGNMENT_BASED, align_variant=variant_str, parameters=parameters)
+                                variant=replay_fitness.Variants.ALIGNMENT_BASED, align_variant=variant_str, parameters=parameters)
 
     return result
 

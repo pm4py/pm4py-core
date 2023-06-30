@@ -378,7 +378,6 @@ def __dotted_attribute_selection(log: Union[EventLog, pd.DataFrame], attributes)
     return log, attributes
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the dotted chart visualization will be removed in a future release.")
 def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", attributes=None, bgcolor: str = "white", show_legend: bool = True):
     """
     Displays the dotted chart
@@ -431,7 +430,6 @@ def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", a
     dotted_chart_visualizer.view(gviz)
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the dotted chart visualization will be removed in a future release.")
 def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, attributes=None, bgcolor: str = "white", show_legend: bool = True):
     """
     Saves the visualization of the dotted chart
@@ -675,7 +673,6 @@ def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path
     graphs_visualizer.save(graph_vis, file_path)
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the performance spectrum visualization will be removed in a future release.")
 def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], format: str = "png", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", bgcolor: str = "white"):
     """
     Displays the performance spectrum
@@ -717,7 +714,6 @@ def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: Li
     perf_spectrum_visualizer.view(gviz)
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the performance spectrum visualization will be removed in a future release.")
 def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], file_path: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", bgcolor: str = "white"):
     """
     Saves the visualization of the performance spectrum to a file

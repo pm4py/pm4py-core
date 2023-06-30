@@ -1,5 +1,30 @@
 # Changelog of pm4py
 
+## pm4py 2.7.5 (2023.06.30)
+
+### Added
+
+### Changed
+* e414949a69e0376c0299955ecf7cb7d27f7cf349
+  * removed deprecation warning dotted chart and performance spectrum' packages
+
+### Deprecated
+
+### Fixed
+* 437a8c8b885b8e11557ff20e9a5635eeaf4c919c
+  * fix problem OCEL copy/deepcopy
+* 2705b6b6be171bf821570f58027db531e7290801
+  * small fixes feature extraction event log
+* 8a588ff40143f585faf643a5f9cb9f7137ab32e6
+  * small fix textual abstraction OCEL features
+
+### Removed
+
+### Other
+
+
+---
+
 ## pm4py 2.7.4 (2023.05.08)
 
 ### Added

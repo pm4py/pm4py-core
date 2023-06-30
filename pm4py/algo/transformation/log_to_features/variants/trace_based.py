@@ -156,7 +156,7 @@ def max_concurrent_events_per_activity(log: EventLog, parameters: Optional[Dict[
                     conc = conc + 1
                 j = j + 1
             i = i + 1
-            max_conc_act[act] = conc
+            max_conc_act[act] = max(max_conc_act[act], conc)
         arr = []
         for act in activities:
             arr.append(max_conc_act[act])
@@ -198,7 +198,7 @@ def resource_workload(log: EventLog, parameters: Optional[Dict[Union[str, Parame
     tree_dict = {}
     for case in log:
         if case:
-            resources = set(x[resource_key] for x in case)
+            resources = set(x[resource_key] for x in case if resource_key in x)
             st = case[0][start_timestamp_key].timestamp() - epsilon
             ct = case[-1][timestamp_key].timestamp() + epsilon
             for res in resources:
@@ -213,7 +213,7 @@ def resource_workload(log: EventLog, parameters: Optional[Dict[Union[str, Parame
 
     for case in log:
         data.append([])
-        resources = set(x[resource_key] for x in case)
+        resources = set(x[resource_key] for x in case if resource_key in x)
         st = case[0][start_timestamp_key].timestamp() - epsilon
         ct = case[-1][timestamp_key].timestamp() + epsilon
         for res in resources_list:
