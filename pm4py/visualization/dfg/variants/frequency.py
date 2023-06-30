@@ -56,7 +56,13 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     end_activities = exec_utils.get_param_value(Parameters.END_ACTIVITIES, parameters, {})
     font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 12)
     font_size = str(font_size)
-    activities = dfg_utils.get_activities_from_dfg(dfg)
+
+    if start_activities is None:
+        start_activities = dict()
+    if end_activities is None:
+        end_activities = dict()
+    activities = sorted(list(set(dfg_utils.get_activities_from_dfg(dfg)).union(set(start_activities)).union(set(end_activities))))
+
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
 
     if activities_count is None:
