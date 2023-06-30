@@ -35,6 +35,9 @@
   * removing point border in dotted chart
 * c5056add3101b7a846a630d67062f5ca9b8c84d3
   * deug parameter for Petri nets visualization in simplified interface
+* b11d3ae66c1ddf3be244f233efd8c7b1a02124e2
+  * moved "pm4py.algo.querying.openai" to "pm4py.algo.querying.llm"
+  * moved "pm4py.openai" to "pm4py.llm" (simplified interface)
 
 ### Deprecated
 
