@@ -1,15 +1,12 @@
-import pkgutil
+from pm4py.objects.ocel.validation import xmlocel
 
 
 def execute_script():
-    import lxml.etree
+    file_path = "../tests/input_data/ocel/ocel20_example.xmlocel"
+    validation_path = "../tests/input_data/ocel/ocel2-validation.xsd"
 
-    if not pkgutil.find_loader("lxml"):
-        raise Exception("please install lxml in order to validate an XMLOCEL file.")
+    is_valid = xmlocel.apply(file_path, validation_path)
 
-    xml_file = lxml.etree.parse("../tests/input_data/ocel/ocel20_example.xmlocel")
-    xml_validator = lxml.etree.XMLSchema(file="../tests/input_data/ocel/ocel2-validation.xsd")
-    is_valid = xml_validator.validate(xml_file)
     print(is_valid)
 
 
