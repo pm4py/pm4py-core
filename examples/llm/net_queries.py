@@ -1,7 +1,7 @@
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from typing import Optional, Dict, Any
-from pm4py.algo.querying.openai import net_to_descr
-from pm4py.algo.querying.openai import perform_query
+from pm4py.algo.querying.llm.abstractions import net_to_descr
+from pm4py.algo.querying.llm.connectors import openai as perform_query
 from enum import Enum
 from pm4py.util import exec_utils, constants
 
