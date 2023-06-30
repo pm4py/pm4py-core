@@ -1,7 +1,7 @@
 __doc__ = """
 """
 
-from typing import List, Optional, Tuple, Dict, Union, Generator
+from typing import List, Optional, Tuple, Dict, Union, Generator, Set
 
 from pm4py.objects.log.obj import Trace, EventLog, EventStream
 from pm4py.objects.conversion.log import converter as log_converter
@@ -412,3 +412,22 @@ def reduce_petri_net_implicit_places(net: PetriNet, im: Marking, fm: Marking) ->
     from pm4py.objects.petri_net.utils import murata
     return murata.apply_reduction(net, im, fm)
 
+
+def get_enabled_transitions(net: PetriNet, marking: Marking) -> Set[PetriNet.Transition]:
+    """
+    Gets the transitions enabled in a given marking
+
+    :param net: Petri net
+    :param marking: marking
+    :rtype: ``Set[PetriNet.Transition]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('tests/input_data/running-example.pnml')
+        # gets the transitions enabled in the initial marking
+        enabled_transitions = pm4py.get_enabled_transitions(net, im)
+    """
+    from pm4py.objects.petri_net import semantics
+    return semantics.enabled_transitions(net, marking)

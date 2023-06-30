@@ -23,6 +23,9 @@ class Parameters(Enum):
     CHANGED_FIELD = constants.PARAM_CHNGD_FIELD
 
 
+RELOBJ_TAG = "object"
+
+
 def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
@@ -72,8 +75,8 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
             object_changes2[objid] = {}
             object_changes3[objid] = []
             for x, y in obj.items():
-                object_changes2[objid][x] = [(y, "0")]
-                object_changes3[objid].append((x, y, "0"))
+                object_changes2[objid][x] = [(y, "1970-01-01T00:00:00")]
+                object_changes3[objid].append((x, y, "1970-01-01T00:00:00"))
 
     for chng in object_changes0:
         oid = chng[object_id_column]
@@ -134,33 +137,6 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
         object.set("id", str(objid))
         object.set("type", str(obj[object_type_column]))
 
-        """obj = {x: y for x, y in obj.items() if not x.startswith("ocel:") and y is not None and not pd.isna(y)}
-        object_attributes = etree.SubElement(object, "attributes")
-        object_attributes.set("time", "0")
-        if len(obj) > 0:
-            for k, v in obj.items():
-                object_attribute = etree.SubElement(object_attributes, "attribute")
-                object_attribute.set("name", k)
-                object_attribute.text = str(v)
-        if objid in object_changes1:
-            for timee in object_changes1[objid]:
-                object_attributes = etree.SubElement(object, "attributes")
-                object_attributes.set("time", timee.isoformat())
-                for el in object_changes1[objid][timee]:
-                    object_attribute = etree.SubElement(object_attributes, "attribute")
-                    object_attribute.set("name", el[0])
-                    object_attribute.text = str(el[1])"""
-
-        """object_attributes = etree.SubElement(object, "attributes")
-        if objid in object_changes2:
-            for attr, val in object_changes2[objid].items():
-                object_attribute = etree.SubElement(object_attributes, "attribute")
-                object_attribute.set("name", attr)
-                for tup in val:
-                    object_attrval = etree.SubElement(object_attribute, "value")
-                    object_attrval.set("time", tup[1])
-                    object_attrval.text = tup[0]"""
-
         object_attributes = etree.SubElement(object, "attributes")
         if objid in object_changes3:
             for val in object_changes3[objid]:
@@ -172,7 +148,7 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
         if objid in o2o_dict:
             object_objects = etree.SubElement(object, "objects")
             for i in range(len(o2o_dict[objid][0])):
-                object_object = etree.SubElement(object_objects, "object")
+                object_object = etree.SubElement(object_objects, RELOBJ_TAG)
                 object_object.set("object-id", o2o_dict[objid][0][i])
                 object_object.set("qualifier", o2o_dict[objid][1][i])
 
@@ -188,7 +164,7 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
             this_ids = relations0_obj_ids[evid]
             this_qualifiers = relations0_qualifiers[evid]
             for i in range(len(this_ids)):
-                event_object = etree.SubElement(event_objects, "object")
+                event_object = etree.SubElement(event_objects, RELOBJ_TAG)
                 event_object.set("object-id", str(this_ids[i]))
                 event_object.set("qualifier", str(this_qualifiers[i]))
         eve = {x: y for x, y in eve.items() if not x.startswith("ocel:") and y is not None and not pd.isna(y)}

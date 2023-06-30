@@ -69,8 +69,13 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=timest_format)
     # drop NaN(s) in the main columns (case ID, activity, timestamp) to ensure functioning of the
     # algorithms
+    prev_length = len(df)
     df = df.dropna(subset={constants.CASE_CONCEPT_NAME, xes_constants.DEFAULT_NAME_KEY,
                            xes_constants.DEFAULT_TIMESTAMP_KEY}, how="any")
+
+    if len(df) < prev_length:
+        warnings.warn("Some rows of the Pandas data frame have been removed because of empty case IDs, activity labels, or timestamps to ensure the correct functioning of PM4Py's algorithms.")
+
     # make sure the case ID column is of string type
     df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype("string")
     # make sure the activity column is of string type
@@ -360,7 +365,7 @@ def parse_event_log_string(traces: Collection[str], sep: str = ",",
     return pd.DataFrame({case_id_key: cases, activity_key: activitiess, timestamp_key: timestamps})
 
 
-def project_on_event_attribute(log: Union[EventLog, pd.DataFrame], attribute_key=xes_constants.DEFAULT_NAME_KEY) -> \
+def project_on_event_attribute(log: Union[EventLog, pd.DataFrame], attribute_key=xes_constants.DEFAULT_NAME_KEY, case_id_key=None) -> \
 List[List[str]]:
     """
     Project the event log on a specified event attribute. The result is a list, containing a list for each case:
@@ -379,6 +384,7 @@ List[List[str]]:
 
     :param log: Event log / Pandas dataframe
     :param attribute_key: The attribute to be used
+    :param case_id_key: The attribute to be used as case identifier
     :rtype: ``List[List[str]]``
 
     .. code-block:: python3
@@ -394,7 +400,10 @@ List[List[str]]:
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
         from pm4py.streaming.conversion import from_pandas
-        it = from_pandas.apply(log, parameters={from_pandas.Parameters.ACTIVITY_KEY: attribute_key})
+        parameters = {from_pandas.Parameters.ACTIVITY_KEY: attribute_key}
+        if case_id_key is not None:
+            parameters[from_pandas.Parameters.CASE_ID_KEY] = case_id_key
+        it = from_pandas.apply(log, parameters=parameters)
         for trace in it:
             output.append([x[xes_constants.DEFAULT_NAME_KEY] if xes_constants.DEFAULT_NAME_KEY is not None else None for x in trace])
     else:

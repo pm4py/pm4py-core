@@ -67,10 +67,13 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
 
     ret = []
 
-    for cc in conn_comp:
-        subocel = deepcopy(ocel)
-        subocel.objects = subocel.objects[subocel.objects[subocel.object_id_column].isin(cc)]
-        subocel = filtering_utils.propagate_object_filtering(subocel, parameters=parameters)
+    for index, cc in enumerate(conn_comp):
+        subocel = OCEL()
+        subocel.objects = ocel.objects[ocel.objects[ocel.object_id_column].isin(cc)]
+        subocel.relations = ocel.relations[ocel.relations[ocel.object_id_column].isin(cc)]
+        included_evs = subocel.relations[ocel.event_id_column].unique()
+        subocel.events = ocel.events[ocel.events[ocel.event_id_column].isin(included_evs)]
+
         ret.append(subocel)
 
     return ret

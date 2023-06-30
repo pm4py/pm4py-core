@@ -3,6 +3,7 @@ The ``pm4py.vis`` module contains the visualizations offered in ``pm4py``
 """
 
 import os
+import sys
 from typing import Optional
 from typing import Union, List, Dict, Any, Tuple, Set
 
@@ -26,7 +27,7 @@ import deprecation
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = None,
                    final_marking: Optional[Marking] = None, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white",
-                   decorations: Dict[Any, Any] = None):
+                   decorations: Dict[Any, Any] = None, debug: bool = False):
     """
     Views a (composite) Petri net
 
@@ -36,6 +37,7 @@ def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = Non
     :param format: Format of the output picture (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param bgcolor: Background color of the visualization (default: white)
     :param decorations: Decorations (color, label) associated to the elements of the Petri net
+    :param debug: Boolean enabling/disabling the debug mode (show place and transition's names)
 
     .. code-block:: python3
 
@@ -47,12 +49,12 @@ def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = Non
     format = str(format).lower()
     from pm4py.visualization.petri_net import visualizer as pn_visualizer
     gviz = pn_visualizer.apply(petri_net, initial_marking, final_marking,
-                               parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format, "bgcolor": bgcolor, "decorations": decorations})
+                               parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format, "bgcolor": bgcolor, "decorations": decorations, "debug": debug})
     pn_visualizer.view(gviz)
 
 
 def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, file_path: str, bgcolor: str = "white",
-                   decorations: Dict[Any, Any] = None):
+                   decorations: Dict[Any, Any] = None, debug: bool = False):
     """
     Saves a Petri net visualization to a file
 
@@ -62,6 +64,7 @@ def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_mark
     :param file_path: Destination path
     :param bgcolor: Background color of the visualization (default: white)
     :param decorations: Decorations (color, label) associated to the elements of the Petri net
+    :param debug: Boolean enabling/disabling the debug mode (show place and transition's names)
 
     .. code-block:: python3
 
@@ -74,7 +77,7 @@ def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_mark
     format = os.path.splitext(file_path)[1][1:].lower()
     from pm4py.visualization.petri_net import visualizer as pn_visualizer
     gviz = pn_visualizer.apply(petri_net, initial_marking, final_marking,
-                               parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format, "bgcolor": bgcolor, "decorations": decorations})
+                               parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format, "bgcolor": bgcolor, "decorations": decorations, "debug": debug})
     pn_visualizer.save(gviz, file_path)
 
 
@@ -145,7 +148,7 @@ def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: 
     dfg_visualizer.save(gviz, file_path)
 
 
-def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white"):
+def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", max_num_edges: int = sys.maxsize):
     """
     Views a (composite) DFG
 
@@ -154,6 +157,7 @@ def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: st
     :param end_activities: End activities
     :param format: Format of the output picture (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param bgcolor: Background color of the visualization (default: white)
+    :param max_num_edges: maximum number of edges to represent in the graph
 
     .. code-block:: python3
 
@@ -170,12 +174,13 @@ def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: st
     parameters[dfg_parameters.START_ACTIVITIES] = start_activities
     parameters[dfg_parameters.END_ACTIVITIES] = end_activities
     parameters["bgcolor"] = bgcolor
+    parameters["maxNoOfEdgesInDiagram"] = max_num_edges
     gviz = dfg_visualizer.apply(dfg, variant=dfg_visualizer.Variants.FREQUENCY,
                                 parameters=parameters)
     dfg_visualizer.view(gviz)
 
 
-def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str, bgcolor: str = "white"):
+def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str, bgcolor: str = "white", max_num_edges: int = sys.maxsize):
     """
     Saves a DFG visualization to a file
 
@@ -184,6 +189,7 @@ def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_p
     :param end_activities: End activities
     :param file_path: Destination path
     :param bgcolor: Background color of the visualization (default: white)
+    :param max_num_edges: maximum number of edges to represent in the graph
 
     .. code-block:: python3
 
@@ -201,6 +207,7 @@ def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_p
     parameters[dfg_parameters.START_ACTIVITIES] = start_activities
     parameters[dfg_parameters.END_ACTIVITIES] = end_activities
     parameters["bgcolor"] = bgcolor
+    parameters["maxNoOfEdgesInDiagram"] = max_num_edges
     gviz = dfg_visualizer.apply(dfg, variant=dfg_visualizer.Variants.FREQUENCY,
                                 parameters=parameters)
     dfg_visualizer.save(gviz, file_path)
@@ -362,7 +369,6 @@ def __dotted_attribute_selection(log: Union[EventLog, pd.DataFrame], attributes)
     return log, attributes
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the dotted chart visualization will be removed in a future release.")
 def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", attributes=None, bgcolor: str = "white", show_legend: bool = True):
     """
     Displays the dotted chart
@@ -415,7 +421,6 @@ def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", a
     dotted_chart_visualizer.view(gviz)
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the dotted chart visualization will be removed in a future release.")
 def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, attributes=None, bgcolor: str = "white", show_legend: bool = True):
     """
     Saves the visualization of the dotted chart
@@ -659,7 +664,6 @@ def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path
     graphs_visualizer.save(graph_vis, file_path)
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the performance spectrum visualization will be removed in a future release.")
 def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], format: str = "png", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", bgcolor: str = "white"):
     """
     Displays the performance spectrum
@@ -701,7 +705,6 @@ def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: Li
     perf_spectrum_visualizer.view(gviz)
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the performance spectrum visualization will be removed in a future release.")
 def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], file_path: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", bgcolor: str = "white"):
     """
     Saves the visualization of the performance spectrum to a file

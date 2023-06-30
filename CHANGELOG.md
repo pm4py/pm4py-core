@@ -1,5 +1,67 @@
 # Changelog of pm4py
 
+## pm4py 2.7.5 (2023.06.30)
+
+### Added
+* f6d5a343808b350e83caac8cb0480e2ca671bfb4
+  * method in the simplified interface to get the curently enabled transitions
+* 44964d19b7052350f21d637c1a55048026d2b165
+  * replay prefix using TBR (to obtain a marking)
+* eb49b29863c65102ada2443ae66d7fe529a3d91e
+  * OCEL relational validation
+* a128100af8182070453df161a22dbb54d1c08458
+  * LLM textual abstraction of a single case object
+* 0f5b5668a8f134a36e65349f835bf4e1835ae9ea
+  * LLM textual abstraction of the log skeleton
+* 3287c53c83f0198b47c56a3ef7b15ed8d6e09b3f
+  * LLM textual abstraction of EventLog features
+* 7892697f04e14bbfecb7842139a82daf939aefbe
+  * restored OpenAI query executor
+
+### Changed
+* e414949a69e0376c0299955ecf7cb7d27f7cf349
+  * removed deprecation warning dotted chart and performance spectrum' packages
+* 8f4ebdf93c3cbb57e7427238871d4b2e048f357c
+  * added warning for dropping rows with empty case ID/activity/timestamp in format_dataframe
+* 1b35a81e58ee145d5c82029c1110234ac3899856
+  * added the possibility to specify the cae ID in project_on_event_attribute
+* 6a4025f9a430ea32da29dd4142a51473ba16c5ef
+  * optimization connected components filtering OCEL
+* c1028d56269e775167c3cb89827e02a57d263384
+  * minor changes OCEL 2.0 XML importers/exporters
+* 3287c53c83f0198b47c56a3ef7b15ed8d6e09b3f
+  * max_num_edges parameter in simplified interface's DFG visualization
+* 8e04c243a2de3e344832f719e085a0630b3a5f1c
+  * removing point border in dotted chart
+* c5056add3101b7a846a630d67062f5ca9b8c84d3
+  * deug parameter for Petri nets visualization in simplified interface
+* b11d3ae66c1ddf3be244f233efd8c7b1a02124e2
+  * moved "pm4py.algo.querying.openai" to "pm4py.algo.querying.llm"
+  * moved "pm4py.openai" to "pm4py.llm" (simplified interface)
+
+### Deprecated
+
+### Fixed
+* 437a8c8b885b8e11557ff20e9a5635eeaf4c919c
+  * fix problem OCEL copy/deepcopy
+* 2705b6b6be171bf821570f58027db531e7290801
+  * small fixes feature extraction event log
+* 8a588ff40143f585faf643a5f9cb9f7137ab32e6
+  * small fix textual abstraction OCEL features
+* 63108ee30c05a60a99f58a1fbb31dd33228c76fc
+  * fixing DFG visualization when some activities do not appear in the DFG (single activity cases)
+* 30932c4de18ea55dace9678cb87a784d7eb438af
+  * bug fix Alpha Miner on Pandas dataframes
+* 5cc3ded30c7f15ebe13d0a74894ca7f18f8a96e4
+  * fix heuristics net visualization's background color issue
+
+### Removed
+
+### Other
+
+
+---
+
 ## pm4py 2.7.4 (2023.05.08)
 
 ### Added
