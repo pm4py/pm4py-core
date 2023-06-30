@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.7.5 (2023.07.XX)
+## pm4py 2.7.5 (2023.06.30)
 
 ### Added
 * f6d5a343808b350e83caac8cb0480e2ca671bfb4
@@ -104,7 +104,7 @@
 * e561089945951e91b2ecfe0f223b35bd2d351630
   * other NLP/LLM abstractions
 * 42b0d2a6f6fe7430d382117bf0ce54e8fd60ce23
-  * return diagnostics dataframe in pm4py.conformance methods
+  * return diagnostics dataframe in pm4py.conformance methods&
 
 ### Changed
 * 44fc2aecd0885534dd2083a4011be9e031c3a04a
