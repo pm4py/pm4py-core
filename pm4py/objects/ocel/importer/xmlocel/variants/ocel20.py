@@ -108,7 +108,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                             except:
                                 attribute_type = "string"
                             attribute_text = parse_xml(attribute.text, attribute_type, date_parser)
-                            if attribute_time == "0":
+                            if attribute_time == "0" or attribute_time == "1970-01-01T00:00:00":
                                 obj_dict[attribute_name] = attribute_text
                             else:
                                 attribute_time = date_parser.apply(attribute_time)
