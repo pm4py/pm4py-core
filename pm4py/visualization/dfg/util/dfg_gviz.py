@@ -170,12 +170,10 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
 
     # calculate edges penwidth
     penwidth = assign_penwidth_edges(dfg)
-    activities_in_dfg = set()
+
     activities_count_int = copy(activities_count)
 
-    for edge in dfg:
-        activities_in_dfg.add(edge[0])
-        activities_in_dfg.add(edge[1])
+    activities_in_dfg = set(activities_count)
 
     # assign attributes color
     if measure == "frequency":
