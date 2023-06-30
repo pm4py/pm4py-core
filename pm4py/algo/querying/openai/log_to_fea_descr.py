@@ -124,7 +124,11 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
         if len(ret) >= max_len:
             break
 
-        stru = cols[i][0]+":    number of non-zero values: "+str(cols[i][1])+" ; quantiles of the non-zero: "+str(cols[i][3].quantile([0.0, 0.25, 0.5, 0.75, 1.0]).to_dict())+"\n"
+        fea_name = cols[i][0]
+        fea_col = cols[i][3]
+
+        stru = fea_name+":    number of non-zero values: "+str(cols[i][1])+" ; quantiles of the non-zero: "+str(fea_col.quantile([0.0, 0.25, 0.5, 0.75, 1.0]).to_dict())+"\n"
+
         ret = ret + stru
 
         i = i + 1
