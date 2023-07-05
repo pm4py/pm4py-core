@@ -223,7 +223,7 @@ Also, some filtering techniques are offered on top of object-centric event logs:
   * :meth:`pm4py.filtering.filter_ocel_objects`; filters a specified collection of object identifiers from the object-centric event log.
   * :meth:`pm4py.filtering.filter_ocel_cc_object`; filters a connected component from the object-centric event log to which the object with the provided identifier belongs.
   * :meth:`pm4py.filtering.filter_ocel_cc_length`; filter the connected components from an object-centric event log having a number of objects falling in a provided range.
-
+  * :meth:`pm4py.filtering.filter_ocel_cc_otype`; filter the connected components from an object-centric event log having at least an object of the specified object type.
 
 Machine Learning (:mod:`pm4py.ml`)
 ------------------------------------------
@@ -541,6 +541,7 @@ Overall List of Methods
    pm4py.filtering.filter_ocel_objects
    pm4py.filtering.filter_ocel_cc_object
    pm4py.filtering.filter_ocel_cc_length
+   pm4py.filtering.filter_ocel_cc_otype
    pm4py.ml
    pm4py.ml.split_train_test
    pm4py.ml.get_prefixes_from_log
