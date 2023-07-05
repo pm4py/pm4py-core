@@ -1065,3 +1065,42 @@ def filter_ocel_cc_object(ocel: OCEL, object_id: str) -> OCEL:
     for cc in ocel_splits:
         if object_id in cc.objects[ocel.object_id_column].unique():
             return cc
+
+
+def filter_ocel_cc_length(ocel: OCEL, min_cc_length: int, max_cc_length: int) -> OCEL:
+    """
+    Keeps only the objects in an OCEL belonging to a connected component with a length
+    falling in a specified range
+
+    :param ocel: object-centric event log
+    :param min_cc_length: minimum allowed length for the connected component
+    :param max_cc_length: maximum allowed length for the connected component
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('log.jsonocel')
+        filtered_ocel = pm4py.filter_ocel_cc_length(ocel, 2, 10)
+    """
+    from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
+    from pm4py.objects.ocel.util import filtering_utils
+    import networkx as nx
+    from copy import copy
+
+    g0 = object_interaction_graph.apply(ocel)
+    g = nx.Graph()
+
+    for edge in g0:
+        g.add_edge(edge[0], edge[1])
+
+    conn_comp = list(nx.connected_components(g))
+    conn_comp = [x for x in conn_comp if min_cc_length <= len(x) <= max_cc_length]
+    objs = [y for x in conn_comp for y in x]
+
+    ocel = copy(ocel)
+    ocel.objects = ocel.objects[ocel.objects[ocel.object_id_column].isin(objs)]
+    ocel = filtering_utils.propagate_object_filtering(ocel)
+
+    return ocel
