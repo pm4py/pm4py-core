@@ -15,6 +15,9 @@ def execute_script():
     prompt += pm4py.llm.abstract_variants(dataframe_unprot, max_len=5000)
     prompt += "\n\nwhich are the main differences? use your domain knowledge."
     print(prompt)
+    input()
+    prompt = "Perfect. Now please provide me a single DuckDB SQL query to filter the dataframe to such variants that are critical for fairness. More in detail, the data is stored in a Pandas dataframe where each row is an event having the provided attributes (so there are no separate table containing the variant). Please consider the following information: the case identifier is called 'case:concept:name', the activity is stored inside the attribute 'concept:name', the timestamp is stored inside the attribute 'time:timestamp', the resource is stored inside the attribute 'org:resource', there is not a variant column but that can be obtained as concatenation of the activities of a case, there is not a duration column but that can be obtained as difference between the timestamp of the first and the last event. Also, the dataframe is called 'dataframe'. You should use the EPOCH function of DuckDB to get the timestamp from the date. Note that I want the original rows back (so add the variant column on the original dataframe and filter on that)"
+    print(prompt)
 
 
 if __name__ == "__main__":

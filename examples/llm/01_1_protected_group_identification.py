@@ -3,7 +3,7 @@ import os
 
 
 def execute_script():
-    log_path = os.path.join(r"C:\Users\berti\fairness xes logs", "hospital_log_high.xes.gz")
+    log_path = os.path.join(r"C:\Users\berti\fairness xes logs", "renting_log_high.xes.gz")
     dataframe = pm4py.read_xes(log_path)
     dataframe = dataframe[[x for x in dataframe.columns if 'protected' not in x]]
     print(dataframe)
@@ -12,7 +12,7 @@ def execute_script():
     prompt += pm4py.llm.abstract_dfg(dataframe, max_len=5000, response_header=False)
     prompt += "\n\nand the following attributes:\n\n"
     prompt += pm4py.llm.abstract_log_attributes(dataframe, max_len=5000)
-    prompt += "\n\nCould you make an hypothesis and provide me a DuckDB SQL query that I can execute to filter the dataframe on the cases in which unfairness is likely to happen? It can be an OR query (several different conditions could signal unfairness) The dataframe is called 'dataframe'. Please only a single query. The single query should only look at the case attributes, not the activities in a case."
+    prompt += "\n\nCould you make an hypothesis and provide me a DuckDB SQL query that I can execute to filter the dataframe on the cases in which unfairness is likely to happen? It can be an OR query (several different conditions could signal unfairness) The dataframe is called 'dataframe'. Please only a single query. The single query should only look at the case attributes, not the activities in a case. Quote the names of the attributes with a \" at start and at the end."
     print(prompt)
 
 
