@@ -4,35 +4,43 @@ import duckdb
 
 
 def execute_script():
-    log_path = os.path.join(r"C:\Users\berti\fairness xes logs", "hospital_log_high.xes.gz")
+    log_path = os.path.join(r"C:\Users\berti\fairness xes logs", "renting_log_high.xes.gz")
     dataframe = pm4py.read_xes(log_path)
     protected_attr = [x for x in dataframe.columns if "protected" in x][0]
 
     sql_query = """
-    WITH process_variants AS (
-        SELECT *, 
-               STRING_AGG("concept:name", ' -> ') OVER(PARTITION BY "case:concept:name" ORDER BY "time:timestamp") AS variant,
-               (MAX(EPOCH("time:timestamp")) OVER(PARTITION BY "case:concept:name") - MIN(EPOCH("time:timestamp")) OVER(PARTITION BY "case:concept:name")) AS duration
-        FROM dataframe
-    )
-    SELECT *
-    FROM process_variants
-    WHERE variant NOT IN (
-        'Register at ER -> Examination -> Diagnosis -> Treatment -> Treatment successful -> Discharge',
-        'Register at FD -> Examination -> Diagnosis -> Treatment -> Treatment successful -> Discharge',
-        'Register at FD -> Expert Examination -> Diagnosis -> Treatment -> Treatment successful -> Discharge',
-        'Register at ER -> Expert Examination -> Diagnosis -> Treatment -> Treatment successful -> Discharge',
-        'Register at FD -> Examination -> Thorough Examination -> Diagnosis -> Treatment -> Treatment successful -> Discharge',
-        'Register at ER -> Examination -> Thorough Examination -> Diagnosis -> Treatment -> Treatment successful -> Discharge',
-        'Register at FD -> Expert Examination -> Thorough Examination -> Diagnosis -> Treatment -> Treatment successful -> Discharge',
-        'Register at ER -> Expert Examination -> Thorough Examination -> Diagnosis -> Treatment -> Treatment successful -> Discharge',
-        'Register at ER -> Examination -> Diagnosis -> Treatment -> Treatment unsuccessful -> Diagnosis -> Treatment -> Treatment successful -> Discharge',
-        'Register at FD -> Examination -> Diagnosis -> Treatment -> Treatment unsuccessful -> Diagnosis -> Treatment -> Treatment successful -> Discharge',
-        'Register at ER -> Expert Examination -> Thorough Examination -> Diagnosis -> Treatment -> Treatment unsuccessful -> Diagnosis -> Treatment -> Treatment successful -> Discharge',
-        'Register at FD -> Expert Examination -> Thorough Examination -> Diagnosis -> Treatment -> Treatment unsuccessful -> Diagnosis -> Treatment -> Treatment successful -> Discharge',
-        'Register at ER -> Expert Examination -> Diagnosis -> Treatment -> Treatment unsuccessful -> Diagnosis -> Treatment -> Treatment successful -> Discharge',
-        'Register at FD -> Expert Examination -> Diagnosis -> Treatment -> Treatment unsuccessful -> Diagnosis -> Treatment -> Treatment successful -> Discharge'
-    )
+WITH cases AS (
+    SELECT 
+        "case:concept:name", 
+        STRING_AGG("concept:name", ' -> ') OVER (PARTITION BY "case:concept:name" ORDER BY "time:timestamp") AS variant
+    FROM 
+        dataframe 
+), 
+filtered_cases AS (
+    SELECT 
+        "case:concept:name"
+    FROM 
+        cases 
+    WHERE variant IN (
+    'Request Appointment -> Set Appointment -> Hand In Credit Appliaction -> Verify Borrowers Information -> Submit File to Underwriter -> Loan Denied',
+    'Request Appointment -> Set Appointment -> Hand In Credit Appliaction -> Verify Borrowers Information -> Application Rejected',
+    'Request Appointment -> Appointment Denied',
+    'Request Appointment -> Set Appointment -> Hand In Credit Appliaction -> Verify Borrowers Information -> Request Co-Signer On Loan -> Submit File to Underwriter -> Loan Denied',
+    'Request Appointment -> Set Appointment -> Hand In Credit Appliaction -> Verify Borrowers Information -> Make Visit to Assess Colatteral -> Submit File to Underwriter -> Loan Denied',
+    'Request Appointment -> Set Appointment -> Hand In Credit Appliaction -> Verify Borrowers Information -> Make Visit to Assess Colatteral -> Submit File to Underwriter -> Sign Loan Agreement'
+)
+    GROUP BY
+        "case:concept:name"
+)
+SELECT 
+    df.*, 
+    cases.variant
+FROM 
+    dataframe AS df
+JOIN 
+    filtered_cases ON df."case:concept:name" = filtered_cases."case:concept:name"
+JOIN
+    cases ON df."case:concept:name" = cases."case:concept:name"
     """
     dataframe_pos = duckdb.sql(sql_query).to_df()
     cases_pos = dataframe_pos["case:concept:name"].unique()
