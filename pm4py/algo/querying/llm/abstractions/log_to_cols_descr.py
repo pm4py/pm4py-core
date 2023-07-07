@@ -44,7 +44,7 @@ def apply(log_obj: Union[EventLog, EventStream, pd.DataFrame], parameters: Optio
 
     for x, y in cols_dtypes.items():
         num_nans[x] = log_obj[x].isna().sum()
-        if "object" in y or "string" in y:
+        if "object" in y or "string" in y or "bool" in y:
             values = log_obj[x].value_counts().to_dict()
             if len(values) > 1:
                 for v, co in values.items():
@@ -71,7 +71,7 @@ def apply(log_obj: Union[EventLog, EventStream, pd.DataFrame], parameters: Optio
             ret[el[0]] = stru
             curr_len += len(el[0]) + len(stru) + 9
 
-        stru = " ("+el[1]+"; freq. "+str(el[2])+")"
+        stru = " ("+str(el[1])+"; freq. "+str(el[2])+")"
         ret[el[0]] += stru
         curr_len += len(stru)
 
