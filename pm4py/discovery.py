@@ -143,13 +143,28 @@ def discover_dfg_typed(log: pd.DataFrame, case_id_key: str = "case:concept:name"
         
 
 def discover_timeline_dfg(log: pd.DataFrame, case_id_key: str = "case:concept:name", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp"):
+    """
+    Discovers a timeline-axis proportional directly-follows graph from an event log.
+
+    This method returns a dictionary with the couples of directly-following activities as keys and 
+    the duration it takes from them to occur starting from the start event as values. 
+
+    :param log: ``pandas.DataFrame``
+    :param case_id_key: attribute to be used as case identifier
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    
+    .. code-block:: python3
+
+        import pm4py
+
+        dfg, start_activities, end_activities = pm4py.discover_dfg_typed(log)
+        dfg_time = pm4py.discover_timeline_dfg(log) 
+    """
     from pm4py.algo.discovery.dfg.variants import clean_time
-    print("start discover_timeline_dfg")
     parameters = get_properties(
         log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    print("finish getting parameters")
     if type(log) is pd.DataFrame:
-        print("start clean_time")
         return clean_time.apply(log, parameters)
 
 

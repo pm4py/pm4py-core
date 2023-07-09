@@ -159,19 +159,31 @@ def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: 
 
 
 def view_timeline_dfg(dfg: dict, start_activities: dict, end_activities: dict, dfg_time, format: str = "png", bgcolor: str = "white"):
-    #print(dfg_time)
+    """
+    Views a DFG with timeline axis 
+
+    :param dfg: DFG object
+    :param start_activities: Start activities
+    :param end_activities: End activities
+    :param dfg_time : Mapping of each activity to its time taken to execute   
+    :param format: Format of the output picture (default: png)
+    :param bgcolor: Background color of the visualization (default: white)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        dfg, start_activities, end_activities = pm4py.discover_dfg_typed(log)
+        dfg_time = pm4py.discover_timeline_dfg(log) 
+        pm4py.view_dfg(dfg, start_activities, end_activities, dfg_time)
+    """
     from pm4py.visualization.dfg import visualizer as dfg_visualizer
     from pm4py.visualization.dfg.variants import timeline as dfg_time_visualizer
-    #from pm4py.visualization.dfg.variants import performance as dfg_perf_visualizer
-    #if(len(start_activities)>1):
-     #   print("Not supported for more than one start activity yet")
-      #  return
     dfg_parameters = dfg_time_visualizer.Parameters
     parameters = {}
     parameters[dfg_parameters.FORMAT] = format
     parameters[dfg_parameters.START_ACTIVITIES] = start_activities
     parameters[dfg_parameters.END_ACTIVITIES] = end_activities
-    #parameters[dfg_parameters.AGGREGATION_MEASURE] = aggregation_measure
     parameters["bgcolor"] = bgcolor
     gviz = dfg_time_visualizer.apply(dfg, parameters=parameters, dfg_time=dfg_time)
     dfg_visualizer.view(gviz)

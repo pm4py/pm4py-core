@@ -90,12 +90,13 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
 
-    # first, remove edges in diagram that exceeds the maximum number of edges in the diagram
+    '''first, remove edges in diagram that exceeds the maximum number of edges in the diagram'''
     dfg_key_value_list = []
     for edge in dfg:
         dfg_key_value_list.append([edge, dfg[edge]])
-    # more fine grained sorting to avoid that edges that are below the threshold are
-    # undeterministically removed
+
+    '''More fine grained sorting to avoid that edges that are below the threshold are 
+    undeterministically removed'''
     dfg_key_value_list = sorted(dfg_key_value_list, key=lambda x: (x[1], x[0][0], x[0][1]), reverse=True)
     dfg_key_value_list = dfg_key_value_list[0:min(len(dfg_key_value_list), max_no_of_edges_in_diagram)]
     dfg_allowed_keys = [x[0] for x in dfg_key_value_list]
@@ -126,11 +127,7 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
         activities_to_include = sorted(list(set(activities_in_dfg)))
 
 
-
-
-#############################################TIMELINE
-
-#TIMELINE SPECIFIC CODE--------: 
+    #Timeline specific code 
     #get the timestamps needed as nodes
 
     dfg_timestamps = sorted(dfg_time.items(), key = lambda x:x[1])
@@ -148,14 +145,13 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
         timestamps_to_include.append(stat)
         act_time_map[act] = str(hash(stat))
 
-    '''so far, we have created nodes for each timeline. Each node gets a unique value of the readable statistics
-    a dictioarny (act_time_map) is crated having keys as activity and value as the hash of the stat (human readable time).
-    i have nother dictionary (timestamp_hash) that has the hash value of the stat as key and an empty list as the value.
-    In the enxt step, I will fill this empty list by those activities that are repeated having the same roudned time value.
-    the goal is to have a dictionary having the timestamps as keys and a list of activities as values. 
+    '''So far, we have created nodes for each timeline. Each node gets a unique value of the readable statistics
+    a dictionary (act_time_map) is created having keys as activity and value as the hash of the stat (human readable time).
+    There exists another dictionary (timestamp_hash) that has the hash value of the stat as key and an empty list as the value.
+    In the next step, we fill this empty list by those activities that are repeated having the same roudned time value.
+    The goal is to have a dictionary having the timestamps as keys and a list of activities as values. 
     '''
 
-    #the following code meets the goal. We will use the time_Act_dict later on while making subgraphs
     time_act_dict = {}
     for key, value in act_time_map.items():
         if value in time_act_dict:
@@ -179,8 +175,6 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
         minlen_list.append(minlen)
 
 
-
-    '''timestamps_to_include only have timestamps. So we can use it to create edges for the timeline'''
     #create edges for the timeline
     edges_in_timeline = []
     for i, t in enumerate(hash_timestamps_to_include[:-1]):
@@ -191,15 +185,7 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
 
 
     '''Now we have the values that need to go on timeline and we have what activities are supposed to be aligned with what timestamp.
-    Next step is to calculate how long each edge should be to make the edges proportional alomg the timeilne axis..'''
-
-
-
-    
-
-################################# Timeline ####################
-
-
+    Next step is calculating how long each edge should be to make the edges proportional along the timeilne axis..'''
 
     activities_map = {}
 
@@ -235,26 +221,20 @@ def graphviz_visualization(activities_count, dfg, dfg_time : Dict, image_format=
             viz.edge("@@startnode", activities_map[act], label=label, fontsize=font_size)
 
     if end_activities_to_include:
-        # <&#9632;>
         viz.node("@@endnode", "<&#9632;>", shape='doublecircle', fontsize="32")
         for act in end_activities_to_include:
             label = str(end_activities[act]) if isinstance(end_activities, dict) else ""
             viz.edge(activities_map[act], "@@endnode", label=label, fontsize=font_size)
 
 
-    ################################# time line ##################
+    '''Next, we create subgraphs & include those nodes which are to be aligned on the same rank. 
+    Here, we include one node from the timeline axis and 1 or more nodes from the DFG. 
+    We use the information of what activities are supposed to go on same level from 
+    previous caluclation (i.e. we use time_Act_dict)
 
-
-
-    ''' Here, we create subgraphs include those nodes who are supposed to be aligned on teh same rank / level. Here, we include
-    one node from the timeline axis and 1 or more nodes from the dfg. We use the information of what activities are supposed to go on
-    same level from previous caluclation (i.e. we use time_Act_dict)'''
-
-
-    '''we merge the dictiomaries of act_time_map with activities_map to ensure the alignment i s done on the activity node referencing
-    to the same object.'''
-
-    #TRY MERGING MAP in different way!
+    We merge the dictiomaries of act_time_map with activities_map to ensure the alignment is 
+    done on the activity node referencing to the same object.'''
+ 
     from collections import defaultdict
     dd = defaultdict(list)
 
@@ -309,8 +289,6 @@ def apply(dfg: Dict[Tuple[str, str], int], dfg_time : Dict, log: EventLog = None
                     activities_count[act] += start_activities[act]
 
 
-
-    #write dict as soj time for relative time and pass it as a parameter
     return graphviz_visualization(activities_count, dfg, dfg_time, image_format=image_format, measure="frequency",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
                                   start_activities=start_activities, end_activities=end_activities, 
