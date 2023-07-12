@@ -34,7 +34,7 @@ def apply(temporal_profile: Dict[Tuple[str, str], Tuple[float, float]],
 
     if include_header:
         ret.append(
-            "The temporal profile is a model describing the average and the standard deviation of the times between couples of activities following each other in at least a process execution. Given a positive value ZETA, a deviation occurs in a process execution when the time between two activities is lower than AVG - ZETA * STDEV or greater than AVG + ZETA * STDEV. For this process, the model is:\n")
+            "The temporal profile is a model describing the average and the standard deviation of the times between couples of activities eventually (not only directly) following each other in at least a process execution (so in a trace <A,B,C,D> the couples (A,B) (A,C) (A,D) (B,C) (B,D) (C,D) shall be considered). Given a positive value ZETA, a deviation occurs in a process execution when the time between two activities is lower than AVG - ZETA * STDEV or greater than AVG + ZETA * STDEV. For this process, the model is:\n")
 
     for act_couple, agg in temporal_profile.items():
         ret.append("%s -> %s :  AVG: %.2f s  STD: %.2f s" % (act_couple[0], act_couple[1], agg[0], agg[1]))
