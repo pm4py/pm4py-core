@@ -63,7 +63,7 @@ def apply(case: Trace, parameters: Optional[Dict[Any, Any]] = None) -> str:
     ret.append("\n\n")
 
     if include_header:
-        ret.append("\nand the following events:\n\n")
+        ret.append("\nthe case contains the following events (the activity of the event is reported first):\n\n")
 
     for ev in case:
         stru = "%s " % (ev[activity_key])
