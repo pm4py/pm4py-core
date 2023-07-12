@@ -34,7 +34,7 @@ def execute_script():
     arrival_diffs = []
     i = 0
     while i < len(time_intervals)-1:
-        arrival_diffs.append(max(time_intervals[i+1][0]-time_intervals[i][1], epsilon))
+        arrival_diffs.append(max(time_intervals[i+1][0]-time_intervals[i][0], epsilon))
         i = i + 1
 
     check_esponential_distribution("service_times", service_times)
