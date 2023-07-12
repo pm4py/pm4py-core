@@ -30,10 +30,12 @@ def log_to_intervals(log: Union[EventLog, pd.DataFrame], parameters: Optional[Di
         Event log
     parameters
         Parameters of the algorithm, including:
+        - Parameters.ACTIVITY_KEY => the attribute to be used as activity (default: xes_constants.DEFAULT_NAME_KEY)
         - Parameters.START_TIMESTAMP_KEY => the attribute to be used as start timestamp (default: xes_constants.DEFAULT_TIMESTAMP_KEY)
         - Parameters.TIMESTAMP_KEY => the attribute to be used as completion timestamp (default: xes_constants.DEFAULT_TIMESTAMP_KEY)
         - Parameters.EPSILON => the small gap that is removed from the timestamp of the source event and added to the
             timestamp of the target event to make interval querying possible
+        - Parameters.FILTER_ACTIVITY_COUPLE => (optional) keeps only the paths between the specified tuple of two activities.
 
     Returns
     -----------------
@@ -70,6 +72,22 @@ def log_to_intervals(log: Union[EventLog, pd.DataFrame], parameters: Optional[Di
     return ret_list
 
 
+def interval_to_tree(intervals: List[List[Any]], parameters: Optional[Dict[Any, Any]] = None) -> IntervalTree:
+    """Internal methods to convert the obtained intervals to the eventual IntervalTree"""
+    if parameters is None:
+        parameters = {}
+
+    epsilon = exec_utils.get_param_value(Parameters.EPSILON, parameters, 0.00001)
+
+    tree = IntervalTree()
+
+    for inte in intervals:
+        tree.add(Interval(inte[0] - epsilon, inte[1] + epsilon,
+                          data={"source_event": inte[2], "target_event": inte[3], "trace_attributes": inte[4]}))
+
+    return tree
+
+
 def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None) -> IntervalTree:
     """
     Transforms the event log to an interval tree in which the intervals are the
@@ -83,26 +101,18 @@ def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Any, Any
         Event log
     parameters
         Parameters of the algorithm, including:
+        - Parameters.ACTIVITY_KEY => the attribute to be used as activity (default: xes_constants.DEFAULT_NAME_KEY)
         - Parameters.START_TIMESTAMP_KEY => the attribute to be used as start timestamp (default: xes_constants.DEFAULT_TIMESTAMP_KEY)
         - Parameters.TIMESTAMP_KEY => the attribute to be used as completion timestamp (default: xes_constants.DEFAULT_TIMESTAMP_KEY)
         - Parameters.EPSILON => the small gap that is removed from the timestamp of the source event and added to the
             timestamp of the target event to make interval querying possible
+        - Parameters.FILTER_ACTIVITY_COUPLE => (optional) keeps only the paths between the specified tuple of two activities.
 
     Returns
     -----------------
     tree
         Interval tree object (which can be queried at a given timestamp, or range of timestamps)
     """
-    if parameters is None:
-        parameters = {}
-
-    epsilon = exec_utils.get_param_value(Parameters.EPSILON, parameters, 0.00001)
-
     intervals = log_to_intervals(log, parameters=parameters)
-    tree = IntervalTree()
 
-    for inte in intervals:
-        tree.add(Interval(inte[0] - epsilon, inte[1] + epsilon,
-                          data={"source_event": inte[2], "target_event": inte[3], "trace_attributes": inte[4]}))
-
-    return tree
+    return interval_to_tree(intervals, parameters=parameters)
