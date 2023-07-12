@@ -3,7 +3,7 @@ import numpy as np
 import scipy.stats as stats
 
 
-def test_esponential_distribution(name, your_data):
+def check_esponential_distribution(name, your_data):
     print("\n\n### Testing exponential distribution for: "+name+"\n\n")
 
     your_data = np.array(your_data)
@@ -37,8 +37,8 @@ def execute_script():
         arrival_diffs.append(max(time_intervals[i+1][0]-time_intervals[i][1], epsilon))
         i = i + 1
 
-    test_esponential_distribution("service_times", service_times)
-    test_esponential_distribution("arrival_diffs", arrival_diffs)
+    check_esponential_distribution("service_times", service_times)
+    check_esponential_distribution("arrival_diffs", arrival_diffs)
 
 
 if __name__ == "__main__":
