@@ -1,5 +1,26 @@
 # Changelog of pm4py
 
+
+## pm4py 2.7.6 (2023.07.14)
+
+### Added
+
+### Changed
+* 84629e2ea342348e30aa04a7d41ad7b39159b400
+  * changed case-based text abstraction header text
+
+### Deprecated
+
+### Fixed
+* 12c9d877e5fb27b709d06c21310ab32868c2ea74
+  * bug fix textual abstraction attributes LLM
+
+### Removed
+
+### Other
+
+---
+
 ## pm4py 2.7.5 (2023.06.30)
 
 ### Added
