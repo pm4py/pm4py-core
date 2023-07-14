@@ -364,6 +364,7 @@ def abstract_log_skeleton(log_skeleton, include_header: bool = True) -> str:
         print(pm4py.llm.abstract_log_skeleton(log_ske))
     """
     parameters = {}
+    parameters["include_header"] = include_header
 
     from pm4py.algo.querying.llm.abstractions import logske_to_descr
     return logske_to_descr.apply(log_skeleton, parameters=parameters)
