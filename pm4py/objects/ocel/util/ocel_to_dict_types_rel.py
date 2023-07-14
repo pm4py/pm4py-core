@@ -8,7 +8,7 @@ def apply(ocel: OCEL) -> Dict[str, Dict[str, OCEL]]:
     a dictionary associating to every event/object/e2o/o2o/change type
     a dataframe containing the associated information.
     This effectively splits the information of different event/object types
-    in sparse dataframes.
+    in dense dataframes.
 
     Parameters
     -------------
@@ -18,7 +18,7 @@ def apply(ocel: OCEL) -> Dict[str, Dict[str, OCEL]]:
     Returns
     -----------
     dct_types_rel
-        Dictionray associating to every type the corresponding sparse table
+        Dictionray associating to every type the corresponding dense table
     """
     ev_types_list = list(ocel.events[ocel.event_activity].unique())
     obj_types_list = list(ocel.objects[ocel.object_type_column].unique())
