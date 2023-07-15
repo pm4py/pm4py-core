@@ -12,7 +12,11 @@
 ### Changed
 * 84629e2ea342348e30aa04a7d41ad7b39159b400
   * changed case-based text abstraction header text
-
+* c3886beff7abc82db56c60835479f47a76e545d6
+  * refactored log_to_interval_tree methods in two methods
+      (log to intervals, and intervals to tree)
+  * added queue-related examples
+  
 ### Deprecated
 
 ### Fixed
