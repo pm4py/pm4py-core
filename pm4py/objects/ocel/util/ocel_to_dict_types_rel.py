@@ -1,8 +1,9 @@
 from pm4py.objects.ocel.obj import OCEL
-from typing import Dict
+from typing import Dict, Union, Tuple
+import pandas as pd
 
 
-def apply(ocel: OCEL) -> Dict[str, Dict[str, OCEL]]:
+def apply(ocel: OCEL) -> Dict[str, Dict[Union[str, Tuple[str, str]], pd.DataFrame]]:
     """
     Gets from an object-centric event log (OCEL)
     a dictionary associating to every event/object/e2o/o2o/change type
@@ -18,7 +19,21 @@ def apply(ocel: OCEL) -> Dict[str, Dict[str, OCEL]]:
     Returns
     -----------
     dct_types_rel
-        Dictionray associating to every type the corresponding dense table
+        Dictionary associating to every type the corresponding dense table.
+
+        Keys at the first level:
+        - ev_types: pointing to the different event types of the object-centric event log
+        - obj_types: pointing to the different object types of the object-centric event log
+        - e2o: pointing to the different event-object relationships of the object-centric event log
+        - o2o: pointing to the different object-object relationships of the object-centric event log
+        - object_changes: pointing to temporal changes in the attributes of the different object types of an OCEL
+
+        Keys at the second level:
+        - for "ev_types", "obj_types" and "object_changes": the name of the event/object type related to the dense table
+        - for "e2o": a tuple in which the first element is an event type, and the second element is an object type
+        - for "o2o": a tuple in which the two elements are interconnected object types
+
+        Value: a Pandas dataframe (dense table).
     """
     ev_types_list = list(ocel.events[ocel.event_activity].unique())
     obj_types_list = list(ocel.objects[ocel.object_type_column].unique())
