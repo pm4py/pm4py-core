@@ -4,8 +4,7 @@ import duckdb
 
 
 def execute_script():
-    log_path = os.path.join(r"C:\Users\berti\fairness xes logs", "renting_log_high.xes.gz")
-    dataframe = pm4py.read_xes(log_path)
+    dataframe = pm4py.read_xes("../../tests/input_data/fairness/renting_log_high.xes.gz")
     protected_attr = [x for x in dataframe.columns if "protected" in x][0]
 
     sql_query = """

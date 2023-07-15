@@ -3,8 +3,7 @@ import os
 
 
 def execute_script():
-    log_path = os.path.join(r"C:\Users\berti\fairness xes logs", "renting_log_high.xes.gz")
-    dataframe = pm4py.read_xes(log_path)
+    dataframe = pm4py.read_xes("../../tests/input_data/fairness/renting_log_high.xes.gz")
     dataframe = dataframe[[x for x in dataframe.columns if 'protected' not in x]]
     print(dataframe)
     print(dataframe.columns)
