@@ -18,7 +18,7 @@ import deprecation
 
 
 def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking,
-                                               final_marking: Marking, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> List[Dict[str, Any]]:
+                                               final_marking: Marking, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME, opt_parameters: Optional[Dict[Any, Any]] = None) -> List[Dict[str, Any]]:
     """
     Apply token-based replay for conformance checking analysis.
     The methods return the full token-based-replay diagnostics.
@@ -47,6 +47,16 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :param return_diagnostics_dataframe: if possible, returns a dataframe with the diagnostics (instead of the usual output)
+    :param opt_parameters: optional parameters of the token-based replay, including:
+        * reach_mark_through_hidden: boolean value that decides if we shall try to reach the final marking through hidden transitions
+        * stop_immediately_unfit: boolean value that decides if we shall stop immediately when a non-conformance is detected
+        * walk_through_hidden_trans: boolean value that decides if we shall walk through hidden transitions in order to enable visible transitions
+        * places_shortest_path_by_hidden: shortest paths between places by hidden transitions
+        * is_reduction: expresses if the token-based replay is called in a reduction attempt
+        * thread_maximum_ex_time: alignment threads maximum allowed execution time
+        * cleaning_token_flood: decides if a cleaning of the token flood shall be operated
+        * disable_variants: disable variants grouping
+        * return_object_names: decides whether names instead of object pointers shall be returned
     :rtype: ``List[Dict[str, Any]]``
 
     .. code-block:: python3
@@ -67,6 +77,12 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
         case_id_key = None
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    if opt_parameters is None:
+        opt_parameters = {}
+
+    for k, v in opt_parameters.items():
+        properties[k] = v
 
     from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
     result = token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=properties)

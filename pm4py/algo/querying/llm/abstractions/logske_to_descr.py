@@ -16,7 +16,7 @@ def apply(lsk: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) -> s
     ret = ["\n"]
 
     if include_header:
-        ret.append("If I have the following declarative constraints:\n\n")
+        ret.append("I have a Log Skeleton process model containing the following declarative constraints:\n\n")
 
     # equivalence
     ret.append("Equivalence (if the first activity occurs, then it has the same occurrences as the second one): ")
