@@ -78,9 +78,9 @@ def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], A
         attributes_to_consider.add(event_id_key)
 
     log = log[list(attributes_to_consider)]
-    log[timestamp_key] = log[timestamp_key].values.astype(np.int64) // 10**9
+    log[timestamp_key] = log[timestamp_key].values.astype(np.int64) / 10**9
     if start_timestamp_key != timestamp_key:
-        log[start_timestamp_key] = log[start_timestamp_key].values.astype(np.int64) // 10**9
+        log[start_timestamp_key] = log[start_timestamp_key].values.astype(np.int64) / 10**9
 
     actres_grouping0 = log.groupby([activity_key, resource_key]).agg(list).to_dict()
     start_timestamps = actres_grouping0[start_timestamp_key]
