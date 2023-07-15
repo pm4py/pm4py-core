@@ -3,6 +3,12 @@ import os
 
 
 def execute_script():
+    """
+    Script that, given the process variants of the "protected" and "non-protected" groups,
+    generates a (first) prompt asking to the LLM which are the procedural differences between the two groups.
+    The second prompt works on the output of the first prompt, and generates a SQL query isolating the
+    paths or the process variants that lead to discrimination.
+    """
     dataframe = pm4py.read_xes("../../tests/input_data/fairness/renting_log_high.xes.gz")
     protected_attr = [x for x in dataframe.columns if "protected" in x][0]
     dataframe_prot = dataframe[dataframe[protected_attr] == True]

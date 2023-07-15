@@ -4,6 +4,11 @@ import duckdb
 
 
 def execute_script():
+    """
+    Scripts to check the query provided (in the script 01_1_...) for the "protected"
+    group against the ground truth (that for the logs included in pm4py is reported in the log)
+    and measure the quality of the classification.
+    """
     dataframe = pm4py.read_xes("../../tests/input_data/fairness/renting_log_high.xes.gz")
     protected_attr = [x for x in dataframe.columns if "protected" in x][0]
 

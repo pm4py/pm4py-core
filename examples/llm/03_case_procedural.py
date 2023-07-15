@@ -4,6 +4,11 @@ import duckdb
 
 
 def execute_script():
+    """
+    Measures the quality of the SQL query provided in 02_...
+    to isolate the procedural behavior leading to discrimination,
+    and assess the quality of the classification against the ground truth written in the log.
+    """
     dataframe = pm4py.read_xes("../../tests/input_data/fairness/renting_log_high.xes.gz")
     protected_attr = [x for x in dataframe.columns if "protected" in x][0]
 

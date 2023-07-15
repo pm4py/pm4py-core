@@ -3,6 +3,10 @@ import os
 
 
 def execute_script():
+    """
+    Prompt asking to the LLM to generate a SQL query that, given the attributes of the event log,
+    identifies the cases with higher risk of discrimination ("protected" group).
+    """
     dataframe = pm4py.read_xes("../../tests/input_data/fairness/renting_log_high.xes.gz")
     dataframe = dataframe[[x for x in dataframe.columns if 'protected' not in x]]
     print(dataframe)
