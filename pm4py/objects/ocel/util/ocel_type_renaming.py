@@ -19,7 +19,7 @@ def __rename_types_from_maps(ocel: OCEL, event_types_map: Optional[Dict[str, str
     return ret_ocel
 
 
-def rename_strip_spaces(ocel: OCEL) -> OCEL:
+def remove_spaces_non_alphanumeric_characters_from_types(ocel: OCEL) -> OCEL:
     """
     Creates a copy of the object-centric event log in which
     spaces and non-alphanumeric characters inside the event/object types are stripped
@@ -43,7 +43,7 @@ def rename_strip_spaces(ocel: OCEL) -> OCEL:
     return __rename_types_from_maps(ocel, event_types_map, object_types_map)
 
 
-def rename_ev_types_to_alphabet(ocel: OCEL) -> OCEL:
+def abbreviate_event_types(ocel: OCEL) -> OCEL:
     """
     Creates a copy of the object-centric event log in which
     the event types are replaced by the letters of the alphabet (A being the most frequent event type, ...).
