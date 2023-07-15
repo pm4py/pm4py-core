@@ -17,7 +17,7 @@
 
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
-from typing import Union, Optional
+from typing import Union, Optional, Dict, Tuple
 from pm4py.utils import get_properties, constants
 from pm4py.utils import __event_log_deprecation_warning
 from pm4py.objects.ocel.obj import OCEL
@@ -308,6 +308,30 @@ def abstract_log_features(log_obj: Union[pd.DataFrame, EventLog, EventStream], m
     return log_to_fea_descr.apply(log_obj, parameters=parameters)
 
 
+def abstract_temporal_profile(temporal_profile: Dict[Tuple[str, str], Tuple[float, float]], include_header: bool = True) -> str:
+    """
+    Abstracts a temporal profile model to a string.
+
+    :param temporal_profile: temporal profile model
+    :param include_header: includes an header in the response, describing the temporal profile
+    :rtype: ``str``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes", return_legacy_log_object=True)
+        temporal_profile = pm4py.discover_temporal_profile(log)
+        text_abstr = pm4py.llm.abstract_temporal_profile(temporal_profile, include_header=True)
+        print(text_abstr)
+    """
+    parameters = {}
+    parameters["include_header"] = include_header
+
+    from pm4py.algo.querying.llm.abstractions import tempprofile_to_descr
+    return tempprofile_to_descr.apply(temporal_profile, parameters=parameters)
+
+
 def abstract_case(case: Trace, include_case_attributes: bool = True, include_event_attributes: bool = True, include_timestamp: bool = True, include_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp") -> str:
     """
     Textually abstracts a case
@@ -357,6 +381,7 @@ def abstract_log_skeleton(log_skeleton, include_header: bool = True) -> str:
         print(pm4py.llm.abstract_log_skeleton(log_ske))
     """
     parameters = {}
+    parameters["include_header"] = include_header
 
     from pm4py.algo.querying.llm.abstractions import logske_to_descr
     return logske_to_descr.apply(log_skeleton, parameters=parameters)

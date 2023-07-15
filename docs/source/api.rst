@@ -305,6 +305,7 @@ The following methods provides just the abstractions of the given objects:
   * :meth:`pm4py.llm.abstract_ocel_ocdfg`; provides the abstraction of an object-centric event log (OC-DFG)
   * :meth:`pm4py.llm.abstract_ocel_features`; provides the abstraction of an object-centric event log (features for ML)
   * :meth:`pm4py.llm.abstract_event_stream`; provides an abstraction of the (last) events of the stream related to a traditional event log
+  * :meth:`pm4py.llm.abstract_temporal_profile`; provides the abstraction of a temporal profile model
   * :meth:`pm4py.llm.abstract_petri_net`; provides the abstraction of a Petri net
   * :meth:`pm4py.llm.abstract_log_skeleton`; provides the abstraction of a log skeleton model
 
@@ -585,6 +586,7 @@ Overall List of Methods
    pm4py.llm.abstract_petri_net
    pm4py.llm.abstract_log_attributes
    pm4py.llm.abstract_log_features
+   pm4py.llm.abstract_temporal_profile
    pm4py.llm.abstract_case
    pm4py.llm.abstract_log_skeleton
    pm4py.llm.openai_query

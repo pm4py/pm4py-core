@@ -18,7 +18,7 @@ __doc__ = """
 The ``pm4py.convert`` module contains the cross-conversions implemented in ``pm4py``
 """
 
-from typing import Union, Tuple, Optional, Collection
+from typing import Union, Tuple, Optional, Collection, List, Any
 
 import pandas as pd
 from copy import deepcopy
@@ -30,6 +30,7 @@ from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.petri_net.obj import PetriNet
+from pm4py.util import constants
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.objects.transition_system.obj import TransitionSystem
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
@@ -357,6 +358,46 @@ def convert_log_to_networkx(log: Union[EventLog, EventStream, pd.DataFrame], inc
     from pm4py.objects.conversion.log import converter
 
     return converter.apply(log, variant=converter.Variants.TO_NX, parameters={"include_df": include_df, "case_id_attribute": case_id_key, "other_case_attributes_as_nodes": other_case_attributes_as_nodes, "event_attributes_as_nodes": event_attributes_as_nodes})
+
+
+def convert_log_to_time_intervals(log: Union[EventLog, pd.DataFrame], filter_activity_couple: Optional[Tuple[str, str]] = None,
+                                  activity_key: str = "concept:name",
+                                  timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name",
+                                  start_timestamp_key: str = "time:timestamp"
+                                  ) -> List[List[Any]]:
+    """
+    Gets a list of intervals from an event log.
+    Each interval contains two temporally consecutive events and measures the time between the two events
+    (complete timestamp of the first against start timestamp of the second).
+
+    :param log: log object
+    :param filter_activity_couple: (optional) filters the intervals to only consider a given couple of activities of the log
+    :param activity_key: the attribute to be used as activity
+    :param timestamp_key: the attribute to be used as timestamp
+    :param case_id_key: the attribute to be used as case identifier
+    :param start_timestamp_key: the attribute to be used as start timestamp
+    :rtype: ``List[List[Any]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes('tests/input_data/receipt.xes')
+        time_intervals = pm4py.convert_log_to_time_intervals(log)
+        print(len(time_intervals))
+        time_intervals = pm4py.convert_log_to_time_intervals(log, ('Confirmation of receipt', 'T02 Check confirmation of receipt'))
+        print(len(time_intervals))
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception(
+        "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+    properties["filter_activity_couple"] = filter_activity_couple
+    properties[constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY] = start_timestamp_key
+
+    from pm4py.algo.transformation.log_to_interval_tree.variants import open_paths
+    return open_paths.log_to_intervals(log, parameters=properties)
 
 
 def convert_petri_net_to_networkx(net: PetriNet, im: Marking, fm: Marking) -> nx.DiGraph:

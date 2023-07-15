@@ -1,19 +1,31 @@
 # Changelog of pm4py
 
 
-## pm4py 2.7.6 (2023.07.14)
+## pm4py 2.7.6 (2023.07.XX)
 
 ### Added
+* 6760518dea19334a21442200bef647e4c07f3636
+  * LLM abstraction of the temporal profile model
+* 13d001c76e3de40786dce75e76e56a13a821173a
+  * set of event logs for fairness assessment (hospital, hiring, lending, renting)
 
 ### Changed
 * 84629e2ea342348e30aa04a7d41ad7b39159b400
   * changed case-based text abstraction header text
-
+* c3886beff7abc82db56c60835479f47a76e545d6
+  * refactored log_to_interval_tree methods in two methods
+      (log to intervals, and intervals to tree)
+  * added queue-related examples
+  
 ### Deprecated
 
 ### Fixed
 * 12c9d877e5fb27b709d06c21310ab32868c2ea74
   * bug fix textual abstraction attributes LLM
+* 3b9fb1ffc9646cf56a0b84a9b95dfdfd9b7fd565
+  * small fixes pre-existing Jupyter notebooks
+* 17f1340cc8a1095e6cdd8a8d85b92a3800a1e7f9
+  * bug fix textual abstraction log skeleton
 
 ### Removed
 
