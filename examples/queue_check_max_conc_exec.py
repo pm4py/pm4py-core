@@ -3,6 +3,10 @@ from pm4py.algo.transformation.log_to_interval_tree.variants import open_paths
 
 
 def execute_script():
+    """
+    Scripts checking the maximum number of concurrently open paths (in distinct cases of the log)
+    between two activities (in this situation, "Confirmation of receipt" and "T02 Check confirmation of receipt").
+    """
     epsilon = 0.0001
     log = pm4py.read_xes('../tests/input_data/receipt.xes', return_legacy_log_object=True)
     intervals = pm4py.convert_log_to_time_intervals(log, ('Confirmation of receipt', 'T02 Check confirmation of receipt'))
@@ -10,8 +14,8 @@ def execute_script():
     max_conc_exec = 0
     argmax_conc_exec = None
     for inte in intervals:
-        # approximated method:
         # check how many intervals in the three are open at the start and end point of this interval
+        # this leads to the maximum
         at_start = interval_tree[inte[0]-epsilon:inte[0]+epsilon]
         at_end = interval_tree[inte[1]-epsilon:inte[1]+epsilon]
         if len(at_start) > max_conc_exec:
