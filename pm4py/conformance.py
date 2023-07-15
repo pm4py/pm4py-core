@@ -47,6 +47,16 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :param return_diagnostics_dataframe: if possible, returns a dataframe with the diagnostics (instead of the usual output)
+    :param opt_parameters: optional parameters of the token-based replay, including:
+        * reach_mark_through_hidden: boolean value that decides if we shall try to reach the final marking through hidden transitions
+        * stop_immediately_unfit: boolean value that decides if we shall stop immediately when a non-conformance is detected
+        * walk_through_hidden_trans: boolean value that decides if we shall walk through hidden transitions in order to enable visible transitions
+        * places_shortest_path_by_hidden: shortest paths between places by hidden transitions
+        * is_reduction: expresses if the token-based replay is called in a reduction attempt
+        * thread_maximum_ex_time: alignment threads maximum allowed execution time
+        * cleaning_token_flood: decides if a cleaning of the token flood shall be operated
+        * disable_variants: disable variants grouping
+        * return_object_names: decides whether names instead of object pointers shall be returned
     :rtype: ``List[Dict[str, Any]]``
 
     .. code-block:: python3
