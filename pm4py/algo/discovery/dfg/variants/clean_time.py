@@ -43,7 +43,10 @@ CONST_COUNT = 'count_'
 
 from pm4py.discovery import discover_dfg_typed
 
-def apply(log: pd.DataFrame, parameters):
+
+def apply(log: pd.DataFrame, parameters=None):
+    if parameters is None:
+        parameters = {}
 
     act_key = exec_utils.get_param_value(
         Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
