@@ -10,7 +10,7 @@ def execute_script():
     # prints the original timestamp column of the dataframe
     print(dataframe["time:timestamp"])
 
-    # Here are some common options that you can use as a frequency:
+    # Here are some common options that you can use as a granularity:
     #
     # 'D': Day
     # 'H': Hour
@@ -29,6 +29,12 @@ def execute_script():
 
     # prints the new timestamp column of the dataframe
     print(dataframe["time:timestamp"])
+
+    # for completeness, we report some alternatives methods in Pandas to do the same (casting on the minute):
+    #
+    # dataframe["time:timestamp"] = dataframe["time:timestamp"].apply(lambda x: x.replace(second=0, microsecond=0))
+    #
+    # dataframe["time:timestamp"] = dataframe["time:timestamp"].dt.round('min')
 
 
 if __name__ == "__main__":
