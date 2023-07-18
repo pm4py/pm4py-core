@@ -239,11 +239,11 @@ setup(
               'pm4py.visualization.network_analysis.variants', 'pm4py.visualization.transition_system',
               'pm4py.visualization.transition_system.util', 'pm4py.visualization.transition_system.variants',
               'pm4py.visualization.performance_spectrum', 'pm4py.visualization.performance_spectrum.variants'],
-    url='http://www.pm4py.org',
+    url='https://pm4py.fit.fraunhofer.de',
     license='GPL 3.0',
     install_requires=read_file("requirements.txt").split("\n"),
     project_urls={
-        'Documentation': 'http://www.pm4py.org',
+        'Documentation': 'https://pm4py.fit.fraunhofer.de',
         'Source': 'https://github.com/pm4py/pm4py-source',
         'Tracker': 'https://github.com/pm4py/pm4py-source/issues',
     }

@@ -4,7 +4,7 @@ It is open source (licensed under GPL) and intended to be used in both academia 
 pm4py is a product of the Fraunhofer Institute for Applied Information Technology.
 
 ## Documentation / API
-The full documentation of pm4py can be found at http://pm4py.org/
+The full documentation of pm4py can be found at https://pm4py.fit.fraunhofer.de
 
 ## First Example
 A very simple example, to whet your appetite:
