@@ -79,7 +79,7 @@ OPENAI_EXEC_RESULT = True if get_param_from_env("PM4PY_OPENAI_EXEC_RESULT", "Fal
 DEFAULT_GVIZ_VIEW = get_param_from_env("PM4PY_DEFAULT_GVIZ_VIEW", None)
 
 JQUERY_LINK = "https://code.jquery.com/jquery-3.6.3.min.js"
-GRAPHVIZJS_LINK = "http://viz-js.com/bower_components/viz.js/viz.js"
+GRAPHVIZJS_LINK = "https://github.com/mdaines/viz-js/releases/download/v1.8.2/viz.js"
 
 if pkgutil.find_loader("psutil"):
     import psutil
