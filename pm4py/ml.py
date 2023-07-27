@@ -175,6 +175,9 @@ def extract_ocel_features(ocel: OCEL, obj_type: str, enable_object_lifecycle_pat
     Extracts from an object-centric event log a set of features (returned as dataframe) computed on the OCEL
     for the objects of a given object type.
 
+    Implements the approach described in:
+    Berti, A., Herforth, J., Qafari, M.S. et al. Graph-based feature extraction on object-centric event logs. Int J Data Sci Anal (2023). https://doi.org/10.1007/s41060-023-00428-2
+
     :param ocel: object-centric event log
     :param obj_type: object type that should be considered
     :param enable_object_lifecycle_paths: enables the "lifecycle paths" feature
@@ -230,7 +233,6 @@ def extract_temporal_features_dataframe(log: Union[EventLog, pd.DataFrame], grou
 
     Implements the approach described in the paper:
     Pourbafrani, Mahsa, Sebastiaan J. van Zelst, and Wil MP van der Aalst. "Supporting automatic system dynamics model generation for simulation in the context of process mining." International Conference on Business Information Systems. Springer, Cham, 2020.
-
 
     :param log: log object (event log / Pandas dataframe)
     :param grouper_freq: the grouping frequency (D, W, M, Y) to use
