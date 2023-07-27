@@ -7,21 +7,21 @@ MAX_EDGE_PENWIDTH_GRAPHVIZ = 2.6
 MIN_EDGE_PENWIDTH_GRAPHVIZ = 1.0
 
 
-def human_readable_stat(c):
+def human_readable_stat(c0):
     """
-    Transform a timedelta expressed in seconds into a human readable string
+    Transform a timedelta into a human readable string
 
     Parameters
     ----------
-    c
-        Timedelta expressed in seconds
+    c0
+        Timedelta
 
     Returns
     ----------
     string
         Human readable string
     """
-    c = int(float(c))
+    c = int(float(c0))
     years = c // 31104000
     months = c // 2592000
     days = c // 86400
@@ -30,15 +30,22 @@ def human_readable_stat(c):
     seconds = c % 60
     if years > 0:
         return str(years) + "Y"
-    if months > 0:
+    elif months > 0:
         return str(months) + "MO"
-    if days > 0:
+    elif days > 0:
         return str(days) + "D"
-    if hours > 0:
+    elif hours > 0:
         return str(hours) + "h"
-    if minutes > 0:
+    elif minutes > 0:
         return str(minutes) + "m"
-    return str(seconds) + "s"
+    elif seconds > 0:
+        return str(seconds) + "s"
+    else:
+        c = int(float(c0*1000))
+        if c > 0:
+            return str(c) + "ms"
+        else:
+            return str(int(float(c0 * 10**9))) + "ns"
 
 
 def get_arc_penwidth(arc_measure, min_arc_measure, max_arc_measure):
