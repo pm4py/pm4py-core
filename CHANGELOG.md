@@ -26,10 +26,22 @@
   * small fixes pre-existing Jupyter notebooks
 * 17f1340cc8a1095e6cdd8a8d85b92a3800a1e7f9
   * bug fix textual abstraction log skeleton
+* 1217473888b97a00f34834b4746bb7f7e4744df3
+  * bug fix PuLP solver with extremely low weights
+* badbff239cf8a703e7d05c1cc2fc6d51af8aa7d7
+  * bug fix WOFLAN when no basis vectors are identified
+* f528509c6b5117aca6285686e78175dbcf4ba057
+  * fixed path to Graphviz.JS
+* ca79aa9b9e51ba3a95665d5d53c8e5ab5028bf12
+  * minor fix TBR generalization parameters
 
 ### Removed
 
 ### Other
+* 916ea3163119afe7aa0fc9f6c43624147d6c0f9f
+  * reference to published paper in OCEL feature extraction
+* 549aa7c6766f1a51425a7a65673173c55d9731e9
+  * updated reference to PM4Py website
 
 ---
 
