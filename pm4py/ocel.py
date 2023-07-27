@@ -9,6 +9,7 @@ import pandas as pd
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants
 import sys
+import random
 
 
 def ocel_get_object_types(ocel: OCEL) -> List[str]:
@@ -339,13 +340,19 @@ def sample_ocel_objects(ocel: OCEL, num_objects: int) -> OCEL:
     return sampling.sample_ocel_objects(ocel, parameters={"num_entities": num_objects})
 
 
-def sample_ocel_connected_components(ocel: OCEL, connected_components: int = 1) -> OCEL:
+def sample_ocel_connected_components(ocel: OCEL, connected_components: int = 1,
+                                     max_num_events_per_cc: int = sys.maxsize,
+                                     max_num_objects_per_cc: int = sys.maxsize,
+                                     max_num_e2o_relations_per_cc: int = sys.maxsize) -> OCEL:
     """
     Given an object-centric event log, returns a sampled event log with a subset of the executions.
     The number of considered connected components need to be specified by the user.
 
     :param ocel: Object-centric event log
     :param connected_components: Number of connected components to pick from the OCEL
+    :param max_num_events_per_cc: maximum number of events allowed per connected component (default: sys.maxsize)
+    :param max_num_objects_per_cc: maximum number of events allowed per connected component (default: sys.maxsize)
+    :param max_num_e2o_relations_per_cc: maximum number of event-to-object relationships allowed per connected component (default: sys.maxsize)
     :rtype: ``OCEL``
 
     .. code-block:: python3
@@ -360,10 +367,14 @@ def sample_ocel_connected_components(ocel: OCEL, connected_components: int = 1) 
     events = None
     objects = None
     relations = None
-    ocel_splits = sorted(list(ocel_splits), key=lambda x: (len(x.events), len(x.relations)))
-    i = 0
-    while i < min(connected_components, len(ocel_splits)):
-        cc = ocel_splits[i]
+    ocel_splits = [x for x in ocel_splits if
+                   len(x.events) <= max_num_events_per_cc and len(x.objects) <= max_num_objects_per_cc and len(
+                       x.relations) <= max_num_e2o_relations_per_cc]
+
+    if len(ocel_splits) > 0:
+        ocel_splits = random.sample(ocel_splits, min(connected_components, len(ocel_splits)))
+
+    for cc in ocel_splits:
         if events is None:
             events = cc.events
             objects = cc.objects
@@ -372,7 +383,6 @@ def sample_ocel_connected_components(ocel: OCEL, connected_components: int = 1) 
             events = pd.concat([events, cc.events])
             objects = pd.concat([objects, cc.objects])
             relations = pd.concat([relations, cc.relations])
-        i = i + 1
 
     return OCEL(events, objects, relations)
 
