@@ -222,14 +222,14 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     if start_activities_to_include:
         viz.node("@@startnode", "<&#9679;>", shape='circle', fontsize="34")
         for act in start_activities_to_include:
-            label = str(start_activities[act]) if isinstance(start_activities, dict) else ""
+            label = str(start_activities[act]) if isinstance(start_activities, dict) and measure == "frequency" else ""
             viz.edge("@@startnode", activities_map[act], label=label, fontsize=font_size)
 
     if end_activities_to_include:
         # <&#9632;>
         viz.node("@@endnode", "<&#9632;>", shape='doublecircle', fontsize="32")
         for act in end_activities_to_include:
-            label = str(end_activities[act]) if isinstance(end_activities, dict) else ""
+            label = str(end_activities[act]) if isinstance(end_activities, dict) and measure == "frequency" else ""
             viz.edge(activities_map[act], "@@endnode", label=label, fontsize=font_size)
 
     viz.attr(overlap='false')
