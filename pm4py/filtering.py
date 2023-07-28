@@ -1072,6 +1072,9 @@ def filter_ocel_cc_length(ocel: OCEL, min_cc_length: int, max_cc_length: int) ->
     Keeps only the objects in an OCEL belonging to a connected component with a length
     falling in a specified range
 
+    Paper:
+    Adams, Jan Niklas, et al. "Defining cases and variants for object-centric event data." 2022 4th International Conference on Process Mining (ICPM). IEEE, 2022.
+
     :param ocel: object-centric event log
     :param min_cc_length: minimum allowed length for the connected component
     :param max_cc_length: maximum allowed length for the connected component
@@ -1104,6 +1107,9 @@ def filter_ocel_cc_otype(ocel: OCEL, otype: str, positive: bool = True) -> OCEL:
     """
     Filters the objects belonging to the connected components having at least an object
     of the provided object type.
+
+    Paper:
+    Adams, Jan Niklas, et al. "Defining cases and variants for object-centric event data." 2022 4th International Conference on Process Mining (ICPM). IEEE, 2022.
 
     :param ocel: object-centric event log
     :param otype: object type
