@@ -11,6 +11,21 @@ def apply(ocel: OCEL) -> Dict[str, Dict[Union[str, Tuple[str, str]], pd.DataFram
     This effectively splits the information of different event/object types
     in dense dataframes.
 
+    Running example:
+
+        import pm4py
+        from pm4py.objects.ocel.util import ocel_to_dict_types_rel
+
+
+        ocel = pm4py.read_ocel("tests/input_data/ocel/example_log.jsonocel")
+        dct_types_rel = ocel_to_dict_types_rel.apply(ocel)
+
+        # prints the dense dataframes for every event type of the log
+        for evt, table in dct_types_rel["ev_types"].items():
+            print("\n")
+            print(evt)
+            print(table)
+
     Parameters
     -------------
     ocel
