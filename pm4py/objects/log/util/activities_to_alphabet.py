@@ -14,6 +14,16 @@ def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) 
     """
     Remap the activities in a dataframe using an augmented alphabet to minimize the size of the encoding
 
+    Running example:
+
+        import pm4py
+        from pm4py.objects.log.util import activities_to_alphabet
+        from pm4py.util import constants
+
+        dataframe = pm4py.read_xes("tests/input_data/running-example.xes")
+        renamed_dataframe = activities_to_alphabet.apply(dataframe, parameters={constants.PARAMETER_CONSTANT_ACTIVITY_KEY: "concept:name"})
+        print(renamed_dataframe)
+
     Parameters
     --------------
     dataframe
