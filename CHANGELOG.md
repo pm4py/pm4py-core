@@ -8,6 +8,10 @@
   * LLM abstraction of the temporal profile model
 * 13d001c76e3de40786dce75e76e56a13a821173a
   * set of event logs for fairness assessment (hospital, hiring, lending, renting)
+* e3044278b3e7d984c7fdf9e39554cc4551332739
+  * added OCEL filters:
+    * length of a connected components
+    * presence of at least an object of a given object type
 
 ### Changed
 * 84629e2ea342348e30aa04a7d41ad7b39159b400
@@ -38,6 +42,8 @@
   * fixed path to Graphviz.JS
 * ca79aa9b9e51ba3a95665d5d53c8e5ab5028bf12
   * minor fix TBR generalization parameters
+* 57a30fb452a759bc71f707e67bf0f63118194b7f
+  * method to sample OCEL connected components is fixed
 
 ### Removed
 * bf5574a34a31b93024dd9feb54acc5cc475640bd
