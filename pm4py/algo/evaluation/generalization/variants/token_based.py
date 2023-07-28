@@ -99,10 +99,7 @@ def apply(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marki
     """
     if parameters is None:
         parameters = {}
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, pmutil.xes_constants.DEFAULT_NAME_KEY)
 
-    parameters_tr = {Parameters.ACTIVITY_KEY: activity_key}
-
-    aligned_traces = token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters_tr)
+    aligned_traces = token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=parameters)
 
     return get_generalization(petri_net, aligned_traces)

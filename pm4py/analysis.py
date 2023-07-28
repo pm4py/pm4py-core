@@ -1,7 +1,7 @@
 __doc__ = """
 """
 
-from typing import List, Optional, Tuple, Dict, Union, Generator, Set
+from typing import List, Optional, Tuple, Dict, Union, Generator, Set, Any
 
 from pm4py.objects.log.obj import Trace, EventLog, EventStream
 from pm4py.objects.conversion.log import converter as log_converter
@@ -137,7 +137,7 @@ def solve_extended_marking_equation(trace: Trace, sync_net: PetriNet, sync_im: M
 
 
 def check_soundness(petri_net: PetriNet, initial_marking: Marking,
-                    final_marking: Marking) -> bool:
+                    final_marking: Marking, print_diagnostics: bool = False) -> Tuple[bool, Dict[str, Any]]:
     """
     Check if a given Petri net is a sound WF-net.
     A Petri net is a WF-net iff:
@@ -149,11 +149,15 @@ def check_soundness(petri_net: PetriNet, initial_marking: Marking,
         - it contains no deadlocks
         - we are able to always reach the final marking
     For a formal definition of sound WF-net, consider: http://www.padsweb.rwth-aachen.de/wvdaalst/publications/p628.pdf
+    In the returned object, the first element is a boolean indicating if the Petri net is a sound workflow net.
+    The second element is a set of diagnostics collected while running WOFLAN
+    (expressed as a dictionary associating the keys [name of the diagnostics] with the corresponding diagnostics).
 
     :param petri_net: petri net
     :param initial_marking: initial marking
     :param final_marking: final marking
-    :rtype: ``bool``
+    :param print_diagnostics: boolean value that sets up additional prints during the execution of WOFLAN
+    :rtype: ``Tuple[bool, Dict[str, Any]]``
 
     .. code-block:: python3
 
@@ -163,7 +167,8 @@ def check_soundness(petri_net: PetriNet, initial_marking: Marking,
         is_sound = pm4py.check_soundness(net, im, fm)
     """
     from pm4py.algo.analysis.woflan import algorithm as woflan
-    return woflan.apply(petri_net, initial_marking, final_marking, parameters={"return_asap_when_not_sound": True, "return_diagnostics": True})
+    return woflan.apply(petri_net, initial_marking, final_marking,
+                        parameters={"return_asap_when_not_sound": True, "return_diagnostics": True, "print_diagnostics": print_diagnostics})
 
 
 def cluster_log(log: Union[EventLog, EventStream, pd.DataFrame], sklearn_clusterer=None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Generator[EventLog, None, None]:
