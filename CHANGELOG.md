@@ -1,7 +1,7 @@
 # Changelog of pm4py
 
 
-## pm4py 2.7.6 (2023.07.28)
+## pm4py 2.7.6 (2023.08.XX)
 
 ### Added
 * 6760518dea19334a21442200bef647e4c07f3636
@@ -16,7 +16,11 @@
   * refactored log_to_interval_tree methods in two methods
       (log to intervals, and intervals to tree)
   * added queue-related examples
-  
+* da3a12f615dba3c46793a2d9977dfca11dad85b0
+  * avoid annotation start/end edges in DFG with performance metrics
+*  37fba9285cfde95309142e4404f9cfbcb2b9296c
+  * visualizations support nanoseconds granularity when needed
+
 ### Deprecated
 
 ### Fixed
@@ -36,12 +40,16 @@
   * minor fix TBR generalization parameters
 
 ### Removed
+* bf5574a34a31b93024dd9feb54acc5cc475640bd
+  * change-of-mind on format_dataframe deprecation warning
 
 ### Other
 * 916ea3163119afe7aa0fc9f6c43624147d6c0f9f
   * reference to published paper in OCEL feature extraction
 * 549aa7c6766f1a51425a7a65673173c55d9731e9
   * updated reference to PM4Py website
+* 20ce84db4e195937c77280c950ff12083fc5833b
+  * example for log granularity change
 
 ---
 
