@@ -348,6 +348,9 @@ def sample_ocel_connected_components(ocel: OCEL, connected_components: int = 1,
     Given an object-centric event log, returns a sampled event log with a subset of the executions.
     The number of considered connected components need to be specified by the user.
 
+    Paper:
+    Adams, Jan Niklas, et al. "Defining cases and variants for object-centric event data." 2022 4th International Conference on Process Mining (ICPM). IEEE, 2022.
+
     :param ocel: Object-centric event log
     :param connected_components: Number of connected components to pick from the OCEL
     :param max_num_events_per_cc: maximum number of events allowed per connected component (default: sys.maxsize)
