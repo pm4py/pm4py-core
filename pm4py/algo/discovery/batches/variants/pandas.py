@@ -94,9 +94,14 @@ def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], A
         attributes_to_consider.add(event_id_key)
 
     log = log[list(attributes_to_consider)]
-    log[timestamp_key] = log[timestamp_key].values.astype(np.int64) // 10**9
+    # the timestamp columns are expressed in nanoseconds values
+    # here, we want them to have the second granularity, so we divide by 10**9
+    # for example 1001000000 nanoseconds (value stored in the column)
+    # is equivalent to 1,001 seconds.
+    log[timestamp_key] = log[timestamp_key].values.astype(np.int64) / 10**9
     if start_timestamp_key != timestamp_key:
-        log[start_timestamp_key] = log[start_timestamp_key].values.astype(np.int64) // 10**9
+        # see the aforementioned explanation.
+        log[start_timestamp_key] = log[start_timestamp_key].values.astype(np.int64) / 10**9
 
     actres_grouping0 = log.groupby([activity_key, resource_key]).agg(list).to_dict()
     start_timestamps = actres_grouping0[start_timestamp_key]

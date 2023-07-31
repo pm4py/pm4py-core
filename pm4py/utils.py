@@ -35,7 +35,6 @@ INDEX_COLUMN = "@@index"
 CASE_INDEX_COLUMN = "@@case_index"
 
 
-@deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="the format_dataframe function does not need application anymore.")
 def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAME,
                      activity_key: str = xes_constants.DEFAULT_NAME_KEY,
                      timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
