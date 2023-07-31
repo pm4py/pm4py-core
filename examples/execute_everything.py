@@ -4,6 +4,36 @@ import sys
 import traceback
 
 
+def activities_to_alphabet():
+    from examples import activities_to_alphabet
+    print("\n\nactivities_to_alphabet")
+    activities_to_alphabet.execute_script()
+
+
+def ocel_filter_cc():
+    from examples import ocel_filter_cc
+    print("\n\nocel_filter_cc")
+    ocel_filter_cc.execute_script()
+
+
+def queue_check_exponential():
+    from examples import queue_check_exponential
+    print("\n\nqueue_check_exponential")
+    queue_check_exponential.execute_script()
+
+
+def queue_check_max_conc_exec():
+    from examples import queue_check_max_conc_exec
+    print("\n\nqueue_check_max_conc_exec")
+    queue_check_max_conc_exec.execute_script()
+
+
+def timestamp_granularity():
+    from examples import timestamp_granularity
+    print("\n\ntimestamp_granularity")
+    timestamp_granularity.execute_script()
+
+
 def ocel_occm_example():
     from examples import ocel_occm_example
     print("\n\nocel_occm_example")
@@ -772,6 +802,11 @@ if __name__ == "__main__":
     execute_script(inductive_miner_dfg)
     execute_script(inductive_miner_variants)
     execute_script(heu_miner_plus_plus)
+    execute_script(activities_to_alphabet)
+    execute_script(ocel_filter_cc)
+    execute_script(queue_check_exponential)
+    execute_script(queue_check_max_conc_exec)
+    execute_script(timestamp_granularity)
     execute_script(ocel_occm_example)
     execute_script(ocel_clustering)
     execute_script(ocel_enrichment)
