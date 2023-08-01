@@ -126,6 +126,7 @@ def apply(ocdfg: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) ->
         Parameters of the algorithm:
         - Parameters.FORMAT => the format of the output visualization (default: "png")
         - Parameters.BGCOLOR => the default background color (default: "bgcolor")
+        - Parameters.RANKDIR => direction of the graph ("LR" for left-to-right; "TB" for top-to-bottom)
         - Parameters.ACT_METRIC => the metric to use for the activities. Available values:
             - "events" => number of events (default)
             - "unique_objects" => number of unique objects

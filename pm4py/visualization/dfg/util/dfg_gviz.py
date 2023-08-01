@@ -140,6 +140,12 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         End activities of the log
     soj_time
         For each activity, the sojourn time in the log
+    font_size
+        Size of the text on the activities/edges
+    bgcolor
+        Background color of the visualization (i.e., 'transparent', 'white', ...)
+    rankdir
+        Direction of the graph ("LR" for left-to-right; "TB" for top-to-bottom)
 
     Returns
     -----------
