@@ -44,7 +44,11 @@
   * minor fix TBR generalization parameters
 * 57a30fb452a759bc71f707e67bf0f63118194b7f
   * method to sample OCEL connected components is fixed
-
+* 051d98cd0bfbf86419fe68f6cb0c1f139855cfdf
+  * fixed divergence from Github repo
+* e0cbce6b90a16ef1e21edca45b83d69e1743674c
+  * fixed typo in OCPN discovery method
+ 
 ### Removed
 * bf5574a34a31b93024dd9feb54acc5cc475640bd
   * change-of-mind on format_dataframe deprecation warning
