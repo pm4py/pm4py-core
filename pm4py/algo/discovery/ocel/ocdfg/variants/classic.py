@@ -30,7 +30,32 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
     Returns
     -----------------
     ocdfg
-        Object-centric directly-follows graph
+        Object-centric directly-follows graph, expressed as a dictionary containing the following properties:
+        - activities: complete set of activities derived from the object-centric event log
+        - object_types: complete set of object types derived from the object-centric event log
+        - edges: dictionary connecting each object type to a set of directly-followed arcs between activities (expressed as tuples,
+                  e.g., (act1, act2)). Every pair of activities is linked to some sets:
+                - event_pairs: the tuples of event identifiers where the directly-follows arc occurs
+                - total_objects: set of tuples containing two event and one object identifier, uniquely identifying an
+                                  occurrence of the arc.
+        - activities_indep: dictionary linking each activity, regardless of the object type, to some sets:
+            - events: the event identifiers where the activity occurs
+            - unique_objects: the object identifiers where the activity occurs
+            - total_objects: the tuples of event and object identifiers where the activity occurs.
+        - activities_ot: dictionary linking each object type to another dictionary, where the activities are linked to some sets:
+            - events: the event identifiers where the activity occurs (with at least one object of the given object type)
+            - unique_objects: the object identifiers of the given object type where the activity occurs
+            - total_objects: the tuples of event and object identifiers where the activity occurs.
+        - start_activities: dictionary linking each object type to another dictionary, where the start activities
+                            of the given object type are linked to some sets:
+            - events: the event identifiers where the start activity occurs (with at least one object of the given object type)
+            - unique_objects: the object identifiers of the given object type where the start activity occurs
+            - total_objects: the tuples of event and object identifiers where the start activity occurs.
+        - end_activities: dictionary linking each object type to another dictionary, where the end activities
+                          of the given object type are linked to some sets:
+            - events: the event identifiers where the end activity occurs (with at least one object of the given object type)
+            - unique_objects: the object identifiers of the given object type where the end activity occurs
+            - total_objects: the tuples of event and object identifiers where the end activity occurs.
     """
     if parameters is None:
         parameters = {}
