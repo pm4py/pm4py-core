@@ -47,19 +47,20 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
     double_arc_threshold = exec_utils.get_param_value(Parameters.DOUBLE_ARC_THRESHOLD, parameters, 0.0)
     inductive_miner_variant = exec_utils.get_param_value(Parameters.INDUCTIVE_MINER_VARIANT, parameters, "im")
 
-    ocdfg = ocdfg_discovery.apply(ocel, parameters=parameters)
+    ocpn = ocdfg_discovery.apply(ocel, parameters=parameters)
 
     petri_nets = {}
     double_arcs_on_activity = {}
+    tbr_results = {}
 
-    for ot in ocdfg["object_types"]:
-        activities_eo = ocdfg["activities_ot"]["total_objects"][ot]
+    for ot in ocpn["object_types"]:
+        activities_eo = ocpn["activities_ot"]["total_objects"][ot]
 
-        start_activities = {x: len(y) for x, y in ocdfg["start_activities"]["events"][ot].items()}
-        end_activities = {x: len(y) for x, y in ocdfg["end_activities"]["events"][ot].items()}
+        start_activities = {x: len(y) for x, y in ocpn["start_activities"]["events"][ot].items()}
+        end_activities = {x: len(y) for x, y in ocpn["end_activities"]["events"][ot].items()}
         dfg = {}
-        if ot in ocdfg["edges"]["event_couples"]:
-            dfg = {x: len(y) for x, y in ocdfg["edges"]["event_couples"][ot].items()}
+        if ot in ocpn["edges"]["event_couples"]:
+            dfg = {x: len(y) for x, y in ocpn["edges"]["event_couples"][ot].items()}
 
         is_activity_double = {}
         for act in activities_eo:
@@ -81,13 +82,15 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
             obj._start_activities = Counter(start_activities)
             obj._end_activities = Counter(end_activities)
             process_tree = inductive_miner.apply(obj, variant=inductive_miner.Variants.IMd, parameters=parameters)
+            petri_nets[ot] = tree_converter.apply(process_tree, parameters=parameters)
         elif inductive_miner_variant == "im":
             flat_log = flattening.flatten(ocel, ot, parameters=parameters)
             process_tree = inductive_miner.apply(flat_log, parameters=parameters)
+            petri_net = tree_converter.apply(process_tree, parameters=parameters)
+            petri_nets[ot] = petri_net
 
-        petri_nets[ot] = tree_converter.apply(process_tree, parameters=parameters)
+    ocpn["petri_nets"] = petri_nets
+    ocpn["double_arcs_on_activity"] = double_arcs_on_activity
+    ocpn["tbr_results"] = tbr_results
 
-    ocdfg["petri_nets"] = petri_nets
-    ocdfg["double_arcs_on_activity"] = double_arcs_on_activity
-
-    return ocdfg
+    return ocpn
