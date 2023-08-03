@@ -114,7 +114,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
         double_arcs_on_activity[ot] = is_activity_double
 
         im_parameters = copy(parameters)
-
+        # disables the fallthroughs, as computing the model on a myriad of different object types
+        # could be really expensive
+        im_parameters["disable_fallthroughs"] = True
+        # for performance reasons, also disable the strict sequence cut (use the normal sequence cut)
+        im_parameters["disable_strict_sequence_cut"] = True
         process_tree = None
         flat_log = None
 
@@ -129,9 +133,6 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
             obj._end_activities = Counter(end_activities)
             process_tree = inductive_miner.apply(obj, variant=inductive_miner.Variants.IMd, parameters=im_parameters)
         elif inductive_miner_variant == "im":
-            # disables the fallthroughs, as computing the model on a myriad of different object types
-            # could be really expensive
-            im_parameters["disable_fallthroughs"] = True
             process_tree = inductive_miner.apply(flat_log, parameters=im_parameters)
 
         petri_net = tree_converter.apply(process_tree, parameters=parameters)
