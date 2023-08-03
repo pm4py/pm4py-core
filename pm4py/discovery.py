@@ -289,7 +289,7 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame, DFG], multi_
     :param noise_threshold: noise threshold (default: 0.0)
     :param multi_processing: boolean that enables/disables multiprocessing in inductive miner
     :param disable_fallthroughs: disables the fallthroughs in the inductive miner algorithm
-    :param disable_strict_sequence_cut: disables the strict sequence cut (computationally expensive), and uses the 'normal' sequence cut
+    :param disable_strict_sequence_cut: disables the strict sequence cut, and uses the 'normal' sequence cut
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
@@ -373,7 +373,7 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame, DFG], noi
     :param activity_key: attribute to be used for the activity
     :param multi_processing: boolean that enables/disables multiprocessing in inductive miner
     :param disable_fallthroughs: disables the fallthroughs in the inductive miner algorithm
-    :param disable_strict_sequence_cut: disables the strict sequence cut (computationally expensive), and uses the 'normal' sequence cut
+    :param disable_strict_sequence_cut: disables the strict sequence cut, and uses the 'normal' sequence cut
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``ProcessTree``
@@ -558,7 +558,7 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_thres
     :param noise_threshold: noise threshold (default: 0.0)
     :param multi_processing: boolean that enables/disables multiprocessing in inductive miner
     :param disable_fallthroughs: disables the fallthroughs in the inductive miner algorithm
-    :param disable_strict_sequence_cut: disables the strict sequence cut (computationally expensive), and uses the 'normal' sequence cut
+    :param disable_strict_sequence_cut: disables the strict sequence cut, and uses the 'normal' sequence cut
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
