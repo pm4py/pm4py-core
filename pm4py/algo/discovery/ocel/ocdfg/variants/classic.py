@@ -10,6 +10,7 @@ from copy import copy
 class Parameters(Enum):
     EVENT_ACTIVITY = ocel_constants.PARAM_EVENT_ACTIVITY
     OBJECT_TYPE = ocel_constants.PARAM_OBJECT_TYPE
+    COMPUTE_EDGES_PERFORMANCE = "compute_edges_performance"
 
 
 def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
@@ -26,6 +27,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
         Parameters of the algorithm, including:
         - Parameters.EVENT_ACTIVITY => the attribute to be used as activity
         - Parameters.OBJECT_TYPE => the attribute to be used as object type
+        - Parameters.COMPUTE_EDGES_PERFORMANCE => (boolean) enables/disables the computation of the performance on the edges
 
     Returns
     -----------------
@@ -60,6 +62,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
     if parameters is None:
         parameters = {}
 
+    compute_edges_performance = exec_utils.get_param_value(Parameters.COMPUTE_EDGES_PERFORMANCE, parameters, True)
+
     ot_independent = act_utils.find_associations_from_ocel(ocel, parameters=parameters)
     ot_dependent = act_ot_dependent.find_associations_from_ocel(ocel, parameters=parameters)
     start_parameters = copy(parameters)
@@ -82,16 +86,6 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
     ret["edges"]["unique_objects"] = edge_metrics.aggregate_unique_objects(edges)
     ret["edges"]["total_objects"] = edge_metrics.aggregate_total_objects(edges)
 
-    ret["edges_performance"] = {}
-    ret["edges_performance"]["event_couples"] = edge_metrics.performance_calculation_ocel_aggregation(ocel,
-                                                                                                      ret["edges"][
-                                                                                                          "event_couples"],
-                                                                                                      parameters=parameters)
-    ret["edges_performance"]["total_objects"] = edge_metrics.performance_calculation_ocel_aggregation(ocel,
-                                                                                                      ret["edges"][
-                                                                                                          "total_objects"],
-                                                                                                      parameters=parameters)
-
     ret["activities_indep"] = {}
     ret["activities_indep"]["events"] = act_utils.aggregate_events(ot_independent)
     ret["activities_indep"]["unique_objects"] = act_utils.aggregate_unique_objects(ot_independent)
@@ -111,5 +105,19 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
     ret["end_activities"]["events"] = act_ot_dependent.aggregate_events(ot_dependent_end)
     ret["end_activities"]["unique_objects"] = act_ot_dependent.aggregate_unique_objects(ot_dependent_end)
     ret["end_activities"]["total_objects"] = act_ot_dependent.aggregate_total_objects(ot_dependent_end)
+
+    ret["edges_performance"] = {}
+    ret["edges_performance"]["event_couples"] = {}
+    ret["edges_performance"]["total_objects"] = {}
+
+    if compute_edges_performance:
+        ret["edges_performance"]["event_couples"] = edge_metrics.performance_calculation_ocel_aggregation(ocel,
+                                                                                                          ret["edges"][
+                                                                                                              "event_couples"],
+                                                                                                          parameters=parameters)
+        ret["edges_performance"]["total_objects"] = edge_metrics.performance_calculation_ocel_aggregation(ocel,
+                                                                                                          ret["edges"][
+                                                                                                              "total_objects"],
+                                                                                                          parameters=parameters)
 
     return ret
