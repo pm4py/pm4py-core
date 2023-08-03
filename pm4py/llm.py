@@ -33,7 +33,7 @@ def openai_query(prompt: str, api_key: Optional[str] = None, openai_model: Optio
     return perform_query.apply(prompt, parameters=parameters)
 
 
-def abstract_dfg(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = constants.OPENAI_MAX_LEN, include_performance: bool = True, relative_frequency: bool = False, response_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+def abstract_dfg(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = constants.OPENAI_MAX_LEN, include_performance: bool = True, relative_frequency: bool = False, response_header: bool = True, primary_performance_aggregation: str = "mean", secondary_performance_aggregation: Optional[str] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
     """
     Obtains the DFG abstraction of a traditional event log
 
@@ -42,6 +42,8 @@ def abstract_dfg(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: i
     :param include_performance: (boolean) includes the performance of the paths in the abstraction
     :param relative_frequency: (boolean) uses the relative instead of the absolute frequency of the paths
     :param response_header: includes a short header before the paths, pointing to the description of the abstraction
+    :param primary_performance_aggregation: primary aggregation to be used for the arc's performance (default: mean, other options: median, min, max, sum, stdev)
+    :param secondary_performance_aggregation: (optional) secondary aggregation to be used for the arc's performance (default None, other options: mean, median, min, max, sum, stdev)
     :param activity_key: the column to be used as activity
     :param timestamp_key: the column to be used as timestamp
     :param case_id_key: the column to be used as case identifier
@@ -63,12 +65,14 @@ def abstract_dfg(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: i
     parameters["include_performance"] = include_performance
     parameters["relative_frequency"] = relative_frequency
     parameters["response_header"] = response_header
+    parameters["primary_performance_aggregation"] = primary_performance_aggregation
+    parameters["secondary_performance_aggregation"] = secondary_performance_aggregation
 
     from pm4py.algo.querying.llm.abstractions import log_to_dfg_descr
     return log_to_dfg_descr.apply(log_obj, parameters=parameters)
 
 
-def abstract_variants(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = constants.OPENAI_MAX_LEN, include_performance: bool = True, relative_frequency: bool = False, response_header: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
+def abstract_variants(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: int = constants.OPENAI_MAX_LEN, include_performance: bool = True, relative_frequency: bool = False, response_header: bool = True, primary_performance_aggregation: str = "mean", secondary_performance_aggregation: Optional[str] = None,  activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> str:
     """
     Obtains the variants abstraction of a traditional event log
 
@@ -77,6 +81,8 @@ def abstract_variants(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_l
     :param include_performance: (boolean) includes the performance of the variants in the abstraction
     :param relative_frequency: (boolean) uses the relative instead of the absolute frequency of the variants
     :param response_header: includes a short header before the variants, pointing to the description of the abstraction
+    :param primary_performance_aggregation: primary aggregation to be used for the arc's performance (default: mean, other options: median, min, max, sum, stdev)
+    :param secondary_performance_aggregation: (optional) secondary aggregation to be used for the arc's performance (default None, other options: mean, median, min, max, sum, stdev)
     :param activity_key: the column to be used as activity
     :param timestamp_key: the column to be used as timestamp
     :param case_id_key: the column to be used as case identifier
@@ -98,6 +104,8 @@ def abstract_variants(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_l
     parameters["include_performance"] = include_performance
     parameters["relative_frequency"] = relative_frequency
     parameters["response_header"] = response_header
+    parameters["primary_performance_aggregation"] = primary_performance_aggregation
+    parameters["secondary_performance_aggregation"] = secondary_performance_aggregation
 
     from pm4py.algo.querying.llm.abstractions import log_to_variants_descr
     return log_to_variants_descr.apply(log_obj, parameters=parameters)
