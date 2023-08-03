@@ -33,13 +33,13 @@ class FallThroughFactory:
         if inst is IMInstance.IM or inst is IMInstance.IMf:
             if type(obj) is IMDataStructureUVCL:
                 if disable_fallthroughs:
-                    return [FlowerModelUVCL]
+                    return [EmptyTracesUVCL, FlowerModelUVCL]
                 else:
                     return [EmptyTracesUVCL, ActivityOncePerTraceUVCL, ActivityConcurrentUVCL, StrictTauLoopUVCL,
                             TauLoopUVCL, FlowerModelUVCL]
         if inst is IMInstance.IMd:
             if disable_fallthroughs:
-                return [FlowerModelDFG]
+                return [EmptyTracesDFG, FlowerModelDFG]
             else:
                 return [EmptyTracesDFG, FlowerModelDFG]
         return list()
