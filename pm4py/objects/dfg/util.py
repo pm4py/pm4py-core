@@ -97,6 +97,9 @@ def get_transitive_relations(dfg: DFG) -> Tuple[Dict[Any, Collection[Any]], Dict
     G = nx.DiGraph()
     alph = get_vertices(dfg)
 
+    for act in alph:
+        G.add_node(act)
+
     for edge in dfg.graph:
         G.add_edge(edge[0], edge[1])
 
