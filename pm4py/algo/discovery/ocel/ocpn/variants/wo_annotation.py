@@ -81,7 +81,9 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
     inductive_miner_variant = exec_utils.get_param_value(Parameters.INDUCTIVE_MINER_VARIANT, parameters, "im")
     diagnostics_with_tbr = exec_utils.get_param_value(Parameters.DIAGNOSTICS_WITH_TBR, parameters, False)
 
-    ocpn = ocdfg_discovery.apply(ocel, parameters=parameters)
+    ocdfg_parameters = copy(parameters)
+    ocdfg_parameters["compute_edges_performance"] = False
+    ocpn = ocdfg_discovery.apply(ocel, parameters=ocdfg_parameters)
 
     petri_nets = {}
     double_arcs_on_activity = {}
@@ -98,10 +100,12 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
 
         is_activity_double = {}
         for act in activities_eo:
-            ev_obj_count = Counter()
-            for evc in activities_eo[act]:
-                ev_obj_count[evc[0]] += 1
-            this_single_amount = len(list(x for x in ev_obj_count if ev_obj_count[x] == 1)) / len(ev_obj_count)
+            ev_obj_count = Counter([x[0] for x in activities_eo[act]])
+            this_single_amount = 0
+            for y in ev_obj_count.values():
+                if y == 1:
+                    this_single_amount += 1
+            this_single_amount = this_single_amount / len(ev_obj_count)
             if this_single_amount <= double_arc_threshold:
                 is_activity_double[act] = True
             else:
