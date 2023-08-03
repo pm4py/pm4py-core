@@ -276,7 +276,7 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_k
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
 
 
-def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame, DFG], multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, noise_threshold: float = 0.0, disable_fallthroughs: bool = False, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[
+def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame, DFG], multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, noise_threshold: float = 0.0, disable_fallthroughs: bool = False, disable_strict_sequence_cut: bool = False, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[
         PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the inductive miner algorithm.
@@ -289,6 +289,7 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame, DFG], multi_
     :param noise_threshold: noise threshold (default: 0.0)
     :param multi_processing: boolean that enables/disables multiprocessing in inductive miner
     :param disable_fallthroughs: disables the fallthroughs in the inductive miner algorithm
+    :param disable_strict_sequence_cut: disables the strict sequence cut (computationally expensive), and uses the 'normal' sequence cut
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
@@ -310,7 +311,7 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame, DFG], multi_
             log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     pt = discover_process_tree_inductive(
-        log, noise_threshold, multi_processing=multi_processing, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, disable_fallthroughs=disable_fallthroughs)
+        log, noise_threshold, multi_processing=multi_processing, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, disable_fallthroughs=disable_fallthroughs, disable_strict_sequence_cut=disable_strict_sequence_cut)
     from pm4py.convert import convert_to_petri_net
     return convert_to_petri_net(pt)
 
@@ -359,7 +360,7 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
         return heuristics_miner.apply(log, parameters=parameters)
 
 
-def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_threshold: float = 0.0, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, disable_fallthroughs: bool = False, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> ProcessTree:
+def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_threshold: float = 0.0, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, disable_fallthroughs: bool = False, disable_strict_sequence_cut: bool = False, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> ProcessTree:
     """
     Discovers a process tree using the inductive miner algorithm
 
@@ -372,6 +373,7 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame, DFG], noi
     :param activity_key: attribute to be used for the activity
     :param multi_processing: boolean that enables/disables multiprocessing in inductive miner
     :param disable_fallthroughs: disables the fallthroughs in the inductive miner algorithm
+    :param disable_strict_sequence_cut: disables the strict sequence cut (computationally expensive), and uses the 'normal' sequence cut
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :rtype: ``ProcessTree``
@@ -397,6 +399,7 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame, DFG], noi
     parameters["noise_threshold"] = noise_threshold
     parameters["multiprocessing"] = multi_processing
     parameters["disable_fallthroughs"] = disable_fallthroughs
+    parameters["disable_strict_sequence_cut"] = disable_strict_sequence_cut
 
     variant = inductive_miner.Variants.IMf if noise_threshold > 0 else inductive_miner.Variants.IM
 
@@ -543,7 +546,7 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame], activi
         return get.apply(log, parameters=properties)
 
 
-def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_threshold: float = 0.0, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, disable_fallthroughs: bool = False, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> BPMN:
+def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_threshold: float = 0.0, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, disable_fallthroughs: bool = False, disable_strict_sequence_cut: bool = False, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> BPMN:
     """
     Discovers a BPMN using the Inductive Miner algorithm
 
@@ -555,6 +558,7 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_thres
     :param noise_threshold: noise threshold (default: 0.0)
     :param multi_processing: boolean that enables/disables multiprocessing in inductive miner
     :param disable_fallthroughs: disables the fallthroughs in the inductive miner algorithm
+    :param disable_strict_sequence_cut: disables the strict sequence cut (computationally expensive), and uses the 'normal' sequence cut
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
@@ -576,7 +580,7 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_thres
             log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     pt = discover_process_tree_inductive(
-        log, noise_threshold, multi_processing=multi_processing, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, disable_fallthroughs=disable_fallthroughs)
+        log, noise_threshold, multi_processing=multi_processing, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, disable_fallthroughs=disable_fallthroughs, disable_strict_sequence_cut=disable_strict_sequence_cut)
     from pm4py.convert import convert_to_bpmn
     return convert_to_bpmn(pt)
 

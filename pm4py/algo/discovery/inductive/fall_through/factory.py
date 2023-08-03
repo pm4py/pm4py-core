@@ -21,6 +21,7 @@ S = TypeVar('S', bound=FallThrough)
 class Parameters(Enum):
     DISABLE_FALLTHROUGHS = "disable_fallthroughs"
 
+
 class FallThroughFactory:
 
     @classmethod
