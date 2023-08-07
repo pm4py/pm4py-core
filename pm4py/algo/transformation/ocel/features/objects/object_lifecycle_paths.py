@@ -41,7 +41,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     feature_names = ["@@ocel_lif_path_"+str(x) for x in all_paths]
 
     for obj in ordered_objects:
-        lif = paths[obj]
+        lif = paths[obj] if obj in paths else []
         data.append([])
         for p in all_paths:
             data[-1].append(len(list(x for x in lif if x == p)))
