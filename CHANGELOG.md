@@ -48,7 +48,10 @@
   * fixed divergence from Github repo
 * e0cbce6b90a16ef1e21edca45b83d69e1743674c
   * fixed typo in OCPN discovery method
- 
+* 0af7368ce306678466df759ca15359c1e3901bcd
+  * fixed discover_petri_net_inductive multi_processing parameter
+    default value.
+
 ### Removed
 * bf5574a34a31b93024dd9feb54acc5cc475640bd
   * change-of-mind on format_dataframe deprecation warning
