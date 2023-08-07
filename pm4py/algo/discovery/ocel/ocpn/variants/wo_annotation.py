@@ -119,6 +119,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
         im_parameters["disable_fallthroughs"] = True
         # for performance reasons, also disable the strict sequence cut (use the normal sequence cut)
         im_parameters["disable_strict_sequence_cut"] = True
+        
         process_tree = None
         flat_log = None
 
@@ -140,6 +141,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
         if diagnostics_with_tbr:
             tbr_parameters = copy(parameters)
             tbr_parameters["enable_pltr_fitness"] = True
+            tbr_parameters["show_progress_bar"] = False
+
             replayed_traces, place_fitness_per_trace, transition_fitness_per_trace, notexisting_activities_in_model = token_based_replay.apply(
                 flat_log, petri_net[0], petri_net[1], petri_net[2], parameters=tbr_parameters)
             place_diagnostics = {place: {"m": 0, "r": 0, "c": 0, "p": 0} for place in place_fitness_per_trace}
