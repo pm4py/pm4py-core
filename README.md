@@ -41,25 +41,15 @@ If you are using pm4py in your scientific work, please cite pm4py as follows:
 
 BiBTeX:
 
-@article{pm4py,
-
-title = {PM4Py: A process mining library for Python},
-
-journal = {Software Impacts},
-
-volume = {17},
-
-pages = {100556},
-
-year = {2023},
-
-issn = {2665-9638},
-
-doi = {https://doi.org/10.1016/j.simpa.2023.100556},
-
-url = {https://www.sciencedirect.com/science/article/pii/S2665963823000933},
-
-author = {Alessandro Berti and Sebastiaan van Zelst and Daniel Schuster},
-
+@article{pm4py,  
+title = {PM4Py: A process mining library for Python},  
+journal = {Software Impacts},  
+volume = {17},  
+pages = {100556},  
+year = {2023},  
+issn = {2665-9638},  
+doi = {https://doi.org/10.1016/j.simpa.2023.100556},  
+url = {https://www.sciencedirect.com/science/article/pii/S2665963823000933},  
+author = {Alessandro Berti and Sebastiaan van Zelst and Daniel Schuster},  
 }
 
