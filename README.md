@@ -39,4 +39,19 @@ Please check the */third_party/LICENSES_TRANSITIVE* file to get a full list of a
 ## Citing pm4py
 If you are using pm4py in your scientific work, please cite pm4py as follows:
 
-Berti, A., van Zelst, S.J., van der Aalst, W.M.P. (2019): Process Mining for Python (PM4Py): Bridging the Gap Between Process-and Data Science. In: Proceedings of the ICPM Demo Track 2019, co-located with 1st International Conference on Process Mining (ICPM 2019), Aachen, Germany, June 24-26, 2019. pp. 13-16 (2019). http://ceur-ws.org/Vol-2374/
+**Alessandro Berti, Sebastiaan van Zelst, Daniel Schuster**. (2023). *PM4Py: A process mining library for Python*. Software Impacts, 17, 100556. [DOI](https://doi.org/10.1016/j.simpa.2023.100556) | [Article Link](https://www.sciencedirect.com/science/article/pii/S2665963823000933)
+
+BiBTeX:
+
+@article{pm4py,
+title = {PM4Py: A process mining library for Python},
+journal = {Software Impacts},
+volume = {17},
+pages = {100556},
+year = {2023},
+issn = {2665-9638},
+doi = {https://doi.org/10.1016/j.simpa.2023.100556},
+url = {https://www.sciencedirect.com/science/article/pii/S2665963823000933},
+author = {Alessandro Berti and Sebastiaan van Zelst and Daniel Schuster},
+}
+
