@@ -1168,7 +1168,7 @@ def filter_ocel_cc_activity(ocel: OCEL, activity: str, positive: bool = True) ->
     if positive:
         evs = set(ocel.events[ocel.events[ocel.event_activity] == activity][ocel.event_id_column])
     else:
-        evs = set(ocel.events[ocel.events[ocel.event_activity] == activity][ocel.event_id_column])
+        evs = set(ocel.events[~(ocel.events[ocel.event_activity] == activity)][ocel.event_id_column])
 
     objs = set(ocel.relations[ocel.relations[ocel.event_id_column].isin(evs)][ocel.object_id_column].unique())
 
