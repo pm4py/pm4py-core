@@ -1145,7 +1145,7 @@ def filter_ocel_cc_otype(ocel: OCEL, otype: str, positive: bool = True) -> OCEL:
     return filter_ocel_objects(ocel, objs)
 
 
-def filter_ocel_cc_activity(ocel: OCEL, activity: str, positive: bool = True) -> OCEL:
+def filter_ocel_cc_activity(ocel: OCEL, activity: str) -> OCEL:
     """
     Filters the objects belonging to the connected components having at least an event
     with the provided activity.
@@ -1155,7 +1155,6 @@ def filter_ocel_cc_activity(ocel: OCEL, activity: str, positive: bool = True) ->
 
     :param ocel: object-centric event log
     :param activity: activity
-    :param positive: boolean that keeps or discards the objects of these components
     :rtype: ``OCEL``
 
     .. code-block:: python3
@@ -1165,11 +1164,7 @@ def filter_ocel_cc_activity(ocel: OCEL, activity: str, positive: bool = True) ->
         ocel = pm4py.read_ocel('log.jsonocel')
         filtered_ocel = pm4py.filter_ocel_cc_activity(ocel, 'Create Order')
     """
-    if positive:
-        evs = set(ocel.events[ocel.events[ocel.event_activity] == activity][ocel.event_id_column])
-    else:
-        evs = set(ocel.events[~(ocel.events[ocel.event_activity] == activity)][ocel.event_id_column])
-
+    evs = set(ocel.events[ocel.events[ocel.event_activity] == activity][ocel.event_id_column])
     objs = set(ocel.relations[ocel.relations[ocel.event_id_column].isin(evs)][ocel.object_id_column].unique())
 
     from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
