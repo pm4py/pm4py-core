@@ -301,7 +301,7 @@ def apply(net, im, fm, parameters=None):
 
     if len(grouped_net.transitions) == 1:
         pt_str = list(grouped_net.transitions)[0].label
-        pt = pt_util.parse(pt_str)
+        pt = pt_operator.ProcessTree(operator=None, label=pt_str)
         ret = pt_util.fold(pt) if fold else pt
         tree_sort(ret)
         return ret
