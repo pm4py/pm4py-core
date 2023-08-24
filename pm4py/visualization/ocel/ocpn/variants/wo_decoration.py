@@ -79,8 +79,18 @@ def apply(ocpn: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) -> 
             place_id = str(uuid.uuid4())
             places[place] = place_id
             place_label = " "
-            if place in im or place in fm:
+            place_shape = "circle"
+            place_fontcolor = None
+            place_fillcolor = otc
+
+            if place in im:
                 place_label = ot
+                place_shape = "ellipse"
+            elif place in fm:
+                place_label = ot
+                place_shape = "underline"
+                place_fontcolor = otc
+                place_fillcolor = None
 
             # if the place has some TBR diagnostics, override the label in any case
             if place in all_places_diagn:
@@ -88,7 +98,7 @@ def apply(ocpn: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) -> 
                 place_label = "p=%d m=%d\nc=%d r=%d" % (
                     this_diagn['p'], this_diagn['m'], this_diagn['c'], this_diagn['r'])
 
-            viz.node(places[place], label=place_label, shape="circle", style="filled", fillcolor=otc)
+            viz.node(places[place], label=place_label, shape=place_shape, style="filled" if place_fillcolor is not None else None, fillcolor=place_fillcolor, fontcolor=place_fontcolor)
 
         for trans in net.transitions:
             if trans.label is not None:
