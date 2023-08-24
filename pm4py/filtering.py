@@ -1143,3 +1143,42 @@ def filter_ocel_cc_otype(ocel: OCEL, otype: str, positive: bool = True) -> OCEL:
     objs = [y for x in conn_comp for y in x]
 
     return filter_ocel_objects(ocel, objs)
+
+
+def filter_ocel_cc_activity(ocel: OCEL, activity: str) -> OCEL:
+    """
+    Filters the objects belonging to the connected components having at least an event
+    with the provided activity.
+
+    Paper:
+    Adams, Jan Niklas, et al. "Defining cases and variants for object-centric event data." 2022 4th International Conference on Process Mining (ICPM). IEEE, 2022.
+
+    :param ocel: object-centric event log
+    :param activity: activity
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel('log.jsonocel')
+        filtered_ocel = pm4py.filter_ocel_cc_activity(ocel, 'Create Order')
+    """
+    evs = set(ocel.events[ocel.events[ocel.event_activity] == activity][ocel.event_id_column])
+    objs = set(ocel.relations[ocel.relations[ocel.event_id_column].isin(evs)][ocel.object_id_column].unique())
+
+    from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
+    import networkx as nx
+
+    g0 = object_interaction_graph.apply(ocel)
+    g = nx.Graph()
+
+    for edge in g0:
+        g.add_edge(edge[0], edge[1])
+
+    conn_comp = list(nx.connected_components(g))
+    conn_comp = [x for x in conn_comp if len(set(x).intersection(objs)) > 0]
+
+    objs = [y for x in conn_comp for y in x]
+
+    return filter_ocel_objects(ocel, objs)
