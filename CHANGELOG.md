@@ -9,9 +9,11 @@
 * 13d001c76e3de40786dce75e76e56a13a821173a
   * set of event logs for fairness assessment (hospital, hiring, lending, renting)
 * e3044278b3e7d984c7fdf9e39554cc4551332739
+  50f59379fb8f49bbe6eb1796c6664a6057225b95
   * added OCEL filters:
     * length of a connected components
     * presence of at least an object of a given object type
+    * activity executed
 
 ### Changed
 * 84629e2ea342348e30aa04a7d41ad7b39159b400
@@ -44,6 +46,19 @@
   * minor fix TBR generalization parameters
 * 57a30fb452a759bc71f707e67bf0f63118194b7f
   * method to sample OCEL connected components is fixed
+* 051d98cd0bfbf86419fe68f6cb0c1f139855cfdf
+  * fixed divergence from Github repo
+* e0cbce6b90a16ef1e21edca45b83d69e1743674c
+  * fixed typo in OCPN discovery method
+* 0af7368ce306678466df759ca15359c1e3901bcd
+  * fixed discover_petri_net_inductive multi_processing parameter
+    default value.
+* 23aae39adf83f199a3b53533c45cbae4c7a9354e
+  * bug fixes OCEL feature extraction
+* a3faf71ac4eddb22f1bc80a35c752b6b9d98df99
+  * bug fix direct conversion process tree -> BPMN (loops with several REDOs)
+* fa242485e6c99dded04d1d9c10ee1ed81ea96252
+  * bug fix OCEL2.0 SQLite importer
 
 ### Removed
 * bf5574a34a31b93024dd9feb54acc5cc475640bd
@@ -56,6 +71,10 @@
   * updated reference to PM4Py website
 * 20ce84db4e195937c77280c950ff12083fc5833b
   * example for log granularity change
+* 0de0be4fa11183f034fbb61e936dee365bbdea4a
+  * example for the management of stochastic Petri nets
+* 570df6c21a03e6ac37ba2d7c9af160e8b175a68f
+  * manual creation of the constraints of the log skeleton (example)
 
 ---
 
