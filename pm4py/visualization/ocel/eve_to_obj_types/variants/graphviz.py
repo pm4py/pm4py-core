@@ -44,7 +44,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Digraph:
     annotate_frequency = exec_utils.get_param_value(Parameters.ANNOTATE_FREQUENCY, parameters, False)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
-    viz = Digraph("interleavings", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
+    viz = Digraph("eve_to_obj_types", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
 
     event_types = sorted(list(ocel.events[ocel.event_activity].unique()))
     object_types = sorted(list(ocel.objects[ocel.object_type_column].unique()))
