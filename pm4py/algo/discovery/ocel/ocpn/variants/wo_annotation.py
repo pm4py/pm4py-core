@@ -77,7 +77,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
     if parameters is None:
         parameters = {}
 
-    double_arc_threshold = exec_utils.get_param_value(Parameters.DOUBLE_ARC_THRESHOLD, parameters, 0.0)
+    double_arc_threshold = exec_utils.get_param_value(Parameters.DOUBLE_ARC_THRESHOLD, parameters, 0.8)
     inductive_miner_variant = exec_utils.get_param_value(Parameters.INDUCTIVE_MINER_VARIANT, parameters, "im")
     diagnostics_with_tbr = exec_utils.get_param_value(Parameters.DIAGNOSTICS_WITH_TBR, parameters, False)
 
@@ -106,6 +106,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
                 if y == 1:
                     this_single_amount += 1
             this_single_amount = this_single_amount / len(ev_obj_count)
+
             if this_single_amount <= double_arc_threshold:
                 is_activity_double[act] = True
             else:
