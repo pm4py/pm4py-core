@@ -5,7 +5,7 @@ deprecation==2.1.0
 fonttools==4.42.1
 graphviz==0.20.1
 intervaltree==3.1.0
-kiwisolver==1.4.4
+kiwisolver==1.4.5
 lxml==4.9.3
 matplotlib==3.7.1
 networkx==3.1
