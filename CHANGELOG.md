@@ -26,6 +26,11 @@
   * avoid annotation start/end edges in DFG with performance metrics
 *  37fba9285cfde95309142e4404f9cfbcb2b9296c
   * visualizations support nanoseconds granularity when needed
+* afb6f6ba74c03f422ce8d8417f840f6eb6aa3a6e
+  * inductive miner - parameter to disable the computation of fall-throughs
+    and the strict sequence cut.
+* 49e738a7aee6e05ecf0ec50cd6aaa4cd0668687d
+  * inductive miner - optimization in the computation of the transitive relations
 
 ### Deprecated
 
