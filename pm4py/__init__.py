@@ -14,7 +14,7 @@ from pm4py.filtering import filter_log_relative_occurrence_event_attribute, filt
     filter_ocel_object_types_allowed_activities, filter_ocel_object_per_type_count, filter_ocel_start_events_per_object_type, \
     filter_ocel_end_events_per_object_type, filter_ocel_events_timestamp, filter_prefixes, filter_suffixes, \
     filter_four_eyes_principle, filter_activity_done_different_resources, filter_ocel_events, filter_ocel_objects, \
-    filter_ocel_object_types, filter_ocel_cc_object
+    filter_ocel_object_types, filter_ocel_cc_object, filter_ocel_cc_length, filter_ocel_cc_otype, filter_ocel_cc_activity
 from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_plus, discover_petri_net_ilp, discover_petri_net_heuristics, \
     discover_petri_net_inductive, discover_process_tree_inductive, discover_heuristics_net, \
     discover_dfg, discover_footprints, discover_eventually_follows_graph, discover_directly_follows_graph, discover_bpmn_inductive, \
@@ -39,7 +39,7 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
     view_footprints, save_vis_footprints
 from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
     convert_to_petri_net, convert_to_process_tree, convert_to_reachability_graph, convert_log_to_ocel, convert_ocel_to_networkx, convert_log_to_networkx, \
-    convert_petri_net_to_networkx, convert_petri_net_type
+    convert_log_to_time_intervals, convert_petri_net_to_networkx, convert_petri_net_type
 from pm4py.analysis import cluster_log, check_soundness, compute_emd, solve_marking_equation, solve_extended_marking_equation, \
     construct_synchronous_product_net, insert_artificial_start_end, check_is_workflow_net, maximal_decomposition, generate_marking, \
     reduce_petri_net_invisibles, reduce_petri_net_implicit_places, insert_case_arrival_finish_rate, insert_case_service_waiting_time, get_enabled_transitions

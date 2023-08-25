@@ -1,5 +1,83 @@
 # Changelog of pm4py
 
+
+## pm4py 2.7.6 (2023.08.XX)
+
+### Added
+* 6760518dea19334a21442200bef647e4c07f3636
+  * LLM abstraction of the temporal profile model
+* 13d001c76e3de40786dce75e76e56a13a821173a
+  * set of event logs for fairness assessment (hospital, hiring, lending, renting)
+* e3044278b3e7d984c7fdf9e39554cc4551332739
+  50f59379fb8f49bbe6eb1796c6664a6057225b95
+  * added OCEL filters:
+    * length of a connected components
+    * presence of at least an object of a given object type
+    * activity executed
+
+### Changed
+* 84629e2ea342348e30aa04a7d41ad7b39159b400
+  * changed case-based text abstraction header text
+* c3886beff7abc82db56c60835479f47a76e545d6
+  * refactored log_to_interval_tree methods in two methods
+      (log to intervals, and intervals to tree)
+  * added queue-related examples
+* da3a12f615dba3c46793a2d9977dfca11dad85b0
+  * avoid annotation start/end edges in DFG with performance metrics
+*  37fba9285cfde95309142e4404f9cfbcb2b9296c
+  * visualizations support nanoseconds granularity when needed
+
+### Deprecated
+
+### Fixed
+* 12c9d877e5fb27b709d06c21310ab32868c2ea74
+  * bug fix textual abstraction attributes LLM
+* 3b9fb1ffc9646cf56a0b84a9b95dfdfd9b7fd565
+  * small fixes pre-existing Jupyter notebooks
+* 17f1340cc8a1095e6cdd8a8d85b92a3800a1e7f9
+  * bug fix textual abstraction log skeleton
+* 1217473888b97a00f34834b4746bb7f7e4744df3
+  * bug fix PuLP solver with extremely low weights
+* badbff239cf8a703e7d05c1cc2fc6d51af8aa7d7
+  * bug fix WOFLAN when no basis vectors are identified
+* f528509c6b5117aca6285686e78175dbcf4ba057
+  * fixed path to Graphviz.JS
+* ca79aa9b9e51ba3a95665d5d53c8e5ab5028bf12
+  * minor fix TBR generalization parameters
+* 57a30fb452a759bc71f707e67bf0f63118194b7f
+  * method to sample OCEL connected components is fixed
+* 051d98cd0bfbf86419fe68f6cb0c1f139855cfdf
+  * fixed divergence from Github repo
+* e0cbce6b90a16ef1e21edca45b83d69e1743674c
+  * fixed typo in OCPN discovery method
+* 0af7368ce306678466df759ca15359c1e3901bcd
+  * fixed discover_petri_net_inductive multi_processing parameter
+    default value.
+* 23aae39adf83f199a3b53533c45cbae4c7a9354e
+  * bug fixes OCEL feature extraction
+* a3faf71ac4eddb22f1bc80a35c752b6b9d98df99
+  * bug fix direct conversion process tree -> BPMN (loops with several REDOs)
+* fa242485e6c99dded04d1d9c10ee1ed81ea96252
+  * bug fix OCEL2.0 SQLite importer
+
+### Removed
+* bf5574a34a31b93024dd9feb54acc5cc475640bd
+  * change-of-mind on format_dataframe deprecation warning
+
+### Other
+* 916ea3163119afe7aa0fc9f6c43624147d6c0f9f
+  * reference to published paper in OCEL feature extraction
+* 549aa7c6766f1a51425a7a65673173c55d9731e9
+  * updated reference to PM4Py website
+* 20ce84db4e195937c77280c950ff12083fc5833b
+  * example for log granularity change
+* 0de0be4fa11183f034fbb61e936dee365bbdea4a
+  * example for the management of stochastic Petri nets
+* 570df6c21a03e6ac37ba2d7c9af160e8b175a68f
+  * manual creation of the constraints of the log skeleton (example)
+
+---
+
 ## pm4py 2.7.5 (2023.06.30)
 
 ### Added

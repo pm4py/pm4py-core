@@ -222,7 +222,9 @@ Also, some filtering techniques are offered on top of object-centric event logs:
   * :meth:`pm4py.filtering.filter_ocel_events`; filters a specified collection of event identifiers from the object-centric event log.
   * :meth:`pm4py.filtering.filter_ocel_objects`; filters a specified collection of object identifiers from the object-centric event log.
   * :meth:`pm4py.filtering.filter_ocel_cc_object`; filters a connected component from the object-centric event log to which the object with the provided identifier belongs.
-
+  * :meth:`pm4py.filtering.filter_ocel_cc_length`; filter the connected components from an object-centric event log having a number of objects falling in a provided range.
+  * :meth:`pm4py.filtering.filter_ocel_cc_otype`; filter the connected components from an object-centric event log having at least an object of the specified object type.
+  * :meth:`pm4py.filtering.filter_ocel_cc_activity`; filter the connected components from an object-centric event log having at least an event with the specified activity.
 
 Machine Learning (:mod:`pm4py.ml`)
 ------------------------------------------
@@ -305,6 +307,7 @@ The following methods provides just the abstractions of the given objects:
   * :meth:`pm4py.llm.abstract_ocel_ocdfg`; provides the abstraction of an object-centric event log (OC-DFG)
   * :meth:`pm4py.llm.abstract_ocel_features`; provides the abstraction of an object-centric event log (features for ML)
   * :meth:`pm4py.llm.abstract_event_stream`; provides an abstraction of the (last) events of the stream related to a traditional event log
+  * :meth:`pm4py.llm.abstract_temporal_profile`; provides the abstraction of a temporal profile model
   * :meth:`pm4py.llm.abstract_petri_net`; provides the abstraction of a Petri net
   * :meth:`pm4py.llm.abstract_log_skeleton`; provides the abstraction of a log skeleton model
 
@@ -539,6 +542,9 @@ Overall List of Methods
    pm4py.filtering.filter_ocel_events
    pm4py.filtering.filter_ocel_objects
    pm4py.filtering.filter_ocel_cc_object
+   pm4py.filtering.filter_ocel_cc_length
+   pm4py.filtering.filter_ocel_cc_otype
+   pm4py.filtering.filter_ocel_cc_activity
    pm4py.ml
    pm4py.ml.split_train_test
    pm4py.ml.get_prefixes_from_log
@@ -578,6 +584,7 @@ Overall List of Methods
    pm4py.llm.abstract_petri_net
    pm4py.llm.abstract_log_attributes
    pm4py.llm.abstract_log_features
+   pm4py.llm.abstract_temporal_profile
    pm4py.llm.abstract_case
    pm4py.llm.abstract_log_skeleton
    pm4py.llm.openai_query
