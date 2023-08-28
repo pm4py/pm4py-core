@@ -9,12 +9,14 @@ The full documentation of pm4py can be found at https://pm4py.fit.fraunhofer.de
 ## First Example
 A very simple example, to whet your appetite:
 
+```python
 import pm4py
 
 if __name__ == "__main__":
     log = pm4py.read_xes('<path-to-xes-log-file.xes>')
     net, initial_marking, final_marking = pm4py.discover_petri_net_inductive(log)
     pm4py.view_petri_net(net, initial_marking, final_marking, format="svg")
+```
 
 ## Installation
 pm4py can be installed on Python 3.8.x / 3.9.x / 3.10.x / 3.11.x by invoking:
@@ -41,6 +43,7 @@ If you are using pm4py in your scientific work, please cite pm4py as follows:
 
 BiBTeX:
 
+```bibtex
 @article{pm4py,  
 title = {PM4Py: A process mining library for Python},  
 journal = {Software Impacts},  
@@ -52,4 +55,5 @@ doi = {https://doi.org/10.1016/j.simpa.2023.100556},
 url = {https://www.sciencedirect.com/science/article/pii/S2665963823000933},  
 author = {Alessandro Berti and Sebastiaan van Zelst and Daniel Schuster},  
 }
+```
 
