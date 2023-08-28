@@ -72,6 +72,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
         - petri_nets: the accepted Petri nets (Petri net + initial marking + final marking) discovered by the process discovery algorithm
         - double_arcs_on_activity: dictionary linking each object type to another dictionary, where each arc of the Petri net
                                     is linked to a boolean (True if it is a double arc)
+        - tbr_results: the results of the token-based replay operation (if required)
     """
     if parameters is None:
         parameters = {}
@@ -123,7 +124,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
         process_tree = None
         flat_log = None
 
-        if inductive_miner_variant == "im":
+        if inductive_miner_variant == "im" or diagnostics_with_tbr:
             # do the flattening only if it is required
             flat_log = flattening.flatten(ocel, ot, parameters=parameters)
 
@@ -137,6 +138,29 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
             process_tree = inductive_miner.apply(flat_log, parameters=im_parameters)
 
         petri_net = tree_converter.apply(process_tree, parameters=parameters)
+
+        if diagnostics_with_tbr:
+            tbr_parameters = copy(parameters)
+            tbr_parameters["enable_pltr_fitness"] = True
+            tbr_parameters["show_progress_bar"] = False
+
+            replayed_traces, place_fitness_per_trace, transition_fitness_per_trace, notexisting_activities_in_model = token_based_replay.apply(
+                flat_log, petri_net[0], petri_net[1], petri_net[2], parameters=tbr_parameters)
+            place_diagnostics = {place: {"m": 0, "r": 0, "c": 0, "p": 0} for place in place_fitness_per_trace}
+            trans_count = {trans: 0 for trans in petri_net[0].transitions}
+            # computes the missing, remaining, consumed, and produced tokens per place.
+            for place, res in place_fitness_per_trace.items():
+                place_diagnostics[place]['m'] += res['m']
+                place_diagnostics[place]['r'] += res['r']
+                place_diagnostics[place]['c'] += res['c']
+                place_diagnostics[place]['p'] += res['p']
+
+            # counts the number of times a transition has been fired during the replay.
+            for trace in replayed_traces:
+                for trans in trace['activated_transitions']:
+                    trans_count[trans] += 1
+
+            tbr_results[ot] = (place_diagnostics, trans_count)
         
         petri_nets[ot] = petri_net
 
