@@ -1,4 +1,4 @@
-from typing import Optional, Dict, Any, Tuple, Set
+from typing import Optional, Dict, Any, Tuple, Set, List
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.objects.ocel import constants as ocel_constants
@@ -53,7 +53,7 @@ def aggregate_total_objects(associations: Dict[str, Dict[str, Set[Tuple[str, str
 
 
 def find_associations_from_ocel(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[
-    str, Dict[str, Set[Tuple[str, str]]]]:
+    str, Dict[str, List[Tuple[str, str]]]]:
     """
     Associates each object type and activity in the object-centric event log with the combinations
     of event identifiers and objects that are associated to them.
@@ -79,13 +79,9 @@ def find_associations_from_ocel(ocel: OCEL, parameters: Optional[Dict[Any, Any]]
 
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
 
-    ots = set(ocel.objects[object_type].unique())
-
     ret = {}
 
-    for ot in ots:
-        relations = ocel.relations[ocel.relations[object_type] == ot]
-
+    for ot, relations in ocel.relations.groupby(object_type):
         ret[ot] = find_associations_from_relations_df(relations, parameters=parameters)
 
     return ret

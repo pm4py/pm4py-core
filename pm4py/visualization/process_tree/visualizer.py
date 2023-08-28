@@ -29,6 +29,8 @@ def apply(tree0: ProcessTree, parameters: Optional[Dict[Any, Any]] = None, varia
     parameters
         Possible parameters of the algorithm:
             Parameters.FORMAT -> Format of the image (PDF, PNG, SVG; default PNG)
+            Parameters.BGCOLOR -> Background color to be used (i.e., 'white' or 'transparent')
+            Parameters.RANKDIR -> Direction of the graph ("LR" for left-to-right; "TB" for top-to-bottom)
     variant
         Variant of the algorithm to use:
             - Variants.WO_DECORATION

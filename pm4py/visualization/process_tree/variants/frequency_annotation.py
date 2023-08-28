@@ -18,6 +18,7 @@ class Parameters(Enum):
     ENABLE_DEEPCOPY = "enable_deepcopy"
     FONT_SIZE = "font_size"
     BGCOLOR = "bgcolor"
+    RANKDIR = "rankdir"
     NUM_EVENTS_PROPERTY = "num_events_property"
     NUM_CASES_PROPERTY = "num_cases_property"
 
@@ -86,8 +87,9 @@ def apply(tree: ProcessTree, parameters: Optional[Dict[Union[str, Parameters], A
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
 
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "TB")
 
-    viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
+    viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor, "rankdir": rankdir})
     viz.attr('node', shape='ellipse', fixedsize='false')
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
