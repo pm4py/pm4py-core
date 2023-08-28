@@ -664,6 +664,52 @@ def conformance_temporal_profile(log: Union[EventLog, pd.DataFrame], temporal_pr
     return result
 
 
+def conformance_declare(log: Union[EventLog, pd.DataFrame], declare_model: Dict[str, Dict[Any, Dict[str, int]]], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> List[Dict[str, Any]]:
+    """
+    Applies conformance checking against a DECLARE model.
+
+    Reference paper:
+    F. M. Maggi, A. J. Mooij and W. M. P. van der Aalst, "User-guided discovery of declarative process models," 2011 IEEE Symposium on Computational Intelligence and Data Mining (CIDM), Paris, France, 2011, pp. 192-199, doi: 10.1109/CIDM.2011.5949297.
+
+    :param log: event log
+    :param declare_model: DECLARE model
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :param return_diagnostics_dataframe: if possible, returns a dataframe with the diagnostics (instead of the usual output)
+    :rtype: ``List[Dict[str, Any]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("C:/receipt.xes")
+        declare_model = pm4py.discover_declare(log)
+        conf_result = pm4py.conformance_declare(log, declare_model)
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception(
+        "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key,
+                                       case_id_key=case_id_key)
+
+    if return_diagnostics_dataframe:
+        log = convert_to_event_log(log, case_id_key=case_id_key)
+        case_id_key = None
+
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    from pm4py.algo.conformance.declare import algorithm as declare_conformance
+    result = declare_conformance.apply(log, declare_model, parameters=properties)
+
+    if return_diagnostics_dataframe:
+        return declare_conformance.get_diagnostics_dataframe(log, result, parameters=properties)
+
+    return result
+
+
 def conformance_log_skeleton(log: Union[EventLog, pd.DataFrame], log_skeleton: Dict[str, Any], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> List[Set[Any]]:
     """
     Performs conformance checking using the log skeleton
