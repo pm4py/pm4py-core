@@ -118,7 +118,7 @@ def assign_penwidth_edges(dfg):
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
                            max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, soj_time=None,
-                           font_size="12", bgcolor=constants.DEFAULT_BGCOLOR):
+                           font_size="12", bgcolor=constants.DEFAULT_BGCOLOR, rankdir="TB"):
     """
     Do GraphViz visualization of a DFG graph
 
@@ -140,6 +140,12 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         End activities of the log
     soj_time
         For each activity, the sojourn time in the log
+    font_size
+        Size of the text on the activities/edges
+    bgcolor
+        Background color of the visualization (i.e., 'transparent', 'white', ...)
+    rankdir
+        Direction of the graph ("LR" for left-to-right; "TB" for top-to-bottom)
 
     Returns
     -----------
@@ -152,7 +158,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         end_activities = []
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
-    viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
+    viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor, 'rankdir': rankdir})
 
     # first, remove edges in diagram that exceeds the maximum number of edges in the diagram
     dfg_key_value_list = []
