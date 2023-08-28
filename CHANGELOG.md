@@ -1,6 +1,31 @@
 # Changelog of pm4py
 
 
+## pm4py 2.7.6 (2023.08.28)
+
+### Added
+* 69e6692ff08868586f9d4d29c6b8e7dd6609c732
+  * rankdir option for simplified interface's visualizations (and fixing here and there support in main methods).
+
+### Changed
+* 95bbaee94e177644ac12d526abbba0eafdf6eb00
+  * refactoring of the textual abstractions of the DFG and variants (split in two methods + provision of primary and
+    secondary performance metrics).
+* 710b09619ebff74a0166e9518e2390289b0f686d
+  * refactoring OC-Petri nets discovery and visualization.
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
+
 ## pm4py 2.7.5.1 (2023.08.28)
 
 ### Added
