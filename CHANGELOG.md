@@ -1,7 +1,32 @@
 # Changelog of pm4py
 
 
-## pm4py 2.7.6 (2023.08.XX)
+## pm4py 2.7.6 (2023.08.28)
+
+### Added
+* 69e6692ff08868586f9d4d29c6b8e7dd6609c732
+  * rankdir option for simplified interface's visualizations (and fixing here and there support in main methods).
+
+### Changed
+* 95bbaee94e177644ac12d526abbba0eafdf6eb00
+  * refactoring of the textual abstractions of the DFG and variants (split in two methods + provision of primary and
+    secondary performance metrics).
+* 710b09619ebff74a0166e9518e2390289b0f686d
+  * refactoring OC-Petri nets discovery and visualization.
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
+
+## pm4py 2.7.5.1 (2023.08.28)
 
 ### Added
 * 6760518dea19334a21442200bef647e4c07f3636
@@ -26,6 +51,11 @@
   * avoid annotation start/end edges in DFG with performance metrics
 *  37fba9285cfde95309142e4404f9cfbcb2b9296c
   * visualizations support nanoseconds granularity when needed
+* afb6f6ba74c03f422ce8d8417f840f6eb6aa3a6e
+  * inductive miner - parameter to disable the computation of fall-throughs
+    and the strict sequence cut.
+* 49e738a7aee6e05ecf0ec50cd6aaa4cd0668687d
+  * inductive miner - optimization in the computation of the transitive relations
 
 ### Deprecated
 
@@ -59,6 +89,8 @@
   * bug fix direct conversion process tree -> BPMN (loops with several REDOs)
 * fa242485e6c99dded04d1d9c10ee1ed81ea96252
   * bug fix OCEL2.0 SQLite importer
+* 0e1b0daad489eb8100cddd2105e6405862a184de
+  * fixed parameters in OCPN discovery
 
 ### Removed
 * bf5574a34a31b93024dd9feb54acc5cc475640bd
@@ -75,6 +107,10 @@
   * example for the management of stochastic Petri nets
 * 570df6c21a03e6ac37ba2d7c9af160e8b175a68f
   * manual creation of the constraints of the log skeleton (example)
+* 959a685696da725180be0675fd00aaede9bb17bd
+  * examples for LLM-based fairness
+* 7a98fe6b943db9d2402a4b867e8f6a441cdde243
+  * docstring for OC-DFG discovery
 
 ---
 
