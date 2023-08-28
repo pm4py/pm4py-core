@@ -1,20 +1,4 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
-from typing import Optional, Dict, Any, Tuple, Set
+from typing import Optional, Dict, Any, Tuple, Set, List
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.objects.ocel import constants as ocel_constants
@@ -63,7 +47,7 @@ def aggregate_total_objects(associations: Dict[str, Set[Tuple[str, str]]]) -> Di
 
 def find_associations_from_relations_df(relations_df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> \
 Dict[
-    str, Set[Tuple[str, str]]]:
+    str, List[Tuple[str, str]]]:
     """
     Associates each activity in the relationship dataframe with the combinations
     of event identifiers and objects that are associated to the activity.
@@ -96,19 +80,14 @@ Dict[
         relations_df = relations_df.groupby(object_id).first().reset_index()
     elif prefiltering == "end":
         relations_df = relations_df.groupby(object_id).last().reset_index()
-
-    ids = list(relations_df[event_id])
-    oids = list(relations_df[object_id])
-    acts = list(relations_df[event_activity])
+    associations1 = relations_df.groupby(event_activity)[[event_id, object_id]].agg(list).to_dict()
 
     associations = {}
-
-    i = 0
-    while i < len(acts):
-        if acts[i] not in associations:
-            associations[acts[i]] = set()
-        associations[acts[i]].add((ids[i], oids[i]))
-        i = i + 1
+    for act, evs in associations1[event_id].items():
+        associations[act] = []
+        objs = associations1[object_id][act]
+        for i in range(len(evs)):
+            associations[act].append((evs[i], objs[i]))
 
     return associations
 

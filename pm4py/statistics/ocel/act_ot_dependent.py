@@ -1,20 +1,4 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
-from typing import Optional, Dict, Any, Tuple, Set
+from typing import Optional, Dict, Any, Tuple, Set, List
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.objects.ocel import constants as ocel_constants
@@ -69,7 +53,7 @@ def aggregate_total_objects(associations: Dict[str, Dict[str, Set[Tuple[str, str
 
 
 def find_associations_from_ocel(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[
-    str, Dict[str, Set[Tuple[str, str]]]]:
+    str, Dict[str, List[Tuple[str, str]]]]:
     """
     Associates each object type and activity in the object-centric event log with the combinations
     of event identifiers and objects that are associated to them.
@@ -95,13 +79,9 @@ def find_associations_from_ocel(ocel: OCEL, parameters: Optional[Dict[Any, Any]]
 
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
 
-    ots = set(ocel.objects[object_type].unique())
-
     ret = {}
 
-    for ot in ots:
-        relations = ocel.relations[ocel.relations[object_type] == ot]
-
+    for ot, relations in ocel.relations.groupby(object_type):
         ret[ot] = find_associations_from_relations_df(relations, parameters=parameters)
 
     return ret

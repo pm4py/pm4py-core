@@ -4,6 +4,30 @@ import sys
 import traceback
 
 
+def declare_simple():
+    from examples import declare_simple
+    print("\n\ndeclare_simple")
+    declare_simple.execute_script()
+
+
+def log_skeleton_manual_constraints():
+    from examples import log_skeleton_manual_constraints
+    print("\n\nlog_skeleton_manual_constraints")
+    log_skeleton_manual_constraints.execute_script()
+
+
+def stochastic_petri_playout():
+    from examples import stochastic_petri_playout
+    print("\n\nstochastic_petri_playout")
+    stochastic_petri_playout.execute_script()
+
+
+def trace_attrib_hierarch_cluster():
+    from examples import trace_attrib_hierarch_cluster
+    print("\n\ntrace_attrib_hierarch_cluster")
+    trace_attrib_hierarch_cluster.execute_script()
+
+
 def activities_to_alphabet():
     from examples import activities_to_alphabet
     print("\n\nactivities_to_alphabet")
@@ -789,6 +813,10 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(declare_simple)
+    execute_script(log_skeleton_manual_constraints)
+    execute_script(stochastic_petri_playout)
+    execute_script(trace_attrib_hierarch_cluster)
     execute_script(simplified_interface)
     execute_script(read_write_ocel)
     execute_script(discovery_data_petri_net)

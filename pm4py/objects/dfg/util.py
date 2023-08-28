@@ -110,24 +110,22 @@ def get_transitive_relations(dfg: DFG) -> Tuple[Dict[Any, Collection[Any]], Dict
     activities that are able to reach the activity ('transitive pre set')
         second argument maps an activity on all other activities that it can reach (transitively) ('transitive post set')
     '''
+    G = nx.DiGraph()
     alph = get_vertices(dfg)
-    pre = {a: set() for a in alph}
-    post = {a: set() for a in alph}
-    if len(dfg.graph) > 0:
-        q = list(dfg.graph.keys())
-        while len(q) > 0:
-            s, t = q.pop(0)
-            post[s].add(t)
-            pre[t].add(s)
-            post[s].update(post[t])
-            pre[t].update(pre[s])
-            for (a, b) in dfg.graph:
-                if b == s and not post[s].issubset(post[a]):
-                    post[a].update(post[s])
-                    q.append((a, b))
-                if a == t and not pre[t].issubset(pre[b]):
-                    pre[b].update(pre[t])
-                    q.append((a, b))
+
+    for act in alph:
+        G.add_node(act)
+
+    for edge in dfg.graph:
+        G.add_edge(edge[0], edge[1])
+
+    pre = {}
+    post = {}
+
+    for a in alph:
+        pre[a] = nx.ancestors(G, a)
+        post[a] = nx.descendants(G, a)
+
     return pre, post
 
 

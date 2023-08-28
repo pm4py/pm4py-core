@@ -25,6 +25,7 @@ from typing import Optional, Dict, Any
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.conversion.process_tree import converter as tree_converter
 from pm4py.objects.ocel.util import flattening
+from copy import copy
 
 
 class Parameters(Enum):
@@ -55,15 +56,45 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
     Returns
     -----------------
     ocpn
-        Object-centric Petri net model, as a dictionary of properties.
+        Object-centric Petri net model, presented as a dictionary of properties:
+        - activities: complete set of activities derived from the object-centric event log
+        - object_types: complete set of object types derived from the object-centric event log
+        - edges: dictionary connecting each object type to a set of directly-followed arcs between activities (expressed as tuples,
+                  e.g., (act1, act2)). Every pair of activities is linked to some sets:
+                - event_pairs: the tuples of event identifiers where the directly-follows arc occurs
+                - total_objects: set of tuples containing two event and one object identifier, uniquely identifying an
+                                  occurrence of the arc.
+        - activities_indep: dictionary linking each activity, regardless of the object type, to some sets:
+            - events: the event identifiers where the activity occurs
+            - unique_objects: the object identifiers where the activity occurs
+            - total_objects: the tuples of event and object identifiers where the activity occurs.
+        - activities_ot: dictionary linking each object type to another dictionary, where the activities are linked to some sets:
+            - events: the event identifiers where the activity occurs (with at least one object of the given object type)
+            - unique_objects: the object identifiers of the given object type where the activity occurs
+            - total_objects: the tuples of event and object identifiers where the activity occurs.
+        - start_activities: dictionary linking each object type to another dictionary, where the start activities
+                            of the given object type are linked to some sets:
+            - events: the event identifiers where the start activity occurs (with at least one object of the given object type)
+            - unique_objects: the object identifiers of the given object type where the start activity occurs
+            - total_objects: the tuples of event and object identifiers where the start activity occurs.
+        - end_activities: dictionary linking each object type to another dictionary, where the end activities
+                          of the given object type are linked to some sets:
+            - events: the event identifiers where the end activity occurs (with at least one object of the given object type)
+            - unique_objects: the object identifiers of the given object type where the end activity occurs
+            - total_objects: the tuples of event and object identifiers where the end activity occurs.
+        - petri_nets: the accepted Petri nets (Petri net + initial marking + final marking) discovered by the process discovery algorithm
+        - double_arcs_on_activity: dictionary linking each object type to another dictionary, where each arc of the Petri net
+                                    is linked to a boolean (True if it is a double arc)
     """
     if parameters is None:
         parameters = {}
 
-    double_arc_threshold = exec_utils.get_param_value(Parameters.DOUBLE_ARC_THRESHOLD, parameters, 0.0)
+    double_arc_threshold = exec_utils.get_param_value(Parameters.DOUBLE_ARC_THRESHOLD, parameters, 0.8)
     inductive_miner_variant = exec_utils.get_param_value(Parameters.INDUCTIVE_MINER_VARIANT, parameters, "im")
 
-    ocpn = ocdfg_discovery.apply(ocel, parameters=parameters)
+    ocdfg_parameters = copy(parameters)
+    ocdfg_parameters["compute_edges_performance"] = False
+    ocpn = ocdfg_discovery.apply(ocel, parameters=ocdfg_parameters)
 
     petri_nets = {}
     double_arcs_on_activity = {}
@@ -80,10 +111,13 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
 
         is_activity_double = {}
         for act in activities_eo:
-            ev_obj_count = Counter()
-            for evc in activities_eo[act]:
-                ev_obj_count[evc[0]] += 1
-            this_single_amount = len(list(x for x in ev_obj_count if ev_obj_count[x] == 1)) / len(ev_obj_count)
+            ev_obj_count = Counter([x[0] for x in activities_eo[act]])
+            this_single_amount = 0
+            for y in ev_obj_count.values():
+                if y == 1:
+                    this_single_amount += 1
+            this_single_amount = this_single_amount / len(ev_obj_count)
+
             if this_single_amount <= double_arc_threshold:
                 is_activity_double[act] = True
             else:
@@ -91,19 +125,32 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
 
         double_arcs_on_activity[ot] = is_activity_double
 
+        im_parameters = copy(parameters)
+        # disables the fallthroughs, as computing the model on a myriad of different object types
+        # could be really expensive
+        im_parameters["disable_fallthroughs"] = True
+        # for performance reasons, also disable the strict sequence cut (use the normal sequence cut)
+        im_parameters["disable_strict_sequence_cut"] = True
+        
         process_tree = None
+        flat_log = None
+
+        if inductive_miner_variant == "im":
+            # do the flattening only if it is required
+            flat_log = flattening.flatten(ocel, ot, parameters=parameters)
+
         if inductive_miner_variant == "imd":
             obj = DFG()
             obj._graph = Counter(dfg)
             obj._start_activities = Counter(start_activities)
             obj._end_activities = Counter(end_activities)
-            process_tree = inductive_miner.apply(obj, variant=inductive_miner.Variants.IMd, parameters=parameters)
-            petri_nets[ot] = tree_converter.apply(process_tree, parameters=parameters)
+            process_tree = inductive_miner.apply(obj, variant=inductive_miner.Variants.IMd, parameters=im_parameters)
         elif inductive_miner_variant == "im":
-            flat_log = flattening.flatten(ocel, ot, parameters=parameters)
-            process_tree = inductive_miner.apply(flat_log, parameters=parameters)
-            petri_net = tree_converter.apply(process_tree, parameters=parameters)
-            petri_nets[ot] = petri_net
+            process_tree = inductive_miner.apply(flat_log, parameters=im_parameters)
+
+        petri_net = tree_converter.apply(process_tree, parameters=parameters)
+        
+        petri_nets[ot] = petri_net
 
     ocpn["petri_nets"] = petri_nets
     ocpn["double_arcs_on_activity"] = double_arcs_on_activity

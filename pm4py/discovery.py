@@ -19,7 +19,7 @@ The ``pm4py.discovery`` module contains the process discovery algorithms impleme
 """
 
 import warnings
-from typing import Tuple, Union, List, Dict, Any, Optional
+from typing import Tuple, Union, List, Dict, Any, Optional, Set
 
 import pandas as pd
 from pandas import DataFrame
@@ -762,6 +762,49 @@ def discover_log_skeleton(log: Union[EventLog, pd.DataFrame], noise_threshold: f
 
     from pm4py.algo.discovery.log_skeleton import algorithm as log_skeleton_discovery
     return log_skeleton_discovery.apply(log, parameters=properties)
+
+
+def discover_declare(log: Union[EventLog, pd.DataFrame], allowed_templates: Optional[Set[str]] = None, considered_activities: Optional[Set[str]] = None, min_support_ratio: Optional[float] = None, min_confidence_ratio: Optional[float] = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, Dict[Any, Dict[str, int]]]:
+    """
+    Discovers a DECLARE model from an event log.
+
+    Reference paper:
+    F. M. Maggi, A. J. Mooij and W. M. P. van der Aalst, "User-guided discovery of declarative process models," 2011 IEEE Symposium on Computational Intelligence and Data Mining (CIDM), Paris, France, 2011, pp. 192-199, doi: 10.1109/CIDM.2011.5949297.
+
+    :param log: event log / Pandas dataframe
+    :param allowed_templates: (optional) collection of templates to consider for the discovery
+    :param considered_activities: (optional) collection of activities to consider for the discovery
+    :param min_support_ratio: (optional, decided automatically otherwise) minimum percentage of cases (over the entire set of cases of the log) for which the discovered rules apply
+    :param min_confidence_ratio: (optional, decided automatically otherwise) minimum percentage of cases (over the rule's support) for which the discovered rules are valid
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Dict[str, Any]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        declare_model = pm4py.discover_declare(log)
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]:
+        raise Exception(
+            "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(
+            log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    properties = get_properties(
+        log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    properties["allowed_templates"] = allowed_templates
+    properties["considered_activities"] = considered_activities
+    properties["min_support_ratio"] = min_support_ratio
+    properties["min_confidence_ratio"] = min_confidence_ratio
+
+    from pm4py.algo.discovery.declare import algorithm as declare_discovery
+    return declare_discovery.apply(log, parameters=properties)
 
 
 def discover_batches(log: Union[EventLog, pd.DataFrame], merge_distance: int = 15 * 60, min_batch_size: int = 2, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource") -> List[
