@@ -22,9 +22,29 @@
 
 ### Other
 
-
 ---
 
+## pm4py 2.7.5.2 (2023.08.30)
+
+### Added
+* 889f0531c0e307bfe56d933a294c61470a001e13
+  * POWL feature
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 9105eb375cb2fee7d731862b3fe5bf1ce88d455c
+  * various bug fixes OCEL import
+* 0c483e52b6ea41a4df8b83ad5e39e3c1e2dc5539
+  * bug fix OCEL 2.0
+
+### Removed
+
+### Other
+
+---
 
 ## pm4py 2.7.5.1 (2023.08.28)
 
