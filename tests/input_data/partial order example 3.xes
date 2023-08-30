@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This file has been generated with the OpenXES library. It conforms -->
+<!-- to the XML serialization of the XES standard for log storage and -->
+<!-- management. -->
+<!-- XES standard version: 1.0 -->
+<!-- OpenXES library version: 1.0RC7 -->
+<!-- OpenXES is available from http://www.openxes.org/ -->
+<log xes.version="1.0" xes.features="nested-attributes" openxes.version="1.0RC7">
+	<extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext"/>
+	<global scope="trace">
+		<string key="concept:name" value="__INVALID__"/>
+	</global>
+	<global scope="event">
+		<string key="concept:name" value="__INVALID__"/>
+	</global>
+	<classifier name="Event Name" keys="concept:name"/>
+	<classifier name="Event Name" keys="concept:name"/>
+	<string key="concept:name" value="Event Log (created by RapidMiner @ 2017-09-28 12:03:44)"/>
+	     <trace>
+                <string key="concept:name" value="1.0"/>
+		<event>
+			<string key="concept:name" value="a"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="b"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+		<event>
+			<string key="concept:name" value="c"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+
+		<event>
+			<string key="concept:name" value="e"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+           <event>
+			<string key="concept:name" value="f"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="g"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="g"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+
+
+                
+	</trace>
+
+
+	<trace>
+		<string key="concept:name" value="2.0"/>
+		<event>
+			<string key="concept:name" value="a"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+                <event>
+			<string key="concept:name" value="b"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+		<event>
+			<string key="concept:name" value="e"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+
+		<event>
+			<string key="concept:name" value="c"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+                <event>
+			<string key="concept:name" value="f"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="g"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+	</trace>
+
+
+	
+	<trace>
+		<string key="concept:name" value="3.0"/>
+		<event>
+			<string key="concept:name" value="a"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="b"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+		<event>
+			<string key="concept:name" value="e"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+
+                <event>
+			<string key="concept:name" value="f"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+                <event>
+			<string key="concept:name" value="c"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="g"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+	</trace>
+
+
+
+	<trace>
+		<string key="concept:name" value="4.0"/>
+		<event>
+			<string key="concept:name" value="a"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+                <event>
+			<string key="concept:name" value="e"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+		<event>
+			<string key="concept:name" value="b"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+                <event>
+			<string key="concept:name" value="c"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+                <event>
+			<string key="concept:name" value="f"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="g"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+	</trace>
+
+
+	<trace>
+		<string key="concept:name" value="5.0"/>
+		<event>
+			<string key="concept:name" value="a"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="e"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+		<event>
+			<string key="concept:name" value="b"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+
+		<event>
+			<string key="concept:name" value="f"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+                <event>
+			<string key="concept:name" value="c"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="g"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+<event>
+			<string key="concept:name" value="g"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+<event>
+			<string key="concept:name" value="g"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+	</trace>
+	<trace>
+		<string key="concept:name" value="6.0"/>
+		<event>
+			<string key="concept:name" value="a"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="b"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+		<event>
+			<string key="concept:name" value="d"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+
+		<event>
+			<string key="concept:name" value="e"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+                <event>
+			<string key="concept:name" value="f"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="g"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+                
+	</trace>
+
+
+	<trace>
+		<string key="concept:name" value="7.0"/>
+		<event>
+			<string key="concept:name" value="a"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+                <event>
+			<string key="concept:name" value="b"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+		<event>
+			<string key="concept:name" value="e"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+
+		<event>
+			<string key="concept:name" value="d"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+                <event>
+			<string key="concept:name" value="f"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="g"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+	</trace>
+
+
+	
+	<trace>
+		<string key="concept:name" value="8.0"/>
+		<event>
+			<string key="concept:name" value="a"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+                <event>
+			<string key="concept:name" value="b"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+		<event>
+			<string key="concept:name" value="e"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+
+                <event>
+			<string key="concept:name" value="f"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+                <event>
+			<string key="concept:name" value="d"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="g"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+<event>
+			<string key="concept:name" value="g"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+	</trace>
+
+
+
+	<trace>
+		<string key="concept:name" value="9.0"/>
+		<event>
+			<string key="concept:name" value="a"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+		<event>
+			<string key="concept:name" value="e"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+		<event>
+			<string key="concept:name" value="b"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+                <event>
+			<string key="concept:name" value="d"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+                <event>
+			<string key="concept:name" value="f"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="g"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+	</trace>
+
+
+	<trace>
+		<string key="concept:name" value="10.0"/>
+		<event>
+			<string key="concept:name" value="a"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+		<event>
+			<string key="concept:name" value="e"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+		<event>
+			<string key="concept:name" value="b"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+
+		<event>
+			<string key="concept:name" value="f"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+                <event>
+			<string key="concept:name" value="d"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+           <event>
+			<string key="concept:name" value="g"/>
+			<string key="time:timestamp" value="?"/>
+		</event>
+
+	</trace>
+</log>
