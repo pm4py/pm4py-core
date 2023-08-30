@@ -81,7 +81,9 @@ def apply(ocel: OCEL, file_path: str, parameters: Optional[Dict[Any, Any]] = Non
         df = ocel.objects[ocel.objects[object_type] == ot].dropna(how="all", axis="columns")
         df = df.rename(columns={object_id: "ocel_id"})
         del df[object_type]
-        df["ocel_time"] = datetime.fromtimestamp(0)
+        # Pandas 2.1.0 changes the way that datetime is written to SQL, and this is causing problems.
+        df["ocel_time"] = datetime.fromtimestamp(129600)
+        df["ocel_time"] = df["ocel_time"].astype('datetime64[ns]')
 
         df2 = ocel.object_changes[ocel.object_changes[object_type] == ot].dropna(how="all", axis="columns")
         if len(df2) > 0:

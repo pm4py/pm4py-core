@@ -1,4 +1,4 @@
-from pm4py.statistics.eventually_follows import log
+from pm4py.statistics.eventually_follows import log, uvcl
 import pkgutil
 
 if pkgutil.find_loader("pandas"):
