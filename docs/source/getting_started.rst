@@ -6,7 +6,9 @@ Understanding Process Mining
 
 .. raw:: html
 
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/XLHtvt36g6U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <!--<iframe width="560" height="315" src="https://www.youtube.com/embed/XLHtvt36g6U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
+    <a href="https://www.youtube.com/embed/XLHtvt36g6U" target="_blank" rel="noopener noreferrer">→ Watch on YouTube: pm4py tutorials - tutorial #1 What is Process Mining?</a>
+
 
 In this section, we explain what process mining is all about. 
 Note that this page describes the basics of process mining, i.e., it is not a full-fledged reference of every possible aspect of process mining. 
@@ -80,7 +82,9 @@ Loading CSV Files
 
 .. raw:: html
 
-	<iframe width="560" height="315" src="https://www.youtube.com/embed/bWOKVx0PO6g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	<!--<iframe width="560" height="315" src="https://www.youtube.com/embed/bWOKVx0PO6g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
+    <a href="https://www.youtube.com/embed/bWOKVx0PO6g" target="_blank" rel="noopener noreferrer">→ Watch on YouTube: pm4py tutorials - tutorial #2 Importing CSV Files</a>
+
 
 Given that we have familiarized ourselves with event logs and a way to represent event logs in a CSV file, it is time to start doing some process mining! We are going to load the event data, and, we are going to count how many cases are present in the event log, as well as the number of events. Note that, for all this, we are effectively using a third-party library called `pandas <https://pandas.pydata.org>`_. We do so because pandas is the de-facto standard of loading/manipulating csv-based data. Hence, *any process mining algorithm implemented in PM4Py, using an event log as an input, can work directly with a pandas file!*
 
@@ -135,7 +139,8 @@ Loading XES Files
 
 .. raw:: html
 
-	<iframe width="560" height="315" src="https://www.youtube.com/embed/pmpN3A_h2sQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	<!--<iframe width="560" height="315" src="https://www.youtube.com/embed/pmpN3A_h2sQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
+    <a href="https://www.youtube.com/embed/pmpN3A_h2sQ" target="_blank" rel="noopener noreferrer">→ Watch on YouTube: pm4py tutorials - tutorial #3 Importing XES Files</a>
 
 Next to CSV files, event data can also be stored in an XML-based format, i.e., in XES files. In an XES file, we can describe a containment relation, i.e., a log contains a number of traces, which in turn contain several events. Furthermore, an object, i.e., a log, trace, or event, is allowed to have attributes. The advantage is that certain data attributes that are constant for a log or a trace, can be stored at that level. For example, assume that we only know the total costs of a case, rather than the costs of the individual events. If we want to store this information in a CSV file, we either need to replicate this information (i.e., we can only store data in rows, which directly refer to events), or, we need to explicitly define that certain columns only get a value once, i.e., referring to case-level attributes. The XES standard more naturally supports the storage of this type of information.
 
@@ -166,7 +171,8 @@ Exporting Event Data
 
 .. raw:: html
 
-	<iframe width="560" height="315" src="https://www.youtube.com/embed/gVnfG6xLIxI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	<!--<iframe width="560" height="315" src="https://www.youtube.com/embed/gVnfG6xLIxI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
+    <a href="https://www.youtube.com/embed/gVnfG6xLIxI" target="_blank" rel="noopener noreferrer">→ Watch on YouTube: pm4py tutorials - tutorial #6 exporting event data</a>
 
 
 Now we are able to import event data into PM4Py, let’s take a look at the opposite, i.e., exporting event data. Exporting of event logs can be very useful, e.g., we might want to convert a .csv file into a .xes file or we might want to filter out certain (noisy) cases and save the filtered event log. Like importing, exporting of event data is possible in two ways, i.e., exporting to csv (using pandas) and exporting to xes. In the upcoming sections, we show how to export an event log stored as a pandas data frame into a csv file, a pandas data frame as a xes file, a PM4Py event log object as a csv file and finally, a PM4Py event log object as a xes file.
@@ -234,7 +240,8 @@ Pre-Built Event Log Filters
 
 .. raw:: html
 
-	<iframe width="560" height="315" src="https://www.youtube.com/embed/alkZkhK2mAo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	<!--<iframe width="560" height="315" src="https://www.youtube.com/embed/alkZkhK2mAo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
+    <a href="https://www.youtube.com/embed/alkZkhK2mAo" target="_blank" rel="noopener noreferrer">→ Watch on YouTube: pm4py tutorials - tutorial #5: Playing with Event Data; Shipped Filters</a>
 
 There are various pre-built filters in PM4Py, which make commonly needed process mining filtering functionality a lot easier. In the upcoming list, we briefly give an overview of these functions. We describe how to call them, their main input parameters and their return objects.
 
@@ -301,7 +308,8 @@ Since we have studied basic conceptual knowledge of process mining and event dat
 
 .. raw:: html
 
-	<iframe width="560" height="315" src="https://www.youtube.com/embed/BJMp763Ye_o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	<!--<iframe width="560" height="315" src="https://www.youtube.com/embed/BJMp763Ye_o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
+    <a href="https://www.youtube.com/embed/BJMp763Ye_o" target="_blank" rel="noopener noreferrer">→ Watch on YouTube: pm4py tutorials - tutorial #7 process discovery</a>
 
 Obtaining a Process Model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -398,5 +406,6 @@ Conformance Checking
 
 .. raw:: html
 
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/0YNvijqX3FY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <!--<iframe width="560" height="315" src="https://www.youtube.com/embed/0YNvijqX3FY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
+    <a href="https://www.youtube.com/embed/0YNvijqX3FY" target="_blank" rel="noopener noreferrer">→ Watch on YouTube: pm4py tutorials - tutorial #8 conformance checking</a>
 
