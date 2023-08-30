@@ -45,6 +45,8 @@ setup(
               'pm4py.algo.discovery.ocel.interleavings.variants', 'pm4py.algo.discovery.ocel.link_analysis',
               'pm4py.algo.discovery.ocel.link_analysis.variants', 'pm4py.algo.discovery.powl',
               'pm4py.algo.discovery.powl.inductive', 'pm4py.algo.discovery.powl.inductive.cuts',
+              'pm4py.algo.discovery.powl.inductive.variants', 'pm4py.algo.discovery.powl.inductive.variants.clustering',
+              'pm4py.algo.discovery.powl.inductive.variants.brute_force',
               'pm4py.algo.discovery.powl.inductive.base_case', 'pm4py.algo.discovery.powl.inductive.fall_through',
               'pm4py.algo.discovery.alpha', 'pm4py.algo.discovery.alpha.utils', 'pm4py.algo.discovery.alpha.variants',
               'pm4py.algo.discovery.alpha.data_structures', 'pm4py.algo.discovery.causal',

@@ -10,7 +10,7 @@ ROOT = ""
 
 
 def discover_powl(event_log):
-    powl = powl_disc.apply(event_log, variant = POWLDiscoveryVariant.CLUSTER)
+    powl = powl_disc.apply(event_log, variant=POWLDiscoveryVariant.CLUSTER)
     vis_1 = visualize_powl(powl, parameters={"format": "svg"})
     vis_1.view()
     pn, init, final = powl_to_pn(powl)
