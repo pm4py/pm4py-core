@@ -6,7 +6,7 @@ lxml
 matplotlib
 networkx
 numpy
-pandas<=2.0.3
+pandas
 pydotplus
 pytz
 scipy
