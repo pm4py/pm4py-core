@@ -30,6 +30,8 @@ class Operator(Enum):
     OR = 'O'
     # interleaving operator
     INTERLEAVING = "<>"
+    # partially-ordered operator
+    PARTIALORDER = "PO"
 
     def __str__(self):
         """
@@ -104,6 +106,8 @@ class ProcessTree(object):
                 h = h * 37
             elif self.operator == Operator.INTERLEAVING:
                 h = h * 41
+            elif self.operator == Operator.PARTIALORDER:
+                h = h * 43
             return h % 268435456
 
     def _set_operator(self, operator):
