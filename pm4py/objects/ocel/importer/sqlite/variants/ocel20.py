@@ -136,7 +136,6 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
         object_changes = object_changes.sort_values([event_timestamp, internal_index])
         del object_changes[internal_index]
 
-    E2O.dropna(inplace=True, subset=[event_id, event_activity, event_timestamp, object_id, object_type])
     ocel = OCEL(events=event_types_coll, objects=objects, relations=E2O, object_changes=object_changes, o2o=O2O, parameters=parameters)
     ocel = ocel_consistency.apply(ocel, parameters=parameters)
     ocel = filtering_utils.propagate_relations_filtering(ocel, parameters=parameters)
