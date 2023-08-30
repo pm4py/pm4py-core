@@ -36,6 +36,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
         for fie in fields[tab]:
             df.dropna(subset=[fie], how="any", inplace=True)
             df[fie] = df[fie].astype("string")
+            df.dropna(subset=[fie], how="any", inplace=True)
             df = df[df[fie].str.len() > 0]
 
     return ocel
