@@ -1093,14 +1093,16 @@ def filter_ocel_events(ocel: OCEL, event_identifiers: Collection[str], positive:
     return filtering_utils.propagate_event_filtering(filtered_ocel)
 
 
-def filter_ocel_cc_object(ocel: OCEL, object_id: str) -> OCEL:
+def filter_ocel_cc_object(ocel: OCEL, object_id: str, conn_comp: Optional[List[List[str]]] = None, return_conn_comp: bool = False) -> Union[OCEL, Tuple[OCEL, List[List[str]]]]:
     """
     Returns the connected component of the object-centric event log
     to which the object with the provided identifier belongs.
 
     :param ocel: object-centric event log
     :param object_id: object identifier
-    :rtype: ``OCEL``
+    :param conn_comp: (optional) connected components of the objects of the OCEL
+    :param return_conn_comp: if True, returns the computed connected components of the OCEL
+    :rtype: ``Union[OCEL, Tuple[OCEL, List[List[str]]]]``
 
     .. code-block:: python3
 
@@ -1109,11 +1111,29 @@ def filter_ocel_cc_object(ocel: OCEL, object_id: str) -> OCEL:
         ocel = pm4py.read_ocel('log.jsonocel')
         filtered_ocel = pm4py.filter_ocel_cc_object(ocel, 'order1')
     """
-    from pm4py.algo.transformation.ocel.split_ocel import algorithm
-    ocel_splits = algorithm.apply(ocel, variant=algorithm.Variants.CONNECTED_COMPONENTS)
-    for cc in ocel_splits:
-        if object_id in cc.objects[ocel.object_id_column].unique():
-            return cc
+    if conn_comp is None:
+        from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
+        import networkx as nx
+
+        g0 = object_interaction_graph.apply(ocel)
+        g = nx.Graph()
+
+        for edge in g0:
+            g.add_edge(edge[0], edge[1])
+
+        conn_comp = list(nx.connected_components(g))
+
+    for cc in conn_comp:
+        if object_id in cc:
+            if return_conn_comp:
+                return filter_ocel_objects(ocel, cc), conn_comp
+            else:
+                return filter_ocel_objects(ocel, cc)
+
+    if return_conn_comp:
+        return filter_ocel_objects(ocel, [object_id]), conn_comp
+    else:
+        return filter_ocel_objects(ocel, [object_id])
 
 
 def filter_ocel_cc_length(ocel: OCEL, min_cc_length: int, max_cc_length: int) -> OCEL:
