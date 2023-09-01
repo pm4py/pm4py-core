@@ -332,7 +332,7 @@ def write_ocel2_xml(ocel: OCEL, file_path: str):
 
         import pm4py
 
-        log = pm4py.write_ocel2_sqlite(ocel, '<path_to_export_to>')
+        log = pm4py.write_ocel2_xml(ocel, '<path_to_export_to>')
     """
     file_path = str(file_path)
     if not file_path.lower().endswith("xml") and not file_path.lower().endswith("xmlocel"):

@@ -494,6 +494,9 @@ class BPMN(object):
     def get_name(self):
         return self.__name
 
+    def set_name(self, name: str):
+        self.__name = name
+
     def add_node(self, node):
         node.set_layout(self.get_layout())
         self.__nodes.add(node)
