@@ -24,7 +24,10 @@ def parse_element(bpmn_graph, counts, curr_el, parents, incoming_dict, outgoing_
         nodes_dict[process] = node
     elif tag.endswith("process"): # process of the current subtree
         process = curr_el.get("id")
+        name = curr_el.get("name")
         bpmn_graph.set_process_id(process)
+        if name is not None:
+            bpmn_graph.set_name(name)
     elif tag.endswith("shape"): # shape of a node, contains x,y,width,height information
         bpmn_element = curr_el.get("bpmnElement")
     elif tag.endswith("task"): # simple task object
