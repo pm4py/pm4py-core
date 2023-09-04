@@ -17,7 +17,10 @@ def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, Proc
     The function either takes a petri net, initial and final marking, or, a process tree as an input.
 
     :param args: model (Petri net with initial and final marking, or process tree)
-    :param kwargs: dictionary containing the parameters of the playout
+    :param kwargs: optional parameters of the method, including:
+        - parameters: dictionary containing the parameters of the playout, including:
+            - smap: (if provided) stochastic map to be used to stochastically choose the transition
+            - log: (if provided) EventLog to be used to compute the stochastic map, if smap not provided
     :rtype: ``EventLog``
 
     .. code-block:: python3
