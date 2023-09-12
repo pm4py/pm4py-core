@@ -131,14 +131,14 @@ def extract_outcome_enriched_dataframe(log: Union[EventLog, pd.DataFrame], activ
 
     from pm4py.util import pandas_utils
 
-    fea_df = extract_features_dataframe(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    fea_df = extract_features_dataframe(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, include_case_id=True)
     log2 = pandas_utils.insert_case_arrival_finish_rate(log.copy(), timestamp_column=timestamp_key, case_id_column=case_id_key, start_timestamp_column=start_timestamp_key)
     log2 = pandas_utils.insert_case_service_waiting_time(log2.copy(), timestamp_column=timestamp_key, case_id_column=case_id_key, start_timestamp_column=start_timestamp_key)
 
     return log2.merge(fea_df, left_on=case_id_key, right_on=case_id_key)
 
 
-def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=None, num_tr_attr=None, str_ev_attr=None, num_ev_attr=None, str_evsucc_attr=None, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name", resource_key="org:resource", **kwargs) -> pd.DataFrame:
+def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=None, num_tr_attr=None, str_ev_attr=None, num_ev_attr=None, str_evsucc_attr=None, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key=None, resource_key="org:resource", include_case_id: bool = False, **kwargs) -> pd.DataFrame:
     """
     Extracts a dataframe containing the features of each case of the provided log object
 
@@ -149,8 +149,9 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
     :param num_ev_attr: (if provided) numeric attributes at the event level which should be extracted as features (last value per attribute in a case)
     :param activity_key: the attribute to be used as activity
     :param timestamp_key: the attribute to be used as timestamp
-    :param case_id_key: the attribute to be used as case identifier
+    :param case_id_key: (if provided, otherwise default) the attribute to be used as case identifier
     :param resource_key: the attribute to be used as resource
+    :param include_case_id: includes the case identifier column in the features table
     :rtype: ``pd.DataFrame``
 
     .. code-block:: python3
@@ -175,6 +176,7 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
     parameters["str_ev_attr"] = str_ev_attr
     parameters["num_ev_attr"] = num_ev_attr
     parameters["str_evsucc_attr"] = str_evsucc_attr
+    parameters["add_case_identifier_column"] = include_case_id
 
     from pm4py.algo.transformation.log_to_features import algorithm as log_to_features
 
@@ -243,7 +245,7 @@ def extract_ocel_features(ocel: OCEL, obj_type: str, enable_object_lifecycle_pat
     return dataframe
 
 
-def extract_temporal_features_dataframe(log: Union[EventLog, pd.DataFrame], grouper_freq="W", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name", start_timestamp_key="time:timestamp", resource_key="org:resource") -> pd.DataFrame:
+def extract_temporal_features_dataframe(log: Union[EventLog, pd.DataFrame], grouper_freq="W", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key=None, start_timestamp_key="time:timestamp", resource_key="org:resource") -> pd.DataFrame:
     """
     Extracts a dataframe containing the temporal features of the provided log object
 
@@ -254,7 +256,7 @@ def extract_temporal_features_dataframe(log: Union[EventLog, pd.DataFrame], grou
     :param grouper_freq: the grouping frequency (D, W, M, Y) to use
     :param activity_key: the attribute to be used as activity
     :param timestamp_key: the attribute to be used as timestamp
-    :param case_id_key: the attribute to be used as case identifier
+    :param case_id_key: (if provided, otherwise default) the attribute to be used as case identifier
     :param resource_key: the attribute to be used as resource
     :param start_timestamp_key: the attribute to be used as start timestamp
     :rtype: ``pd.DataFrame``
@@ -275,7 +277,8 @@ def extract_temporal_features_dataframe(log: Union[EventLog, pd.DataFrame], grou
     parameters[temporal.Parameters.GROUPER_FREQ] = grouper_freq
     parameters[temporal.Parameters.ACTIVITY_COLUMN] = activity_key
     parameters[temporal.Parameters.TIMESTAMP_COLUMN] = timestamp_key
-    parameters[temporal.Parameters.CASE_ID_COLUMN] = case_id_key
+    if case_id_key is not None:
+        parameters[temporal.Parameters.CASE_ID_COLUMN] = case_id_key
     parameters[temporal.Parameters.START_TIMESTAMP_COLUMN] = start_timestamp_key
     parameters[temporal.Parameters.RESOURCE_COLUMN] = resource_key
 

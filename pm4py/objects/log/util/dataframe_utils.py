@@ -47,6 +47,7 @@ class Parameters(Enum):
     INDEX_KEY = "index_key"
     CASE_INDEX_KEY = "case_index_key"
     USE_EXTREMES_TIMESTAMP = "use_extremes_timestamp"
+    ADD_CASE_IDENTIFIER_COLUMN = "add_case_identifier_column"
 
 
 def insert_partitioning(df, num_partitions, parameters=None):
@@ -353,6 +354,7 @@ def get_features_df(df: pd.DataFrame, list_columns: List[str],
         parameters = {}
 
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    add_case_identifier_column = exec_utils.get_param_value(Parameters.ADD_CASE_IDENTIFIER_COLUMN, parameters, False)
 
     fea_df = pd.DataFrame({case_id_key: sorted(list(df[case_id_key].unique()))})
     for col in list_columns:
@@ -361,6 +363,9 @@ def get_features_df(df: pd.DataFrame, list_columns: List[str],
         elif "float" in str(df[col].dtype) or "int" in str(df[col].dtype):
             fea_df = select_number_column(df, fea_df, col, case_id_key=case_id_key)
     fea_df = fea_df.sort_values(case_id_key)
+    if not add_case_identifier_column:
+        del fea_df[case_id_key]
+
     return fea_df
 
 
