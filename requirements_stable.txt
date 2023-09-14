@@ -7,7 +7,7 @@ graphviz==0.20.1
 intervaltree==3.1.0
 kiwisolver==1.4.5
 lxml==4.9.3
-matplotlib==3.7.1
+matplotlib==3.7.3
 networkx==3.1
 numpy==1.25.2
 packaging==23.1
@@ -16,7 +16,7 @@ pillow==10.0.0
 pydotplus==2.0.2
 pyparsing==3.1.1
 python-dateutil==2.8.2
-pytz==2023.3
+pytz==2023.3.post1
 scipy==1.11.2
 six==1.16.0
 sortedcontainers==2.4.0

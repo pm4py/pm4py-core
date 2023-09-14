@@ -58,6 +58,7 @@ TRIGGERED_DT_PARSING_WARNING = False
 
 DEFAULT_BGCOLOR = get_param_from_env("PM4PY_DEFAULT_BGCOLOR", "white")
 DEFAULT_FORMAT_GVIZ_VIEW = get_param_from_env("PM4PY_DEFAULT_FORMAT_GVIZ_VIEW", "png")
+DEFAULT_RANKDIR_GVIZ = get_param_from_env("PM4PY_DEFAULT_RANKDIR_GVIZ", "LR")
 
 ENABLE_MULTIPROCESSING_DEFAULT = True if get_param_from_env("PM4PY_ENABLE_MULTIPROCESSING_DEFAULT", "False").lower() == "true" else False
 DEFAULT_READ_XES_LEGACY_OBJECT = True if get_param_from_env("PM4PY_DEFAULT_READ_XES_LEGACY_OBJECT", "False").lower() == "true" else False
