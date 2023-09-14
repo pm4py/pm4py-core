@@ -4,7 +4,7 @@ from graphviz import Digraph, Graph
 from enum import Enum
 from pm4py.util import exec_utils
 import tempfile
-from pm4py.util import vis_utils
+from pm4py.util import vis_utils, constants
 from pm4py.objects.ocel.obj import OCEL
 
 
@@ -52,7 +52,7 @@ def apply(ocel: OCEL, graph: Set[Tuple[str, str]], parameters: Optional[Dict[Any
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, "transparent")
-    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "LR")
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, constants.DEFAULT_RANKDIR_GVIZ)
     directed = exec_utils.get_param_value(Parameters.DIRECTED, parameters, True)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
