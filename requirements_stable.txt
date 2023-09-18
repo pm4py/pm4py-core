@@ -7,7 +7,7 @@ graphviz==0.20.1
 intervaltree==3.1.0
 kiwisolver==1.4.5
 lxml==4.9.3
-matplotlib==3.7.3
+matplotlib==3.8.0
 networkx==3.1
 numpy==1.25.2
 packaging==23.1
