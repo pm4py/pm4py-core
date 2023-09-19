@@ -40,10 +40,9 @@ def parse_element(bpmn_graph, counts, curr_el, parents, incoming_dict, outgoing_
         nodes_dict[process] = node
     elif tag.endswith("process"): # process of the current subtree
         process = curr_el.get("id")
-        name = curr_el.get("name")
+        name = curr_el.get("name").replace("\r", "").replace("\n", "") if "name" in curr_el.attrib else ""
         bpmn_graph.set_process_id(process)
-        if name is not None:
-            bpmn_graph.set_name(name)
+        bpmn_graph.set_name(name)
     elif tag.endswith("shape"): # shape of a node, contains x,y,width,height information
         bpmn_element = curr_el.get("bpmnElement")
     elif tag.endswith("task"): # simple task object
@@ -182,18 +181,21 @@ def parse_element(bpmn_graph, counts, curr_el, parents, incoming_dict, outgoing_
         node = inclusive_gateway
         nodes_dict[id] = node
     elif tag.endswith("incoming"): # incoming flow of a node
+        name = curr_el.get("name").replace("\r", "").replace("\n", "") if "name" in curr_el.attrib else ""
         if node is not None:
-            incoming_dict[curr_el.text.strip()] = (node, process, tag)
+            incoming_dict[curr_el.text.strip()] = (node, process, tag, name)
     elif tag.endswith("outgoing"): # outgoing flow of a node
+        name = curr_el.get("name").replace("\r", "").replace("\n", "") if "name" in curr_el.attrib else ""
         if node is not None:
-            outgoing_dict[curr_el.text.strip()] = (node, process, tag)
+            outgoing_dict[curr_el.text.strip()] = (node, process, tag, name)
     elif tag.endswith("sequenceflow"): # normal sequence flow between two nodes
         seq_flow_id = curr_el.get("id")
         source_ref = curr_el.get("sourceRef")
         target_ref = curr_el.get("targetRef")
+        name = curr_el.get("name").replace("\r", "").replace("\n", "") if "name" in curr_el.attrib else ""
         if source_ref is not None and target_ref is not None:
-            incoming_dict[seq_flow_id] = (target_ref, process, tag)
-            outgoing_dict[seq_flow_id] = (source_ref, process, tag)
+            incoming_dict[seq_flow_id] = (target_ref, process, tag, name)
+            outgoing_dict[seq_flow_id] = (source_ref, process, tag, name)
     elif tag.endswith("waypoint"): # contains information of x, y values of an edge
         if flow is not None:
             x = float(curr_el.get("x"))
@@ -221,14 +223,14 @@ def parse_element(bpmn_graph, counts, curr_el, parents, incoming_dict, outgoing_
         # bpmn_graph.set_process_id(process)
         for seq_flow_id in incoming_dict:
             if incoming_dict[seq_flow_id][0] in nodes_dict:
-                incoming_dict[seq_flow_id] = (nodes_dict[incoming_dict[seq_flow_id][0]], incoming_dict[seq_flow_id][1], incoming_dict[seq_flow_id][2])
+                incoming_dict[seq_flow_id] = (nodes_dict[incoming_dict[seq_flow_id][0]], incoming_dict[seq_flow_id][1], incoming_dict[seq_flow_id][2], incoming_dict[seq_flow_id][3])
         for seq_flow_id in outgoing_dict:
             if outgoing_dict[seq_flow_id][0] in nodes_dict:
-                outgoing_dict[seq_flow_id] = (nodes_dict[outgoing_dict[seq_flow_id][0]], outgoing_dict[seq_flow_id][1], outgoing_dict[seq_flow_id][2])
+                outgoing_dict[seq_flow_id] = (nodes_dict[outgoing_dict[seq_flow_id][0]], outgoing_dict[seq_flow_id][1], outgoing_dict[seq_flow_id][2], outgoing_dict[seq_flow_id][3])
         for flow_id in flow_info:
             if flow_id in outgoing_dict and flow_id in incoming_dict:
                 if isinstance(outgoing_dict[flow_id][0], BPMN.BPMNNode) and isinstance(incoming_dict[flow_id][0], BPMN.BPMNNode):
-                    flow = BPMN.SequenceFlow(outgoing_dict[flow_id][0], incoming_dict[flow_id][0], id=flow_id, name="", process=outgoing_dict[flow_id][1])
+                    flow = BPMN.SequenceFlow(outgoing_dict[flow_id][0], incoming_dict[flow_id][0], id=flow_id, name=outgoing_dict[flow_id][3], process=outgoing_dict[flow_id][1])
                     bpmn_graph.add_flow(flow)
                     layout.get(flow).del_waypoints()
                     for waypoint in flow_info[flow_id]:
