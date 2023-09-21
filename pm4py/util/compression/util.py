@@ -217,7 +217,8 @@ def get_end_activities(log: Union[UCL, MCL, UVCL], index: int = 0) -> TCounter[A
 
 def get_alphabet(log: Union[UCL, MCL, UVCL], index: int = 0):
     log = _map_log_to_single_index(log, index)
-    return set([e for t in log for e in t])
+    sorted_set = sorted(set([e for t in log for e in t]))
+    return sorted_set
 
 
 def get_variants(log: Union[UCL, MCL], index: int = 0) -> UVCL:

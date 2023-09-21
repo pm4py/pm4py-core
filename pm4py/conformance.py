@@ -34,7 +34,7 @@ import deprecation
 
 
 def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking,
-                                               final_marking: Marking, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> List[Dict[str, Any]]:
+                                               final_marking: Marking, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME, opt_parameters: Optional[Dict[Any, Any]] = None) -> List[Dict[str, Any]]:
     """
     Apply token-based replay for conformance checking analysis.
     The methods return the full token-based-replay diagnostics.
@@ -63,6 +63,16 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :param return_diagnostics_dataframe: if possible, returns a dataframe with the diagnostics (instead of the usual output)
+    :param opt_parameters: optional parameters of the token-based replay, including:
+        * reach_mark_through_hidden: boolean value that decides if we shall try to reach the final marking through hidden transitions
+        * stop_immediately_unfit: boolean value that decides if we shall stop immediately when a non-conformance is detected
+        * walk_through_hidden_trans: boolean value that decides if we shall walk through hidden transitions in order to enable visible transitions
+        * places_shortest_path_by_hidden: shortest paths between places by hidden transitions
+        * is_reduction: expresses if the token-based replay is called in a reduction attempt
+        * thread_maximum_ex_time: alignment threads maximum allowed execution time
+        * cleaning_token_flood: decides if a cleaning of the token flood shall be operated
+        * disable_variants: disable variants grouping
+        * return_object_names: decides whether names instead of object pointers shall be returned
     :rtype: ``List[Dict[str, Any]]``
 
     .. code-block:: python3
@@ -83,6 +93,12 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
         case_id_key = None
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    if opt_parameters is None:
+        opt_parameters = {}
+
+    for k, v in opt_parameters.items():
+        properties[k] = v
 
     from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
     result = token_replay.apply(log, petri_net, initial_marking, final_marking, parameters=properties)
@@ -236,7 +252,7 @@ def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: Pe
     return result
 
 
-def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> \
+def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", variant_str : Optional[str] = None) -> \
         Dict[str, float]:
     """
     Calculates the fitness using alignments
@@ -261,6 +277,7 @@ def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, 
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+    :param variant_str: variant specification
     :rtype: ``Dict[str, float]``
 
     .. code-block:: python3
@@ -280,7 +297,7 @@ def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, 
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters["multiprocessing"] = multi_processing
     result = replay_fitness.apply(log, petri_net, initial_marking, final_marking,
-                                variant=replay_fitness.Variants.ALIGNMENT_BASED, parameters=parameters)
+                                variant=replay_fitness.Variants.ALIGNMENT_BASED, align_variant=variant_str, parameters=parameters)
 
     return result
 
@@ -381,6 +398,42 @@ def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet
                                      parameters=parameters)
 
     return result
+
+
+def replay_prefix_tbr(prefix: List[str], net: PetriNet, im: Marking, fm: Marking, activity_key: str = "concept:name") -> Marking:
+    """
+    Replays a prefix (list of activities) on a given accepting Petri net, using Token-Based Replay.
+
+    :param prefix: list of activities
+    :param net: Petri net
+    :param im: initial marking
+    :param fm: final marking
+    :param activity_key: attribute to be used as activity
+    :rtype:  ``Marking``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.read_pnml('tests/input_data/running-example.pnml')
+        marking = pm4py.replay_prefix_tbr(['register request', 'check ticket'], net, im, fm)
+    """
+    purpose_log = EventLog()
+    trace = Trace()
+    for act in prefix:
+        trace.append(Event({activity_key: act}))
+    purpose_log.append(trace)
+
+    from pm4py.algo.conformance.tokenreplay.variants import token_replay
+    parameters_tr = {
+        token_replay.Parameters.CONSIDER_REMAINING_IN_FITNESS: False,
+        token_replay.Parameters.TRY_TO_REACH_FINAL_MARKING_THROUGH_HIDDEN: False,
+        token_replay.Parameters.STOP_IMMEDIATELY_UNFIT: True,
+        token_replay.Parameters.WALK_THROUGH_HIDDEN_TRANS: True,
+        token_replay.Parameters.ACTIVITY_KEY: activity_key
+    }
+    res = token_replay.apply(purpose_log, net, im, fm, parameters=parameters_tr)[0]
+    return res["reached_marking"]
 
 
 @deprecation.deprecated(deprecated_in="2.3.0", removed_in="3.0.0", details="conformance checking using footprints will not be exposed in a future release")
@@ -623,6 +676,52 @@ def conformance_temporal_profile(log: Union[EventLog, pd.DataFrame], temporal_pr
 
     if return_diagnostics_dataframe:
         return temporal_profile_conformance.get_diagnostics_dataframe(log, result, parameters=properties)
+
+    return result
+
+
+def conformance_declare(log: Union[EventLog, pd.DataFrame], declare_model: Dict[str, Dict[Any, Dict[str, int]]], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> List[Dict[str, Any]]:
+    """
+    Applies conformance checking against a DECLARE model.
+
+    Reference paper:
+    F. M. Maggi, A. J. Mooij and W. M. P. van der Aalst, "User-guided discovery of declarative process models," 2011 IEEE Symposium on Computational Intelligence and Data Mining (CIDM), Paris, France, 2011, pp. 192-199, doi: 10.1109/CIDM.2011.5949297.
+
+    :param log: event log
+    :param declare_model: DECLARE model
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :param return_diagnostics_dataframe: if possible, returns a dataframe with the diagnostics (instead of the usual output)
+    :rtype: ``List[Dict[str, Any]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("C:/receipt.xes")
+        declare_model = pm4py.discover_declare(log)
+        conf_result = pm4py.conformance_declare(log, declare_model)
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception(
+        "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key,
+                                       case_id_key=case_id_key)
+
+    if return_diagnostics_dataframe:
+        log = convert_to_event_log(log, case_id_key=case_id_key)
+        case_id_key = None
+
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    from pm4py.algo.conformance.declare import algorithm as declare_conformance
+    result = declare_conformance.apply(log, declare_model, parameters=properties)
+
+    if return_diagnostics_dataframe:
+        return declare_conformance.get_diagnostics_dataframe(log, result, parameters=properties)
 
     return result
 

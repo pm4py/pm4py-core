@@ -55,7 +55,7 @@ def apply(df, parameters=None):
 
     df = df.copy()
     df = df[list({activity_key, case_id_key})]
-    df = pandas_utils.insert_ev_in_tr_index(df, column_name=constants.DEFAULT_INDEX_IN_TRACE_KEY)
+    df = pandas_utils.insert_ev_in_tr_index(df, case_id=case_id_key, column_name=constants.DEFAULT_INDEX_IN_TRACE_KEY)
     df[CONCAT_ACT_CASE] = df[case_id_key] + df[activity_key]
     df[INT_CASE_ACT_SIZE] = df.groupby(CONCAT_ACT_CASE).cumcount()
     df_last = df.groupby(CONCAT_ACT_CASE).last().reset_index()

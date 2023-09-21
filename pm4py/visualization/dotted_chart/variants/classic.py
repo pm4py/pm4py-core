@@ -199,7 +199,7 @@ def apply(points_list: List[Any], attributes: List[str], parameters: Optional[Di
         color = color_dict[p[2]] if color_dict is not None else "blue"
         n_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
         lines.append(
-            "%s [label=\"\", shape=circle,  width=\"%.10fpx\", height=\"%.10fpx\", pos=\"%.10f,%.10f!\", fontsize=\"6pt\", style=\"filled\", fillcolor=\"%s\"];" % (
+            "%s [label=\"\", shape=circle,  width=\"%.10fpx\", height=\"%.10fpx\", pos=\"%.10f,%.10f!\", fontsize=\"6pt\", style=\"filled\", fillcolor=\"%s\", penwidth=0];" % (
                 n_id, dot_size, dot_size, coord_x * x_length, coord_y * y_length, color))
 
     if color_dict is not None and show_legend:

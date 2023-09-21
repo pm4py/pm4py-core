@@ -46,6 +46,9 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     feature_names = ["@@object_lifecycle_length"]
 
     for obj in ordered_objects:
-        data.append([lifecycle_length[obj]])
+        if obj in lifecycle_length:
+            data.append([lifecycle_length[obj]])
+        else:
+            data.append([0])
 
     return data, feature_names

@@ -50,6 +50,9 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     """
     Extract a feature table related to the objects of an OCEL
 
+    Implements the approach described in:
+    Berti, A., Herforth, J., Qafari, M.S. et al. Graph-based feature extraction on object-centric event logs. Int J Data Sci Anal (2023). https://doi.org/10.1007/s41060-023-00428-2
+
     Parameters
     ------------------
     ocel

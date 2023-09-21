@@ -16,7 +16,7 @@
 '''
 import time
 
-from pm4py import util, objects, statistics, algo, visualization, openai, connectors
+from pm4py import util, objects, statistics, algo, visualization, llm, connectors
 from pm4py import analysis, conformance, convert, discovery, filtering, hof, ml, ocel, org, read, sim, stats, utils, vis, write
 from pm4py.read import read_xes, read_dfg, read_bpmn, read_pnml, read_ptml, read_ocel, read_ocel_csv, read_ocel_xml, read_ocel_json, read_ocel_sqlite, read_ocel2, read_ocel2_sqlite, read_ocel2_xml
 from pm4py.write import write_xes, write_dfg, write_bpmn, write_pnml, write_ptml, write_ocel, write_ocel_json, write_ocel_csv, write_ocel_xml, write_ocel_sqlite, write_ocel2, write_ocel2_sqlite, write_ocel2_xml
@@ -30,18 +30,18 @@ from pm4py.filtering import filter_log_relative_occurrence_event_attribute, filt
     filter_ocel_object_types_allowed_activities, filter_ocel_object_per_type_count, filter_ocel_start_events_per_object_type, \
     filter_ocel_end_events_per_object_type, filter_ocel_events_timestamp, filter_prefixes, filter_suffixes, \
     filter_four_eyes_principle, filter_activity_done_different_resources, filter_ocel_events, filter_ocel_objects, \
-    filter_ocel_object_types, filter_ocel_cc_object
+    filter_ocel_object_types, filter_ocel_cc_object, filter_ocel_cc_length, filter_ocel_cc_otype, filter_ocel_cc_activity
 from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_plus, discover_petri_net_ilp, discover_petri_net_heuristics, \
     discover_petri_net_inductive, discover_process_tree_inductive, discover_heuristics_net, \
     discover_dfg, discover_footprints, discover_eventually_follows_graph, discover_directly_follows_graph, discover_bpmn_inductive, \
     discover_performance_dfg, discover_transition_system, discover_prefix_tree, \
-    discover_temporal_profile, discover_log_skeleton, discover_batches, derive_minimum_self_distance, discover_dfg_typed
+    discover_temporal_profile, discover_log_skeleton, discover_batches, derive_minimum_self_distance, discover_dfg_typed, discover_declare
 from pm4py.conformance import conformance_diagnostics_token_based_replay, conformance_diagnostics_alignments, \
     fitness_token_based_replay, \
     fitness_alignments, precision_token_based_replay, \
     precision_alignments, conformance_diagnostics_footprints, \
     fitness_footprints, precision_footprints, check_is_fitting, conformance_temporal_profile, \
-    conformance_log_skeleton
+    conformance_declare, conformance_log_skeleton, replay_prefix_tbr
 from pm4py.ocel import ocel_objects_interactions_summary, ocel_temporal_summary, ocel_objects_summary, ocel_get_object_types, ocel_get_attribute_names, ocel_flattening, ocel_object_type_activities, ocel_objects_ot_count, \
                         discover_ocdfg, discover_oc_petri_net, discover_objects_graph, sample_ocel_objects, ocel_drop_duplicates, ocel_merge_duplicates, ocel_sort_by_additional_column, \
                         ocel_add_index_based_timedelta, sample_ocel_connected_components, ocel_o2o_enrichment, ocel_e2o_lifecycle_enrichment, cluster_equivalent_ocel
@@ -55,10 +55,10 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
     view_footprints, save_vis_footprints
 from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
     convert_to_petri_net, convert_to_process_tree, convert_to_reachability_graph, convert_log_to_ocel, convert_ocel_to_networkx, convert_log_to_networkx, \
-    convert_petri_net_to_networkx, convert_petri_net_type
+    convert_log_to_time_intervals, convert_petri_net_to_networkx, convert_petri_net_type
 from pm4py.analysis import cluster_log, check_soundness, compute_emd, solve_marking_equation, solve_extended_marking_equation, \
     construct_synchronous_product_net, insert_artificial_start_end, check_is_workflow_net, maximal_decomposition, generate_marking, \
-    reduce_petri_net_invisibles, reduce_petri_net_implicit_places, insert_case_arrival_finish_rate, insert_case_service_waiting_time
+    reduce_petri_net_invisibles, reduce_petri_net_implicit_places, insert_case_arrival_finish_rate, insert_case_service_waiting_time, get_enabled_transitions
 from pm4py.stats import get_start_activities, get_end_activities, get_event_attributes, get_event_attribute_values, get_variants, \
     get_trace_attributes, get_variants_as_tuples, get_trace_attribute_values, get_case_arrival_average, \
     get_minimum_self_distances, get_minimum_self_distance_witnesses, \

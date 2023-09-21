@@ -190,18 +190,15 @@ def recursively_add_tree(parent_tree, tree, bpmn, initial_event, final_event, co
             final_connector = final_connect
 
     elif tree.operator == Operator.LOOP:
-        if len(tree_childs) != 2:
-            raise Exception("Loop doesn't have 2 childs")
-        else:
-            do = tree_childs[0]
-            redo = tree_childs[1]
-            bpmn, split, join, counts = add_xor_gateway(bpmn, counts)
-            bpmn, counts, i, y = recursively_add_tree(tree, do, bpmn, join, split, counts, rec_depth + 1)
+        do = tree_childs[0]
+        bpmn, split, join, counts = add_xor_gateway(bpmn, counts)
+        bpmn, counts, i, y = recursively_add_tree(tree, do, bpmn, join, split, counts, rec_depth + 1)
+        for redo in tree_childs[1:]:
             bpmn, counts, x, y = recursively_add_tree(tree, redo, bpmn, split, join, counts, rec_depth + 1)
-            bpmn.add_flow(BPMN.Flow(initial_event, join))
-            bpmn.add_flow(BPMN.Flow(split, final_event))
-            initial_connector = join
-            final_connector = split
+        bpmn.add_flow(BPMN.Flow(initial_event, join))
+        bpmn.add_flow(BPMN.Flow(split, final_event))
+        initial_connector = join
+        final_connector = split
 
     return bpmn, counts, initial_connector, final_connector
 

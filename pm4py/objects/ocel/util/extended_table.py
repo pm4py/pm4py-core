@@ -67,16 +67,21 @@ def get_ocel_from_extended_table(df: pd.DataFrame, objects_df: Optional[Dict[Any
     relations = []
     objects = {x: set() for x in object_type_columns}
 
-    for ev in stream:
+    i = 0
+    while i < len(stream):
+        ev = stream[i]
+        for ot in object_type_columns:
+            ev[ot] = parse_list(ev[ot])
         for ot in object_type_columns:
             ot_stri = ot.split(object_type_prefix)[1]
-            ev[ot] = parse_list(ev[ot])
             oot = objects[ot]
             for obj in ev[ot]:
                 oot.add(obj)
                 relations.append(
-                    {event_id: ev[event_id], event_activity: ev[event_activity], event_timestamp: ev[event_timestamp],
+                    {event_id: ev[event_id], event_activity: ev[event_activity],
+                     event_timestamp: ev[event_timestamp],
                      object_id_column: obj, object_type_column: ot_stri})
+        i = i + 1
 
     relations = pd.DataFrame(relations)
 

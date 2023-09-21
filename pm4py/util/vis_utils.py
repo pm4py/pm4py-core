@@ -18,46 +18,55 @@ import base64
 import os
 import subprocess
 import sys
+from typing import Optional, Dict
+
 
 MAX_EDGE_PENWIDTH_GRAPHVIZ = 2.6
 MIN_EDGE_PENWIDTH_GRAPHVIZ = 1.0
 
 
-def human_readable_stat(timedelta_seconds, stat_locale: dict = {}):
+def human_readable_stat(timedelta, stat_locale: Optional[Dict[str, str]] = None) -> str:
     """
-    Transform a timedelta expressed in seconds into a human readable string
+    Transform a timedelta into a human readable string
 
     Parameters
     ----------
-    timedelta_seconds
-        Timedelta expressed in seconds
-    stat_locale
-        Dict mapping stat strings
+    timedelta
+        Timedelta
 
     Returns
     ----------
     string
         Human readable string
     """
-    timedelta_seconds = int(float(timedelta_seconds))
-    years = timedelta_seconds // 31104000
-    months = timedelta_seconds // 2592000
-    days = timedelta_seconds // 86400
-    hours = timedelta_seconds // 3600 % 24
-    minutes = timedelta_seconds // 60 % 60
-    seconds = timedelta_seconds % 60
-    
+    if stat_locale is None:
+        stat_locale = {}
+
+    c = int(float(timedelta))
+    years = c // 31104000
+    months = c // 2592000
+    days = c // 86400
+    hours = c // 3600 % 24
+    minutes = c // 60 % 60
+    seconds = c % 60
     if years > 0:
         return str(years) + stat_locale.get("year", "Y")
-    if months > 0:
+    elif months > 0:
         return str(months) + stat_locale.get("month", "MO")
-    if days > 0:
+    elif days > 0:
         return str(days) + stat_locale.get("day", "D")
-    if hours > 0:
+    elif hours > 0:
         return str(hours) + stat_locale.get("hour", "h")
-    if minutes > 0:
+    elif minutes > 0:
         return str(minutes) + stat_locale.get("minute", "m")
-    return str(seconds) + stat_locale.get("second", "s")
+    elif seconds > 0:
+        return str(seconds) + stat_locale.get("second", "s")
+    else:
+        c = int(float(timedelta*1000))
+        if c > 0:
+            return str(c) + stat_locale.get("millisecond", "ms")
+        else:
+            return str(int(float(timedelta * 10**9))) + stat_locale.get("nanosecond", "ns")
 
 
 def get_arc_penwidth(arc_measure, min_arc_measure, max_arc_measure):

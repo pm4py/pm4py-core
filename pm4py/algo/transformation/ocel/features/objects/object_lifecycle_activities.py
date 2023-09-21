@@ -47,8 +47,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     feature_names = ["@@ocel_lif_activity_"+str(x) for x in activities]
 
     for obj in ordered_objects:
-        lif = lifecycle[obj]
         data.append([])
+        if obj in lifecycle:
+            lif = lifecycle[obj]
+        else:
+            lif = []
         for act in activities:
             data[-1].append(len(list(x for x in lif if x == act)))
 

@@ -92,6 +92,7 @@ Among *procedural process models*, ``pm4py`` currently supports:
 
 Among *declarative process models*, ``pm4py`` currently supports:
 
+  * :meth:`pm4py.discovery.discover_declare`; discovers a *DECLARE* model.
   * :meth:`pm4py.discovery.discover_log_skeleton`; discovers a *log skeleton*.
   * :meth:`pm4py.discovery.discover_temporal_profile`; discovers a *temporal profile*.
 
@@ -107,10 +108,12 @@ Among procedural process models, ``pm4py`` currently supports:
   * :meth:`pm4py.conformance.fitness_alignments`; evaluation of the fitness between an event log and a *Petri net* using alignments.
   * :meth:`pm4py.conformance.precision_token_based_replay`; evaluation of the precision between an event log and a *Petri net* using token-based replay.
   * :meth:`pm4py.conformance.precision_alignments`; evaluation of the precision between an event log and a *Petri net* using alignments.
+  * :meth:`pm4py.conformance.replay_prefix_tbr`; replays a prefix (list of activities) on a given *Petri net*, using Token-Based Replay.
 
 Among declarative process models, ``pm4py`` currently supports:
 
   * :meth:`pm4py.conformance.conformance_log_skeleton`; conformance checking using the *log skeleton*.
+  * :meth:`pm4py.conformance.conformance_declare`; conformance checking using a *DECLARE model*.
   * :meth:`pm4py.conformance.conformance_temporal_profile`; conformance checking using the *temporal profile*.
 
 
@@ -221,7 +224,9 @@ Also, some filtering techniques are offered on top of object-centric event logs:
   * :meth:`pm4py.filtering.filter_ocel_events`; filters a specified collection of event identifiers from the object-centric event log.
   * :meth:`pm4py.filtering.filter_ocel_objects`; filters a specified collection of object identifiers from the object-centric event log.
   * :meth:`pm4py.filtering.filter_ocel_cc_object`; filters a connected component from the object-centric event log to which the object with the provided identifier belongs.
-
+  * :meth:`pm4py.filtering.filter_ocel_cc_length`; filter the connected components from an object-centric event log having a number of objects falling in a provided range.
+  * :meth:`pm4py.filtering.filter_ocel_cc_otype`; filter the connected components from an object-centric event log having at least an object of the specified object type.
+  * :meth:`pm4py.filtering.filter_ocel_cc_activity`; filter the connected components from an object-centric event log having at least an event with the specified activity.
 
 Machine Learning (:mod:`pm4py.ml`)
 ------------------------------------------
@@ -290,20 +295,28 @@ Some object-centric process discovery algorithms are also offered:
   * :meth:`pm4py.ocel.discover_objects_graph`; discovers an object-based graph from the object-centric event log.
 
 
-OpenAI Integration (:mod:`pm4py.openai`)
+LLM Integration (:mod:`pm4py.llm`)
 ------------------------------------------
 
 The following methods provides just the abstractions of the given objects:
 
-  * :meth:`pm4py.openai.abstract_dfg`; provides the DFG abstraction of a traditional event log
-  * :meth:`pm4py.openai.abstract_variants`; provides the variants abstraction of a traditional event log
-  * :meth:`pm4py.openai.abstract_log_attributes`; provides the abstraction of the attributes/columns of the event log
-  * :meth:`pm4py.openai.abstract_ocel`; provides the abstraction of an object-centric event log (list of events and objects)
-  * :meth:`pm4py.openai.abstract_ocel_ocdfg`; provides the abstraction of an object-centric event log (OC-DFG)
-  * :meth:`pm4py.openai.abstract_ocel_features`; provides the abstraction of an object-centric event log (features for ML)
-  * :meth:`pm4py.openai.abstract_event_stream`; provides an abstraction of the (last) events of the stream related to a traditional event log
-  * :meth:`pm4py.openai.abstract_petri_net`; provides the abstraction of a Petri net
+  * :meth:`pm4py.llm.abstract_dfg`; provides the DFG abstraction of a traditional event log
+  * :meth:`pm4py.llm.abstract_variants`; provides the variants abstraction of a traditional event log
+  * :meth:`pm4py.llm.abstract_log_attributes`; provides the abstraction of the attributes/columns of the event log
+  * :meth:`pm4py.llm.abstract_log_features`; provides the abstraction of the machine learning features obtained from an event log
+  * :meth:`pm4py.llm.abstract_case`; provides the abstraction of a case (collection of events)
+  * :meth:`pm4py.llm.abstract_ocel`; provides the abstraction of an object-centric event log (list of events and objects)
+  * :meth:`pm4py.llm.abstract_ocel_ocdfg`; provides the abstraction of an object-centric event log (OC-DFG)
+  * :meth:`pm4py.llm.abstract_ocel_features`; provides the abstraction of an object-centric event log (features for ML)
+  * :meth:`pm4py.llm.abstract_event_stream`; provides an abstraction of the (last) events of the stream related to a traditional event log
+  * :meth:`pm4py.llm.abstract_temporal_profile`; provides the abstraction of a temporal profile model
+  * :meth:`pm4py.llm.abstract_petri_net`; provides the abstraction of a Petri net
+  * :meth:`pm4py.llm.abstract_declare`; provides the abstraction of a DECLARE model
+  * :meth:`pm4py.llm.abstract_log_skeleton`; provides the abstraction of a log skeleton model
 
+The following methods can be executed directly against the LLM APIs:
+
+  * :meth:`pm4py.llm.openai_query`; executes a prompt against OpenAI, returning the response as string
 
 
 Basic Connectors (:mod:`pm4py.connectors`)
@@ -374,6 +387,7 @@ Other algorithms, which do not belong to the aforementioned categories, are coll
   * :meth:`pm4py.analysis.generate_marking`; generates a Marking object from a textual representation.
   * :meth:`pm4py.analysis.reduce_petri_net_invisibles`; reduces the invisible transitions of a Petri net when possible.
   * :meth:`pm4py.analysis.reduce_petri_net_implicit_places`; reduces the implicit places in the Petri net (MURATA).
+  * :meth:`pm4py.analysis.get_enabled_transitions`; gets the transitions enabled in a given marking.
 
 
 Overall List of Methods
@@ -435,6 +449,7 @@ Overall List of Methods
    pm4py.discovery.discover_transition_system
    pm4py.discovery.discover_prefix_tree
    pm4py.discovery.discover_temporal_profile
+   pm4py.discovery.discover_declare
    pm4py.discovery.discover_log_skeleton
    pm4py.discovery.discover_batches
    pm4py.conformance
@@ -444,7 +459,9 @@ Overall List of Methods
    pm4py.conformance.fitness_alignments
    pm4py.conformance.precision_token_based_replay
    pm4py.conformance.precision_alignments
+   pm4py.conformance.replay_prefix_tbr
    pm4py.conformance.conformance_temporal_profile
+   pm4py.conformance.conformance_declare
    pm4py.conformance.conformance_log_skeleton
    pm4py.vis
    pm4py.vis.view_petri_net
@@ -537,6 +554,9 @@ Overall List of Methods
    pm4py.filtering.filter_ocel_events
    pm4py.filtering.filter_ocel_objects
    pm4py.filtering.filter_ocel_cc_object
+   pm4py.filtering.filter_ocel_cc_length
+   pm4py.filtering.filter_ocel_cc_otype
+   pm4py.filtering.filter_ocel_cc_activity
    pm4py.ml
    pm4py.ml.split_train_test
    pm4py.ml.get_prefixes_from_log
@@ -566,15 +586,21 @@ Overall List of Methods
    pm4py.ocel.ocel_o2o_enrichment
    pm4py.ocel.ocel_e2o_lifecycle_enrichment
    pm4py.ocel.cluster_equivalent_ocel
-   pm4py.openai
-   pm4py.openai.abstract_dfg
-   pm4py.openai.abstract_variants
-   pm4py.openai.abstract_ocel
-   pm4py.openai.abstract_ocel_ocdfg
-   pm4py.openai.abstract_ocel_features
-   pm4py.openai.abstract_event_stream
-   pm4py.openai.abstract_petri_net
-   pm4py.openai.abstract_log_attributes
+   pm4py.llm
+   pm4py.llm.abstract_dfg
+   pm4py.llm.abstract_variants
+   pm4py.llm.abstract_ocel
+   pm4py.llm.abstract_ocel_ocdfg
+   pm4py.llm.abstract_ocel_features
+   pm4py.llm.abstract_event_stream
+   pm4py.llm.abstract_petri_net
+   pm4py.llm.abstract_log_attributes
+   pm4py.llm.abstract_log_features
+   pm4py.llm.abstract_temporal_profile
+   pm4py.llm.abstract_case
+   pm4py.llm.abstract_declare
+   pm4py.llm.abstract_log_skeleton
+   pm4py.llm.openai_query
    pm4py.connectors.extract_log_outlook_mails
    pm4py.connectors.extract_log_outlook_calendar
    pm4py.connectors.extract_log_windows_events
@@ -613,6 +639,7 @@ Overall List of Methods
    pm4py.analysis.compute_emd
    pm4py.analysis.reduce_petri_net_invisibles
    pm4py.analysis.reduce_petri_net_implicit_places
+   pm4py.analysis.get_enabled_transitions
    pm4py.utils
    pm4py.utils.rebase
    pm4py.utils.parse_process_tree

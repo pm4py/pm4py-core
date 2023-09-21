@@ -98,9 +98,10 @@ def compute_place_invariants(net):
             basis.append(vec.tolist())
 
         z = [[] for k in range(len(basis))]
-        for i in range(len(basis[0])):
-            for k in range(len(basis)):
-                z[k].append([basis[k][i]])
+        if basis:
+            for i in range(len(basis[0])):
+                for k in range(len(basis)):
+                    z[k].append([basis[k][i]])
         z = np.array(z)
 
         return z

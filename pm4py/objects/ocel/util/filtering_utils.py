@@ -131,10 +131,12 @@ def propagate_relations_filtering(ocel: OCEL, parameters: Optional[Dict[Any, Any
     event_id = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, ocel.event_id_column)
     object_id = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, ocel.object_id_column)
 
-    selected_event_ids = set(ocel.relations[event_id].unique())
-    selected_object_ids = set(ocel.relations[object_id].unique())
+    selected_event_ids = set(ocel.relations[event_id].unique()).intersection(set(ocel.events[event_id].unique()))
+    selected_object_ids = set(ocel.relations[object_id].unique()).intersection(set(ocel.objects[object_id].unique()))
     ocel.events = ocel.events[ocel.events[event_id].isin(selected_event_ids)]
     ocel.objects = ocel.objects[ocel.objects[object_id].isin(selected_object_ids)]
+    ocel.relations = ocel.relations[ocel.relations[event_id].isin(selected_event_ids)]
+    ocel.relations = ocel.relations[ocel.relations[object_id].isin(selected_object_ids)]
 
     ocel.e2e = ocel.e2e[(ocel.e2e[event_id].isin(selected_event_ids)) & (ocel.e2e[event_id+"_2"].isin(selected_event_ids))]
     ocel.o2o = ocel.o2o[(ocel.o2o[object_id].isin(selected_object_ids)) & (ocel.o2o[object_id+"_2"].isin(selected_object_ids))]

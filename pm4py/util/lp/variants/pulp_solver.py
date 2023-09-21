@@ -106,8 +106,9 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
 
     eval_str = ""
     expr_count = 0
+    min_threshold = min(max(c[j] for j in range(len(c))), MIN_THRESHOLD)
     for j in range(len(c)):
-        if abs(c[j]) > MIN_THRESHOLD:
+        if abs(c[j]) >= min_threshold:
             if expr_count > 0:
                 eval_str = eval_str + " + "
             eval_str = eval_str + str(c[j]) + "*x_list[" + str(j) + "]"
@@ -115,12 +116,13 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
     eval_str = eval_str + ", \"objective\""
     prob += eval(eval_str)
 
+    min_threshold = min(max(Aub[i, j] for i in range(Aub.shape[0]) for j in range(Aub.shape[1])), MIN_THRESHOLD)
     for i in range(Aub.shape[0]):
         expr_count = 0
         eval_str = 0
         eval_str = ""
         for j in range(Aub.shape[1]):
-            if abs(Aub[i, j]) > MIN_THRESHOLD:
+            if abs(Aub[i, j]) >= min_threshold:
                 if expr_count > 0:
                     eval_str = eval_str + " + "
                 eval_str = eval_str + str(Aub[i, j]) + "*x_list[" + str(j) + "]"

@@ -95,7 +95,7 @@ def performance_calculation_ocel_aggregation(ocel: OCEL, aggregation: Dict[str, 
                                        workcalendar=workcalendar)
                     diff = bh.get_seconds()
                 else:
-                    diff = timestamps[el[1]].timestamp() - timestamps[el[0]].timestamp()
+                    diff = (timestamps[el[1]] - timestamps[el[0]]).total_seconds()
                 ret[ot][act].append(diff)
             ret[ot][act] = sorted(ret[ot][act])
 

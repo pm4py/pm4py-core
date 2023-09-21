@@ -50,8 +50,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     feature_names = ["@@object_lifecycle_duration", "@@object_lifecycle_start_timestamp", "@@object_lifecycle_end_timestamp"]
 
     for obj in ordered_objects:
-        se = first_object_timestamp[obj].timestamp()
-        ee = last_object_timestamp[obj].timestamp()
-        data.append([ee - se, se, ee])
+        if obj in first_object_timestamp:
+            se = first_object_timestamp[obj].timestamp()
+            ee = last_object_timestamp[obj].timestamp()
+            data.append([ee - se, se, ee])
+        else:
+            data.append([0, 0, 0])
 
     return data, feature_names

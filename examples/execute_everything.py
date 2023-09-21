@@ -4,6 +4,60 @@ import sys
 import traceback
 
 
+def declare_simple():
+    from examples import declare_simple
+    print("\n\ndeclare_simple")
+    declare_simple.execute_script()
+
+
+def log_skeleton_manual_constraints():
+    from examples import log_skeleton_manual_constraints
+    print("\n\nlog_skeleton_manual_constraints")
+    log_skeleton_manual_constraints.execute_script()
+
+
+def stochastic_petri_playout():
+    from examples import stochastic_petri_playout
+    print("\n\nstochastic_petri_playout")
+    stochastic_petri_playout.execute_script()
+
+
+def trace_attrib_hierarch_cluster():
+    from examples import trace_attrib_hierarch_cluster
+    print("\n\ntrace_attrib_hierarch_cluster")
+    trace_attrib_hierarch_cluster.execute_script()
+
+
+def activities_to_alphabet():
+    from examples import activities_to_alphabet
+    print("\n\nactivities_to_alphabet")
+    activities_to_alphabet.execute_script()
+
+
+def ocel_filter_cc():
+    from examples import ocel_filter_cc
+    print("\n\nocel_filter_cc")
+    ocel_filter_cc.execute_script()
+
+
+def queue_check_exponential():
+    from examples import queue_check_exponential
+    print("\n\nqueue_check_exponential")
+    queue_check_exponential.execute_script()
+
+
+def queue_check_max_conc_exec():
+    from examples import queue_check_max_conc_exec
+    print("\n\nqueue_check_max_conc_exec")
+    queue_check_max_conc_exec.execute_script()
+
+
+def timestamp_granularity():
+    from examples import timestamp_granularity
+    print("\n\ntimestamp_granularity")
+    timestamp_granularity.execute_script()
+
+
 def ocel_occm_example():
     from examples import ocel_occm_example
     print("\n\nocel_occm_example")
@@ -759,6 +813,10 @@ def execute_script(f):
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
 if __name__ == "__main__":
+    execute_script(declare_simple)
+    execute_script(log_skeleton_manual_constraints)
+    execute_script(stochastic_petri_playout)
+    execute_script(trace_attrib_hierarch_cluster)
     execute_script(simplified_interface)
     execute_script(read_write_ocel)
     execute_script(discovery_data_petri_net)
@@ -772,10 +830,14 @@ if __name__ == "__main__":
     execute_script(inductive_miner_dfg)
     execute_script(inductive_miner_variants)
     execute_script(heu_miner_plus_plus)
+    execute_script(activities_to_alphabet)
+    execute_script(ocel_filter_cc)
+    execute_script(queue_check_exponential)
+    execute_script(queue_check_max_conc_exec)
+    execute_script(timestamp_granularity)
     execute_script(ocel_occm_example)
     execute_script(ocel_clustering)
     execute_script(ocel_enrichment)
-    execute_script(openai_queries)
     execute_script(validation_ocel20_xml)
     execute_script(consecutive_act_case_grouping_filter)
     execute_script(cost_based_dfg)
