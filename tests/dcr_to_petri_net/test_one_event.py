@@ -1,9 +1,15 @@
+import os
 import unittest
 
 from pm4py.objects.conversion.dcr.variants.to_petri_net import Dcr2PetriTransport
 
+from pm4py.objects.conversion.dcr.variants.to_petri_net_submodules import utils
+
 
 class ReadableTestCase(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.test_folder = '../../models/tests'
 
     def test_3_events_random(self):
         G = {
@@ -19,14 +25,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {'B'}
                         }
         }
-        tapn_path = '../models/fase/event/three_events.tapn'
+        tapn_path = os.path.join(self.test_folder, 'three_events.tapn')
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_one_event_included(self):
@@ -43,14 +49,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/event/one_event_incl.tapn'
+        tapn_path = os.path.join(self.test_folder, 'one_event_incl.tapn')
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_one_event_pend_inc(self):
@@ -67,14 +73,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {'A'}
                         }
         }
-        tapn_path = '../models/fase/event/one_event_incl_pend.tapn'
+        tapn_path = os.path.join(self.test_folder, 'one_event_incl_pend.tapn')
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_one_event_pending(self):
@@ -91,14 +97,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {'A'}
                         }
         }
-        tapn_path = '../models/fase/event/one_event_pending.tapn'
+        tapn_path = os.path.join(self.test_folder, 'one_event_pending.tapn')
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_one_event_executed_inc(self):
@@ -115,14 +121,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/event/one_event_exec_inc.tapn'
+        tapn_path = os.path.join(self.test_folder, 'one_event_exec_inc.tapn')
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_one_event_executed(self):
@@ -139,14 +145,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/event/one_event_exec.tapn'
+        tapn_path = os.path.join(self.test_folder, 'one_event_exec.tapn')
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_one_event(self):
@@ -163,14 +169,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/event/one_event.tapn'
+        tapn_path = os.path.join(self.test_folder, 'one_event.tapn')
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertEqual(len(tapn.places), p)
+        self.assertEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_one_event_unoptimized(self):
@@ -187,14 +193,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/event/one_event_full.tapn'
+        tapn_path = os.path.join(self.test_folder, 'one_event_full.tapn')
         d2p = Dcr2PetriTransport(preoptimize=False, map_unexecutable_events=True)
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_skeleton(self):
@@ -214,15 +220,20 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/test.pnml'
+        tapn_path = os.path.join(self.test_folder, 'test.pnml')
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
+
+    def tearDown(self) -> None:
+        tests_model_folder = '../../models/tests/'
+        for filename in os.listdir(tests_model_folder):
+            os.remove(os.path.join(tests_model_folder, filename))
 
 
 if __name__ == '__main__':

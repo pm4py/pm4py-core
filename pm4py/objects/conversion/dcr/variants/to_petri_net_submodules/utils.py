@@ -2,6 +2,7 @@ from pm4py.objects.petri_net.obj import *
 from pm4py.objects.petri_net.utils import petri_utils as pn_utils
 from pm4py.objects.dcr.obj import Relations
 
+
 def map_existing_transitions_of_copy_0(delta, copy_0, t, tapn) -> (PetriNet, PetriNet.Transition):
     trans = copy_0[delta]
     # if trans in tapn.transitions: # since this is a copy this cannot be checked here. trust me bro
@@ -29,12 +30,13 @@ def create_event_pattern_transitions_and_arcs(tapn, event, helper_struct, mappin
         t = PetriNet.Transition(f'{t_name}_{event}{i_copy}', f'{t_name}_{event}{i_copy}_label')
         tapn.transitions.add(t)
         # this if statement handles self response exclude
-        if event in mapping_exceptions.self_exceptions[frozenset([Relations.E.value,Relations.R.value])]:
+        if event in mapping_exceptions.self_exceptions[frozenset([Relations.E.value, Relations.R.value])]:
             pn_utils.add_arc_from_to(t, pend_exc_place, tapn)
 
         pn_utils.add_arc_from_to(inc_place, t, tapn)
         # this if statement handles self exclude and self response exclude
-        if not ((event in mapping_exceptions.self_exceptions[Relations.E.value]) or (event in mapping_exceptions.self_exceptions[frozenset([Relations.E.value,Relations.R.value])])):
+        if not ((event in mapping_exceptions.self_exceptions[Relations.E.value]) or (
+                event in mapping_exceptions.self_exceptions[frozenset([Relations.E.value, Relations.R.value])])):
             pn_utils.add_arc_from_to(t, inc_place, tapn)
 
         # this if statement handles self response
@@ -56,11 +58,12 @@ def create_event_pattern_transitions_and_arcs(tapn, event, helper_struct, mappin
     helper_struct[event]['trans_group_index'] += 1
     return tapn, ts
 
+
 def get_expected_places_transitions_arcs(G):
     # 3^(conditions + milestones) * 2^((inc+exc)+(resp+no_resp))*2 for each event in relations
     expected_transitions = 0
     # 3*no of events
-    expected_places = 4* len(G['events'])
+    expected_places = 4 * len(G['events'])
     # arcs:
     #   - events * 12
     #   - conditions * 9
@@ -73,11 +76,23 @@ def get_expected_places_transitions_arcs(G):
 
     for event in G['events']:
         expected_transitions += ((3 ** (len(G['conditionsFor'][event]) if event in G['conditionsFor'] else 0 +
-                                len(G['milestonesFor'][event]) if event in G['milestonesFor'] else 0)) *
+                                                                                                           len(G[
+                                                                                                                   'milestonesFor'][
+                                                                                                                   event]) if event in
+                                                                                                                              G[
+                                                                                                                                  'milestonesFor'] else 0)) *
                                  (3 ** ((len(G['includesTo'][event]) if event in G['includesTo'] else 0 +
-                                len(G['excludesTo'][event]) if event in G['excludesTo'] else 0)) *
+                                                                                                      len(G[
+                                                                                                              'excludesTo'][
+                                                                                                              event]) if event in
+                                                                                                                         G[
+                                                                                                                             'excludesTo'] else 0)) *
                                   (4 ** (len(G['responseTo'][event]) if event in G['responseTo'] else 0 +
-                                len(G['noResponseTo'][event]) if event in G['noResponseTo'] else 0)))) * 4
+                                                                                                      len(G[
+                                                                                                              'noResponseTo'][
+                                                                                                              event]) if event in
+                                                                                                                         G[
+                                                                                                                             'noResponseTo'] else 0)))) * 4
 
         expected_arcs += 2 ^ ((3 ^ (len(set(G['includesTo'][event] if event in G['includesTo'] else set()).union(
             set(G['excludesTo'][event] if event in G['excludesTo'] else set()))))) *

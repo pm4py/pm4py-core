@@ -4,7 +4,7 @@ from pm4py.objects.petri_net.obj import *
 from pm4py.objects.petri_net.utils import petri_utils as pn_utils
 from pm4py.objects.petri_net.exporter import exporter as pnml_exporter
 
-from pm4py.objects.conversion.dcr.variants.to_petri_net import exceptional_cases, single_relations, preoptimizer, utils
+from pm4py.objects.conversion.dcr.variants.to_petri_net_submodules import exceptional_cases, single_relations, preoptimizer, utils
 
 
 class Dcr2PetriTransport(object):

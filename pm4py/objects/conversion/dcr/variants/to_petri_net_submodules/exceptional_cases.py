@@ -1,7 +1,7 @@
 from pm4py.objects.petri_net.obj import *
 from pm4py.objects.petri_net.utils import petri_utils as pn_utils
 from pm4py.objects.dcr.obj import Relations
-from pm4py.objects.conversion.dcr.variants.to_petri_net import utils
+from pm4py.objects.conversion.dcr.variants.to_petri_net_submodules import utils
 
 from itertools import combinations
 

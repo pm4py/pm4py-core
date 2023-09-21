@@ -1,6 +1,7 @@
 import unittest
-from copy import deepcopy
+import os
 import itertools
+from copy import deepcopy
 from itertools import combinations
 
 from pm4py.objects.conversion.dcr.variants.to_petri_net import Dcr2PetriTransport
@@ -129,7 +130,7 @@ class MyTestCase(unittest.TestCase):
             k_split = k.split('_')
             file_name = k.replace("'", "").replace("(", "").replace(")", "").replace(",", "").replace(" ", "_")
             file_name = file_name + ".tapn"
-            res_path = f"../models/all/{file_name}"
+            res_path = f"../../models/tests/{file_name}"
             d2p = Dcr2PetriTransport(postoptimize=False)
             tapn = d2p.dcr2tapn(v, res_path)
             if k_split[1] != past_k:
@@ -158,9 +159,15 @@ class MyTestCase(unittest.TestCase):
                         }
             }
         file_name = "one.tapn"
-        res_path = f"../models/all/{file_name}"
+        res_path = f"../../models/tests/{file_name}"
         d2p = Dcr2PetriTransport(postoptimize=False)
         tapn = d2p.dcr2tapn(dcr, res_path)
+
+    def tearDown(self) -> None:
+        # comment this if you don't want to delete the results (the point of these tests is to inspect them in tapaal
+        tests_model_folder = '../../models/tests/'
+        for filename in os.listdir(tests_model_folder):
+            os.remove(os.path.join(tests_model_folder, filename))
 
 if __name__ == '__main__':
     unittest.main()

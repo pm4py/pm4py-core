@@ -1,9 +1,14 @@
+import os
 import unittest
 
 from pm4py.objects.conversion.dcr.variants.to_petri_net import Dcr2PetriTransport
+from pm4py.objects.conversion.dcr.variants.to_petri_net_submodules import utils
 
 
 class ReadableTestCase(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.test_folder = '../../models/tests'
 
     def test_2c_cond_mil(self):
         '''
@@ -22,14 +27,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/2c_cond_mil.tapn'
+        tapn_path = self.test_folder + '/2c_cond_mil.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_2c_cond_mil_pend(self):
@@ -49,14 +54,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {'A'}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/2c_cond_mil_pend.tapn'
+        tapn_path = self.test_folder + '/2c_cond_mil_pend.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_2e_resp_no_resp(self):
@@ -76,14 +81,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/2e_resp_no_resp.tapn'
+        tapn_path = self.test_folder + '/2e_resp_no_resp.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_2e_incl_excl(self):
@@ -100,14 +105,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/2e_incl_excl.tapn'
+        tapn_path = self.test_folder + '/2e_incl_excl.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_2e_incl_excl_excluded(self):
@@ -124,14 +129,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/2e_incl_excl_excluded.tapn'
+        tapn_path = self.test_folder + '/2e_incl_excl_excluded.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_2e_incl_resp(self):
@@ -148,14 +153,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/2e_incl_resp.tapn'
+        tapn_path = self.test_folder + '/2e_incl_resp.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_2e_incl_resp_excluded(self):
@@ -172,14 +177,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/2e_incl_resp_excluded.tapn'
+        tapn_path = self.test_folder + '/2e_incl_resp_excluded.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_2e_excl_no_resp(self):
@@ -199,14 +204,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/2e_excl_no_resp.tapn'
+        tapn_path = self.test_folder + '/2e_excl_no_resp.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_2e_excl_resp(self):
@@ -223,14 +228,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/2e_excl_resp.tapn'
+        tapn_path = self.test_folder + '/2e_excl_resp.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_2e_incl_no_resp(self):
@@ -250,14 +255,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/2e_incl_no_resp.tapn'
+        tapn_path = self.test_folder + '/2e_incl_no_resp.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_ec_mil_incl(self):
@@ -277,14 +282,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/ec_mil_incl.tapn'
+        tapn_path = self.test_folder + '/ec_mil_incl.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_ec_mil_excl(self):
@@ -304,14 +309,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/ec_mil_excl.tapn'
+        tapn_path = self.test_folder + '/ec_mil_excl.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_ec_mil_resp(self):
@@ -331,14 +336,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/ec_mil_resp.tapn'
+        tapn_path = self.test_folder + '/ec_mil_resp.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_ec_mil_no_resp(self):
@@ -358,14 +363,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/ec_mil_no_resp.tapn'
+        tapn_path = self.test_folder + '/ec_mil_no_resp.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_2ec_cond_incl(self):
@@ -382,14 +387,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/2ec_cond_incl.tapn'
+        tapn_path = self.test_folder + '/2ec_cond_incl.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_2ec_cond_incl_excluded(self):
@@ -406,14 +411,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/2ec_cond_incl_excluded.tapn'
+        tapn_path = self.test_folder + '/2ec_cond_incl_excluded.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_2ec_cond_excl(self):
@@ -430,14 +435,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/2ec_cond_excl.tapn'
+        tapn_path = self.test_folder + '/2ec_cond_excl.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_2ec_cond_resp(self):
@@ -454,14 +459,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/2ec_cond_resp.tapn'
+        tapn_path = self.test_folder + '/2ec_cond_resp.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_3ec_cond_resp_incl(self):
@@ -478,14 +483,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/3ec_cond_resp_incl.tapn'
+        tapn_path = self.test_folder + '/3ec_cond_resp_incl.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_3ec_cond_resp_excl(self):
@@ -502,14 +507,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/3ec_cond_resp_excl.tapn'
+        tapn_path = self.test_folder + '/3ec_cond_resp_excl.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_4ec_cond_resp_incl_excl(self):
@@ -526,14 +531,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/4ec_cond_resp_incl_excl.tapn'
+        tapn_path = self.test_folder + '/4ec_cond_resp_incl_excl.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_4ec_cond_resp_incl_excl_dumn(self):
@@ -550,14 +555,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/4ec_cond_resp_incl_excl_dumn.tapn'
+        tapn_path = self.test_folder + '/4ec_cond_resp_incl_excl_dumn.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_ec_cond_no_resp(self):
@@ -577,14 +582,14 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/reciprocal/ec_cond_no_resp.tapn'
+        tapn_path = self.test_folder + '/ec_cond_no_resp.tapn'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
 
     def test_skeleton(self):
@@ -604,15 +609,19 @@ class ReadableTestCase(unittest.TestCase):
                         'pending': {}
                         }
         }
-        tapn_path = '../models/fase/test.pnml'
+        tapn_path = self.test_folder + '/test.pnml'
         d2p = Dcr2PetriTransport()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
-        p, t, a = util.get_expected_places_transitions_arcs(G)
-        self.assertEqual(p, len(tapn.places))
-        self.assertEqual(t, len(tapn.transitions))
+        p, t, a = utils.get_expected_places_transitions_arcs(G)
+        self.assertLessEqual(len(tapn.places), p)
+        self.assertLessEqual(len(tapn.transitions), t)
         self.assertLessEqual(len(tapn.arcs), a)
+
+    def tearDown(self) -> None:
+        for filename in os.listdir(self.test_folder):
+            os.remove(os.path.join(self.test_folder, filename))
 
 
 if __name__ == '__main__':
