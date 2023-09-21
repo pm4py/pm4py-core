@@ -168,8 +168,8 @@ def __search(net, ini, fin, variants,  exponent=2, marking_limit=1000, epsilon =
             tp = utils.DijkstraSearchTupleForAntiAndMulti(cost, new_marking, curr.r + [t])
             heapq.heappush(open_set, tp)
 
-    return  {'anti-alignment': best.r, 'cost': best.g, 'visited_states': visited, 'queued_states': queued,
-                      'traversed_arcs': traversed, 'precision':getPrecision(best.r,variants,epsilon)}
+    return {'anti-alignment': best.r, 'cost': best.g, 'visited_states': visited, 'queued_states': queued,
+                      'traversed_arcs': traversed, 'precision': getPrecision(best.r, variants, epsilon)}
 
 
 def getPrecision(run, variants, epsilon):

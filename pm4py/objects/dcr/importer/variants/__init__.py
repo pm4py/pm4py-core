@@ -1,1 +1,1 @@
-from pm4py.objects.dcr.importer.variants import dcrxml, text
+from pm4py.objects.dcr.importer.variants import xml_dcr_portal, text

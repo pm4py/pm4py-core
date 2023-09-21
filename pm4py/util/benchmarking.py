@@ -4,6 +4,7 @@ from copy import deepcopy
 from pm4py.algo.discovery.dcr_discover import algorithm as alg
 from pm4py.objects.dcr.exporter import exporter as dcr_exporter
 
+
 def run_discover_config(event_log_file, variant, result_file_prefix, dcr_title, config=None):
     if config is None:
         config = {
@@ -26,10 +27,10 @@ def run_discover_config(event_log_file, variant, result_file_prefix, dcr_title, 
     if variant == alg.DCR_BASIC:
         dcr_model, la = alg.apply(event_log, alg.DCR_BASIC, **config)
     else:
-        dcr_model, sp_log = alg.apply(event_log, alg.DCR_SUBPROCESS_ME, **config)
+        dcr_model, sp_log = alg.apply(event_log, alg.DCR_SUBPROCESS, **config)
     dcr_exporter.apply(dcr_graph=dcr_model,
                        path=export_path,
-                       variant=dcr_exporter.DCR_XML_SIMPLE,
+                       variant=dcr_exporter.XML_SIMPLE,
                        dcr_title=dcr_title,
                        dcr_description=dcr_title)
     print(f'[!] Model saved in {export_path}')
@@ -55,14 +56,15 @@ def benchmark_subprocess_no_i2e_e2i(event_log_file, result_file_prefix, dcr_titl
     export_path = f'models/{rfp}_Sp{t}_no_i2e_e2i.xml'
     config2 = deepcopy(config)
     config2['inBetweenRels'] = False
-    sp_no_i2e_e2i_dcr, sp_no_i2e_e2i_log = alg.apply(event_log, alg.DCR_SUBPROCESS_ME, **config)
+    sp_no_i2e_e2i_dcr, sp_no_i2e_e2i_log = alg.apply(event_log, alg.DCR_SUBPROCESS, **config)
     dcr_exporter.apply(dcr_graph=sp_no_i2e_e2i_dcr,
                        path=export_path,
-                       variant=dcr_exporter.DCR_XML_SIMPLE,
+                       variant=dcr_exporter.XML_SIMPLE,
                        dcr_title=dcr_title,
                        dcr_description=f"Sp{t}-no i2e oe e21")
     print(f'[!] Model saved in {export_path}')
     return sp_no_i2e_e2i_dcr, sp_no_i2e_e2i_log
+
 
 def benchmark_event_log_from_configs(event_log_file, result_file_prefix, dcr_title, configs=[]):
     """
@@ -90,13 +92,14 @@ def benchmark_event_log_from_configs(event_log_file, result_file_prefix, dcr_tit
         dcr, log = alg.apply(el, **config)
         dcr_exporter.apply(dcr_graph=dcr,
                            path=export_path,
-                           variant=dcr_exporter.DCR_XML_SIMPLE,
+                           variant=dcr_exporter.XML_SIMPLE,
                            dcr_title=dcr_title,
                            dcr_description=dcr_title)
         i = i + 1
         res.append(dcr)
         print(f'[!] Model saved in {export_path}')
     return res
+
 
 def benchmark_event_log(event_log_file, result_file_prefix, dcr_title, config=None):
     if config is None:
@@ -117,20 +120,20 @@ def benchmark_event_log(event_log_file, result_file_prefix, dcr_title, config=No
 
     print('[i] Mining with DisCoveR!')
     export_path = f'models/{rfp}_{t}DisCoveR.xml'
-    reference_dcr, la = alg.apply(reference_event_log,alg.DCR_BASIC, **config)
+    reference_dcr, la = alg.apply(reference_event_log, alg.DCR_BASIC, **config)
     dcr_exporter.apply(dcr_graph=reference_dcr,
-                       path= export_path,
-                       variant=dcr_exporter.DCR_XML_SIMPLE,
+                       path=export_path,
+                       variant=dcr_exporter.XML_SIMPLE,
                        dcr_title=dcr_title,
                        dcr_description=f"Basic {t}DisCoveR")
     print(f'[!] Model saved in {export_path}')
 
     print('[i] Mining with SpT-DisCoveR - mutual exclusion (ME)!')
     export_path = f'models/{rfp}_Sp{t}.xml'
-    spme_dcr, spme_log = alg.apply(event_log, alg.DCR_SUBPROCESS_ME, **config)
+    spme_dcr, spme_log = alg.apply(event_log, alg.DCR_SUBPROCESS, **config)
     dcr_exporter.apply(dcr_graph=spme_dcr,
                        path=export_path,
-                       variant=dcr_exporter.DCR_XML_SIMPLE,
+                       variant=dcr_exporter.XML_SIMPLE,
                        dcr_title=dcr_title,
                        dcr_description=f"Sp{t}-ME")
     print(f'[!] Model saved in {export_path}')
@@ -141,7 +144,7 @@ def benchmark_event_log(event_log_file, result_file_prefix, dcr_title, config=No
         sp_dcr, sp_log = alg.apply(event_log, alg.DCR_SUBPROCESS, **config)
         dcr_exporter.apply(dcr_graph=sp_dcr,
                            path=export_path,
-                           variant=dcr_exporter.DCR_XML_SIMPLE,
+                           variant=dcr_exporter.XML_SIMPLE,
                            dcr_title=dcr_title,
                            dcr_description=f"Sp{t}")
         print(f'[!] Model saved in {export_path}')

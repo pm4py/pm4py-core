@@ -10,13 +10,13 @@ from pm4py.algo.discovery.dcr_discover.algorithm import Variants
 from pm4py.util.benchmarking import *
 from pm4py.algo.evaluation.simplicity.variants import dcr_relations as dcr_simplicity
 from pm4py.algo.evaluation.confusion_matrix.algorithm import fitness
-from pm4py.objects.dcr import semantics_obj as dcr_semantics
+from pm4py.objects.dcr import semantics as dcr_semantics
 
 
 def pdcFscore(tp, fp, tn, fn):
     try:
-        posAcc = tp / (tp + fn)
-        negAcc = tn / (tn + fp)
+        posAcc = tp / (tp + fn) #TPR - harmonic mean
+        negAcc = tn / (tn + fp) #TNR -
         res = 2 * posAcc * negAcc / (posAcc + negAcc)
         return res
     except:
@@ -152,7 +152,107 @@ def compare_two_models(dcr_model_1, dcr_model_2, ground_truth_log):
 def score_everything(
         base_dir='/home/vco/Datasets',
         folders=None,
-        special_folders=None):
+        special_folders=None,
+        configs=None):
+    if folders is None:
+        folders = ['PDC19', 'PDC20', 'PDC21', 'PDC22']
+    if special_folders is None:
+        special_folders = ['PDC21', 'PDC22']
+    if configs is None:
+        configs = [{
+                'timed': False,
+                'pending': False,
+                'variant': Variants.DCR_BASIC,
+                'alg_name': 'DisCoveR'
+            },{
+                'inBetweenRels': True,
+                'timed': False,
+                'pending': False,
+                'variant': Variants.DCR_SUBPROCESS_ME,
+                'alg_name': 'DisCoveR_Tics'
+            },{
+                'inBetweenRels': False,
+                'timed': False,
+                'pending': False,
+                'variant': Variants.DCR_SUBPROCESS_ME,
+                'alg_name': 'DisCoveR_Tics_no_re'
+            }]
+    sub_folders = ['Ground Truth Logs', 'Test Logs', 'Training Logs']
+    # now just take all .xes files and make sure they match across folders
+    temp_results = []
+    for folder in folders:
+        print(f'[i] Started for {folder}')
+        for log_name in os.listdir(os.path.join(base_dir, folder, sub_folders[0])):
+            print(f'[i] Log {log_name}')
+            gt = pm4py.read_xes(os.path.join(base_dir, folder, sub_folders[0], log_name), return_legacy_log_object=True,
+                                show_progress_bar=False)
+            # test = pm4py.read_xes(os.path.join(base_dir,folder,sub_folders[1],log_name),return_legacy_log_object=True)
+
+            if folder in special_folders:
+                specific_log = f'{Path(log_name).stem}{0}.xes'
+                train = pm4py.read_xes(os.path.join(base_dir, folder, sub_folders[2], specific_log),
+                                       return_legacy_log_object=True, show_progress_bar=False)
+            else:
+                train = pm4py.read_xes(os.path.join(base_dir, folder, sub_folders[2], log_name),
+                                       return_legacy_log_object=True, show_progress_bar=False)
+            i = 0
+            for config in configs:
+                if 'alg_name' not in config:
+                    config['alg_name'] = f'config {i}'
+                    i += 1
+                temp_results.append(score_based_on_config(train,gt,config,folder,log_name,alg_name=config['alg_name']))
+                print(f'[i] Done for {folder}')
+    results = pd.DataFrame(
+        columns=['PDC Year', 'Log name', 'Algorithm', 'TP', 'FP', 'TN', 'FN', 'F1-PDC', 'F1',
+                 'BAC', 'Training Fitness', '#Relations', '#Subprocesses', '#InSpActivities',
+                 '#Activities', 'Runtime'],
+        data=temp_results)
+    results.to_csv(path_or_buf='/models_old/results.csv', index=False)
+    return results
+
+
+def score_based_on_config(train,gt,config,folder,log_name,alg_name='DisCoveR'):
+    start_time = time.time()
+    dcr = train_dcr_model(train, config)
+    elapsed = time.time() - start_time
+
+    sim = dcr_simplicity.get_simplicity(dcr)
+    fit = fitness(train, dcr)
+    tp, fp, tn, fn = score_one_model(dcr, gt)
+    pdc_f_score = pdcFscore(tp, fp, tn, fn)
+    f_score = fscore(tp, fp, tn, fn)
+    b_acc = balancedAccuracy(tp, fp, tn, fn)
+    m_c_c = mcc(tp, fp, tn, fn)
+    sp_events = 0
+    for k, v in dcr['subprocesses'].items():
+        sp_events += len(v)
+    return {
+        'PDC Year': folder,
+        'Log name': log_name,
+        'Algorithm': alg_name,
+        'TP': tp, 'FP': fp, 'TN': tn, 'FN': fn,
+        'F1-PDC': pdc_f_score,
+        'F1': f_score,
+        'BAC': b_acc,
+        # 'MCC': m_c_c,
+        'Training Fitness': fit[0] / fit[1],  # fitness is on training
+        '#Relations': sim[0],
+        '#Subprocesses': len(dcr['subprocesses']),
+        '#InSpActivities': sp_events,
+        '#Activities': len(dcr['events']),
+        'Runtime': elapsed
+    }
+    # train on the training logs
+    # get the isPos for each trace in the Ground Truth log
+    # compare the isPos with the prediction on the test for some stupid reason the gt == test plus the isPos tag
+    # do aggregated results too
+
+
+def score_everything_old(
+        base_dir='/home/vco/Datasets',
+        folders=None,
+        special_folders=None,
+        configs=None):
     if folders is None:
         folders = ['PDC19', 'PDC20', 'PDC21', 'PDC22']
     if special_folders is None:
@@ -280,10 +380,5 @@ def score_everything(
         columns=['PDC Year', 'Log name', 'Algorithm', 'TP', 'FP', 'TN', 'FN', 'Fscore (PDC)', 'Fscore',
                  'balancedAccuracy', 'mcc', 'Fitness', 'Simplicity', 'Subprocesses', 'Events', 'Runtime'],
         data=temp_results)
-    results.to_csv(path_or_buf='/home/vco/Projects/pm4py-dcr/models/results.csv', index=False)
+    results.to_csv(path_or_buf='/models_old/results.csv', index=False)
     return results
-
-    # train on the training logs
-    # get the isPos for each trace in the Ground Truth log
-    # compare the isPos with the prediction on the test for some stupid reason the gt == test plus the isPos tag
-    # do aggregated results too

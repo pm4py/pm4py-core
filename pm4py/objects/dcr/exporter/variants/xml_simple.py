@@ -1,26 +1,6 @@
 from lxml import etree
 
 
-def seconds_to_iso_time(time):
-    day = time // (24 * 3600)
-    time = time % (24 * 3600)
-    hour = time // 3600
-    time %= 3600
-    minutes = time // 60
-    time %= 60
-    seconds = time
-    if day > 0:
-        return f'P{day}DT{hour}H{minutes}M{seconds}S'
-    elif hour > 0:
-        return f'PT{hour}H{minutes}M{seconds}S'
-    elif minutes > 0:
-        return f'PT{minutes}M{seconds}S'
-    elif seconds > 0:
-        return f'PT{seconds}S'
-    else:
-        return 'P0D'  # anything less than 1 second is 0
-
-
 def export_dcr_graph(dcr, root, parents_dict=None):
     for event in dcr['events']:
         xml_event = etree.SubElement(root, "events")
@@ -46,7 +26,7 @@ def export_dcr_graph(dcr, root, parents_dict=None):
                     time = dcr['conditionsForDelays'][event][event_prime]
                     if time.floor(freq='S').to_numpy() > 0:
                         xml_target = etree.SubElement(xml_condition, "duration")
-                        xml_target.text = time.floor(freq='S').isoformat() #seconds_to_iso_time(time)
+                        xml_target.text = time.floor(freq='S').isoformat()
             if event in dcr["responseTo"] and event_prime in dcr["responseTo"][event]:
                 xml_response = etree.SubElement(root, "rules")
                 xml_type = etree.SubElement(xml_response, "type")
@@ -60,7 +40,7 @@ def export_dcr_graph(dcr, root, parents_dict=None):
                     time = dcr['responseToDeadlines'][event][event_prime]
                     if time.floor(freq='S').to_numpy() > 0:
                         xml_target = etree.SubElement(xml_response, "duration")
-                        xml_target.text = time.floor(freq='S').isoformat() #seconds_to_iso_time(time)
+                        xml_target.text = time.floor(freq='S').isoformat()
             if event in dcr["includesTo"] and event_prime in dcr["includesTo"][event]:
                 xml_include = etree.SubElement(root, "rules")
                 xml_type = etree.SubElement(xml_include, "type")
@@ -73,6 +53,22 @@ def export_dcr_graph(dcr, root, parents_dict=None):
                 xml_exclude = etree.SubElement(root, "rules")
                 xml_type = etree.SubElement(xml_exclude, "type")
                 xml_type.text = "exclude"
+                xml_source = etree.SubElement(xml_exclude, "source")
+                xml_source.text = event
+                xml_target = etree.SubElement(xml_exclude, "target")
+                xml_target.text = event_prime
+            if event in dcr["milestonesFor"] and event_prime in dcr["milestonesFor"][event]:
+                xml_exclude = etree.SubElement(root, "rules")
+                xml_type = etree.SubElement(xml_exclude, "type")
+                xml_type.text = "milestone"
+                xml_source = etree.SubElement(xml_exclude, "source")
+                xml_source.text = event
+                xml_target = etree.SubElement(xml_exclude, "target")
+                xml_target.text = event_prime
+            if event in dcr["noResponseTo"] and event_prime in dcr["noResponseTo"][event]:
+                xml_exclude = etree.SubElement(root, "rules")
+                xml_type = etree.SubElement(xml_exclude, "type")
+                xml_type.text = "coresponse"
                 xml_source = etree.SubElement(xml_exclude, "source")
                 xml_source.text = event
                 xml_target = etree.SubElement(xml_exclude, "target")

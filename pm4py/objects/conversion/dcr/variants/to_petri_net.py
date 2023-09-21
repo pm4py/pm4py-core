@@ -4,11 +4,12 @@ from pm4py.objects.petri_net.obj import *
 from pm4py.objects.petri_net.utils import petri_utils as pn_utils
 from pm4py.objects.petri_net.exporter import exporter as pnml_exporter
 
-from pm4py.objects.conversion.dcr.variants.mappings import exceptional_cases, single_relations, preoptimizer
-from pm4py.objects.conversion.dcr.variants import dcr_to_pn_utils
+from pm4py.objects.conversion.dcr.variants.to_petri_net import exceptional_cases, single_relations, preoptimizer, utils
+
+
 class Dcr2PetriTransport(object):
 
-    def __init__(self, preoptimize=True, postoptimize=True, map_unexecutable_events=False,debug=False) -> None:
+    def __init__(self, preoptimize=True, postoptimize=True, map_unexecutable_events=False, debug=False) -> None:
         self.in_t_types = ['event', 'init', 'initpend', 'pend']
         self.helper_struct = {}
         self.preoptimize = preoptimize
@@ -18,7 +19,7 @@ class Dcr2PetriTransport(object):
         self.transitions = {}
         self.mapping_exceptions = None
         self.reachability_timeout = None
-        self.print_steps = False
+        self.print_steps = debug
         self.debug = debug
 
     def initialize_helper_struct(self, G) -> None:
@@ -94,8 +95,8 @@ class Dcr2PetriTransport(object):
 
     def create_event_pattern(self, event, G, tapn, m) -> (PetriNet, Marking):
         tapn, m = self.create_event_pattern_places(event, G, tapn, m)
-        tapn, ts = dcr_to_pn_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct,
-                                                                  self.mapping_exceptions)
+        tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct,
+                                                                             self.mapping_exceptions)
         self.helper_struct[event]['transitions'].extend(ts)
         return tapn, m
 
@@ -103,7 +104,7 @@ class Dcr2PetriTransport(object):
         from pm4py.objects.petri_net.utils import reachability_graph
         # from pm4py.visualization.transition_system import visualizer as ts_visualizer
         from pm4py.objects.petri_net.transport_invariant import semantics as tapn_semantics
-        max_elab_time = 2 * 60 * 60 #2 hours
+        max_elab_time = 2 * 60 * 60  # 2 hours
         if self.reachability_timeout:
             max_elab_time = self.reachability_timeout
         trans_sys = reachability_graph.construct_reachability_graph(tapn, m, use_trans_name=True,
@@ -135,7 +136,7 @@ class Dcr2PetriTransport(object):
             for event in G['events']:
                 for type, event_place in self.helper_struct[event]['places'].items():
                     for type_prime, event_place_prime in self.helper_struct[event]['places'].items():
-                        if event_place and event_place_prime and event_place.name != event_place_prime.name and\
+                        if event_place and event_place_prime and event_place.name != event_place_prime.name and \
                                 event_place not in parallel_places:
                             is_parallel = False
                             ep_ins = event_place.in_arcs
@@ -169,7 +170,7 @@ class Dcr2PetriTransport(object):
 
         return tapn
 
-    def export_debug_net(self,tapn,m,path,step,pn_export_format):
+    def export_debug_net(self, tapn, m, path, step, pn_export_format):
         path_without_extension, extens = os.path.splitext(path)
         debug_save_path = f'{path_without_extension}_{step}{extens}'
         pnml_exporter.apply(tapn, m, debug_save_path, variant=pn_export_format, parameters={'isTimed': self.timed})
@@ -208,7 +209,7 @@ class Dcr2PetriTransport(object):
         for event in G['events']:
             tapn, m = self.create_event_pattern(event, G, tapn, m)
         if self.debug:
-            self.export_debug_net(tapn,m,tapn_path,f'{induction_step}event',pn_export_format)
+            self.export_debug_net(tapn, m, tapn_path, f'{induction_step}event', pn_export_format)
             induction_step += 1
         # all self exceptions have been mapped at this point
 
@@ -220,14 +221,14 @@ class Dcr2PetriTransport(object):
             for event_prime in G['conditionsFor'][event]:
                 tapn = sr.create_condition_pattern(event, event_prime, tapn)
                 if self.debug:
-                    self.export_debug_net(tapn,m,tapn_path,f'{induction_step}conditionsFor',pn_export_format)
+                    self.export_debug_net(tapn, m, tapn_path, f'{induction_step}conditionsFor', pn_export_format)
                     induction_step += 1
         if not self.basic:
             for event in G['milestonesFor']:
                 for event_prime in G['milestonesFor'][event]:
                     tapn = sr.create_milestone_pattern(event, event_prime, tapn)
                     if self.debug:
-                        self.export_debug_net(tapn,m,tapn_path,f'{induction_step}milestonesFor',pn_export_format)
+                        self.export_debug_net(tapn, m, tapn_path, f'{induction_step}milestonesFor', pn_export_format)
                         induction_step += 1
 
         # map effect relations
@@ -237,26 +238,26 @@ class Dcr2PetriTransport(object):
             for event_prime in G['includesTo'][event]:
                 tapn = sr.create_include_pattern(event, event_prime, tapn)
                 if self.debug:
-                    self.export_debug_net(tapn,m,tapn_path,f'{induction_step}includesTo',pn_export_format)
+                    self.export_debug_net(tapn, m, tapn_path, f'{induction_step}includesTo', pn_export_format)
                     induction_step += 1
         for event in G['excludesTo']:
             for event_prime in G['excludesTo'][event]:
                 tapn = sr.create_exclude_pattern(event, event_prime, tapn)
                 if self.debug:
-                    self.export_debug_net(tapn,m,tapn_path,f'{induction_step}excludesTo',pn_export_format)
+                    self.export_debug_net(tapn, m, tapn_path, f'{induction_step}excludesTo', pn_export_format)
                     induction_step += 1
         for event in G['responseTo']:
             for event_prime in G['responseTo'][event]:
                 tapn = sr.create_response_pattern(event, event_prime, tapn)
                 if self.debug:
-                    self.export_debug_net(tapn,m,tapn_path,f'{induction_step}responseTo',pn_export_format)
+                    self.export_debug_net(tapn, m, tapn_path, f'{induction_step}responseTo', pn_export_format)
                     induction_step += 1
         if not self.basic:
             for event in G['noResponseTo']:
                 for event_prime in G['noResponseTo'][event]:
                     tapn = sr.create_no_response_pattern(event, event_prime, tapn)
                     if self.debug:
-                        self.export_debug_net(tapn,m,tapn_path,f'{induction_step}noResponseTo',pn_export_format)
+                        self.export_debug_net(tapn, m, tapn_path, f'{induction_step}noResponseTo', pn_export_format)
                         induction_step += 1
 
         # handle all relation exceptions
@@ -290,8 +291,8 @@ def run_specific_dcr():
         'noResponseTo': {},
         'includesTo': {},
         'excludesTo': {'A': {'B'}},
-        # 'conditionsForDelays': {'A': {'B': 2}},
-        # 'responseToDeadlines': {'C': {'B': 5}, 'A': {'B': 7}},
+        'conditionsForDelays': {'A': {'B': 2}},
+        'responseToDeadlines': {'C': {'B': 5}, 'A': {'B': 7}},
         'marking': {'executed': set(),
                     'included': {'A', 'B'},
                     'pending': set()
@@ -301,5 +302,3 @@ def run_specific_dcr():
     d2p = Dcr2PetriTransport(preoptimize=True, postoptimize=True, map_unexecutable_events=False)
     print('[i] dcr')
     tapn, m = d2p.dcr2tapn(dcr, tapn_path="../models/one_petri.tapn")
-
-

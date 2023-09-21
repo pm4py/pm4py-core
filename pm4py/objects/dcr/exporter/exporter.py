@@ -1,21 +1,19 @@
 from enum import Enum
-from pm4py.objects.dcr.exporter.variants import xml_simple,xml_full
-from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple
+from pm4py.objects.dcr.exporter.variants import xml_simple, xml_dcr_portal
 
 
 class Variants(Enum):
-    DCR_XML_SIMPLE = xml_simple
-    DCR_XML_FULL = xml_full
+    XML_SIMPLE = xml_simple
+    XML_DCR_PORTAL = xml_dcr_portal
 
 
-DCR_XML_SIMPLE = Variants.DCR_XML_SIMPLE
-DCR_XML_FULL = Variants.DCR_XML_FULL
+XML_SIMPLE = Variants.XML_SIMPLE
+XML_DCR_PORTAL = Variants.XML_DCR_PORTAL
 
-VERSIONS = {DCR_XML_SIMPLE, DCR_XML_FULL}
+VERSIONS = {XML_SIMPLE, XML_DCR_PORTAL}
 
 
-def apply(dcr_graph, path, variant=DCR_XML_SIMPLE, **parameters):
+def apply(dcr_graph, path, variant=XML_SIMPLE, **parameters):
     """
     Parameters
     -----------
@@ -32,7 +30,7 @@ def apply(dcr_graph, path, variant=DCR_XML_SIMPLE, **parameters):
 
     """
 
-    if variant is Variants.DCR_XML_FULL:
-        xml_full.export_dcr_xml(dcr_graph, output_file_name=path, **parameters)
-    elif variant is Variants.DCR_XML_SIMPLE:
+    if variant is Variants.XML_DCR_PORTAL:
+        xml_dcr_portal.export_dcr_xml(dcr_graph, output_file_name=path, **parameters)
+    elif variant is Variants.XML_SIMPLE:
         xml_simple.export_dcr_xml(dcr_graph, output_file_name=path, **parameters)

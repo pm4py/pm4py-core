@@ -1,16 +1,14 @@
 from enum import Enum
 
-from pm4py.objects.dcr.importer.variants import dcrxml, text
+from pm4py.objects.dcr.importer.variants import xml_dcr_portal
 from pm4py.util import exec_utils
 
 
 class Variants(Enum):
-    DCRXML = dcrxml
-    # DCR_JSON = dcr_json
-    TEXT = text
+    XML_DCR_PORTAL = xml_dcr_portal
 
 
-DEFAULT_VARIANT = Variants.DCRXML
+DEFAULT_VARIANT = Variants.XML_DCR_PORTAL
 
 
 def apply(path, variant=DEFAULT_VARIANT, parameters=None):

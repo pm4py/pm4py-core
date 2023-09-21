@@ -46,6 +46,17 @@ def get_number_of_subgraphs(dcr):
 
 
 def get_simplicity(dcr, variant="DCR"):
+    '''
+
+    Parameters
+    ----------
+    dcr
+    variant
+
+    Returns (no of edges), (no of subprocesses)
+    -------
+
+    '''
     relation_count = get_number_of_edges(dcr)
     subprocesses_count = get_number_of_subgraphs(dcr)
 

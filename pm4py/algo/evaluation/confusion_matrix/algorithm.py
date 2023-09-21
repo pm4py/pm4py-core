@@ -9,7 +9,7 @@ from math import sqrt
 from copy import deepcopy
 from pm4py.objects.log.importer.xes import importer
 from pm4py.objects.log.obj import EventLog
-from pm4py.objects.dcr import semantics_obj as dcr_semantics
+from pm4py.objects.dcr import semantics as dcr_semantics
 
 minerPath = "./DisCoveR.jar"
 testDir = "../logs/PDC2020/TestLogs/"
