@@ -1,4 +1,4 @@
-import pkgutil
+import importlib.util
 from enum import Enum
 
 try:
@@ -241,7 +241,7 @@ def __export_traces(log, root, parameters=None):
     show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
 
     progress = None
-    if pkgutil.find_loader("tqdm") and show_progress_bar:
+    if importlib.util.find_spec("tqdm") and show_progress_bar:
         from tqdm.auto import tqdm
         progress = tqdm(total=len(log), desc="exporting log, completed traces :: ")
 

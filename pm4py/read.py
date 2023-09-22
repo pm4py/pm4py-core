@@ -1,4 +1,3 @@
-import warnings
 from typing import Tuple, Dict, Optional
 
 from pm4py.objects.bpmn.obj import BPMN
@@ -13,8 +12,7 @@ from pm4py.util import constants
 import os
 
 from pandas import DataFrame
-import pkgutil
-import deprecation
+import importlib.util
 from typing import Union
 
 INDEX_COLUMN = "@@index"
@@ -45,7 +43,7 @@ def read_xes(file_path: str, variant: str = "lxml", return_legacy_log_object: bo
         raise Exception("File does not exist")
     from pm4py.objects.log.importer.xes import importer as xes_importer
     v = xes_importer.Variants.LINE_BY_LINE
-    if pkgutil.find_loader("lxml"):
+    if importlib.util.find_spec("lxml"):
         v = xes_importer.Variants.ITERPARSE
     if variant == "iterparse_20":
         v = xes_importer.Variants.ITERPARSE_20
