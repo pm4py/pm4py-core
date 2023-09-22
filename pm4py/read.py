@@ -115,7 +115,7 @@ def read_ptml(file_path: str, encoding: str = constants.DEFAULT_ENCODING) -> Pro
     return tree
 
 
-def read_dfg(file_path: str) -> Tuple[Dict[Tuple[str,str],int], Dict[str,int], Dict[str,int]]:
+def read_dfg(file_path: str, encoding: str = constants.DEFAULT_ENCODING) -> Tuple[Dict[Tuple[str,str],int], Dict[str,int], Dict[str,int]]:
     """
     Reads a DFG object from a .dfg file.
     The DFG object returned is a triple containing the following objects:
@@ -126,7 +126,7 @@ def read_dfg(file_path: str) -> Tuple[Dict[Tuple[str,str],int], Dict[str,int], D
 
     :rtype: ``Tuple[Dict[Tuple[str,str],int], Dict[str,int], Dict[str,int]]``
     :param file_path: file path of the dfg model on disk
-    
+    :param encoding: the encoding to be used (default: utf-8)
 
     .. code-block:: python3
 
@@ -137,7 +137,7 @@ def read_dfg(file_path: str) -> Tuple[Dict[Tuple[str,str],int], Dict[str,int], D
     if not os.path.exists(file_path):
         raise Exception("File does not exist")
     from pm4py.objects.dfg.importer import importer as dfg_importer
-    dfg, start_activities, end_activities = dfg_importer.apply(file_path)
+    dfg, start_activities, end_activities = dfg_importer.apply(file_path, parameters={"encoding": encoding})
     return dfg, start_activities, end_activities
 
 
