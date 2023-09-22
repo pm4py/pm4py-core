@@ -4,7 +4,7 @@ import importlib.util
 
 
 def execute_script():
-    if importlib.util.find_spec("tqdm"):
+    if importlib.util.find_spec("jsonschema"):
         # validate a JSONOCEL file against the corresponding schema
         validation_result = jsonocel.apply(os.path.join("..", "tests", "input_data", "ocel", "example_log.jsonocel"), os.path.join("..", "tests", "input_data", "ocel", "validation", "schema.json"))
         print(validation_result)
