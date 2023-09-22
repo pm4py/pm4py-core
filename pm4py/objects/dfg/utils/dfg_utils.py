@@ -1,5 +1,5 @@
 import logging
-import pkgutil
+import importlib.util
 import queue
 from collections import Counter
 from copy import copy
@@ -793,7 +793,7 @@ def transform_dfg_to_directed_nx_graph(dfg, activities=None):
     if activities is None:
         activities = get_activities_from_dfg(dfg)
 
-    if pkgutil.find_loader("networkx"):
+    if importlib.util.find_spec("networkx"):
         import networkx as nx
 
         G = nx.DiGraph()

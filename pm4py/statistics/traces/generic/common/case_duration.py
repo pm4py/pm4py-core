@@ -1,5 +1,6 @@
 import numpy as np
-import json, pkgutil, logging
+import json, logging
+import importlib.util
 from pm4py.util import exec_utils
 from enum import Enum
 
@@ -28,7 +29,7 @@ def get_kde_caseduration(duration_values, parameters=None):
     y
         Y-axis values to represent
     """
-    if pkgutil.find_loader("scipy"):
+    if importlib.util.find_spec("scipy"):
         from scipy.stats import gaussian_kde
 
         if parameters is None:
