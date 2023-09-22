@@ -7,7 +7,7 @@ from pm4py.objects.conversion.log.variants import to_event_stream
 from pm4py.objects.log import obj as log_instance
 from pm4py.util import xes_constants as xes
 from pm4py.util import exec_utils, constants as pmconstants
-import pkgutil
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -29,10 +29,9 @@ def apply(log, parameters=None):
     case_pref = exec_utils.get_param_value(Parameters.CASE_ATTRIBUTE_PREFIX, parameters,
                                            "case:")
 
-    if pkgutil.find_loader("pandas"):
-        import pandas
-        if isinstance(log, pandas.core.frame.DataFrame):
-            log = to_event_stream.apply(log, parameters=parameters)
+    if isinstance(log, pd.DataFrame):
+        log = to_event_stream.apply(log, parameters=parameters)
+
     if isinstance(log, log_instance.EventStream) and (not isinstance(log, log_instance.EventLog)):
         return __transform_event_stream_to_event_log(log, case_glue=glue, include_case_attributes=True,
                                                      case_attribute_prefix=case_pref, enable_deepcopy=enable_deepcopy)

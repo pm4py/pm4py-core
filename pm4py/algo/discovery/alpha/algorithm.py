@@ -1,6 +1,3 @@
-import pkgutil
-from enum import Enum
-
 from pm4py import util as pmutil
 from pm4py.algo.discovery.alpha import variants
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics

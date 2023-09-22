@@ -1,5 +1,5 @@
 import gzip
-import pkgutil
+import importlib.util
 from enum import Enum
 from io import BytesIO
 
@@ -198,7 +198,7 @@ def export_log_line_by_line(log, fp_obj, encoding, parameters=None):
     show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
 
     progress = None
-    if pkgutil.find_loader("tqdm") and show_progress_bar:
+    if importlib.util.find_loader("tqdm") and show_progress_bar:
         from tqdm.auto import tqdm
         progress = tqdm(total=len(log), desc="exporting log, completed traces :: ")
 
