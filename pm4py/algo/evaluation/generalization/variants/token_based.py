@@ -35,39 +35,6 @@ def get_generalization(petri_net, aligned_traces):
 
 
 def apply(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Union[str, Parameters], Any]] = None):
-    """
-    Calculates generalization on the provided log and Petri net.
-
-    The approach has been suggested by the paper
-    Buijs, Joos CAM, Boudewijn F. van Dongen, and Wil MP van der Aalst. "Quality dimensions in process discovery:
-    The importance of fitness, precision, generalization and simplicity."
-    International Journal of Cooperative Information Systems 23.01 (2014): 1440001.
-
-    A token replay is applied and, for each transition, we can measure the number of occurrences
-    in the replay. The following formula is applied for generalization
-
-           \sum_{t \in transitions} (math.sqrt(1.0/(n_occ_replay(t)))
-    1 -    ----------------------------------------------------------
-                             # transitions
-
-    Parameters
-    -----------
-    log
-        Trace log
-    petri_net
-        Petri net
-    initial_marking
-        Initial marking
-    final_marking
-        Final marking
-    parameters
-        Algorithm parameters
-
-    Returns
-    -----------
-    generalization
-        Generalization measure
-    """
     if parameters is None:
         parameters = {}
 
