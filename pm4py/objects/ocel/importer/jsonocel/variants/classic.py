@@ -8,7 +8,7 @@ from pm4py.objects.ocel import constants
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel.util import filtering_utils
 from pm4py.objects.ocel.util import ocel_consistency
-from pm4py.util import exec_utils, dt_parsing
+from pm4py.util import exec_utils, dt_parsing, constants as pm4_constants
 
 
 class Parameters(Enum):
@@ -18,6 +18,7 @@ class Parameters(Enum):
     OBJECT_ID = constants.PARAM_OBJECT_ID
     OBJECT_TYPE = constants.PARAM_OBJECT_TYPE
     INTERNAL_INDEX = constants.PARAM_INTERNAL_INDEX
+    ENCODING = "encoding"
 
 
 def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
@@ -45,7 +46,9 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     if parameters is None:
         parameters = {}
 
-    ocel = json.load(open(file_path, "r"))
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, pm4_constants.DEFAULT_ENCODING)
+
+    ocel = json.load(open(file_path, "r", encoding=encoding))
 
     events = []
     relations = []

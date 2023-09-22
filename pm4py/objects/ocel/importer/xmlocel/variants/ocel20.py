@@ -20,6 +20,7 @@ class Parameters(Enum):
     INTERNAL_INDEX = constants.PARAM_INTERNAL_INDEX
     QUALIFIER = constants.PARAM_QUALIFIER
     CHANGED_FIELD = constants.PARAM_CHNGD_FIELD
+    ENCODING = "encoding"
 
 
 def parse_xml(value, tag_str_lower, parser):
@@ -40,6 +41,8 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     object_changes_list = []
     o2o_list = []
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, None)
+
     event_id_column = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, constants.DEFAULT_EVENT_ID)
     event_activity_column = exec_utils.get_param_value(Parameters.EVENT_ACTIVITY, parameters, constants.DEFAULT_EVENT_ACTIVITY)
     event_timestamp_column = exec_utils.get_param_value(Parameters.EVENT_TIMESTAMP, parameters,
@@ -53,7 +56,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
 
     date_parser = dt_parsing.parser.get()
 
-    parser = etree.XMLParser(remove_comments=True)
+    parser = etree.XMLParser(remove_comments=True, encoding=encoding)
     tree = objectify.parse(file_path, parser=parser)
     root = tree.getroot()
 
