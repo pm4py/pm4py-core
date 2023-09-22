@@ -1,20 +1,3 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
-
 from pm4py.statistics.attributes.log import get as attr_get
 from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.util import xes_constants as xes
@@ -41,6 +24,7 @@ class Parameters(Enum):
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     FONT_SIZE = "font_size"
     AGGREGATION_MEASURE = "aggregation_measure"
+    RANKDIR = "rankdir"
     BGCOLOR = "bgcolor"
     STAT_LOCALE = "stat_locale"
 
@@ -78,6 +62,8 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     font_size = str(font_size)
     activities = dfg_utils.get_activities_from_dfg(dfg)
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
+
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "TB")
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
     stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, {})
 
@@ -116,6 +102,5 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
 
     return dfg_gviz.graphviz_visualization(activities_count, dfg, image_format=image_format, measure="performance",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
-                                  start_activities=start_activities, end_activities=end_activities, 
-                                  soj_time=soj_time, font_size=font_size, bgcolor=bgcolor)
-
+                                  start_activities=start_activities, end_activities=end_activities, soj_time=soj_time,
+                                  font_size=font_size, bgcolor=bgcolor, rankdir=rankdir)

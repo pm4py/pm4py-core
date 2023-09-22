@@ -235,13 +235,16 @@ def discover_ocdfg(ocel: OCEL, business_hours=False, business_hour_slots=constan
     return ocdfg_discovery.apply(ocel, parameters=parameters)
 
 
-def discover_oc_petri_net(ocel: OCEL, inductive_miner_variant: str = "im") -> Dict[str, Any]:
+def discover_oc_petri_net(ocel: OCEL, inductive_miner_variant: str = "im", diagnostics_with_tbr: bool = False) -> Dict[str, Any]:
     """
     Discovers an object-centric Petri net from the provided object-centric event log.
 
     Reference paper: van der Aalst, Wil MP, and Alessandro Berti. "Discovering object-centric Petri nets." Fundamenta informaticae 175.1-4 (2020): 1-40.
 
     :param ocel: object-centric event log
+    :param inductive_miner_variant: specify the variant of the inductive miner to be used
+                            ("im" for traditional; "imd" for the faster inductive miner directly-follows)
+    :param diagnostics_with_tbr: (boolean) enables the computation of some diagnostics using token-based replay
     :rtype: ``Dict[str, Any]``
 
     .. code-block:: python3
@@ -253,6 +256,8 @@ def discover_oc_petri_net(ocel: OCEL, inductive_miner_variant: str = "im") -> Di
     from pm4py.algo.discovery.ocel.ocpn import algorithm as ocpn_discovery
     parameters = {}
     parameters["inductive_miner_variant"] = inductive_miner_variant
+    parameters["diagnostics_with_token_based_replay"] = diagnostics_with_tbr
+
     return ocpn_discovery.apply(ocel, parameters=parameters)
 
 
