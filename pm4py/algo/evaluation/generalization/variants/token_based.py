@@ -17,35 +17,6 @@ class Parameters(Enum):
 
 
 def get_generalization(petri_net, aligned_traces):
-    """
-    Gets the generalization from the Petri net and the list of activated transitions
-    during the replay
-
-    The approach has been suggested by the paper
-    Buijs, Joos CAM, Boudewijn F. van Dongen, and Wil MP van der Aalst. "Quality dimensions in process discovery:
-    The importance of fitness, precision, generalization and simplicity."
-    International Journal of Cooperative Information Systems 23.01 (2014): 1440001.
-
-    A token replay is applied and, for each transition, we can measure the number of occurrences
-    in the replay. The following formula is applied for generalization
-
-           \sum_{t \in transitions} (math.sqrt(1.0/(n_occ_replay(t)))
-    1 -    ----------------------------------------------------------
-                             # transitions
-
-    Parameters
-    -----------
-    petri_net
-        Petri net
-    aligned_traces
-        Result of the token-replay
-
-    Returns
-    -----------
-    generalization
-        Generalization measure
-    """
-
     trans_occ_map = Counter()
     for trace in aligned_traces:
         for trans in trace["activated_transitions"]:
