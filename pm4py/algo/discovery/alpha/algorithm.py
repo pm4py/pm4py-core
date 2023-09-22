@@ -65,7 +65,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
                                                      None)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)
 
-    if isinstance(log, pd.core.frame.DataFrame) and variant == ALPHA_VERSION_CLASSIC:
+    if isinstance(log, pd.DataFrame) and variant == ALPHA_VERSION_CLASSIC:
         dfg = df_statistics.get_dfg_graph(log, case_id_glue=case_id_glue,
                                           activity_key=activity_key,
                                           timestamp_key=timestamp_key, start_timestamp_key=start_timestamp_key)
