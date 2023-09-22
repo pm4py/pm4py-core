@@ -16,8 +16,8 @@
 '''
 
 from pm4py.algo.anonymization import trace_variant_query
-import pkgutil
+import importlib.util
 
-if pkgutil.find_loader("diffprivlib"):
+if importlib.util.find_spec("diffprivlib"):
     # import pripel only if the diffprivlib package is installed
     from pm4py.algo.anonymization import pripel
