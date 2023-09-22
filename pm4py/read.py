@@ -287,6 +287,7 @@ def read_ocel2(file_path: str) -> OCEL:
     elif file_path.lower().endswith("xml") or file_path.lower().endswith("xmlocel"):
         return read_ocel2_xml(file_path)
 
+
 def read_ocel2_sqlite(file_path: str) -> OCEL:
     """
     Reads an OCEL2.0 event log from a SQLite database

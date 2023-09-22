@@ -3,11 +3,14 @@ from typing import Optional, Dict, Any
 from pm4py.util import exec_utils, constants, xes_constants
 from enum import Enum
 import numpy as np
+import pandas as pd
 
 
 class Parameters(Enum):
     INCLUDE_HEADER = "include_header"
     MAX_LEN = "max_len"
+    DEBUG = "debug"
+    ENABLE_OBJECT_LIFECYCLE_PATHS = "enable_object_lifecycle_paths"
 
 
 def __transform_to_string(stru: str) -> str:
@@ -50,16 +53,12 @@ def __transform_to_string(stru: str) -> str:
     return stru
 
 
-def apply(ocel: OCEL, obj_type: str, parameters: Optional[Dict[Any, Any]] = None) -> str:
+def textual_abstraction_from_fea_df(fea_df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> str:
     if parameters is None:
         parameters = {}
 
     include_header = exec_utils.get_param_value(Parameters.INCLUDE_HEADER, parameters, True)
     max_len = exec_utils.get_param_value(Parameters.MAX_LEN, parameters, constants.OPENAI_MAX_LEN)
-
-    import pm4py
-
-    fea_df = pm4py.extract_ocel_features(ocel, obj_type, include_obj_id=False)
 
     cols = []
 
@@ -98,3 +97,16 @@ def apply(ocel: OCEL, obj_type: str, parameters: Optional[Dict[Any, Any]] = None
 
     return ret
 
+
+def apply(ocel: OCEL, obj_type: str, parameters: Optional[Dict[Any, Any]] = None) -> str:
+    if parameters is None:
+        parameters = {}
+
+    debug = exec_utils.get_param_value(Parameters.DEBUG, parameters, True)
+    enable_object_lifecycle_paths = exec_utils.get_param_value(Parameters.ENABLE_OBJECT_LIFECYCLE_PATHS, parameters, False)
+
+    import pm4py
+
+    fea_df = pm4py.extract_ocel_features(ocel, obj_type, include_obj_id=False, debug=debug, enable_object_lifecycle_paths=enable_object_lifecycle_paths)
+
+    return textual_abstraction_from_fea_df(fea_df, parameters=parameters)

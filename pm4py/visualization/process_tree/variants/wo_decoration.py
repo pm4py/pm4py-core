@@ -85,7 +85,7 @@ def apply(tree: ProcessTree, parameters: Optional[Dict[Union[str, Parameters], A
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
 
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
-    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "TB")
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, constants.DEFAULT_RANKDIR_GVIZ)
 
     viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor, 'rankdir': rankdir})
     viz.attr('node', shape='ellipse', fixedsize='false')
