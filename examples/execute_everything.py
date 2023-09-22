@@ -805,6 +805,10 @@ def process_tree_reduction():
 def execute_script(f):
     try:
         f()
+    except ImportError:
+        import time
+        traceback.print_exc()
+        time.sleep(3)
     except:
         traceback.print_exc()
         input("\npress INPUT if you want to continue")
