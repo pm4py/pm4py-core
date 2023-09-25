@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.objects.process_tree import obj, semantics, state, utils
-import pkgutil
+import importlib.util
 
-if pkgutil.find_loader("lxml"):
+if importlib.util.find_spec("lxml"):
     from pm4py.objects.process_tree import importer, exporter

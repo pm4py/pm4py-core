@@ -1,21 +1,10 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+import importlib.util
+from enum import Enum
 
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
 
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+class Parameters(Enum):
+    REQUIRE_ILP = "require_ilp"
 
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
-import pkgutil
-import os
 
 # not available in the latest version of PM4Py
 CVXOPT = "cvxopt"
@@ -34,7 +23,7 @@ VERSIONS_GET_PRIM_OBJ = {}
 VERSIONS_GET_POINTS_FROM_SOL = {}
 DEFAULT_LP_SOLVER_VARIANT = None
 
-if pkgutil.find_loader("pulp"):
+if importlib.util.find_spec("pulp"):
     # assuming pulp is installed
     from pm4py.util.lp.variants import pulp_solver
 
@@ -44,7 +33,7 @@ if pkgutil.find_loader("pulp"):
 
     DEFAULT_LP_SOLVER_VARIANT = PULP
 
-if pkgutil.find_loader("scipy"):
+if importlib.util.find_spec("scipy"):
     # in the case scipy is installed, it works
     from pm4py.util.lp.variants import scipy_solver
 

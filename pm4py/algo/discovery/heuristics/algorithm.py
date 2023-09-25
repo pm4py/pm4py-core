@@ -1,20 +1,3 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
-import pkgutil
 from enum import Enum
 
 from pm4py.algo.discovery.heuristics.variants import classic, plusplus
@@ -72,11 +55,8 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     fm
         Final marking
     """
-    if pkgutil.find_loader("pandas"):
-        import pandas
-
-        if isinstance(log, pandas.core.frame.DataFrame):
-            return exec_utils.get_variant(variant).apply_pandas(log, parameters=parameters)
+    if isinstance(log, pd.DataFrame):
+        return exec_utils.get_variant(variant).apply_pandas(log, parameters=parameters)
 
     return exec_utils.get_variant(variant).apply(log_conversion.apply(log, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters),
                                                  parameters=parameters)

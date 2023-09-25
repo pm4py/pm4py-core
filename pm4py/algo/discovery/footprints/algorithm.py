@@ -23,9 +23,8 @@ from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.process_tree.obj import ProcessTree
 from enum import Enum
 from pm4py.util import exec_utils
-from collections import Counter
-import pkgutil
-from typing import Optional, Dict, Any, Union, Tuple
+import pandas as pd
+from typing import Optional, Dict, Any
 
 
 class Variants(Enum):
@@ -69,11 +68,8 @@ def apply(*args, variant=None, parameters: Optional[Dict[Any, Any]] = None) -> D
         elif isinstance(args[0], dict):
             variant = Variants.DFG
 
-        if pkgutil.find_loader("pandas"):
-            import pandas as pd
-
-            if type(args[0]) is pd.DataFrame:
-                variant = Variants.ENTIRE_DATAFRAME
+        if type(args[0]) is pd.DataFrame:
+            variant = Variants.ENTIRE_DATAFRAME
 
         if variant is None:
             return Exception("unsupported arguments")

@@ -1,20 +1,3 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
-import warnings
 from typing import Tuple, Dict, Optional
 
 from pm4py.objects.bpmn.obj import BPMN
@@ -29,8 +12,7 @@ from pm4py.util import constants
 import os
 
 from pandas import DataFrame
-import pkgutil
-import deprecation
+import importlib.util
 from typing import Union
 
 INDEX_COLUMN = "@@index"
@@ -60,7 +42,7 @@ def read_xes(file_path: str, variant: str = "lxml", return_legacy_log_object: bo
         raise Exception("File does not exist")
     from pm4py.objects.log.importer.xes import importer as xes_importer
     v = xes_importer.Variants.LINE_BY_LINE
-    if pkgutil.find_loader("lxml"):
+    if importlib.util.find_spec("lxml"):
         v = xes_importer.Variants.ITERPARSE
     if variant == "iterparse_20":
         v = xes_importer.Variants.ITERPARSE_20

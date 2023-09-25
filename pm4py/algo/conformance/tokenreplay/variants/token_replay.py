@@ -1,23 +1,5 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
-from pm4py.util import variants_util
 from pm4py.util import xes_constants as xes_util
 from pm4py.objects.petri_net import semantics
-from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.petri_net.utils.petri_utils import get_places_shortest_path_by_hidden, get_s_components_from_petri
 from pm4py.objects.log import obj as log_implementation
 from pm4py.objects.petri_net.utils import align_utils
@@ -25,9 +7,9 @@ from copy import copy
 from enum import Enum
 from pm4py.util import exec_utils, constants
 from pm4py.util import variants_util
-import pkgutil
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+import importlib.util
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import EventLog
 import pandas as pd
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import typing
@@ -999,7 +981,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
     vc = list(sorted(vc, key=lambda x: (x[1], x[0]), reverse=True))
 
     progress = None
-    if pkgutil.find_loader("tqdm") and show_progress_bar and len(variants) > 1:
+    if importlib.util.find_spec("tqdm") and show_progress_bar and len(variants) > 1:
         from tqdm.auto import tqdm
         progress = tqdm(total=len(variants), desc="replaying log with TBR, completed variants :: ")
 

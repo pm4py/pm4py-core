@@ -16,7 +16,7 @@
 '''
 from pm4py.objects import log, petri_net, transition_system, conversion, process_tree, \
     dfg, trie, org
-import pkgutil
+import importlib.util
 
-if pkgutil.find_loader("networkx"):
+if importlib.util.find_spec("networkx"):
     from pm4py.objects import bpmn

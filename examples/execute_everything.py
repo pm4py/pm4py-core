@@ -772,12 +772,6 @@ def logs_alignments():
     logs_alignment.execute_script()
 
 
-def visualization_serialization():
-    from examples import visualization_serialization
-    print("\n\visualization_serialization")
-    visualization_serialization.execute_script()
-
-
 def orgmining_local_diagn():
     from examples import orgmining_local_diagn
     print("\n\norgmining_local_diagn")
@@ -894,7 +888,6 @@ if __name__ == "__main__":
     execute_script(process_tree_reduction)
     execute_script(dataframe_prefix_and_fea_extraction)
     execute_script(logs_alignments)
-    execute_script(visualization_serialization)
     execute_script(bpmn_from_pt)
     execute_script(bpmn_import_and_to_petri_net)
     execute_script(tree_playout)

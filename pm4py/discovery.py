@@ -18,7 +18,6 @@ __doc__ = """
 The ``pm4py.discovery`` module contains the process discovery algorithms implemented in ``pm4py``
 """
 
-import warnings
 from typing import Tuple, Union, List, Dict, Any, Optional, Set
 
 import pandas as pd
@@ -34,10 +33,10 @@ from pm4py.objects.log.obj import EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
-from pm4py.utils import get_properties, xes_constants, __event_log_deprecation_warning
+from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.util import constants
 import deprecation
-import pkgutil
+import importlib.util
 
 
 def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
@@ -131,7 +130,7 @@ def discover_dfg_typed(log: pd.DataFrame, case_id_key: str = "case:concept:name"
         log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     if type(log) is pd.DataFrame:
         return clean.apply(log, parameters)
-    elif pkgutil.find_loader("polars"):
+    elif importlib.util.find_spec("polars"):
         import polars as pl
         if type(log) is pl.DataFrame:
             from pm4py.algo.discovery.dfg.variants import clean_polars
