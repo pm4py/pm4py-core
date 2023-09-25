@@ -3,6 +3,7 @@ from enum import Enum
 from pm4py.objects.ocel import constants
 from pm4py.util import exec_utils
 import pandas as pd
+import numpy as np
 from copy import copy, deepcopy
 
 
@@ -97,6 +98,20 @@ class OCEL(object):
         ret.append(
             "Please use <THIS>.get_extended_table() to get a dataframe representation of the events related to the objects.")
         return "".join(ret)
+
+    def is_ocel20(self):
+        unique_qualifiers = [x for x in self.relations[self.qualifier].unique() if not self.__check_is_nan(x)]
+
+        return len(self.o2o) > 0 or len(self.object_changes) > 0 or len(unique_qualifiers) > 0
+
+    def __check_is_nan(self, x):
+        try:
+            if x is None:
+                return True
+            if np.isnan(x):
+                return True
+        except:
+            return False
 
     def __str__(self):
         return str(self.get_summary())
