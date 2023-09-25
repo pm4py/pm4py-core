@@ -59,7 +59,7 @@ if importlib.util.find_spec("scipy"):
 
     DEFAULT_LP_SOLVER_VARIANT = SCIPY
 
-if pkgutil.find_loader("cvxopt"):
+if importlib.util.find_spec("cvxopt"):
     from pm4py.util.lp.variants import cvxopt_solver, cvxopt_solver_custom_align, cvxopt_solver_custom_align_ilp, \
         cvxopt_solver_custom_align_arm
 
