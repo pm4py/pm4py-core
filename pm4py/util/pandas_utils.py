@@ -1,5 +1,3 @@
-import pkgutil
-
 import pandas as pd
 
 from pm4py.util import constants, xes_constants
@@ -240,10 +238,8 @@ def check_is_pandas_dataframe(log):
     boolean
         Is dataframe?
     """
-    if pkgutil.find_loader("pandas"):
-        import pandas as pd
-        return type(log) is pd.DataFrame
-    return False
+    import pandas as pd
+    return type(log) is pd.DataFrame
 
 
 def check_pandas_dataframe_columns(df, activity_key=None, case_id_key=None, timestamp_key=None):
