@@ -228,7 +228,11 @@ def write_ocel_json(ocel: OCEL, file_path: str, encoding: str = constants.DEFAUL
         file_path = file_path + ".jsonocel"
 
     from pm4py.objects.ocel.exporter.jsonocel import exporter as jsonocel_exporter
-    return jsonocel_exporter.apply(ocel, file_path, variant=jsonocel_exporter.Variants.CLASSIC, parameters={"encoding": encoding})
+
+    is_ocel20 = ocel.is_ocel20()
+    variant = jsonocel_exporter.Variants.OCEL20 if is_ocel20 else jsonocel_exporter.Variants.CLASSIC
+
+    return jsonocel_exporter.apply(ocel, file_path, variant=variant, parameters={"encoding": encoding})
 
 
 def write_ocel_xml(ocel: OCEL, file_path: str, encoding: str = constants.DEFAULT_ENCODING):
@@ -295,6 +299,8 @@ def write_ocel2(ocel: OCEL, file_path: str, encoding: str = constants.DEFAULT_EN
         return write_ocel2_sqlite(ocel, file_path, encoding=encoding)
     elif file_path.lower().endswith("xml") or file_path.lower().endswith("xmlocel"):
         return write_ocel2_xml(ocel, file_path, encoding=encoding)
+    elif file_path.lower().endswith("jsonocel"):
+        return write_ocel_json(ocel, file_path, encoding=encoding)
 
 
 def write_ocel2_sqlite(ocel: OCEL, file_path: str, encoding: str = constants.DEFAULT_ENCODING):
