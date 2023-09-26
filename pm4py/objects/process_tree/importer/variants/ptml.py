@@ -7,7 +7,12 @@ from pm4py.meta import VERSION
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.process_tree.obj import Operator
 from pm4py.objects.process_tree.utils.generic import tree_sort
-from pm4py.util import constants
+from pm4py.util import constants, exec_utils
+from enum import Enum
+
+
+class Parameters(Enum):
+    ENCODING = "encoding"
 
 
 def apply(path, parameters=None):
@@ -29,7 +34,9 @@ def apply(path, parameters=None):
     if parameters is None:
         parameters = {}
 
-    parser = etree.XMLParser(remove_comments=True)
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, None)
+
+    parser = etree.XMLParser(remove_comments=True, encoding=encoding)
     xml_tree = objectify.parse(path, parser=parser)
     root = xml_tree.getroot()
 
@@ -55,8 +62,10 @@ def import_tree_from_string(tree_string, parameters=None):
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
     if type(tree_string) is str:
-        tree_string = tree_string.encode(constants.DEFAULT_ENCODING)
+        tree_string = tree_string.encode(encoding)
 
     parser = etree.XMLParser(remove_comments=True)
     root = objectify.fromstring(tree_string, parser=parser)
