@@ -1,9 +1,12 @@
 from copy import deepcopy
 from pm4py import get_event_attribute_values
 from pm4py.objects.dcr.obj import dcr_template
+from pm4py.objects.dcr.obj import DCR_Graph
+from typing import Tuple, Any
 
 
 def apply(log, findAdditionalConditions=True, **kwargs):
+    print('[i] Mining with Basic DisCoveR')
     disc = Discover()
     return disc.mine(log, findAdditionalConditions, **kwargs)
 

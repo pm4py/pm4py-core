@@ -17,10 +17,15 @@
 import datetime
 from copy import deepcopy
 
-import pm4py.objects.log.obj
+import pm4py
+from pm4py.objects.log.obj import EventLog
+from pm4py.objects.dcr.obj import DCR_Graph
+from pm4py.util import exec_utils
 from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
 from pm4py.algo.discovery.dcr_discover.extenstions import time_constraints, initial_pending, subprocess
 from enum import Enum
+import pandas as pd
+from typing import Union, Tuple, Any
 
 
 class Variants(Enum):
@@ -34,12 +39,13 @@ DCR_SUBPROCESS = Variants.DCR_SUBPROCESS
 VERSIONS = {DCR_BASIC, DCR_SUBPROCESS}
 
 
-def apply(input_log, variant=DCR_BASIC, **parameters):
+
+def apply(input_log: Union[EventLog, pd.DataFrame], variant=DCR_BASIC, **parameters) -> Tuple[DCR_Graph,dict]:
     """
     Parameters
     -----------
     input_log
-    variant
+    variant:
         Variant of the algorithm to use:
             - DCR_BASIC
             - DCR_SUBPROCESS
@@ -50,7 +56,16 @@ def apply(input_log, variant=DCR_BASIC, **parameters):
     -----------
     dcr graph
     """
+    #right now this only works for basic
     log = deepcopy(input_log)
+    if not isinstance(log, EventLog):
+        log = pm4py.convert_to_event_log(log)
+    dcr_model, la = exec_utils.get_variant(variant).apply(log, **parameters)
+    dcr = DCR_Graph()
+    dcr.convertToObj(dcr_model, pm4py.convert_to_dataframe(log).copy(deep=True))
+    #to be removed
+    """
+        log = deepcopy(input_log)
     if variant.value == Variants.DCR_BASIC.value:
         print('[i] Mining with basic DisCoveR')
         if not isinstance(log, pm4py.objects.log.obj.EventLog):
@@ -71,14 +86,17 @@ def apply(input_log, variant=DCR_BASIC, **parameters):
             dcr_model = initial_pending.apply(dcr_model, sp_log)
         dcr_model = post_processing(dcr_model, **parameters)
         return dcr_model, sp_log
+        """
+    return dcr, la
 
 
-def post_processing(dcr, timed=True, nestings=False,  **parameters):
+
+def post_processing(dcr, timed=True, nestings=False, **parameters):
     if timed:
         dcr = post_processing_timed(dcr)
     # future work on nestings
     # if nestings:
-        # dcr = post_processing_nestings(dcr)
+    # dcr = post_processing_nestings(dcr)
     return dcr
 
 

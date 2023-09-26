@@ -1,7 +1,83 @@
 from copy import deepcopy
 from datetime import timedelta
+from pm4py.objects.dcr.obj import DCR_Graph
 
 rels = ['conditionsFor', 'responseTo', 'includesTo', 'excludesTo', 'milestonesFor']
+
+"""
+We will implement the semantics according to the papers given in:
+DCR 2011, and
+Efficient optimal alignment between dynamic condition response graphs and traces
+Following the schematic as the pm4py, by using definition function and no class function for this
+"""
+
+
+class DCRSemantics(object):
+    @classmethod
+    def is_enabled(cls, event, dcr):
+        """
+        checks whether an event is enabled in a given DCR graph and Event
+
+
+        Parameters
+        ----------
+        :param event: the instance of event being check for if enabled
+        :param dcr: DCR graph that it check for being enabled
+
+        Returns
+        -------
+        :return: true if enabled, false otherwise
+        """
+        # check if event is enabled, calls function that returns a graph, of enabled events
+        return event in cls.enabled(dcr)
+
+    @classmethod
+    def enabled(cls, dcr):
+        res = deepcopy(dcr.marking.included)
+        for e in set(dcr.conditionsFor.keys()).intersection(res):
+            if len(dcr.conditionsFor[e].intersection(dcr.marking.included.difference(
+                    dcr.marking.executed))) > 0:
+                res.discard(e)
+        return res
+
+    @classmethod
+    def execute(cls, dcr, label):
+        """
+        Parameters
+        ----------
+        :param dcr: The current DCR graph
+        :param label: the type of event being executed
+
+        Returns
+        -------
+        :return dcr: return the updated DCR graph
+
+        """
+        #each event is called for execution is called
+        dcr.marking.executed.add(label)
+
+        #the following if statements are used to provide to update DCR graph
+        # depeding on prime event structure within conditions relations
+        if label in dcr.excludesTo:
+            for e_prime in dcr.excludesTo[label]:
+                dcr.marking.included.remove(e_prime)
+
+        if label in dcr.includesTo:
+            for e_prime in dcr.includesTo[label]:
+                dcr.marking.included.add(e_prime)
+
+        if label in dcr.responseTo:
+            for e_prime in dcr.responseTo[label]:
+                dcr.marking.pending.add(e_prime)
+        return dcr
+
+    @classmethod
+    def is_accepting(cls, dcr):
+        res = dcr.marking.pending.intersection(dcr.marking.included)
+        if len(res) > 0:
+            return False
+        else:
+            return True
 
 
 class DcrSemantics(object):
@@ -59,7 +135,8 @@ class DcrSemantics(object):
                 print(f'[!] Event {e} not enabled!') if self.cmd_print else None
                 return False, timedelta(0)
         else:
-            print(f'[!] Event {e} {" does not exist" if e not in self.dcr["events"] else " is not an atomic event"}!') if self.cmd_print else None
+            print(
+                f'[!] Event {e} {" does not exist" if e not in self.dcr["events"] else " is not an atomic event"}!') if self.cmd_print else None
             return False, timedelta(0)
 
     def enabled_atomic_events(self):
@@ -77,7 +154,8 @@ class DcrSemantics(object):
     def enabled(self):
         res = deepcopy(self.dcr['marking']['included'])
         for e in set(self.dcr['conditionsFor'].keys()).intersection(res):
-            if len(self.dcr['conditionsFor'][e].intersection(self.dcr['marking']['included']).difference(self.dcr['marking']['executed'])) > 0:
+            if len(self.dcr['conditionsFor'][e].intersection(self.dcr['marking']['included']).difference(
+                    self.dcr['marking']['executed'])) > 0:
                 res.discard(e)
                 if e in self.dcr['subprocesses'].keys():
                     for e_in_sp in self.dcr['subprocesses'][e]:
@@ -95,7 +173,8 @@ class DcrSemantics(object):
                                 res.discard(e_in_sp)
 
         for e in set(self.dcr['milestonesFor'].keys()).intersection(res):
-            if len(self.dcr['milestonesFor'][e].intersection(self.dcr['marking']['included'].intersection(self.dcr['marking']['pending'])))>0:
+            if len(self.dcr['milestonesFor'][e].intersection(
+                    self.dcr['marking']['included'].intersection(self.dcr['marking']['pending']))) > 0:
                 res.discard(e)
                 if e in self.dcr['subprocesses'].keys():
                     for e_in_sp in self.dcr['subprocesses'][e]:
@@ -130,7 +209,8 @@ class DcrSemantics(object):
         deadline = self.find_next_deadline()
         if deadline is None or deadline - time >= timedelta(0):
             for e in self.dcr['marking']['pendingDeadline']:
-                self.dcr['marking']['pendingDeadline'][e] = max(self.dcr['marking']['pendingDeadline'][e] - time, timedelta(0))
+                self.dcr['marking']['pendingDeadline'][e] = max(self.dcr['marking']['pendingDeadline'][e] - time,
+                                                                timedelta(0))
             for e in self.dcr['marking']['executed']:
                 self.dcr['marking']['executedTime'][e] = min(self.dcr['marking']['executedTime'][e] + time,
                                                              self.dict_exe[e])

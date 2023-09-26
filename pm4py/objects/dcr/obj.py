@@ -35,6 +35,124 @@ dcr_template = {
 }
 
 
+class Marking_v2(object):
+    def __init__(self) -> None:
+        self.__executed = set()
+        self.__included = set()
+        self.__pending = set()
+
+    @property
+    def executed(self):
+        return self.__executed
+
+    @executed.setter
+    def executed(self, value):
+        self.__executed = value
+
+    @property
+    def included(self):
+        return self.__included
+
+    @included.setter
+    def included(self, value):
+        self.__included = value
+
+    @property
+    def pending(self):
+        return self.__pending
+
+    @pending.setter
+    def pending(self, value):
+        self.__pending = value
+
+
+class DCR_Graph(object):
+    def __init__(self):
+        self.__events = set()
+        self.__labels = set()
+        self.__labelMapping = {}
+        self.__conditionsFor = {}
+        self.__responseTo = {}
+        self.__includesTo = {}
+        self.__excludesTo = {}
+        self.__marking = Marking_v2()
+        self.__roles: set()
+        self.__principals: set()
+        self.__rolesAssignment: {}
+
+    def convertToObj(self, template, log):
+        self.__events = set(log.index)
+        self.__labels = set(template['events'])
+        self.__labelMapping = {key: log['concept:name'][key] for key in set(log.index)}
+        self.__conditionsFor = template['conditionsFor']
+        self.__responseTo = template['responseTo']
+        self.__includesTo = template['includesTo']
+        self.__excludesTo = template['excludesTo']
+        self.__marking.executed = template['marking']['executed']
+        self.__marking.included = template['marking']['included']
+        self.__marking.pending = template['marking']['pending']
+
+
+
+
+    @property
+    def events(self):
+        return self.__events
+
+    @property
+    def labels(self):
+        return self.__labels
+
+    @property
+    def labelMapping(self):
+        return self.__labelMapping
+
+    @property
+    def conditionsFor(self):
+        return self.__conditionsFor
+
+    @property
+    def responseTo(self):
+        return self.__responseTo
+
+    @property
+    def includesTo(self):
+        return self.__includesTo
+
+    @property
+    def excludesTo(self):
+        return self.__excludesTo
+
+    @property
+    def marking(self):
+        return self.__marking
+
+    """
+        'events': set(),
+        'conditionsFor': {},
+        'milestonesFor': {},
+        'responseTo': {},
+        'includesTo': {},
+        'excludesTo': {},
+        'marking': {'executed': set(),
+                    'included': set(),
+                    'pending': set(),
+                    'executedTime': {},  # Gives the time since a event was executed
+                    'pendingDeadline': {}  # The deadline until an event must be executed
+                    },
+        'conditionsForDelays': {},
+        'responseToDeadlines': {},
+        'subprocesses': {},
+        'nestings': {},
+        'labels': set(),
+        'labelMapping': {},
+        'roles': set(),
+        'roleAssignments': set()
+        
+
+    }"""
+
+
 class Marking(object):
     """
     This is a per Event marking not a per graph marking
