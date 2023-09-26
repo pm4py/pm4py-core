@@ -1,5 +1,5 @@
 import os
-import pkgutil
+import importlib.util
 from enum import Enum
 
 
@@ -82,7 +82,7 @@ DEFAULT_GVIZ_VIEW = get_param_from_env("PM4PY_DEFAULT_GVIZ_VIEW", None)
 JQUERY_LINK = "https://code.jquery.com/jquery-3.6.3.min.js"
 GRAPHVIZJS_LINK = "https://github.com/mdaines/viz-js/releases/download/v1.8.2/viz.js"
 
-if pkgutil.find_loader("psutil"):
+if importlib.util.find_spec("psutil"):
     import psutil
 
     parent_pid = os.getppid()

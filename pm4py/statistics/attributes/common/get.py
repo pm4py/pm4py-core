@@ -1,4 +1,5 @@
-import json, pkgutil, logging
+import json, logging
+import importlib.util
 
 from pm4py.util.points_subset import pick_chosen_points_list
 from pm4py.util import exec_utils
@@ -83,7 +84,7 @@ def get_kde_numeric_attribute(values, parameters=None):
     y
         Y-axis values to represent
     """
-    if pkgutil.find_loader("scipy") and pkgutil.find_loader("numpy") and pkgutil.find_loader("pandas"):
+    if importlib.util.find_spec("scipy") and importlib.util.find_spec("numpy"):
         from scipy.stats import gaussian_kde
         import numpy as np
         import pandas as pd
@@ -153,7 +154,7 @@ def get_kde_date_attribute(values, parameters=None):
     y
         Y-axis values to represent
     """
-    if pkgutil.find_loader("scipy") and pkgutil.find_loader("numpy") and pkgutil.find_loader("pandas"):
+    if importlib.util.find_spec("scipy") and importlib.util.find_spec("numpy"):
         from scipy.stats import gaussian_kde
         import numpy as np
         import pandas as pd

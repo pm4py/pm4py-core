@@ -1,7 +1,7 @@
 from typing import Optional, Dict, Any
 import pandas as pd
 from datetime import datetime
-import pkgutil
+import importlib.util
 
 
 def apply(parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
@@ -33,7 +33,7 @@ def apply(parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
     events = []
 
     progress = None
-    if pkgutil.find_loader("tqdm"):
+    if importlib.util.find_spec("tqdm"):
         from tqdm.auto import tqdm
         progress = tqdm(total=len(colItems),
                         desc="extracting Windows events, progress :: ")

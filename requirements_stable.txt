@@ -1,5 +1,5 @@
 colorama==0.4.6
-contourpy==1.1.0
+contourpy==1.1.1
 cycler==0.11.0
 deprecation==2.1.0
 fonttools==4.42.1
@@ -7,12 +7,12 @@ graphviz==0.20.1
 intervaltree==3.1.0
 kiwisolver==1.4.5
 lxml==4.9.3
-matplotlib==3.7.3
+matplotlib==3.8.0
 networkx==3.1
-numpy==1.25.2
+numpy==1.26.0
 packaging==23.1
-pandas==2.1.0
-pillow==10.0.0
+pandas==2.1.1
+Pillow==10.0.1
 pydotplus==2.0.2
 pyparsing==3.1.1
 python-dateutil==2.8.2
@@ -20,6 +20,6 @@ pytz==2023.3.post1
 scipy==1.11.2
 six==1.16.0
 sortedcontainers==2.4.0
-stringdist==1.0.9
+StringDist==1.0.9
 tqdm==4.66.1
 tzdata==2023.3

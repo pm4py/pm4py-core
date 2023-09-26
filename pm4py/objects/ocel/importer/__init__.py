@@ -1,5 +1,5 @@
 from pm4py.objects.ocel.importer import csv, jsonocel
-import pkgutil
+import importlib.util
 
-if pkgutil.find_loader("lxml"):
+if importlib.util.find_spec("lxml"):
     from pm4py.objects.ocel.importer import xmlocel
