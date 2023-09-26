@@ -3,7 +3,7 @@ from pm4py.algo.connectors.util import mail as mail_utils
 import pandas as pd
 from datetime import datetime
 from typing import List, Any
-import pkgutil
+import importlib.util
 import traceback
 
 
@@ -88,7 +88,7 @@ def apply(parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
     outbox = mail_utils.connect(None, 5)
 
     progress = None
-    if pkgutil.find_loader("tqdm"):
+    if importlib.util.find_spec("tqdm"):
         from tqdm.auto import tqdm
         progress = tqdm(total=len(outbox.Items)+len(inbox.Items),
                         desc="extracting mailbox items, progress :: ")

@@ -5,7 +5,7 @@ from dateutil.parser import parse
 from typing import Optional, Dict, Any
 from enum import Enum
 from pm4py.util import exec_utils
-import pkgutil
+import importlib.util
 
 
 class Parameters(Enum):
@@ -61,7 +61,7 @@ def apply(parameters: Optional[Dict[Any, str]] = None) -> pd.DataFrame:
                 continuee = False
                 break
 
-            if pkgutil.find_loader("tqdm"):
+            if importlib.util.find_spec("tqdm"):
                 from tqdm.auto import tqdm
                 progress = tqdm(total=len(issues),
                                 desc="extracting issues of page " + str(page) + ", progress :: ")
