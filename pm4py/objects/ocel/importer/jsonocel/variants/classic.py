@@ -25,6 +25,8 @@ def get_base_ocel(json_obj: Any, parameters: Optional[Dict[Any, Any]] = None):
     events = []
     relations = []
     objects = []
+    o2o = []
+    object_changes = []
 
     event_id = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, constants.DEFAULT_EVENT_ID)
     event_activity = exec_utils.get_param_value(Parameters.EVENT_ACTIVITY, parameters, constants.DEFAULT_EVENT_ACTIVITY)
@@ -44,6 +46,12 @@ def get_base_ocel(json_obj: Any, parameters: Optional[Dict[Any, Any]] = None):
         dct = {object_id: obj_id, object_type: obj_type}
         for k, v in obj[constants.OCEL_OVMAP_KEY].items():
             dct[k] = v
+        if constants.OCEL_O2O_KEY in obj:
+            this_rel_objs = obj[constants.OCEL_O2O_KEY]
+            for newel in this_rel_objs:
+                target_id = newel[object_id]
+                qualifier = newel[constants.DEFAULT_QUALIFIER]
+                o2o.append({object_id: obj_id, object_id+"_2": target_id, constants.DEFAULT_QUALIFIER: qualifier})
         objects.append(dct)
 
     for ev_id in json_obj[constants.OCEL_EVENTS_KEY]:
@@ -64,6 +72,9 @@ def get_base_ocel(json_obj: Any, parameters: Optional[Dict[Any, Any]] = None):
             relations.append(this_rel[obj])
         events.append(dct)
 
+    if constants.OCEL_OBJCHANGES_KEY in json_obj:
+        object_changes = json_obj[constants.OCEL_OBJCHANGES_KEY]
+
     events = pd.DataFrame(events)
     objects = pd.DataFrame(objects)
     relations = pd.DataFrame(relations)
@@ -82,7 +93,15 @@ def get_base_ocel(json_obj: Any, parameters: Optional[Dict[Any, Any]] = None):
     globals[constants.OCEL_GLOBAL_EVENT] = json_obj[constants.OCEL_GLOBAL_EVENT]
     globals[constants.OCEL_GLOBAL_OBJECT] = json_obj[constants.OCEL_GLOBAL_OBJECT]
 
-    log = OCEL(events=events, objects=objects, relations=relations, globals=globals, parameters=parameters)
+    o2o = pd.DataFrame(o2o) if o2o else None
+    object_changes = pd.DataFrame(object_changes) if object_changes else None
+    if object_changes is not None and len(object_changes) > 0:
+        object_changes[event_timestamp] = pd.to_datetime(object_changes[event_timestamp])
+        obj_id_map = objects[[object_id, object_type]].to_dict("records")
+        obj_id_map = {x[object_id]: x[object_type] for x in obj_id_map}
+        object_changes[object_type] = object_changes[object_id].map(obj_id_map)
+
+    log = OCEL(events=events, objects=objects, relations=relations, o2o=o2o, object_changes=object_changes, globals=globals, parameters=parameters)
 
     return log
 
