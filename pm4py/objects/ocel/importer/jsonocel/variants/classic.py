@@ -37,6 +37,91 @@ class Parameters(Enum):
     ENCODING = "encoding"
 
 
+def get_base_ocel(json_obj: Any, parameters: Optional[Dict[Any, Any]] = None):
+    events = []
+    relations = []
+    objects = []
+    o2o = []
+    object_changes = []
+
+    event_id = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, constants.DEFAULT_EVENT_ID)
+    event_activity = exec_utils.get_param_value(Parameters.EVENT_ACTIVITY, parameters, constants.DEFAULT_EVENT_ACTIVITY)
+    event_timestamp = exec_utils.get_param_value(Parameters.EVENT_TIMESTAMP, parameters,
+                                                 constants.DEFAULT_EVENT_TIMESTAMP)
+    object_id = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, constants.DEFAULT_OBJECT_ID)
+    object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, constants.DEFAULT_OBJECT_TYPE)
+    internal_index = exec_utils.get_param_value(Parameters.INTERNAL_INDEX, parameters, constants.DEFAULT_INTERNAL_INDEX)
+
+    parser = dt_parsing.parser.get()
+
+    types_dict = {}
+    for obj_id in json_obj[constants.OCEL_OBJECTS_KEY]:
+        obj = json_obj[constants.OCEL_OBJECTS_KEY][obj_id]
+        obj_type = obj[object_type]
+        types_dict[obj_id] = obj_type
+        dct = {object_id: obj_id, object_type: obj_type}
+        for k, v in obj[constants.OCEL_OVMAP_KEY].items():
+            dct[k] = v
+        if constants.OCEL_O2O_KEY in obj:
+            this_rel_objs = obj[constants.OCEL_O2O_KEY]
+            for newel in this_rel_objs:
+                target_id = newel[object_id]
+                qualifier = newel[constants.DEFAULT_QUALIFIER]
+                o2o.append({object_id: obj_id, object_id+"_2": target_id, constants.DEFAULT_QUALIFIER: qualifier})
+        objects.append(dct)
+
+    for ev_id in json_obj[constants.OCEL_EVENTS_KEY]:
+        ev = json_obj[constants.OCEL_EVENTS_KEY][ev_id]
+        dct = {event_id: ev_id, event_timestamp: parser.apply(ev[event_timestamp]),
+               event_activity: ev[event_activity]}
+        for k, v in ev[constants.OCEL_VMAP_KEY].items():
+            dct[k] = v
+        this_rel = {}
+        for obj in ev[constants.OCEL_OMAP_KEY]:
+            this_rel[obj] = {event_id: ev_id, event_activity: ev[event_activity],
+                              event_timestamp: parser.apply(ev[event_timestamp]), object_id: obj,
+                              object_type: types_dict[obj]}
+        if constants.OCEL_TYPED_OMAP_KEY in ev:
+            for element in ev[constants.OCEL_TYPED_OMAP_KEY]:
+                this_rel[element[object_id]][constants.DEFAULT_QUALIFIER] = element[constants.DEFAULT_QUALIFIER]
+        for obj in this_rel:
+            relations.append(this_rel[obj])
+        events.append(dct)
+
+    if constants.OCEL_OBJCHANGES_KEY in json_obj:
+        object_changes = json_obj[constants.OCEL_OBJCHANGES_KEY]
+
+    events = pd.DataFrame(events)
+    objects = pd.DataFrame(objects)
+    relations = pd.DataFrame(relations)
+
+    events[internal_index] = events.index
+    relations[internal_index] = relations.index
+
+    events = events.sort_values([event_timestamp, internal_index])
+    relations = relations.sort_values([event_timestamp, internal_index])
+
+    del events[internal_index]
+    del relations[internal_index]
+
+    globals = {}
+    globals[constants.OCEL_GLOBAL_LOG] = json_obj[constants.OCEL_GLOBAL_LOG]
+    globals[constants.OCEL_GLOBAL_EVENT] = json_obj[constants.OCEL_GLOBAL_EVENT]
+    globals[constants.OCEL_GLOBAL_OBJECT] = json_obj[constants.OCEL_GLOBAL_OBJECT]
+
+    o2o = pd.DataFrame(o2o) if o2o else None
+    object_changes = pd.DataFrame(object_changes) if object_changes else None
+    if object_changes is not None and len(object_changes) > 0:
+        object_changes[event_timestamp] = pd.to_datetime(object_changes[event_timestamp])
+        obj_id_map = objects[[object_id, object_type]].to_dict("records")
+        obj_id_map = {x[object_id]: x[object_type] for x in obj_id_map}
+        object_changes[object_type] = object_changes[object_id].map(obj_id_map)
+
+    log = OCEL(events=events, objects=objects, relations=relations, o2o=o2o, object_changes=object_changes, globals=globals, parameters=parameters)
+
+    return log
+
+
 def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     """
     Imports an object-centric event log from a JSON-OCEL file, using the default JSON backend of Python
@@ -64,64 +149,11 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
 
     encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, pm4_constants.DEFAULT_ENCODING)
 
-    ocel = json.load(open(file_path, "r", encoding=encoding))
+    json_obj = json.load(open(file_path, "r", encoding=encoding))
 
-    events = []
-    relations = []
-    objects = []
+    log = get_base_ocel(json_obj, parameters=parameters)
 
-    event_id = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, constants.DEFAULT_EVENT_ID)
-    event_activity = exec_utils.get_param_value(Parameters.EVENT_ACTIVITY, parameters, constants.DEFAULT_EVENT_ACTIVITY)
-    event_timestamp = exec_utils.get_param_value(Parameters.EVENT_TIMESTAMP, parameters,
-                                                 constants.DEFAULT_EVENT_TIMESTAMP)
-    object_id = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, constants.DEFAULT_OBJECT_ID)
-    object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, constants.DEFAULT_OBJECT_TYPE)
-    internal_index = exec_utils.get_param_value(Parameters.INTERNAL_INDEX, parameters, constants.DEFAULT_INTERNAL_INDEX)
+    log = ocel_consistency.apply(log, parameters=parameters)
+    log = filtering_utils.propagate_relations_filtering(log, parameters=parameters)
 
-    parser = dt_parsing.parser.get()
-
-    types_dict = {}
-    for obj_id in ocel[constants.OCEL_OBJECTS_KEY]:
-        obj = ocel[constants.OCEL_OBJECTS_KEY][obj_id]
-        obj_type = obj[object_type]
-        types_dict[obj_id] = obj_type
-        dct = {object_id: obj_id, object_type: obj_type}
-        for k, v in obj[constants.OCEL_OVMAP_KEY].items():
-            dct[k] = v
-        objects.append(dct)
-
-    for ev_id in ocel[constants.OCEL_EVENTS_KEY]:
-        ev = ocel[constants.OCEL_EVENTS_KEY][ev_id]
-        dct = {event_id: ev_id, event_timestamp: parser.apply(ev[event_timestamp]),
-               event_activity: ev[event_activity]}
-        for k, v in ev[constants.OCEL_VMAP_KEY].items():
-            dct[k] = v
-        for obj in ev[constants.OCEL_OMAP_KEY]:
-            relations.append({event_id: ev_id, event_activity: ev[event_activity],
-                              event_timestamp: parser.apply(ev[event_timestamp]), object_id: obj,
-                              object_type: types_dict[obj]})
-        events.append(dct)
-
-    events = pd.DataFrame(events)
-    objects = pd.DataFrame(objects)
-    relations = pd.DataFrame(relations)
-
-    events[internal_index] = events.index
-    relations[internal_index] = relations.index
-
-    events = events.sort_values([event_timestamp, internal_index])
-    relations = relations.sort_values([event_timestamp, internal_index])
-
-    del events[internal_index]
-    del relations[internal_index]
-
-    globals = {}
-    globals[constants.OCEL_GLOBAL_LOG] = ocel[constants.OCEL_GLOBAL_LOG]
-    globals[constants.OCEL_GLOBAL_EVENT] = ocel[constants.OCEL_GLOBAL_EVENT]
-    globals[constants.OCEL_GLOBAL_OBJECT] = ocel[constants.OCEL_GLOBAL_OBJECT]
-
-    ocel = OCEL(events=events, objects=objects, relations=relations, globals=globals, parameters=parameters)
-    ocel = ocel_consistency.apply(ocel, parameters=parameters)
-    ocel = filtering_utils.propagate_relations_filtering(ocel, parameters=parameters)
-
-    return ocel
+    return log

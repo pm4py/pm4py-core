@@ -300,6 +300,8 @@ def read_ocel2(file_path: str) -> OCEL:
         return read_ocel2_sqlite(file_path)
     elif file_path.lower().endswith("xml") or file_path.lower().endswith("xmlocel"):
         return read_ocel2_xml(file_path)
+    elif file_path.lower().endswith("jsonocel"):
+        return read_ocel_json(file_path)
 
 
 def read_ocel2_sqlite(file_path: str) -> OCEL:
