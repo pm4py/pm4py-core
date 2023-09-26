@@ -1,16 +1,16 @@
 import os
 import unittest
 
-from sklearn import tree
-
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import  get_class_representation
 from pm4py.algo.transformation.log_to_features import algorithm as log_to_features
-from pm4py.visualization.decisiontree import visualizer as dt_vis
 
 
 class DecisionTreeTest(unittest.TestCase):
     def test_decisiontree_evattrvalue(self):
+        from sklearn import tree
+        from pm4py.visualization.decisiontree import visualizer as dt_vis
+
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
@@ -28,6 +28,9 @@ class DecisionTreeTest(unittest.TestCase):
         del gviz
 
     def test_decisiontree_traceduration(self):
+        from sklearn import tree
+        from pm4py.visualization.decisiontree import visualizer as dt_vis
+
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
