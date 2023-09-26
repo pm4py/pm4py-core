@@ -1,5 +1,5 @@
 import sys
-import pkgutil
+import importlib.util
 import warnings
 from pm4py.util import constants
 
@@ -26,7 +26,7 @@ if sys.version_info >= (3, 7):
 
     DEFAULT_VARIANT = STRPFROMISO
 
-if pkgutil.find_loader("ciso8601"):
+if importlib.util.find_spec("ciso8601"):
     # ciso8601 variant is included only if ciso8601 installed
     # slowly it will fade out of the default since now Python
     # in the default package includes an equally performing library

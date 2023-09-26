@@ -4,7 +4,7 @@ from enum import Enum
 from pm4py.algo.connectors.util import mail as mail_utils
 import pandas as pd
 from datetime import datetime
-import pkgutil
+import importlib.util
 import traceback
 
 
@@ -37,7 +37,7 @@ def apply(parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
     calendar = mail_utils.connect(email_user, calendar_id)
 
     progress = None
-    if pkgutil.find_loader("tqdm"):
+    if importlib.util.find_spec("tqdm"):
         from tqdm.auto import tqdm
         progress = tqdm(total=len(calendar.Items),
                         desc="extracting calendar items, progress :: ")

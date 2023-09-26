@@ -17,7 +17,7 @@ from pm4py.algo.discovery.causal import algorithm as causal_discovery
 from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
 from pm4py.objects.petri_net.utils import murata
 from pm4py.objects.petri_net.utils import reduction
-import pkgutil
+import importlib.util
 import warnings
 
 
@@ -251,7 +251,7 @@ def apply(log0: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional
     explored_solutions = set()
 
     progress = None
-    if pkgutil.find_loader("tqdm") and show_progress_bar and len(causal) > 1:
+    if importlib.util.find_spec("tqdm") and show_progress_bar and len(causal) > 1:
         from tqdm.auto import tqdm
         progress = tqdm(total=len(causal), desc="discovering Petri net using ILP miner, completed causal relations :: ")
 

@@ -1,6 +1,28 @@
 # Changelog of pm4py
 
 
+## pm4py 2.7.7 (2023.09.22)
+
+### Added
+* 056d9e5714e2ad0a21fbcac0725ea4fb7aae260c
+  * encoding specification in pm4py.read and pm4py.write classes
+
+### Changed
+* f81d62ad8dc8a76aabdf90763a8bd8b8e2ea2aa9
+  * fixed compatibility with Python 3.12 (removed deprecation warnings)
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
+
 ## pm4py 2.7.6 (2023.08.28)
 
 ### Added
@@ -238,7 +260,7 @@
 * e561089945951e91b2ecfe0f223b35bd2d351630
   * other NLP/LLM abstractions
 * 42b0d2a6f6fe7430d382117bf0ce54e8fd60ce23
-  * return diagnostics dataframe in pm4py.conformance methods
+  * return diagnostics dataframe in pm4py.conformance methods&
 
 ### Changed
 * 44fc2aecd0885534dd2083a4011be9e031c3a04a
