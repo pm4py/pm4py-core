@@ -100,7 +100,9 @@ class OCEL(object):
         return "".join(ret)
 
     def is_ocel20(self):
-        unique_qualifiers = [x for x in self.relations[self.qualifier].unique() if not self.__check_is_nan(x)]
+        unique_qualifiers = []
+        if self.qualifier in self.relations.columns:
+            unique_qualifiers = [x for x in self.relations[self.qualifier].unique() if not self.__check_is_nan(x)]
 
         return len(self.o2o) > 0 or len(self.object_changes) > 0 or len(unique_qualifiers) > 0
 
