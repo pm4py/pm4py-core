@@ -27,7 +27,7 @@ from pm4py.util import exec_utils
 from enum import Enum
 import sys
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY, CASE_CONCEPT_NAME
-import pkgutil
+import importlib.util
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
 from pm4py.objects.petri_net.obj import PetriNet, Marking
@@ -349,7 +349,7 @@ def __get_variants_structure(log, parameters):
 def __get_progress_bar(num_variants, parameters):
     show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
     progress = None
-    if pkgutil.find_loader("tqdm") and show_progress_bar and num_variants > 1:
+    if importlib.util.find_spec("tqdm") and show_progress_bar and num_variants > 1:
         from tqdm.auto import tqdm
         progress = tqdm(total=num_variants, desc="aligning log, completed variants :: ")
     return progress

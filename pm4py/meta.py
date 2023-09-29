@@ -14,8 +14,9 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+
 __name__ = 'pm4py'
-VERSION = '2.7.5.3'
+VERSION = '2.7.6'
 __version__ = VERSION
 __doc__ = 'Process mining for Python'
 __author__ = 'Fraunhofer Institute for Applied Technology'

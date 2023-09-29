@@ -41,6 +41,7 @@ class Parameters(Enum):
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     FONT_SIZE = "font_size"
     AGGREGATION_MEASURE = "aggregation_measure"
+    RANKDIR = "rankdir"
     BGCOLOR = "bgcolor"
     STAT_LOCALE = "stat_locale"
 
@@ -78,6 +79,8 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
     font_size = str(font_size)
     activities = dfg_utils.get_activities_from_dfg(dfg)
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
+
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "TB")
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
     stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, {})
 
@@ -116,6 +119,5 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
 
     return dfg_gviz.graphviz_visualization(activities_count, dfg, image_format=image_format, measure="performance",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
-                                  start_activities=start_activities, end_activities=end_activities, 
-                                  soj_time=soj_time, font_size=font_size, bgcolor=bgcolor)
-
+                                  start_activities=start_activities, end_activities=end_activities, soj_time=soj_time,
+                                  font_size=font_size, bgcolor=bgcolor, rankdir=rankdir)

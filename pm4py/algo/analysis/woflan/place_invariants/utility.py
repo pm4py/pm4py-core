@@ -17,7 +17,7 @@
 import numpy as np
 from copy import copy
 from pm4py.util.lp import solver
-import pkgutil
+import importlib.util
 
 
 def removearray(L, arr):
@@ -144,7 +144,7 @@ def transform_basis(basis, style=None):
             # this is highly critical and LP solutions are not always correct :(
 
             proposed_solver = solver.SCIPY
-            if pkgutil.find_loader("pulp"):
+            if importlib.util.find_spec("pulp"):
                 proposed_solver = solver.PULP
             else:
                 import warnings

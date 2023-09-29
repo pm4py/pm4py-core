@@ -16,10 +16,9 @@
 '''
 from pm4py.algo.discovery.performance_spectrum.variants import dataframe, log, dataframe_disconnected, log_disconnected
 from pm4py.util import exec_utils
-import pkgutil
 from enum import Enum
 from pm4py.util import constants
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, Union, List
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
 
@@ -79,13 +78,12 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], list_activities: List
 
     points = None
 
-    if pkgutil.find_loader("pandas"):
-        import pandas as pd
-        if type(log) is pd.DataFrame:
-            if variant is None:
-                variant = Variants.DATAFRAME
+    import pandas as pd
+    if type(log) is pd.DataFrame:
+        if variant is None:
+            variant = Variants.DATAFRAME
 
-            points = exec_utils.get_variant(variant).apply(log, list_activities, sample_size, parameters)
+        points = exec_utils.get_variant(variant).apply(log, list_activities, sample_size, parameters)
 
     if points is None:
         if variant is None:

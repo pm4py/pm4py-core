@@ -25,7 +25,7 @@ from pm4py.objects.ocel.exporter.util import clean_dataframes
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel.util import attributes_names
 from pm4py.objects.ocel.util import related_objects
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants as pm4_constants
 from pm4py.objects.ocel.util import ocel_consistency
 
 
@@ -33,6 +33,7 @@ class Parameters(Enum):
     EVENT_ID = constants.PARAM_EVENT_ID
     OBJECT_ID = constants.PARAM_OBJECT_ID
     OBJECT_TYPE = constants.PARAM_OBJECT_TYPE
+    ENCODING = "encoding"
 
 
 def get_type(t0):
@@ -68,6 +69,7 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
     event_id = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, ocel.event_id_column)
     object_id = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, ocel.object_id_column)
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, pm4_constants.DEFAULT_ENCODING)
 
     ocel = ocel_consistency.apply(ocel, parameters=parameters)
 
@@ -183,4 +185,4 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
     del objects_items
 
     tree = etree.ElementTree(root)
-    tree.write(target_path, pretty_print=True, xml_declaration=True, encoding="utf-8")
+    tree.write(target_path, pretty_print=True, xml_declaration=True, encoding=encoding)

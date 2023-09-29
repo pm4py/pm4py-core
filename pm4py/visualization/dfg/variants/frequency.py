@@ -38,6 +38,7 @@ class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     FONT_SIZE = "font_size"
+    RANKDIR = "rankdir"
     BGCOLOR = "bgcolor"
     STAT_LOCALE = "stat_locale"
 
@@ -81,6 +82,7 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
         end_activities = dict()
     activities = sorted(list(set(dfg_utils.get_activities_from_dfg(dfg)).union(set(start_activities)).union(set(end_activities))))
 
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "TB")
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
     stat_locale = exec_utils.get_param_value(Parameters.STAT_LOCALE, parameters, {})
 
@@ -106,5 +108,5 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
 
     return dfg_gviz.graphviz_visualization(activities_count, dfg, image_format=image_format, measure="frequency",
                                   max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
-                                  start_activities=start_activities, end_activities=end_activities, 
-                                  soj_time=soj_time, font_size=font_size, bgcolor=bgcolor)
+                                  start_activities=start_activities, end_activities=end_activities, soj_time=soj_time,
+                                  font_size=font_size, bgcolor=bgcolor, rankdir=rankdir)

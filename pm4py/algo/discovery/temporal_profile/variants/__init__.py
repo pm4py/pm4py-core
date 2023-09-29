@@ -14,8 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.discovery.temporal_profile.variants import log
-import pkgutil
-
-if pkgutil.find_loader("pandas"):
-    from pm4py.algo.discovery.temporal_profile.variants import dataframe
+from pm4py.algo.discovery.temporal_profile.variants import log, dataframe

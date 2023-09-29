@@ -15,8 +15,13 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.objects.bpmn.obj import BPMN
-from pm4py.util import constants
+from pm4py.util import constants, exec_utils
 import uuid
+from enum import Enum
+
+
+class Parameters(Enum):
+    ENCODING = "encoding"
 
 
 class Counts:
@@ -291,9 +296,11 @@ def apply(path, parameters=None):
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, None)
+
     from lxml import etree, objectify
 
-    parser = etree.XMLParser(remove_comments=True)
+    parser = etree.XMLParser(remove_comments=True, encoding=encoding)
     xml_tree = objectify.parse(path, parser=parser)
 
     return import_xml_tree_from_root(xml_tree.getroot())
@@ -318,8 +325,10 @@ def import_from_string(bpmn_string, parameters=None):
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
     if type(bpmn_string) is str:
-        bpmn_string = bpmn_string.encode(constants.DEFAULT_ENCODING)
+        bpmn_string = bpmn_string.encode(encoding)
 
     from lxml import etree, objectify
 

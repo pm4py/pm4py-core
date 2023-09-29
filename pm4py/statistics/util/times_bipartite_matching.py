@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import pkgutil
+import importlib.util
 import logging
 
 
@@ -41,7 +41,7 @@ def exact_match_minimum_average(l1, l2):
         an element of the second list)
     """
     import sys
-    if pkgutil.find_loader("networkx"):
+    if importlib.util.find_spec("networkx"):
         import networkx as nx
     else:
         msg = "networkx is not available. inductive exact_match_minimum_average cannot be used!"

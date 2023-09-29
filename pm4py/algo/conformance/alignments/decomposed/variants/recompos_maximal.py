@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import pkgutil
+import importlib.util
 import sys
 import time
 from copy import copy
@@ -185,7 +185,7 @@ def apply_log(log, list_nets, parameters=None):
     variants_idxs = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
 
     progress = None
-    if pkgutil.find_loader("tqdm") and show_progress_bar:
+    if importlib.util.find_spec("tqdm") and show_progress_bar:
         from tqdm.auto import tqdm
         progress = tqdm(total=len(variants_idxs),
                         desc="aligning log with decomposition/recomposition, completed variants :: ")
