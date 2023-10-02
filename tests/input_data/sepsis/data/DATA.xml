@@ -1,0 +1,125 @@
+<metadata>
+   <doi>doi:10.4121/uuid:915d2bfb-7e84-49ad-a286-dc35f063a460</doi>
+   <name>Sepsis Cases - Event Log.xes.gz</name>
+   <description>This real-life event log contains events of sepsis cases from a hospital. Sepsis is a life threatening condition typically caused by an infection. One case represents the pathway through the hospital.  The events were recorded by the ERP system of the hospital. There are about 1000 cases with in total 15,000 events that were recorded for 16 different activities. Moreover, 39 data attributes are recorded, e.g., the group responsible for the activity, the results of tests and information from checklists.  Events and attribute values have been anonymized. The time stamps of events have been randomized, but the time between events within a trace has not been altered.</description>
+   <language>English</language>
+   <log_type>Real-life</log_type>
+   <process_type>Unknown</process_type>
+   <creation>
+   <insitute>Eindhoven University of Technology</insitute>
+   <person>Mannhardt, Felix</person>
+   <place>Eindhoven</place>
+   <time>Thu Dec 01 14:58:44 CET 2016</time>
+   </creation>
+   <source>
+   <insitute>Eindhoven University of Technology</insitute>
+   <institute_type>Hospital</institute_type>
+   <program>ERP System</program>
+   </source>
+   <rights type="Public">
+   </rights>
+   <number_of_traces>1050</number_of_traces>
+   <number_of_events>15214</number_of_events>
+   <events_per_trace>14.49</events_per_trace>
+   <min_events_per_trace>3</min_events_per_trace>
+   <max_events_per_trace>185</max_events_per_trace>
+   <global_attributes>
+      <trace_level>
+         <attribute key="concept:name" default="DEFAULT"/>
+      </trace_level>
+      <event_level>
+         <attribute key="concept:name" default="DEFAULT"/>
+         <attribute key="lifecycle:transition" default="DEFAULT"/>
+         <attribute key="org:group" default="DEFAULT"/>
+         <attribute key="time:timestamp" default="1970-01-01T01:00:00+01:00"/>
+      </event_level>
+   </global_attributes>
+   <meta_extensions>
+      <MetaData_Concept prefix="meta_concept" uri="http://www.xes-standard.org/meta_concept.xesext">
+         <different_names_average>9.133</different_names_average>
+         <different_names_max>12</different_names_max>
+         <different_names_min>3</different_names_min>
+         <different_names_standard_deviation>2.106</different_names_standard_deviation>
+         <different_names_total>16</different_names_total>
+         <named_events_average>14.49</named_events_average>
+         <named_events_max>185</named_events_max>
+         <named_events_min>3</named_events_min>
+         <named_events_standard_deviation>11.476</named_events_standard_deviation>
+         <named_events_total>15214</named_events_total>
+      </MetaData_Concept>
+      <MetaData_General prefix="meta_general" uri="http://www.xes-standard.org/meta_general.xesext">
+         <classifiers>2</classifiers>
+         <events_average>14.49</events_average>
+         <events_max>185</events_max>
+         <events_min>3</events_min>
+         <events_standard_deviation>11.476</events_standard_deviation>
+         <events_total>15214</events_total>
+         <traces_total>1050</traces_total>
+      </MetaData_General>
+      <MetaData_LifeCycle prefix="meta_life" uri="http://www.xes-standard.org/meta_life.xesext">
+         <different_transitions_average>1.0</different_transitions_average>
+         <different_transitions_max>1</different_transitions_max>
+         <different_transitions_min>1</different_transitions_min>
+         <different_transitions_standard_deviation>0.0</different_transitions_standard_deviation>
+         <different_transitions_total>1</different_transitions_total>
+         <transition_events_average>14.49</transition_events_average>
+         <transition_events_max>185</transition_events_max>
+         <transition_events_min>3</transition_events_min>
+         <transition_events_standard_deviation>11.476</transition_events_standard_deviation>
+         <transition_events_total>15214</transition_events_total>
+      </MetaData_LifeCycle>
+      <MetaData_Organization prefix="meta_org" uri="http://www.xes-standard.org/meta_org.xesext">
+         <different_groups_average>5.169</different_groups_average>
+         <different_groups_max>9</different_groups_max>
+         <different_groups_min>2</different_groups_min>
+         <different_groups_standard_deviation>1.5</different_groups_standard_deviation>
+         <different_groups_total>26</different_groups_total>
+         <different_resources_average>1.0</different_resources_average>
+         <different_resources_max>1</different_resources_max>
+         <different_resources_min>1</different_resources_min>
+         <different_resources_standard_deviation>0.0</different_resources_standard_deviation>
+         <different_resources_total>1</different_resources_total>
+         <different_roles_average>1.0</different_roles_average>
+         <different_roles_max>1</different_roles_max>
+         <different_roles_min>1</different_roles_min>
+         <different_roles_standard_deviation>0.0</different_roles_standard_deviation>
+         <different_roles_total>1</different_roles_total>
+         <group_events_average>14.49</group_events_average>
+         <group_events_max>185</group_events_max>
+         <group_events_min>3</group_events_min>
+         <group_events_standard_deviation>11.476</group_events_standard_deviation>
+         <group_events_total>15214</group_events_total>
+         <resource_events_average>14.49</resource_events_average>
+         <resource_events_max>185</resource_events_max>
+         <resource_events_min>3</resource_events_min>
+         <resource_events_standard_deviation>11.476</resource_events_standard_deviation>
+         <resource_events_total>15214</resource_events_total>
+         <role_events_average>14.49</role_events_average>
+         <role_events_max>185</role_events_max>
+         <role_events_min>3</role_events_min>
+         <role_events_standard_deviation>11.476</role_events_standard_deviation>
+         <role_events_total>15214</role_events_total>
+      </MetaData_Organization>
+      <MetaData_Time prefix="meta_time" uri="http://www.xes-standard.org/meta_time.xesext">
+         <duration_average>2459733.94</duration_average>
+         <duration_max>3.6488789E7</duration_max>
+         <duration_min>122.0</duration_min>
+         <duration_standard_deviation>5230403.112</duration_standard_deviation>
+         <duration_total>2.582720637E9</duration_total>
+         <log_duration>4.9691202E7</log_duration>
+         <log_end_time>2015-06-05T12:25:11+02:00</log_end_time>
+         <log_start_time>2013-11-07T08:18:29+01:00</log_start_time>
+      </MetaData_Time>
+   </meta_extensions>
+   <extensions>
+      <Concept prefix="concept" uri="http://www.xes-standard.org/concept.xesext">
+         <name>Sepsis Cases - Event Log</name>
+      </Concept>
+      <Lifecycle prefix="lifecycle" uri="http://www.xes-standard.org/lifecycle.xesext">
+      </Lifecycle>
+      <Organizational prefix="org" uri="http://www.xes-standard.org/org.xesext">
+      </Organizational>
+      <Time prefix="time" uri="http://www.xes-standard.org/time.xesext">
+      </Time>
+   </extensions>
+</metadata>
