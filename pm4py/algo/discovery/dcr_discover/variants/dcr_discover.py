@@ -1,3 +1,19 @@
+'''
+    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
+
+    PM4Py is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PM4Py is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
+'''
 from copy import deepcopy
 from pm4py import get_event_attribute_values
 from pm4py.objects.dcr.obj import dcr_template
@@ -6,14 +22,39 @@ from typing import Tuple, Any
 
 
 def apply(log, findAdditionalConditions=True, **kwargs):
+    """
+    Discovers a DCR graph model from an event log.
+
+    Implements DCR algorithm provided in:
+    C. O. Back, T. Slaats, T. T. Hildebrandt, M. Marquard, "DisCoveR: accurate and efficient discovery of declarative process models"
+
+    Parameters
+    ----------
+    log
+        event log (pandas dataframe)
+    findAdditionalConditions
+        bool value to identify if additional conditions should be mined
+    kwargs
+        optional parameters, currently not used
+    Returns
+    -------
+    tuple(dict,dict)
+        returns tuple of dictionary containing the dcr_graph and the abstracted log used to mine the graph
+    """
     print('[i] Mining with Basic DisCoveR')
     disc = Discover()
     return disc.mine(log, findAdditionalConditions, **kwargs)
 
 
 class Discover:
-
+    """
+    Class constructed for the DisCoveR miner,
+    initiates relevant objects used for mine and Contains all methods used for mining basic DCR graphs.
+    """
     def __init__(self):
+        """
+        initiates the dcr_template and log abstraction used for mining
+        """
         self.graph = deepcopy(dcr_template)
         self.logAbstraction = {
             'events': set(),
@@ -30,12 +71,15 @@ class Discover:
         '''
         Parameters
         ----------
-        log : the event log loaded using read_xes from pm4py
-        findAdditionalConditions : apply the last step of the algorithm? True (default) or False
+        log
+            the event log loaded using read_xes from pm4py
+        findAdditionalConditions
+            apply the last step of the algorithm? True (default) or False
 
         Returns
         -------
-        A mined dcr graph with the 4 basic relations: condition, response, include and exclude
+        tuple(dict,dict)
+            returns a mind dcr graph and associated log abstraction used for mining
         '''
         self.createLogAbstraction(log)
         self.mineFromAbstraction(findAdditionalConditions=findAdditionalConditions)
@@ -47,13 +91,12 @@ class Discover:
         '''
         Main mining
         :param log: pm4py event log
-        :param graph_path: where to save the log
         :return: 0 for success anything else for failure
         '''
         activities = get_event_attribute_values(log, "concept:name")
         events = set(activities)
         self.logAbstraction['events'] = events.copy()
-        self.logAbstraction['traces'] = log
+        self.logAbstraction['traces'] = log.groupby('case:concept:name').apply(lambda event: event.to_dict(orient='records')).tolist()
         self.logAbstraction['atMostOnce'] = events.copy()
         for event in events:
             self.logAbstraction['chainPrecedenceFor'][event] = events.copy() - set([event])
@@ -121,9 +164,9 @@ class Discover:
 
         return 0
 
-    # Removes redundant relations based on transitive closure
     def optimizeRelation(self, relation):
         '''
+        Removes redundant relations based on transitive closure
         if cond and resp A -> B, B -> C then you can remove an existing relation A -> C
         :param relation:
         :return:
@@ -160,7 +203,6 @@ class Discover:
         # Mine self-exclusions
         for event in self.logAbstraction['atMostOnce']:
             self.graph['excludesTo'][event].add(event)
-
         # Mine responses from logAbstraction
         self.graph['responseTo'] = deepcopy(self.logAbstraction['responseTo'])
         # Remove redundant responses

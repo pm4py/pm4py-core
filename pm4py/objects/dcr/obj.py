@@ -1,6 +1,8 @@
 from enum import Enum
-from collections import Counter
+#from collections import Counter
+#from typing import Tuple
 
+#import numpy as np
 
 class Relations(Enum):
     I = 'includesTo'
@@ -29,18 +31,22 @@ dcr_template = {
     'subprocesses': {},
     'nestings': {},
     'labels': set(),
-    'labelMapping': {},
-    'roles': set(),
-    'roleAssignments': set()
+    'labelMapping': {}
 }
 
 
 class Marking_v2(object):
-    def __init__(self) -> None:
-        self.__executed = set()
-        self.__included = set()
-        self.__pending = set()
+    """
+    Class object inspired by implementation of prototype of pm4py-dcr
+    responsible for storing the state of the DCR graph
+    """
 
+    def __init__(self, executed, included, pending) -> None:
+        self.__executed = executed
+        self.__included = included
+        self.__pending = pending
+
+    # getters and setters for datamanipulation, mainly used for DCR semantics
     @property
     def executed(self):
         return self.__executed
@@ -65,22 +71,20 @@ class Marking_v2(object):
     def pending(self, value):
         self.__pending = value
 
+    # built-in functions for printing a visual string representation
+    def __str__(self) -> str:
+        return f'( {self.__executed},{self.__included},{self.__pending})'
+
 
 class DCR_Graph(object):
-    def __init__(self):
-        self.__events = set()
-        self.__labels = set()
-        self.__labelMapping = {}
-        self.__conditionsFor = {}
-        self.__responseTo = {}
-        self.__includesTo = {}
-        self.__excludesTo = {}
-        self.__marking = Marking_v2()
-        self.__roles: set()
-        self.__principals: set()
-        self.__rolesAssignment: {}
-
-    def convertToObj(self, template, log):
+    """
+    This implementation is based on the thoery of this Paper:
+    Author: Thomas T. Hildebrandt and Raghava Rao Mukkamala,
+    Title: Declarative Event-BasedWorkflow as Distributed Dynamic Condition Response Graphs
+    publisher: Electronic Proceedings in Theoretical Computer Science. EPTCS, Open Publishing Association, 2010, pp. 59–73. doi: 10.4204/EPTCS.69.5.
+    """
+    # initiate the objects: contains events ID, activity, the 4 relations, markings, roles and principals
+    def __init__(self, template, log):
         self.__events = set(log.index)
         self.__labels = set(template['events'])
         self.__labelMapping = {key: log['concept:name'][key] for key in set(log.index)}
@@ -88,13 +92,10 @@ class DCR_Graph(object):
         self.__responseTo = template['responseTo']
         self.__includesTo = template['includesTo']
         self.__excludesTo = template['excludesTo']
-        self.__marking.executed = template['marking']['executed']
-        self.__marking.included = template['marking']['included']
-        self.__marking.pending = template['marking']['pending']
+        self.__marking = Marking_v2(template['marking']['executed'], template['marking']['included'], template['marking']['pending'])
 
 
-
-
+    # @property functions to extraxt values used for data manipulation and testing
     @property
     def events(self):
         return self.__events
@@ -127,37 +128,23 @@ class DCR_Graph(object):
     def marking(self):
         return self.__marking
 
-    """
-        'events': set(),
-        'conditionsFor': {},
-        'milestonesFor': {},
-        'responseTo': {},
-        'includesTo': {},
-        'excludesTo': {},
-        'marking': {'executed': set(),
-                    'included': set(),
-                    'pending': set(),
-                    'executedTime': {},  # Gives the time since a event was executed
-                    'pendingDeadline': {}  # The deadline until an event must be executed
-                    },
-        'conditionsForDelays': {},
-        'responseToDeadlines': {},
-        'subprocesses': {},
-        'nestings': {},
-        'labels': set(),
-        'labelMapping': {},
-        'roles': set(),
-        'roleAssignments': set()
-        
+    # in_built functions to print
+    def __repr__(self):
+        return str('{' + '\n'.join(
+            [str(x) + ':' + '{conditionsFor: ' + str(self.conditionsFor[x]) + ', reponseTo: ' + str(self.responseTo[x])
+             + ', includesTo: ' + str(self.includesTo[x]) + ', excludesTo: ' + str(self.excludesTo[x]) + '}' for x in
+             self.labels]) + '}')
 
-    }"""
+    def __str__(self):
+        return self.__repr__()
 
-
+"""
 class Marking(object):
     """
+"""
     This is a per Event marking not a per graph marking
     """
-
+"""
     def __init__(self, executed, included, pending) -> None:
         self.__executed = executed
         self.__included = included
@@ -214,12 +201,13 @@ class Event(object):
 
     def __init__(self, n, l, p, g) -> None:
         """
-
+"""
         :param n: name (assumed unique)
         :param l: label
         :param p: parent
         :param g: children (a graph)
         """
+"""
         self.__children = g
         self.__loading = False
         self.__parent = p
@@ -549,3 +537,4 @@ class DCRGraph(object):
                 res.append(s)
 
         return res
+"""

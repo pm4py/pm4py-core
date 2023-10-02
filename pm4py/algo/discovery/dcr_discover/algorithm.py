@@ -14,84 +14,88 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import datetime
 from copy import deepcopy
 
-import pm4py
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.dcr.obj import DCR_Graph
+from pm4py.objects.dcr.roles.obj import RoleDCR_Graph
 from pm4py.util import exec_utils
-from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
-from pm4py.algo.discovery.dcr_discover.extenstions import time_constraints, initial_pending, subprocess
+from pm4py.algo.discovery.dcr_discover.variants import dcr_discover, roles
+#from pm4py.algo.discovery.dcr_discover.extenstions import time_constraints, initial_pending, subprocess, roles
 from enum import Enum
 import pandas as pd
-from typing import Union, Tuple, Any
+from typing import Union, Any
 
 
 class Variants(Enum):
     DCR_BASIC = dcr_discover
-    DCR_SUBPROCESS = subprocess
+    DCR_ROLES = roles
+    #DCR_SUBPROCESS = subprocess
 
 
 DCR_BASIC = Variants.DCR_BASIC
-DCR_SUBPROCESS = Variants.DCR_SUBPROCESS
+#DCR_SUBPROCESS = Variants.DCR_SUBPROCESS
+DCR_ROLES = Variants.DCR_ROLES
 
-VERSIONS = {DCR_BASIC, DCR_SUBPROCESS}
+#VERSIONS = {DCR_BASIC, DCR_ROLES, DCR_SUBPROCESS}
+VERSIONS = {DCR_BASIC, DCR_ROLES}
 
-
-
-def apply(input_log: Union[EventLog, pd.DataFrame], variant=DCR_BASIC, **parameters) -> Tuple[DCR_Graph,dict]:
+def apply(log: Union[EventLog, pd.DataFrame], variant=DCR_BASIC, **parameters) -> DCR_Graph | tuple[Any, Any]:
     """
+    discover a DCR graph from a provided event log
     Parameters
     -----------
-    input_log
-    variant:
+    log
+        log object (EventLog, pandas dataframe)
+    variant
         Variant of the algorithm to use:
-            - DCR_BASIC
-            - DCR_SUBPROCESS
+        - DCR_BASIC
+        - DCR_ROLES
     parameters
-        Algorithm related params
+        variant specific parameters
         finaAdditionalConditions: [True or False]
     Returns
     -----------
     dcr graph
+        DCR graph (as an object) containing eventId, set of activities, mapping of event to activities,
+            condition relations, response relation, include relations and exclude relations.
+        possible to return variant of different dcr graph depending on which variant, basic, roles, etc.
     """
-    #right now this only works for basic
-    log = deepcopy(input_log)
-    if not isinstance(log, EventLog):
-        log = pm4py.convert_to_event_log(log)
-    dcr_model, la = exec_utils.get_variant(variant).apply(log, **parameters)
-    dcr = DCR_Graph()
-    dcr.convertToObj(dcr_model, pm4py.convert_to_dataframe(log).copy(deep=True))
-    #to be removed
+    # right now this only works for basic
+    input_log = deepcopy(log)
+    dcr, la = exec_utils.get_variant(variant).apply(input_log, **parameters)
+
+
+    if variant == DCR_BASIC.value:
+        return DCR_Graph(dcr, input_log), la
+    elif variant == DCR_ROLES.value:
+        return RoleDCR_Graph(dcr, input_log), la
+
+    #for later possible extension, if not used later, just delete:
     """
-        log = deepcopy(input_log)
-    if variant.value == Variants.DCR_BASIC.value:
-        print('[i] Mining with basic DisCoveR')
-        if not isinstance(log, pm4py.objects.log.obj.EventLog):
-            log = pm4py.convert_to_event_log(log)
-        disc_b = dcr_discover.Discover()
-        dcr_model, la = disc_b.mine(log, **parameters)
-        if 'timed' in parameters.keys() and parameters['timed']:
-            dcr_model = apply_timed(dcr_model, log, None)
-        if 'pending' in parameters.keys() and parameters['pending']:
-            dcr_model = initial_pending.apply(dcr_model, log)
-        return dcr_model, la
-    elif variant.value == Variants.DCR_SUBPROCESS.value:
-        print('[i] Mining with Sp-DisCoveR')
-        dcr_model, sp_log = subprocess.apply(log, **parameters)
-        if 'timed' in parameters.keys() and parameters['timed']:
-            dcr_model = apply_timed(dcr_model, deepcopy(input_log), sp_log)
-        if 'pending' in parameters.keys() and parameters['pending']:
-            dcr_model = initial_pending.apply(dcr_model, sp_log)
-        dcr_model = post_processing(dcr_model, **parameters)
-        return dcr_model, sp_log
-        """
-    return dcr, la
-
-
-
-def post_processing(dcr, timed=True, nestings=False, **parameters):
+           log = deepcopy(input_log)
+       if variant.value == Variants.DCR_BASIC.value:
+           print('[i] Mining with basic DisCoveR')
+           if not isinstance(log, pm4py.objects.log.obj.EventLog):
+               log = pm4py.convert_to_event_log(log)
+           disc_b = dcr_discover.Discover()
+           dcr_model, la = disc_b.mine(log, **parameters)
+           if 'timed' in parameters.keys() and parameters['timed']:
+               dcr_model = apply_timed(dcr_model, log, None)
+           if 'pending' in parameters.keys() and parameters['pending']:
+               dcr_model = initial_pending.apply(dcr_model, log)
+           return dcr_model, la
+       elif variant.value == Variants.DCR_SUBPROCESS.value:
+           print('[i] Mining with Sp-DisCoveR')
+           dcr_model, sp_log = subprocess.apply(log, **parameters)
+           if 'timed' in parameters.keys() and parameters['timed']:
+               dcr_model = apply_timed(dcr_model, deepcopy(input_log), sp_log)
+           if 'pending' in parameters.keys() and parameters['pending']:
+               dcr_model = initial_pending.apply(dcr_model, sp_log)
+           dcr_model = post_processing(dcr_model, **parameters)
+           return dcr_model, sp_log
+    
+    def post_processing(dcr, timed=True, nestings=False, **parameters):
     if timed:
         dcr = post_processing_timed(dcr)
     # future work on nestings
@@ -155,3 +159,6 @@ def apply_timed(dcr_model, log, sp_log):
                 dcr_model['responseToDeadlines'][e1] = {}
             dcr_model['responseToDeadlines'][e1][e2] = value
     return dcr_model
+    """
+
+
