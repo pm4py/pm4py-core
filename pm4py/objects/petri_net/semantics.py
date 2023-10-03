@@ -157,7 +157,7 @@ def execute(t, pn, m):
 
 
 def weak_execute(t, m):
-    m_out = copy.copy(m)
+    m_out = m.copy()
 
     for in_arc in t.in_arcs:
         m_out[in_arc.source] -= in_arc.weight
