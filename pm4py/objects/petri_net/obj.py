@@ -79,6 +79,8 @@ class Marking(Counter):
 
 class PetriNet(object):
     class Place(object):
+        __slots__ = ('_name', '_in_arcs', '_out_arcs', '_properties')
+
         def __init__(self, name, in_arcs=None, out_arcs=None, properties=None):
             self._name = name
             self._in_arcs = set() if in_arcs is None else in_arcs
@@ -133,6 +135,8 @@ class PetriNet(object):
             return new_place
 
     class Transition(object):
+        __slots__ = ('_name', '_label', '_in_arcs', '_out_arcs', '_properties')
+
         def __init__(self, name, label=None, in_arcs=None, out_arcs=None, properties=None):
             self._name = name
             self._label = None if label is None else label
@@ -199,6 +203,8 @@ class PetriNet(object):
             return new_trans
 
     class Arc(object):
+        __slots__ = ('_source', '_target', '_weight', '_properties')
+
         def __init__(self, source, target, weight=1, properties=None):
             if type(source) is type(target):
                 raise Exception('Petri nets are bipartite graphs!')
