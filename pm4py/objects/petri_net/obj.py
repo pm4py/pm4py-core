@@ -76,13 +76,14 @@ class Marking(Counter):
 
 class PetriNet(object):
     class Place(object):
-        __slots__ = ('_name', '_in_arcs', '_out_arcs', '_properties')
+        __slots__ = ('_name', '_in_arcs', '_out_arcs', '_properties', '_id')
 
         def __init__(self, name, in_arcs=None, out_arcs=None, properties=None):
             self._name = name
             self._in_arcs = set() if in_arcs is None else in_arcs
             self._out_arcs = set() if out_arcs is None else out_arcs
             self._properties = dict() if properties is None else properties
+            self._id = id(self)
 
         @property
         def name(self):
@@ -112,11 +113,11 @@ class PetriNet(object):
 
         def __eq__(self, other):
             # keep the ID for now in places
-            return id(self) == id(other)
+            return self._id == other._id
 
         def __hash__(self):
             # keep the ID for now in places
-            return id(self)
+            return self._id
 
         def __deepcopy__(self, memodict={}):
             if id(self) in memodict:
@@ -132,7 +133,7 @@ class PetriNet(object):
             return new_place
 
     class Transition(object):
-        __slots__ = ('_name', '_label', '_in_arcs', '_out_arcs', '_properties')
+        __slots__ = ('_name', '_label', '_in_arcs', '_out_arcs', '_properties', '_id')
 
         def __init__(self, name, label=None, in_arcs=None, out_arcs=None, properties=None):
             self._name = name
@@ -140,6 +141,7 @@ class PetriNet(object):
             self._in_arcs = set() if in_arcs is None else in_arcs
             self._out_arcs = set() if out_arcs is None else out_arcs
             self._properties = dict() if properties is None else properties
+            self._id = id(self)
 
         @property
         def name(self):
@@ -180,11 +182,11 @@ class PetriNet(object):
 
         def __eq__(self, other):
             # keep the ID for now in transitions
-            return id(self) == id(other)
+            return self._id == other._id
 
         def __hash__(self):
             # keep the ID for now in transitions
-            return id(self)
+            return self._id
 
         def __deepcopy__(self, memodict={}):
             if id(self) in memodict:
@@ -200,7 +202,7 @@ class PetriNet(object):
             return new_trans
 
     class Arc(object):
-        __slots__ = ('_source', '_target', '_weight', '_properties')
+        __slots__ = ('_source', '_target', '_weight', '_properties', '_id')
 
         def __init__(self, source, target, weight=1, properties=None):
             if type(source) is type(target):
@@ -209,6 +211,7 @@ class PetriNet(object):
             self._target = target
             self._weight = weight
             self._properties = dict() if properties is None else properties
+            self._id = id(self)
 
         @property
         def source(self):
@@ -239,7 +242,7 @@ class PetriNet(object):
             return self.__repr__()
 
         def __hash__(self):
-            return id(self)
+            return self._id
 
         def __eq__(self, other):
             return self.source == other.source and self.target == other.target
