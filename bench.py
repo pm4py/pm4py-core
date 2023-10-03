@@ -42,6 +42,7 @@ def benchmark_for_model(model_name: str):
     net, im, _ = pm4py.read_pnml(file_name)
     semantics = pm4py.objects.petri_net.semantics.ClassicSemantics()
     semantics = pm4py.objects.petri_net.compiled_semantics.CompiledClassicSemantics(net)
+    im = pm4py.objects.petri_net.obj.Marking({place._id: count for place, count in im.items()})
 
     visited_markings, total_time = do_run_benchmark(net, im, semantics)
     print(model_name, len(visited_markings), total_time, sep='\t')

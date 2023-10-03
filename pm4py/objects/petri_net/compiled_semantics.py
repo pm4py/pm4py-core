@@ -32,7 +32,7 @@ class CompiledClassicSemantics(Semantics):
         self._no_pre_conditions = {
             t for t in pn.transitions if _transition_has_no_pre_condition(t)
         }
-        self._place_post_sets = {p: _get_place_post_set(p) for p in pn.places}
+        self._place_post_sets = {p._id: _get_place_post_set(p) for p in pn.places}
 
     def _check_is_same_net(self, other_net):
         # This is to keep compatibility with the existing semantics API,
@@ -86,11 +86,11 @@ class CompiledClassicSemantics(Semantics):
 
 
 def _get_transition_pre_set(transition: PetriNet.Transition):
-    return Counter({in_arc.source: in_arc.weight for in_arc in transition.in_arcs})
+    return Counter({in_arc.source._id: in_arc.weight for in_arc in transition.in_arcs})
 
 
 def _get_transition_post_set(transition: PetriNet.Transition):
-    return Counter({out_arc.target: out_arc.weight for out_arc in transition.out_arcs})
+    return Counter({out_arc.target._id: out_arc.weight for out_arc in transition.out_arcs})
 
 
 def _get_transition_delta(transition: PetriNet.Transition):
