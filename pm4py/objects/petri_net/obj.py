@@ -21,10 +21,7 @@ from typing import Any, Collection, Dict
 
 class Marking(Counter):
     def __hash__(self):
-        r = 0
-        for p in self.items():
-            r += 31 * hash(p[0]) * p[1]
-        return r
+        return hash(frozenset(self.items()))
 
     def __eq__(self, other):
         if not self.keys() == other.keys():
