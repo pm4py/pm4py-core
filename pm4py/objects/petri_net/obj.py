@@ -26,35 +26,35 @@ class Marking(Counter):
     def __eq__(self, other):
         if not self.keys() == other.keys():
             return False
-        for p in self.keys():
-            if other.get(p) != self.get(p):
+        for place, count in self.items():
+            if other[place] != count:
                 return False
         return True
 
     def __le__(self, other):
         if not self.keys() <= other.keys():
             return False
-        for p in self.keys():
-            if other.get(p) < self.get(p):
+        for place, count in self.items():
+            if other[place] < count:
                 return False
         return True
 
     def __add__(self, other):
         m = Marking()
-        for p in self.items():
-            m[p[0]] = p[1]
-        for p in other.items():
-            m[p[0]] += p[1]
+        for place, count in self.items():
+            m[place] = count
+        for place, count in other.items():
+            m[place] += count
         return m
 
     def __sub__(self, other):
         m = Marking()
-        for p in self.items():
-            m[p[0]] = p[1]
-        for p in other.items():
-            m[p[0]] -= p[1]
-            if m[p[0]] == 0:
-                del m[p[0]]
+        for place, count in self.items():
+            m[place] = count
+        for place, count in other.items():
+            m[place] -= count
+            if m[place] == 0:
+                del m[place]
         return m
 
     def __repr__(self):
