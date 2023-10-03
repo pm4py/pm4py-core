@@ -14,22 +14,22 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from collections import Counter
 from copy import deepcopy
 from typing import Any, Collection, Dict
 
 
-class Marking(Counter):
+class Marking(dict):
+    """
+    A Marking is a dictionary of place->token_count, with the constraint
+        that the token count is always positive (or implicitly assumed to be 0).
+    So it is similar to the collections.Counter class, but faster.
+    """
     def __hash__(self):
         return hash(frozenset(self.items()))
 
-    def __eq__(self, other):
-        if not self.keys() == other.keys():
-            return False
-        for place, count in self.items():
-            if other[place] != count:
-                return False
-        return True
+    def __missing__(self, key):
+        # The count of an element not in the marking is 0
+        return 0
 
     def __le__(self, other):
         if not self.keys() <= other.keys():

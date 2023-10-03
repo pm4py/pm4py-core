@@ -16,7 +16,7 @@
 '''
 import copy
 from typing import Counter, Generic, TypeVar
-from pm4py.objects.petri_net.obj import PetriNet
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.petri_net.sem_interface import Semantics
 
 N = TypeVar("N", bound=PetriNet)
@@ -157,7 +157,7 @@ def execute(t, pn, m):
 
 
 def weak_execute(t, m):
-    m_out = m.copy()
+    m_out = Marking(m.copy())
 
     for in_arc in t.in_arcs:
         m_out[in_arc.source] -= in_arc.weight
