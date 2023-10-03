@@ -72,6 +72,7 @@ class PetriNetSemantics(Generic[N]):
             m_out[a.target] += a.weight
         return m_out
 
+
 class ClassicSemantics(Semantics):
     def is_enabled(self, t, pn, m, **kwargs):
         """
@@ -121,7 +122,6 @@ class ClassicSemantics(Semantics):
         """
         return weak_execute(t, m)
 
-
     def enabled_transitions(self, pn, m, **kwargs):
         """
             Returns a set of enabled transitions in a Petri net and given marking
@@ -141,10 +141,11 @@ class ClassicSemantics(Semantics):
 def is_enabled(t, pn, m):
     if t not in pn.transitions:
         return False
-    else:
-        for a in t.in_arcs:
-            if m[a.source] < a.weight:
-                return False
+
+    for in_arc in t.in_arcs:
+        if m[in_arc.source] < in_arc.weight:
+            return False
+
     return True
 
 
@@ -152,32 +153,22 @@ def execute(t, pn, m):
     if not is_enabled(t, pn, m):
         return None
 
-    m_out = copy.copy(m)
-    for a in t.in_arcs:
-        m_out[a.source] -= a.weight
-        if m_out[a.source] == 0:
-            del m_out[a.source]
-
-    for a in t.out_arcs:
-        m_out[a.target] += a.weight
-
-    return m_out
+    return weak_execute(t, m)
 
 
 def weak_execute(t, m):
     m_out = copy.copy(m)
-    for a in t.in_arcs:
-        m_out[a.source] -= a.weight
-        if m_out[a.source] <= 0:
-            del m_out[a.source]
-    for a in t.out_arcs:
-        m_out[a.target] += a.weight
+
+    for in_arc in t.in_arcs:
+        m_out[in_arc.source] -= in_arc.weight
+        if m_out[in_arc.source] <= 0:
+            del m_out[in_arc.source]
+
+    for out_arc in t.out_arcs:
+        m_out[out_arc.target] += out_arc.weight
+
     return m_out
 
 
 def enabled_transitions(pn, m):
-    enabled = set()
-    for t in pn.transitions:
-        if is_enabled(t, pn, m):
-            enabled.add(t)
-    return enabled
+    return {t for t in pn.transitions if is_enabled(t, pn, m)}
