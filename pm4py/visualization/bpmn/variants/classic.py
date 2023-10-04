@@ -56,7 +56,7 @@ def apply(bpmn_graph: BPMN, parameters: Optional[Dict[Any, Any]] = None) -> grap
     from pm4py.objects.bpmn.util.sorting import get_sorted_nodes_edges
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
-    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "LR")
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, constants.DEFAULT_RANKDIR_GVIZ)
     font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 12)
     font_size = str(font_size)
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)

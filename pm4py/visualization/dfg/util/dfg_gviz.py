@@ -135,7 +135,7 @@ def assign_penwidth_edges(dfg):
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
                            max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, soj_time=None,
-                           font_size="12", bgcolor=constants.DEFAULT_BGCOLOR, rankdir="TB"):
+                           font_size="12", bgcolor=constants.DEFAULT_BGCOLOR, rankdir=constants.DEFAULT_RANKDIR_GVIZ):
     """
     Do GraphViz visualization of a DFG graph
 

@@ -1,6 +1,28 @@
 # Changelog of pm4py
 
 
+## pm4py 2.7.7 (2023.09.22)
+
+### Added
+* 056d9e5714e2ad0a21fbcac0725ea4fb7aae260c
+  * encoding specification in pm4py.read and pm4py.write classes
+
+### Changed
+* f81d62ad8dc8a76aabdf90763a8bd8b8e2ea2aa9
+  * fixed compatibility with Python 3.12 (removed deprecation warnings)
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
+
 ## pm4py 2.7.6 (2023.08.28)
 
 ### Added

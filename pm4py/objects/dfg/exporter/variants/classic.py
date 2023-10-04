@@ -18,12 +18,13 @@ from pm4py.util import exec_utils
 from enum import Enum
 from collections import Counter
 from pm4py.objects.dfg.utils import dfg_utils
-from pm4py.util.constants import DEFAULT_ENCODING
+from pm4py.util import constants
 
 
 class Parameters(Enum):
     START_ACTIVITIES = "start_activities"
     END_ACTIVITIES = "end_activities"
+    ENCODING = "encoding"
 
 
 def export_line_by_line(dfg, parameters=None):
@@ -91,13 +92,16 @@ def apply(dfg, output_path, parameters=None):
         Parameters of the algorithm, including:
             Parameters.START_ACTIVITIES => Start activities of the DFG
             Parameters.END_ACTIVITIES => End activities of the DFG
+            Parameters.ENCODING => The encoding to be used (default: utf-8)
     """
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
     F = open(output_path, "wb")
     for row in export_line_by_line(dfg, parameters=parameters):
-        F.write(row.encode(DEFAULT_ENCODING))
+        F.write(row.encode(encoding))
     F.close()
 
 
@@ -113,6 +117,7 @@ def export_as_string(dfg, parameters=None):
         Parameters of the algorithm, including:
             Parameters.START_ACTIVITIES => Start activities of the DFG
             Parameters.END_ACTIVITIES => End activities of the DFG
+            Parameters.ENCODING => The encoding to be used (default: utf-8)
 
     Returns
     --------------
@@ -122,10 +127,12 @@ def export_as_string(dfg, parameters=None):
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
     ret = []
     for row in export_line_by_line(dfg, parameters=parameters):
         ret.append(row)
     ret = "".join(ret)
-    ret = ret.encode(DEFAULT_ENCODING)
+    ret = ret.encode(encoding)
 
     return ret

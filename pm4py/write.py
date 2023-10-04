@@ -34,7 +34,7 @@ from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_data
 from pm4py.objects.log.obj import XESExtension
 
 
-def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str, case_id_key: str = "case:concept:name", extensions: Optional[Collection[XESExtension]] = None, **kwargs) -> None:
+def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str, case_id_key: str = "case:concept:name", extensions: Optional[Collection[XESExtension]] = None, encoding: str = constants.DEFAULT_ENCODING, **kwargs) -> None:
     """
     Writes an event log to disk in the XES format (see `xes-standard <https://xes-standard.org/>`_)
 
@@ -42,6 +42,7 @@ def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str, case_id_key: s
     :param file_path: target file path of the event log (``.xes`` file) on disk
     :param case_id_key: column key that identifies the case identifier
     :param extensions: extensions defined for the event log
+    :param encoding: the encoding to be used (default: utf-8)
         
     .. code-block:: python3
 
@@ -64,12 +65,13 @@ def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str, case_id_key: s
         parameters[k] = v
     parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] = case_id_key
     parameters["extensions"] = extensions
+    parameters["encoding"] = encoding
 
     from pm4py.objects.log.exporter.xes import exporter as xes_exporter
     xes_exporter.apply(log, file_path, parameters=parameters)
 
 
-def write_pnml(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, file_path: str) -> None:
+def write_pnml(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, file_path: str, encoding: str = constants.DEFAULT_ENCODING) -> None:
     """
     Writes a Petri net object to disk in the ``.pnml`` format (see `pnml-standard <https://www.pnml.org/>`_)
 
@@ -77,6 +79,7 @@ def write_pnml(petri_net: PetriNet, initial_marking: Marking, final_marking: Mar
     :param initial_marking: initial marking of the Petri net
     :param final_marking: final marking of the Petri net
     :param file_path: target file path on disk of the ``.pnml`` file
+    :param encoding: the encoding to be used (default: utf-8)
 
     .. code-block:: python3
 
@@ -89,15 +92,16 @@ def write_pnml(petri_net: PetriNet, initial_marking: Marking, final_marking: Mar
         file_path = file_path + ".pnml"
 
     from pm4py.objects.petri_net.exporter import exporter as petri_exporter
-    petri_exporter.apply(petri_net, initial_marking, file_path, final_marking=final_marking)
+    petri_exporter.apply(petri_net, initial_marking, file_path, final_marking=final_marking, parameters={"encoding": encoding})
 
 
-def write_ptml(tree: ProcessTree, file_path: str) -> None:
+def write_ptml(tree: ProcessTree, file_path: str, encoding: str = constants.DEFAULT_ENCODING) -> None:
     """
     Writes a process tree object to disk in the ``.ptml`` format.
 
     :param tree: ProcessTree object that needs to be written to disk
     :param file_path: target file path on disk of the ``.ptml`` file
+    :param encoding: the encoding to be used (default: utf-8)
 
     .. code-block:: python3
 
@@ -110,10 +114,10 @@ def write_ptml(tree: ProcessTree, file_path: str) -> None:
         file_path = file_path + ".ptml"
 
     from pm4py.objects.process_tree.exporter import exporter as tree_exporter
-    tree_exporter.apply(tree, file_path)
+    tree_exporter.apply(tree, file_path, parameters={"encoding": encoding})
 
 
-def write_dfg(dfg: Dict[Tuple[str,str],int], start_activities:  Dict[str,int], end_activities:  Dict[str,int], file_path: str):
+def write_dfg(dfg: Dict[Tuple[str,str],int], start_activities:  Dict[str,int], end_activities:  Dict[str,int], file_path: str, encoding: str = constants.DEFAULT_ENCODING):
     """
     Writes a directly follows graph (DFG) object to disk in the ``.dfg`` format.
 
@@ -121,6 +125,7 @@ def write_dfg(dfg: Dict[Tuple[str,str],int], start_activities:  Dict[str,int], e
     :param start_activities: multiset tracking the number of occurrences of start activities
     :param end_activities: mulltiset tracking the number of occurrences of end activities
     :param file_path: target file path on disk to write the dfg object to
+    :param encoding: the encoding to be used (default: utf-8)
 
     .. code-block:: python3
 
@@ -135,16 +140,18 @@ def write_dfg(dfg: Dict[Tuple[str,str],int], start_activities:  Dict[str,int], e
     from pm4py.objects.dfg.exporter import exporter as dfg_exporter
     dfg_exporter.apply(dfg, file_path,
                        parameters={dfg_exporter.Variants.CLASSIC.value.Parameters.START_ACTIVITIES: start_activities,
-                                   dfg_exporter.Variants.CLASSIC.value.Parameters.END_ACTIVITIES: end_activities})
+                                   dfg_exporter.Variants.CLASSIC.value.Parameters.END_ACTIVITIES: end_activities,
+                                   "encoding": encoding})
 
 
-def write_bpmn(model: BPMN, file_path: str, auto_layout: bool = True):
+def write_bpmn(model: BPMN, file_path: str, auto_layout: bool = True, encoding: str = constants.DEFAULT_ENCODING):
     """
     Writes a BPMN model object to disk in the ``.bpmn`` format.
 
     :param model: BPMN model to export
     :param file_path: target file path on disk to write the BPMN object to
     :param auto_layout: boolean indicating whether the model should get an auto layout (which is written to disk)
+    :param encoding: the encoding to be used (default: utf-8)
 
     .. code-block:: python3
 
@@ -160,10 +167,10 @@ def write_bpmn(model: BPMN, file_path: str, auto_layout: bool = True):
         from pm4py.objects.bpmn.layout import layouter
         model = layouter.apply(model)
     from pm4py.objects.bpmn.exporter import exporter
-    exporter.apply(model, file_path)
+    exporter.apply(model, file_path, parameters={"encoding": encoding})
 
 
-def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
+def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None, encoding: str = constants.DEFAULT_ENCODING):
     """
     Writes an OCEL object to disk in the ``.bpmn`` format.
     Different formats are supported, including CSV (flat table), JSON-OCEL, XML-OCEL and SQLite
@@ -172,6 +179,7 @@ def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     :param ocel: OCEL object to write to disk
     :param file_path: target file path on disk to write the OCEL object to
     :param objects_path: location of the objects table (only applicable in case of .csv exporting)
+    :param encoding: the encoding to be used (default: utf-8)
 
     .. code-block:: python3
 
@@ -182,17 +190,17 @@ def write_ocel(ocel: OCEL, file_path: str, objects_path: str = None):
     file_path = str(file_path)
 
     if file_path.lower().endswith("csv"):
-        return write_ocel_csv(ocel, file_path, objects_path)
+        return write_ocel_csv(ocel, file_path, objects_path, encoding=encoding)
     elif file_path.lower().endswith("jsonocel"):
-        return write_ocel_json(ocel, file_path)
+        return write_ocel_json(ocel, file_path, encoding=encoding)
     elif file_path.lower().endswith("xmlocel"):
-        return write_ocel_xml(ocel, file_path)
+        return write_ocel_xml(ocel, file_path, encoding=encoding)
     elif file_path.lower().endswith("sqlite"):
-        return write_ocel_sqlite(ocel, file_path)
+        return write_ocel_sqlite(ocel, file_path, encoding=encoding)
     raise Exception("unsupported file format")
 
 
-def write_ocel_csv(ocel: OCEL, file_path: str, objects_path: str):
+def write_ocel_csv(ocel: OCEL, file_path: str, objects_path: str, encoding: str = constants.DEFAULT_ENCODING):
     """
     Writes an OCEL object to disk in the ``.csv`` file format.
     The OCEL object is exported into two separate files, i.e., one event table and one objects table.
@@ -201,6 +209,7 @@ def write_ocel_csv(ocel: OCEL, file_path: str, objects_path: str):
     :param ocel: OCEL object
     :param file_path: target file path on disk to write the event table to
     :param objects_path: target file path on disk to write the objects table to
+    :param encoding: the encoding to be used (default: utf-8)
 
     .. code-block:: python3
 
@@ -213,15 +222,16 @@ def write_ocel_csv(ocel: OCEL, file_path: str, objects_path: str):
         file_path = file_path + ".csv"
 
     from pm4py.objects.ocel.exporter.csv import exporter as csv_exporter
-    return csv_exporter.apply(ocel, file_path, objects_path=objects_path)
+    return csv_exporter.apply(ocel, file_path, objects_path=objects_path, parameters={"encoding": encoding})
 
 
-def write_ocel_json(ocel: OCEL, file_path: str):
+def write_ocel_json(ocel: OCEL, file_path: str, encoding: str = constants.DEFAULT_ENCODING):
     """
     Writes an OCEL object to disk in the ``.json`` file format (exported as ``.oceljson`` file).
 
     :param ocel: OCEL object
     :param file_path: target file path on disk to write the OCEL object to
+    :param encoding: the encoding to be used (default: utf-8)
 
     .. code-block:: python3
 
@@ -238,15 +248,16 @@ def write_ocel_json(ocel: OCEL, file_path: str):
     is_ocel20 = ocel.is_ocel20()
     variant = jsonocel_exporter.Variants.OCEL20 if is_ocel20 else jsonocel_exporter.Variants.CLASSIC
 
-    return jsonocel_exporter.apply(ocel, file_path, variant=variant)
+    return jsonocel_exporter.apply(ocel, file_path, variant=variant, parameters={"encoding": encoding})
 
 
-def write_ocel_xml(ocel: OCEL, file_path: str):
+def write_ocel_xml(ocel: OCEL, file_path: str, encoding: str = constants.DEFAULT_ENCODING):
     """
     Writes an OCEL object to disk in the ``.xml`` file format (exported as ``.ocelxml`` file).
 
     :param ocel: OCEL object
     :param file_path: target file path on disk to write the OCEL object to
+    :param encoding: the encoding to be used (default: utf-8)
 
     .. code-block:: python3
 
@@ -259,15 +270,16 @@ def write_ocel_xml(ocel: OCEL, file_path: str):
         file_path = file_path + ".xmlocel"
 
     from pm4py.objects.ocel.exporter.xmlocel import exporter as xmlocel_exporter
-    return xmlocel_exporter.apply(ocel, file_path, variant=xmlocel_exporter.Variants.CLASSIC)
+    return xmlocel_exporter.apply(ocel, file_path, variant=xmlocel_exporter.Variants.CLASSIC, parameters={"encoding": encoding})
 
 
-def write_ocel_sqlite(ocel: OCEL, file_path: str):
+def write_ocel_sqlite(ocel: OCEL, file_path: str, encoding: str = constants.DEFAULT_ENCODING):
     """
     Writes an OCEL object to disk to a ``SQLite`` database (exported as ``.sqlite`` file).
 
     :param ocel: OCEL object
     :param file_path: target file path to the SQLite datbaase
+    :param encoding: the encoding to be used (default: utf-8)
 
     .. code-block:: python3
 
@@ -280,15 +292,16 @@ def write_ocel_sqlite(ocel: OCEL, file_path: str):
         file_path = file_path + ".sqlite"
 
     from pm4py.objects.ocel.exporter.sqlite import exporter as sqlite_exporter
-    return sqlite_exporter.apply(ocel, file_path, variant=sqlite_exporter.Variants.PANDAS_EXPORTER)
+    return sqlite_exporter.apply(ocel, file_path, variant=sqlite_exporter.Variants.PANDAS_EXPORTER, parameters={"encoding": encoding})
 
 
-def write_ocel2(ocel: OCEL, file_path: str):
+def write_ocel2(ocel: OCEL, file_path: str, encoding: str = constants.DEFAULT_ENCODING):
     """
     Writes an OCEL2.0 object to disk
 
     :param ocel: OCEL object
     :param file_path: target file path to the SQLite datbaase
+    :param encoding: the encoding to be used (default: utf-8)
 
     .. code-block:: python3
 
@@ -299,19 +312,20 @@ def write_ocel2(ocel: OCEL, file_path: str):
     file_path = str(file_path)
 
     if file_path.lower().endswith("sqlite"):
-        return write_ocel2_sqlite(ocel, file_path)
+        return write_ocel2_sqlite(ocel, file_path, encoding=encoding)
     elif file_path.lower().endswith("xml") or file_path.lower().endswith("xmlocel"):
-        return write_ocel2_xml(ocel, file_path)
+        return write_ocel2_xml(ocel, file_path, encoding=encoding)
     elif file_path.lower().endswith("jsonocel"):
-        return write_ocel_json(ocel, file_path)
+        return write_ocel_json(ocel, file_path, encoding=encoding)
 
 
-def write_ocel2_sqlite(ocel: OCEL, file_path: str):
+def write_ocel2_sqlite(ocel: OCEL, file_path: str, encoding: str = constants.DEFAULT_ENCODING):
     """
     Writes an OCEL2.0 object to disk to a ``SQLite`` database (exported as ``.sqlite`` file).
 
     :param ocel: OCEL object
     :param file_path: target file path to the SQLite datbaase
+    :param encoding: the encoding to be used (default: utf-8)
 
     .. code-block:: python3
 
@@ -324,15 +338,16 @@ def write_ocel2_sqlite(ocel: OCEL, file_path: str):
         file_path = file_path + ".sqlite"
 
     from pm4py.objects.ocel.exporter.sqlite import exporter as sqlite_exporter
-    return sqlite_exporter.apply(ocel, file_path, variant=sqlite_exporter.Variants.OCEL20)
+    return sqlite_exporter.apply(ocel, file_path, variant=sqlite_exporter.Variants.OCEL20, parameters={"encoding": encoding})
 
 
-def write_ocel2_xml(ocel: OCEL, file_path: str):
+def write_ocel2_xml(ocel: OCEL, file_path: str, encoding: str = constants.DEFAULT_ENCODING):
     """
     Writes an OCEL2.0 object to disk to an ``XML`` file (exported as ``.xmlocel`` file).
 
     :param ocel: OCEL object
     :param file_path: target file path to the XML file
+    :param encoding: the encoding to be used (default: utf-8)
 
     .. code-block:: python3
 
@@ -345,4 +360,4 @@ def write_ocel2_xml(ocel: OCEL, file_path: str):
         file_path = file_path + ".xmlocel"
 
     from pm4py.objects.ocel.exporter.xmlocel import exporter as xml_exporter
-    return xml_exporter.apply(ocel, file_path, variant=xml_exporter.Variants.OCEL20)
+    return xml_exporter.apply(ocel, file_path, variant=xml_exporter.Variants.OCEL20, parameters={"encoding": encoding})

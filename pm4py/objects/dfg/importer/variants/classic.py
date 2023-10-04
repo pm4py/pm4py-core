@@ -1,21 +1,10 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
-from pm4py.util import constants
+from pm4py.util import constants, exec_utils
 from io import StringIO
+from enum import Enum
+
+
+class Parameters(Enum):
+    ENCODING = "encoding"
 
 
 def import_dfg_from_rows(rows, parameters=None):
@@ -111,7 +100,9 @@ def apply(file_path, parameters=None):
     if parameters is None:
         parameters = {}
 
-    F = open(file_path, "r")
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
+    F = open(file_path, "r", encoding=encoding)
     content = F.readlines()
     F.close()
 
@@ -141,7 +132,9 @@ def import_dfg_from_string(dfg_string, parameters=None):
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
     if type(dfg_string) is bytes:
-        dfg_string = dfg_string.decode(constants.DEFAULT_ENCODING)
+        dfg_string = dfg_string.decode(encoding)
 
     return import_dfg_from_rows(StringIO(dfg_string).readlines(), parameters=parameters)

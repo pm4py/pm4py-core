@@ -175,7 +175,7 @@ def apply(ocdfg: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) ->
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
-    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "TB")
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, constants.DEFAULT_RANKDIR_GVIZ)
     act_metric = exec_utils.get_param_value(Parameters.ACT_METRIC, parameters, "events")
     edge_metric = exec_utils.get_param_value(Parameters.EDGE_METRIC, parameters, "event_couples")
     act_threshold = exec_utils.get_param_value(Parameters.ACT_THRESHOLD, parameters, 0)
