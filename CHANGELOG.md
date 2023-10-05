@@ -1,5 +1,26 @@
 # Changelog of pm4py
 
+## pm4py 2.7.8 (2023.10.XX)
+
+### Added
+
+### Changed
+* 634b6a5ac1b40963baa76a42a10c3c22176aaf84
+  f6993293d665e2f7b69c27ce0f09d2df4e889b0b
+  f0240670292086cb3b6fe523b1646dcfa4c71ddc
+  * Refactoring OCEL import/export
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
 
 ## pm4py 2.7.7 (2023.09.22)
 
