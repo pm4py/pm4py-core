@@ -4,7 +4,7 @@ from pm4py.objects.dfg.obj import DFG
 
 
 def execute_script():
-    log = pm4py.read_xes(os.path.join("..", "tests", "input_data", "running-example.xes"))
+    log = pm4py.read_xes(os.path.join("..", "tests", "input_data", "running-example.xes"), return_legacy_log_object=False)
     typed_dfg_1 = pm4py.discover_dfg_typed(log)
     # in alternative ...
     dfg, sa, ea = pm4py.discover_dfg(log)
