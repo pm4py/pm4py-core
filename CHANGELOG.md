@@ -9,15 +9,32 @@
   f6993293d665e2f7b69c27ce0f09d2df4e889b0b
   f0240670292086cb3b6fe523b1646dcfa4c71ddc
   * Refactoring OCEL import/export
+* c1379120480539f5578a52ce6d76effb4819b3c6
+  * centralized enabling/disabling of TQDM progress bar + Disabling progress bar in tests
+* 08c2c16d17d2cbe26224662032a298f6b0a409a9
+  * avoiding the necessity of re-creating setup.py when new packages are added to pm4py
+* a7dc86f7fd821b5dd229ff404b5afa3b5ad919b4
+  * disable IM fallthroughs in the simplified interface
 
 ### Deprecated
 
 ### Fixed
+* 063a6d64bae61f1b54444e0b34ec0926b504aa34
+  * properly closing file objects in different pm4py importers/exporters (XES, PNML, PTML, ...)
+* 35f13b65a0523f889748679fbe90cf2d041e1038
+  * fixing XES importing warnings in obtaining the resulting pd.DataFrame
+* ef548ef18f514ad6ad0a32a104f380b322ab72e7
+  * fixing test/examples execution
+* d1b39bde1b14f160c0fff42bdc6b172bb0ae760e
+	* fix Petri net serialization
+* e51c5e1e084a7fd7d13cb8d1381f868435762cca
+	* fixing TBR diagnostics when the methods are called on pd.DataFrame
 
 ### Removed
 
 ### Other
-
+* 49a472d002890b35e3f59ef93fd75f2e35455715
+	* storing stable pm4py Python requirements for the old Python 3.8
 
 ---
 
