@@ -7,7 +7,7 @@ from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
 
 
 def execute_script():
-    log = pm4py.read_xes(os.path.join("..", "tests", "input_data", "running-example.xes"))
+    log = pm4py.read_xes(os.path.join("..", "tests", "input_data", "running-example.xes"), return_legacy_log_object=False)
     variants = pm4py.get_variants(log)
     uvcl = UVCL()
     for var, occ in variants.items():

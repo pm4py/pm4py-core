@@ -30,7 +30,7 @@ push-release-branch:
     # - if: '$CI_PROJECT_URL =~ /^https:\/\/gitlab.fit.fraunhofer.de\/process-mining\/pm4py-industry-partners.*/'
     #   when: never
     # does NOT work, for unknown reasons.
-    - if: '$CI_COMMIT_BRANCH == "release" && $CI_PROJECT_URL == "https://gitlab.fit.fraunhofer.de/process-mining/pm4py/pm4py-core"'
+    - if: '$CI_COMMIT_BRANCH == "DISABLED" && $CI_PROJECT_URL == "https://gitlab.fit.fraunhofer.de/process-mining/pm4py/pm4py-core"'
   script:
     # The runner checks out a detached(!) head, which we cannot push -> we need to switch to "release" explicitly
     - git checkout release
