@@ -7,6 +7,7 @@ from statistics import median
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.util import constants
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -76,6 +77,8 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
     if parameters is None:
         parameters = {}
 
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
     diagnostics = {}
 
@@ -128,6 +131,8 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
     """
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes.DEFAULT_TIMESTAMP_KEY)
     diagnostics = {}
