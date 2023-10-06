@@ -329,6 +329,7 @@ def import_log(filename, parameters=None):
     else:
         f = open(filename, "rb")
     context = etree.iterparse(f, events=[_EVENT_START, _EVENT_END], encoding=encoding)
+    f.close()
 
     log = EventLog()
     return import_from_context(context, num_traces, log, parameters=parameters)
