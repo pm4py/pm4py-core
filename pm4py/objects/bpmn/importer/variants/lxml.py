@@ -285,7 +285,10 @@ def apply(path, parameters=None):
     from lxml import etree, objectify
 
     parser = etree.XMLParser(remove_comments=True, encoding=encoding)
-    xml_tree = objectify.parse(path, parser=parser)
+
+    F = open(path, "rb")
+    xml_tree = objectify.parse(F, parser=parser)
+    F.close()
 
     return import_xml_tree_from_root(xml_tree.getroot())
 
