@@ -131,7 +131,7 @@ class InductiveMinerTest(unittest.TestCase):
 
     def test_inductive_miner_new_df_dfg(self):
         import pm4py
-        log = pm4py.read_xes("input_data/running-example.xes")
+        log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=False)
         typed_dfg = pm4py.discover_dfg_typed(log)
         tree = pm4py.discover_process_tree_inductive(typed_dfg, noise_threshold=0.2)
 
