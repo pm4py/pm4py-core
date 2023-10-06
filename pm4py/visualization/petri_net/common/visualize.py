@@ -98,6 +98,8 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
     font_size = str(font_size)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
+
     viz = Digraph(net.name, filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     if set_rankdir:
         viz.graph_attr['rankdir'] = set_rankdir
