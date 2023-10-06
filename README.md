@@ -22,6 +22,9 @@ if __name__ == "__main__":
 pm4py can be installed on Python 3.9.x / 3.10.x / 3.11.x / 3.12.x by invoking:
 *pip install -U pm4py*
 
+pm4py is also running on older Python environments with different requirements sets, including:
+- Python 3.8 (3.8.10): third_party/old_python_deps/requirements_py38.txt
+
 ## Requirements
 pm4py depends on some other Python packages, with different levels of importance:
 * *Essential requirements*: numpy, pandas, deprecation, networkx
