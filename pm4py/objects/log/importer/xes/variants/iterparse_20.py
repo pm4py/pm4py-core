@@ -331,9 +331,10 @@ def import_log(filename, parameters=None):
     else:
         f = open(filename, "rb")
     context = etree.iterparse(f, events=[_EVENT_START, _EVENT_END], encoding=encoding)
-    f.close()
 
-    return import_from_context(context, num_traces, parameters=parameters)
+    log = import_from_context(context, num_traces, parameters=parameters)
+    f.close()
+    return log
 
 
 def import_from_string(log_string, parameters=None):
