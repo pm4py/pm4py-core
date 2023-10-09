@@ -97,6 +97,7 @@ def apply(tree: ProcessTree, parameters: Optional[Dict[Union[str, Parameters], A
         parameters = {}
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
 
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
     rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, constants.DEFAULT_RANKDIR_GVIZ)

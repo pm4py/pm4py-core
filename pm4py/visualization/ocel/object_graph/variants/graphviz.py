@@ -72,6 +72,7 @@ def apply(ocel: OCEL, graph: Set[Tuple[str, str]], parameters: Optional[Dict[Any
     directed = exec_utils.get_param_value(Parameters.DIRECTED, parameters, True)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
 
     if directed:
         viz = Digraph("ograph", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})

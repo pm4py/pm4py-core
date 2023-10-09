@@ -17,9 +17,11 @@
 from pm4py.objects.process_tree import obj as pt_operator
 from pm4py.util.regex import SharedObj, get_new_char
 
+from pm4py.util import constants
 import warnings
 
-warnings.warn("The regex package will be removed in a future release.")
+if constants.SHOW_INTERNAL_WARNINGS:
+    warnings.warn("The regex package will be removed in a future release.")
 
 
 def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):

@@ -175,6 +175,8 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         end_activities = []
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
+
     viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor, 'rankdir': rankdir})
 
     # first, remove edges in diagram that exceeds the maximum number of edges in the diagram

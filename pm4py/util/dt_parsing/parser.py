@@ -73,8 +73,9 @@ def get(variant=DEFAULT_VARIANT):
     if DEFAULT_VARIANT == STRPFROMISO:
         if not constants.TRIGGERED_DT_PARSING_WARNING:
             if sys.version_info < (3, 11):
-                warnings.warn(
-                    "ISO8601 strings are not fully supported with strpfromiso for Python versions below 3.11")
+                if constants.SHOW_INTERNAL_WARNINGS:
+                    warnings.warn(
+                        "ISO8601 strings are not fully supported with strpfromiso for Python versions below 3.11")
                 constants.TRIGGERED_DT_PARSING_WARNING = True
 
     return VERSIONS[variant]

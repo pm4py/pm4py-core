@@ -22,10 +22,6 @@ from pm4py.util import xes_constants as xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.regex import SharedObj, get_new_char
 
-import warnings
-
-#warnings.warn("The regex package will be removed in a future release.")
-
 
 def get_encoded_trace(trace, mapping, parameters=None):
     """

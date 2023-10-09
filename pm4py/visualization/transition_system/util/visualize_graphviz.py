@@ -59,6 +59,8 @@ def visualize(ts, parameters=None):
         ts = nts
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
+
     viz = Digraph(ts.name, filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
 
     # states

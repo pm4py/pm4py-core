@@ -18,9 +18,6 @@ __doc__ = """
 The ``pm4py.write`` module contains all funcationality related to writing files/objects to disk.
 """
 
-import warnings
-import deprecation
-
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.ocel.obj import OCEL

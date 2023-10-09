@@ -23,6 +23,7 @@ from typing import Union, Optional, Dict, Any, Tuple, List
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from enum import Enum
 from pm4py.util import exec_utils, xes_constants, constants
+import warnings
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log.util import filtering_utils
 from pm4py.util.lp import solver as lp_solver
@@ -34,7 +35,6 @@ from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
 from pm4py.objects.petri_net.utils import murata
 from pm4py.objects.petri_net.utils import reduction
 import importlib.util
-import warnings
 
 
 class Parameters(Enum):
@@ -157,7 +157,8 @@ def apply(log0: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional
     anc_end = set(nx.ancestors(G, artificial_end_activity))
 
     if artificial_start_activity in desc_start or artificial_end_activity in anc_end or len(desc_start.union({artificial_start_activity}).difference(activities)) > 0 or len(anc_end.union({artificial_end_activity}).difference(activities)) > 0:
-        warnings.warn("The conditions needed to ensure a relaxed sound WF-net as output are not satisfied.")
+        if constants.SHOW_INTERNAL_WARNINGS:
+            warnings.warn("The conditions needed to ensure a relaxed sound WF-net as output are not satisfied.")
 
     matr = __transform_log_to_matrix(log, activities, activity_key)
 

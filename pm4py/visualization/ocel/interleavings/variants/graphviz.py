@@ -113,6 +113,8 @@ def apply(dataframe1: pd.DataFrame, dataframe2: pd.DataFrame, interleavings: pd.
     min_fact_edges_interleavings = exec_utils.get_param_value(Parameters.MIN_FACT_EDGES_INTERLEAVINGS, parameters, 0.3)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
+
     viz = Digraph("interleavings", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     viz.attr('node', shape='ellipse', fixedsize='false')
 

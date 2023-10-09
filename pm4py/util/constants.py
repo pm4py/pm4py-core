@@ -71,11 +71,14 @@ DEFAULT_ARTIFICIAL_END_ACTIVITY = "■"
 DEFAULT_BUSINESS_HOURS_WORKCALENDAR = None
 
 SHOW_EVENT_LOG_DEPRECATION = True if get_param_from_env("PM4PY_SHOW_EVENT_LOG_DEPRECATION", "True").lower() == "true" else False
+SHOW_INTERNAL_WARNINGS = True if get_param_from_env("PM4PY_SHOW_INTERNAL_WARNINGS", "True").lower() == "true" else False
+
 TRIGGERED_DT_PARSING_WARNING = False
 
 DEFAULT_BGCOLOR = get_param_from_env("PM4PY_DEFAULT_BGCOLOR", "white")
 DEFAULT_FORMAT_GVIZ_VIEW = get_param_from_env("PM4PY_DEFAULT_FORMAT_GVIZ_VIEW", "png")
 DEFAULT_RANKDIR_GVIZ = get_param_from_env("PM4PY_DEFAULT_RANKDIR_GVIZ", "LR")
+DEFAULT_TIMESTAMP_PARSE_FORMAT = get_param_from_env("PM4PY_DEFAULT_TIMESTAMP_PARSE_FORMAT", None)
 
 ENABLE_MULTIPROCESSING_DEFAULT = True if get_param_from_env("PM4PY_ENABLE_MULTIPROCESSING_DEFAULT", "False").lower() == "true" else False
 SHOW_PROGRESS_BAR = True if get_param_from_env("PM4PY_SHOW_PROGRESS_BAR", "True").lower() == "true" else False

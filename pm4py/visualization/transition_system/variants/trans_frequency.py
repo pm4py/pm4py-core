@@ -46,6 +46,8 @@ def apply(tsys: TransitionSystem, parameters: Optional[Dict[Union[str, Parameter
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
+
     viz = Digraph(tsys.name, filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
 
     states_dictio = {}
