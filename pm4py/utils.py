@@ -329,7 +329,8 @@ def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASS
 def parse_event_log_string(traces: Collection[str], sep: str = ",",
                            activity_key: str = xes_constants.DEFAULT_NAME_KEY,
                            timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
-                           case_id_key: str = constants.CASE_CONCEPT_NAME) -> pd.DataFrame:
+                           case_id_key: str = constants.CASE_CONCEPT_NAME,
+                           return_legacy_log_object: bool = constants.DEFAULT_READ_XES_LEGACY_OBJECT) -> Union[EventLog, pd.DataFrame]:
     """
     Parse a collection of traces expressed as strings
     (e.g., ["A,B,C,D", "A,C,B,D", "A,D"])
@@ -340,6 +341,7 @@ def parse_event_log_string(traces: Collection[str], sep: str = ",",
     :param activity_key: The attribute that should be used as activity
     :param timestamp_key: The attribute that should be used as timestamp
     :param case_id_key: The attribute that should be used as case identifier
+    :param return_legacy_log_object: boolean value enabling returning a log object (default: False)
     :rtype: ``pd.DataFrame``
 
     .. code-block:: python3
@@ -361,7 +363,14 @@ def parse_event_log_string(traces: Collection[str], sep: str = ",",
             timestamps.append(datetime.datetime.fromtimestamp(this_timest))
             this_timest = this_timest + 1
 
-    return pd.DataFrame({case_id_key: cases, activity_key: activitiess, timestamp_key: timestamps})
+    dataframe = pd.DataFrame({case_id_key: cases, activity_key: activitiess, timestamp_key: timestamps})
+
+    if return_legacy_log_object:
+        import pm4py
+
+        return pm4py.convert_to_event_log(dataframe, case_id_key=case_id_key)
+
+    return dataframe
 
 
 def project_on_event_attribute(log: Union[EventLog, pd.DataFrame], attribute_key=xes_constants.DEFAULT_NAME_KEY, case_id_key=None) -> \
