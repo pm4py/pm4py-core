@@ -2,7 +2,6 @@ __doc__ = """
 """
 
 import datetime
-import warnings
 from typing import Optional, Tuple, Any, Collection, Union, List
 
 import pandas as pd
@@ -11,6 +10,7 @@ from pm4py.objects.log.obj import EventLog, EventStream, Trace, Event
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants, xes_constants, pandas_utils
+import warnings
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 import deprecation
 
@@ -45,6 +45,9 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     """
     if type(df) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
+    if timest_format is None:
+        timest_format = constants.DEFAULT_TIMESTAMP_PARSE_FORMAT
+
     from pm4py.objects.log.util import dataframe_utils
     if case_id not in df.columns:
         raise Exception(case_id + " column (case ID) is not in the dataframe!")
@@ -73,7 +76,8 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
                            xes_constants.DEFAULT_TIMESTAMP_KEY}, how="any")
 
     if len(df) < prev_length:
-        warnings.warn("Some rows of the Pandas data frame have been removed because of empty case IDs, activity labels, or timestamps to ensure the correct functioning of PM4Py's algorithms.")
+        if constants.SHOW_INTERNAL_WARNINGS:
+            warnings.warn("Some rows of the Pandas data frame have been removed because of empty case IDs, activity labels, or timestamps to ensure the correct functioning of PM4Py's algorithms.")
 
     # make sure the case ID column is of string type
     df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype("string")
@@ -483,12 +487,13 @@ def sample_events(log: Union[EventStream, OCEL], num_events: int) -> Union[Event
 
 def __event_log_deprecation_warning(log):
     if constants.SHOW_EVENT_LOG_DEPRECATION and not hasattr(log, "deprecation_warning_shown"):
-        if isinstance(log, EventLog) or isinstance(log, Trace):
-            warnings.warn("the EventLog class has been deprecated and will be removed in a future release.")
-            log.deprecation_warning_shown = True
-        elif isinstance(log, Trace):
-            warnings.warn("the Trace class has been deprecated and will be removed in a future release.")
-            log.deprecation_warning_shown = True
-        elif isinstance(log, EventStream):
-            warnings.warn("the EventStream class has been deprecated and will be removed in a future release.")
-            log.deprecation_warning_shown = True
+        if constants.SHOW_INTERNAL_WARNINGS:
+            if isinstance(log, EventLog) or isinstance(log, Trace):
+                warnings.warn("the EventLog class has been deprecated and will be removed in a future release.")
+                log.deprecation_warning_shown = True
+            elif isinstance(log, Trace):
+                warnings.warn("the Trace class has been deprecated and will be removed in a future release.")
+                log.deprecation_warning_shown = True
+            elif isinstance(log, EventStream):
+                warnings.warn("the EventStream class has been deprecated and will be removed in a future release.")
+                log.deprecation_warning_shown = True

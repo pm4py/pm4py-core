@@ -3,6 +3,12 @@ import os
 import sys
 import traceback
 
+import pm4py
+
+pm4py.util.constants.SHOW_PROGRESS_BAR = True
+pm4py.util.constants.SHOW_EVENT_LOG_DEPRECATION = False
+pm4py.util.constants.DEFAULT_TIMESTAMP_PARSE_FORMAT = None
+
 
 def declare_simple():
     from examples import declare_simple

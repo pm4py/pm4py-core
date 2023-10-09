@@ -2,13 +2,11 @@ __doc__ = """
 The ``pm4py.conformance`` module contains the conformance checking algorithms implemented in ``pm4py``
 """
 
-import warnings
 from typing import List, Dict, Any, Union, Optional, Tuple, Set
 
 from pm4py.objects.log.obj import EventLog, Trace, Event, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.convert import convert_to_event_log
-from collections import Counter
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import xes_constants, constants
 from pm4py.utils import get_properties, __event_log_deprecation_warning
