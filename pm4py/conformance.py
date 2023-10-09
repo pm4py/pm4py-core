@@ -173,6 +173,12 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
                 result = search_graph_pt.apply(log, args[0], parameters=properties)
 
             return result
+        elif type(args[0]) in [EventLog, pd.DataFrame]:
+            # edit distance alignments (log2log)
+            from pm4py.algo.conformance.alignments.edit_distance import algorithm as edit_distance_alignments
+            result = edit_distance_alignments.apply(log, args[0], parameters=properties)
+
+            return result
     # try to convert to Petri net
     import pm4py
     from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
