@@ -37,32 +37,12 @@ class Parameters(Enum):
     ENCODING = "encoding"
 
 
-def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = None):
-    """
-    Exports an object-centric event log (OCEL 2.0) in a JSONOCEL 2.0 file, using the classic JSON dump
-
-    Parameters
-    ------------------
-    ocel
-        Object-centric event log
-    target_path
-        Destination path
-    parameters
-        Parameters of the algorithm, including:
-        - Parameters.EVENT_ID => the event ID column
-        - Parameters.OBJECT_ID => the object ID column
-        - Parameters.OBJECT_TYPE => the object type column
-    """
-    if parameters is None:
-        parameters = {}
-
+def get_enriched_object(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     event_id = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, ocel.event_id_column)
     object_id = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, ocel.object_id_column)
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
     event_activity = exec_utils.get_param_value(Parameters.EVENT_ACTIVITY, parameters, ocel.event_activity)
     event_timestamp = exec_utils.get_param_value(Parameters.EVENT_TIMESTAMP, parameters, ocel.event_timestamp)
-
-    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, pm4_constants.DEFAULT_ENCODING)
 
     ocel = ocel_consistency.apply(ocel, parameters=parameters)
 
@@ -130,6 +110,32 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
 
         base_object[constants.OCEL_OBJECTS_KEY][oid][constants.OCEL_O2O_KEY].append({object_id: oid2, constants.DEFAULT_QUALIFIER: qualifier})
 
+    return base_object
+
+
+def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = None):
+    """
+    Exports an object-centric event log (OCEL 2.0) in a JSONOCEL 2.0 file, using the classic JSON dump
+
+    Parameters
+    ------------------
+    ocel
+        Object-centric event log
+    target_path
+        Destination path
+    parameters
+        Parameters of the algorithm, including:
+        - Parameters.EVENT_ID => the event ID column
+        - Parameters.OBJECT_ID => the object ID column
+        - Parameters.OBJECT_TYPE => the object type column
+    """
+    if parameters is None:
+        parameters = {}
+
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, pm4_constants.DEFAULT_ENCODING)
+
+    json_object = get_enriched_object(ocel, parameters=parameters)
+
     F = open(target_path, "w", encoding=encoding)
-    json.dump(base_object, F, indent=2)
+    json.dump(json_object, F, indent=2)
     F.close()

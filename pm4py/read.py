@@ -316,7 +316,28 @@ def read_ocel2(file_path: str, encoding: str = constants.DEFAULT_ENCODING) -> OC
     elif file_path.lower().endswith("xml") or file_path.lower().endswith("xmlocel"):
         return read_ocel2_xml(file_path, encoding=encoding)
     elif file_path.lower().endswith("jsonocel"):
-        return read_ocel_json(file_path, encoding=encoding)
+        return read_ocel2_json(file_path, encoding=encoding)
+
+
+def read_ocel2_json(file_path: str, encoding: str = constants.DEFAULT_ENCODING) -> OCEL:
+    """
+    Reads an OCEL2.0 event log from a JSON-OCEL(2) file
+
+    :param file_path: path to the JSON file
+    :param encoding: the encoding to be used (default: utf-8)
+    :rtype: ``OCEL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        ocel = pm4py.read_ocel2_json("<path_to_ocel_file.jsonocel>")
+    """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
+
+    from pm4py.objects.ocel.importer.jsonocel import importer as jsonocel_importer
+    return jsonocel_importer.apply(file_path, variant=jsonocel_importer.Variants.OCEL20_STANDARD, parameters={"encoding": encoding})
 
 
 def read_ocel2_sqlite(file_path: str, encoding: str = constants.DEFAULT_ENCODING) -> OCEL:

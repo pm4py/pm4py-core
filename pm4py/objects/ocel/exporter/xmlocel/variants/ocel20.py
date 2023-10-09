@@ -38,7 +38,7 @@ class Parameters(Enum):
     ENCODING = "encoding"
 
 
-RELOBJ_TAG = "object"
+RELOBJ_TAG = "relationship"
 
 
 def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = None):
@@ -78,8 +78,8 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
             object_changes2[objid] = {}
             object_changes3[objid] = []
             for x, y in obj.items():
-                object_changes2[objid][x] = [(y, "1970-01-01T00:00:00")]
-                object_changes3[objid].append((x, y, "1970-01-01T00:00:00"))
+                object_changes2[objid][x] = [(y, "1970-01-01T00:00:00Z")]
+                object_changes3[objid].append((x, y, "1970-01-01T00:00:00Z"))
 
     for chng in object_changes0:
         oid = chng[object_id_column]
