@@ -136,7 +136,8 @@ class DCR_Graph:
                    'conditionsFor: '+str(self.conditionsFor) + ', ' +
                    'responseTo: '+str(self.responseTo) + ', ' +
                    'includesTo'+str(self.includesTo) + ', ' +
-                   'excludesTo'+str(self.excludesTo)
+                   'excludesTo'+str(self.excludesTo) + ', ' +
+                   'marking'+str(self.marking)
                    + '}')
 
     def __str__(self):
