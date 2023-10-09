@@ -66,6 +66,7 @@ def apply(fp1: Dict[str, Any], fp2: Dict[str, Any], parameters: Optional[Dict[Un
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
 
     footprints_table = ["digraph {\n", "tbl [\n", "shape=plaintext\n", "label=<\n"]
     footprints_table.append("<table border='0' cellborder='1' color='blue' cellspacing='0'>\n")

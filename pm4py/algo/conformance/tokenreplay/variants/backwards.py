@@ -5,6 +5,7 @@ from copy import copy
 from pm4py.objects.petri_net.obj import Marking
 from collections import Counter
 from pm4py.util import exec_utils, constants, xes_constants
+import warnings
 from enum import Enum
 from pm4py.util import variants_util
 from typing import Optional, Dict, Any, Union, Tuple
@@ -12,7 +13,6 @@ from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import typing
-import warnings
 
 
 class Parameters(Enum):
@@ -276,7 +276,8 @@ def apply(log: EventLog, net: PetriNet, initial_marking: Marking, final_marking:
     if parameters is None:
         parameters = {}
 
-    warnings.warn("the backwards variant of TBR will be removed in a future version.")
+    if constants.SHOW_INTERNAL_WARNINGS:
+        warnings.warn("the backwards variant of TBR will be removed in a future version.")
 
     for t in net.transitions:
         ma = Marking()

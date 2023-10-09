@@ -2,7 +2,6 @@ __doc__ = """
 The ``pm4py.filtering`` module contains the filtering features offered in ``pm4py``
 """
 
-import warnings
 from typing import List, Union, Set, List, Tuple, Collection, Any, Dict, Optional
 
 import pandas as pd
@@ -10,6 +9,7 @@ import pandas as pd
 from pm4py.meta import VERSION as PM4PY_CURRENT_VERSION
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.util import constants, xes_constants
+import warnings
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.objects.ocel.obj import OCEL
@@ -374,7 +374,8 @@ def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mo
         elif mode == "traces_intersecting":
             return timestamp_filter.filter_traces_intersecting(log, dt1, dt2, parameters=properties)
         else:
-            warnings.warn('mode provided: ' + mode + ' is not recognized; original log returned!')
+            if constants.SHOW_INTERNAL_WARNINGS:
+                warnings.warn('mode provided: ' + mode + ' is not recognized; original log returned!')
             return log
     else:
         from pm4py.algo.filtering.log.timestamp import timestamp_filter
@@ -385,7 +386,8 @@ def filter_time_range(log: Union[EventLog, pd.DataFrame], dt1: str, dt2: str, mo
         elif mode == "traces_intersecting":
             return timestamp_filter.filter_traces_intersecting(log, dt1, dt2, parameters=properties)
         else:
-            warnings.warn('mode provided: ' + mode + ' is not recognized; original log returned!')
+            if constants.SHOW_INTERNAL_WARNINGS:
+                warnings.warn('mode provided: ' + mode + ' is not recognized; original log returned!')
             return log
 
 

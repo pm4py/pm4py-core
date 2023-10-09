@@ -1,7 +1,6 @@
 import uuid
 from enum import Enum
 from collections import Counter
-import deprecation
 
 
 DEFAULT_PROCESS = str(uuid.uuid4())
@@ -168,35 +167,27 @@ class BPMN(object):
         def set_process(self, process):
             self.__process = process
 
-        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
         def set_x(self, x):
             return self.__layout.get(self).set_x(x)
 
-        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
         def set_y(self, y):
             return self.__layout.get(self).set_y(y)
 
-        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
         def get_x(self):
             return self.__layout.get(self).get_x()
 
-        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
         def get_y(self):
             return self.__layout.get(self).get_y()
 
-        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
         def get_width(self):
             return self.__layout.get(self).get_width()
 
-        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
         def set_width(self, width):
             return self.__layout.get(self).set_width(width)
 
-        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
         def get_height(self):
             return self.__layout.get(self).get_height()
 
-        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
         def set_height(self, height):
             return self.__layout.get(self).set_height(height)
 
@@ -403,15 +394,12 @@ class BPMN(object):
         def set_process(self, process):
             self.__process = process
 
-        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
         def add_waypoint(self, waypoint):
             return self.__layout.get(self).add_waypoint(waypoint)
 
-        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
         def del_waypoints(self):
             return self.__layout.get(self).del_waypoints()
 
-        @deprecation.deprecated('2.3.0', '3.0.0', details="layout information has been moved outside the BPMN object")
         def get_waypoints(self):
             return self.__layout.get(self).get_waypoints()
 
