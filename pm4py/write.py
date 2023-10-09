@@ -297,7 +297,29 @@ def write_ocel2(ocel: OCEL, file_path: str, encoding: str = constants.DEFAULT_EN
     elif file_path.lower().endswith("xml") or file_path.lower().endswith("xmlocel"):
         return write_ocel2_xml(ocel, file_path, encoding=encoding)
     elif file_path.lower().endswith("jsonocel"):
-        return write_ocel_json(ocel, file_path, encoding=encoding)
+        return write_ocel2_json(ocel, file_path, encoding=encoding)
+
+
+def write_ocel2_json(ocel: OCEL, file_path: str, encoding: str = constants.DEFAULT_ENCODING):
+    """
+    Writes an OCEL2.0 object to disk to an ``XML`` file (exported as ``.jsonocel`` file).
+
+    :param ocel: OCEL object
+    :param file_path: target file path to the JSON file
+    :param encoding: the encoding to be used (default: utf-8)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.write_ocel2_json(ocel, '<path_to_export_to>')
+    """
+    file_path = str(file_path)
+    if "json" not in file_path:
+        file_path = file_path + ".json"
+
+    from pm4py.objects.ocel.exporter.jsonocel import exporter as jsonocel_exporter
+    return jsonocel_exporter.apply(ocel, file_path, variant=jsonocel_exporter.Variants.OCEL20_STANDARD, parameters={"encoding": encoding})
 
 
 def write_ocel2_sqlite(ocel: OCEL, file_path: str, encoding: str = constants.DEFAULT_ENCODING):

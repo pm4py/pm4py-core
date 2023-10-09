@@ -1,5 +1,5 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="attribute">
     <xs:complexType>
       <xs:simpleContent>
@@ -16,12 +16,11 @@
               </xs:restriction>
             </xs:simpleType>
           </xs:attribute>
-          <xs:attribute type="xs:string" name="time" use="optional"/>
+          <xs:attribute type="xs:dateTime" name="time" use="optional"/>
         </xs:extension>
       </xs:simpleContent>
     </xs:complexType>
   </xs:element>
-
   <xs:element name="attributes">
     <xs:complexType mixed="true">
       <xs:sequence>
@@ -29,25 +28,30 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-
   <xs:element name="object-type">
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="attributes"/>
       </xs:sequence>
-      <xs:attribute type="xs:string" name="name" use="optional"/>
+      <xs:attribute type="xs:string" name="name" use="required"/>
     </xs:complexType>
+    <xs:key name="objectTypeAttributeKey">
+      <xs:selector xpath="attributes/attribute"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
   </xs:element>
-
   <xs:element name="event-type">
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="attributes"/>
       </xs:sequence>
-      <xs:attribute type="xs:string" name="name" use="optional"/>
+      <xs:attribute type="xs:string" name="name" use="required"/>
     </xs:complexType>
+    <xs:key name="eventTypeAttributeKey">
+      <xs:selector xpath="attributes/attribute"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
   </xs:element>
-
   <xs:element name="object">
     <xs:complexType mixed="true">
       <xs:sequence>
@@ -57,10 +61,9 @@
       <xs:attribute type="xs:string" name="object-id" use="optional"/>
       <xs:attribute type="xs:string" name="qualifier" use="optional"/>
       <xs:attribute type="xs:string" name="id" use="optional"/>
-      <xs:attribute type="xs:string" name="type" use="optional"/>
+      <xs:attribute type="xs:string" name="type" use="required"/>
     </xs:complexType>
   </xs:element>
-
   <xs:element name="objects">
     <xs:complexType>
       <xs:sequence>
@@ -68,19 +71,17 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-
   <xs:element name="event">
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="attributes"/>
         <xs:element ref="objects"/>
       </xs:sequence>
-      <xs:attribute type="xs:string" name="id" use="optional"/>
-      <xs:attribute type="xs:string" name="type" use="optional"/>
-      <xs:attribute type="xs:dateTime" name="time" use="optional"/>
+      <xs:attribute type="xs:string" name="id" use="required"/>
+      <xs:attribute type="xs:string" name="type" use="required"/>
+      <xs:attribute type="xs:dateTime" name="time" use="required"/>
     </xs:complexType>
   </xs:element>
-
   <xs:element name="object-types">
     <xs:complexType>
       <xs:sequence>
@@ -88,7 +89,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-
   <xs:element name="event-types">
     <xs:complexType>
       <xs:sequence>
@@ -96,7 +96,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-
   <xs:element name="events">
     <xs:complexType>
       <xs:sequence>
@@ -104,9 +103,7 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-
   <xs:element name="log">
-    
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="object-types"/>
@@ -115,7 +112,6 @@
         <xs:element ref="events"/>
       </xs:sequence>
     </xs:complexType>
-
     <xs:key name="objectTypeKey">
       <xs:selector xpath="object-types/object-type"/>
       <xs:field xpath="@name"/>
@@ -132,7 +128,6 @@
       <xs:selector xpath="events/event"/>
       <xs:field xpath="@id"/>
     </xs:key>
-
     <xs:keyref name="objectTypeRef" refer="objectTypeKey">
       <xs:selector xpath="objects/object"/>
       <xs:field xpath="@type"/>
@@ -149,7 +144,13 @@
       <xs:selector xpath="events/event/objects/object"/>
       <xs:field xpath="@object-id"/>
     </xs:keyref>
-
+    <xs:keyref name="objectAttributeRef" refer="objectTypeAttributeKey">
+      <xs:selector xpath="objects/object/attributes/attribute"/>
+      <xs:field xpath="@name"/>
+    </xs:keyref>
+    <xs:keyref name="eventAttributeRef" refer="eventTypeAttributeKey">
+      <xs:selector xpath="events/event/attributes/attribute"/>
+      <xs:field xpath="@name"/>
+    </xs:keyref>
   </xs:element>
-
 </xs:schema>
