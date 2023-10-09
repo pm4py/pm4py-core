@@ -810,6 +810,13 @@ def execute_script(f):
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
+import pm4py
+
+pm4py.util.constants.SHOW_PROGRESS_BAR = True
+pm4py.util.constants.SHOW_EVENT_LOG_DEPRECATION = False
+pm4py.util.constants.SHOW_INTERNAL_WARNINGS = False
+#pm4py.util.constants.DEFAULT_TIMESTAMP_PARSE_FORMAT = None
+
 if __name__ == "__main__":
     execute_script(declare_simple)
     execute_script(log_skeleton_manual_constraints)

@@ -152,6 +152,9 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None)
         Dataframe with timestamp columns converted
 
     """
+    if timest_format is None:
+        timest_format = constants.DEFAULT_TIMESTAMP_PARSE_FORMAT
+
     for col in df.columns:
         if timest_columns is None or col in timest_columns:
             if "obj" in str(df[col].dtype) or "str" in str(df[col].dtype):

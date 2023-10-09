@@ -3,6 +3,7 @@ import sys
 import numpy as np
 
 from pm4py.objects.random_variables.basic_structure import BasicStructureRandomVariable
+from pm4py.util import constants
 import warnings
 
 
@@ -93,7 +94,8 @@ class Gamma(BasicStructureRandomVariable):
             try:
                 self.a, self.loc, self.scale = gamma.fit(values)
             except:
-                warnings.warn("Gamma fitting: Optimization converged to parameters that are outside the range allowed by the distribution")
+                if constants.SHOW_INTERNAL_WARNINGS:
+                    warnings.warn("Gamma fitting: Optimization converged to parameters that are outside the range allowed by the distribution")
 
     def get_value(self):
         """

@@ -40,6 +40,7 @@ def apply(powl: POWL, parameters: Optional[Dict[Union[str, Parameters], Any]] = 
         parameters = {}
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
 
     viz = Digraph("powl", filename=filename.name, engine='dot')
     viz.attr('node', shape='ellipse', fixedsize='false')

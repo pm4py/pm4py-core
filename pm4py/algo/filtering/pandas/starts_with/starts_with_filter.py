@@ -7,7 +7,6 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_CONSTA
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
-import deprecation
 from typing import Optional, Dict, Any, Union, Tuple, List
 import pandas as pd
 from pm4py.util import variants_util, constants
