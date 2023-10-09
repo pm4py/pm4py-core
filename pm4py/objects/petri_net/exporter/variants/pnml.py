@@ -237,12 +237,14 @@ def export_petri_as_string(petrinet, marking, final_marking=None, export_prom5=F
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
     # gets the XML tree
     tree = export_petri_tree(petrinet, marking, final_marking=final_marking,
                              export_prom5=export_prom5)
 
     # removing default decoding (return binary string as in other parts of the application)
-    return etree.tostring(tree, xml_declaration=True, encoding=constants.DEFAULT_ENCODING)
+    return etree.tostring(tree, xml_declaration=True, encoding=encoding)
 
 
 def export_net(petrinet, marking, output_filename, final_marking=None, export_prom5=False,
