@@ -73,7 +73,11 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     date_parser = dt_parsing.parser.get()
 
     parser = etree.XMLParser(remove_comments=True, encoding=encoding)
-    tree = objectify.parse(file_path, parser=parser)
+
+    F = open(file_path, "rb")
+    tree = objectify.parse(F, parser=parser)
+    F.close()
+
     root = tree.getroot()
 
     object_type_attributes = {}

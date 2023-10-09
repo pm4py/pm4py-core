@@ -136,7 +136,7 @@ def apply(log0: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional
                                                            constants.DEFAULT_ARTIFICIAL_START_ACTIVITY)
     artificial_end_activity = exec_utils.get_param_value(Parameters.PARAM_ARTIFICIAL_END_ACTIVITY, parameters,
                                                          constants.DEFAULT_ARTIFICIAL_END_ACTIVITY)
-    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, constants.SHOW_PROGRESS_BAR)
 
     log0 = log_converter.apply(log0, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
     log0 = filtering_utils.keep_one_trace_per_variant(log0, parameters=parameters)

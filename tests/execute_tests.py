@@ -7,6 +7,10 @@ if __name__ == "__main__":
     current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     parent_dir = os.path.dirname(current_dir)
     sys.path.insert(0, parent_dir)
+
+    import pm4py
+    pm4py.util.constants.SHOW_PROGRESS_BAR = False
+    
     from tests.doc_tests import DocTests
     from tests.role_detection import RoleDetectionTest
     from tests.passed_time import PassedTimeTest

@@ -58,8 +58,14 @@ def import_net(input_file_path, parameters=None):
     if parameters is None:
         parameters = {}
 
-    parser = etree.XMLParser(remove_comments=True)
-    tree = objectify.parse(input_file_path, parser=parser)
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, None)
+
+    parser = etree.XMLParser(remove_comments=True, encoding=encoding)
+
+    F = open(input_file_path, "rb")
+    tree = objectify.parse(F, parser=parser)
+    F.close()
+
     root = tree.getroot()
 
     return import_net_from_xml_object(root, parameters=parameters)

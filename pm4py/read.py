@@ -78,7 +78,7 @@ def read_xes(file_path: str, variant: str = "lxml", return_legacy_log_object: bo
     if return_legacy_log_object:
         return log
     log = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
-    log = dataframe_utils.convert_timestamp_columns_in_df(log)
+    log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format="ISO8601")
     return log
 
 

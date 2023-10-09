@@ -22,6 +22,7 @@ import numpy as np
 from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.objects.log.util import basic_filter
 from pm4py.util import exec_utils
+from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
@@ -144,6 +145,8 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
     if parameters is None:
         parameters = {}
 
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     diagnostics = {}
     string_attributes = exec_utils.get_param_value(Parameters.STRING_ATTRIBUTES, parameters, [])
     numeric_attributes = exec_utils.get_param_value(Parameters.NUMERIC_ATTRIBUTES, parameters, [])
@@ -224,6 +227,8 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
 
     if parameters is None:
         parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     diagnostics = {}
     string_attributes = exec_utils.get_param_value(Parameters.STRING_ATTRIBUTES, parameters, [])

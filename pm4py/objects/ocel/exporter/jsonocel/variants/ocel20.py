@@ -130,4 +130,6 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
 
         base_object[constants.OCEL_OBJECTS_KEY][oid][constants.OCEL_O2O_KEY].append({object_id: oid2, constants.DEFAULT_QUALIFIER: qualifier})
 
-    json.dump(base_object, open(target_path, "w", encoding=encoding), indent=2)
+    F = open(target_path, "w", encoding=encoding)
+    json.dump(base_object, F, indent=2)
+    F.close()

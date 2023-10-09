@@ -266,4 +266,6 @@ def export_net(petrinet, marking, output_filename, final_marking=None, export_pr
                              export_prom5=export_prom5)
 
     # write the tree to a file
-    tree.write(output_filename, pretty_print=True, xml_declaration=True, encoding=constants.DEFAULT_ENCODING)
+    F = open(output_filename, "wb")
+    tree.write(F, pretty_print=True, xml_declaration=True, encoding=encoding)
+    F.close()

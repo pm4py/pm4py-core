@@ -149,7 +149,9 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
 
     encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, pm4_constants.DEFAULT_ENCODING)
 
-    json_obj = json.load(open(file_path, "r", encoding=encoding))
+    F = open(file_path, "r", encoding=encoding)
+    json_obj = json.load(F)
+    F.close()
 
     log = get_base_ocel(json_obj, parameters=parameters)
 

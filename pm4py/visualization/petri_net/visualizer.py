@@ -26,6 +26,7 @@ from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
 from pm4py.objects.log.util import dataframe_utils
+from pm4py.visualization.common.gview import serialize, serialize_dot
 import graphviz
 
 

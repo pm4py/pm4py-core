@@ -185,4 +185,7 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
     del objects_items
 
     tree = etree.ElementTree(root)
-    tree.write(target_path, pretty_print=True, xml_declaration=True, encoding=encoding)
+
+    F = open(target_path, "wb")
+    tree.write(F, pretty_print=True, xml_declaration=True, encoding=encoding)
+    F.close()
