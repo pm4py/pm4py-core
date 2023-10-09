@@ -1,5 +1,32 @@
 # Changelog of pm4py
 
+## pm4py 2.7.8.1 (2023.10.XX)
+
+### Added
+
+### Changed
+* b3d88dcfa6553beae4b289191d6aa29020daeeb2
+  * refactor pm4py.llm.abstract_log_features (split in two methods)
+* b9f74be6ffb68ac1b8c32d6c2cfb3cb3ae5d173c
+  * playout variant selection in the simplified interface
+* 5aedd3048a9780816f37ad7f89c65a3e56b5229c
+  * support for log2log alignments in the simplified interface
+* b254210f09d1844dee11b9ccd262baf62779edca
+  * return legacy log option in pm4py.parse_event_log_string
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+* 9717be4fc6be34c9278ddd7f2d39a0cb8efc4ec2
+  * verbose option configuration
+
+---
+
+
 ## pm4py 2.7.8 (2023.10.06)
 
 ### Added
