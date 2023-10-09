@@ -92,8 +92,8 @@ class DCR_Graph(object):
         self.__marking.included = template['marking']['included']
         self.__marking.pending = template['marking']['pending']
 
-
-
+    def __lt__(self, other):
+        return self.some_attribute < other.some_attribute
 
     @property
     def events(self):
@@ -236,6 +236,11 @@ class Event(object):
         self.__excludes = set()
         super().__init__()
 
+    def __lt__(self, other):
+        if isinstance(other, Event):
+            return self.__name < other.__name
+        return NotImplemented
+
     @property
     def marking(self):
         return self.__marking
@@ -344,6 +349,11 @@ class Event(object):
 
     def __hash__(self) -> int:
         return self.__name.hash()
+
+"""
+def __hash__(self) -> int:
+    return hash(self.__name)
+"""
 
 
 class DCRGraph(object):
@@ -549,3 +559,6 @@ class DCRGraph(object):
                 res.append(s)
 
         return res
+
+    def get_cost(self, event, marking):
+        pass

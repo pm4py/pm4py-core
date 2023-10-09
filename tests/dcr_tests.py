@@ -1,8 +1,12 @@
 import os
 import unittest
+import pandas as pd
 
 import pm4py
 from pm4py.algo.discovery.dcr_discover.algorithm import apply
+from pm4py.objects.conversion.log import converter as log_converter
+from pm4py.algo.conformance.alignments.dcr import algorithm as dcr_alignment
+
 from pm4py.objects.dcr.importer import importer as dcr_importer
 from pm4py.objects.dcr.exporter import exporter as dcr_exporter
 from pm4py.objects.conversion.dcr import *
@@ -130,5 +134,50 @@ class TestDcr(unittest.TestCase):
         from pm4py.objects.dcr.semantics import DCRSemantics
         sem = DCRSemantics()
         self.assertTrue(sem.is_accepting(dcr))
+
+    def test_align_dcr_log(self):
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+
+        # If log is a DataFrame, convert it to an EventLog
+        if isinstance(log, pd.DataFrame):
+            log = log_converter.apply(log)
+
+        from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
+        from pm4py.algo.conformance.alignments.dcr.variants import optimal
+
+        dcr_result = apply(log, dcr_discover)
+        dcr_graph = dcr_result[0]
+
+        first_trace = log[0]
+
+        try:
+            aligned_traces = optimal.apply_trace(first_trace, dcr_graph)
+        except ValueError as e:
+            print(f"A ValueError occurred: {e}")
+            self.fail(f"ValueError: {e}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            self.fail(f"Unexpected error: {e}")
+
+        alignment = aligned_traces.get('alignment', None) if aligned_traces else None
+
+        for trace in log:
+            dcr_result = optimal.apply(log, dcr_discover)
+            is_fit = True
+            for couple in dcr_result:
+                if not (couple[0] == couple[1] or couple[0] == ">>" and couple[1] is None):
+                    is_fit = False
+            if not is_fit:
+                raise Exception("should be fit")
+
+        self.assertIsNotNone(aligned_traces)
+        self.assertTrue(len(aligned_traces) > 0)
+        self.assertIsNotNone(alignment)
+        self.assertEqual(len(first_trace), len(alignment))
+        for event, align_tuple in zip(first_trace, alignment):
+            self.assertEqual(event['concept:name'], align_tuple[2]['concept:name'])
+
+        cost = aligned_traces.get('cost', None)
+        self.assertEqual(cost, 0)
 
 
