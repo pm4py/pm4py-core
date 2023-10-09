@@ -12,7 +12,7 @@ if __name__ == "__main__":
     pm4py.util.constants.SHOW_PROGRESS_BAR = False
     pm4py.util.constants.SHOW_EVENT_LOG_DEPRECATION = False
     pm4py.util.constants.SHOW_INTERNAL_WARNINGS = False
-    pm4py.util.constants.DEFAULT_TIMESTAMP_PARSE_FORMAT = None
+    #pm4py.util.constants.DEFAULT_TIMESTAMP_PARSE_FORMAT = None
     
     from tests.doc_tests import DocTests
     from tests.role_detection import RoleDetectionTest
