@@ -23,6 +23,9 @@
 ### Other
 * 9717be4fc6be34c9278ddd7f2d39a0cb8efc4ec2
   * verbose option configuration
+* 671688effb5ccf01d5653726de6725810333af0a
+  * support to OCEL 2.0 JSON specification
+
 
 ---
 
