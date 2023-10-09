@@ -2,13 +2,11 @@ __doc__ = """
 The ``pm4py.conformance`` module contains the conformance checking algorithms implemented in ``pm4py``
 """
 
-import warnings
 from typing import List, Dict, Any, Union, Optional, Tuple, Set
 
 from pm4py.objects.log.obj import EventLog, Trace, Event, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.convert import convert_to_event_log
-from collections import Counter
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util import xes_constants, constants
 from pm4py.utils import get_properties, __event_log_deprecation_warning
@@ -171,6 +169,12 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
                 result = search_graph_pt.apply_multiprocessing(log, args[0], parameters=properties)
             else:
                 result = search_graph_pt.apply(log, args[0], parameters=properties)
+
+            return result
+        elif type(args[0]) in [EventLog, pd.DataFrame]:
+            # edit distance alignments (log2log)
+            from pm4py.algo.conformance.alignments.edit_distance import algorithm as edit_distance_alignments
+            result = edit_distance_alignments.apply(log, args[0], parameters=properties)
 
             return result
     # try to convert to Petri net

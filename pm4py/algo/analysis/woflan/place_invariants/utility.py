@@ -1,6 +1,8 @@
 import numpy as np
 from copy import copy
 from pm4py.util.lp import solver
+from pm4py.util import constants
+import warnings
 import importlib.util
 
 
@@ -131,8 +133,8 @@ def transform_basis(basis, style=None):
             if importlib.util.find_spec("pulp"):
                 proposed_solver = solver.PULP
             else:
-                import warnings
-                warnings.warn("solution from scipy may be unstable. Please install PuLP (pip install pulp) for fully reliable results.")
+                if constants.SHOW_INTERNAL_WARNINGS:
+                    warnings.warn("solution from scipy may be unstable. Please install PuLP (pip install pulp) for fully reliable results.")
 
             sol = solver.apply(c, Aub, bub, Aeq, beq, variant=proposed_solver, parameters={"method": "revised simplex", "require_ilp": True})
             points = solver.get_points_from_sol(sol, variant=proposed_solver)
