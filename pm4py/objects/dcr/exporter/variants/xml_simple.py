@@ -65,7 +65,7 @@ def export_dcr_graph(dcr, root, parents_dict=None):
                 xml_source.text = event
                 xml_target = etree.SubElement(xml_exclude, "target")
                 xml_target.text = event_prime
-            if event in dcr["noResponseTo"] and event_prime in dcr["noResponseTo"][event]:
+            if "noResponseTo" in dcr and event in dcr["noResponseTo"] and event_prime in dcr["noResponseTo"][event]:
                 xml_exclude = etree.SubElement(root, "rules")
                 xml_type = etree.SubElement(xml_exclude, "type")
                 xml_type.text = "coresponse"

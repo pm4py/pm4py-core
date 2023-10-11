@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from pm4py.objects.conversion.dcr.variants.to_petri_net import Dcr2PetriTransport
+from pm4py.objects.conversion.dcr.variants.to_petri_net import Dcr2PetriNet
 
 from pm4py.objects.conversion.dcr.variants.to_petri_net_submodules import utils
 
@@ -26,7 +26,7 @@ class PnTestCase(unittest.TestCase):
                         }
         }
         tapn_path = '../../models/test/petrinets_paper_example.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 

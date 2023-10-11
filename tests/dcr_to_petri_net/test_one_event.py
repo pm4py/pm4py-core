@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from pm4py.objects.conversion.dcr.variants.to_petri_net import Dcr2PetriTransport
+from pm4py.objects.conversion.dcr.variants.to_petri_net import Dcr2PetriNet
 
 from pm4py.objects.conversion.dcr.variants.to_petri_net_submodules import utils
 
@@ -26,7 +26,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = os.path.join(self.test_folder, 'three_events.tapn')
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -50,7 +50,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = os.path.join(self.test_folder, 'one_event_incl.tapn')
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -74,7 +74,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = os.path.join(self.test_folder, 'one_event_incl_pend.tapn')
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -98,7 +98,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = os.path.join(self.test_folder, 'one_event_pending.tapn')
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -122,7 +122,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = os.path.join(self.test_folder, 'one_event_exec_inc.tapn')
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -146,7 +146,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = os.path.join(self.test_folder, 'one_event_exec.tapn')
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -170,7 +170,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = os.path.join(self.test_folder, 'one_event.tapn')
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -194,7 +194,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = os.path.join(self.test_folder, 'one_event_full.tapn')
-        d2p = Dcr2PetriTransport(preoptimize=False, map_unexecutable_events=True)
+        d2p = Dcr2PetriNet(preoptimize=False, map_unexecutable_events=True)
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -221,7 +221,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = os.path.join(self.test_folder, 'test.pnml')
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 

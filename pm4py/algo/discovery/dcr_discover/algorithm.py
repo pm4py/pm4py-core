@@ -54,6 +54,7 @@ def apply(input_log, variant=DCR_BASIC, **parameters):
     if variant.value == Variants.DCR_BASIC.value:
         print('[i] Mining with basic DisCoveR')
         if not isinstance(log, pm4py.objects.log.obj.EventLog):
+            print('[i] Converting to old event log!')
             log = pm4py.convert_to_event_log(log)
         disc_b = dcr_discover.Discover()
         dcr_model, la = disc_b.mine(log, **parameters)
