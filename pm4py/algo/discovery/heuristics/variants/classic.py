@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import pkgutil
 from copy import deepcopy
 from enum import Enum
 
@@ -23,7 +22,6 @@ from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thre
 from pm4py.objects.conversion.heuristics_net import converter as hn_conv_alg
 from pm4py.objects.heuristics_net import defaults
 from pm4py.objects.heuristics_net.node import Node
-from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.statistics.attributes.log import get as log_attributes
 from pm4py.statistics.end_activities.log import get as log_ea_filter
 from pm4py.statistics.start_activities.log import get as log_sa_filter
@@ -31,7 +29,7 @@ from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes
 from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 import pandas as pd
 from pm4py.objects.heuristics_net.obj import HeuristicsNet

@@ -15,7 +15,6 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import math
-import pkgutil
 from copy import deepcopy, copy
 from enum import Enum
 
@@ -24,6 +23,7 @@ from pm4py.objects.log import obj as log_instance
 from pm4py.objects.log.obj import EventLog, Event, XESExtension
 from pm4py.util import constants as pmutil
 from pm4py.util import exec_utils, pandas_utils, xes_constants
+import pandas as pd
 
 
 class Parameters(Enum):
@@ -138,10 +138,8 @@ def apply(log, parameters=None):
     compress = exec_utils.get_param_value(Parameters.COMPRESS, parameters, False)
     extensions = exec_utils.get_param_value(Parameters.EXTENSIONS, parameters, None)
 
-    if pkgutil.find_loader("pandas"):
-        import pandas
-        if isinstance(log, pandas.DataFrame):
-            return __transform_dataframe_to_event_stream(log, stream_post_processing=stream_post_processing, compress=compress, extensions=extensions)
+    if isinstance(log, pd.DataFrame):
+        return __transform_dataframe_to_event_stream(log, stream_post_processing=stream_post_processing, compress=compress, extensions=extensions)
 
     if isinstance(log, EventLog):
         return __transform_event_log_to_event_stream(log, include_case_attributes=include_case_attributes,

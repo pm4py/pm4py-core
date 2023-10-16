@@ -92,6 +92,7 @@ def apply(log: EventLog, aligned_traces: typing.ListAlignments, parameters: Opti
     table_alignments = "".join(table_alignments_list)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
 
     gviz = Source(table_alignments, filename=filename.name)
     gviz.format = image_format

@@ -16,7 +16,7 @@
 '''
 
 import os
-import pkgutil
+import importlib.util
 from enum import Enum
 
 
@@ -34,6 +34,7 @@ PARAMETER_CONSTANT_CASEID_KEY = 'pm4py:param:case_id_key'
 PARAMETER_CONSTANT_RESOURCE_KEY = 'pm4py:param:resource_key'
 PARAMETER_CONSTANT_TRANSITION_KEY = 'pm4py:param:transition_key'
 PARAMETER_CONSTANT_GROUP_KEY = 'pm4py:param:group_key'
+PARAMETER_CONSTANT_ROLE_KEY = 'pm4py:param:role_key'
 
 GROUPED_DATAFRAME = 'grouped_dataframe'
 RETURN_EA_COUNT_DICT_AUTOFILTER = 'return_ea_count_dict_autofilter'
@@ -71,12 +72,17 @@ DEFAULT_ARTIFICIAL_END_ACTIVITY = "■"
 DEFAULT_BUSINESS_HOURS_WORKCALENDAR = None
 
 SHOW_EVENT_LOG_DEPRECATION = True if get_param_from_env("PM4PY_SHOW_EVENT_LOG_DEPRECATION", "True").lower() == "true" else False
+SHOW_INTERNAL_WARNINGS = True if get_param_from_env("PM4PY_SHOW_INTERNAL_WARNINGS", "True").lower() == "true" else False
+
 TRIGGERED_DT_PARSING_WARNING = False
 
 DEFAULT_BGCOLOR = get_param_from_env("PM4PY_DEFAULT_BGCOLOR", "white")
 DEFAULT_FORMAT_GVIZ_VIEW = get_param_from_env("PM4PY_DEFAULT_FORMAT_GVIZ_VIEW", "png")
+DEFAULT_RANKDIR_GVIZ = get_param_from_env("PM4PY_DEFAULT_RANKDIR_GVIZ", "LR")
+DEFAULT_TIMESTAMP_PARSE_FORMAT = get_param_from_env("PM4PY_DEFAULT_TIMESTAMP_PARSE_FORMAT", None)
 
 ENABLE_MULTIPROCESSING_DEFAULT = True if get_param_from_env("PM4PY_ENABLE_MULTIPROCESSING_DEFAULT", "False").lower() == "true" else False
+SHOW_PROGRESS_BAR = True if get_param_from_env("PM4PY_SHOW_PROGRESS_BAR", "True").lower() == "true" else False
 DEFAULT_READ_XES_LEGACY_OBJECT = True if get_param_from_env("PM4PY_DEFAULT_READ_XES_LEGACY_OBJECT", "False").lower() == "true" else False
 DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME = True if get_param_from_env("PM4PY_DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME", "False").lower() == "true" else False
 
@@ -98,7 +104,7 @@ DEFAULT_GVIZ_VIEW = get_param_from_env("PM4PY_DEFAULT_GVIZ_VIEW", None)
 JQUERY_LINK = "https://code.jquery.com/jquery-3.6.3.min.js"
 GRAPHVIZJS_LINK = "https://github.com/mdaines/viz-js/releases/download/v1.8.2/viz.js"
 
-if pkgutil.find_loader("psutil"):
+if importlib.util.find_spec("psutil"):
     import psutil
 
     parent_pid = os.getppid()

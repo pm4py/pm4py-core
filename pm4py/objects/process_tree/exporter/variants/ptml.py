@@ -21,7 +21,12 @@ from lxml import etree
 
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.process_tree.obj import Operator
-from pm4py.util import constants
+from pm4py.util import constants, exec_utils
+from enum import Enum
+
+
+class Parameters(Enum):
+    ENCODING = "encoding"
 
 
 def get_list_nodes_from_tree(tree, parameters=None):
@@ -152,10 +157,12 @@ def export_tree_as_string(tree, parameters=None):
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
     # gets the XML tree
     tree = export_ptree_tree(tree, parameters=parameters)
 
-    return etree.tostring(tree, xml_declaration=True, encoding=constants.DEFAULT_ENCODING)
+    return etree.tostring(tree, xml_declaration=True, encoding=encoding)
 
 
 def apply(tree, output_path, parameters=None):
@@ -174,10 +181,14 @@ def apply(tree, output_path, parameters=None):
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
     # gets the XML tree
     tree = export_ptree_tree(tree, parameters=parameters)
 
     # exports the tree to a file
-    tree.write(output_path, pretty_print=True, xml_declaration=True, encoding=constants.DEFAULT_ENCODING)
+    F = open(output_path, "wb")
+    tree.write(F, pretty_print=True, xml_declaration=True, encoding=encoding)
+    F.close()
 
     return tree

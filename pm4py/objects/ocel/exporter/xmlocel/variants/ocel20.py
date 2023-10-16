@@ -21,12 +21,10 @@ import pandas as pd
 from lxml import etree
 
 from pm4py.objects.ocel import constants
-from pm4py.objects.ocel.exporter.util import clean_dataframes
 from pm4py.objects.ocel.obj import OCEL
-from pm4py.objects.ocel.util import attributes_names
-from pm4py.objects.ocel.util import related_objects
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants as pm4_constants
 from pm4py.objects.ocel.util import ocel_consistency
+from pm4py.objects.ocel.util import attributes_per_type
 
 
 class Parameters(Enum):
@@ -37,15 +35,17 @@ class Parameters(Enum):
     OBJECT_TYPE = constants.PARAM_OBJECT_TYPE
     QUALIFIER = constants.PARAM_QUALIFIER
     CHANGED_FIELD = constants.PARAM_CHNGD_FIELD
+    ENCODING = "encoding"
 
 
-RELOBJ_TAG = "object"
+RELOBJ_TAG = "relationship"
 
 
 def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, pm4_constants.DEFAULT_ENCODING)
     event_id_column = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, ocel.event_id_column)
     event_activity_column = exec_utils.get_param_value(Parameters.EVENT_ACTIVITY, parameters, ocel.event_activity)
     event_timestamp_column = exec_utils.get_param_value(Parameters.EVENT_TIMESTAMP, parameters, ocel.event_timestamp)
@@ -56,22 +56,9 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
 
     ocel = ocel_consistency.apply(ocel, parameters=parameters)
 
-    ets = {k: {x: str(v[x].dtype) for x in v.dropna(axis="columns", how="all").columns if not x.startswith("ocel:")} for k, v in ocel.events.groupby(event_activity_column)}
-    ots = {k: {x: str(v[x].dtype) for x in v.dropna(axis="columns", how="all").columns if not x.startswith("ocel:")} for k, v in ocel.objects.groupby(object_type_column)}
-    ots2 = {k: {x: str(v[x].dtype) for x in v.dropna(axis="columns", how="all").columns if not x.startswith("ocel:")} for k, v in ocel.object_changes.groupby(object_type_column)}
-
-    for k in ots2:
-        if k not in ots:
-            ots[k] = ots2[k]
-        else:
-            for x in ots2[k]:
-                if x not in ots[k]:
-                    ots[k][x] = ots2[k][x]
-
     objects0 = ocel.objects.to_dict("records")
     events0 = ocel.events.to_dict("records")
     object_changes0 = ocel.object_changes.to_dict("records")
-    o2o_list = ocel.o2o.to_dict("records")
     o2o_dict = ocel.o2o.groupby(object_id_column).agg(list).to_dict("tight")
     o2o_dict = {o2o_dict["index"][i]: o2o_dict["data"][i] for i in range(len(o2o_dict["index"]))}
 
@@ -91,8 +78,8 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
             object_changes2[objid] = {}
             object_changes3[objid] = []
             for x, y in obj.items():
-                object_changes2[objid][x] = [(y, "1970-01-01T00:00:00")]
-                object_changes3[objid].append((x, y, "1970-01-01T00:00:00"))
+                object_changes2[objid][x] = [(y, "1970-01-01T00:00:00Z")]
+                object_changes3[objid].append((x, y, "1970-01-01T00:00:00Z"))
 
     for chng in object_changes0:
         oid = chng[object_id_column]
@@ -113,6 +100,8 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
         object_changes1[oid][chng_time].append((chng_field, chng_value))
         object_changes2[oid][chng_field].append((chng_value, chng_time.isoformat()))
         object_changes3[oid].append((chng_field, chng_value, chng_time.isoformat()))
+
+    ets, ots = attributes_per_type.get(ocel, parameters=parameters)
 
     root = etree.Element("log")
     object_types = etree.SubElement(root, "object-types")
@@ -191,4 +180,7 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
                 event_attribute.text = str(v)
 
     tree = etree.ElementTree(root)
-    tree.write(target_path, pretty_print=True, xml_declaration=True, encoding="utf-8")
+
+    F = open(target_path, "wb")
+    tree.write(F, pretty_print=True, xml_declaration=True, encoding=encoding)
+    F.close()

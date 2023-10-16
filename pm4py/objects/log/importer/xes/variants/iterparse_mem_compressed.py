@@ -16,7 +16,7 @@
 '''
 import gzip
 import logging
-import pkgutil
+import importlib.util
 import sys
 from enum import Enum
 from io import BytesIO
@@ -97,11 +97,11 @@ def import_from_context(context, num_traces, log, parameters=None):
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     reverse_sort = exec_utils.get_param_value(Parameters.REVERSE_SORT, parameters, False)
-    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, constants.SHOW_PROGRESS_BAR)
 
     date_parser = dt_parser.get()
     progress = None
-    if pkgutil.find_loader("tqdm") and show_progress_bar:
+    if importlib.util.find_spec("tqdm") and show_progress_bar:
         from tqdm.auto import tqdm
         progress = tqdm(total=num_traces, desc="parsing log, completed traces :: ")
 
@@ -326,10 +326,10 @@ def import_log(filename, parameters=None):
         parameters = {}
 
     encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
-    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, constants.SHOW_PROGRESS_BAR)
     is_compressed = filename.lower().endswith(".gz")
 
-    if pkgutil.find_loader("tqdm") and show_progress_bar:
+    if importlib.util.find_spec("tqdm") and show_progress_bar:
         if is_compressed:
             f = gzip.open(filename, "rb")
         else:
@@ -347,7 +347,9 @@ def import_log(filename, parameters=None):
     context = etree.iterparse(f, events=[_EVENT_START, _EVENT_END], encoding=encoding)
 
     log = EventLog()
-    return import_from_context(context, num_traces, log, parameters=parameters)
+    log = import_from_context(context, num_traces, log, parameters=parameters)
+    f.close()
+    return log
 
 
 def import_from_string(log_string, parameters=None):
@@ -379,13 +381,13 @@ def import_from_string(log_string, parameters=None):
         parameters = {}
 
     encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
-    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, constants.SHOW_PROGRESS_BAR)
     decompress_serialization = exec_utils.get_param_value(Parameters.DECOMPRESS_SERIALIZATION, parameters, False)
 
     if type(log_string) is str:
         log_string = log_string.encode(constants.DEFAULT_ENCODING)
 
-    if pkgutil.find_loader("tqdm") and show_progress_bar:
+    if importlib.util.find_spec("tqdm") and show_progress_bar:
         # first iteration: count the number of traces
         b = BytesIO(log_string)
         if decompress_serialization:

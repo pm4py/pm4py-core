@@ -1,6 +1,7 @@
 from copy import deepcopy
-from datetime import timedelta
-from pm4py.objects.dcr.obj import DCR_Graph
+#from datetime import timedelta
+from typing import Set
+
 
 rels = ['conditionsFor', 'responseTo', 'includesTo', 'excludesTo', 'milestonesFor']
 
@@ -13,11 +14,17 @@ Following the schematic as the pm4py, by using definition function and no class 
 
 
 class DCRSemantics(object):
-    @classmethod
-    def is_enabled(cls, event, dcr):
-        """
-        checks whether an event is enabled in a given DCR graph and Event
+    """
+        the semantics functions implemented is based on the paper by:
 
+        Author: Thomas T. Hildebrandt and Raghava Rao Mukkamala,
+        Title: Declarative Event-BasedWorkflow as Distributed Dynamic Condition Response Graphs
+        publisher: Electronic Proceedings in Theoretical Computer Science. EPTCS, Open Publishing Association, 2010, pp. 59–73. doi: 10.4204/EPTCS.69.5.
+        """
+    @classmethod
+    def is_enabled(cls, event, dcr) -> bool:
+        """
+        Function for semantic for checking if event is enabled
 
         Parameters
         ----------
@@ -32,7 +39,18 @@ class DCRSemantics(object):
         return event in cls.enabled(dcr)
 
     @classmethod
-    def enabled(cls, dcr):
+    def enabled(cls, dcr) -> Set[str]:
+        """
+        Function to that based on sematics for enabled behavior returns a set of allowed activities to execute
+        can be extended to check milestone
+        Parameters
+        ----------
+        :param dcr: takes the current state of the DCR
+
+        Returns
+        -------
+        :param res: set of enabled activities
+        """
         res = deepcopy(dcr.marking.included)
         for e in set(dcr.conditionsFor.keys()).intersection(res):
             if len(dcr.conditionsFor[e].intersection(dcr.marking.included.difference(
@@ -41,34 +59,42 @@ class DCRSemantics(object):
         return res
 
     @classmethod
-    def execute(cls, dcr, label):
+    def execute(cls, dcr, event):
         """
+        Function based on semantics of execution a DCR graph
+        will update the graph according to relations of the executed activity
+
+        can extend to allow of execution of milestone activity
+
         Parameters
         ----------
-        :param dcr: The current DCR graph
-        :param label: the type of event being executed
+        :param dcr: The current state of DCR graph, with activities and their relatiosn
+        :param e: the event being executed the type activity being executed
 
         Returns
         -------
-        :return dcr: return the updated DCR graph
+        :return dcr: return the updated state of DCR graph
 
         """
         #each event is called for execution is called
-        dcr.marking.executed.add(label)
+        if event in dcr.marking.pending:
+            dcr.marking.pending.discard(event)
+        dcr.marking.executed.add(event)
 
         #the following if statements are used to provide to update DCR graph
         # depeding on prime event structure within conditions relations
-        if label in dcr.excludesTo:
-            for e_prime in dcr.excludesTo[label]:
-                dcr.marking.included.remove(e_prime)
+        if event in dcr.excludesTo:
+            for e_prime in dcr.excludesTo[event]:
+                dcr.marking.included.discard(e_prime)
 
-        if label in dcr.includesTo:
-            for e_prime in dcr.includesTo[label]:
+        if event in dcr.includesTo:
+            for e_prime in dcr.includesTo[event]:
                 dcr.marking.included.add(e_prime)
 
-        if label in dcr.responseTo:
-            for e_prime in dcr.responseTo[label]:
+        if event in dcr.responseTo:
+            for e_prime in dcr.responseTo[event]:
                 dcr.marking.pending.add(e_prime)
+
         return dcr
 
     @classmethod
@@ -79,9 +105,8 @@ class DCRSemantics(object):
         else:
             return True
 
-
+"""
 class DcrSemantics(object):
-
     def __init__(self, dcr, cmd_print=True) -> None:
         self.dcr = deepcopy(dcr)
         self.dict_exe = self.__create_max_executed_time_dict()
@@ -311,3 +336,4 @@ class DcrSemantics(object):
             for (e_prime, k) in self.dcr['responseToDeadlines'][e]:
                 self.dcr['marking']['pendingDeadline'][e_prime] = timedelta(k)
                 self.dcr['marking']['pending'].add(e_prime)
+"""

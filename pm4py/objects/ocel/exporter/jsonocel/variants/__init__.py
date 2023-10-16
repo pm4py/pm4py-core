@@ -14,4 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.ocel.exporter.jsonocel.variants import classic
+from pm4py.objects.ocel.exporter.jsonocel.variants import classic, ocel20, ocel20_standard

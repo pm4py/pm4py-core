@@ -14,13 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import re
-
-import warnings
-
-#warnings.warn("The regex package will be removed in a future release.")
-
-
 def get_new_char(label, shared_obj):
     """
     Get a new single character describing the activity, for the regex

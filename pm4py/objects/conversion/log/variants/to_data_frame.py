@@ -54,7 +54,7 @@ def apply(log, parameters=None):
 
     if parameters is None:
         parameters = dict()
-    if isinstance(log, pd.core.frame.DataFrame):
+    if isinstance(log, pd.DataFrame):
         return log
     if type(log) is log_instance.EventLog:
         new_parameters = copy(parameters)

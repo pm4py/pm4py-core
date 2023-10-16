@@ -16,20 +16,18 @@
 '''
 import copy
 import heapq
-import pkgutil
+import importlib.util
 from enum import Enum
-from typing import List, Any, Optional
+from typing import List
 
 import pandas as pd
 
 from pm4py.algo.conformance.alignments.process_tree.util import search_graph_pt_replay_semantics as pt_sem
-from pm4py.objects.log.obj import Trace
 from pm4py.objects.petri_net.utils import align_utils
 from pm4py.objects.process_tree.obj import Operator
-from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.process_tree.utils import generic as pt_util
 from pm4py.util import exec_utils, constants, xes_constants
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util import typing
@@ -233,7 +231,7 @@ def apply_variant(variant, tree, parameters=None):
 
 
 def _construct_progress_bar(progress_length, parameters):
-    if exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True) and pkgutil.find_loader("tqdm"):
+    if exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, constants.SHOW_PROGRESS_BAR) and importlib.util.find_spec("tqdm"):
         if progress_length > 1:
             from tqdm.auto import tqdm
             return tqdm(total=progress_length, desc="aligning log, completed variants :: ")

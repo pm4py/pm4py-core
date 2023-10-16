@@ -14,12 +14,11 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import pkgutil
 from typing import Optional, Dict, Any, Union
 
 import pandas as pd
 
-from pm4py.algo.discovery.temporal_profile.variants import log
+from pm4py.algo.discovery.temporal_profile.variants import log, dataframe
 from pm4py.objects.log.obj import EventLog
 from pm4py.util import typing
 
@@ -46,9 +45,7 @@ def apply(elog: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Any, An
     temporal_profile
         Temporal profile of the log
     """
-    if pkgutil.find_loader("pandas"):
-        import pandas as pd
-        from pm4py.algo.discovery.temporal_profile.variants import dataframe
-        if type(elog) is pd.DataFrame:
-            return dataframe.apply(elog, parameters=parameters)
+    if type(elog) is pd.DataFrame:
+        return dataframe.apply(elog, parameters=parameters)
+
     return log.apply(elog, parameters=parameters)

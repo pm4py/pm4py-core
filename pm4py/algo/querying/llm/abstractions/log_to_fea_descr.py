@@ -86,14 +86,24 @@ def __transform_to_string(stru: str) -> str:
     return stru
 
 
-def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None) -> str:
+def textual_abstraction_from_fea_df(fea_df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> str:
     """
-    Returns the textual abstraction of ML features extracted from a traditional event log object.
+    Returns the textual abstraction of ML features already encoded in a feature table
+
+    Minimum viable example:
+
+        import pm4py
+        from pm4py.algo.querying.llm.abstractions import log_to_fea_descr
+
+        log = pm4py.read_xes("tests/input_data/receipt.xes", return_legacy_log_object=True)
+        fea_df = pm4py.extract_features_dataframe(log)
+        text_abstr = log_to_fea_descr.textual_abstraction_from_fea_df(fea_df)
+        print(text_abstr)
 
     Parameters
     ---------------
-    log
-        Event log / Pandas dataframe
+    fea_df
+        Feature table (numeric features; stored as Pandas dataframe)
     parameters
         Parameters that should be provided to the feature extraction, plus:
         - Parameters.INCLUDE_HEADER => includes a descriptive header in the returned text
@@ -109,12 +119,6 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
 
     include_header = exec_utils.get_param_value(Parameters.INCLUDE_HEADER, parameters, True)
     max_len = exec_utils.get_param_value(Parameters.MAX_LEN, parameters, constants.OPENAI_MAX_LEN)
-
-    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
-
-    data, feature_names = log_to_features.apply(log, parameters=parameters)
-
-    fea_df = pd.DataFrame(data, columns=feature_names)
 
     cols = []
 
@@ -151,3 +155,42 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
         i = i + 1
 
     return ret
+
+
+def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None) -> str:
+    """
+    Returns the textual abstraction of ML features extracted from a traditional event log object.
+
+    Minimum viable example:
+
+        import pm4py
+        from pm4py.algo.querying.llm.abstractions import log_to_fea_descr
+
+        log = pm4py.read_xes("tests/input_data/receipt.xes", return_legacy_log_object=True)
+        text_abstr = log_to_fea_descr.apply(log)
+        print(text_abstr)
+
+    Parameters
+    ---------------
+    log
+        Event log / Pandas dataframe
+    parameters
+        Parameters that should be provided to the feature extraction, plus:
+        - Parameters.INCLUDE_HEADER => includes a descriptive header in the returned text
+        - Parameters.MAX_LEN => maximum length of the provided text (if necessary, only the most meaningful features are kept)
+
+    Returns
+    ---------------
+    stru
+        Textual abstraction
+    """
+    if parameters is None:
+        parameters = {}
+
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
+    data, feature_names = log_to_features.apply(log, parameters=parameters)
+
+    fea_df = pd.DataFrame(data, columns=feature_names)
+
+    return textual_abstraction_from_fea_df(fea_df, parameters=parameters)

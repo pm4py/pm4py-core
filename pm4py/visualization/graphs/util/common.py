@@ -31,7 +31,11 @@ def get_temp_file_name(format):
     """
     filename = tempfile.NamedTemporaryFile(suffix='.' + format)
 
-    return filename.name
+    name = filename.name
+
+    filename.close()
+
+    return name
 
 
 def save(temp_file_name, target_path):

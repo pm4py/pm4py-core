@@ -14,9 +14,8 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import pkgutil
+import importlib.util
 from pm4py.streaming.importer import csv
 
-if pkgutil.find_loader("lxml"):
+if importlib.util.find_spec("lxml"):
     from pm4py.streaming.importer import xes
-
