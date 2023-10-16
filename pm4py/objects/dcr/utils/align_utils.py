@@ -61,7 +61,7 @@ def cost_function_dcr(dcr) -> Dict[str, int]:
         if e == SKIP:
             costs[e] = STD_TAU_COST
         else:
-            costs[e] = STD_SYNC_COST  # Assign costs based on your DCR model
+            costs[e] = STD_SYNC_COST  # Assign costs based on DCR model
     return costs
 
 

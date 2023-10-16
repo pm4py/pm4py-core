@@ -80,6 +80,9 @@ class DCR_Graph(object):
         self.__principals: set()
         self.__rolesAssignment: {}
 
+    def __lt__(self, other):
+        return len(self.events) < len(other.events)
+
     def convertToObj(self, template, log):
         self.__events = set(log.index)
         self.__labels = set(template['events'])
@@ -91,9 +94,6 @@ class DCR_Graph(object):
         self.__marking.executed = template['marking']['executed']
         self.__marking.included = template['marking']['included']
         self.__marking.pending = template['marking']['pending']
-
-    def __lt__(self, other):
-        return self.some_attribute < other.some_attribute
 
     @property
     def events(self):
