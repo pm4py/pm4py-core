@@ -15,13 +15,18 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from copy import deepcopy
+
+import numpy as np
+
+import pm4py.utils
 from pm4py import get_event_attribute_values
 from pm4py.objects.dcr.obj import dcr_template
-from pm4py.objects.dcr.obj import DCR_Graph
-from typing import Tuple, Any
+from enum import Enum
+from pm4py.util import exec_utils, constants, xes_constants
+import time
 
 
-def apply(log, findAdditionalConditions=True, **kwargs):
+def apply(log, findAdditionalConditions=True, parameters=None):
     """
     Discovers a DCR graph model from an event log.
 
@@ -34,16 +39,16 @@ def apply(log, findAdditionalConditions=True, **kwargs):
         event log (pandas dataframe)
     findAdditionalConditions
         bool value to identify if additional conditions should be mined
-    kwargs
+    Parameters
         optional parameters, currently not used
     Returns
     -------
     tuple(dict,dict)
         returns tuple of dictionary containing the dcr_graph and the abstracted log used to mine the graph
     """
-    print('[i] Mining with Basic DisCoveR')
     disc = Discover()
-    return disc.mine(log, findAdditionalConditions, **kwargs)
+    dcr = disc.mine(log, findAdditionalConditions, parameters=parameters)
+    return dcr
 
 
 class Discover:
@@ -51,6 +56,8 @@ class Discover:
     Class constructed for the DisCoveR miner,
     initiates relevant objects used for mine and Contains all methods used for mining basic DCR graphs.
     """
+
+    # these parameters are used in case of attribute has a custom name, in which case it can be specified on call
     def __init__(self):
         """
         initiates the dcr_template and log abstraction used for mining
@@ -67,7 +74,7 @@ class Discover:
             'successor': {}
         }
 
-    def mine(self, log, findAdditionalConditions=True, **kwargs):
+    def mine(self, log, findAdditionalConditions=True, parameters=None):
         '''
         Parameters
         ----------
@@ -76,27 +83,51 @@ class Discover:
         findAdditionalConditions
             apply the last step of the algorithm? True (default) or False
 
+        case_id_key
+        activity_key
+
         Returns
         -------
         tuple(dict,dict)
             returns a mind dcr graph and associated log abstraction used for mining
         '''
-        self.createLogAbstraction(log)
-        self.mineFromAbstraction(findAdditionalConditions=findAdditionalConditions)
+        activity_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+        case_id_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_CASEID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+        self.createLogAbstraction(log, activity_key, case_id_key)
+        self.mineFromAbstraction(activity_key, findAdditionalConditions=findAdditionalConditions)
         # if graph_path:
         #     self.writeGraph(graph_path)
         return self.graph, self.logAbstraction
 
-    def createLogAbstraction(self, log):
+    def createLogAbstraction(self, log, activity_key: str, case_key: str):
         '''
         Main mining
+        Parameters
+        ----------
         :param log: pm4py event log
+        case_id_key
+        activity_key
+
+        Returns
+        ----------
         :return: 0 for success anything else for failure
         '''
-        activities = get_event_attribute_values(log, "concept:name")
+
+        """
+        activities = set(get_event_attribute_values(log, activity_key)))
+        events = set([str(i) for i in range(len(activities))])
+        labelMapping = {}
+        for i,j in zip(events,activities):
+            labelMapping.update({str(i): j})
+        """
+        activities = get_event_attribute_values(log, activity_key)
         events = set(activities)
         self.logAbstraction['events'] = events.copy()
-        self.logAbstraction['traces'] = log.groupby('case:concept:name').apply(lambda event: event.to_dict(orient='records')).tolist()
+
+        start_time = time.perf_counter()
+        self.logAbstraction['traces'] = pm4py.project_on_event_attribute(log, case_id_key=case_key)
+        end_time = time.perf_counter()
+        #print("time it took to load traces: "+str((end_time-start_time)*1000))
         self.logAbstraction['atMostOnce'] = events.copy()
         for event in events:
             self.logAbstraction['chainPrecedenceFor'][event] = events.copy() - set([event])
@@ -104,28 +135,28 @@ class Discover:
             self.logAbstraction['predecessor'][event] = set()
             self.logAbstraction['responseTo'][event] = events.copy() - set([event])
             self.logAbstraction['successor'][event] = set()
-
+        start_time = time.perf_counter()
         for trace in self.logAbstraction['traces']:
-            self.parseTrace(trace)
-
+            self.parseTrace(trace, activity_key)
+        end_time = time.perf_counter()
+        #print("time it took to mine declare templates: " + str((end_time - start_time) * 1000))
         for i in self.logAbstraction['predecessor']:
             for j in self.logAbstraction['predecessor'][i]:
                 self.logAbstraction['successor'][j].add(i)
-
         return 0
 
-    def parseTrace(self, trace):
+    def parseTrace(self, trace, activity_key):
         '''
         :param trace: array each trace one row and then events in order
+        :param activity_key:
         :return: 0 if success anything else for failure
         '''
         localAtLeastOnce = set()
         localSeenOnlyBefore = {}
         lastEvent = ''
-        for event_dict in trace:
-            event = event_dict['concept:name']
+        for event in trace:
             # All events seen before this one must be predecessors
-            self.logAbstraction['predecessor'][event] = self.logAbstraction['predecessor'][event].union(
+            self.logAbstraction['predecessor'][event] = self.logAbstraction['predecessor'].get(event).union(
                 localAtLeastOnce)
             # If event seen before in trace, remove from atMostOnce
             if event in localAtLeastOnce:
@@ -134,6 +165,7 @@ class Discover:
             # Precedence for (event): All events that occurred before (event) are kept in the precedenceFor set
             self.logAbstraction['precedenceFor'][event] = self.logAbstraction['precedenceFor'][event].intersection(
                 localAtLeastOnce)
+
             # Chain-Precedence for (event): Some event must occur immediately before (event) in all traces
             if lastEvent != '':  # TODO: objects vs strings in sets
                 # If first time this clause is encountered - leaves lastEvent in chain-precedence set.
@@ -171,9 +203,14 @@ class Discover:
         :param relation:
         :return:
         '''
-        for eventA in relation:
-            for eventB in relation[eventA]:
-                relation[eventA] = relation[eventA].difference(relation[eventB])
+        # Sortedlist to avoid possibly non-deterministic behavior
+        sortedList = list(relation.items())
+        sortedList.sort(key=lambda num: len(num[1]),reverse=True)
+        sortedList = [list(i) for i in sortedList]
+        for i in range(len(sortedList)):
+            for j in sortedList[i][1]:
+                sortedList[i][1] = sortedList[i][1].difference(relation[j])
+        relation = dict(sortedList)
         return relation
 
     def optimizeRelationTransitiveReduction(self, relation):
@@ -182,14 +219,22 @@ class Discover:
             for eventB in relation[eventA]:
                 print('af')
 
-    def mineFromAbstraction(self, findAdditionalConditions: bool = True):
+    def mineFromAbstraction(self, activity_key, findAdditionalConditions: bool = True):
         '''
-        :param findAttitionalConditions:
+        Parameters
+        ----------
+        :param activity_key:
+        :param findAdditionalConditions:
+
+        Returns
+        ----------
         :return: a dcr graph
         '''
         # Initialize graph
         # Note that events become an alias, but this is irrelevant since events are never altered
         self.graph['events'] = self.logAbstraction['events'].copy()
+        # self.graph['labels'] = self.logAbstraction['activities'].copy()
+        # self.graph['labelMapping'] = self.logAbstraction['labelMapping'].copy()
         self.graph['marking']['included'] = self.logAbstraction['events'].copy()
 
         # Initialize all to_petri_net to avoid indexing errors
@@ -199,7 +244,7 @@ class Discover:
             self.graph['includesTo'][event] = set()
             self.graph['responseTo'][event] = set()
             self.graph['milestonesFor'][event] = set()
-
+        start_time = time.perf_counter()
         # Mine self-exclusions
         for event in self.logAbstraction['atMostOnce']:
             self.graph['excludesTo'][event].add(event)
@@ -254,8 +299,9 @@ class Discover:
 
                 localSeenBefore = set()
                 included = self.logAbstraction['events'].copy()
-                for event_dict in trace:
-                    event = event_dict['concept:name']
+                for event in trace:
+                    # val_list = list(self.logAbstraction['labelMapping'].values())
+                    # event = str(val_list.index(event))
                     # Compute conditions that still allow event to be executed
                     excluded = self.logAbstraction['events'].difference(included)
                     validConditions = localSeenBefore.union(excluded)
@@ -273,5 +319,7 @@ class Discover:
 
             # Removing redundant conditions
             self.graph['conditionsFor'] = self.optimizeRelation(self.graph['conditionsFor'])
+        end_time = time.perf_counter()
+        #print("time it took to mine from LA: " + str((end_time - start_time) * 1000))
 
         return 0

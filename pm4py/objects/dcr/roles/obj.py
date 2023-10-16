@@ -4,8 +4,8 @@ from pm4py.objects.dcr.obj import DCR_Graph
 
 
 class RoleDCR_Graph(DCR_Graph):
-    def __init__(self, template, log):
-        super().__init__(template, log)
+    def __init__(self, template):
+        super().__init__(template)
         self.__principals = template['principals']
         self.__roles = template['roles']
         self.__rolesAssignment = template['roleAssignment']

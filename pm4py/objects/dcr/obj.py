@@ -35,7 +35,7 @@ dcr_template = {
 }
 
 
-class Marking_v2(object):
+class Marking:
     """
     Class object inspired by implementation of prototype of pm4py-dcr
     responsible for storing the state of the DCR graph
@@ -51,62 +51,47 @@ class Marking_v2(object):
     def executed(self):
         return self.__executed
 
-    @executed.setter
-    def executed(self, value):
-        self.__executed = value
-
     @property
     def included(self):
         return self.__included
-
-    @included.setter
-    def included(self, value):
-        self.__included = value
 
     @property
     def pending(self):
         return self.__pending
 
-    @pending.setter
-    def pending(self, value):
-        self.__pending = value
-
     # built-in functions for printing a visual string representation
     def __str__(self) -> str:
         return f'( {self.__executed},{self.__included},{self.__pending})'
+    def __iter__(self):
+        yield 'executed', self.__executed
+        yield 'included', self.__included
+        yield 'pending', self.__pending
 
 
-class DCR_Graph(object):
+class DCR_Graph:
     """
     This implementation is based on the thoery of this Paper:
     Author: Thomas T. Hildebrandt and Raghava Rao Mukkamala,
     Title: Declarative Event-BasedWorkflow as Distributed Dynamic Condition Response Graphs
     publisher: Electronic Proceedings in Theoretical Computer Science. EPTCS, Open Publishing Association, 2010, pp. 59–73. doi: 10.4204/EPTCS.69.5.
     """
+
     # initiate the objects: contains events ID, activity, the 4 relations, markings, roles and principals
-    def __init__(self, template, log):
-        self.__events = set(log.index)
-        self.__labels = set(template['events'])
-        self.__labelMapping = {key: log['concept:name'][key] for key in set(log.index)}
+    def __init__(self, template):
+        # events and logs are essentially the same, and events was used as an identification for activities
+        # in essence, activities were directly mined, but it was based on the event idenfication.
+        self.__events = set(template['events'])
         self.__conditionsFor = template['conditionsFor']
         self.__responseTo = template['responseTo']
         self.__includesTo = template['includesTo']
         self.__excludesTo = template['excludesTo']
-        self.__marking = Marking_v2(template['marking']['executed'], template['marking']['included'], template['marking']['pending'])
-
+        self.__marking = Marking(template['marking']['executed'], template['marking']['included'],
+                                    template['marking']['pending'])
 
     # @property functions to extraxt values used for data manipulation and testing
     @property
     def events(self):
         return self.__events
-
-    @property
-    def labels(self):
-        return self.__labels
-
-    @property
-    def labelMapping(self):
-        return self.__labelMapping
 
     @property
     def conditionsFor(self):
@@ -128,15 +113,38 @@ class DCR_Graph(object):
     def marking(self):
         return self.__marking
 
+
     # in_built functions to print
+    def __iter__(self):
+        yield 'events', self.__events
+        yield 'conditionsFor', self.__conditionsFor
+        yield 'milestonesFor', {}
+        yield 'responseTo', self.__responseTo
+        yield 'includesTo', self.__includesTo
+        yield 'excludesTo', self.excludesTo
+        yield 'marking', dict(self.__marking)
+        yield 'conditionsForDelays', {}
+        yield 'responseToDeadlines', {}
+        yield 'subprocesses', {}
+        yield 'nestings', {}
+        yield 'labels', set()
+        yield 'labelMapping', {}
+
     def __repr__(self):
-        return str('{' + '\n'.join(
-            [str(x) + ':' + '{conditionsFor: ' + str(self.conditionsFor[x]) + ', reponseTo: ' + str(self.responseTo[x])
-             + ', includesTo: ' + str(self.includesTo[x]) + ', excludesTo: ' + str(self.excludesTo[x]) + '}' for x in
-             self.labels]) + '}')
+        return str('{' +
+                   'events: '+str(self.events) + ', ' +
+                   'conditionsFor: '+str(self.conditionsFor) + ', ' +
+                   'responseTo: '+str(self.responseTo) + ', ' +
+                   'includesTo'+str(self.includesTo) + ', ' +
+                   'excludesTo'+str(self.excludesTo) + ', ' +
+                   'marking'+str(self.marking)
+                   + '}')
 
     def __str__(self):
         return self.__repr__()
+
+    def __eq__(self, other):
+        return self.conditionsFor == other.conditionsFor and self.responseTo == other.responseTo and self.includesTo == other.includesTo and self.excludesTo == other.excludesTo
 
 """
 class Marking(object):

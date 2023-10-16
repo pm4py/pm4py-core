@@ -264,7 +264,7 @@ def deserialize(ser_obj: Tuple[str, bytes]) -> Any:
         return dfg_importer.deserialize(ser_obj[1])
 
 
-def get_properties(log, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource", group_key: Optional[str] = None, **kwargs):
+def get_properties(log, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource", role_key: str = "org:role", group_key: Optional[str] = None, **kwargs):
     """
     Gets the properties from a log object
 
@@ -273,8 +273,10 @@ def get_properties(log, activity_key: str = "concept:name", timestamp_key: str =
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :param resource_key: (if provided) attribute to be used as resource
+    :param role_key: (if provided) attribute to be used as role
     :param group_key: (if provided) attribute to be used as group identifier
     :rtype: ``Dict``
+
     """
     __event_log_deprecation_warning(log)
 
@@ -299,6 +301,9 @@ def get_properties(log, activity_key: str = "concept:name", timestamp_key: str =
 
     if group_key is not None:
         parameters[constants.PARAMETER_CONSTANT_GROUP_KEY] = group_key
+
+    if role_key is not None:
+        parameters[constants.PARAMETER_CONSTANT_ROLE_KEY] = role_key
 
     for k, v in kwargs.items():
         parameters[k] = v
