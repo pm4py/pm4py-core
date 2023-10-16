@@ -103,7 +103,7 @@ def apply(dataframe1: pd.DataFrame, dataframe2: pd.DataFrame, interleavings: pd.
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
-    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "TB")
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, constants.DEFAULT_RANKDIR_GVIZ)
     annotation = exec_utils.get_param_value(Parameters.ANNOTATION, parameters, "frequency")
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE, parameters, "mean")
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
@@ -113,6 +113,8 @@ def apply(dataframe1: pd.DataFrame, dataframe2: pd.DataFrame, interleavings: pd.
     min_fact_edges_interleavings = exec_utils.get_param_value(Parameters.MIN_FACT_EDGES_INTERLEAVINGS, parameters, 0.3)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
+
     viz = Digraph("interleavings", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     viz.attr('node', shape='ellipse', fixedsize='false')
 

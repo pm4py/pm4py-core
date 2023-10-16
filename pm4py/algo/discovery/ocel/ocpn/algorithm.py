@@ -15,17 +15,18 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from enum import Enum
-from pm4py.algo.discovery.ocel.ocpn.variants import wo_annotation
+from pm4py.algo.discovery.ocel.ocpn.variants import classic
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import exec_utils
 from typing import Optional, Dict, Any
 
 
 class Variants(Enum):
-    WO_ANNOTATION = wo_annotation
+    WO_ANNOTATION = classic
+    CLASSIC = classic
 
 
-def apply(ocel: OCEL, variant=Variants.WO_ANNOTATION, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
+def apply(ocel: OCEL, variant=Variants.CLASSIC, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, Any]:
     """
     Discovers an object-centric Petri net from the provided object-centric event log.
 

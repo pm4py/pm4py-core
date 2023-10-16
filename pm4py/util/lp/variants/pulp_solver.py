@@ -151,8 +151,9 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None):
 
                 prob += eval(eval_str)
 
-    filename = tempfile.NamedTemporaryFile(suffix='.lp').name
-    prob.writeLP(filename)
+    filename = tempfile.NamedTemporaryFile(suffix='.lp')
+    filename.close()
+    prob.writeLP(filename.name)
     solver(prob)
 
     return prob

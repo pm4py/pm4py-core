@@ -14,8 +14,13 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import pkgutil
-import os
+import importlib.util
+from enum import Enum
+
+
+class Parameters(Enum):
+    REQUIRE_ILP = "require_ilp"
+
 
 # not available in the latest version of PM4Py
 CVXOPT = "cvxopt"
@@ -34,7 +39,7 @@ VERSIONS_GET_PRIM_OBJ = {}
 VERSIONS_GET_POINTS_FROM_SOL = {}
 DEFAULT_LP_SOLVER_VARIANT = None
 
-if pkgutil.find_loader("pulp"):
+if importlib.util.find_spec("pulp"):
     # assuming pulp is installed
     from pm4py.util.lp.variants import pulp_solver
 
@@ -44,7 +49,7 @@ if pkgutil.find_loader("pulp"):
 
     DEFAULT_LP_SOLVER_VARIANT = PULP
 
-if pkgutil.find_loader("scipy"):
+if importlib.util.find_spec("scipy"):
     # in the case scipy is installed, it works
     from pm4py.util.lp.variants import scipy_solver
 
@@ -54,7 +59,7 @@ if pkgutil.find_loader("scipy"):
 
     DEFAULT_LP_SOLVER_VARIANT = SCIPY
 
-if pkgutil.find_loader("cvxopt"):
+if importlib.util.find_spec("cvxopt"):
     from pm4py.util.lp.variants import cvxopt_solver, cvxopt_solver_custom_align, cvxopt_solver_custom_align_ilp, \
         cvxopt_solver_custom_align_arm
 

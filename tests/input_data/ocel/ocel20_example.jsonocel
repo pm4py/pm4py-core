@@ -1,0 +1,518 @@
+{
+  "objectTypes": [
+    {
+      "name": "Invoice",
+      "attributes": [
+        {
+          "name": "is_blocked",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Payment",
+      "attributes": []
+    },
+    {
+      "name": "Purchase Order",
+      "attributes": [
+        {
+          "name": "po_product",
+          "type": "string"
+        },
+        {
+          "name": "po_quantity",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Purchase Requisition",
+      "attributes": [
+        {
+          "name": "pr_product",
+          "type": "string"
+        },
+        {
+          "name": "pr_quantity",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "eventTypes": [
+    {
+      "name": "Approve Purchase Requisition",
+      "attributes": [
+        {
+          "name": "pr_approver",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Change PO Quantity",
+      "attributes": [
+        {
+          "name": "po_editor",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Create Purchase Order",
+      "attributes": [
+        {
+          "name": "po_creator",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Create Purchase Requisition",
+      "attributes": [
+        {
+          "name": "pr_creator",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Insert Invoice",
+      "attributes": [
+        {
+          "name": "invoice_inserter",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Insert Payment",
+      "attributes": [
+        {
+          "name": "payment_inserter",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Remove Payment Block",
+      "attributes": [
+        {
+          "name": "invoice_block_rem",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Set Payment Block",
+      "attributes": [
+        {
+          "name": "invoice_blocker",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "id": "R1",
+      "type": "Invoice",
+      "attributes": [
+        {
+          "name": "is_blocked",
+          "time": "1970-01-01T00:00:00Z",
+          "value": "No"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "P1",
+          "qualifier": "Payment from invoice"
+        }
+      ]
+    },
+    {
+      "id": "R2",
+      "type": "Invoice",
+      "attributes": [
+        {
+          "name": "is_blocked",
+          "time": "1970-01-01T00:00:00Z",
+          "value": "No"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "P2",
+          "qualifier": "Payment from invoice"
+        }
+      ]
+    },
+    {
+      "id": "R3",
+      "type": "Invoice",
+      "attributes": [
+        {
+          "name": "is_blocked",
+          "time": "1970-01-01T00:00:00Z",
+          "value": "No"
+        },
+        {
+          "name": "is_blocked",
+          "time": "2022-02-03T06:30:00+00:00",
+          "value": "Yes"
+        },
+        {
+          "name": "is_blocked",
+          "time": "2022-02-03T22:30:00+00:00",
+          "value": "No"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "P3",
+          "qualifier": "Payment from invoice"
+        }
+      ]
+    },
+    {
+      "id": "P1",
+      "type": "Payment"
+    },
+    {
+      "id": "P2",
+      "type": "Payment"
+    },
+    {
+      "id": "P3",
+      "type": "Payment"
+    },
+    {
+      "id": "PO1",
+      "type": "Purchase Order",
+      "attributes": [
+        {
+          "name": "po_product",
+          "time": "1970-01-01T00:00:00Z",
+          "value": "Cows"
+        },
+        {
+          "name": "po_quantity",
+          "time": "1970-01-01T00:00:00Z",
+          "value": "500"
+        },
+        {
+          "name": "po_quantity",
+          "time": "2022-01-13T11:00:00+00:00",
+          "value": "600"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "R1",
+          "qualifier": "Invoice from PO"
+        },
+        {
+          "objectId": "R2",
+          "qualifier": "Invoice from PO"
+        }
+      ]
+    },
+    {
+      "id": "PO2",
+      "type": "Purchase Order",
+      "attributes": [
+        {
+          "name": "po_product",
+          "time": "1970-01-01T00:00:00Z",
+          "value": "Notebooks"
+        },
+        {
+          "name": "po_quantity",
+          "time": "1970-01-01T00:00:00Z",
+          "value": "1"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "R3",
+          "qualifier": "Maverick buying"
+        }
+      ]
+    },
+    {
+      "id": "PR1",
+      "type": "Purchase Requisition",
+      "attributes": [
+        {
+          "name": "pr_product",
+          "time": "1970-01-01T00:00:00Z",
+          "value": "Cows"
+        },
+        {
+          "name": "pr_quantity",
+          "time": "1970-01-01T00:00:00Z",
+          "value": "500"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "PO1",
+          "qualifier": "PO from PR"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "e1",
+      "type": "Create Purchase Requisition",
+      "time": "2022-01-09T14:00:00+00:00",
+      "attributes": [
+        {
+          "name": "pr_creator",
+          "value": "Mike"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "PR1",
+          "qualifier": "Regular placement of PR"
+        }
+      ]
+    },
+    {
+      "id": "e2",
+      "type": "Approve Purchase Requisition",
+      "time": "2022-01-09T15:30:00+00:00",
+      "attributes": [
+        {
+          "name": "pr_approver",
+          "value": "Tania"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "PR1",
+          "qualifier": "Regular approval of PR"
+        }
+      ]
+    },
+    {
+      "id": "e3",
+      "type": "Create Purchase Order",
+      "time": "2022-01-10T08:15:00+00:00",
+      "attributes": [
+        {
+          "name": "po_creator",
+          "value": "Mike"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "PR1",
+          "qualifier": "Created order from PR"
+        },
+        {
+          "objectId": "PO1",
+          "qualifier": "Created order with identifier"
+        }
+      ]
+    },
+    {
+      "id": "e4",
+      "type": "Change PO Quantity",
+      "time": "2022-01-13T11:00:00+00:00",
+      "attributes": [
+        {
+          "name": "po_editor",
+          "value": "Mike"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "PO1",
+          "qualifier": "Change of quantity"
+        }
+      ]
+    },
+    {
+      "id": "e5",
+      "type": "Insert Invoice",
+      "time": "2022-01-14T11:00:00+00:00",
+      "attributes": [
+        {
+          "name": "invoice_inserter",
+          "value": "Luke"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "PO1",
+          "qualifier": "Invoice created starting from the PO"
+        },
+        {
+          "objectId": "R1",
+          "qualifier": "Invoice created with identifier"
+        }
+      ]
+    },
+    {
+      "id": "e6",
+      "type": "Insert Invoice",
+      "time": "2022-01-16T10:00:00+00:00",
+      "attributes": [
+        {
+          "name": "invoice_inserter",
+          "value": "Luke"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "PO1",
+          "qualifier": "Invoice created starting from the PO"
+        },
+        {
+          "objectId": "R2",
+          "qualifier": "Invoice created with identifier"
+        }
+      ]
+    },
+    {
+      "id": "e7",
+      "type": "Insert Payment",
+      "time": "2022-01-30T22:00:00+00:00",
+      "attributes": [
+        {
+          "name": "payment_inserter",
+          "value": "Robot"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "R1",
+          "qualifier": "Payment for the invoice"
+        },
+        {
+          "objectId": "P1",
+          "qualifier": "Payment inserted with identifier"
+        }
+      ]
+    },
+    {
+      "id": "e8",
+      "type": "Insert Payment",
+      "time": "2022-01-31T21:00:00+00:00",
+      "attributes": [
+        {
+          "name": "payment_inserter",
+          "value": "Robot"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "R2",
+          "qualifier": "Payment for the invoice"
+        },
+        {
+          "objectId": "P2",
+          "qualifier": "Payment created with identifier"
+        }
+      ]
+    },
+    {
+      "id": "e9",
+      "type": "Insert Invoice",
+      "time": "2022-02-02T08:00:00+00:00",
+      "attributes": [
+        {
+          "name": "invoice_inserter",
+          "value": "Mario"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "R3",
+          "qualifier": "Invoice created with identifier"
+        }
+      ]
+    },
+    {
+      "id": "e10",
+      "type": "Create Purchase Order",
+      "time": "2022-02-02T16:00:00+00:00",
+      "attributes": [
+        {
+          "name": "po_creator",
+          "value": "Mario"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "R3",
+          "qualifier": "Purchase order created with maverick buying from"
+        },
+        {
+          "objectId": "PO2",
+          "qualifier": "Purhcase order created with identifier"
+        }
+      ]
+    },
+    {
+      "id": "e11",
+      "type": "Set Payment Block",
+      "time": "2022-02-03T06:30:00+00:00",
+      "attributes": [
+        {
+          "name": "invoice_blocker",
+          "value": "Mario"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "R3",
+          "qualifier": "Payment block due to unethical maverick buying"
+        }
+      ]
+    },
+    {
+      "id": "e12",
+      "type": "Remove Payment Block",
+      "time": "2022-02-03T22:30:00+00:00",
+      "attributes": [
+        {
+          "name": "invoice_block_rem",
+          "value": "Mario"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "R3",
+          "qualifier": "Payment block removed ..."
+        }
+      ]
+    },
+    {
+      "id": "e13",
+      "type": "Insert Payment",
+      "time": "2022-02-28T22:00:00+00:00",
+      "attributes": [
+        {
+          "name": "payment_inserter",
+          "value": "Robot"
+        }
+      ],
+      "relationships": [
+        {
+          "objectId": "R3",
+          "qualifier": "Payment for the invoice"
+        },
+        {
+          "objectId": "P3",
+          "qualifier": "Payment inserted with identifier"
+        }
+      ]
+    }
+  ]
+}

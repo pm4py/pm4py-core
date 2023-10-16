@@ -26,8 +26,8 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking, ResetNet, InhibitorNe
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.util import constants, exec_utils
-from enum import Enum
 import warnings
+from enum import Enum
 
 
 class Parameters(Enum):
@@ -58,8 +58,14 @@ def import_net(input_file_path, parameters=None):
     if parameters is None:
         parameters = {}
 
-    parser = etree.XMLParser(remove_comments=True)
-    tree = objectify.parse(input_file_path, parser=parser)
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, None)
+
+    parser = etree.XMLParser(remove_comments=True, encoding=encoding)
+
+    F = open(input_file_path, "rb")
+    tree = objectify.parse(F, parser=parser)
+    F.close()
+
     root = tree.getroot()
 
     return import_net_from_xml_object(root, parameters=parameters)
@@ -340,6 +346,7 @@ def import_net_from_xml_object(root, parameters=None):
             # generate the final marking in the case has not been found
             fmarking = final_marking.discover_final_marking(net)
         else:
-            warnings.warn("the Petri net has been imported without a specified final marking. Please create it using the method pm4py.generate_marking")
+            if constants.SHOW_INTERNAL_WARNINGS:
+                warnings.warn("the Petri net has been imported without a specified final marking. Please create it using the method pm4py.generate_marking")
 
     return net, marking, fmarking

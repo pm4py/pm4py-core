@@ -77,6 +77,8 @@ def apply(network_analysis_edges0: Dict[Tuple[str, str], Dict[str, Any]], parame
         aggregation_f = sum
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
+
     viz = Digraph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     viz.attr('node', shape='ellipse', fixedsize='false')
 

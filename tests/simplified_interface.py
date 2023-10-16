@@ -1015,6 +1015,16 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
         filtered_ocel = pm4py.ocel_add_index_based_timedelta(ocel)
 
+    def test_ocel2_xml(self):
+        ocel = pm4py.read_ocel2("input_data/ocel/ocel20_example.xmlocel")
+        pm4py.write_ocel2(ocel, "test_output_data/ocel20_example.xmlocel")
+        os.remove("test_output_data/ocel20_example.xmlocel")
+
+    def test_ocel2_sqlite(self):
+        ocel = pm4py.read_ocel2("input_data/ocel/ocel20_example.sqlite")
+        pm4py.write_ocel2(ocel, "test_output_data/ocel20_example.sqlite")
+        os.remove("test_output_data/ocel20_example.sqlite")
+
 
 if __name__ == "__main__":
     unittest.main()

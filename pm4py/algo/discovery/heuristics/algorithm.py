@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import pkgutil
 from enum import Enum
 
 from pm4py.algo.discovery.heuristics.variants import classic, plusplus
@@ -72,11 +71,8 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     fm
         Final marking
     """
-    if pkgutil.find_loader("pandas"):
-        import pandas
-
-        if isinstance(log, pandas.core.frame.DataFrame):
-            return exec_utils.get_variant(variant).apply_pandas(log, parameters=parameters)
+    if isinstance(log, pd.DataFrame):
+        return exec_utils.get_variant(variant).apply_pandas(log, parameters=parameters)
 
     return exec_utils.get_variant(variant).apply(log_conversion.apply(log, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters),
                                                  parameters=parameters)

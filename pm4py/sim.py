@@ -33,7 +33,10 @@ def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, Proc
     The function either takes a petri net, initial and final marking, or, a process tree as an input.
 
     :param args: model (Petri net with initial and final marking, or process tree)
-    :param kwargs: dictionary containing the parameters of the playout
+    :param kwargs: optional parameters of the method, including:
+        - parameters: dictionary containing the parameters of the playout, including:
+            - smap: (if provided) stochastic map to be used to stochastically choose the transition
+            - log: (if provided) EventLog to be used to compute the stochastic map, if smap not provided
     :rtype: ``EventLog``
 
     .. code-block:: python3
@@ -57,11 +60,21 @@ def play_out(*args: Union[Tuple[PetriNet, Marking, Marking], dict, Counter, Proc
             parameters = kwargs["parameters"] if "parameters" in kwargs else None
             if parameters is None:
                 parameters = {}
+
+            variant = algorithm.Variants.BASIC_PLAYOUT
+            # if the log, or the stochastic map of the transitions, is provided
+            # use the stochastic playout in place of the basic playout
+            # (that means, the relative weight of the transitions in a marking
+            # will be considered during transition's picking)
+            if "log" in parameters or "smap" in parameters:
+                variant = algorithm.Variants.STOCHASTIC_PLAYOUT
+
             semantics = ClassicSemantics()
             if isinstance(net, ResetNet) or isinstance(net, InhibitorNet):
                 semantics = InhibitorResetSemantics()
             parameters["petri_semantics"] = semantics
-            return algorithm.apply(net, im, final_marking=fm, parameters=parameters)
+
+            return algorithm.apply(net, im, final_marking=fm, variant=variant, parameters=parameters)
         elif isinstance(args[0], dict):
             from pm4py.algo.simulation.playout.dfg import algorithm as dfg_playout
             return dfg_playout.apply(args[0], args[1], args[2], **kwargs)

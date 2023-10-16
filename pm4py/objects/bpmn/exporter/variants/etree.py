@@ -17,7 +17,12 @@
 import uuid
 
 from pm4py.objects.bpmn.obj import BPMN
-from pm4py.util import constants
+from pm4py.util import constants, exec_utils
+from enum import Enum
+
+
+class Parameters(Enum):
+    ENCODING = "encoding"
 
 
 def apply(bpmn_graph, target_path, parameters=None):
@@ -42,6 +47,8 @@ def apply(bpmn_graph, target_path, parameters=None):
 def get_xml_string(bpmn_graph, parameters=None):
     if parameters is None:
         parameters = {}
+
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
 
     layout = bpmn_graph.get_layout()
 
@@ -148,4 +155,4 @@ def get_xml_string(bpmn_graph, parameters=None):
                                                            "sourceRef": str(source.get_id()),
                                                            "targetRef": str(target.get_id())})
 
-    return minidom.parseString(ET.tostring(definitions)).toprettyxml(encoding=constants.DEFAULT_ENCODING)
+    return minidom.parseString(ET.tostring(definitions)).toprettyxml(encoding=encoding)

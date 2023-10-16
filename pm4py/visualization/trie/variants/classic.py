@@ -75,6 +75,8 @@ def apply(trie: Trie, parameters: Optional[Dict[Union[str, Parameters], Any]] = 
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
+    
     viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     viz.attr('node', shape='ellipse', fixedsize='false')
 

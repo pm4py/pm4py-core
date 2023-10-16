@@ -53,6 +53,7 @@ def apply(clf: tree.DecisionTreeClassifier, feature_names: List[str], classes: L
 
     format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
 
     dot_data = tree.export_graphviz(clf, out_file=None,
                                     feature_names=feature_names,

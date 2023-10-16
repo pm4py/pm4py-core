@@ -14,8 +14,4 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.statistics.variants import log
-import pkgutil
-
-if pkgutil.find_loader("pandas"):
-    from pm4py.statistics.variants import pandas
+from pm4py.statistics.variants import log, pandas

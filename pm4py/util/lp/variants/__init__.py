@@ -14,10 +14,10 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import pkgutil
+import importlib.util
 
-if pkgutil.find_loader("pulp"):
+if importlib.util.find_spec("pulp"):
     from pm4py.util.lp.variants import pulp_solver
 
-if pkgutil.find_loader("scipy"):
+if importlib.util.find_spec("scipy"):
     from pm4py.util.lp.variants import scipy_solver
