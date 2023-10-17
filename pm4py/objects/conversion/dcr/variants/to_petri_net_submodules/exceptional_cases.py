@@ -1092,18 +1092,18 @@ class ExceptionalCases(object):
                     tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
-                    pn_utils.add_arc_from_to(exec_place_e_prime, t, tapn, type='inhibitor')
+                    # pn_utils.add_arc_from_to(exec_place_e_prime, t, tapn, type='inhibitor')
 
             # copy 3
-            for delta in range(len_delta):
-                tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
-                new_transitions.extend(ts)
-                for t in ts:
-                    tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
-                    pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
-
-                    pn_utils.add_arc_from_to(t, exec_place_e_prime, tapn)
-                    pn_utils.add_arc_from_to(exec_place_e_prime, t, tapn)
+            # for delta in range(len_delta):
+            #     tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
+            #     new_transitions.extend(ts)
+            #     for t in ts:
+            #         tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+            #         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
+            #
+            #         pn_utils.add_arc_from_to(t, exec_place_e_prime, tapn)
+            #         pn_utils.add_arc_from_to(exec_place_e_prime, t, tapn)
 
             # copy 0
             for t in copy_0:

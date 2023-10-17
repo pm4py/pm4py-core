@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from pm4py.objects.conversion.dcr.variants.to_petri_net import Dcr2PetriTransport
+from pm4py.objects.conversion.dcr.variants.to_petri_net import Dcr2PetriNet
 from pm4py.objects.conversion.dcr.variants.to_petri_net_submodules import utils
 
 
@@ -28,7 +28,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/2c_cond_mil.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -55,7 +55,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/2c_cond_mil_pend.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -82,7 +82,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/2e_resp_no_resp.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -106,7 +106,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/2e_incl_excl.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -130,7 +130,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/2e_incl_excl_excluded.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -154,7 +154,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/2e_incl_resp.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -178,7 +178,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/2e_incl_resp_excluded.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -205,7 +205,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/2e_excl_no_resp.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -229,7 +229,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/2e_excl_resp.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -256,7 +256,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/2e_incl_no_resp.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -283,7 +283,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/ec_mil_incl.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -310,7 +310,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/ec_mil_excl.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -337,7 +337,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/ec_mil_resp.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -364,7 +364,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/ec_mil_no_resp.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -388,7 +388,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/2ec_cond_incl.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -412,7 +412,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/2ec_cond_incl_excluded.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -436,7 +436,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/2ec_cond_excl.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -460,7 +460,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/2ec_cond_resp.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -484,7 +484,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/3ec_cond_resp_incl.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -508,7 +508,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/3ec_cond_resp_excl.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -532,7 +532,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/4ec_cond_resp_incl_excl.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -556,7 +556,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/4ec_cond_resp_incl_excl_dumn.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -583,7 +583,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/ec_cond_no_resp.tapn'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 
@@ -610,7 +610,7 @@ class ReadableTestCase(unittest.TestCase):
                         }
         }
         tapn_path = self.test_folder + '/test.pnml'
-        d2p = Dcr2PetriTransport()
+        d2p = Dcr2PetriNet()
 
         tapn, m = d2p.dcr2tapn(G, tapn_path)
 

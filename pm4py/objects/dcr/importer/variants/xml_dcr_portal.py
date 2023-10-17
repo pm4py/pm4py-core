@@ -1,8 +1,10 @@
+import copy
+
 import isodate
 
 from pm4py.util import constants
 from copy import deepcopy
-from pm4py.objects.dcr.obj import Relations
+from pm4py.objects.dcr.obj import Relations, dcr_template
 
 I = Relations.I.value
 E = Relations.E.value
@@ -21,7 +23,18 @@ def parse_element(curr_el, parent, dcr):
                 event_type = curr_el.get('type')
                 match event_type:
                     case 'subprocess':
-                        dcr['subprocesses'][id] = {}
+                        dcr['subprocesses'][id] = set()
+                    case 'nesting':
+                        dcr['nestings'][id] = set()
+                        pass
+                    case _:
+                        pass
+                match parent.get('type'):
+                    case 'subprocess':
+                        dcr['subprocesses'][parent.get('id')].add(id)
+                    case 'nesting':
+                        dcr['nestings'][parent.get('id')].add(id)
+                        pass
                     case _:
                         pass
                 match parent.tag:
@@ -31,6 +44,18 @@ def parse_element(curr_el, parent, dcr):
                         dcr['marking']['pending'].add(id)
                     case _:
                         pass
+                for role in curr_el.findall('.//role'):
+                    if role.text:
+                        if role.text not in dcr['roleAssignments']:
+                            dcr['roleAssignments'][role.text] = set([id])
+                        else:
+                            dcr['roleAssignments'][role.text].add(id)
+                for role in curr_el.findall('.//readRole'):
+                    if role.text:
+                        if role.text not in dcr['readRoleAssignments']:
+                            dcr['readRoleAssignments'][role.text] = set([id])
+                        else:
+                            dcr['readRoleAssignments'][role.text].add(id)
         case 'label':
             id = curr_el.get('id')
             dcr['labels'].add(id)
@@ -57,7 +82,10 @@ def parse_element(curr_el, parent, dcr):
             if delay:
                 if not dcr['conditionsForDelays'].__contains__(event_prime):
                     dcr['conditionsForDelays'][event_prime] = set()
-                delay_days = isodate.parse_duration(delay).days
+                if delay.isdecimal():
+                    delay_days = int(delay)
+                else:
+                    delay_days = isodate.parse_duration(delay).days
                 dcr['conditionsForDelays'][event_prime].add((event, delay_days))
 
         case 'response':
@@ -77,9 +105,18 @@ def parse_element(curr_el, parent, dcr):
             if deadline:
                 if not dcr['responseToDeadlines'].__contains__(event):
                     dcr['responseToDeadlines'][event] = set()
-                deadline_days = isodate.parse_duration(deadline).days
+                if deadline.isdecimal():
+                    deadline_days = int(deadline)
+                else:
+                    deadline_days = isodate.parse_duration(deadline).days
                 dcr['responseToDeadlines'][event].add((event_prime, deadline_days))
-
+        case 'role':
+            if curr_el.text:
+                dcr['roles'].add(curr_el.text)
+                if curr_el.text not in dcr['roleAssignments']:
+                    dcr['roleAssignments'][curr_el.text] = set()
+                if curr_el.text not in dcr['readRoleAssignments']:
+                    dcr['readRoleAssignments'][curr_el.text] = set()
         case 'include' | 'exclude':
             event = curr_el.get('sourceId')
             event_prime = curr_el.get('targetId')
@@ -127,57 +164,44 @@ def parse_element(curr_el, parent, dcr):
     return dcr
 
 def import_xml_tree_from_root(root, white_space_replacement=None):
-    dcr = {
-        'events': set(),
-        'labels': set(),
-        'labelMapping': {},  # this is a dictionary with one label and 1 to many events
-        'conditionsFor': {},# this should be a dict with events as keys and sets as values
-        'milestonesFor': {},
-        'responseTo': {},
-        'noResponseTo': {},
-        'includesTo': {},
-        'excludesTo': {},
-        'conditionsForDelays': {},  # this should be a dict with events as keys and tuples as values
-        'responseToDeadlines': {},
-        'marking': {'executed': set(),
-                    'included': set(),
-                    'pending': set()
-                    },
-        'subprocesses': {}
-    }
+    dcr = copy.deepcopy(dcr_template)
     dcr = parse_element(root, None, dcr)
-    dcr = clean_input(dcr, white_space_replacement)
+    dcr = clean_input(dcr, white_space_replacement='')
     return dcr
 
 
 def clean_input(dcr, white_space_replacement=None):
     if white_space_replacement is None:
         white_space_replacement = ' '
-    # remove all space characters and put conditions an milestones in the correct order (according to the actual arrows)
+    # remove all space characters and put conditions and milestones in the correct order (according to the actual arrows)
     for k, v in deepcopy(dcr).items():
         if k in [I, E, C, R, M, N]:
             v_new = {}
             for k2, v2 in v.items():
-                v_new[k2.strip().replace(' ', '')] = set([v3.strip().replace(' ', white_space_replacement) for v3 in v2])
+                v_new[k2.strip().replace(' ', white_space_replacement)] = set([v3.strip().replace(' ', white_space_replacement) for v3 in v2])
             dcr[k] = v_new
         elif k in ['conditionsForDelays', 'responseToDeadlines']:
             v_new = {}
             for k2, v2 in v.items():
-                v_new[k2.strip().replace(' ', '')] = set([(v3.strip().replace(' ', white_space_replacement),d) for (v3,d) in v2])
+                v_new[k2.strip().replace(' ', white_space_replacement)] = set([(v3.strip().replace(' ', white_space_replacement),d) for (v3,d) in v2])
             dcr[k] = v_new
         elif k == 'marking':
             for k2 in ['executed', 'included', 'pending']:
                 new_v = set([v2.strip().replace(' ', white_space_replacement) for v2 in dcr[k][k2]])
                 dcr[k][k2] = new_v
-        elif k in ['subprocesses', 'labelMapping']:
+        elif k in ['subprocesses', 'nestings', 'labelMapping', 'roleAssignments', 'readRoleAssignments']:
             v_new = {}
             for k2, v2 in v.items():
-                v_new[k2.strip().replace(' ', '')] = set([v3.strip().replace(' ', white_space_replacement) for v3 in v2])
+                v_new[k2.strip().replace(' ', white_space_replacement)] = set([v3.strip().replace(' ', white_space_replacement) for v3 in v2])
             dcr[k] = v_new
         else:
             new_v = set([v2.strip().replace(' ', white_space_replacement) for v2 in dcr[k]])
             dcr[k] = new_v
     return dcr
+
+
+def map_labels_to_ids(dcr):
+    pass
 
 
 def apply(path, parameters=None):
