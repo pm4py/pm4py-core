@@ -18,7 +18,7 @@ __doc__ = """
 The ``pm4py.stats`` module contains the statistics offered in ``pm4py``
 """
 
-from typing import Dict, Union, List, Tuple, Collection
+from typing import Dict, Union, List, Tuple, Collection, Iterator
 from typing import Set, Optional
 from collections import Counter
 
@@ -262,6 +262,125 @@ def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame], activity_key: str
     else:
         from pm4py.statistics.variants.log import get
         return get.get_variants(log, parameters=properties)
+
+
+def split_by_process_variant(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name",
+                             timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name",
+                             variant_column: str = "@@variant_column",
+                             index_in_trace_column: str = "@@index_in_trace") -> Iterator[
+    Tuple[Collection[str], pd.DataFrame]]:
+    """
+    Splits an event log into sub-dataframes for each process variant.
+    The result is an iterator over the variants along with the sub-dataframes.
+
+    :param log: Event log
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :param variant_column: name of the utility column that stores the variant's tuple
+    :param index_in_trace_column: name of the utility column that stores the index of the event in the case
+    :rtype: ``Iterator[Tuple[Collection[str], pd.DataFrame]]``
+
+    .. code-block:: python3
+
+        import pandas as pd
+        import pm4py
+
+        dataframe = pd.read_csv('tests/input_data/receipt.csv')
+        dataframe = pm4py.format_dataframe(dataframe)
+        for variant, subdf in pm4py.split_by_process_variant(dataframe):
+            print(variant)
+            print(subdf)
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception(
+        "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    import pm4py
+    log = pm4py.convert_to_dataframe(log)
+    check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    from pm4py.util import pandas_utils
+    log = pandas_utils.insert_ev_in_tr_index(log, case_id=case_id_key, column_name=index_in_trace_column)
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    from pm4py.objects.log.util import pandas_numpy_variants
+    variants_dict, case_variant = pandas_numpy_variants.apply(log, parameters=properties)
+
+    log[variant_column] = log[case_id_key].map(case_variant)
+
+    for variant, filtered_log in log.groupby(variant_column, sort=False):
+        yield variant, filtered_log
+
+
+def get_variants_paths_duration(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name",
+                                timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name",
+                                variant_column: str = "@@variant_column",
+                                index_in_trace_column: str = "@@index_in_trace",
+                                cumulative_occ_path_column: str = "@@cumulative_occ_path_column",
+                                times_agg: str = "mean") -> pd.DataFrame:
+    """
+    Method that associates to a log object a Pandas dataframe aggregated by variants and positions (inside the variant).
+    Each row is associated to different columns:
+    - The variant
+    - The position (in the variant)
+    - The source activity (of the path)
+    - The target activity (of the path)
+    - An aggregation of the times between the two activities (for example, the mean over all the cases of the same variant)
+    - The cumulative occurrences of the path inside the case (for example, the first A->B would be associated to 0,
+                                                            and the second A->B would be associated to 1)
+
+    :param log: Event log
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :param variant_column: name of the utility column that stores the variant's tuple
+    :param index_in_trace_column: name of the utility column that stores the index of the event in the case
+    :param cumulative_occ_path_column: name of the column that stores the cumulative occurrences of the path inside the case
+    :param times_agg: aggregation (mean, median) to be used
+    :rtype: ``pd.DataFrame``
+
+    .. code-block:: python3
+
+        import pandas as pd
+        import pm4py
+
+        dataframe = pd.read_csv('tests/input_data/receipt.csv')
+        dataframe = pm4py.format_dataframe(dataframe)
+
+        var_paths_durs = pm4py.get_variants_paths_duration(dataframe)
+        print(var_paths_durs)
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception(
+        "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+    check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    list_to_concat = []
+    for variant, filtered_log in split_by_process_variant(log, activity_key=activity_key, timestamp_key=timestamp_key,
+                                                          case_id_key=case_id_key, variant_column=variant_column,
+                                                          index_in_trace_column=index_in_trace_column):
+        from pm4py.statistics.eventually_follows.pandas import get as eventually_follows
+        dir_follo_dataframe = eventually_follows.get_partial_order_dataframe(filtered_log, activity_key=activity_key,
+                                                                             timestamp_key=timestamp_key,
+                                                                             case_id_glue=case_id_key,
+                                                                             sort_caseid_required=False,
+                                                                             sort_timestamp_along_case_id=False,
+                                                                             reduce_dataframe=False)
+        dir_follo_dataframe[cumulative_occ_path_column] = dir_follo_dataframe.groupby(
+            [case_id_key, activity_key, activity_key + "_2"]).cumcount()
+        dir_follo_dataframe = dir_follo_dataframe[
+            [index_in_trace_column, constants.DEFAULT_FLOW_TIME, cumulative_occ_path_column]].groupby(
+            index_in_trace_column).agg(
+            {constants.DEFAULT_FLOW_TIME: times_agg, cumulative_occ_path_column: 'min'}).reset_index()
+        dir_follo_dataframe[activity_key] = dir_follo_dataframe[index_in_trace_column].apply(lambda x: variant[x])
+        dir_follo_dataframe[activity_key + "_2"] = dir_follo_dataframe[index_in_trace_column].apply(
+            lambda x: variant[x + 1])
+        dir_follo_dataframe[variant_column] = dir_follo_dataframe[index_in_trace_column].apply(lambda x: variant)
+
+        list_to_concat.append(dir_follo_dataframe)
+
+    return pd.concat(list_to_concat)
 
 
 def get_stochastic_language(*args, **kwargs) -> Dict[List[str], float]:

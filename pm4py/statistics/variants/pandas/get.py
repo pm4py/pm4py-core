@@ -42,7 +42,9 @@ def get_variants_count(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = 
     if parameters is None:
         parameters = {}
 
-    return pandas_numpy_variants.apply(df, parameters=parameters)
+    variants_counter, case_variant = pandas_numpy_variants.apply(df, parameters=parameters)
+
+    return variants_counter
 
 
 def get_variants_set(df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> Union[Set[str], Set[List[str]]]:
