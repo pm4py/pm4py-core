@@ -10,6 +10,8 @@
     variant-specific paths statistics on request
 * 86cbdb103410a692c15e35a1723f7107e573656e
   * removing unused imports throughout the code
+* c37cdd31bfbd5742d769fa7a00cea2615e679e2e
+  * increased test coverage by testing also the old EventLog methods
 
 ### Deprecated
 
