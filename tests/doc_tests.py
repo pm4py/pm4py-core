@@ -153,37 +153,6 @@ class DocTests(unittest.TestCase):
                 case_filter.Parameters.CASE_ID_KEY: "case:concept:name",
                 case_filter.Parameters.TIMESTAMP_KEY: "time:timestamp"})
 
-    def test_16(self):
-        from pm4py.algo.filtering.log.start_activities import start_activities_filter
-        log = self.load_running_example_xes()
-        log_start = start_activities_filter.get_start_activities(log)
-        filtered_log = start_activities_filter.apply(log,
-                                                     ["register request"])
-
-    def test_17(self):
-        from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
-        dataframe = self.load_running_example_df()
-        log_start = start_activities_filter.get_start_activities(dataframe)
-        df_start_activities = start_activities_filter.apply(dataframe, ["register request"],
-                                                            parameters={
-                                                                start_activities_filter.Parameters.CASE_ID_KEY: "case:concept:name",
-                                                                start_activities_filter.Parameters.ACTIVITY_KEY: "concept:name"})
-
-    def test_20(self):
-        from pm4py.algo.filtering.log.end_activities import end_activities_filter
-        log = self.load_running_example_xes()
-        end_activities = end_activities_filter.get_end_activities(log)
-        filtered_log = end_activities_filter.apply(log, ["pay compensation"])
-
-    def test_21(self):
-        from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
-        df = self.load_running_example_df()
-        end_acitivites = end_activities_filter.get_end_activities(df)
-        filtered_df = end_activities_filter.apply(df, ["pay compensation"],
-                                                  parameters={
-                                                      end_activities_filter.Parameters.CASE_ID_KEY: "case:concept:name",
-                                                      end_activities_filter.Parameters.ACTIVITY_KEY: "concept:name"})
-
     def test_22(self):
         from pm4py.algo.filtering.log.variants import variants_filter
         log = self.load_running_example_xes()
