@@ -1,5 +1,28 @@
 # Changelog of pm4py
 
+## pm4py 2.7.8.2 (2023.10.19)
+
+### Added
+
+### Changed
+* d219db5ece5ce68239b217072bf04ac576ded062
+  * refactoring DFG utility to also output
+    variant-specific paths statistics on request
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+* 26ee9d9311f353327184f3f4b91378a1aa2cdc9d
+  * dependencies sheet script
+
+
+---
+
+
 ## pm4py 2.7.8.1 (2023.10.12)
 
 ### Added
