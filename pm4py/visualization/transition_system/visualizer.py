@@ -4,7 +4,7 @@ from pm4py.visualization.transition_system.variants import view_based, trans_fre
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.visualization.common.gview import serialize, serialize_dot
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any
 from pm4py.objects.transition_system.obj import TransitionSystem
 import graphviz
 

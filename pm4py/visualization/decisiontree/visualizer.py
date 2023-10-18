@@ -5,7 +5,7 @@ from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.visualization.common.gview import serialize, serialize_dot
 from sklearn import tree
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, List
 import graphviz
 
 

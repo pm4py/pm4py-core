@@ -1,6 +1,4 @@
-from collections import Counter
 import random
-import traceback
 
 
 class ObjMarking(dict):

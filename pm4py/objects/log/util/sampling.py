@@ -1,5 +1,4 @@
 import random
-from copy import copy
 
 from pm4py.objects.log.obj import EventStream, EventLog
 

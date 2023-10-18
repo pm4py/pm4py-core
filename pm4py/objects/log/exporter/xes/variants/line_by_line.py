@@ -5,7 +5,7 @@ from io import BytesIO
 
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.util import exec_utils, constants
-from xml.sax.saxutils import escape as sax_escape, quoteattr
+from xml.sax.saxutils import quoteattr
 
 
 class Parameters(Enum):

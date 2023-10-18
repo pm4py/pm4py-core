@@ -5,7 +5,6 @@ import pandas as pd
 
 from pm4py.statistics.traces.generic.common import case_duration as case_duration_commons
 from pm4py.util import exec_utils, constants, pandas_utils
-from pm4py.util import variants_util
 from pm4py.util import xes_constants as xes
 from pm4py.util.business_hours import soj_time_business_hours_diff
 from pm4py.util.constants import CASE_CONCEPT_NAME

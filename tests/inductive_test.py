@@ -32,7 +32,7 @@ class InductiveMinerTest(unittest.TestCase):
             log = xes_importer.apply(log_name)
         else:
             df = pd.read_csv(log_name)
-            df = dataframe_utils.convert_timestamp_columns_in_df(df)
+            df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
             log = log_conversion.apply(df, variant=log_conversion.Variants.TO_EVENT_LOG)
         process_tree = inductive_miner.apply(log)
         net, marking, final_marking = process_tree_converter.apply(process_tree)

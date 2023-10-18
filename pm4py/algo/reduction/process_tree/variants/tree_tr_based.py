@@ -1,5 +1,4 @@
 from copy import deepcopy
-from enum import Enum
 from typing import Optional, Dict, Any, List, Set
 
 from pm4py.objects.log.obj import Trace

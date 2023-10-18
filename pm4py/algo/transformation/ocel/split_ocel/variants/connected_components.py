@@ -1,8 +1,6 @@
 from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any
 from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
-from pm4py.objects.ocel.util import filtering_utils
-from copy import deepcopy
 from pm4py.util import exec_utils
 from enum import Enum
 import sys

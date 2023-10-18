@@ -102,7 +102,7 @@ class AlgorithmTest(unittest.TestCase):
 
     def test_alpha_miner_dataframe(self):
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         from pm4py.algo.discovery.alpha import algorithm as alpha_miner
         net, im, fm = alpha_miner.apply(df, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC)
 
@@ -122,7 +122,7 @@ class AlgorithmTest(unittest.TestCase):
         from pm4py.algo.discovery.performance_spectrum import algorithm as pspectrum
         ps = pspectrum.apply(log, ["register request", "decide"])
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         ps = pspectrum.apply(df, ["register request", "decide"])
 
 if __name__ == "__main__":

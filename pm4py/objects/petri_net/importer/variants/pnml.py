@@ -1,10 +1,7 @@
-import os
-import tempfile
 import time
 
 from lxml import etree, objectify
 
-from pm4py.meta import VERSION
 from pm4py.objects.petri_net.utils import final_marking
 from pm4py.objects.petri_net.obj import PetriNet, Marking, ResetNet, InhibitorNet, ResetInhibitorNet
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to

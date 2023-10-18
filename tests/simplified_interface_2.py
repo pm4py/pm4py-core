@@ -25,8 +25,9 @@ class SimplifiedInterface2Test(unittest.TestCase):
         pm4py.reduce_petri_net_implicit_places(net, im, fm)
 
     def test_language_df(self):
-        log = pm4py.read_xes("input_data/running-example.xes")
-        pm4py.get_stochastic_language(log)
+        for legacy_obj in [True, False]:
+            log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=legacy_obj)
+            pm4py.get_stochastic_language(log)
 
     def test_language_log(self):
         log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=True)
@@ -37,8 +38,9 @@ class SimplifiedInterface2Test(unittest.TestCase):
         pm4py.get_stochastic_language(net, im, fm)
 
     def test_conversion_df_to_nx(self):
-        log = pm4py.read_xes("input_data/running-example.xes")
-        pm4py.convert_log_to_networkx(log)
+        for legacy_obj in [True, False]:
+            log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=legacy_obj)
+            pm4py.convert_log_to_networkx(log)
 
     def test_conversion_log_to_nx(self):
         log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=True)
@@ -49,8 +51,9 @@ class SimplifiedInterface2Test(unittest.TestCase):
         pm4py.convert_ocel_to_networkx(ocel)
 
     def test_conversion_df_to_ocel(self):
-        log = pm4py.read_xes("input_data/running-example.xes")
-        pm4py.convert_log_to_ocel(log)
+        for legacy_obj in [True, False]:
+            log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=legacy_obj)
+            pm4py.convert_log_to_ocel(log)
 
     def test_conversion_log_to_ocel(self):
         log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=True)
@@ -73,8 +76,9 @@ class SimplifiedInterface2Test(unittest.TestCase):
         pm4py.compute_emd(lang1, lang2)
 
     def test_hybrid_ilp_miner(self):
-        log = pm4py.read_xes("input_data/running-example.xes")
-        pm4py.discover_petri_net_ilp(log)
+        for legacy_obj in [True, False]:
+            log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=legacy_obj)
+            pm4py.discover_petri_net_ilp(log)
 
 
 if __name__ == "__main__":

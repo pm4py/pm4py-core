@@ -1,5 +1,4 @@
 import tempfile
-import uuid
 from copy import deepcopy
 from enum import Enum
 
@@ -7,7 +6,7 @@ from graphviz import Graph
 
 from pm4py.objects.process_tree.utils import generic as util
 from pm4py.util import exec_utils, constants
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.process_tree.obj import ProcessTree
 import graphviz
 
