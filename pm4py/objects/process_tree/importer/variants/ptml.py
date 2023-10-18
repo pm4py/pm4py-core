@@ -1,9 +1,5 @@
-import os
-import tempfile
-
 from lxml import etree, objectify
 
-from pm4py.meta import VERSION
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.process_tree.obj import Operator
 from pm4py.objects.process_tree.utils.generic import tree_sort

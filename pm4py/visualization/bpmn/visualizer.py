@@ -4,9 +4,8 @@ from enum import Enum
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
 from pm4py.visualization.common.gview import serialize, serialize_dot
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any
 from pm4py.objects.bpmn.obj import BPMN
-from pm4py.util import typing
 import graphviz
 
 

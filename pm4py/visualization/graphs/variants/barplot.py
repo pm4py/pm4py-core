@@ -5,7 +5,7 @@ import matplotlib
 
 from pm4py.util import exec_utils, constants
 from pm4py.visualization.graphs.util import common
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, Union, List
 
 
 class Parameters(Enum):

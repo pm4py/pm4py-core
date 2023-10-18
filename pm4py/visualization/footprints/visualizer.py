@@ -5,7 +5,7 @@ from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
 from pm4py.visualization.common.gview import serialize, serialize_dot
 import graphviz
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any
 
 
 class Variants(Enum):

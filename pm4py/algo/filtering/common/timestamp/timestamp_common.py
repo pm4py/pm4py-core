@@ -1,5 +1,4 @@
 from datetime import datetime
-import pytz
 
 
 def get_dt_from_string(dt):

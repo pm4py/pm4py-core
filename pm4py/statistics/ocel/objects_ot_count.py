@@ -1,5 +1,5 @@
 from enum import Enum
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import exec_utils
 from pm4py.objects.ocel import constants as ocel_constants
 from collections import Counter
 from pm4py.objects.ocel.obj import OCEL

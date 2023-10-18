@@ -1,10 +1,8 @@
 from enum import Enum
 
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
-from pm4py.objects.conversion.log import converter
-from pm4py.objects.log.util import sorting
-from pm4py.util import exec_utils, constants, xes_constants
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from pm4py.util import constants
+from typing import Optional, Dict, Any, Union, Tuple
 
 
 class Parameters(Enum):

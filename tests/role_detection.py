@@ -10,7 +10,7 @@ from pm4py.algo.organizational_mining.roles import algorithm as role_mining
 class RoleDetectionTest(unittest.TestCase):
     def test_role_running_csv(self):
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         roles = role_mining.apply(df)
 
     def test_role_running_xes(self):
@@ -19,7 +19,7 @@ class RoleDetectionTest(unittest.TestCase):
 
     def test_role_receipt_csv(self):
         df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         roles = role_mining.apply(df)
 
     def test_role_receipt_xes(self):

@@ -74,7 +74,7 @@ class OtherPartsTests(unittest.TestCase):
 
     def test_performance_spectrum_df(self):
         df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         pspectr = df_pspectrum.apply(df, ["T02 Check confirmation of receipt", "T03 Adjust confirmation of receipt"],
                                      1000, {})
 
@@ -125,7 +125,7 @@ class OtherPartsTests(unittest.TestCase):
 
     def test_footprints_tree_df(self):
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         log = converter.apply(df, variant=converter.Variants.TO_EVENT_LOG)
         tree = inductive_miner.apply(log)
@@ -165,7 +165,7 @@ class OtherPartsTests(unittest.TestCase):
         import pandas as pd
         dataframe = pd.read_csv(os.path.join("input_data", "interval_event_log.csv"))
         from pm4py.objects.log.util import dataframe_utils
-        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe)
+        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
         from pm4py.statistics.sojourn_time.pandas import get
         soj_time = get.apply(dataframe, parameters={get.Parameters.START_TIMESTAMP_KEY: "start_timestamp"})
 
@@ -178,7 +178,7 @@ class OtherPartsTests(unittest.TestCase):
         import pandas as pd
         dataframe = pd.read_csv(os.path.join("input_data", "interval_event_log.csv"))
         from pm4py.objects.log.util import dataframe_utils
-        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe)
+        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
         from pm4py.statistics.concurrent_activities.pandas import get
         conc_act = get.apply(dataframe, parameters={get.Parameters.START_TIMESTAMP_KEY: "start_timestamp"})
 
@@ -191,7 +191,7 @@ class OtherPartsTests(unittest.TestCase):
         import pandas as pd
         dataframe = pd.read_csv(os.path.join("input_data", "interval_event_log.csv"))
         from pm4py.objects.log.util import dataframe_utils
-        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe)
+        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
         from pm4py.statistics.eventually_follows.pandas import get
         efg = get.apply(dataframe, parameters={get.Parameters.START_TIMESTAMP_KEY: "start_timestamp"})
 

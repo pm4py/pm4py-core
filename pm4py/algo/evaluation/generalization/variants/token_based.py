@@ -1,13 +1,11 @@
 from collections import Counter
 from math import sqrt
 
-from pm4py import util as pmutil
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
-from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util import constants
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 import pandas as pd
 

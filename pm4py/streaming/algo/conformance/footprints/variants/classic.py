@@ -3,7 +3,6 @@ from pm4py.streaming.util.dictio import generator
 from pm4py.streaming.algo.interface import StreamingAlgorithm
 import logging
 from copy import copy
-from threading import Lock
 
 
 class Parameters:

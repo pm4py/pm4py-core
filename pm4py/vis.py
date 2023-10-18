@@ -22,8 +22,6 @@ from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.org.sna.obj import SNA
 from pm4py.util import constants
 
-import deprecation
-
 
 def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = None,
                    final_marking: Optional[Marking] = None, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white",
