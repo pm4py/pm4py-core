@@ -13,13 +13,13 @@ class DocTests(unittest.TestCase):
 
     def load_running_example_df(self):
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         return df
 
     def load_running_example_stream(self):
         from pm4py.objects.conversion.log import converter
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         stream = converter.apply(df, variant=converter.TO_EVENT_STREAM)
         return stream
 
@@ -35,13 +35,13 @@ class DocTests(unittest.TestCase):
 
     def load_receipt_df(self):
         df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         return df
 
     def load_receipt_stream(self):
         from pm4py.objects.conversion.log import converter
         df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         stream = converter.apply(df, variant=converter.TO_EVENT_STREAM)
         return stream
 
@@ -272,7 +272,7 @@ class DocTests(unittest.TestCase):
     def test_39(self):
         import os
         df = pd.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
 
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
         filtered_df_events = attributes_filter.apply_numeric_events(df, 34, 36,

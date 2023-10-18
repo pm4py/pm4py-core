@@ -5,7 +5,7 @@ import os
 
 def execute_script():
     #dataframe = pd.read_csv(os.path.join("..", "tests", "input_data", "receipt.csv"))
-    #dataframe = pm4py.format_dataframe(dataframe)
+    #dataframe = pm4py.format_dataframe(dataframe, timest_format="ISO8601")
     dataframe = pm4py.read_xes(os.path.join("..", "tests", "input_data", "receipt.xes"), return_legacy_log_object=True)
 
     # define a K-Means with 3 clusters

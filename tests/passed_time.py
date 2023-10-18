@@ -16,7 +16,7 @@ class PassedTimeTest(unittest.TestCase):
 
     def test_passedtime_prepost_df(self):
         df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         prepost = df_passed_time.apply(df, "decide", variant=df_passed_time.Variants.PREPOST)
         del prepost
 
