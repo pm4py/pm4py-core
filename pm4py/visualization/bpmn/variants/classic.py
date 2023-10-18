@@ -2,9 +2,9 @@ from pm4py.util import exec_utils
 from enum import Enum
 import tempfile
 from graphviz import Digraph
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any
 from pm4py.objects.bpmn.obj import BPMN
-from pm4py.util import typing, constants
+from pm4py.util import constants
 import graphviz
 
 

@@ -3,7 +3,7 @@ from enum import Enum
 from pm4py.algo.discovery.declare.variants import classic
 from pm4py.objects.log.obj import EventLog
 import pandas as pd
-from typing import Union, Dict, Optional, Any, Tuple
+from typing import Union, Dict, Optional, Any
 
 
 class Variants(Enum):

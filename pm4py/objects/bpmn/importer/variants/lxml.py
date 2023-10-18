@@ -1,6 +1,5 @@
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.util import constants, exec_utils
-import uuid
 from enum import Enum
 
 

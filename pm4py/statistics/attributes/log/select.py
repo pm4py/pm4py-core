@@ -1,6 +1,6 @@
 from pm4py.statistics.attributes.log.get import get_attribute_values, get_all_event_attributes_from_log, get_all_trace_attributes_from_log, get_trace_attribute_values
 from pm4py.objects.log.util import sampling
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Union, List, Set
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.conversion.log import converter as log_converter
 

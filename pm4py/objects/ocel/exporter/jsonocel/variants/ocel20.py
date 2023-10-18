@@ -2,8 +2,6 @@ import json
 from enum import Enum
 from typing import Optional, Dict, Any
 
-import pandas as pd
-
 from pm4py.objects.ocel import constants
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import exec_utils, constants as pm4_constants

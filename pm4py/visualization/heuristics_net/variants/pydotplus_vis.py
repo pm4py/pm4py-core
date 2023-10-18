@@ -7,7 +7,7 @@ from pm4py.util import exec_utils, constants
 from pm4py.visualization.common.utils import human_readable_stat
 from enum import Enum
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from uuid import uuid4
 
 

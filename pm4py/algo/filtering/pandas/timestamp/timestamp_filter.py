@@ -1,4 +1,3 @@
-import pandas as pd
 import pytz
 
 from pm4py.util.constants import CASE_CONCEPT_NAME
@@ -8,7 +7,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY, PARAMETER_CON
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, Union
 import pandas as pd
 import datetime
 

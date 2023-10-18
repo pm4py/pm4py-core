@@ -1,7 +1,6 @@
 import sys
 import tempfile
 
-import numpy as np
 import pulp
 from pulp import LpProblem, LpMinimize, LpVariable, LpStatus, value
 

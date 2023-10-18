@@ -1,11 +1,10 @@
 from pm4py.algo.evaluation.replay_fitness.variants import alignment_based, token_replay
 from pm4py.algo.conformance import alignments
-from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import exec_utils
 from pm4py.objects.petri_net.utils.check_soundness import check_easy_soundness_net_in_fin_marking
 from enum import Enum
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 import pandas as pd
 

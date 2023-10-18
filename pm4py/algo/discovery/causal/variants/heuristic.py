@@ -1,4 +1,4 @@
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Dict, Tuple
 
 
 def apply(dfg: Dict[Tuple[str, str], int]) -> Dict[Tuple[str, str], float]:

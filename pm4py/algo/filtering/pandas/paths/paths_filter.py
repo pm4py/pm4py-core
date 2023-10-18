@@ -1,5 +1,3 @@
-import pandas as pd
-
 from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
