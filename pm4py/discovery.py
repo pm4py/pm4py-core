@@ -924,11 +924,10 @@ def discover_batches(log: Union[EventLog, pd.DataFrame], merge_distance: int = 1
     from pm4py.algo.discovery.batches import algorithm as batches_discovery
     return batches_discovery.apply(log, parameters=properties)
 
-def discover_dcr(log, process_type = None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp",
-                 case_id_key: str = "case:concept:name", resource_key: str = "org:resource", role_key: str = "org:role",
-                 finaAdditionalConditions: bool = True):
+
+def discover_dcr(log: Union[EventLog, pd.DataFrame], process_type=None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource", role_key: str = "org:role", finaAdditionalConditions: bool = True):
     """
-        Discovers a DCR graph model from an event log.
+        Discovers a DCR graph from an event log.
 
         Implements DCR algorithm described in:
         C. O. Back, T. Slaats, T. T. Hildebrandt, M. Marquard, "DisCoveR: accurate and efficient discovery of declarative process models"
@@ -948,11 +947,6 @@ def discover_dcr(log, process_type = None, activity_key: str = "concept:name", t
             import pm4py
 
             DCR_graph = pm4py.discover_DCR(log)
-
-    Parameters
-    ----------
-    proces_type
-    proces_type
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]:
         raise Exception(
@@ -964,7 +958,7 @@ def discover_dcr(log, process_type = None, activity_key: str = "concept:name", t
         log, activity_key=activity_key, case_id_key=case_id_key,
         resource_key=resource_key, role_key=role_key)
 
-
     from pm4py.algo.discovery.dcr_discover import algorithm as dcr_alg
     from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
-    return dcr_alg.apply(log, dcr_discover, post_process=process_type, parameters=properties)
+    return dcr_alg.apply(log, dcr_discover, post_process=process_type,
+                         findAdditionalConditions=finaAdditionalConditions, parameters=properties)
