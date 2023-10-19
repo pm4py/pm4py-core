@@ -95,6 +95,7 @@ Among *declarative process models*, ``pm4py`` currently supports:
   * :meth:`pm4py.discovery.discover_declare`; discovers a *DECLARE* model.
   * :meth:`pm4py.discovery.discover_log_skeleton`; discovers a *log skeleton*.
   * :meth:`pm4py.discovery.discover_temporal_profile`; discovers a *temporal profile*.
+  * :meth:`pm4py.discovery.discover_dcr`; discovers a *DCR Graph*.
 
 
 Conformance Checking (:mod:`pm4py.conformance`)
@@ -115,7 +116,7 @@ Among declarative process models, ``pm4py`` currently supports:
   * :meth:`pm4py.conformance.conformance_log_skeleton`; conformance checking using the *log skeleton*.
   * :meth:`pm4py.conformance.conformance_declare`; conformance checking using a *DECLARE model*.
   * :meth:`pm4py.conformance.conformance_temporal_profile`; conformance checking using the *temporal profile*.
-
+  * :meth:`pm4py.conformance.conformance_dcr`; conformance checking using the *DCR Graph*
 
 Visualization (:mod:`pm4py.vis`)
 ------------------------------------------
@@ -452,6 +453,7 @@ Overall List of Methods
    pm4py.discovery.discover_declare
    pm4py.discovery.discover_log_skeleton
    pm4py.discovery.discover_batches
+   pm4py.discovery.discover_dcr
    pm4py.conformance
    pm4py.conformance.conformance_diagnostics_token_based_replay
    pm4py.conformance.conformance_diagnostics_alignments
@@ -463,6 +465,7 @@ Overall List of Methods
    pm4py.conformance.conformance_temporal_profile
    pm4py.conformance.conformance_declare
    pm4py.conformance.conformance_log_skeleton
+   pm4py.conformance.conformance_dcr
    pm4py.vis
    pm4py.vis.view_petri_net
    pm4py.vis.save_vis_petri_net
