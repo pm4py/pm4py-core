@@ -41,8 +41,10 @@ class DCRSemantics(object):
     @classmethod
     def enabled(cls, dcr) -> Set[str]:
         """
-        Function to that based on sematics for enabled behavior returns a set of allowed activities to execute
-        can be extended to check milestone
+        enabled returns list based on allowed behavior
+
+        The function uses the semantics for condition checking, if a conditions activity has been executed.
+
         Parameters
         ----------
         :param dcr: takes the current state of the DCR
@@ -51,6 +53,7 @@ class DCRSemantics(object):
         -------
         :param res: set of enabled activities
         """
+        #can be extended to check for milestones
         res = deepcopy(dcr.marking.included)
         for e in set(dcr.conditionsFor.keys()).intersection(res):
             if len(dcr.conditionsFor[e].intersection(dcr.marking.included.difference(
@@ -98,12 +101,23 @@ class DCRSemantics(object):
         return dcr
 
     @classmethod
-    def is_accepting(cls, dcr):
+    def is_accepting(cls, dcr) -> bool:
         res = dcr.marking.pending.intersection(dcr.marking.included)
         if len(res) > 0:
             return False
         else:
             return True
+
+    @classmethod
+    def run(cls, dcr, trace):
+        #runs the model, returns graph is model can run, return none if it can't
+        for e in trace:
+            if cls.is_enabled(e['concept:name'], dcr):
+                dcr = cls.execute(dcr, e['concept:name'])
+            else:
+                return None
+        return dcr
+
 
 """
 class DcrSemantics(object):
