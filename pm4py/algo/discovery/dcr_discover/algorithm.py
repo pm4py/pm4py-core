@@ -25,7 +25,7 @@ from pm4py.algo.discovery.dcr_discover.extenstions import roles
 # from pm4py.algo.discovery.dcr_discover.extenstions import time_constraints, initial_pending, subprocess, roles
 from enum import Enum
 import pandas as pd
-from typing import Union, Any
+from typing import Union, Any, Optional, Dict
 
 
 class Variants(Enum):
@@ -35,32 +35,34 @@ class Variants(Enum):
 
 
 DCR_BASIC = Variants.DCR_BASIC
-# DCR_SUBPROCESS = Variants.DCR_SUBPROCESS
 DCR_ROLES = Variants.DCR_ROLES
-
-# VERSIONS = {DCR_BASIC, DCR_ROLES, DCR_SUBPROCESS}
 VERSIONS = {DCR_BASIC, DCR_ROLES}
 
-
-def apply(log: Union[EventLog, pd.DataFrame], variant=DCR_BASIC, findAdditionalConditions: bool = True, post_process=None, parameters = None) -> DCR_Graph | tuple[
-    Any, Any]:
+# DCR_SUBPROCESS = Variants.DCR_SUBPROCESS
+# VERSIONS = {DCR_BASIC, DCR_ROLES, DCR_SUBPROCESS}
+def apply(log: Union[EventLog, pd.DataFrame], variant=DCR_BASIC, findAdditionalConditions: bool = True, post_process=None, parameters: Optional[Dict[Any, Any]] = None):
     """
     discover a DCR graph from a provided event log
+
     Parameters
-    -----------
+    ---------------
     log
         log object (EventLog, pandas dataframe)
     variant
         Variant of the algorithm to use:
         - DCR_BASIC
+    findAdditionalConditions:
+        Parameter determining if the miner should include an extra step of mining for extra conditions
+        - [True, False]
+
     post_process
         kind of post process to handle further patterns
         - DCR_ROLES
     parameters
         variant specific parameters
-        finaAdditionalConditions: [True or False]
+        findAdditionalConditions: [True or False]
     Returns
-    -----------
+    ---------------
     dcr graph
         DCR graph (as an object) containing eventId, set of activities, mapping of event to activities,
             condition relations, response relation, include relations and exclude relations.
@@ -69,7 +71,9 @@ def apply(log: Union[EventLog, pd.DataFrame], variant=DCR_BASIC, findAdditionalC
     # right now this only works for basic
     input_log = deepcopy(log)
     dcr, la = exec_utils.get_variant(variant).apply(input_log, findAdditionalConditions=findAdditionalConditions, parameters=parameters)
-    if post_process == 'roles':
+    if post_process is None:
+        post_process = set()
+    if 'roles' in post_process:
         dcr = exec_utils.get_variant(DCR_ROLES).apply(input_log, dcr, parameters=parameters)
         return RoleDCR_Graph(dcr), la
 
