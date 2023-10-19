@@ -1,5 +1,8 @@
 import os
+import time
 import unittest
+
+import pandas as pd
 
 import pm4py
 from pm4py.algo.discovery.dcr_discover.algorithm import apply
@@ -57,7 +60,6 @@ class Test_discovery_dcr(unittest.TestCase):
         #test to see if the DCR graphs has been mine correctly with additional conditions
         log = pm4py.read_xes(os.path.join("../input_data", "running-example.xes"))
         dcr, la = apply(log)
-        print(dcr)
         # each unique events should be saved in the graph
         self.assertEqual(set(log['concept:name'].unique()), dcr.events)
         # it should have mined relations for activities,
@@ -82,7 +84,7 @@ class Test_discovery_dcr(unittest.TestCase):
         log2 = pm4py.read_xes(os.path.join("../input_data", "running-example.xes"))
         from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
         dcr2, la = apply(log2, dcr_discover)
-
+        print(dcr2)
         self.check_if_dcr_is_equal(dcr1, dcr2)
 
     def test_role_mining(self):
@@ -90,20 +92,40 @@ class Test_discovery_dcr(unittest.TestCase):
         #given a DCR graph
         log = pm4py.read_xes(os.path.join("../input_data", "running-example.xes"))
         #when mined, with post_process roles
-        dcr, la = apply(log, post_process='roles')
+        dcr, la = apply(log, post_process={'roles'})
         #these attributes, will not be empty
         self.assertNotEqual(len(dcr.roles),0)
         self.assertNotEqual(len(dcr.principals),0)
         self.assertNotEqual(len(dcr.roleAssignment),0)
+        # no roles are given, so principals and roles should be equal
+        self.assertEqual(dcr.principals, dcr.roles)
+
+
+    def test_role_mining_with_roles(self):
+        #given an
+        log = pd.read_csv("../input_data/mobis/mobis_challenge_log_2019.csv",sep=";")
+        log = pm4py.format_dataframe(log, case_id='case', activity_key='activity', timestamp_key='start')
+        #when
+        dcr, la = pm4py.discover_dcr(log,process_type={'roles'})
+        #then roles, principals and roleAssignment should have some values
+        #additionally, a org:role is provided, therefore principals and roles are different
+        self.assertNotEqual(len(dcr.roles), 0)
+        self.assertNotEqual(len(dcr.principals), 0)
+        self.assertNotEqual(len(dcr.roleAssignment), 0)
+        self.assertNotEqual(dcr.roles, dcr.principals)
 
 
     def test_role_mining_with_no_roles_or_resources(self):
-        #if a person tries to mine for roles, but no roles or resources exist in the event log
-        log = pm4py.read_xes(os.path.join('../input_data', 'pdc/pdc_2019/Training Logs/pdc_2019_10.xes'))
+        # if a person tries to mine for roles, but no roles or resources exist in the event log
+        log = pm4py.read_xes(os.path.join('../input_data', 'running-example.xes'))
+        # drop org:resource column
+        log = log.drop(columns=['org:resource'])
+        # when the miner is then performed
         from pm4py.algo.discovery.dcr_discover.algorithm import apply
         from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
-        with self.assertRaises(Exception):
-            apply(log, dcr_discover, post_process='roles')
+        dcr, la = apply(log, dcr_discover, post_process={'roles'})
+        self.assertEqual(dcr.model,)
+
 
 
 
