@@ -21,6 +21,8 @@ The ``pm4py.conformance`` module contains the conformance checking algorithms im
 import warnings
 from typing import List, Dict, Any, Union, Optional, Tuple, Set
 
+from pandas import DataFrame
+
 from pm4py.objects.log.obj import EventLog, Trace, Event, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.convert import convert_to_event_log
@@ -156,7 +158,6 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
         case_id_key = None
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-
     if len(args) == 3:
         if type(args[0]) is PetriNet:
             # Petri net alignments
@@ -782,5 +783,60 @@ def conformance_log_skeleton(log: Union[EventLog, pd.DataFrame], log_skeleton: D
 
     if return_diagnostics_dataframe:
         return log_skeleton_conformance.get_diagnostics_dataframe(log, result, parameters=properties)
+
+    return result
+
+from pm4py.objects.dcr.obj import DCR_Graph
+#parameters: Optional[Dict[Any, Any]] = None
+
+
+def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DCR_Graph, activity_key: str = "concept:name",
+                    timestamp_key: str = "time:timestamp", case_key: str = "case:concept:name", role_key: str = "org:role",
+                    return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> DataFrame | \
+                                                                                                            list[tuple[
+                                                                                                                str,
+                                                                                                                dict[
+                                                                                                                    str, Any]]]:
+    """
+    Applies conformance checking against a DCR model.
+
+    inspired by github implementation:
+    https://github.com/fau-is/cc-dcr/tree/master
+
+    :param log: event log
+    :param dcr_graph: DCR graph
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :param return_diagnostics_dataframe: if possible, returns a dataframe with the diagnostics (instead of the usual output)
+    :rtype: ``List[Dict[str, Any]]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("C:/receipt.xes")
+        dcr_graph = pm4py.discover_dcr(log)
+        conf_result = pm4py.conformance_dcr(log, dcr_graph)
+    """
+    if type(log) not in [pd.DataFrame, EventLog]: raise Exception(
+        "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key,
+                                       case_id_key=case_key)
+
+    if return_diagnostics_dataframe:
+        log = convert_to_event_log(log, case_id_key=case_key)
+        case_key = None
+
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_key, role_key=role_key)
+
+    from pm4py.algo.conformance.dcr import algorithm as dcr_conformance
+    result = dcr_conformance.apply(log, dcr_graph, parameters=properties)
+
+    if return_diagnostics_dataframe:
+        return dcr_conformance.get_diagnostics_dataframe(log, result, parameters=properties)
 
     return result
