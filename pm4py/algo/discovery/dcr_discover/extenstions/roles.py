@@ -1,8 +1,8 @@
 # if the same org:resource(s) are associated with the same events than this is a role.
 # The role is associated to a group of (org:resources) and a subset of events (concept:name)
-
+import pm4py
 from pm4py.util import exec_utils, constants, xes_constants
-
+import pandas as pd
 def apply(log, dcr, parameters):
     role_mine = Role_Mining()
     return role_mine.mine(log, dcr, parameters)
@@ -10,35 +10,20 @@ def apply(log, dcr, parameters):
 
 class Role_Mining:
     def find_roles_from_log(self, dcr, log, activity_key, role_key, resource_key):
-        dcr['roles'] = set(log[role_key])
-        # extracts the union of org:resource, org:role, and activity
-        tuple_df = log[[role_key, resource_key, activity_key]].apply(tuple, axis=1).copy()
-        # store tuple of org:resource and activity together with associated role as key
-        for e in tuple_df:
-            if e[0] not in dcr.__rolesAssignment:
-                d = set()
-                d.add(e[1:])
-                dcr.__rolesAssignment[e[0]] = d
-            else:
-                dcr.__rolesAssignment[e[0]].add(e)
+        activities = pm4py.project_on_event_attribute(log, activity_key)
+        resources = pm4py.project_on_event_attribute(log, resource_key)
+        roles = pm4py.project_on_event_attribute(log, role_key)
+        for i,j,k in zip(activities,resources,roles):
+            for activity,resource,role in zip(i,j,k):
+                # if resource is nan, the there is no role assignment
+                if role == role:
+                    dcr['roleAssignment'][role].add((resource, activity))
 
-    def determine_roles_from_resource(self, dcr, log):
-        roles = set()
-        roleAssign = {}
-        # we import the role miner, to perform this task
-        from pm4py.algo.organizational_mining.roles.algorithm import apply as role_alg
-        mined_roles = role_alg(log)
-        for i in range(len(mined_roles)):
-            role = "role" + str(i)
-            roles.add(role)
-            for act in mined_roles[i].activities:
-                for res in mined_roles[i].originator_importance.keys():
-                    if role not in roleAssign.keys():
-                        roleAssign[role] = {(act, res)}
-                    else:
-                        roleAssign[role].add((act, res))
-        dcr['roles'] = roles
-        dcr['roleAssignment'] = roleAssign
+    def determine_roles_from_resource(self, dcr, log, activity_key, resource_key):
+        roles = pm4py.discover_organizational_roles(log,activity_key=activity_key,resource_key=resource_key)
+        for i in roles:
+            for resource in set(i.originator_importance):
+                dcr['roleAssignment'][resource] = dcr['roleAssignment'][resource].union(set(i.activities))
 
 
     def mine(self, log, dcr, parameters):
@@ -49,29 +34,39 @@ class Role_Mining:
                                                   xes_constants.DEFAULT_RESOURCE_KEY)
         role_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_ROLE_KEY, parameters,
                                               xes_constants.DEFAULT_ROLE_KEY)
+
+
         # check if there is organizational for resources performing an event
         dcr['principals'] = set()
         dcr['roles'] = set()
         dcr['roleAssignment'] = {}
         # raises exception, if no resources of roles are provided
-        if (resource_key not in log.keys()) and (role_key not in log.keys()):
-            raise Exception(
-                "no resources or roles in event log, to allow for process of roles to event log"
-            )
+        keys = pm4py.get_event_attributes(log)
+
+
+        if (resource_key not in keys) and (role_key not in keys):
+            return dcr
 
         #load resources if provided
-        if resource_key in log.keys():
-            dcr['principals'] = set(log[resource_key])
+        if resource_key in keys:
+            dcr['principals'] = set(pm4py.get_event_attribute_values(log,resource_key))
 
         #if no resources are provided, map roles to activities
-        if (resource_key not in log.keys()) and (role_key in log.keys()):
-            dcr['roles'] = set(log[role_key]).copy
+        if role_key in keys:
+            dcr['roles'] = set(pm4py.get_event_attribute_values(log,role_key))
+            for i in dcr['roles']:
+                dcr['roleAssignment'][i] = set()
+        else:
+            dcr['roles'] = dcr['principals']
+            for i in dcr['roles']:
+                dcr['roleAssignment'][i] = set()
 
-        #if both roles and resources are provided
-        elif (resource_key in log.keys()) and (role_key in log.keys()):
+        # if both roles and resources are provided
+        if (resource_key in keys) and (role_key in keys):
             self.find_roles_from_log(dcr, log, activity_key, role_key, resource_key)
 
-        #if resources are provided, but no roles
-        else:
-            self.determine_roles_from_resource(dcr, log)
+        # if resources are provided, but no roles
+        elif (role_key not in keys) and (resource_key in keys):
+            self.determine_roles_from_resource(dcr, log, activity_key, resource_key)
+
         return dcr
