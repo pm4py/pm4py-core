@@ -14,8 +14,13 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.util import constants
+from pm4py.util import constants, exec_utils
 from io import StringIO
+from enum import Enum
+
+
+class Parameters(Enum):
+    ENCODING = "encoding"
 
 
 def import_dfg_from_rows(rows, parameters=None):
@@ -111,7 +116,9 @@ def apply(file_path, parameters=None):
     if parameters is None:
         parameters = {}
 
-    F = open(file_path, "r")
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
+    F = open(file_path, "r", encoding=encoding)
     content = F.readlines()
     F.close()
 
@@ -141,7 +148,9 @@ def import_dfg_from_string(dfg_string, parameters=None):
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, constants.DEFAULT_ENCODING)
+
     if type(dfg_string) is bytes:
-        dfg_string = dfg_string.decode(constants.DEFAULT_ENCODING)
+        dfg_string = dfg_string.decode(encoding)
 
     return import_dfg_from_rows(StringIO(dfg_string).readlines(), parameters=parameters)

@@ -7,7 +7,7 @@ from pm4py.objects.petri_net.exporter import exporter as pnml_exporter
 from pm4py.objects.conversion.dcr.variants.to_petri_net_submodules import exceptional_cases, single_relations, preoptimizer, utils
 
 
-class Dcr2PetriTransport(object):
+class Dcr2PetriNet(object):
 
     def __init__(self, preoptimize=True, postoptimize=True, map_unexecutable_events=False, debug=False) -> None:
         self.in_t_types = ['event', 'init', 'initpend', 'pend']
@@ -108,9 +108,10 @@ class Dcr2PetriTransport(object):
         if self.reachability_timeout:
             max_elab_time = self.reachability_timeout
         trans_sys = reachability_graph.construct_reachability_graph(tapn, m, use_trans_name=True,
-                                                                    parameters={
-                                                                        'petri_semantics': tapn_semantics.TransportInvariantSemantics(),
-                                                                        'max_elab_time': max_elab_time})
+                        parameters={
+                            'petri_semantics': tapn_semantics.TransportInvariantSemantics(),
+                            'max_elab_time': max_elab_time
+                        })
 
         fired_transitions = set()
 
@@ -132,41 +133,41 @@ class Dcr2PetriTransport(object):
         parallel_places = set()
         places_to_rename = {}
         ps_to_remove = tapn.places.difference(changed_places)
-        if G:
-            for event in G['events']:
-                for type, event_place in self.helper_struct[event]['places'].items():
-                    for type_prime, event_place_prime in self.helper_struct[event]['places'].items():
-                        if event_place and event_place_prime and event_place.name != event_place_prime.name and \
-                                event_place not in parallel_places:
-                            is_parallel = False
-                            ep_ins = event_place.in_arcs
-                            epp_ins = event_place_prime.in_arcs
-                            ep_outs = event_place.out_arcs
-                            epp_outs = event_place_prime.out_arcs
-                            if len(ep_ins) == len(epp_ins) and len(ep_outs) == len(epp_outs):
-                                ep_sources = set()
-                                epp_sources = set()
-                                for ep_in in ep_ins:
-                                    ep_sources.add(ep_in.source)
-                                for epp_in in epp_ins:
-                                    epp_sources.add(epp_in.source)
-                                ep_targets = set()
-                                epp_targets = set()
-                                for ep_out in ep_outs:
-                                    ep_targets.add(ep_out.target)
-                                for epp_out in epp_outs:
-                                    epp_targets.add(epp_out.target)
-                                if ep_sources == epp_sources and ep_targets == epp_targets:
-                                    is_parallel = True
-                            if is_parallel and m[event_place] == m[event_place_prime]:
-                                parallel_places.add(event_place_prime)
-                                places_to_rename[event_place] = f'{type_prime}_{event_place.name}'
+        # if G:
+        #     for event in G['events']:
+        #         for type, event_place in self.helper_struct[event]['places'].items():
+        #             for type_prime, event_place_prime in self.helper_struct[event]['places'].items():
+        #                 if event_place and event_place_prime and event_place.name != event_place_prime.name and \
+        #                         event_place not in parallel_places:
+        #                     is_parallel = False
+        #                     ep_ins = event_place.in_arcs
+        #                     epp_ins = event_place_prime.in_arcs
+        #                     ep_outs = event_place.out_arcs
+        #                     epp_outs = event_place_prime.out_arcs
+        #                     if len(ep_ins) == len(epp_ins) and len(ep_outs) == len(epp_outs):
+        #                         ep_sources = set()
+        #                         epp_sources = set()
+        #                         for ep_in in ep_ins:
+        #                             ep_sources.add(ep_in.source)
+        #                         for epp_in in epp_ins:
+        #                             epp_sources.add(epp_in.source)
+        #                         ep_targets = set()
+        #                         epp_targets = set()
+        #                         for ep_out in ep_outs:
+        #                             ep_targets.add(ep_out.target)
+        #                         for epp_out in epp_outs:
+        #                             epp_targets.add(epp_out.target)
+        #                         if ep_sources == epp_sources and ep_targets == epp_targets:
+        #                             is_parallel = True
+        #                     if is_parallel and m[event_place] == m[event_place_prime]:
+        #                         parallel_places.add(event_place_prime)
+        #                         places_to_rename[event_place] = f'{type_prime}_{event_place.name}'
         ps_to_remove = ps_to_remove.union(parallel_places)
         for p in ps_to_remove:
             tapn = pn_utils.remove_place(tapn, p)
 
-        for p, name in places_to_rename.items():
-            p.name = name
+        # for p, name in places_to_rename.items():
+        #     p.name = name
 
         return tapn
 
@@ -197,6 +198,7 @@ class Dcr2PetriTransport(object):
                 G = self.preoptimizer.remove_un_executable_events_from_dcr(G)
 
         # including the handling of exception cases from the induction step
+        G_old = deepcopy(G)
         G = self.mapping_exceptions.filter_exceptional_cases(G)
         if self.preoptimize:
             if self.print_steps:
@@ -208,6 +210,7 @@ class Dcr2PetriTransport(object):
             print('[i] mapping events')
         for event in G['events']:
             tapn, m = self.create_event_pattern(event, G, tapn, m)
+
         if self.debug:
             self.export_debug_net(tapn, m, tapn_path, f'{induction_step}event', pn_export_format)
             induction_step += 1
@@ -284,21 +287,75 @@ def run_specific_dcr():
     here you can write your own graph and run it
     '''
     dcr = {
-        'events': {'A', 'B'},
-        'conditionsFor': {'A': {'B'}},
+        'events': {'Triage', 'RelA', 'Reg', 'RelB','CRP'},
+        'conditionsFor': {'RelA': {'Triage','Reg','RelB'}, 'RelB': {'CRP'}},
         'milestonesFor': {},
         'responseTo': {},
         'noResponseTo': {},
         'includesTo': {},
-        'excludesTo': {'A': {'B'}},
-        'conditionsForDelays': {'A': {'B': 2}},
-        'responseToDeadlines': {'C': {'B': 5}, 'A': {'B': 7}},
+        'excludesTo': {'Reg': {'Reg'},'RelB': {'RelB'}, 'RelA': {'RelA', 'RelB', 'Triage'}},
         'marking': {'executed': set(),
-                    'included': {'A', 'B'},
+                    'included': {'Triage', 'RelA', 'Reg', 'RelB','CRP'},
                     'pending': set()
                     }
     }
 
-    d2p = Dcr2PetriTransport(preoptimize=True, postoptimize=True, map_unexecutable_events=False)
+    d2p = Dcr2PetriNet(preoptimize=True, postoptimize=True, map_unexecutable_events=False)
     print('[i] dcr')
-    tapn, m = d2p.dcr2tapn(dcr, tapn_path="../models/one_petri.tapn")
+    tapn, m = d2p.dcr2tapn(dcr, tapn_path="/home/vco/Projects/pm4py-dcr/models/one_petri_test.tapn")
+
+def clean_input(dcr, white_space_replacement=None):
+    if white_space_replacement is None:
+        white_space_replacement = ''
+    # remove all space characters and put conditions and milestones in the correct order (according to the actual arrows)
+    for k, v in deepcopy(dcr).items():
+        if k in ['includesTo', 'excludesTo', 'conditionsFor', 'responseTo', 'milestonesFor', 'noResponseTo']:
+            v_new = {}
+            for k2, v2 in v.items():
+                v_new[k2.strip().replace(' ', white_space_replacement)] = set([v3.strip().replace(' ', white_space_replacement) for v3 in v2])
+            dcr[k] = v_new
+        elif k in ['conditionsForDelays', 'responseToDeadlines']:
+            v_new = {}
+            for k2, v2 in v.items():
+                v_new[k2.strip().replace(' ', white_space_replacement)] = set([(v3.strip().replace(' ', white_space_replacement),d) for (v3,d) in v2])
+            dcr[k] = v_new
+        elif k == 'marking':
+            for k2 in ['executed', 'included', 'pending']:
+                new_v = set([v2.strip().replace(' ', white_space_replacement) for v2 in dcr[k][k2]])
+                dcr[k][k2] = new_v
+        elif k in ['subprocesses', 'nestings', 'labelMapping', 'roleAssignments', 'readRoleAssignments']:
+            v_new = {}
+            for k2, v2 in v.items():
+                v_new[k2.strip().replace(' ', white_space_replacement)] = set([v3.strip().replace(' ', white_space_replacement) for v3 in v2])
+            dcr[k] = v_new
+        else:
+            new_v = set([v2.strip().replace(' ', white_space_replacement) for v2 in dcr[k]])
+            dcr[k] = new_v
+    return dcr
+
+if __name__ == "__main__":
+    # run_specific_dcr()
+    # import pm4py
+    # from pm4py.algo.discovery.dcr_discover import algorithm as dcr_discover
+    from pm4py.objects.dcr.importer import importer as dcr_importer
+    #
+    # # sepsis_log_path = '/home/vco/Datasets/Sepsis Cases - Event Log.xes'
+    # # sepsis = pm4py.read_xes(sepsis_log_path)
+    # # dcr_sepsis, _ = dcr_discover.apply(sepsis)
+    # # dcr_sepsis = clean_input(dcr_sepsis)
+    # # dcr_sepsis_only_conditions = deepcopy(dcr_sepsis)
+    # # dcr_sepsis_only_conditions['excludesTo'] = {}
+    # # dcr_sepsis_only_excludes = deepcopy(dcr_sepsis)
+    # # dcr_sepsis_only_excludes['conditionsFor'] = {}
+    path = '/home/vco/Projects/pm4py-dcr/models/'
+    dcr_sepsis_exceptions = dcr_importer.apply(path+'sepsis_relA.xml')
+    d2p = Dcr2PetriNet(preoptimize=True, postoptimize=False, map_unexecutable_events=False, debug=False)
+    file_name = 'sepsis_relA.tapn'
+    d2p.print_steps = True
+    tapn = d2p.dcr2tapn(dcr_sepsis_exceptions, path+file_name)
+    # # d2p = Dcr2PetriNet(preoptimize=True, postoptimize=True, map_unexecutable_events=False, debug=False)
+    # # file_name = 'sepsis_only_conditions.tapn'
+    # # tapn = d2p.dcr2tapn(dcr_sepsis_only_conditions, path+file_name)
+    # # d2p = Dcr2PetriNet(preoptimize=True, postoptimize=True, map_unexecutable_events=False, debug=False)
+    # # file_name = 'sepsis_only_excludes.tapn'
+    # # tapn = d2p.dcr2tapn(dcr_sepsis_only_excludes, path+file_name)

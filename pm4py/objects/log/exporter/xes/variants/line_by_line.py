@@ -211,7 +211,7 @@ def export_log_line_by_line(log, fp_obj, encoding, parameters=None):
     if parameters is None:
         parameters = {}
 
-    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, constants.SHOW_PROGRESS_BAR)
 
     progress = None
     if importlib.util.find_spec("tqdm") and show_progress_bar:

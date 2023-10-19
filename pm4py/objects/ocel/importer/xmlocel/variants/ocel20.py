@@ -73,7 +73,11 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     date_parser = dt_parsing.parser.get()
 
     parser = etree.XMLParser(remove_comments=True, encoding=encoding)
-    tree = objectify.parse(file_path, parser=parser)
+
+    F = open(file_path, "rb")
+    tree = objectify.parse(F, parser=parser)
+    F.close()
+
     root = tree.getroot()
 
     object_type_attributes = {}
@@ -127,7 +131,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                             except:
                                 attribute_type = "string"
                             attribute_text = parse_xml(attribute.text, attribute_type, date_parser)
-                            if attribute_time == "0" or attribute_time == "1970-01-01T00:00:00":
+                            if attribute_time == "0" or attribute_time.startswith("1970-01-01T00:00:00"):
                                 obj_dict[attribute_name] = attribute_text
                             else:
                                 attribute_time = date_parser.apply(attribute_time)

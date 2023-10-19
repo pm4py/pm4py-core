@@ -17,13 +17,15 @@
 from enum import Enum
 from typing import Optional, Dict, Any
 
-from pm4py.objects.ocel.exporter.jsonocel.variants import classic
+from pm4py.objects.ocel.exporter.jsonocel.variants import classic, ocel20, ocel20_standard
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import exec_utils
 
 
 class Variants(Enum):
     CLASSIC = classic
+    OCEL20 = ocel20
+    OCEL20_STANDARD = ocel20_standard
 
 
 def apply(ocel: OCEL, target_path: str, variant=Variants.CLASSIC, parameters: Optional[Dict[Any, Any]] = None):

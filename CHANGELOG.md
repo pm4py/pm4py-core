@@ -1,5 +1,95 @@
 # Changelog of pm4py
 
+## pm4py 2.7.8.1 (2023.10.12)
+
+### Added
+
+### Changed
+* b3d88dcfa6553beae4b289191d6aa29020daeeb2
+  * refactor pm4py.llm.abstract_log_features (split in two methods)
+* b9f74be6ffb68ac1b8c32d6c2cfb3cb3ae5d173c
+  * playout variant selection in the simplified interface
+* 5aedd3048a9780816f37ad7f89c65a3e56b5229c
+  * support for log2log alignments in the simplified interface
+* b254210f09d1844dee11b9ccd262baf62779edca
+  * return legacy log option in pm4py.parse_event_log_string
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+* 9717be4fc6be34c9278ddd7f2d39a0cb8efc4ec2
+  * verbose option configuration
+* 671688effb5ccf01d5653726de6725810333af0a
+  * support to OCEL 2.0 JSON specification
+
+
+---
+
+
+## pm4py 2.7.8 (2023.10.06)
+
+### Added
+
+### Changed
+* 634b6a5ac1b40963baa76a42a10c3c22176aaf84
+  f6993293d665e2f7b69c27ce0f09d2df4e889b0b
+  f0240670292086cb3b6fe523b1646dcfa4c71ddc
+  * Refactoring OCEL import/export
+* c1379120480539f5578a52ce6d76effb4819b3c6
+  * centralized enabling/disabling of TQDM progress bar + Disabling progress bar in tests
+* 08c2c16d17d2cbe26224662032a298f6b0a409a9
+  * avoiding the necessity of re-creating setup.py when new packages are added to pm4py
+* a7dc86f7fd821b5dd229ff404b5afa3b5ad919b4
+  * disable IM fallthroughs in the simplified interface
+
+### Deprecated
+
+### Fixed
+* 063a6d64bae61f1b54444e0b34ec0926b504aa34
+  * properly closing file objects in different pm4py importers/exporters (XES, PNML, PTML, ...)
+* 35f13b65a0523f889748679fbe90cf2d041e1038
+  * fixing XES importing warnings in obtaining the resulting pd.DataFrame
+* ef548ef18f514ad6ad0a32a104f380b322ab72e7
+  * fixing test/examples execution
+* d1b39bde1b14f160c0fff42bdc6b172bb0ae760e
+	* fix Petri net serialization
+* e51c5e1e084a7fd7d13cb8d1381f868435762cca
+	* fixing TBR diagnostics when the methods are called on pd.DataFrame
+
+### Removed
+
+### Other
+* 49a472d002890b35e3f59ef93fd75f2e35455715
+	* storing stable pm4py Python requirements for the old Python 3.8
+
+---
+
+
+## pm4py 2.7.7 (2023.09.22)
+
+### Added
+* 056d9e5714e2ad0a21fbcac0725ea4fb7aae260c
+  * encoding specification in pm4py.read and pm4py.write classes
+
+### Changed
+* f81d62ad8dc8a76aabdf90763a8bd8b8e2ea2aa9
+  * fixed compatibility with Python 3.12 (removed deprecation warnings)
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
 
 ## pm4py 2.7.6 (2023.08.28)
 

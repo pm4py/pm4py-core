@@ -53,7 +53,11 @@ def apply(path, parameters=None):
     encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, None)
 
     parser = etree.XMLParser(remove_comments=True, encoding=encoding)
-    xml_tree = objectify.parse(path, parser=parser)
+
+    F = open(path, "rb")
+    xml_tree = objectify.parse(F, parser=parser)
+    F.close()
+
     root = xml_tree.getroot()
 
     return import_tree_from_xml_object(root, parameters=parameters)

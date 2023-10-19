@@ -231,7 +231,7 @@ def apply_variant(variant, tree, parameters=None):
 
 
 def _construct_progress_bar(progress_length, parameters):
-    if exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True) and importlib.util.find_spec("tqdm"):
+    if exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, constants.SHOW_PROGRESS_BAR) and importlib.util.find_spec("tqdm"):
         if progress_length > 1:
             from tqdm.auto import tqdm
             return tqdm(total=progress_length, desc="aligning log, completed variants :: ")

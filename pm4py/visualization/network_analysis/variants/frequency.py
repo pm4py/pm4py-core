@@ -60,6 +60,8 @@ def apply(network_analysis_edges: Dict[Tuple[str, str], Dict[str, int]], paramet
     edge_threshold = exec_utils.get_param_value(Parameters.EDGE_THRESHOLD, parameters, 1)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
+
     viz = Digraph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     viz.attr('node', shape='ellipse', fixedsize='false')
 

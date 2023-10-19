@@ -175,7 +175,7 @@ def apply_log(log, list_nets, parameters=None):
     if parameters is None:
         parameters = {}
 
-    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, constants.SHOW_PROGRESS_BAR)
     icache = exec_utils.get_param_value(Parameters.ICACHE, parameters, dict())
     mcache = exec_utils.get_param_value(Parameters.MCACHE, parameters, dict())
 

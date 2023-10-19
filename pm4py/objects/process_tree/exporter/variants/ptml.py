@@ -187,6 +187,8 @@ def apply(tree, output_path, parameters=None):
     tree = export_ptree_tree(tree, parameters=parameters)
 
     # exports the tree to a file
-    tree.write(output_path, pretty_print=True, xml_declaration=True, encoding=encoding)
+    F = open(output_path, "wb")
+    tree.write(F, pretty_print=True, xml_declaration=True, encoding=encoding)
+    F.close()
 
     return tree

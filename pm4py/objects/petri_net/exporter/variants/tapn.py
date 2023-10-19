@@ -166,6 +166,7 @@ def export_petri_tree(petrinet, marking, final_marking=None, export_prom5=False,
                 arc_type = "tapnInhibitor"
                 arc_el.set("inscription","[0,inf)")
             elif arc_type == petri_properties.TRANSPORT_ARC:
+                arc_type = "transport"
                 age_min = "0"
                 age_max = "inf"
                 t_idx = "1"
@@ -458,7 +459,7 @@ def export_net(petrinet, marking, output_filename, final_marking=None, export_pr
 
     # gets the XML tree
     tree = export_petri_tree(petrinet, marking, final_marking=final_marking,
-                             export_prom5=export_prom5)
+                             export_prom5=export_prom5,parameters=parameters)
 
     # write the tree to a file
     tree.write(output_filename, pretty_print=True, xml_declaration=True, encoding='utf-8')
