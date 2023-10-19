@@ -1,7 +1,6 @@
 from enum import Enum
 #from collections import Counter
-#from typing import Tuple
-
+from typing import Tuple, Generic, TypeVar
 #import numpy as np
 
 class Relations(Enum):
@@ -67,8 +66,20 @@ class Marking:
         yield 'included', self.__included
         yield 'pending', self.__pending
 
+    def __getitem__(self, item):
+        classname = self.__class__.__name__
+        temp_dict = {}
+        for i in self.__dict__.keys():
+            if classname not in i:
+                newname = i.removeprefix("_" + classname + "__")
+                temp_dict[newname] = self.__dict__[i]
+        if item in temp_dict:
+            return temp_dict[item]
+        else:
+            return {}
 
-class DCR_Graph:
+
+class DCR_Graph(object):
     """
     This implementation is based on the thoery of this Paper:
     Author: Thomas T. Hildebrandt and Raghava Rao Mukkamala,
@@ -88,7 +99,7 @@ class DCR_Graph:
         self.__marking = Marking(template['marking']['executed'], template['marking']['included'],
                                     template['marking']['pending'])
 
-    # @property functions to extraxt values used for data manipulation and testing
+    # @property functions to extract values used for data manipulation and testing
     @property
     def events(self):
         return self.__events
@@ -146,6 +157,26 @@ class DCR_Graph:
     def __eq__(self, other):
         return self.conditionsFor == other.conditionsFor and self.responseTo == other.responseTo and self.includesTo == other.includesTo and self.excludesTo == other.excludesTo
 
+    def __getitem__(self, item):
+        classname = self.__class__.__name__
+        #set containing names of superclass if exist
+        superClassName = set()
+        if self.__class__.__bases__ != {'object'}:
+            for base in self.__class__.__bases__:
+                superClassName.add(base.__name__)
+        temp_dict = {}
+        for i in self.__dict__.keys():
+            if classname not in i:
+                for j in superClassName:
+                    newname = i.removeprefix("_" + j + "__")
+                    temp_dict[newname] = self.__dict__[i]
+            else:
+                newname = i.removeprefix("_" + classname + "__")
+                temp_dict[newname] = self.__dict__[i]
+        if item in temp_dict:
+            return temp_dict[item]
+        else:
+            return {}
 """
 class Marking(object):
     """
