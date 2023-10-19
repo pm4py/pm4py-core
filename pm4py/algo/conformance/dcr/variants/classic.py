@@ -97,7 +97,7 @@ class RuleBasedConformance:
         #the relations between activities
         total_num_constraints = self.__no_of_rules(dcr)
         #load in the parameter to be used
-        # todo, figure out what to do with roles
+
         activity_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
         case_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_CASEID_KEY, parameters, constants.CASE_CONCEPT_NAME)
         #if case of pandas dataframe, convert it to a list of traces
