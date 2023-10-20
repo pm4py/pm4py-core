@@ -91,6 +91,7 @@ Among *procedural process models*, ``pm4py`` currently supports:
   * :meth:`pm4py.discovery.discover_process_tree_inductive`; discovers a *process tree* using the Inductive Miner algorithm.
   * :meth:`pm4py.discovery.discover_bpmn_inductive`; discovers a *BPMN model* using the Inductive Miner algorithm.
   * :meth:`pm4py.discovery.discover_heuristics_net`; discovers an *heuristics net* using the Heuristics Miner algorithm.
+  * :meth:`pm4py.discovery.discover_footprints`; discovers the *footprints matrix* of the log or the model.
 
 Among *declarative process models*, ``pm4py`` currently supports:
 
@@ -106,10 +107,13 @@ Among procedural process models, ``pm4py`` currently supports:
 
   * :meth:`pm4py.conformance.conformance_diagnostics_token_based_replay`; token-based replay between the event log and a *Petri net*.
   * :meth:`pm4py.conformance.conformance_diagnostics_alignments`; alignment-based replay between the event log and a *Petri net*.
+  * :meth:`pm4py.conformance.conformance_diagnostics_footprints`; footprints-based conformance diagnostics.
   * :meth:`pm4py.conformance.fitness_token_based_replay`; evaluation of the fitness between an event log and a *Petri net* using token-based replay.
   * :meth:`pm4py.conformance.fitness_alignments`; evaluation of the fitness between an event log and a *Petri net* using alignments.
+  * :meth:`pm4py.conformance.fitness_footprints`; evaluation of the fitness based on footprints.
   * :meth:`pm4py.conformance.precision_token_based_replay`; evaluation of the precision between an event log and a *Petri net* using token-based replay.
   * :meth:`pm4py.conformance.precision_alignments`; evaluation of the precision between an event log and a *Petri net* using alignments.
+  * :meth:`pm4py.conformance.precision_footprints`; evaluation of the precision based on footprints.
   * :meth:`pm4py.conformance.replay_prefix_tbr`; replays a prefix (list of activities) on a given *Petri net*, using Token-Based Replay.
 
 Among declarative process models, ``pm4py`` currently supports:
@@ -181,6 +185,8 @@ Different statistics that could be computed on top of event logs are proposed, i
   * :meth:`pm4py.stats.get_event_attribute_values`; gets the values of an *attribute at the event level* of the event log.
   * :meth:`pm4py.stats.get_trace_attribute_values`; gets the values of an *attribute at the trace level* of the event log.
   * :meth:`pm4py.stats.get_variants`; gets the *variants* of the event log.
+  * :meth:`pm4py.stats.split_by_process_variant`; splits an event log into sub-dataframes for each process variant.
+  * :meth:`pm4py.stats.get_variants_paths_duration`; method that associates to a log object a Pandas dataframe aggregated by variants and positions (inside the variant).
   * :meth:`pm4py.stats.get_case_arrival_average`; gets the *average case arrival rate* from the event log.
   * :meth:`pm4py.stats.get_cycle_time`; gets the *cycle time* from the event log.
   * :meth:`pm4py.stats.get_all_case_durations`; gets the list of *case durations* for the cases of the event log.
@@ -452,10 +458,13 @@ Overall List of Methods
    pm4py.conformance
    pm4py.conformance.conformance_diagnostics_token_based_replay
    pm4py.conformance.conformance_diagnostics_alignments
+   pm4py.conformance.conformance_diagnostics_footprints
    pm4py.conformance.fitness_token_based_replay
    pm4py.conformance.fitness_alignments
+   pm4py.conformance.fitness_footprints
    pm4py.conformance.precision_token_based_replay
    pm4py.conformance.precision_alignments
+   pm4py.conformance.precision_footprints
    pm4py.conformance.replay_prefix_tbr
    pm4py.conformance.conformance_temporal_profile
    pm4py.conformance.conformance_declare
@@ -510,6 +519,8 @@ Overall List of Methods
    pm4py.stats.get_trace_attribute_values
    pm4py.stats.get_variants
    pm4py.stats.get_variants_as_tuples
+   pm4py.stats.split_by_process_variant
+   pm4py.stats.get_variants_paths_duration
    pm4py.stats.get_minimum_self_distances
    pm4py.stats.get_minimum_self_distance_witnesses
    pm4py.stats.get_case_arrival_average
