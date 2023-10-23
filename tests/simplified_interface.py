@@ -13,7 +13,7 @@ from pm4py.objects.log.importer.xes import importer as xes_importer
 class SimplifiedInterfaceTest(unittest.TestCase):
     def test_csv(self):
         df = pd.read_csv("input_data/running-example.csv")
-        df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True)
+        df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True, format="ISO8601")
         df["case:concept:name"] = df["case:concept:name"].astype("string")
 
         log2 = pm4py.convert_to_event_log(df)
@@ -157,7 +157,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_statistics_df(self):
         df = pd.read_csv("input_data/running-example-transformed.csv")
-        df["Timestamp"] = pd.to_datetime(df["Timestamp"], utc="True")
+        df["Timestamp"] = pd.to_datetime(df["Timestamp"], utc="True", format="ISO8601")
         df["CaseID"] = df["CaseID"].astype("string")
 
         pm4py.get_start_activities(df, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
@@ -190,7 +190,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_new_statistics_df(self):
         df = pd.read_csv("input_data/running-example-transformed.csv")
-        df["Timestamp"] = pd.to_datetime(df["Timestamp"], utc=True)
+        df["Timestamp"] = pd.to_datetime(df["Timestamp"], utc=True, format="ISO8601")
         df["CaseID"] = df["CaseID"].astype("string")
 
         pm4py.discover_eventually_follows_graph(df, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
@@ -204,7 +204,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_serialization_dataframe(self):
         df = pd.read_csv("input_data/running-example.csv")
-        df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True)
+        df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True, format="ISO8601")
         ser = pm4py.serialize(df)
         df2 = pm4py.deserialize(ser)
 
@@ -352,7 +352,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_rebase(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         dataframe = pm4py.rebase(dataframe, activity_key="Activity", case_id="CaseID", timestamp_key="Timestamp")
@@ -375,7 +375,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_sample_cases_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.sample_cases(dataframe, 2, case_id_key="CaseID")
@@ -387,7 +387,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_sample_events_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.sample_events(dataframe, 2)
@@ -407,7 +407,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_artificial_start_end_dataframe(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.insert_artificial_start_end(dataframe, activity_key="Activity", timestamp_key="Timestamp", case_id_key="CaseID")
@@ -435,7 +435,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_split_train_test_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.split_train_test(dataframe, train_percentage=0.6, case_id_key="CaseID")
@@ -447,7 +447,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_get_prefixes_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.get_prefixes_from_log(dataframe, 3, case_id_key="CaseID")
@@ -463,7 +463,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_hw_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_handover_of_work_network(dataframe, resource_key="Resource", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -475,7 +475,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_wt_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_working_together_network(dataframe, resource_key="Resource", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -487,7 +487,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_act_based_res_sim_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_activity_based_resource_similarity(dataframe, activity_key="Activity", resource_key="Resource", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -499,7 +499,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_subcontracting_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_subcontracting_network(dataframe, resource_key="Resource", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -511,7 +511,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_roles_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_organizational_roles(dataframe, activity_key="Activity", resource_key="Resource", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -523,7 +523,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_network_analysis_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_network_analysis(dataframe, "CaseID", "CaseID", "Resource", "Resource", "Activity", sorting_column="Timestamp", timestamp_column="Timestamp")
@@ -535,7 +535,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_discover_batches_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_batches(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp", resource_key="Resource")
@@ -548,7 +548,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_log_skeleton_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         model = pm4py.discover_log_skeleton(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -562,7 +562,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_temporal_profile_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         model = pm4py.discover_temporal_profile(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -581,7 +581,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         pm4py.ocel_flattening(ocel, "order")
     def test_stats_var_tuples_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.get_variants_as_tuples(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -593,7 +593,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_stats_cycle_time_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.get_cycle_time(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -605,7 +605,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_stats_case_durations_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.get_all_case_durations(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -617,7 +617,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_stats_case_duration_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.get_case_duration(dataframe, "1", activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -629,7 +629,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_stats_act_pos_summary_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.get_activity_position_summary(dataframe, "check ticket", activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -653,7 +653,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_four_eyes_principle_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_four_eyes_principle(dataframe, "register request", "check ticket", activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp", resource_key="Resource")
@@ -665,7 +665,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_rel_occ_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_log_relative_occurrence_event_attribute(dataframe, 0.8, attribute_key="Activity", level="cases", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -677,7 +677,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_start_activities_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_start_activities(dataframe, ["register request"], activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -689,7 +689,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_end_activities_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_end_activities(dataframe, ["pay compensation"], activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -701,7 +701,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_eve_attr_values_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_event_attribute_values(dataframe, "Activity", ["register request", "pay compensation", "reject request"], case_id_key="CaseID")
@@ -718,7 +718,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_variant_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_variants(dataframe, [('register request', 'examine casually', 'check ticket', 'decide', 'reinitiate request', 'examine thoroughly', 'check ticket', 'decide', 'pay compensation')], activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -730,7 +730,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_dfg_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_directly_follows_relation(dataframe, [("register request", "check ticket")], activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -742,7 +742,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_efg_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_eventually_follows_relation(dataframe, [("register request", "check ticket")], activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -754,7 +754,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_time_range_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_time_range(dataframe, "2009-01-01 01:00:00", "2011-01-01 01:00:00", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -766,7 +766,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_between_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_between(dataframe, "check ticket", "decide", activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -778,7 +778,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_case_size_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_case_size(dataframe, 10, 20, case_id_key="CaseID")
@@ -790,7 +790,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_case_performance_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_case_performance(dataframe, 86400, 8640000, case_id_key="CaseID", timestamp_key="Timestamp")
@@ -802,7 +802,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_act_rework_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_activities_rework(dataframe, "check ticket", activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -814,7 +814,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_paths_perf_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_paths_performance(dataframe, ("register request", "check ticket"), 86400, 864000, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -826,7 +826,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_vars_top_k_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_variants_top_k(dataframe, 1, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
