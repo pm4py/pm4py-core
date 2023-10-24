@@ -32,12 +32,11 @@ dcr_template = {
     'nestings': {},
     'labels': set(),
 # <<<<<<< HEAD
-    'labelMapping': {}
-# =======
-#     'labelMapping': {},
-#     'roles': set(),
-#     'roleAssignments': {},
-#     'readRoleAssignments': {}
+    'labelMapping': {},
+    'roles': set(),
+    'principals': set(),
+    'roleAssignments': {},
+    'readRoleAssignments': {}
 # >>>>>>> 40a38596ee1706d65f38e531c20db84f2ffdedba
 }
 
@@ -66,13 +65,18 @@ class Marking:
     def pending(self):
         return self.__pending
 
+    def reset(self, events):
+        self.__executed = set()
+        self.__included = events
+        self.__pending = set()
+
     # built-in functions for printing a visual string representation
     def __str__(self) -> str:
         return f'( {self.__executed},{self.__included},{self.__pending})'
     def __iter__(self):
-        yield 'executed', self.__executed
-        yield 'included', self.__included
-        yield 'pending', self.__pending
+        yield self.__executed
+        yield self.__included
+        yield self.__pending
 
     def __getitem__(self, item):
         classname = self.__class__.__name__
@@ -97,8 +101,7 @@ class DCR_Graph(object):
 
     # initiate the objects: contains events ID, activity, the 4 relations, markings, roles and principals
     def __init__(self, template):
-        # events and logs are essentially the same, and events was used as an identification for activities
-        # in essence, activities were directly mined, but it was based on the event idenfication.
+        # DisCoveR uses bijective labelling, each event has one label
         self.__events = set(template['events'])
         self.__conditionsFor = template['conditionsFor']
         self.__responseTo = template['responseTo']
@@ -106,6 +109,8 @@ class DCR_Graph(object):
         self.__excludesTo = template['excludesTo']
         self.__marking = Marking(template['marking']['executed'], template['marking']['included'],
                                     template['marking']['pending'])
+        self.__labels = set(template['labels'])
+        self.__labelMapping = template['labelMapping']
 
     # @property functions to extract values used for data manipulation and testing
     @property
@@ -132,22 +137,40 @@ class DCR_Graph(object):
     def marking(self):
         return self.__marking
 
+    def getActivity(self,eventId):
+        for i in self.__labelMapping:
+            if eventId == self.__labelMapping[i]:
+                return i
+
+    def getEventId(self, activity):
+        activity = activity.replace(" ","")
+        return 0
+
+    def getConstraints(self):
+        no = 0
+        for i in self.__conditionsFor.values():
+            no += len(i)
+        for i in self.__responseTo.values():
+            no += len(i)
+        for i in self.__excludesTo.values():
+            no += len(i)
+        for i in self.__includesTo.values():
+            no += len(i)
+        return no
+
+    def reset(self):
+        self.__marking.reset(self.__events.copy())
 
     # in_built functions to print
     def __iter__(self):
-        yield 'events', self.__events
-        yield 'conditionsFor', self.__conditionsFor
-        yield 'milestonesFor', {}
-        yield 'responseTo', self.__responseTo
-        yield 'includesTo', self.__includesTo
-        yield 'excludesTo', self.excludesTo
-        yield 'marking', dict(self.__marking)
-        yield 'conditionsForDelays', {}
-        yield 'responseToDeadlines', {}
-        yield 'subprocesses', {}
-        yield 'nestings', {}
-        yield 'labels', set()
-        yield 'labelMapping', {}
+        yield self.__events
+        yield self.__conditionsFor
+        yield self.__responseTo
+        yield self.__includesTo
+        yield self.excludesTo
+        yield dict(self.__marking)
+        yield self.__labels
+        yield self.__labelMapping
 
     def __repr__(self):
         return str('{' +
