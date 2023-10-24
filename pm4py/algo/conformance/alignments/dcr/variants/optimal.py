@@ -21,9 +21,8 @@ from enum import Enum
 from pm4py.objects.dcr.obj import DCR_Graph
 from pm4py.objects.dcr.semantics import DCRSemantics
 from pm4py.util import constants, xes_constants, exec_utils
-from pm4py.objects.dcr.utils import align_utils
 from pm4py.objects.log.obj import EventLog, Trace
-from typing import Optional, Dict, Any, Union, List
+from typing import Optional, Dict, Any, Union, List, Iterable
 from pm4py.objects.conversion.log import converter as log_converter
 import pandas as pd
 
@@ -51,10 +50,12 @@ POSITION_PREV = 4
 
 
 def apply(obj: Union[EventLog, Trace], G: DCR_Graph, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Union[Dict, List[Dict]]:
-    if isinstance(obj[0], list):
+    if isinstance(obj, EventLog):
         return apply_log(obj, G, parameters=parameters)
-    else:
+    elif isinstance(obj, Trace) or isinstance(obj, list):
         return apply_trace(obj, G, parameters=parameters)
+    else:
+        raise ValueError("Invalid type for obj; must be either EventLog or Trace")
 
 
 def enabled(G, e):
@@ -78,6 +79,12 @@ def execute(G, e):
 
 
 def apply_log(log, G: DCR_Graph, parameters=None):
+    if isinstance(log, pd.DataFrame):
+        case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+        activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+        log = list(log.groupby(case_id_key)[activity_key].apply(tuple))
+        log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+
     aligned_traces = []
     for trace in log:
         al_tr = apply_trace(trace, G, parameters=parameters)
@@ -119,7 +126,7 @@ def get_first_activity(curr_trace, activity_key):
         return None
 
 
-def apply_trace(trace, G, parameters=None):
+def apply_trace(trace: Union[pd.DataFrame, Iterable], G, parameters=None):
     """
     Applies the alignment algorithm provided a trace of a log and a DCR Graph.
 
@@ -145,21 +152,11 @@ def apply_trace(trace, G, parameters=None):
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
 
-    if type(trace) is pd.DataFrame:
-        case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
-        trace = list(trace.groupby(case_id_key)[activity_key].apply(tuple))
-    else:
-        converted_trace = log_converter.apply(trace, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
-
-        # Check the type of converted_trace before proceeding
-        if isinstance(converted_trace, list) and all(isinstance(x, dict) for x in converted_trace):
-            trace = [tuple(x[activity_key] for x in single_trace) for single_trace in converted_trace]
-        else:
-            print(
-                f"Warning: Unexpected format for converted_trace. Type: {type(converted_trace)}, Content: {converted_trace}")
+    if not isinstance(trace, (list, Trace)):  # Add more types if necessary
+        print(f"Warning: Unexpected format for trace. Type: {type(trace)}, Content: {trace}")
+        return
 
     curr_trace = trace
-    # print(f"Applying alignment on trace: {trace}")
 
     sync_cost_function = parameters.get(Parameters.SYNC_COST_FUNCTION.value, {})
     model_move_cost_function = parameters.get(Parameters.MODEL_MOVE_COST_FUNCTION.value, {})
@@ -208,15 +205,12 @@ def apply_trace(trace, G, parameters=None):
 
         # Synchronous Moves
         if curr_trace and enabled(curr_G, curr_trace[0]):
-            global_min = handle_state(open_set, curr_cost, curr_G, curr_trace, current, moves, sync_cost_function, global_min,
-                         execute_fn=execute, update_trace=True)
+            global_min = handle_state(open_set, curr_cost, curr_G, curr_trace, current, moves, sync_cost_function, global_min, execute_fn=execute, update_trace=True)
 
         # Model Moves
         if enabled(curr_G, curr_trace[0]):
-            global_min = handle_state(open_set, curr_cost, curr_G, curr_trace, current, moves, model_move_cost_function, global_min,
-                         execute_fn=execute, update_trace=False)
+            global_min = handle_state(open_set, curr_cost, curr_G, curr_trace, current, moves, model_move_cost_function, global_min, execute_fn=execute, update_trace=False)
 
         # Log Moves
         if curr_trace:
-            global_min = handle_state(open_set, curr_cost, curr_G, curr_trace, current, moves, log_move_cost_function, global_min,
-                         execute_fn=None, update_trace=True)
+            global_min = handle_state(open_set, curr_cost, curr_G, curr_trace, current, moves, log_move_cost_function, global_min, execute_fn=None, update_trace=True)
