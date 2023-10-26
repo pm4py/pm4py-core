@@ -492,7 +492,7 @@ def __return_alignment(state, trace, closed):
 def project_log_on_dfg(log: Union[EventLog, pd.DataFrame], dfg: Dict[Tuple[str, str], int], sa: Dict[str, int], ea: Dict[str, int], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Projects the traces of an event log to the specified DFG, in order to assess the conformance of the different
-    directly-follows relationships.
+    directly-follows relationships and their performance (as the timestamps are recorded).
     The result is a event log where each 'projected' trace can be replayed on the given DFG.
     Each event of a 'projected' trace has the '@@is_conforming' attribute set to:
     - True when the activity is mimicked by the original trace (sync move)

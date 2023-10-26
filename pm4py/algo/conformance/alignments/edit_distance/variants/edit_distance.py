@@ -167,7 +167,7 @@ def align_trace(trace: Trace, list_encodings: List[str], set_encodings: Set[str]
 def project_log_on_variant(log: Union[EventLog, pd.DataFrame], variant: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
     """
     Projects the traces of an event log to the specified variant, in order to assess the conformance of the different
-    directly-follows relationships.
+    directly-follows relationships and their performance (as the timestamps are recorded).
     The result is a event log where each 'projected' trace can be replayed on the given variant.
     Each event of a 'projected' trace has the '@@is_conforming' attribute set to:
     - True when the activity is mimicked by the original trace (sync move)
