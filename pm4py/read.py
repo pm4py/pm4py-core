@@ -57,12 +57,14 @@ def read_xes(file_path: str, variant: str = "lxml", return_legacy_log_object: bo
     from copy import copy
     parameters = copy(kwargs)
     parameters["encoding"] = encoding
+    parameters["return_legacy_log_object"] = return_legacy_log_object
 
     log = xes_importer.apply(file_path, variant=v, parameters=parameters)
-    if return_legacy_log_object:
-        return log
-    log = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
-    log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format="ISO8601")
+
+    if type(log) is EventLog and not return_legacy_log_object:
+        log = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
+        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format="ISO8601")
+
     return log
 
 
