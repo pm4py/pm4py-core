@@ -254,7 +254,7 @@ class OtherPartsTests(unittest.TestCase):
         import pandas as pd
         from pm4py.util.compression import util as compression_util
         dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True)
+        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True, format="ISO8601")
         cl = compression_util.project_univariate(dataframe, "concept:name")
         # just verify that the set is non-empty
         self.assertTrue(compression_util.get_start_activities(cl))
@@ -279,7 +279,7 @@ class OtherPartsTests(unittest.TestCase):
         import pandas as pd
         from pm4py.util.compression import util as compression_util
         dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True)
+        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True, format="ISO8601")
         cl, lookup = compression_util.compress_univariate(dataframe, "concept:name")
         # just verify that the set is non-empty
         self.assertTrue(compression_util.get_start_activities(cl))
@@ -304,7 +304,7 @@ class OtherPartsTests(unittest.TestCase):
         import pandas as pd
         from pm4py.util.compression import util as compression_util
         dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True)
+        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True, format="ISO8601")
         cl, lookup = compression_util.compress_multivariate(dataframe, ["concept:name", "org:resource"])
         # just verify that the set is non-empty
         self.assertTrue(compression_util.get_start_activities(cl))

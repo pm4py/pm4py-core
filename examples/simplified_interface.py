@@ -11,7 +11,7 @@ def execute_script():
 
     # reads a CSV into a dataframe
     df = pd.read_csv("../tests/input_data/running-example.csv")
-    df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True)
+    df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True, format="ISO8601")
     df["case:concept:name"] = df["case:concept:name"].astype("string")
 
     # converts the dataframe to an event log
