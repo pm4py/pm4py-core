@@ -5,7 +5,7 @@ import time
 
 def execute_script():
     dataframe = pd.read_csv("../tests/input_data/receipt.csv")
-    dataframe = pm4py.format_dataframe(dataframe)
+    dataframe = pm4py.format_dataframe(dataframe, timest_format="ISO8601")
 
     # prints the original timestamp column of the dataframe
     print(dataframe["time:timestamp"])

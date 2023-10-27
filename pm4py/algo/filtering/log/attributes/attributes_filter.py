@@ -18,11 +18,8 @@ from enum import Enum
 
 from pm4py.statistics.attributes.log.select import *
 from pm4py.statistics.attributes.log.get import *
-from pm4py.algo.filtering.common import filtering_constants
-from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.objects.conversion.log import converter as log_converter
-from pm4py.objects.log.obj import EventLog, Trace, EventStream
-from pm4py.statistics.attributes.common import get as attributes_common
+from pm4py.objects.log.obj import Trace
 from pm4py.statistics.attributes.log.get import get_attribute_values
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes
@@ -30,7 +27,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CON
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_KEY_CASE_GLUE
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from copy import copy
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, Union, List
 from pm4py.objects.log.obj import EventLog, EventStream
 
 

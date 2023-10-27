@@ -19,7 +19,7 @@ from pm4py.objects.process_tree.utils import bottomup as bottomup_disc
 from copy import copy
 
 from enum import Enum
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any
 from pm4py.objects.process_tree.obj import ProcessTree
 
 

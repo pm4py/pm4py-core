@@ -22,8 +22,6 @@ from pm4py.util import constants
 from typing import Callable, Any, Union
 
 from pm4py.objects.log import obj as log_inst
-import pandas as pd
-from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.utils import __event_log_deprecation_warning
 import deprecation
 

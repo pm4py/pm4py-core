@@ -18,7 +18,6 @@ from collections import Counter
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.streaming.util.dictio import generator
 from pm4py.streaming.algo.interface import StreamingAlgorithm
-from threading import Lock
 from enum import Enum
 from copy import copy
 import logging

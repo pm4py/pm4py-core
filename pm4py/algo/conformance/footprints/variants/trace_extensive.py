@@ -16,7 +16,7 @@
 '''
 from enum import Enum
 from pm4py.util import exec_utils, xes_constants, constants
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Optional, Dict, Any, Union, List
 from pm4py.objects.log.obj import EventLog
 import pandas as pd
 

@@ -23,7 +23,7 @@ import numpy as np
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.util import constants
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Optional, Dict, Any, Union, List
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.conversion.log import converter as log_converter
 

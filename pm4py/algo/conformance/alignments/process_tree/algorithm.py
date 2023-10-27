@@ -21,11 +21,10 @@ from pm4py.algo.conformance.alignments.process_tree.variants import search_graph
 from pm4py.util import exec_utils
 from enum import Enum
 
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util import typing
-from pm4py.objects.conversion.log import converter as log_converter
 import pandas as pd
 
 

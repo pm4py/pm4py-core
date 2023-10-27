@@ -17,7 +17,7 @@
 from pm4py.visualization.petri_net.common import visualize
 from pm4py.visualization.petri_net.util import alignments_decoration
 from pm4py.objects.petri_net.obj import PetriNet, Marking
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any
 
 
 def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking, log=None, aggregated_statistics=None, parameters: Optional[Dict[Any, Any]] = None) -> str:

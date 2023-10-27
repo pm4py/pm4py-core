@@ -15,7 +15,6 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import tempfile
-import uuid
 from copy import deepcopy, copy
 from enum import Enum
 

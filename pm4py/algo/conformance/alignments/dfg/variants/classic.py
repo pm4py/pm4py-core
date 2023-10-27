@@ -19,7 +19,6 @@ import sys
 import uuid
 from enum import Enum
 
-from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util import constants, xes_constants, exec_utils
 from pm4py.util import variants_util
 from pm4py.objects.petri_net.utils import align_utils

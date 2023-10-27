@@ -19,7 +19,7 @@ from pm4py.algo.simulation.montecarlo.utils import replay
 from pm4py.objects.petri_net.semantics import enabled_transitions, weak_execute
 from threading import Thread, Semaphore
 from statistics import median
-from pm4py.objects.log.obj import EventLog, Trace, Event
+from pm4py.objects.log.obj import Trace, Event
 from pm4py.util import xes_constants
 from pm4py.objects.stochastic_petri import utils as stochastic_utils
 import datetime
@@ -31,7 +31,7 @@ from enum import Enum
 from pm4py.util import constants
 
 from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 
 

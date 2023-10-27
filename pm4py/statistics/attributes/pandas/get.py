@@ -16,12 +16,12 @@
 '''
 from pm4py.statistics.attributes.common import get as attributes_common
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
-from pm4py.util import exec_utils, constants
+from pm4py.util import exec_utils
 from pm4py.util import constants
 from enum import Enum
 from collections import Counter
 import pandas as pd
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Optional, Dict, Any, Union, Tuple, List
 
 
 class Parameters(Enum):

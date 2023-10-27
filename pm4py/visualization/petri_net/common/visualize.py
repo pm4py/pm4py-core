@@ -22,7 +22,7 @@ from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.util import exec_utils, constants
 from enum import Enum
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY, DEFAULT_ARTIFICIAL_START_ACTIVITY, DEFAULT_ARTIFICIAL_END_ACTIVITY
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 
 class Parameters(Enum):

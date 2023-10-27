@@ -15,11 +15,9 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.algo.conformance.log_skeleton.variants import classic
-from pm4py.objects.log.obj import Trace
-from pm4py.objects.conversion.log import converter as log_conversion
 from enum import Enum
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Optional, Dict, Any, Union, List, Set
 from pm4py.objects.log.obj import EventLog, Trace
 import pandas as pd
 

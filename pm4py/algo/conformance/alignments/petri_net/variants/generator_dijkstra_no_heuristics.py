@@ -30,15 +30,10 @@ from copy import copy
 from enum import Enum
 import sys
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from pm4py.util import variants_util
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import Trace
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import typing
-import pandas as pd
-
-from pm4py.visualization.petri_net.visualizer import apply as vizapply, view as vizview, Variants as vizvariant
-
 
 
 class Parameters(Enum):

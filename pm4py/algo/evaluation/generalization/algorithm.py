@@ -17,7 +17,7 @@
 from pm4py.algo.evaluation.generalization.variants import token_based
 from enum import Enum
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 import pandas as pd

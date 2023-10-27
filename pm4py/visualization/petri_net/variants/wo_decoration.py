@@ -18,8 +18,8 @@ from pm4py.visualization.petri_net.common import visualize
 from enum import Enum
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
 from pm4py.objects.petri_net.obj import PetriNet, Marking
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import EventLog
 import graphviz
 
 

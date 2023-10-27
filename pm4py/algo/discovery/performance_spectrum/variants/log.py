@@ -21,8 +21,8 @@ from pm4py.util import xes_constants as xes
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util import constants
-from typing import Optional, Dict, Any, Union, Tuple, List
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any, Union, List
+from pm4py.objects.log.obj import EventLog
 
 
 class Parameters(Enum):

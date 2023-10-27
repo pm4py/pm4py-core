@@ -21,8 +21,8 @@ from copy import copy
 import matplotlib as mpl
 import matplotlib.cm as cm
 import math
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.conversion.log import converter as log_converter
 import pandas as pd

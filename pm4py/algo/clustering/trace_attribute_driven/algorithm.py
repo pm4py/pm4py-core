@@ -21,7 +21,7 @@ from pm4py.algo.clustering.trace_attribute_driven.util import evaluation
 from pm4py.objects.conversion.log import converter as log_converter
 from enum import Enum
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
 

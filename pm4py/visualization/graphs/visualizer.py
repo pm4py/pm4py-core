@@ -18,7 +18,7 @@ from pm4py.visualization.graphs.variants import cases, attributes, dates, barplo
 from pm4py.visualization.graphs.util.common import save, view, matplotlib_view, serialize
 from enum import Enum
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, List
 
 
 class Variants(Enum):

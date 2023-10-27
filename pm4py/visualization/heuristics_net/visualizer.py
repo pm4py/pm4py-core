@@ -22,7 +22,7 @@ from pm4py.util import exec_utils, vis_utils
 from pm4py.visualization.heuristics_net.variants import pydotplus_vis
 import tempfile
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any
 from pm4py.util import constants
 
 

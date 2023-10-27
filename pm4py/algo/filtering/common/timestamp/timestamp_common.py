@@ -15,7 +15,6 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from datetime import datetime
-import pytz
 
 
 def get_dt_from_string(dt):

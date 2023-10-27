@@ -16,8 +16,8 @@
 '''
 
 from enum import Enum
-from pm4py.util import constants, exec_utils
-from pm4py.algo.transformation.ocel.graphs import object_interaction_graph, object_descendants_graph, object_inheritance_graph, object_cobirth_graph, object_codeath_graph
+from pm4py.util import exec_utils
+from pm4py.algo.transformation.ocel.graphs import object_interaction_graph, object_descendants_graph, object_cobirth_graph, object_codeath_graph
 from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any
 from copy import copy

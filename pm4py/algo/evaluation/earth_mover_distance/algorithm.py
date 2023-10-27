@@ -17,7 +17,7 @@
 from pm4py.algo.evaluation.earth_mover_distance.variants import pyemd
 from enum import Enum
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, List
 
 
 class Variants(Enum):

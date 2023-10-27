@@ -31,7 +31,7 @@ from pm4py.util import variants_util
 from enum import Enum
 from pm4py.util import constants
 
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import typing

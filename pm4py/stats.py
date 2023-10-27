@@ -27,10 +27,9 @@ import pandas as pd
 from pm4py.objects.log.obj import EventLog, Trace, EventStream
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns, insert_ev_in_tr_index
 from pm4py.utils import get_properties, __event_log_deprecation_warning
-from pm4py.util import xes_constants, constants
+from pm4py.util import constants
 from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.process_tree.obj import ProcessTree
-from copy import copy
 import deprecation
 
 

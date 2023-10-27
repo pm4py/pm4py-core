@@ -21,8 +21,7 @@ from enum import Enum
 from io import BytesIO
 
 from pm4py.objects.log.obj import EventLog, Trace, Event
-from pm4py.objects.log.util import sorting
-from pm4py.util import constants, xes_constants, exec_utils
+from pm4py.util import constants, exec_utils
 from pm4py.util.dt_parsing import parser as dt_parser
 import re
 from collections import deque

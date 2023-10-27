@@ -16,7 +16,7 @@
 '''
 from enum import Enum
 from pm4py.util import exec_utils
-from pm4py.util import xes_constants, constants, pandas_utils
+from pm4py.util import xes_constants, constants
 import pandas as pd
 from typing import Dict, Optional, Any, Tuple
 from pm4py.util.business_hours import soj_time_business_hours_diff

@@ -6,7 +6,7 @@ from pm4py.objects.log.util import dataframe_utils
 
 def execute_script():
     dataframe = pd.read_csv("../tests/input_data/receipt.csv")
-    dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe)
+    dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
     tf = temporal_profile_discovery.apply(dataframe)
     conformance = temporal_profile_conformance.apply(dataframe, tf, parameters={"zeta": 6.0})
     for index, dev in enumerate(conformance):

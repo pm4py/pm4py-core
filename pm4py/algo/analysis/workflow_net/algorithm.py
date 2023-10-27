@@ -18,8 +18,8 @@ from enum import Enum
 
 from pm4py.algo.analysis.workflow_net.variants import petri_net
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.petri_net.obj import PetriNet, Marking
+from typing import Optional, Dict, Any
+from pm4py.objects.petri_net.obj import PetriNet
 
 
 class Variants(Enum):

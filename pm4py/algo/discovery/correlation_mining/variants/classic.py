@@ -18,10 +18,9 @@ from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util import constants, xes_constants
 from pm4py.objects.conversion.log import converter
-from pm4py.objects.log.obj import EventStream, Event
+from pm4py.objects.log.obj import Event
 from pm4py.algo.discovery.correlation_mining import util as cm_util
 import numpy as np
-import pandas as pd
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd

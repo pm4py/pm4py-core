@@ -20,12 +20,10 @@ import itertools
 import random
 from abc import ABC, abstractclassmethod
 from collections import Counter
-from typing import Collection
 from typing import Counter as TCounter
 from typing import Generic, List, Optional, Tuple, TypeVar
 
 from pm4py.objects.petri_net.saw_net.obj import StochasticArcWeightNet
-from pm4py.objects.petri_net.semantics import PetriNetSemantics
 from pm4py.objects.petri_net.stochastic.semantics import \
     StochasticPetriNetSemantics
 

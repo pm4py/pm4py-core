@@ -22,7 +22,6 @@ from pm4py.algo.discovery.correlation_mining import util as cm_util
 from statistics import mean
 import numpy as np
 from collections import Counter
-import pandas as pd
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd

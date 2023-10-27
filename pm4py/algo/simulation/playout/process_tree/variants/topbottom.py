@@ -16,13 +16,13 @@
 '''
 from pm4py.objects.process_tree.obj import Operator
 from pm4py.util import exec_utils, constants, xes_constants
-from pm4py.objects.log.obj import EventLog, Trace, Event
+from pm4py.objects.log.obj import Trace, Event
 from enum import Enum
 import random
 import time
 
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.process_tree.obj import ProcessTree
 
 

@@ -16,16 +16,15 @@
 '''
 import datetime
 from enum import Enum
-from typing import Union, Dict, Optional, Any
 
 from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
 from pm4py.objects.conversion.log import converter as log_converter
-from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from pm4py.objects.log.obj import Trace
 from pm4py.util import exec_utils
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog, EventStream
 
 

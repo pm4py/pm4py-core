@@ -23,17 +23,17 @@ class XesImportExportTest(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
         logs = os.listdir(PROBLEMATIC_XES_DIR)
-        for log in logs:
-            log_full_path = os.path.join(PROBLEMATIC_XES_DIR, log)
+        for log_name in logs:
+            log_full_path = os.path.join(PROBLEMATIC_XES_DIR, log_name)
             try:
-                output_log_path = os.path.join(OUTPUT_DATA_DIR, log)
+                output_log_path = os.path.join(OUTPUT_DATA_DIR, log_name)
                 log = xes_importer.apply(log_full_path)
                 xes_exporter.apply(log, output_log_path)
                 log_imported_after_export = xes_importer.apply(output_log_path)
                 self.assertEqual(len(log), len(log_imported_after_export))
                 os.remove(output_log_path)
             except SyntaxError as e:
-                logging.info("SyntaxError on log " + str(log) + ": " + str(e))
+                logging.info("SyntaxError on log " + str(log_name) + ": " + str(e))
 
     def test_importExportXESfromGZIP_imp1(self):
         # to avoid static method warnings in tests,

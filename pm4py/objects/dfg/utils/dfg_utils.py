@@ -16,7 +16,6 @@
 '''
 import logging
 import importlib.util
-import queue
 from collections import Counter
 from copy import copy
 
