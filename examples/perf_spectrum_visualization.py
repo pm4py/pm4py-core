@@ -7,7 +7,7 @@ def execute_script():
     pm4py.view_performance_spectrum(log, ["Confirmation of receipt", "T04 Determine confirmation of receipt",
                                          "T10 Determine necessity to stop indication"], format="svg")
     df = pd.read_csv(os.path.join("..", "tests", "input_data", "receipt.csv"))
-    df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True)
+    df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True, format="ISO8601")
     pm4py.view_performance_spectrum(df, ["Confirmation of receipt", "T04 Determine confirmation of receipt",
                                          "T10 Determine necessity to stop indication"], format="svg")
 
