@@ -11,7 +11,7 @@ matplotlib==3.8.0
 networkx==3.2
 numpy==1.26.1
 packaging==23.2
-pandas==2.1.1
+pandas==2.1.2
 Pillow==10.1.0
 pydotplus==2.0.2
 pyparsing==3.1.1
