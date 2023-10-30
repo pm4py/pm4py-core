@@ -49,6 +49,12 @@ def apply(path, parameters=None, variant=DEFAULT_VARIANT):
         variant = Variants.ITERPARSE
     elif variant == 'chunk_regex':
         variant = Variants.CHUNK_REGEX
+    elif variant == "line_by_line":
+        variant = Variants.LINE_BY_LINE
+    elif variant == "iterparse_20":
+        variant = Variants.ITERPARSE_20
+    elif variant == "iterparse_mem_compressed":
+        variant = Variants.ITERPARSE_MEM_COMPRESSED
 
     log = variant.value.apply(path, parameters=parameters)
 
