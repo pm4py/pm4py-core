@@ -137,7 +137,7 @@ class ExceptionalCases(object):
                     for exception in self.exceptions.keys():
                         has_multiple_rel = True
                         for rel in exception:
-                            has_multiple_rel = has_multiple_rel and (e in G[rel] and e_prime in G[rel][e])
+                            has_multiple_rel = has_multiple_rel and (e in G[rel] and e_prime in G[rel][e]) #if rel not in [C, M] else (e_prime in G[rel] and e in G[rel][e_prime]))
                         if has_multiple_rel:
                             remove_from_g = True
                             if I in exception and E in exception:
@@ -147,9 +147,16 @@ class ExceptionalCases(object):
                                 G[N][e].remove(e_prime)
                                 remove_from_g = False
                             if remove_from_g:
+                                # if C not in exception and M not in exception:
                                 self.exceptions[exception].add((e, e_prime))
+                                # else:
+                                    # self.exceptions[exception].add((e_prime, e))
                                 for rel in exception:
+                                    # if rel not in [C, M]:
                                     G[rel][e].remove(e_prime)
+                                    # else:
+                                        # G[rel][e_prime].remove(e)
+
         return G
 
     def map_exceptional_cases_between_events(self, tapn, m=None) -> PetriNet:
@@ -1092,9 +1099,9 @@ class ExceptionalCases(object):
                     tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
-                    # pn_utils.add_arc_from_to(exec_place_e_prime, t, tapn, type='inhibitor')
-
-            # copy 3
+            #         pn_utils.add_arc_from_to(exec_place_e_prime, t, tapn, type='inhibitor')
+            #
+            # # copy 3
             # for delta in range(len_delta):
             #     tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
             #     new_transitions.extend(ts)

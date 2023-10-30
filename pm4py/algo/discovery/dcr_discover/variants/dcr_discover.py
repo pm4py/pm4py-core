@@ -138,7 +138,7 @@ class Discover:
 
     def mineFromAbstraction(self, findAdditionalConditions: bool = True):
         '''
-        :param findAttitionalConditions:
+        :param findAdditionalConditions:
         :return: a dcr graph
         '''
         # Initialize graph
@@ -176,7 +176,7 @@ class Discover:
 
         # Additional excludes based on predecessors / successors
         for event in self.logAbstraction['events']:
-            # Union of predecessor and successors sets, i.e. all events occuring in the same trace as event
+            # Union of predecessor and successors sets, i.e. all events occurring in the same trace as event
             coExisters = self.logAbstraction['predecessor'][event].union(self.logAbstraction['successor'][event])
             nonCoExisters = self.logAbstraction['events'].difference(coExisters)
             nonCoExisters.discard(event)
@@ -221,7 +221,7 @@ class Discover:
                     # Execute includes starting from (event)
                     included = included.union(self.graph['includesTo'][event])
 
-            # Now the only possible Condtitions that remain are valid for all traces
+            # Now the only possible Conditions that remain are valid for all traces
             # These are therefore added to the graph
             for key in self.graph['conditionsFor']:
                 self.graph['conditionsFor'][key] = self.graph['conditionsFor'][key].union(possibleConditions[key])
