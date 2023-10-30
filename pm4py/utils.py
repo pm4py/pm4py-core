@@ -110,7 +110,7 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
 def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = constants.CASE_CONCEPT_NAME,
                      activity_key: str = xes_constants.DEFAULT_NAME_KEY,
                      timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
-                     start_timestamp_key: str = xes_constants.DEFAULT_START_TIMESTAMP_KEY) -> Union[EventLog, EventStream, pd.DataFrame]:
+                     start_timestamp_key: str = xes_constants.DEFAULT_START_TIMESTAMP_KEY, timest_format: Optional[str] = None) -> Union[EventLog, EventStream, pd.DataFrame]:
     """
     Re-base the log object, changing the case ID, activity and timestamp attributes.
 
@@ -119,6 +119,7 @@ def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = c
     :param activity_key: Activity
     :param timestamp_key: Timestamp
     :param start_timestamp_key: Start timestamp
+    :param timest_format: Timestamp format that is provided to Pandas
     :rtype: ``Union[EventLog, EventStream, pd.DataFrame]``
 
     .. code-block:: python3
@@ -136,17 +137,17 @@ def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = c
 
     if isinstance(log_obj, pd.DataFrame):
         return format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
-                                start_timestamp_key=start_timestamp_key)
+                                start_timestamp_key=start_timestamp_key, timest_format=timest_format)
     elif isinstance(log_obj, EventLog):
         log_obj = pm4py.convert_to_dataframe(log_obj)
         log_obj = format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
-                                   start_timestamp_key=start_timestamp_key)
+                                   start_timestamp_key=start_timestamp_key, timest_format=timest_format)
         from pm4py.objects.conversion.log import converter
         return converter.apply(log_obj, variant=converter.Variants.TO_EVENT_LOG)
     elif isinstance(log_obj, EventStream):
         log_obj = pm4py.convert_to_dataframe(log_obj)
         log_obj = format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
-                                   start_timestamp_key=start_timestamp_key)
+                                   start_timestamp_key=start_timestamp_key, timest_format=timest_format)
         return pm4py.convert_to_event_stream(log_obj)
 
 
