@@ -355,7 +355,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
-        dataframe = pm4py.rebase(dataframe, activity_key="Activity", case_id="CaseID", timestamp_key="Timestamp")
+        dataframe = pm4py.rebase(dataframe, activity_key="Activity", case_id="CaseID", timestamp_key="Timestamp", timest_format="ISO8601")
 
     def test_parse_process_tree(self):
         tree = pm4py.parse_process_tree("-> ( 'a', X ( 'b', 'c' ), tau )")

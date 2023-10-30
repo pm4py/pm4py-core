@@ -10,11 +10,18 @@
 ### Deprecated
 
 ### Fixed
+* 2e5d06da05e8e961b3f99a0194bd8bf072ce1e32
+  * fixed rebase with timestamp format specification
+* 753202cee239e62e47a29fd1bc8658f8f36a39d1
+  * removed warnings (deprecation) in tests execution
+* a209f0df4c16812ac1109150046357c625253106
+  * unneeded workaround in managing datetimes inside Pandas
 
 ### Removed
 
 ### Other
-
+* 6e3b855c30479d2311458f9732732fc30a248270
+  * changed execute_tests.py format
 
 ---
 
