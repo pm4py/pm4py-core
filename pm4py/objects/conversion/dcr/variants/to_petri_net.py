@@ -340,32 +340,35 @@ def clean_input(dcr, white_space_replacement=None):
 
 if __name__ == "__main__":
     # run_specific_dcr()
-    # import pm4py
-    # from pm4py.algo.discovery.dcr_discover import algorithm as dcr_discover
-    from pm4py.objects.dcr.importer import importer as dcr_importer
+    import pm4py
+    from pm4py.algo.discovery.dcr_discover import algorithm as dcr_discover
+    from pm4py.objects.dcr.exporter import exporter as dcr_exporter
 
-    dcr = {
-        'events': {'A', 'B', 'C'},
-        'conditionsFor': {'B': {'A'}},
-        'milestonesFor': {},
-        'responseTo': {},
-        'noResponseTo': {},
-        'includesTo': {},
-        'excludesTo': {'B': {'A', 'B', 'C'}, 'A': {'A', 'B', 'C'}, 'C': {'A','B','C'}},
-        'conditionsForDelays': {},
-        'responseToDeadlines': {},
-        'marking': {'executed': {},
-                    'included': {'A', 'B', 'C'},
-                    'pending': {},
-                    'pendingDeadline': {}
-                    }
-    }
+    # dcr = {
+    #     'events': {'A', 'B', 'C'},
+    #     'conditionsFor': {'B': {'A'}},
+    #     'milestonesFor': {},
+    #     'responseTo': {},
+    #     'noResponseTo': {},
+    #     'includesTo': {},
+    #     'excludesTo': {'B': {'A', 'B', 'C'}, 'A': {'A', 'B', 'C'}, 'C': {'A','B','C'}},
+    #     'conditionsForDelays': {},
+    #     'responseToDeadlines': {},
+    #     'marking': {'executed': {},
+    #                 'included': {'A', 'B', 'C'},
+    #                 'pending': {},
+    #                 'pendingDeadline': {}
+    #                 }
+    # }
 
+    sepsis_log = pm4py.read_xes('/home/vco/Datasets/Sepsis Cases - Event Log.xes', return_legacy_log_object=True)
+    dcr_sepsis, _ = dcr_discover.apply(sepsis_log)
+    dcr_sepsis = clean_input(dcr_sepsis, '')
     path = '/home/vco/Projects/pm4py-dcr/models/'
-    # dcr_sepsis_exceptions = dcr_importer.apply(path+'sepsis_original.xml')
+    dcr_exporter.apply(dcr_sepsis, path+'sepsis.xml')
     d2p = Dcr2PetriNet(preoptimize=True, postoptimize=True, map_unexecutable_events=False, debug=False)
-    # file_name = 'sepsis.tapn'
+    file_name = 'sepsis.tapn'
     d2p.print_steps = True
-    # tapn = d2p.dcr2tapn(dcr_sepsis_exceptions, path+file_name)
-    file_name = 'me.tapn'
-    tapn = d2p.dcr2tapn(dcr, path+file_name)
+    tapn = d2p.dcr2tapn(dcr_sepsis, path+file_name)
+    # file_name = 'me.tapn'
+    # tapn = d2p.dcr2tapn(dcr, path+file_name)

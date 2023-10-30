@@ -15,7 +15,8 @@ class SingleRelations(object):
         pend_excl_place_e_prime = self.helper_struct[event_prime]['places']['pending_excluded']
         copy_0 = self.helper_struct[event]['transitions']
         len_copy_0 = len(copy_0)
-        len_delta = int(len_copy_0 / len(self.helper_struct[event]['t_types']))
+        len_internal = len(self.helper_struct[event]['t_types'])
+        len_delta = int(len_copy_0 / len_internal)
         new_transitions = []
 
         # copy 1
@@ -24,7 +25,7 @@ class SingleRelations(object):
                 tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
@@ -36,7 +37,7 @@ class SingleRelations(object):
                 tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
@@ -58,7 +59,8 @@ class SingleRelations(object):
         pend_excl_place_e_prime = self.helper_struct[event_prime]['places']['pending_excluded']
         copy_0 = self.helper_struct[event]['transitions']
         len_copy_0 = len(copy_0)
-        len_delta = int(len_copy_0 / len(self.helper_struct[event]['t_types']))
+        len_internal = len(self.helper_struct[event]['t_types'])
+        len_delta = int(len_copy_0 / len_internal)
         new_transitions = []
 
         # copy 1
@@ -69,7 +71,7 @@ class SingleRelations(object):
             new_transitions.extend(ts)
             for t in ts:
                 # check if removing t works
-                tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                tapn, t = utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
                 pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
                 pn_utils.add_arc_from_to(pend_place_e_prime, t, tapn, type='inhibitor')
@@ -80,7 +82,7 @@ class SingleRelations(object):
                 tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
                     pn_utils.add_arc_from_to(pend_place_e_prime, t, tapn)
@@ -99,7 +101,8 @@ class SingleRelations(object):
         pend_excl_place_e_prime = self.helper_struct[event_prime]['places']['pending_excluded']
         copy_0 = self.helper_struct[event]['transitions']
         len_copy_0 = len(copy_0)
-        len_delta = int(len_copy_0 / len(self.helper_struct[event]['t_types']))
+        len_internal = len(self.helper_struct[event]['t_types'])
+        len_delta = int(len_copy_0 / len_internal)
         new_transitions = []
 
         # copy 1
@@ -108,7 +111,7 @@ class SingleRelations(object):
                 tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
@@ -120,7 +123,7 @@ class SingleRelations(object):
                 tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                     pn_utils.add_arc_from_to(t, pend_excl_place_e_prime, tapn)
@@ -132,7 +135,7 @@ class SingleRelations(object):
                 tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                     pn_utils.add_arc_from_to(t, pend_excl_place_e_prime, tapn)
@@ -156,7 +159,8 @@ class SingleRelations(object):
         pend_excl_place_e_prime = self.helper_struct[event_prime]['places']['pending_excluded']
         copy_0 = self.helper_struct[event]['transitions']
         len_copy_0 = len(copy_0)
-        len_delta = int(len_copy_0 / len(self.helper_struct[event]['t_types']))
+        len_internal = len(self.helper_struct[event]['t_types'])
+        len_delta = int(len_copy_0 / len_internal)
         new_transitions = []
 
         # copy 1
@@ -165,7 +169,7 @@ class SingleRelations(object):
                 tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 
@@ -176,7 +180,7 @@ class SingleRelations(object):
                 tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                     pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn, type='inhibitor')
@@ -187,7 +191,7 @@ class SingleRelations(object):
                 tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                     pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn)
@@ -209,7 +213,8 @@ class SingleRelations(object):
 
         copy_0 = self.helper_struct[event]['transitions']
         len_copy_0 = len(copy_0)
-        len_delta = int(len_copy_0 / len(self.helper_struct[event]['t_types']))
+        len_internal = len(self.helper_struct[event]['t_types'])
+        len_delta = int(len_copy_0 / len_internal)
         new_transitions = []
         # copy 1
         if inc_place_e_prime and exec_place_e_prime:
@@ -217,7 +222,7 @@ class SingleRelations(object):
                 tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                     # pn_utils.add_arc_from_to(exec_place_e_prime, t, tapn, type='inhibitor')
@@ -228,7 +233,7 @@ class SingleRelations(object):
         #         tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
         #         new_transitions.extend(ts)
         #         for t in ts:
-        #             tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+        #             tapn, t = utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
         #             pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
         #
         #             pn_utils.add_arc_from_to(t, exec_place_e_prime, tapn)
@@ -253,7 +258,8 @@ class SingleRelations(object):
 
         copy_0 = self.helper_struct[event]['transitions']
         len_copy_0 = len(copy_0)
-        len_delta = int(len_copy_0 / len(self.helper_struct[event]['t_types']))
+        len_internal = len(self.helper_struct[event]['t_types'])
+        len_delta = int(len_copy_0 / len_internal)
         new_transitions = []
         # copy 1
         if inc_place_e_prime or pend_excluded_place_e_prime:
@@ -261,7 +267,7 @@ class SingleRelations(object):
                 tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
 
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
@@ -273,7 +279,7 @@ class SingleRelations(object):
                 tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
                 new_transitions.extend(ts)
                 for t in ts:
-                    tapn, t = utils.map_existing_transitions_of_copy_0(delta, copy_0, t, tapn)
+                    tapn, t = utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
 
                     pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
