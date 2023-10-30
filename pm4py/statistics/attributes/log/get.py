@@ -23,6 +23,7 @@ from pm4py.util import exec_utils
 from pm4py.util import constants
 from enum import Enum
 from collections import Counter
+from copy import copy
 from typing import Optional, Dict, Any, Union, Tuple, List, Set
 from pm4py.objects.conversion.log import converter as log_converter
 
@@ -279,12 +280,14 @@ def get_kde_numeric_attribute(log, attribute, parameters=None):
     y
         Y-axis values to represent
     """
-    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+    if parameters is None:
+        parameters = {}
 
-    if type(log) is EventLog:
-        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
-    else:
-        event_log = log
+    this_parameters = copy(parameters)
+    this_parameters["deepcopy"] = False
+    this_parameters["include_case_attributes"] = False
+
+    event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters=this_parameters)
 
     values = [event[attribute] for event in event_log if attribute in event]
 
@@ -314,12 +317,14 @@ def get_kde_numeric_attribute_json(log, attribute, parameters=None):
     y
         Y-axis values to represent
     """
-    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+    if parameters is None:
+        parameters = {}
 
-    if type(log) is EventLog:
-        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
-    else:
-        event_log = log
+    this_parameters = copy(parameters)
+    this_parameters["deepcopy"] = False
+    this_parameters["include_case_attributes"] = False
+
+    event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters=this_parameters)
 
     values = [event[attribute] for event in event_log if attribute in event]
 
@@ -348,12 +353,14 @@ def get_kde_date_attribute(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters=None
     y
         Y-axis values to represent
     """
-    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+    if parameters is None:
+        parameters = {}
 
-    if type(log) is EventLog:
-        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
-    else:
-        event_log = log
+    this_parameters = copy(parameters)
+    this_parameters["deepcopy"] = False
+    this_parameters["include_case_attributes"] = False
+
+    event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters=this_parameters)
 
     values = [event[attribute].replace(tzinfo=None) for event in event_log if attribute in event]
 
@@ -383,12 +390,14 @@ def get_kde_date_attribute_json(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters
     y
         Y-axis values to represent
     """
-    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+    if parameters is None:
+        parameters = {}
 
-    if type(log) is EventLog:
-        event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})
-    else:
-        event_log = log
+    this_parameters = copy(parameters)
+    this_parameters["deepcopy"] = False
+    this_parameters["include_case_attributes"] = False
+
+    event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters=this_parameters)
 
     values = [event[attribute].replace(tzinfo=None) for event in event_log if attribute in event]
 

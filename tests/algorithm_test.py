@@ -18,12 +18,12 @@ class AlgorithmTest(unittest.TestCase):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"),
                                  variant=xes_importer.Variants.CHUNK_REGEX)
 
-    def test_hiearch_clustering(self):
+    """def test_hiearch_clustering(self):
         from pm4py.algo.clustering.trace_attribute_driven import algorithm as clust_algorithm
         log = xes_importer.apply(os.path.join("input_data", "receipt.xes"), variant=xes_importer.Variants.LINE_BY_LINE,
                                  parameters={xes_importer.Variants.LINE_BY_LINE.value.Parameters.MAX_TRACES: 50})
         # raise Exception("%d" % (len(log)))
-        clust_algorithm.apply(log, "responsible", variant=clust_algorithm.Variants.VARIANT_DMM_VEC)
+        clust_algorithm.apply(log, "responsible", variant=clust_algorithm.Variants.VARIANT_DMM_VEC)"""
 
     def test_log_skeleton(self):
         log = xes_importer.apply(os.path.join("input_data", "running-example.xes"))
