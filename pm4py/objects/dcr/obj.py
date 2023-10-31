@@ -118,6 +118,14 @@ class DCR_Graph(object):
         return self.__events
 
     @property
+    def labels(self):
+        return self.__labels
+
+    @property
+    def labelMapping(self):
+        return self.__labelMapping
+
+    @property
     def conditionsFor(self):
         return self.__conditionsFor
 

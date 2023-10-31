@@ -2,6 +2,8 @@ from copy import deepcopy
 #from datetime import timedelta
 from typing import Set
 
+from pm4py.objects.dcr.obj import Marking
+
 
 rels = ['conditionsFor', 'responseTo', 'includesTo', 'excludesTo', 'milestonesFor']
 
@@ -108,6 +110,13 @@ class DCRSemantics(object):
         else:
             return True
 
+    @classmethod
+    def is_execution_equivalent(cls, marking1: Marking, marking2: Marking) -> bool:
+        return (
+                marking1.executed == marking2.executed and
+                marking1.included == marking2.included and
+                marking1.pending == marking2.pending
+        )
     @classmethod
     def run(cls, dcr, trace):
         #runs the model, returns graph is model can run, return none if it can't
@@ -286,68 +295,3 @@ class DcrSemantics(object):
     def __is_effectively_included(self, e, ancestors_dict):
         return ancestors_dict[e].issubset(self.dcr['marking']['included'])
 
-    def __get_effectively_pending(self, e, ancestors_dict):
-        return ancestors_dict[e].issubset(self.dcr['marking']['pending'])
-
-    def __execute(self, e):
-        if isinstance(e, timedelta):
-            return self.time_step(e)
-        if isinstance(e, int):
-            return self.time_step(timedelta(e))
-        elif e in self.dcr['events']:
-            if self.is_enabled(e):
-                self.__weak_execute(e)
-                return (True, timedelta(0))
-            else:
-                print(f'[!] Event {e} not enabled!') if self.cmd_print else None
-                return (False, timedelta(0))
-        else:
-            print(f'[!] Event {e} does not exist!') if self.cmd_print else None
-            return (False, timedelta(0))
-
-    def __create_max_executed_time_dict(self):
-        d = {}
-        for e in self.dcr['events']:
-            d[e] = self.__max_executed_time(e)
-        return d
-
-    def __max_executed_time(self, event):
-        maxDelay = timedelta(0)
-        if 'conditionsForDelays' in self.dcr:
-            for e in self.dcr['conditionsForDelays']:
-                for (e_prime, k) in self.dcr['conditionsForDelays'][e]:
-                    k_td = timedelta(k)
-                    if e_prime == event:
-                        if k_td > maxDelay:
-                            maxDelay = k_td
-        else:
-            self.dcr['conditionsForDelays'] = {}
-        return maxDelay
-
-    def __weak_execute(self, e):
-        '''
-        Executes events even if not enabled. This will break the condition and/or milestone
-        :param e:
-        :param dcr:
-        :return:
-        '''
-        self.dcr['marking']['pending'].discard(e)
-        self.dcr['marking']['executed'].add(e)
-        self.dcr['marking']['executedTime'][e] = timedelta(0)
-
-        if e in self.dcr['marking']['pendingDeadline']:
-            self.dcr['marking']['pendingDeadline'].pop(e)
-        if e in self.dcr['excludesTo']:
-            for e_prime in self.dcr['excludesTo'][e]:
-                self.dcr['marking']['included'].discard(e_prime)
-        if e in self.dcr['includesTo']:
-            for e_prime in self.dcr['includesTo'][e]:
-                self.dcr['marking']['included'].add(e_prime)
-        if e in self.dcr['responseTo']:
-            for e_prime in self.dcr['responseTo'][e]:
-                self.dcr['marking']['pending'].add(e_prime)
-        if e in self.dcr['responseToDeadlines']:
-            for (e_prime, k) in self.dcr['responseToDeadlines'][e]:
-                self.dcr['marking']['pendingDeadline'][e_prime] = timedelta(k)
-                self.dcr['marking']['pending'].add(e_prime)
-"""
