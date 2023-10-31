@@ -22,6 +22,10 @@
 ### Other
 * 6e3b855c30479d2311458f9732732fc30a248270
   * changed execute_tests.py format
+* c62f6fd480b67e466e4c906927413b9f2c87aff4
+  * in tests and examples, provide possibility to try with different Pandas backends
+* 5424eb9ed576a1ef4f0485ce186b0300bf1ace03
+  * example to locate the features for a specific case using pm4py.extract_features_dataframe
 
 ---
 
