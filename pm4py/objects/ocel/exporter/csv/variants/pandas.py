@@ -34,4 +34,4 @@ def apply(ocel: OCEL, output_path: str, objects_path=None, parameters: Optional[
     ocel.get_extended_table().to_csv(output_path, index=False, na_rep="", encoding=encoding)
 
     if objects_path is not None:
-        ocel.objects.to_csv(objects_path, index=False, na_rep="")
+        ocel.objects.to_csv(objects_path, index=False, na_rep="", encoding=encoding)
