@@ -45,8 +45,11 @@ def read_xes(file_path: str, variant: str = "lxml", return_legacy_log_object: bo
     v = xes_importer.Variants.LINE_BY_LINE
     if importlib.util.find_spec("lxml"):
         v = xes_importer.Variants.ITERPARSE
+
     if variant == "iterparse_20":
         v = xes_importer.Variants.ITERPARSE_20
+    elif variant == "iterparse":
+        v = xes_importer.Variants.ITERPARSE
     elif variant == "iterparse_mem_compressed":
         v = xes_importer.Variants.ITERPARSE_MEM_COMPRESSED
     elif variant == "line_by_line":

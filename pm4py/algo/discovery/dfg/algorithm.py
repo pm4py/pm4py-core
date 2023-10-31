@@ -83,8 +83,6 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, pmutil.constants.CASE_CONCEPT_NAME)
 
     if isinstance(log, pd.DataFrame) and not variant == Variants.FREQ_TRIPLES:
-        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_columns=[
-            timestamp_key])
         dfg_frequency, dfg_performance = df_statistics.get_dfg_graph(log, measure="both",
                                                                      activity_key=activity_key,
                                                                      timestamp_key=timestamp_key,
