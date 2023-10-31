@@ -1,10 +1,11 @@
 import pandas as pd
 import pm4py
+from pm4py.util import constants
 import time
 
 
 def execute_script():
-    dataframe = pd.read_csv("../tests/input_data/receipt.csv")
+    dataframe = pd.read_csv("../tests/input_data/receipt.csv", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
     dataframe = pm4py.format_dataframe(dataframe, timest_format="ISO8601")
 
     # prints the original timestamp column of the dataframe

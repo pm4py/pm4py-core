@@ -7,6 +7,7 @@ from pm4py.statistics.traces.generic.log import case_statistics as log_case_stat
 from pm4py.statistics.attributes.log import get as log_attributes_filter
 from pm4py.statistics.attributes.pandas import get as pd_attributes_filter
 import pandas as pd
+from pm4py.util import constants
 from pm4py.objects.log.util import dataframe_utils
 
 
@@ -16,7 +17,7 @@ class GraphsForming(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
 
-        df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        df = pd.read_csv(os.path.join("input_data", "receipt.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         x, y = pd_case_statistics.get_kde_caseduration(df)
         json = pd_case_statistics.get_kde_caseduration_json(df)
@@ -37,7 +38,7 @@ class GraphsForming(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
 
-        df = pd.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"))
+        df = pd.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
 
         x, y = pd_attributes_filter.get_kde_numeric_attribute(df, "amount")
@@ -59,7 +60,7 @@ class GraphsForming(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
 
-        df = pd.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"))
+        df = pd.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
 
         x, y = pd_attributes_filter.get_kde_date_attribute(df)
