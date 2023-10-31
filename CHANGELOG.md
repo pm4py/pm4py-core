@@ -10,11 +10,22 @@
 ### Deprecated
 
 ### Fixed
+* 2e5d06da05e8e961b3f99a0194bd8bf072ce1e32
+  * fixed rebase with timestamp format specification
+* 753202cee239e62e47a29fd1bc8658f8f36a39d1
+  * removed warnings (deprecation) in tests execution
+* a209f0df4c16812ac1109150046357c625253106
+  * unneeded workaround in managing datetimes inside Pandas
 
 ### Removed
 
 ### Other
-
+* 6e3b855c30479d2311458f9732732fc30a248270
+  * changed execute_tests.py format
+* c62f6fd480b67e466e4c906927413b9f2c87aff4
+  * in tests and examples, provide possibility to try with different Pandas backends
+* 5424eb9ed576a1ef4f0485ce186b0300bf1ace03
+  * example to locate the features for a specific case using pm4py.extract_features_dataframe
 
 ---
 

@@ -17,7 +17,7 @@ from pm4py.statistics.variants.log import get as variants_get
 from pm4py.algo.simulation.playout.petri_net import algorithm
 from pm4py.objects.conversion.log import converter
 from pm4py.objects.log.util import dataframe_utils
-from pm4py.util import pandas_utils
+from pm4py.util import pandas_utils, constants
 from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 
@@ -73,7 +73,7 @@ class OtherPartsTests(unittest.TestCase):
                                       1000, {})
 
     def test_performance_spectrum_df(self):
-        df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        df = pd.read_csv(os.path.join("input_data", "receipt.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         pspectr = df_pspectrum.apply(df, ["T02 Check confirmation of receipt", "T03 Adjust confirmation of receipt"],
                                      1000, {})
@@ -124,7 +124,7 @@ class OtherPartsTests(unittest.TestCase):
                                              variant=footprints_conformance.Variants.TRACE_EXTENSIVE)
 
     def test_footprints_tree_df(self):
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         log = converter.apply(df, variant=converter.Variants.TO_EVENT_LOG)
@@ -163,7 +163,7 @@ class OtherPartsTests(unittest.TestCase):
 
     def test_sojourn_time_pandas(self):
         import pandas as pd
-        dataframe = pd.read_csv(os.path.join("input_data", "interval_event_log.csv"))
+        dataframe = pd.read_csv(os.path.join("input_data", "interval_event_log.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         from pm4py.objects.log.util import dataframe_utils
         dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
         from pm4py.statistics.sojourn_time.pandas import get
@@ -176,7 +176,7 @@ class OtherPartsTests(unittest.TestCase):
 
     def test_concurrent_activities_pandas(self):
         import pandas as pd
-        dataframe = pd.read_csv(os.path.join("input_data", "interval_event_log.csv"))
+        dataframe = pd.read_csv(os.path.join("input_data", "interval_event_log.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         from pm4py.objects.log.util import dataframe_utils
         dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
         from pm4py.statistics.concurrent_activities.pandas import get
@@ -189,7 +189,7 @@ class OtherPartsTests(unittest.TestCase):
 
     def test_efg_pandas(self):
         import pandas as pd
-        dataframe = pd.read_csv(os.path.join("input_data", "interval_event_log.csv"))
+        dataframe = pd.read_csv(os.path.join("input_data", "interval_event_log.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         from pm4py.objects.log.util import dataframe_utils
         dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
         from pm4py.statistics.eventually_follows.pandas import get
@@ -214,11 +214,11 @@ class OtherPartsTests(unittest.TestCase):
         aligned_traces = dfg_alignment.apply(log, dfg, sa, ea)
 
     def test_insert_idx_in_trace(self):
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         df = pandas_utils.insert_ev_in_tr_index(df)
 
     def test_automatic_feature_extraction(self):
-        df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        df = pd.read_csv(os.path.join("input_data", "receipt.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         fea_df = dataframe_utils.automatic_feature_extraction_df(df)
 
     def test_log_to_trie(self):
@@ -253,7 +253,7 @@ class OtherPartsTests(unittest.TestCase):
     def test_projection_univariate_df(self):
         import pandas as pd
         from pm4py.util.compression import util as compression_util
-        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True, format="ISO8601")
         cl = compression_util.project_univariate(dataframe, "concept:name")
         # just verify that the set is non-empty
@@ -278,7 +278,7 @@ class OtherPartsTests(unittest.TestCase):
     def test_compression_univariate_df(self):
         import pandas as pd
         from pm4py.util.compression import util as compression_util
-        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True, format="ISO8601")
         cl, lookup = compression_util.compress_univariate(dataframe, "concept:name")
         # just verify that the set is non-empty
@@ -303,7 +303,7 @@ class OtherPartsTests(unittest.TestCase):
     def test_compression_multivariate_df(self):
         import pandas as pd
         from pm4py.util.compression import util as compression_util
-        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
+        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True, format="ISO8601")
         cl, lookup = compression_util.compress_multivariate(dataframe, ["concept:name", "org:resource"])
         # just verify that the set is non-empty
