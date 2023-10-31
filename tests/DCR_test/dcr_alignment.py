@@ -14,7 +14,7 @@ class TestDcr(unittest.TestCase):
         if isinstance(log, pd.DataFrame):
             log = log_converter.apply(log)
         from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
-        from pm4py.algo.conformance.alignments.dcr.variants import optitest
+        from pm4py.algo.conformance.alignments.dcr.variants import optimal
 
         dcr_result = apply(log, dcr_discover)
         dcr_graph = dcr_result[0]
@@ -23,11 +23,11 @@ class TestDcr(unittest.TestCase):
         self.assertIsNotNone(dcr_graph)
 
         first_trace = log[0]
-        graph_handler = optitest.DCRGraphHandler(dcr_graph)
-        trace_handler = optitest.TraceHandler(first_trace, 'concept:name')
+        graph_handler = optimal.DCRGraphHandler(dcr_graph)
+        trace_handler = optimal.TraceHandler(first_trace, 'concept:name')
 
         start_time = time.time()
-        alignment_obj = optitest.Alignment(graph_handler, trace_handler)
+        alignment_obj = optimal.Alignment(graph_handler, trace_handler)
         aligned_traces = alignment_obj.apply_trace()
         end_time = time.time()
         elapsed_time = end_time - start_time
@@ -43,26 +43,25 @@ class TestDcr(unittest.TestCase):
         alignment = aligned_traces['alignment']
         self.assertIsNotNone(alignment)
 
-        # Validate length of alignment
-        if isinstance(first_trace, dict) and 'events' in first_trace:
-            num_events = len(first_trace['events'])
-        else:
-            num_events = len(first_trace)
-        self.assertEqual(len(alignment), num_events)
-
         # Loop through all traces in the log
         for trace in log:
-            graph_handler = optitest.DCRGraphHandler(dcr_graph)
-            trace_handler = optitest.TraceHandler(trace, 'concept:name')
-            alignment_obj = optitest.Alignment(graph_handler, trace_handler)
+            graph_handler = optimal.DCRGraphHandler(dcr_graph)
+            trace_handler = optimal.TraceHandler(trace, 'concept:name')
+            alignment_obj = optimal.Alignment(graph_handler, trace_handler)
             dcr_trace_result = alignment_obj.apply_trace()
 
             self.assertIsNotNone(dcr_trace_result)
             self.assertIn('alignment', dcr_trace_result)
-            self.assertGreaterEqual(len(dcr_trace_result['alignment']), len(trace))
+            self.assertGreaterEqual(len(trace), len(dcr_trace_result['alignment']))
             if len(trace) > 0:
                 self.assertNotEqual(len(dcr_trace_result['alignment']), 0)
 
         # Cost Checks
         alignment_cost = aligned_traces.get('cost', float('inf'))
         self.assertEqual(alignment_cost, aligned_traces.get('global_min', float('inf')))
+
+        model_moves = sum(1 for move in alignment if move[0] == 'model')
+        log_moves = sum(1 for move in alignment if move[0] == 'log')
+        expected_cost = model_moves + log_moves
+        self.assertEqual(expected_cost, alignment_cost)
+

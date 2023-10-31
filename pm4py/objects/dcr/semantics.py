@@ -2,6 +2,8 @@ from copy import deepcopy
 #from datetime import timedelta
 from typing import Set
 
+from pm4py.objects.dcr.obj import Marking
+
 
 rels = ['conditionsFor', 'responseTo', 'includesTo', 'excludesTo', 'milestonesFor']
 
@@ -98,11 +100,18 @@ class DCRSemantics(object):
         return dcr
 
     @classmethod
-    def is_accepting(cls, dcr):
-
-
+    def is_accepting(cls, dcr) -> bool:
         res = dcr.marking.pending.intersection(dcr.marking.included)
         if len(res) > 0:
             return False
         else:
             return True
+
+    @classmethod
+    def is_execution_equivalent(cls, marking1: Marking, marking2: Marking) -> bool:
+        return (
+                marking1.executed == marking2.executed and
+                marking1.included == marking2.included and
+                marking1.pending == marking2.pending
+        )
+
