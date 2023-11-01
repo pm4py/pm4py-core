@@ -214,8 +214,8 @@ def benchmark_optimal2():
 
 if __name__ == "__main__":
     print("Running benchmark for optimal...")
-    benchmark_optimal()
-    # benchmark_optimal2()
+    # benchmark_optimal()
+    benchmark_optimal2()
     # print("Running benchmark for classc")
     # benchmark_dfg_alignment()
 

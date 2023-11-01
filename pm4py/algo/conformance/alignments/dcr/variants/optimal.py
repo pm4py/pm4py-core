@@ -66,15 +66,6 @@ class DCRGraphHandler:
         self.graph.reset()
 
 
-class ComparableObject:
-    def __init__(self, obj):
-        self.obj = obj
-        self.type = type(obj)
-
-    def __lt__(self, other):
-        return str(self.obj) < str(other.obj)
-
-
 class Alignment:
     """
     This class contains the object oriented implementation of the Optimal Alignments algorithm,
@@ -106,6 +97,40 @@ class Alignment:
         self.closed_markings = set()
 
     def handle_state(self, curr_cost, curr_graph, curr_trace, current, moves, move_type=None):
+        """
+        Manages the transition to a new state in the alignment algorithm based on the specified move type.
+        It computes the new state, checks for execution equivalency to avoid re-processing, and if unique,
+        updates the visited states and the priority queue for further processing.
+
+        Parameters
+        ----------
+        curr_cost : int
+            The current cost of the alignment.
+        curr_graph : DCR_Graph
+            The current state of the DCR graph.
+        curr_trace : list
+            The current state of the trace.
+        current : tuple
+            The current state representation in the algorithm.
+        moves : list
+            The list of moves made so far.
+        move_type : str, optional
+            The type of move to make. This should be one of "sync", "model", or "log". Default is None.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        None
+
+        Notes
+        -----
+        - This method interfaces with the `get_new_state` method to compute the new state.
+        - It employs a heap-based priority queue to manage the processing order of states based on their costs.
+        - Execution equivalency check is performed to reduce redundant processing of similar states.
+        """
         if moves is None:
             moves = []
 
@@ -126,10 +151,42 @@ class Alignment:
         if state_representation not in self.visited_states:
             self.visited_states.add(state_representation)
             self.new_moves = moves + [new_move]
-            heappush(self.open_set,
-                     (new_cost, ComparableObject(new_graph), ComparableObject(new_trace), current, self.new_moves))
+
+            heappush(self.open_set, (new_cost, new_graph, new_trace, current, self.new_moves))
 
     def get_new_state(self, curr_cost, curr_graph, curr_trace, moves, move_type):
+        """
+        Computes the new state of the alignment algorithm based on the current state and
+        the specified move type. The new state includes the updated cost, graph, trace,
+        and move. This method handles three types of moves: synchronous, model, and log.
+
+        Parameters
+        ----------
+        curr_cost : int
+            The current cost of the alignment.
+        curr_graph : DCR_Graph
+            The current state of the DCR graph.
+        curr_trace : list
+            The current state of the trace.
+        moves : list
+            The list of moves made so far.
+        move_type : str
+            The type of move to make. This should be one of "sync", "model", or "log".
+
+        Returns
+        -------
+        tuple
+            A tuple containing four elements:
+            - new_cost : int, the updated cost of the alignment.
+            - new_graph : DCR_Graph, the updated state of the DCR graph.
+            - new_trace : list, the updated state of the trace.
+            - new_move : tuple, a tuple representing the move made, formatted as (move_type, first_activity).
+
+        Example
+        -------
+        new_cost, new_graph, new_trace, new_move = get_new_state(curr_cost, curr_graph, curr_trace, moves, "sync")
+
+        """
         new_cost = curr_cost
         new_graph = curr_graph
         new_trace = curr_trace
@@ -160,22 +217,9 @@ class Alignment:
     def process_current_state(self, current):
         curr_cost, curr_graph, curr_trace, _, moves = current
 
-        if isinstance(curr_graph, ComparableObject):
-            curr_graph = curr_graph.obj
-
-        if isinstance(curr_trace, ComparableObject):
-            curr_trace = curr_trace.obj
-
-        if not isinstance(curr_graph, DCR_Graph):
-            return None
-
-        if isinstance(curr_trace, ComparableObject):
-            trace_to_check = curr_trace.obj
-        else:
-            trace_to_check = curr_trace
-
         self.graph_handler.graph = copy.deepcopy(curr_graph)
-        state_repr = (str(self.graph_handler.graph), tuple(map(str, trace_to_check)))
+
+        state_repr = (str(self.graph_handler.graph), tuple(map(str, curr_trace)))
 
         return curr_cost, curr_graph, curr_trace, state_repr, moves
 
@@ -197,6 +241,37 @@ class Alignment:
         return final_cost
 
     def apply_trace(self, parameters=None):
+        """
+        Applies the alignment algorithm to a trace in order to find an optimal alignment
+        between the DCR graph and the trace based on the algorithm outlined in the paper
+        by Axel Kjeld Fjelrad Christfort and Tijs Slaats.
+
+        Parameters
+        ----------
+        parameters : dict, optional
+            A dictionary of parameters to configure the alignment algorithm.
+            Possible keys include:
+            - Parameters.ACTIVITY_KEY: Specifies the key to use for activity names in the trace data.
+            - Parameters.CASE_ID_KEY: Specifies the key to use for case IDs in the trace data.
+            If not provided or None, default values are used.
+
+        Returns
+        -------
+        dict
+            A dictionary containing the results of the alignment algorithm, with the following keys:
+            - 'alignment': List of tuples representing the optimal alignment found.
+            - 'cost': The cost of the optimal alignment.
+            - 'visited': The number of states visited during the alignment algorithm.
+            - 'closed': The number of closed states during the alignment algorithm.
+            - 'global_min': The global minimum cost found during the alignment algorithm.
+
+        Example
+        -------
+        result = alignment_obj.apply_trace()
+        optimal_alignment = result['alignment']
+        alignment_cost = result['cost']
+
+        """
         if parameters is None:
             parameters = {}
 
