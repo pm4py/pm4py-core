@@ -20,6 +20,19 @@ def map_existing_transitions_of_copy_0(delta, copy_0, t, tapn) -> (PetriNet, Pet
 
 
 def create_event_pattern_transitions_and_arcs(tapn, event, helper_struct, mapping_exceptions):
+    '''
+    TODO: handle self no-response (do nothing) and self milestone (cannot execute the event if it is pending)
+    Parameters
+    ----------
+    tapn
+    event
+    helper_struct
+    mapping_exceptions
+
+    Returns
+    -------
+
+    '''
     inc_place = helper_struct[event]['places']['included']
     exec_place = helper_struct[event]['places']['executed']
     pend_place = helper_struct[event]['places']['pending']
