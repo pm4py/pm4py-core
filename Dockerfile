@@ -7,7 +7,7 @@ RUN apt-get -y install git
 RUN apt-get -y install python3-pydot graphviz
 RUN apt-get -y install python3-tk
 RUN apt-get -y install zip unzip
-RUN apt-get -y install gcc gfortran python-dev libopenblas-dev liblapack-dev
+RUN apt-get -y install gcc gfortran libopenblas-dev liblapack-dev
 RUN apt-get -y install g++ libboost-all-dev libncurses5-dev wget
 RUN apt-get -y install libtool flex bison pkg-config g++ libssl-dev automake
 RUN apt-get -y install libjemalloc-dev libboost-dev libboost-filesystem-dev libboost-system-dev libboost-regex-dev python3-dev autoconf flex bison cmake
