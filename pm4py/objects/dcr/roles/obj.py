@@ -1,6 +1,8 @@
 from pm4py.objects.dcr.obj import DCR_Graph
-from typing import Set, Dict
-class RoleDCR_Graph(DCR_Graph):
+from typing import Set
+
+
+class RoleDCR_Graph(object):
     def __init__(self, g: DCR_Graph, template):
         self.__g = g
         self.__principals = template['principals']
@@ -29,26 +31,26 @@ class RoleDCR_Graph(DCR_Graph):
         return self.__roleAssignments
 
     def getConstraints(self):
+        """
+        compute role assignments as constraints in DCR Graph
+
+        Returns
+        -------
+        no
+            number of constraints
+        """
         no = self.__g.getConstraints()
         for i in self.__roleAssignments.values():
             no += len(i)
         return no
 
-    def __getattr__(self, name):
-        return getattr(self.__g, name)
-
-    def __getitem__(self, item):
-        if hasattr(self.__g, item):
-            return self.__g[item]
+    def __repr__(self):
+        string = str(self.__g)
         for key, value in vars(self).items():
-            if item == key.split("_")[-1]:
-                return value
-
-
-class nest_graph(object):
-    def __init__(self, g, template):
-        self.__g = g
-        self.__nest = template['yo']
+            if value is self.__g:
+                continue
+            string += str(key.split("_")[-1])+": "+str(value)+"\n"
+        return string
 
     def __getattr__(self, name):
         return getattr(self.__g, name)

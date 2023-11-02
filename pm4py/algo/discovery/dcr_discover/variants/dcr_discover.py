@@ -17,12 +17,15 @@
 from copy import deepcopy
 
 import numpy as np
+import pandas as pd
+
 import pm4py.utils
 from pm4py import get_event_attribute_values
 from pm4py.objects.dcr.obj import dcr_template
 from enum import Enum
-from typing import Tuple, Dict, Set, Any
+from typing import Tuple, Dict, Set, Any, List, Union
 from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.dcr.obj import DCR_Graph
 
 
@@ -34,7 +37,7 @@ class Parameters(Enum):
 
 def apply(log, findAdditionalConditions=True, parameters = None) -> Tuple[DCR_Graph,Dict[str, Any]]:
     """
-    Discovers a DCR graph model from an event log[1].
+    Discovers a DCR graph model from an event log, using algorithm described in [1]_.
 
     Parameters
     ----------
@@ -53,9 +56,9 @@ def apply(log, findAdditionalConditions=True, parameters = None) -> Tuple[DCR_Gr
 
     References
     ----------
-    Paper:
-    C. O. Back, T. Slaats, T. T. Hildebrandt, M. Marquard, "DisCoveR: accurate and efficient discovery of declarative process models"
-    .. .
+    .. [1]
+        C. O. Back et al., "DisCoveR: accurate and efficient discovery of declarative process models",
+        International Journal on Software Tools for Technology Transfer, 2022, 24:563–587. 'DOI' <https://doi.org/10.1007/s10009-021-00616-0>_.
 
     """
     disc = Discover()
@@ -63,10 +66,6 @@ def apply(log, findAdditionalConditions=True, parameters = None) -> Tuple[DCR_Gr
 
 
 class Discover:
-    """
-    This Class contains the implementation of the DisCoveR algorithm.
-    Contains all methods all the methods used for mining a base DCR graph
-    """
     def __init__(self):
         self.graph = deepcopy(dcr_template)
         self.logAbstraction = {
@@ -80,29 +79,33 @@ class Discover:
             'successor': {}
         }
 
-    def mine(self, log, findAdditionalConditions=True, parameters = None) -> Tuple[DCR_Graph,Dict[str, Any]]:
+    def mine(self, log: Union[EventLog,pd.DataFrame], findAdditionalConditions=True, parameters=None) -> Tuple[DCR_Graph,Dict[str, Any]]:
         '''
+        Method used for calling the underlying mining algorithm used for discovery of DCR Graphs
+
         Parameters
         ----------
         log
-            the event log loaded using read_xes from pm4py
+            an event log as EventLog or pandas.DataFrame
         findAdditionalConditions
-            apply the last step of the algorithm? True (default) or False
+            Condition for mining additional condition: True (default) or False
 
-        case_id_key
-        activity_key
+        parameters
+            Parameters of the algorithm, including:
+                activity_key: optional :class:`str`, used to identify the activities in the log
+                case_id_key: optional :class:`str`,, used to identify the cases executed in the log
 
         Returns
         -------
-        tuple(dict,dict)
-            returns a mind dcr graph and associated log abstraction used for mining
+        Tuple[DCR_Graph,Dict[str, Any]]
+            returns a :class:`tuple` of containing:
+            - The :class:`pm4py.objects.dcr.obj.DCR_Graph`
+            - The log abstraction
         '''
         activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
         self.createLogAbstraction(log, activity_key, case_id_key)
         self.mineFromAbstraction(findAdditionalConditions=findAdditionalConditions)
-        # if graph_path:
-        #     self.writeGraph(graph_path)
         return DCR_Graph(self.graph), self.logAbstraction
 
     def createLogAbstraction(self, log, activity_key: str, case_key: str) -> int:
@@ -111,13 +114,16 @@ class Discover:
 
         Parameters
         ----------
-        :param log: pm4py event log
+        log
+            log: :class:`pm4py.log.log.EventLog` or `pandas.Datafrme`
         case_id_key
+            case identifier for the cases recorded in the log
         activity_key
-
+            activity identifier for the activities recorded in the log
         Returns
         ----------
-        :return: 0 for success anything else for failure
+        int
+            0 for success anything else for failure
         '''
         #initiate the activities, in DisCoveR, activities and event id is mapped bijectively
         activities = get_event_attribute_values(log, activity_key)
@@ -149,8 +155,10 @@ class Discover:
                 self.logAbstraction['successor'][j].add(i)
         return 0
 
-    def parseTrace(self, trace) -> int:
+    def parseTrace(self, trace: List[str]) -> int:
         '''
+        Parse a trace for mining of DEClARE constraints
+
         :param trace: array each trace one row and then events in order
         :return: 0 if success anything else for failure
         '''
@@ -196,17 +204,19 @@ class Discover:
                 seenOnlyAfter)
         return 0
 
-    def optimizeRelation(self, relation) -> Dict[str,Set[str]]:
+    def optimizeRelation(self, relation: Dict[str, Set[str]]) -> Dict[str, Set[str]]:
         '''
-        Removes redundant relations based on transitive closure
+        Removes redundant relations based on transitive closure,
         if cond and resp A -> B, B -> C then you can remove an existing relation A -> C
 
         Parameters
         -----------
-        :param relation: either the conditionFor or responseTo relations
-
+        relation
+            A conditionFor or responseTo relations
         Returns
-        :return: an optimize version of the input relations
+        ----------
+        Dict[str,Set[str]]
+            An optimize version of the input relations
         '''
         # Sortedlist to avoid possibly non-deterministic behavior due to unordered nature of dict
         sortedList = np.array(list(relation.items()))
@@ -222,11 +232,13 @@ class Discover:
 
         Parameters
         ----------
-        :param findAdditionalConditions: Optional parameter defining if
+        findAdditionalConditions
+            can be True or False, if no parameter is given, set to True standard is True
 
         Returns
         ----------
-        :return: returns 0 if succesful
+        int
+            returns 0 if successful any else for failure
         '''
         # Initialize graph
         # Note that events become an alias, but this is irrelevant since events are never altered
@@ -317,19 +329,4 @@ class Discover:
 
             # Removing redundant conditions
             self.graph['conditionsFor'] = self.optimizeRelation(self.graph['conditionsFor'])
-            #self.__clean_relations()
         return 0
-
-    def __clean_relations(self):
-        for e in self.graph['conditionsFor'].copy():
-            if not self.graph['conditionsFor'][e]:
-                self.graph['conditionsFor'].pop(e)
-        for e in self.graph['responseTo'].copy():
-            if not self.graph['responseTo'][e]:
-                self.graph['responseTo'].pop(e)
-        for e in self.graph['excludesTo'].copy():
-            if not self.graph['excludesTo'][e]:
-                self.graph['excludesTo'].pop(e)
-        for e in self.graph['includesTo'].copy():
-            if not self.graph['includesTo'][e]:
-                self.graph['includesTo'].pop(e)

@@ -1,57 +1,126 @@
-# if the same org:resource(s) are associated with the same events than this is a role.
-# The role is associated to a group of (org:resources) and a subset of events (concept:name)
 import pandas as pd
-
+from typing import Optional, Any, Union, Dict, Set
 import pm4py
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.objects.dcr.roles.obj import RoleDCR_Graph
-from collections import Counter
-def apply(log, G, parameters):
+from pm4py.objects.dcr.roles.obj import DCR_Graph
+from pm4py.objects.log.obj import EventLog
+
+
+def apply(log, G, parameters) -> RoleDCR_Graph:
+    """
+    this method calls the role miner
+
+    Parameters
+    ----------
+    log: :class:`pm4py.log.log.EventLog` or :class: 'pandas.Dataframe'
+        Event log to use in the role miner
+    G
+        Dcr graph to apply additional attributes to
+    parameters
+        Parameters of the algorithm, including:
+            activity_key: :class:`str`, optional
+            resource_key: :class:`str`, optional
+            group_key: :class:`str`, optional
+
+    Returns
+    -------
+    G: :class: `pm4py.objects.dcr.roles.obj.RoleDCR_Graph`
+        A DCR graph containing principals, roles and role assignment
+    """
     role_mine = Role_Mining()
     return role_mine.mine(log, G, parameters)
 
 
 class Role_Mining:
-    def role_assignment_role_to_acitivity(self, dcr, log, activity_key, role_key, resource_key):
-        # turn this into a dict that can iterated over
-        act_roles_couple = dict(log.groupby([role_key, activity_key]).size())
-        resource_roles_couple = dict(log.groupby([role_key, activity_key]).size())
-        for couple1, couple2 in zip(act_roles_couple,resource_roles_couple):
-            dcr['roleAssignments'][couple1[0]] = dcr['roleAssignments'][couple1[0]].union({couple1[1]})
+    def role_assignment_role_to_acitivity(self, G: Dict[str, Dict[str, Set[str]]], log: pd.DataFrame, activity_key: str,
+                                          group_key: str) -> None:
+        """
+        If log has defined roles, mine for role assignment using the role identifier
 
-    def role_assignment_resource_to_acitivity(self, dcr, log, activity_key, resource_key):
+        Parameters
+        ----------
+        G
+            DCR graph
+        log
+            event log
+        activity_key
+            attribute to be used as activity identifier
+        group_key
+            attribute to be used as role identifier in dcr graphs
+        """
+        # turn this into a dict that can iterated over
+        act_roles_couple = dict(log.groupby([group_key, activity_key]).size())
+        for couple in act_roles_couple:
+            G['roleAssignments'][couple[0]] = G['roleAssignments'][couple[0]].union({couple[1]})
+
+    def role_assignment_resource_to_acitivity(self, G: Dict[str, Dict[str, Set[str]]], log: pd.DataFrame, activity_key: str,
+                                              resource_key: str) -> None:
+        """
+        if log has no role defined roles, only resource, mine for role assignment using resource identifier
+
+        Parameters
+        ----------
+        G
+            DCR graph
+        log
+            event log
+        activity_key
+            attribute to be used as activity identifier
+        resource_key
+            attribute to be used as role identifier in dcr graphs
+        """
         # turn this into a dict that can iterated over
         act_roles_couple = dict(log.groupby([resource_key, activity_key]).size())
         for couple in act_roles_couple:
-            dcr['roleAssignments'][couple[0]] = dcr['roleAssignments'][couple[0]].union({couple[1]})
+            G['roleAssignments'][couple[0]] = G['roleAssignments'][couple[0]].union({couple[1]})
 
-    def mine(self, log, G, parameters):
+    def mine(self, log: Union[pd.DataFrame, EventLog], G: DCR_Graph, parameters: Optional[Dict[Any, Any]]):
+        """
+        Main role mine algorithm, will mine for principals and roles in a DCR graphs, and associated role assignment.
+        determine principals, roles and roleAssignment through unique occurrences in log.
+
+        Parameters
+        ----------
+        log
+            Event log used for mining
+        G
+            DCR graph to append additional attributes
+        parameters
+            optional parameters used for role mining
+        Returns
+        -------
+        RoleDCR_Graph(G, dcr)
+            returns a :class:`pm4py.objects.dcr.roles.obj.RoleDCR_Graph` with organizational attributes
+        """
 
         activity_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_ACTIVITY_KEY, parameters,
                                                   xes_constants.DEFAULT_NAME_KEY)
         resource_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_RESOURCE_KEY, parameters,
                                                   xes_constants.DEFAULT_RESOURCE_KEY)
         group_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_GROUP_KEY, parameters,
-                                              xes_constants.DEFAULT_GROUP_KEY)
+                                               xes_constants.DEFAULT_GROUP_KEY)
 
-        if not isinstance(log,pd.DataFrame):
+        if not isinstance(log, pd.DataFrame):
             log = pm4py.convert_to_dataframe(log)
 
         dcr = {'principals': set(), 'roles': set(), 'roleAssignments': {}}
-        # check if there is organizational for resources performing an event
-        # raises exception, if no resources of roles are provided
+
         keys = set(log.keys())
-
         if (resource_key not in keys) and (group_key not in keys):
-            return dcr
+            return RoleDCR_Graph(G, dcr)
 
-        #load resources if provided
+        # load resources if provided
         if resource_key in keys:
-            dcr['principals'] = set(pm4py.get_event_attribute_values(log,resource_key))
+            principals = set(log[resource_key].values)
+            principals = set(filter(lambda x: x == x, principals))
+            dcr['principals'] = principals
 
-        #if no resources are provided, map roles to activities
+        # if no resources are provided, map roles to activities
         if group_key in keys:
-            dcr['roles'] = set(pm4py.get_event_attribute_values(log,group_key))
+            roles = set(log[group_key].values)
+            roles = set(filter(lambda x: x == x, roles))
+            dcr['roles'] = roles
             for i in dcr['roles']:
                 dcr['roleAssignments'][i] = set()
         else:

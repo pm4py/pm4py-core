@@ -13,10 +13,9 @@ class Variants(Enum):
 
 
 def apply(log: Union[pd.DataFrame, EventLog], G, variant=Variants.CLASSIC,
-          parameters: Optional[Dict[Union[Any, Any], Any]] = None) -> List[Tuple[str, Dict[str, Any]]]:
+          parameters: Optional[Dict[Union[Any, Any], Any]] = None) -> List[Dict[str, Any]]:
     """
-    Applies conformance checking against a DCR Graph, based on rule checking.
-    Replays the trace and returns a list of conformance data
+    Applies rule based conformance checking against a DCR graph and an event log.
 
     Parameters
     ----------
@@ -24,30 +23,32 @@ def apply(log: Union[pd.DataFrame, EventLog], G, variant=Variants.CLASSIC,
         Event log / Pandas dataframe
     G
         DCR Graph
+
     variant
         Variant to be used:
         - Variants.CLASSIC
+
     parameters
         Variant-specific parameters
 
     Returns
-    -------
-    lst_conf_res
-        List containing for every case a dictionary with different keys:
-        - no_constr_total => the total number of constraints of the DECLARE model
-        - deviations => a list of deviations
-        - no_dev_total => the total number of deviations
-        - dev_fitness => the fitness (1 - no_dev_total / no_constr_total)
-        - is_fit => True if the case is perfectly fit
+    ----------
+    conf_res
+        List containing dictionaries with the following keys and values:
+        - no_constr_total: the total number of constraints of the DCR Graphs
+        - deviations: the list of deviations
+        - no_dev_total: the total number of deviations
+        - dev_fitness: the fitness (1 - no_dev_total / no_constr_total),
+        - is_fit: True if the case is perfectly fit
     """
 
     # run apply function to return template with fulfilled and violated activities
     return exec_utils.get_variant(variant).apply(log, G, parameters)
 
 
-def get_diagnostics_dataframe(log, conf_result, variant=Variants.CLASSIC, parameters=None) -> pd.DataFrame:
+def get_diagnostics_dataframe(log: Union[EventLog, pd.DataFrame], conf_result: List[Dict[str, Any]], variant=Variants.CLASSIC, parameters=None) -> pd.DataFrame:
     """
-    Gets the diagnostics dataframe from a log and the results
+    Gets the diagnostics dataframe from a log and the conformance results
 
     Parameters
     --------------

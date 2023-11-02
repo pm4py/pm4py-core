@@ -930,7 +930,7 @@ def discover_batches(log: Union[EventLog, pd.DataFrame], merge_distance: int = 1
 def discover_dcr(log: Union[EventLog, pd.DataFrame], process_type: Set[str] = None, activity_key: str = "concept:name",
                  timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name",
                  resource_key: str = "org:resource", group_key: str = "org:group",
-                 finaAdditionalConditions: bool = True) -> Tuple[DCR_Graph, Dict[Any, str]]:
+                 finaAdditionalConditions: bool = True) -> Tuple[Any, Dict[str, Any]]:
     """
         Discovers a DCR graph from an event log.
 

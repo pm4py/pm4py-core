@@ -66,6 +66,15 @@ class Marking:
         return self.__pending
 
     def reset(self, events) -> None:
+        """
+        Resets the marking of a DCR graph, uses the graphs event to reset included marking
+
+        Parameters
+        ----------
+        events
+            the events in the DCR Graphs
+
+        """
         self.__executed = set()
         self.__included = events
         self.__pending = set()
@@ -83,9 +92,6 @@ class Marking:
 class DCR_Graph(object):
     """
     The DCR Structure was implemented according to definition 3 in [1].
-
-    The structure of the graphs is:
-    G = (E,M,Act,->*,*->,->(+,%),l)
 
     References
     ----------
@@ -169,11 +175,13 @@ class DCR_Graph(object):
 
         Parameters
         ----------
-        :param activity: A str representing the activity of an event
+        activity
+            the activity of an event
 
         Returns
         -------
-        :return: the Event ID of a given activity
+        event
+            the event ID of activity
         """
         for event in self.__labelMapping:
             act = self.__labelMapping[event].pop()
@@ -187,11 +195,13 @@ class DCR_Graph(object):
 
         Parameters
         ----------
-        :param event: event ID as string
+        event
+            event ID
 
         Returns
         -------
-        :return: the activity of an event
+        activity
+            the activity of the event
         """
         activity = self.__labelMapping[event].pop()
         self.__labelMapping[event].add(activity)
@@ -199,11 +209,12 @@ class DCR_Graph(object):
 
     def getConstraints(self) -> int:
         """
-        Computes the amount of constraint that exist between events
+        compute constraints in DCR Graph
 
         Returns
         -------
-        :return: number of constraints
+        no
+            number of constraints
         """
         no = 0
         for i in self.__conditionsFor.values():
@@ -223,14 +234,10 @@ class DCR_Graph(object):
         self.__marking.reset(self.events.copy())
 
     def __repr__(self):
-        return str('{' +
-                   'events: ' + str(self.events) + ', ' +
-                   'conditionsFor: ' + str(self.conditionsFor) + ', ' +
-                   'responseTo: ' + str(self.responseTo) + ', ' +
-                   'includesTo' + str(self.includesTo) + ', ' +
-                   'excludesTo' + str(self.excludesTo) + ', ' +
-                   'marking' + str(self.marking)
-                   + '}')
+        string = ""
+        for key, value in vars(self).items():
+            string += str(key.split("_")[-1])+": "+str(value)+"\n"
+        return string
 
     def __str__(self):
         return self.__repr__()
