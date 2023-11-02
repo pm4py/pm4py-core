@@ -1,177 +1,100 @@
-import pm4py
-from pm4py.objects.log.obj import EventLog
-from pm4py.objects.dcr.obj import DCR_Graph, Relations
-from pm4py.objects.dcr.roles.obj import RoleDCR_Graph
-from pm4py.objects.dcr.semantics import DCRSemantics
-from pm4py.util import exec_utils, constants, xes_constants
-from typing import Optional, Dict, Any, Union
-from collections import Counter
 import pandas as pd
-from copy import deepcopy
+
+from pm4py.util import exec_utils, constants, xes_constants
+from typing import Optional, Dict, Any, Union, List
+
+from pm4py.objects.log.obj import EventLog
+
+from pm4py.objects.dcr.semantics import DCRSemantics
+
+from pm4py.algo.conformance.dcr.decorators.decorator import ConcreteChecker
+from pm4py.algo.conformance.dcr.decorators.roledecorator import RoleDecorator
+
+from pm4py.objects.dcr.obj import DCR_Graph
+
 
 class RuleBasedConformance:
-    def __excludeViolation(self, act, model, ret):
-        # if an acitivty has been excluded, but trace tries to execute, exclude violation
-        if act not in model.marking.included:
-            ret['deviations'].append(['excludeViolation', act])
+    """
+    Class constructed for the rule based conformance checking
+    """
 
+    def __init__(self, checker, semantics):
+        #"""
+        #Class is instantiated with checker and semantics:
+        #    - checker: the decorated checker that contains all methods needed to compute potential deviations
+        #    - semantics: the appropiate semantics used for executing events in a dcr graph
+        #"""
+        self.__checker = checker
+        self.__semantics = semantics
 
-    def __conditionViolation(self, act, model, ret):
-        # we check if conditions for activity has been executed, if not, that's a conditions violation
-        # check if act is in conditions for
-        if act in model.conditionsFor:
-            #check the conditions for event act
-            for e in model.conditionsFor[act]:
-                # if conditions are included and not executed, add violation
-                if e not in model.marking.included.intersection(model.marking.executed):
-                    ret['deviations'].append(['conditionViolation', (e, act)])
+    def apply_conformance(self, log: Union[EventLog, List[List[dict]]], G: DCR_Graph,
+                          parameters: Optional[Dict[Union[str, Any], Any]] = None) -> List[Dict[str, Any]]:
+        """
+        The main rule based conformance algorithm
 
+        Parameters
+        ----------
+        :param log: event log as a List of lists containing the events with relevant attributes
+        :param G: a DCR graph
+        :param parameters: Optional parameters use for defining the attributes of an event
 
-
-    def __responseViolation(self, model, ret, responseEvent):
-        # if activities are pending, and included, thats a response violation
-        for e in model.marking.included.intersection(model.marking.pending):
-
-            ret['deviations'].append(['response', e])
-
-
-    def __roleViolation(self, event, model, ret, parameters):
-        #get the parameters
-        role_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_ROLE_KEY, parameters,
-                                              xes_constants.DEFAULT_ROLE_KEY)
-        resource_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_RESOURCE_KEY, parameters,
-                                              xes_constants.DEFAULT_RESOURCE_KEY)
-        activity_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY, parameters,
-                                              xes_constants.DEFAULT_NAME_KEY)
-
-        if role_key in event.keys():
-            # checks if event role is NaN
-            # if thats the case, anyone can perform this action
-            if event[role_key] != event[role_key]:
-                return 0
-
-            #if role is performed by a role not registered thats a violation
-            if event[role_key] not in model.roles:
-                #if role doesn't exist, means that they dont have athourity to perform the action
-                ret['deviations'].append(['RoleViolating', event[role_key]])
-                return 0
-            else:
-                # if role exist
-                # violation when:
-                # 1) when as role has not be assigned (P,act)
-                # 2) when role has not be assigned act
-                # 3) when role has not be assigned P
-                res = model.roleAssignment[event[role_key]].intersection({(event[resource_key], event[activity_key])})
-                if not res:
-                    ret['deviations'].append(['RoleViolating', (event[role_key],event[resource_key],event[activity_key])])
-                return 0
-
-        else:
-            #checks if resource is in roles
-            if event[resource_key] not in model.roles:
-                #if role doesn't exist, means that they dont have athourity to perform the action
-                ret['deviations'].append(['RoleViolating', event[resource_key]])
-                return 0
-            else:
-                # if role exist
-                # violation when:
-                # 1) when as role has not be assigned act
-                res = model.roleAssignment[event[resource_key]].intersection({event[activity_key]})
-                if not res:
-                    ret['deviations'].append(['RoleViolating', (event[resource_key],event[activity_key])])
-                return 0
-
-    def __no_of_rules(self, dcr):
-        relations = [e.value for e in Relations]
-        no = 0
-        #allows for dictionary
-        for i in relations:
-            for j in dcr[i]:
-                no += len(dcr[i][j])
-        return no
-
-
-    def apply_conformance(self, log: Union[pd.DataFrame, EventLog], dcr: [DCR_Graph, RoleDCR_Graph], parameters):
+        Returns
+        -------
+        :return: a list of dictionaries containing the conformance results of each trace
+        """
+        # Create list for accumalating each trace data for conformance
         conf_case = []
-        #number of constraints
-        #the relations between activities
-        total_num_constraints = self.__no_of_rules(dcr)
-        #load in the parameter to be used
 
-        activity_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
-        case_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_CASEID_KEY, parameters, constants.CASE_CONCEPT_NAME)
-        #if case of pandas dataframe, convert it to a list of traces
-        if isinstance(log, pd.DataFrame):
-            log = log.groupby(case_key).apply(lambda x: x.to_dict(orient='records'))
+        # number of constraints (the relations between activities)
+        total_num_constraints = G.getConstraints()
 
-        #initiate class for DCR graph semantics
-        sem = DCRSemantics()
-        #iterate through all traces in a log
+        #get activity key
+        activity_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_ACTIVITY_KEY, parameters,
+                                                  xes_constants.DEFAULT_NAME_KEY)
 
+
+        # iterate through all traces in log
         for trace in log:
-            # initiate a dictionary to collect all deviation and their type
-            ret = {'no_constr_total': total_num_constraints, 'deviations': [], 'event_counter': Counter()}
-            # instantiate a new model to perform execution on
-            model = deepcopy(dcr)
-            # count id to find placement in trace, the role deviated
-            countID = 0
-
-            # event casuing a execution to be pending
-            responseEvent = []
+            # reset dcr graph
+            G.reset()
+            # create base dict to accumalate trace conformance data
+            ret = {'no_constr_total': total_num_constraints, 'deviations': []}
             # iterate through all events in a trace
             for event in trace:
-                #get the activity to be performed
-                act = event[activity_key]
-                ret['event_counter'].update([act])
-                #if else conditions to check if activity is enabled for execution
+                # get the event to be executed
+                act = G.getEvent(event[activity_key])
 
-                if event[activity_key] not in sem.enabled(model):
-                    #collection type of violation
-                    self.__conditionViolation(act, model, ret)
-                    self.__excludeViolation(act, model, ret)
+                #check for deviations
+                if not self.__semantics.is_enabled(act, G):
+                    self.__checker.enabled_checker(act, G, ret['deviations'], parameters=parameters)
 
-                if len(model['roles']) > 0:
-                    self.__roleViolation(event, model, ret, parameters)
-                    """
-                    #possible insert more functions here to extend if possible:
-                    """
-                #if pending event exist
-                if act in model.responseTo:
-                    responses = model.responseTo[act]
-                    if responses:
-                        responseEvent.append(responses)
-                    model = sem.execute(model, act)
-                    countID += 1
+                self.__checker.all_checker(act, event, G, ret['deviations'], parameters=parameters)
 
-            #when all events in trace has been executed, check if model is accepting
-            if not sem.is_accepting(model):
+                # execute the event, return dcr with updated marking
+                G = self.__semantics.execute(G, act)
 
-                #if not, get activities violating the response rule
-                self.__responseViolation(model, ret, responseEvent)
+            # check if run is accepting
+            if not self.__semantics.is_accepting(G):
+                self.__checker.accepting_checker(G, ret['deviations'], parameters=parameters)
 
-            #collect the fitness of the trace
+            # compute the conformance for the trace
             ret["no_dev_total"] = len(ret["deviations"])
             ret["dev_fitness"] = 1 - ret["no_dev_total"] / ret["no_constr_total"]
             ret["is_fit"] = ret["no_dev_total"] == 0
-
-            #append the result to conf_case
             conf_case.append(ret)
-
 
         return conf_case
 
 
-def apply(log: Union[pd.DataFrame, EventLog], dcr: DCR_Graph,
-          parameters: Optional[Dict[Any, Any]]):
+def apply(log: Union[pd.DataFrame, EventLog], dcr,
+          parameters: Optional[Dict[Union[str, Any], Any]] = None, additional: bool = False):
     """
-    Applies conformance checking against a DCR graph
+    Applies rule based conformance checking against a DCR graph and an event log.
 
-    implementation based on rule-checking from:
+    Replays the entire log, executing each event and store potential deviations based on set rules associated with the DCR graph
 
-
-    and inspired by implementation in github:
-
-    Returns the same kind of data type and structure as conformance for declare and log skeleton
+    implementation based on the theory provided in [1],
+    and inspired by the implementation of conformance checker that does replay of log on a DCR graph [2].
 
     Parameters
     ---------------
@@ -183,35 +106,104 @@ def apply(log: Union[pd.DataFrame, EventLog], dcr: DCR_Graph,
         Possible parameters of the algorithm, including:
         - Parameters.ACTIVITY_KEY => the attribute to be used as activity
         - Parameters.CASE_ID_KEY => the attribute to be used as case identifier
-        - Parameters.ROLE_KEY => the attribyte to be used as role identifier
+        - Parameters.ROLE_KEY => the attribute to be used as role identifier
 
     Returns
     ---------------
-    traces
+    lst_conf_res
         List containing for every case a dictionary with different keys:
         - no_constr_total => the total number of constraints of the DECLARE model
         - deviations => a list of deviations
         - no_dev_total => the total number of deviations
         - dev_fitness => the fitness (1 - no_dev_total / no_constr_total)
         - is_fit => True if the case is perfectly fit
+
+    References
+    ----------
+    .. [1] C. Josep et al., "Conformance Checking Software",
+      	Springer International Publishing, 65-74, 2018. `DOI <https://doi.org/10.1007/978-3-319-99414-7>`_.
+    .. [2] Sebastian Dunzer, 'Link <https://github.com/fau-is/cc-dcr/tree/master>
     """
-    #if no parameters are given, initiate empty dictionary
     if parameters is None:
         parameters = {}
 
-    # instantiate class
-    con = RuleBasedConformance()
+    if isinstance(log, pd.DataFrame):
+        return __apply_Pandas(log, dcr, parameters=parameters)
+
+    return __apply_log(log, dcr, parameters=parameters)
+
+
+def __apply_log(log, dcr, parameters: Optional[Dict[Union[str, Any], Any]] = None):
+    # instantiate the basic checker and decorator for conformance checking
+    checker = ConcreteChecker()
+    sem = DCRSemantics()
+
+    # check for additional attributes in dcr, instantiate decorator associated
+    if hasattr(dcr, 'roles'):
+        checker = RoleDecorator(checker)
+
+    # instantiate conformance checking
+    con = RuleBasedConformance(checker, sem)
+    return con.apply_conformance(log, dcr, parameters)
+
+
+def __apply_Pandas(log, dcr, parameters: Optional[Dict[Union[str, Any], Any]]):
+    # if log is pandas dataframe, needs to be converted to a list of lists
+    activity_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_ACTIVITY_KEY, parameters,
+                                              xes_constants.DEFAULT_NAME_KEY)
+    case_id_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_CASEID_KEY, parameters,
+                                             constants.CASE_CONCEPT_NAME)
+
+    # base log
+    new_log = log[[activity_key, case_id_key]]
+    # instantiate checker and semantics used for conformance checking
+    checker = ConcreteChecker()
+    sem = DCRSemantics()
+
+    # check for additional attributes in dcr
+    # instantiate decorator associated and append additional column with associated values
+    if hasattr(dcr, 'roles'):
+        resource_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_RESOURCE_KEY, parameters,
+                                                  xes_constants.DEFAULT_RESOURCE_KEY)
+        new_log.insert(len(new_log.keys()), resource_key, log[resource_key], True)
+        checker = RoleDecorator(checker)
+
+    log = __transform_pandas_dataframe(new_log, case_id_key)
+
+
+    con = RuleBasedConformance(checker, sem)
 
     # call apply conformance
-    traces = con.apply_conformance(log, dcr, parameters=parameters)
+    return con.apply_conformance(log, dcr, parameters)
 
-    return traces
+
+def __transform_pandas_dataframe(dataframe, case_id_key):
+
+    # uses a snippet from __transform_dataframe_to_event_stream_new as template to transform pandas dataframe
+    list_events = []
+    columns_names = list(dataframe.columns)
+    columns_corr = []
+    log = []
+    last_case_key = dataframe.iloc[0][case_id_key]
+    for c in columns_names:
+        columns_corr.append(dataframe[c].to_numpy())
+    length = columns_corr[-1].size
+    for i in range(length):
+        event = {}
+        for j in range(len(columns_names)):
+            event[columns_names[j]] = columns_corr[j][i]
+        if last_case_key != event[case_id_key]:
+            log.append(list_events)
+            list_events = []
+        last_case_key = event[case_id_key]
+        list_events.append(event)
+    log.append(list_events)
+    return log
 
 
 def get_diagnostics_dataframe(log, conf_result, parameters=None) -> pd.DataFrame:
     """
     Implemented to provide the same diagnositcs dataframe as declare and log skeleton
-
 
     Gets the diagnostics dataframe from a log and the results
     of DCR-based conformance checking
@@ -230,16 +222,18 @@ def get_diagnostics_dataframe(log, conf_result, parameters=None) -> pd.DataFrame
     diagn_dataframe
         Diagnostics dataframe
     """
+
     if parameters is None:
         parameters = {}
 
-    case_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_CASEID_KEY, parameters, xes_constants.DEFAULT_TRACEID_KEY)
+    case_id_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_CASEID_KEY, parameters,
+                                             xes_constants.DEFAULT_TRACEID_KEY)
     import pandas as pd
 
     diagn_stream = []
 
     for index in range(len(log)):
-        case_id = log[index].attributes[case_key]
+        case_id = log[index].attributes[case_id_key]
         no_dev_total = conf_result[index]["no_dev_total"]
         no_constr_total = conf_result[index]["no_constr_total"]
         dev_fitness = conf_result[index]["dev_fitness"]

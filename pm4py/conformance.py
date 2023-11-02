@@ -796,11 +796,7 @@ from pm4py.objects.dcr.obj import DCR_Graph
 
 def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DCR_Graph, activity_key: str = "concept:name",
                     timestamp_key: str = "time:timestamp", case_key: str = "case:concept:name", role_key: str = "org:role",
-                    return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> DataFrame | \
-                                                                                                            list[tuple[
-                                                                                                                str,
-                                                                                                                dict[
-                                                                                                                    str, Any]]]:
+                    return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> DataFrame | list[tuple[str,dict[str, Any]]]:
     """
     Applies conformance checking against a DCR model.
 
