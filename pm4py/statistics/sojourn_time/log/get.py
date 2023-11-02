@@ -80,7 +80,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     start_timestamp_key = exec_utils.get_param_value(Parameters.START_TIMESTAMP_KEY, parameters,
-                                                     xes_constants.DEFAULT_TIMESTAMP_KEY)
+                                                     xes_constants.DEFAULT_START_TIMESTAMP_KEY)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
     aggregation_measure = exec_utils.get_param_value(Parameters.AGGREGATION_MEASURE,
