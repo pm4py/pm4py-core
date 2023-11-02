@@ -1,44 +1,38 @@
 import pm4py
 from pm4py.objects.log.obj import EventLog
 import pandas as pd
-from pm4py.objects.dcr.obj import DCR_Graph
 from pm4py.algo.conformance.dcr.variants import classic
 from enum import Enum
 from pm4py.util import exec_utils
 from typing import Union, Any, Dict, Tuple, List, Optional
+from pm4py.util import constants
 
 
 class Variants(Enum):
     CLASSIC = classic
 
 
-CLASSIC = Variants.CLASSIC
-VERSIONS = {CLASSIC}
-
-
-def apply(log: Union[pd.DataFrame, EventLog], dcr: DCR_Graph, variant=CLASSIC,
-          parameters=None) -> List[Tuple[str, Dict[str, Any]]]:
+def apply(log: Union[pd.DataFrame, EventLog], G, variant=Variants.CLASSIC,
+          parameters: Optional[Dict[Union[Any, Any], Any]] = None) -> List[Tuple[str, Dict[str, Any]]]:
     """
-    Applies conformance checking against a DECLARE model.
+    Applies conformance checking against a DCR Graph, based on rule checking.
+    Replays the trace and returns a list of conformance data
 
     Parameters
-    --------------
+    ----------
     log
         Event log / Pandas dataframe
-    dcr
+    G
         DCR Graph
     variant
         Variant to be used:
         - Variants.CLASSIC
-     parameters
-        Parameters
-        - Parameters.ACTIVITY_KEY
-        - Parameters.CASE_ID_KEY
-        - PARAMETERS.ROLE_KEY
+    parameters
+        Variant-specific parameters
 
     Returns
-    -------------
-    traces
+    -------
+    lst_conf_res
         List containing for every case a dictionary with different keys:
         - no_constr_total => the total number of constraints of the DECLARE model
         - deviations => a list of deviations
@@ -47,16 +41,13 @@ def apply(log: Union[pd.DataFrame, EventLog], dcr: DCR_Graph, variant=CLASSIC,
         - is_fit => True if the case is perfectly fit
     """
 
-    if parameters is None:
-        parameters = {}
     # run apply function to return template with fulfilled and violated activities
-    return exec_utils.get_variant(variant).apply(log, dcr, parameters)
+    return exec_utils.get_variant(variant).apply(log, G, parameters)
 
 
 def get_diagnostics_dataframe(log, conf_result, variant=Variants.CLASSIC, parameters=None) -> pd.DataFrame:
     """
     Gets the diagnostics dataframe from a log and the results
-    of DECLARE-based conformance checking
 
     Parameters
     --------------
@@ -75,6 +66,4 @@ def get_diagnostics_dataframe(log, conf_result, variant=Variants.CLASSIC, parame
     diagn_dataframe
         Diagnostics dataframe
     """
-    if parameters is None:
-        parameters = {}
     return exec_utils.get_variant(variant).get_diagnostics_dataframe(log, conf_result, parameters)
