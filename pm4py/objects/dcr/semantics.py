@@ -24,21 +24,21 @@ class DCRSemantics(object):
         publisher: Electronic Proceedings in Theoretical Computer Science. EPTCS, Open Publishing Association, 2010, pp. 59–73. doi: 10.4204/EPTCS.69.5.
         """
     @classmethod
-    def is_enabled(cls, event, dcr) -> bool:
+    def is_enabled(cls, event, G) -> bool:
         """
         Function for semantic for checking if event is enabled
 
         Parameters
         ----------
         :param event: the instance of event being check for if enabled
-        :param dcr: DCR graph that it check for being enabled
+        :param G: DCR graph that it check for being enabled
 
         Returns
         -------
         :return: true if enabled, false otherwise
         """
         # check if event is enabled, calls function that returns a graph, of enabled events
-        return event in cls.enabled(dcr)
+        return event in cls.enabled(G)
 
     @classmethod
     def enabled(cls, dcr) -> Set[str]:
@@ -64,7 +64,7 @@ class DCRSemantics(object):
         return res
 
     @classmethod
-    def execute(cls, dcr, event):
+    def execute(cls, G, event):
         """
         Function based on semantics of execution a DCR graph
         will update the graph according to relations of the executed activity
@@ -73,8 +73,9 @@ class DCRSemantics(object):
 
         Parameters
         ----------
+        :param event: the event being executed the type activity being executed
         :param dcr: The current state of DCR graph, with activities and their relatiosn
-        :param e: the event being executed the type activity being executed
+
 
         Returns
         -------
@@ -82,29 +83,29 @@ class DCRSemantics(object):
 
         """
         #each event is called for execution is called
-        if event in dcr.marking.pending:
-            dcr.marking.pending.discard(event)
-        dcr.marking.executed.add(event)
+        if event in G.marking.pending:
+            G.marking.pending.discard(event)
+        G.marking.executed.add(event)
 
         #the following if statements are used to provide to update DCR graph
         # depeding on prime event structure within conditions relations
-        if event in dcr.excludesTo:
-            for e_prime in dcr.excludesTo[event]:
-                dcr.marking.included.discard(e_prime)
+        if event in G.excludesTo:
+            for e_prime in G.excludesTo[event]:
+                G.marking.included.discard(e_prime)
 
-        if event in dcr.includesTo:
-            for e_prime in dcr.includesTo[event]:
-                dcr.marking.included.add(e_prime)
+        if event in G.includesTo:
+            for e_prime in G.includesTo[event]:
+                G.marking.included.add(e_prime)
 
-        if event in dcr.responseTo:
-            for e_prime in dcr.responseTo[event]:
-                dcr.marking.pending.add(e_prime)
+        if event in G.responseTo:
+            for e_prime in G.responseTo[event]:
+                G.marking.pending.add(e_prime)
 
-        return dcr
+        return G
 
     @classmethod
-    def is_accepting(cls, dcr) -> bool:
-        res = dcr.marking.pending.intersection(dcr.marking.included)
+    def is_accepting(cls, G) -> bool:
+        res = G.marking.pending.intersection(G.marking.included)
         if len(res) > 0:
             return False
         else:
@@ -117,15 +118,6 @@ class DCRSemantics(object):
                 marking1.included == marking2.included and
                 marking1.pending == marking2.pending
         )
-    @classmethod
-    def run(cls, dcr, trace):
-        #runs the model, returns graph is model can run, return none if it can't
-        for e in trace:
-            if cls.is_enabled(e['concept:name'], dcr):
-                dcr = cls.execute(dcr, e['concept:name'])
-            else:
-                return None
-        return dcr
 
 
 """
