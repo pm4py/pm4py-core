@@ -106,7 +106,16 @@ class Discover:
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
         self.createLogAbstraction(log, activity_key, case_id_key)
         self.mineFromAbstraction(findAdditionalConditions=findAdditionalConditions)
-        return DCR_Graph(self.graph), self.logAbstraction
+
+        G = DCR_Graph()
+        for k, v in self.graph.items():
+            if k == 'marking':
+                for k2, v2 in v.items():
+                    G[k][k2] = v2
+            else:
+                G[k] = v
+
+        return G, self.logAbstraction
 
     def createLogAbstraction(self, log, activity_key: str, case_key: str) -> int:
         '''
@@ -245,7 +254,7 @@ class Discover:
         self.graph['events'] = self.logAbstraction['events'].copy()
 
         #insert labels and label mapping, used for bijective label mapping
-        self.graph['labels'] = self.graph['events'].copy()
+        self.graph['labels'] = deepcopy(self.graph['events'])
 
         # All events are initially included
         self.graph['marking']['included'] = self.logAbstraction['events'].copy()
@@ -257,7 +266,7 @@ class Discover:
             self.graph['excludesTo'][event] = set()
             self.graph['includesTo'][event] = set()
             self.graph['responseTo'][event] = set()
-            self.graph['milestonesFor'][event] = set()
+
 
         # Mine conditions from logAbstraction
         self.graph['conditionsFor'] = deepcopy(self.logAbstraction['precedenceFor'])
