@@ -315,6 +315,7 @@ def split_by_process_variant(log: Union[EventLog, pd.DataFrame], activity_key: s
 def get_variants_paths_duration(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name",
                                 timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name",
                                 variant_column: str = "@@variant_column",
+                                variant_count: str = "@@variant_count",
                                 index_in_trace_column: str = "@@index_in_trace",
                                 cumulative_occ_path_column: str = "@@cumulative_occ_path_column",
                                 times_agg: str = "mean") -> pd.DataFrame:
@@ -334,6 +335,7 @@ def get_variants_paths_duration(log: Union[EventLog, pd.DataFrame], activity_key
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :param variant_column: name of the utility column that stores the variant's tuple
+    :param variant_count: name of the utility column that stores the variant's number of occurrences
     :param index_in_trace_column: name of the utility column that stores the index of the event in the case
     :param cumulative_occ_path_column: name of the column that stores the cumulative occurrences of the path inside the case
     :param times_agg: aggregation (mean, median) to be used
@@ -360,7 +362,7 @@ def get_variants_paths_duration(log: Union[EventLog, pd.DataFrame], activity_key
                                                           case_id_key=case_id_key, variant_column=variant_column,
                                                           index_in_trace_column=index_in_trace_column):
         from pm4py.statistics.eventually_follows.pandas import get as eventually_follows
-        dir_follo_dataframe = eventually_follows.get_partial_order_dataframe(filtered_log, activity_key=activity_key,
+        dir_follo_dataframe = eventually_follows.get_partial_order_dataframe(filtered_log.copy(), activity_key=activity_key,
                                                                              timestamp_key=timestamp_key,
                                                                              case_id_glue=case_id_key,
                                                                              sort_caseid_required=False,
@@ -376,11 +378,16 @@ def get_variants_paths_duration(log: Union[EventLog, pd.DataFrame], activity_key
         dir_follo_dataframe[activity_key + "_2"] = dir_follo_dataframe[index_in_trace_column].apply(
             lambda x: variant[x + 1])
         dir_follo_dataframe[variant_column] = dir_follo_dataframe[index_in_trace_column].apply(lambda x: variant)
+        dir_follo_dataframe[variant_count] = filtered_log[case_id_key].nunique()
 
         list_to_concat.append(dir_follo_dataframe)
 
-    return pd.concat(list_to_concat)
+    dataframe = pd.concat(list_to_concat)
+    dataframe[index_in_trace_column] = -dataframe[index_in_trace_column]
+    dataframe = dataframe.sort_values([variant_count, variant_column, index_in_trace_column], ascending=False)
+    dataframe[index_in_trace_column] = -dataframe[index_in_trace_column]
 
+    return dataframe
 
 def get_stochastic_language(*args, **kwargs) -> Dict[List[str], float]:
     """
