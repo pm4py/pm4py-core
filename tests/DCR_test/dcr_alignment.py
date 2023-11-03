@@ -1,62 +1,86 @@
 import os
 import unittest
 import pandas as pd
-import time
 
 import pm4py
+from pm4py.algo.conformance.alignments.dcr.variants.optimal import Alignment, Performance, Facade
 from pm4py.algo.discovery.dcr_discover.algorithm import apply
 from pm4py.objects.conversion.log import converter as log_converter
 
 
-class TestDcr(unittest.TestCase):
-    def test_align_dcr_log_new_version(self):
-        log = pm4py.read_xes(os.path.join("../input_data", "running-example.xes"))
-        if isinstance(log, pd.DataFrame):
-            log = log_converter.apply(log)
-        from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
-        from pm4py.algo.conformance.alignments.dcr.variants import optimal
+class TestAlignment(unittest.TestCase):
 
-        dcr_result = apply(log, dcr_discover)
-        dcr_graph = dcr_result[0]
+    def setUp(self):
+        log_path = os.path.join("../input_data", "running-example.xes")
+        self.log = pm4py.read_xes(log_path)
+        if isinstance(self.log, pd.DataFrame):
+            self.log = log_converter.apply(self.log)
+        self.dcr_result = apply(self.log, pm4py.algo.discovery.dcr_discover.variants.dcr_discover)
+        self.dcr_graph = self.dcr_result[0]
+        self.assertIsNotNone(self.dcr_graph)
+        self.first_trace = self.log[0]
 
-        # Assertions to check the graph
-        self.assertIsNotNone(dcr_graph)
+    def test_initial_alignment(self):
+        graph_handler = self.create_graph_handler(self.dcr_graph)
+        trace_handler = self.create_trace_handler(self.first_trace)
 
-        first_trace = log[0]
-        graph_handler = optimal.DCRGraphHandler(dcr_graph)
-        trace_handler = optimal.TraceHandler(first_trace, 'concept:name')
-
-        start_time = time.time()
-        alignment_obj = optimal.Alignment(graph_handler, trace_handler)
+        alignment_obj = Alignment(graph_handler, trace_handler)
         aligned_traces = alignment_obj.apply_trace()
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        print(f"################## Time taken for alignment: {elapsed_time} seconds")
 
-        print(f"aligned traces: {aligned_traces}")
+        self.validate_alignment(aligned_traces)
 
-        # Assertions to check the alignment
+    def test_trace_alignments(self):
+        for trace in self.log:
+            self.check_trace_alignment(trace)
+
+    def test_alignment_costs(self):
+        graph_handler = self.create_graph_handler(self.dcr_graph)
+        trace_handler = self.create_trace_handler(self.first_trace)
+
+        alignment_obj = Alignment(graph_handler, trace_handler)
+        aligned_traces = alignment_obj.apply_trace()
+        self.check_alignment_cost(aligned_traces)
+
+    def test_final_alignment(self):
+        facade = Facade(self.dcr_graph, self.first_trace)
+        alignment_result = facade.perform_alignment()
+        performance_metrics = facade.get_performance_metrics()
+
+        self.assertIsNotNone(alignment_result)
+        self.assertIsNotNone(performance_metrics)
+
+        print(f"Alignment Result: {alignment_result}")
+        print(f"Performance Metrics: {performance_metrics}")
+
+    @staticmethod
+    def create_graph_handler(dcr_graph):
+        return pm4py.algo.conformance.alignments.dcr.variants.optimal.DCRGraphHandler(dcr_graph)
+
+    @staticmethod
+    def create_trace_handler(trace):
+        return pm4py.algo.conformance.alignments.dcr.variants.optimal.TraceHandler(trace, 'concept:name')
+
+    def validate_alignment(self, aligned_traces):
         self.assertIsNotNone(aligned_traces)
         self.assertIsInstance(aligned_traces, dict)
         self.assertIn('alignment', aligned_traces)
 
+    def check_trace_alignment(self, trace):
+        graph_handler = self.create_graph_handler(self.dcr_graph)
+        trace_handler = self.create_trace_handler(trace)
+
+        alignment_obj = Alignment(graph_handler, trace_handler)
+        dcr_trace_result = alignment_obj.apply_trace()
+
+        self.assertIsNotNone(dcr_trace_result)
+        self.assertIn('alignment', dcr_trace_result)
+        self.assertGreaterEqual(len(trace), len(dcr_trace_result['alignment']))
+
+        if len(trace) > 0:
+            self.assertNotEqual(len(dcr_trace_result['alignment']), 0)
+
+    def check_alignment_cost(self, aligned_traces):
         alignment = aligned_traces['alignment']
-        self.assertIsNotNone(alignment)
-
-        # Loop through all traces in the log
-        for trace in log:
-            graph_handler = optimal.DCRGraphHandler(dcr_graph)
-            trace_handler = optimal.TraceHandler(trace, 'concept:name')
-            alignment_obj = optimal.Alignment(graph_handler, trace_handler)
-            dcr_trace_result = alignment_obj.apply_trace()
-
-            self.assertIsNotNone(dcr_trace_result)
-            self.assertIn('alignment', dcr_trace_result)
-            self.assertGreaterEqual(len(trace), len(dcr_trace_result['alignment']))
-            if len(trace) > 0:
-                self.assertNotEqual(len(dcr_trace_result['alignment']), 0)
-
-        # Cost Checks
         alignment_cost = aligned_traces.get('cost', float('inf'))
         self.assertEqual(alignment_cost, aligned_traces.get('global_min', float('inf')))
 

@@ -11,6 +11,66 @@ from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.objects.conversion.log import converter as log_converter
 
 
+class Facade:
+    """
+    The Facade class provides a simplified interface to perform optimal alignment for DCR graphs,
+    abstracting the complexity of direct interactions with the DCRGraphHandler, TraceHandler, and Alignment classes.
+
+    Users should initialize the facade with a DCR_Graph object and a trace object, which can be a list of events, a Pandas DataFrame,
+    an EventLog, or a Trace. Optional parameters can also be passed to customize the processing, such as specifying custom activity
+    and case ID keys.
+
+    After initializing the facade, users can call perform_alignment() to execute the alignment process, which returns the result of
+    the alignment procedure. Once alignment is done, get_performance_metrics() can be used to calculate and retrieve performance
+    metrics such as fitness and precision for the alignment.
+
+    Example usage:
+        Define your instances of DCR graph and trace representation as 'graph' and 'trace'
+        facade = Facade(graph, trace)
+        alignment_result = facade.perform_alignment()
+        performance_metrics = facade.get_performance_metrics()
+        print(f"Alignment Result: {alignment_result}")
+        print(f"Performance Metrics: {performance_metrics}")
+
+    Note:
+    - perform_alignment() must be called before get_performance_metrics(), as the metrics calculation depends on the alignment results.
+    - The user is expected to have a basic understanding of DCR graphs and trace alignment in the context of process mining.
+
+    Attributes:
+        graph_handler (DCRGraphHandler): Handler for DCR graph operations.
+        trace_handler (TraceHandler): Handler for trace operations.
+        alignment (Alignment): Instance that holds the result of the alignment process, initialized to None.
+
+    Methods:
+        perform_alignment(): Performs trace alignment against the DCR graph and returns the alignment result.
+        get_performance_metrics(): Calculates and returns the fitness and precision performance metrics.
+    """
+
+    def __init__(self, graph: DCR_Graph, trace: Union[List[Dict[str, Any]], pd.DataFrame, EventLog, Trace],
+                 parameters: Optional[Dict] = None):
+        self.graph_handler = DCRGraphHandler(graph)
+        self.trace_handler = TraceHandler(trace, parameters)
+        self.alignment = None  # This will hold an instance of Alignment class after perform_alignment is called
+
+    def perform_alignment(self):
+        # Perform the alignment process and store the result in the self.alignment attribute
+        self.alignment = Alignment(self.graph_handler, self.trace_handler)
+        return self.alignment.apply_trace()
+
+    def get_performance_metrics(self):
+        # Ensure that alignment has been performed before calculating performance metrics
+        if not self.alignment:
+            raise ValueError("Alignment has not been performed yet.")
+        # Calculate and return fitness and precision based on the alignment result
+        performance = Performance(self.alignment, self.trace_handler)
+        fitness = performance.calculate_fitness()
+        precision = performance.calculate_precision()
+        return {
+            'fitness': fitness,
+            'precision': precision
+        }
+
+
 class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
@@ -21,6 +81,7 @@ class Outputs(Enum):
     COST = "cost"
     VISITED = "visited_states"
     CLOSED = "closed"
+    GLOBAL_MIN = "global_min"
 
 
 class TraceHandler:
@@ -66,9 +127,27 @@ class DCRGraphHandler:
         self.graph.reset()
 
 
+class Performance:
+    def __init__(self, alignment, trace_handler):
+        self.alignment = alignment
+        self.trace_handler = trace_handler
+
+    def calculate_fitness(self):
+        # Use the stored cost values from the Alignment object to compute the fitness
+        fitness = 1 - (self.alignment.optimal_alignment_cost / self.alignment.worst_case_alignment_cost) \
+            if self.alignment.worst_case_alignment_cost > 0 else 0
+        return fitness
+
+    @staticmethod
+    def calculate_precision():
+        # Implement if we have the time
+        precision = 1.0
+        return precision
+
+
 class Alignment:
     """
-    This class contains the object oriented implementation of the Optimal Alignments algorithm,
+    This class contains the object-oriented implementation of the Optimal Alignments algorithm,
     based on the paper by:
     Author: Axel Kjeld Fjelrad Christfort and Tijs Slaats
     Title: Efficient Optimal Alignment Between Dynamic Condition Response Graphs and Traces
@@ -95,6 +174,8 @@ class Alignment:
         self.new_moves = []
         self.final_alignment = []
         self.closed_markings = set()
+        self.optimal_alignment_cost = 0
+        self.worst_case_alignment_cost = 0
 
     def handle_state(self, curr_cost, curr_graph, curr_trace, current, moves, move_type=None):
         """
@@ -211,6 +292,9 @@ class Alignment:
             new_cost += 1
             new_move = ('log', first_activity)
             new_trace = curr_trace[1:]
+
+        self.optimal_alignment_cost = min(self.optimal_alignment_cost, new_cost)
+        self.worst_case_alignment_cost = len(self.trace_handler.trace) + len(self.graph_handler.graph.events)
 
         return new_cost, new_graph, new_trace, new_move
 
@@ -333,11 +417,9 @@ class Alignment:
                 self.handle_state(curr_cost, curr_graph, curr_trace, current, moves)
 
         return {
-            'alignment': self.final_alignment,
-            'cost': final_cost,
-            'visited': visited,
-            'closed': closed,
-            'global_min': self.global_min
+            Outputs.ALIGNMENT.value: self.final_alignment,
+            Outputs.COST.value: final_cost,
+            Outputs.VISITED.value: visited,
+            Outputs.CLOSED.value: closed,
+            Outputs.GLOBAL_MIN.value: self.global_min
         }
-
-
