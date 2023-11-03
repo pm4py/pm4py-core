@@ -4,7 +4,7 @@ import isodate
 
 from pm4py.util import constants
 from copy import deepcopy
-from pm4py.objects.dcr.obj import Relations, dcr_template
+from pm4py.objects.dcr.obj import Relations, dcr_template, DCR_Graph
 
 I = Relations.I.value
 E = Relations.E.value
@@ -167,7 +167,18 @@ def import_xml_tree_from_root(root, white_space_replacement=None):
     dcr = copy.deepcopy(dcr_template)
     dcr = parse_element(root, None, dcr)
     dcr = clean_input(dcr, white_space_replacement='')
-    return dcr
+    '''
+    Transform the dictionary into a DCR_Graph object
+    '''
+    G = DCR_Graph()
+    for k, v in dcr.items():
+        if k == 'marking':
+            for k2, v2 in v.items():
+                G[k][k2] = v2
+        else:
+            G[k] = v
+
+    return G
 
 
 def clean_input(dcr, white_space_replacement=None):

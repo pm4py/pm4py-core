@@ -224,9 +224,8 @@ def clean_output(dcr):
             graph[K] = v_new
         elif K == 'marking':
             for k2 in ['executed', 'included', 'pending']:
-                print(dcr.__dict__[k][k2])
-                # new_v = set([v2.strip().replace(' ', '_') for v2 in dcr.__dict__[k][k2]]) # TODO: check if this works with new implementation
-                # graph[K][k2] = new_v
+                new_v = set([v2.strip().replace(' ', '_') for v2 in dcr.__dict__[k][k2]])
+                graph[K][k2] = new_v
         elif K in ['subprocesses', 'nestings', 'labelMapping', 'roleAssignments', 'readRoleAssignments']:
             v_new = {}
             for k2, v2 in v.items():
@@ -235,32 +234,4 @@ def clean_output(dcr):
         else:
             new_v = set([v2.strip().replace(' ', '_') for v2 in dcr.__dict__[k]])
             graph[K] = set(new_v)
-    # print(graph['marking'])
-    print(dcr.__dict__['_DCR_Graph__marking'])
     return graph
-
-# def clean_output(dcr):
-#     for k, v in deepcopy(dcr).items():
-#         if k in (relation.value for relation in Relations):
-#             v_new = {}
-#             for k2, v2 in v.items():
-#                 v_new[k2.strip().replace(' ', '_')] = set([v3.strip().replace(' ', '_') for v3 in v2])
-#             dcr[k] = v_new
-#         elif k in ['conditionsForDelays', 'responseToDeadlines']:
-#             v_new = {}
-#             for k2, v2 in v.items():
-#                 v_new[k2.strip().replace(' ', '_')] = set([(v3.strip().replace(' ', '_'),d) for (v3,d) in v2])
-#             dcr[k] = v_new
-#         elif k == 'marking':
-#             for k2 in ['executed', 'included', 'pending']:
-#                 new_v = set([v2.strip().replace(' ', '_') for v2 in dcr[k][k2]])
-#                 dcr[k][k2] = new_v
-#         elif k in ['subprocesses', 'nestings', 'labelMapping', 'roleAssignments', 'readRoleAssignments']:
-#             v_new = {}
-#             for k2, v2 in v.items():
-#                 v_new[k2.strip().replace(' ', '_')] = set([v3.strip().replace(' ', '_') for v3 in v2])
-#             dcr[k] = v_new
-#         else:
-#             new_v = set([v2.strip().replace(' ', '_') for v2 in dcr[k]])
-#             dcr[k] = new_v
-#     return dcr
