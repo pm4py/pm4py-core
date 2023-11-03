@@ -40,7 +40,9 @@ import deprecation
 import importlib.util
 
 
-def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
+def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name",
+                 timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[
+    dict, dict, dict]:
     """
     Discovers a Directly-Follows Graph (DFG) from a log.
 
@@ -95,7 +97,7 @@ def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concep
 
 def discover_directly_follows_graph(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name",
                                     timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> \
-Tuple[dict, dict, dict]:
+        Tuple[dict, dict, dict]:
     if type(log) not in [pd.DataFrame, EventLog, EventStream]:
         raise Exception(
             "the method can be applied only to a traditional event log!")
@@ -281,7 +283,7 @@ def discover_petri_net_ilp(log: Union[EventLog, pd.DataFrame], alpha: float = 1.
                         details="this method will be removed in a future release.")
 def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name",
                                   timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> \
-Tuple[PetriNet, Marking, Marking]:
+        Tuple[PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the Alpha+ algorithm
 
@@ -306,7 +308,7 @@ Tuple[PetriNet, Marking, Marking]:
         check_pandas_dataframe_columns(
             log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key,
-                                                       case_id_key=case_id_key)
+                                case_id_key=case_id_key)
 
     from pm4py.algo.discovery.alpha import algorithm as alpha_miner
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS,
@@ -318,8 +320,8 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame, DFG],
                                  multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT,
                                  noise_threshold: float = 0.0, activity_key: str = "concept:name",
                                  timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> \
-Tuple[
-    PetriNet, Marking, Marking]:
+        Tuple[
+            PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the inductive miner algorithm.
 
@@ -361,7 +363,7 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
                                   and_threshold: float = 0.65,
                                   loop_two_threshold: float = 0.5, activity_key: str = "concept:name",
                                   timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> \
-Tuple[PetriNet, Marking, Marking]:
+        Tuple[PetriNet, Marking, Marking]:
     """
     Discover a Petri net using the Heuristics Miner
 
@@ -557,7 +559,7 @@ def discover_footprints(*args: Union[EventLog, Tuple[PetriNet, Marking, Marking]
 
 def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name",
                                       timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> \
-Dict[Tuple[str, str], int]:
+        Dict[Tuple[str, str], int]:
     """
     Gets the eventually follows graph from a log object.
 
@@ -925,7 +927,10 @@ def discover_batches(log: Union[EventLog, pd.DataFrame], merge_distance: int = 1
     return batches_discovery.apply(log, parameters=properties)
 
 
-def discover_dcr(log: Union[EventLog, pd.DataFrame], process_type=None, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource", role_key: str = "org:role", finaAdditionalConditions: bool = True):
+def discover_dcr(log: Union[EventLog, pd.DataFrame], process_type: Set[str] = None, activity_key: str = "concept:name",
+                 timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name",
+                 resource_key: str = "org:resource", group_key: str = "org:group",
+                 finaAdditionalConditions: bool = True) -> Tuple[Any, Dict[str, Any]]:
     """
         Discovers a DCR graph from an event log.
 
@@ -933,12 +938,12 @@ def discover_dcr(log: Union[EventLog, pd.DataFrame], process_type=None, activity
         C. O. Back, T. Slaats, T. T. Hildebrandt, M. Marquard, "DisCoveR: accurate and efficient discovery of declarative process models"
 
         :param log: event log / Pandas dataframe
-        :param process_type: provides type of post-processing for the event log, currently implemented roles
+        :param process_type: provides type of post-processing for the event log, current supports Roles
         :param activity_key: attribute to be used for the activity
         :param timestamp_key: attribute to be used for the timestamp
         :param case_id_key: attribute to be used as case identifier
         :param resource_key: attribute to be used as a resource identifier
-        :param role_key: attribute to be used as a role identifier
+        :param group_key: attribute to be used as a role identifier
         :param finaAdditionalConditions: boolean value to specify whether additional conditions should be found
         :rtype: ``Tuple[DCR_Graph, dict]``
 
@@ -953,10 +958,11 @@ def discover_dcr(log: Union[EventLog, pd.DataFrame], process_type=None, activity
             "the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
     if check_is_pandas_dataframe(log):
-        check_pandas_dataframe_columns(log)
+        check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key,
+                                       timestamp_key=timestamp_key)
     properties = get_properties(
-        log, activity_key=activity_key, case_id_key=case_id_key,
-        resource_key=resource_key, role_key=role_key)
+        log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key,
+        resource_key=resource_key, group_key=group_key)
 
     from pm4py.algo.discovery.dcr_discover import algorithm as dcr_alg
     from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
