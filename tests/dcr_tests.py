@@ -2,7 +2,7 @@ import os
 import unittest
 
 import pm4py
-from pm4py.algo.discovery.dcr_discover.algorithm import apply
+from pm4py.algo.discovery.dcr_discover.algorithm import apply, Variants
 from pm4py.algo.discovery.dcr_discover.variants import dcr_discover as disc_alg
 from pm4py.objects.dcr.importer import importer as dcr_importer
 from pm4py.objects.dcr.importer.variants.xml_dcr_portal import apply as import_apply
@@ -57,12 +57,21 @@ class TestDcr(unittest.TestCase):
     #     export_apply(dcr_graph=dcr_imported_after_export,path=path,variant=dcr_exporter.DCR_JS_PORTAL, dcr_title='running-example_dcr_js_portal')
     #     os.remove(dcrxml_file_export)
 
-    def test_xes_to_dcr_js_portal(self):
+    # def test_xes_to_dcr_js_portal(self):
+    #     event_log_file = os.path.join("input_data", "receipt.xes")
+    #     dcrxml_file_export = "C:/Users/herma/Downloads/receipt_dcr_js_portal.xml"
+    #     log = pm4py.read_xes(event_log_file)
+    #     dcr, _ = disc_alg.apply(log)
+    #     pm4py.write_dcr_xml(dcr_graph=dcr,path=dcrxml_file_export,variant=dcr_exporter.DCR_JS_PORTAL, dcr_title='receipt_dcr_js_portal')
+
+    def test_import_export_portal(self):
         event_log_file = os.path.join("input_data", "receipt.xes")
-        dcrxml_file_export = os.path.join("test_output_data", "receipt_dcr_js_portal.xml")
+        dcrxml_file_export = "C:/Users/herma/Downloads/receipt_exported.xml"
         log = pm4py.read_xes(event_log_file)
-        dcr, _ = disc_alg.apply(log)
-        export_apply(dcr_graph=dcr,path=dcrxml_file_export,variant=dcr_exporter.DCR_JS_PORTAL, dcr_title='receipt_dcr_js_portal')
+        # dcr, _ = disc_alg.apply(log)
+        dcr, _ = apply(log, variant=Variants.DCR_BASIC)
+        # print((dcr['events']))
+        pm4py.write_dcr_xml(dcr_graph=dcr, path=dcrxml_file_export, variant=dcr_exporter.Variants.DCR_JS_PORTAL, dcr_title='receipt_exported_dcr_js_portal')
 
 if __name__ == '__main__':
     unittest.main()

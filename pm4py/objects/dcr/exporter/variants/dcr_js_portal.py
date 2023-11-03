@@ -1,5 +1,6 @@
 from lxml import etree
-from pm4py.objects.dcr.obj import Relations
+from pm4py.objects.dcr.obj import Relations, dcr_template
+from copy import deepcopy
 
 '''
 The output file is to be visualised using the following link:
@@ -148,36 +149,118 @@ Connects two events with corresponding constraint arrow
 
 
 def create_arrows(xml_waypoints, xcoord, ycoord, event, event_prime):
+    if xcoord[event] < xcoord[event_prime] and ycoord[event] < ycoord[event_prime]:
+        xoffset = 130
+        xprimeoffset = 0
+        yoffset = 75
+        yprimeoffset = 75
+    elif xcoord[event] < xcoord[event_prime] and ycoord[event] > ycoord[event_prime]:
+        xoffset = 130
+        xprimeoffset = 0
+        yoffset = 75
+        yprimeoffset = 75
+    elif xcoord[event] > xcoord[event_prime] and ycoord[event] < ycoord[event_prime]:
+        xoffset = 0
+        xprimeoffset = 130
+        yoffset = 75
+        yprimeoffset = 75
+    elif xcoord[event] > xcoord[event_prime] and ycoord[event] > ycoord[event_prime]:
+        xoffset = 0
+        xprimeoffset = 130
+        yoffset = 75
+        yprimeoffset = 75
+    elif xcoord[event] == xcoord[event_prime] and ycoord[event] < ycoord[event_prime]:
+        xoffset = 65
+        xprimeoffset = 65
+        yoffset = 150
+        yprimeoffset = 0
+    elif xcoord[event] == xcoord[event_prime] and ycoord[event] > ycoord[event_prime]:
+        xoffset = 65
+        xprimeoffset = 65
+        yoffset = 0
+        yprimeoffset = 150
+    elif xcoord[event] < xcoord[event_prime] and ycoord[event] == ycoord[event_prime]:
+        xoffset = 130
+        xprimeoffset = 0
+        yoffset = 75
+        yprimeoffset = 75
+    elif xcoord[event] > xcoord[event_prime] and ycoord[event] == ycoord[event_prime]:
+        xoffset = 0
+        xprimeoffset = 130
+        yoffset = 75
+        yprimeoffset = 75
+
     xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
-    xml_waypoint.set("x", str(xcoord[event]+65))
-    xml_waypoint.set("y", str(ycoord[event]+75))
+    xml_waypoint.set("x", str(xcoord[event]+xoffset))
+    xml_waypoint.set("y", str(ycoord[event]+yoffset))
     xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
-    xml_waypoint.set("x", str(xcoord[event_prime]+65))
-    xml_waypoint.set("y", str(ycoord[event_prime]+75))
+    xml_waypoint.set("x", str((xcoord[event]+xoffset+xcoord[event_prime]+xprimeoffset)/2))
+    xml_waypoint.set("y", str(ycoord[event]+yoffset))
+    xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
+    xml_waypoint.set("x", str((xcoord[event]+xoffset+xcoord[event_prime]+xprimeoffset)/2))
+    xml_waypoint.set("y", str(ycoord[event_prime]+yprimeoffset))
+    xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
+    xml_waypoint.set("x", str(xcoord[event_prime]+xprimeoffset))
+    xml_waypoint.set("y", str(ycoord[event_prime]+yprimeoffset))
 
 
+'''
+Removes spaces to satisfy the dcr-js portal
+'''
 def clean_output(dcr):
-    for k, v in dcr.items():
-        if k in (relation.value for relation in Relations):
+    graph = deepcopy(dcr_template)
+    for k, v in dcr.__dict__.items():
+        item = list(k.split('_'))
+        K = item[len(item)-1]
+        if K in (relation.value for relation in Relations):
             v_new = {}
             for k2, v2 in v.items():
                 v_new[k2.strip().replace(' ', '_')] = set([v3.strip().replace(' ', '_') for v3 in v2])
-            dcr[k] = v_new
-        elif k in ['conditionsForDelays', 'responseToDeadlines']:
+            graph[K] = v_new
+        elif K in ['conditionsForDelays', 'responseToDeadlines']:
             v_new = {}
             for k2, v2 in v.items():
                 v_new[k2.strip().replace(' ', '_')] = set([(v3.strip().replace(' ', '_'), d) for (v3, d) in v2])
-            dcr[k] = v_new
-        elif k == 'marking':
+            graph[K] = v_new
+        elif K == 'marking':
             for k2 in ['executed', 'included', 'pending']:
-                new_v = set([v2.strip().replace(' ', '_') for v2 in dcr[k][k2]])
-                dcr[k][k2] = new_v
-        elif k in ['subprocesses', 'nestings', 'labelMapping', 'roleAssignments', 'readRoleAssignments']:
+                print(dcr.__dict__[k][k2])
+                # new_v = set([v2.strip().replace(' ', '_') for v2 in dcr.__dict__[k][k2]]) # TODO: check if this works with new implementation
+                # graph[K][k2] = new_v
+        elif K in ['subprocesses', 'nestings', 'labelMapping', 'roleAssignments', 'readRoleAssignments']:
             v_new = {}
             for k2, v2 in v.items():
                 v_new[k2.strip().replace(' ', '_')] = set([v3.strip().replace(' ', '_') for v3 in v2])
-            dcr[k] = v_new
+            graph[K] = v_new
         else:
-            new_v = set([v2.strip().replace(' ', '_') for v2 in dcr[k]])
-            dcr[k] = new_v
-    return dcr
+            new_v = set([v2.strip().replace(' ', '_') for v2 in dcr.__dict__[k]])
+            graph[K] = set(new_v)
+    # print(graph['marking'])
+    print(dcr.__dict__['_DCR_Graph__marking'])
+    return graph
+
+# def clean_output(dcr):
+#     for k, v in deepcopy(dcr).items():
+#         if k in (relation.value for relation in Relations):
+#             v_new = {}
+#             for k2, v2 in v.items():
+#                 v_new[k2.strip().replace(' ', '_')] = set([v3.strip().replace(' ', '_') for v3 in v2])
+#             dcr[k] = v_new
+#         elif k in ['conditionsForDelays', 'responseToDeadlines']:
+#             v_new = {}
+#             for k2, v2 in v.items():
+#                 v_new[k2.strip().replace(' ', '_')] = set([(v3.strip().replace(' ', '_'),d) for (v3,d) in v2])
+#             dcr[k] = v_new
+#         elif k == 'marking':
+#             for k2 in ['executed', 'included', 'pending']:
+#                 new_v = set([v2.strip().replace(' ', '_') for v2 in dcr[k][k2]])
+#                 dcr[k][k2] = new_v
+#         elif k in ['subprocesses', 'nestings', 'labelMapping', 'roleAssignments', 'readRoleAssignments']:
+#             v_new = {}
+#             for k2, v2 in v.items():
+#                 v_new[k2.strip().replace(' ', '_')] = set([v3.strip().replace(' ', '_') for v3 in v2])
+#             dcr[k] = v_new
+#         else:
+#             new_v = set([v2.strip().replace(' ', '_') for v2 in dcr[k]])
+#             dcr[k] = new_v
+#     return dcr
