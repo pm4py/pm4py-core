@@ -88,6 +88,42 @@ class Outputs(Enum):
 
 
 class TraceHandler:
+    """
+        TraceHandler is responsible for managing and converting traces into a format suitable
+        for the alignment algorithm. This class provides functionalities to check if the trace is
+        empty, retrieve the first activity from the trace, and convert the trace format as needed.
+
+        A trace can be provided as a list of dictionaries, a pandas DataFrame, an EventLog, or a Trace object.
+        The TraceHandler takes care of converting these into a uniform internal representation.
+
+        Attributes
+        ----------
+        trace : Union[List[Dict[str, Any]], pd.DataFrame, EventLog, Trace]
+            The trace to be managed and converted. It's stored internally in a list of dictionaries
+            regardless of the input format.
+        activity_key : str
+            The key to identify activities within the trace data.
+
+        Methods
+        -------
+        is_empty() -> bool:
+            Checks if the trace is empty (contains no events).
+
+        get_first_activity() -> Any:
+            Retrieves the first activity from the trace, if available.
+
+        convert_trace(activity_key, case_id_key, parameters):
+            Converts the trace into a tuple-based format required for processing by the alignment algorithm.
+            This conversion handles both DataFrame and Event Log traces and can be configured via parameters.
+
+        Parameters
+        ----------
+        trace : Union[List[Dict[str, Any]], pd.DataFrame, EventLog, Trace]
+            The initial trace data provided in one of the acceptable formats.
+        parameters : Optional[Dict]
+            Optional parameters for trace conversion. These can define the keys for activity and case ID within
+            the trace data and can include other conversion-related parameters.
+        """
     def __init__(self, trace: Union[List[Dict[str, Any]], pd.DataFrame, EventLog, Trace],
                  parameters: Optional[Dict] = None):
         if parameters is None or not isinstance(parameters, dict):
@@ -123,6 +159,41 @@ class TraceHandler:
 
 
 class DCRGraphHandler:
+    """
+        DCRGraphHandler manages operations on a DCR graph within the context of an alignment algorithm.
+        It provides methods to check if an event is enabled, if the graph is in an accepting state,
+        and to execute an event on the graph.
+
+        The DCR graph follows the semantics defined in the DCR semantics module, and this class
+        acts as an interface to apply these semantics for the purpose of alignment computation.
+
+        Attributes
+        ----------
+        graph : DCR_Graph
+            The DCR graph on which the operations are to be performed.
+
+        Methods
+        -------
+        is_enabled(event: Any) -> bool:
+            Determines if an event is enabled in the current state of the DCR graph.
+
+        is_accepting() -> bool:
+            Checks if the current state of the DCR graph is an accepting state.
+
+        execute(event: Any, curr_graph) -> Any:
+            Executes an event on the DCR graph, which may result in a transition to a new state.
+            If the execution is not possible, it returns the current graph state.
+
+        Parameters
+        ----------
+        graph : DCR_Graph
+            An instance of a DCR_Graph object which the handler will manage and manipulate.
+
+        Raises
+        ------
+        TypeError
+            If the provided graph is not an instance of DCR_Graph.
+        """
     def __init__(self, graph: DCR_Graph):
         if not isinstance(graph, DCR_Graph):
             raise TypeError(f"Expected a DCR_Graph object, got {type(graph)} instead")
@@ -419,6 +490,29 @@ class Alignment:
             self.handle_state(curr_cost, current[1], current[2], current[3], moves, "log")
 
     def construct_results(self, visited, closed, final_cost):
+        """
+        Constructs a dictionary of results from the alignment process containing various metrics
+        and outcomes, such as the final alignment, its cost, and statistics about the search process.
+
+        Parameters
+        ----------
+        visited : int
+            The number of states visited during the alignment process.
+        closed : int
+            The number of states that were closed (i.e., fully processed and will not be revisited).
+        final_cost : float
+            The cost associated with the final alignment obtained.
+
+        Returns
+        -------
+        dict
+            A dictionary with keys corresponding to various outputs of the alignment process:
+            - 'alignment': The final alignment between the process model and the trace.
+            - 'cost': The cost of the final alignment.
+            - 'visited': The total number of visited states.
+            - 'closed': The total number of closed states.
+            - 'global_min': The global minimum cost across all explored alignments.
+        """
         return {
             Outputs.ALIGNMENT.value: self.final_alignment,
             Outputs.COST.value: final_cost,
