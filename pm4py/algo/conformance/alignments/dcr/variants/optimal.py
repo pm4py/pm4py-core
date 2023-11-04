@@ -279,20 +279,20 @@ class Alignment:
         first_activity = self.trace_handler.get_first_activity()
 
         if move_type == "sync":
-            new_cost += Parameters.SYNC_COST
+            new_cost += Parameters.SYNC_COST.value
             new_move = ('sync', first_activity)
             new_trace = curr_trace[1:]
             if self.graph_handler.is_enabled(first_activity):
                 new_graph = self.graph_handler.execute(first_activity, new_graph)
 
         elif move_type == "model":
-            new_cost += Parameters.MODEL_COST
+            new_cost += Parameters.MODEL_COST.value
             new_move = ('model', first_activity)
             if self.graph_handler.is_enabled(first_activity):
                 new_graph = self.graph_handler.execute(first_activity, new_graph)
 
         elif move_type == "log":
-            new_cost += Parameters.LOG_COST
+            new_cost += Parameters.LOG_COST.value
             new_move = ('log', first_activity)
             new_trace = curr_trace[1:]
 
