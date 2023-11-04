@@ -833,7 +833,7 @@ def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DCR_Graph, ac
         log = convert_to_event_log(log, case_id_key=case_id_key)
         case_key = None
 
-    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_key, group_key=group_key, resource_key=resource_key)
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, group_key=group_key, resource_key=resource_key)
 
     from pm4py.algo.conformance.dcr import algorithm as dcr_conformance
     result = dcr_conformance.apply(log, dcr_graph, parameters=properties)
