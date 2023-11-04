@@ -74,6 +74,9 @@ class Facade:
 class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    SYNC_COST = 0
+    MODEL_COST = 1
+    LOG_COST = 1
 
 
 class Outputs(Enum):
@@ -151,7 +154,7 @@ class Alignment:
     based on the paper by:
     Author: Axel Kjeld Fjelrad Christfort and Tijs Slaats
     Title: Efficient Optimal Alignment Between Dynamic Condition Response Graphs and Traces
-    Publisher: Springer
+    Publisher: Springer International Publishing
     Year: 2023
     DOI: 10.1007/978-3-031-41620-0_1
     Book: Business Process Management (pp.3-19)
@@ -276,20 +279,20 @@ class Alignment:
         first_activity = self.trace_handler.get_first_activity()
 
         if move_type == "sync":
-            new_cost += 0
+            new_cost += Parameters.SYNC_COST
             new_move = ('sync', first_activity)
             new_trace = curr_trace[1:]
             if self.graph_handler.is_enabled(first_activity):
                 new_graph = self.graph_handler.execute(first_activity, new_graph)
 
         elif move_type == "model":
-            new_cost += 1
+            new_cost += Parameters.MODEL_COST
             new_move = ('model', first_activity)
             if self.graph_handler.is_enabled(first_activity):
                 new_graph = self.graph_handler.execute(first_activity, new_graph)
 
         elif move_type == "log":
-            new_cost += 1
+            new_cost += Parameters.LOG_COST
             new_move = ('log', first_activity)
             new_trace = curr_trace[1:]
 
