@@ -942,8 +942,8 @@ def discover_dcr(log: Union[EventLog, pd.DataFrame], process_type: Set[str] = No
         :param activity_key: attribute to be used for the activity
         :param timestamp_key: attribute to be used for the timestamp
         :param case_id_key: attribute to be used as case identifier
-        :param resource_key: attribute to be used as a resource identifier
         :param group_key: attribute to be used as a role identifier
+        :param resource_key: attribute to be used as a resource identifier
         :param finaAdditionalConditions: boolean value to specify whether additional conditions should be found
         :rtype: ``Tuple[DCR_Graph, dict]``
 
@@ -951,7 +951,7 @@ def discover_dcr(log: Union[EventLog, pd.DataFrame], process_type: Set[str] = No
 
             import pm4py
 
-            DCR_graph = pm4py.discover_DCR(log)
+            G = pm4py.discover_DCR(log)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]:
         raise Exception(
