@@ -1,5 +1,5 @@
 colorama==0.4.6
-contourpy==1.1.1
+contourpy==1.2.0
 cycler==0.12.1
 deprecation==2.1.0
 fonttools==4.44.0
