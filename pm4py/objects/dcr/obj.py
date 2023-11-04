@@ -30,13 +30,11 @@ dcr_template = {
     'subprocesses': {},
     'nestings': {},
     'labels': set(),
-    # <<<<<<< HEAD
     'labelMapping': {},
     'roles': set(),
     'principals': set(),
     'roleAssignments': {},
     'readRoleAssignments': {}
-    # >>>>>>> 40a38596ee1706d65f38e531c20db84f2ffdedba
 }
 
 
@@ -88,6 +86,11 @@ class Marking:
             if item == key.split("_")[-1]:
                 return value
 
+    def __setitem__(self, item, value):
+        for key, _ in vars(self).items():
+            if item == key.split("_")[-1]:
+                setattr(self, key, value)
+
 
 class DCR_Graph(object):
     """
@@ -100,17 +103,17 @@ class DCR_Graph(object):
     """
 
     # initiate the objects: contains events ID, activity, the 4 relations, markings, roles and principals
-    def __init__(self, template):
+    def __init__(self):
         # DisCoveR uses bijective labelling, each event has one label
-        self.__events = set(template['events'])
-        self.__marking = Marking(template['marking']['executed'], template['marking']['included'],
-                                 template['marking']['pending'])
-        self.__labels = template['labels']
-        self.__conditionsFor = template['conditionsFor']
-        self.__responseTo = template['responseTo']
-        self.__includesTo = template['includesTo']
-        self.__excludesTo = template['excludesTo']
-        self.__labelMapping = template['labelMapping']
+        self.__events = set()
+        self.__marking = Marking(set(), set(),
+                                 set())
+        self.__labels = set()
+        self.__conditionsFor = {}
+        self.__responseTo = {}
+        self.__includesTo = {}
+        self.__excludesTo = {}
+        self.__labelMapping = {}
 
     # @property functions to extract values used for data manipulation and testing
     @property
@@ -249,3 +252,8 @@ class DCR_Graph(object):
         for key, value in vars(self).items():
             if item == key.split("_")[-1]:
                 return value
+
+    def __setitem__(self, item, value):
+        for key,_ in vars(self).items():
+            if item == key.split("_")[-1]:
+                setattr(self,key,value)

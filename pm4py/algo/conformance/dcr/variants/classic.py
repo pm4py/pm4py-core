@@ -59,23 +59,34 @@ class RuleBasedConformance:
             G.reset()
             # create base dict to accumalate trace conformance data
             ret = {'no_constr_total': total_num_constraints, 'deviations': []}
+
+            response_origin = []
             # iterate through all events in a trace
             for event in trace:
                 # get the event to be executed
-                act = G.getEvent(event[activity_key])
+                e = G.getEvent(event[activity_key])
 
                 #check for deviations
-                if not self.__semantics.is_enabled(act, G):
-                    self.__checker.enabled_checker(act, G, ret['deviations'], parameters=parameters)
+                if e in G.responseTo:
+                    for response in G.responseTo[e]:
+                        response_origin.append([e, response])
 
-                self.__checker.all_checker(act, event, G, ret['deviations'], parameters=parameters)
+                self.__checker.all_checker(e, event, G, ret['deviations'], parameters=parameters)
 
-                # execute the event, return dcr with updated marking
-                G = self.__semantics.execute(G, act)
+                if not self.__semantics.is_enabled(e, G):
+                    self.__checker.enabled_checker(e, G, ret['deviations'], parameters=parameters)
+
+                # execute the event
+                G = self.__semantics.execute(G, e)
+
+                if len(response_origin)>0:
+                    for i in response_origin:
+                        if e in i[1]:
+                            response_origin.remove(i)
 
             # check if run is accepting
             if not self.__semantics.is_accepting(G):
-                self.__checker.accepting_checker(G, ret['deviations'], parameters=parameters)
+                self.__checker.accepting_checker(G, response_origin, ret['deviations'], parameters=parameters)
 
             # compute the conformance for the trace
             ret["no_dev_total"] = len(ret["deviations"])
@@ -90,11 +101,10 @@ def apply(log: Union[pd.DataFrame, EventLog], dcr,
           parameters: Optional[Dict[Union[str, Any], Any]] = None, additional: bool = False):
     """
     Applies rule based conformance checking against a DCR graph and an event log.
+    Replays the entire log, executing each event and store potential deviations based on set rules associated with the DCR graph.
 
-    Replays the entire log, executing each event and store potential deviations based on set rules associated with the DCR graph
-
-    implementation based on the theory provided in [1],
-    and inspired by the implementation of conformance checker that does replay of log on a DCR graph [2].
+    implementation based on the theory provided in [1]_,
+    and inspired by the Github implementation of conformance checking using trace replay on a DCR graph [2]_.
 
     Parameters
     ---------------
@@ -106,23 +116,24 @@ def apply(log: Union[pd.DataFrame, EventLog], dcr,
         Possible parameters of the algorithm, including:
         - Parameters.ACTIVITY_KEY => the attribute to be used as activity
         - Parameters.CASE_ID_KEY => the attribute to be used as case identifier
-        - Parameters.ROLE_KEY => the attribute to be used as role identifier
+        - Parameters.GROUP_KEY => the attribute to be used as role identifier
 
     Returns
     ---------------
-    lst_conf_res
-        List containing for every case a dictionary with different keys:
-        - no_constr_total => the total number of constraints of the DECLARE model
-        - deviations => a list of deviations
-        - no_dev_total => the total number of deviations
-        - dev_fitness => the fitness (1 - no_dev_total / no_constr_total)
-        - is_fit => True if the case is perfectly fit
+    conf_res
+        List containing dictionaries with the following keys and values:
+        - no_constr_total: the total number of constraints of the DCR Graphs
+        - deviations: the list of deviations
+        - no_dev_total: the total number of deviations
+        - dev_fitness: the fitness (1 - no_dev_total / no_constr_total),
+        - is_fit: True if the case is perfectly fit
 
     References
     ----------
     .. [1] C. Josep et al., "Conformance Checking Software",
       	Springer International Publishing, 65-74, 2018. `DOI <https://doi.org/10.1007/978-3-319-99414-7>`_.
     .. [2] Sebastian Dunzer, 'Link <https://github.com/fau-is/cc-dcr/tree/master>
+
     """
     if parameters is None:
         parameters = {}
@@ -200,13 +211,9 @@ def __transform_pandas_dataframe(dataframe, case_id_key):
     log.append(list_events)
     return log
 
-
-def get_diagnostics_dataframe(log, conf_result, parameters=None) -> pd.DataFrame:
+def get_diagnostics_dataframe(log: Union[EventLog, pd.DataFrame], conf_result: List[Dict[str, Any]], parameters=None) -> pd.DataFrame:
     """
-    Implemented to provide the same diagnositcs dataframe as declare and log skeleton
-
-    Gets the diagnostics dataframe from a log and the results
-    of DCR-based conformance checking
+    Gets the diagnostics dataframe from a log and the results of conformance checking of DCR graph
 
     Parameters
     ---------------

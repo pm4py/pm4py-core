@@ -3,7 +3,7 @@
   <specification>
     <resources>
       <events>
-        <event id="LacticAcid">
+        <event id="IVLiquid">
           <custom>
             <visualization>
               <location xLoc="0" yLoc="0"/>
@@ -11,7 +11,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="Leucocytes">
+        <event id="LacticAcid">
           <custom>
             <visualization>
               <location xLoc="300" yLoc="0"/>
@@ -19,7 +19,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="ERSepsisTriage">
+        <event id="CRP">
           <custom>
             <visualization>
               <location xLoc="600" yLoc="0"/>
@@ -27,7 +27,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="AdmissionNC">
+        <event id="ERSepsisTriage">
           <custom>
             <visualization>
               <location xLoc="900" yLoc="0"/>
@@ -35,7 +35,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="ERTriage">
+        <event id="ReturnER">
           <custom>
             <visualization>
               <location xLoc="1200" yLoc="0"/>
@@ -43,7 +43,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="ReleaseA">
+        <event id="ReleaseD">
           <custom>
             <visualization>
               <location xLoc="0" yLoc="300"/>
@@ -51,7 +51,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="ReleaseB">
+        <event id="ReleaseC">
           <custom>
             <visualization>
               <location xLoc="300" yLoc="300"/>
@@ -59,7 +59,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="AdmissionIC">
+        <event id="ReleaseB">
           <custom>
             <visualization>
               <location xLoc="600" yLoc="300"/>
@@ -67,7 +67,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="IVLiquid">
+        <event id="ReleaseE">
           <custom>
             <visualization>
               <location xLoc="900" yLoc="300"/>
@@ -75,7 +75,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="ReturnER">
+        <event id="IVAntibiotics">
           <custom>
             <visualization>
               <location xLoc="1200" yLoc="300"/>
@@ -83,7 +83,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="ERRegistration">
+        <event id="ReleaseA">
           <custom>
             <visualization>
               <location xLoc="0" yLoc="600"/>
@@ -91,7 +91,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="ReleaseC">
+        <event id="AdmissionNC">
           <custom>
             <visualization>
               <location xLoc="300" yLoc="600"/>
@@ -99,7 +99,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="ReleaseD">
+        <event id="AdmissionIC">
           <custom>
             <visualization>
               <location xLoc="600" yLoc="600"/>
@@ -107,7 +107,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="IVAntibiotics">
+        <event id="ERTriage">
           <custom>
             <visualization>
               <location xLoc="900" yLoc="600"/>
@@ -115,7 +115,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="ReleaseE">
+        <event id="ERRegistration">
           <custom>
             <visualization>
               <location xLoc="1200" yLoc="600"/>
@@ -123,7 +123,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="CRP">
+        <event id="Leucocytes">
           <custom>
             <visualization>
               <location xLoc="0" yLoc="900"/>
@@ -134,148 +134,84 @@
       </events>
       <subProcesses/>
       <labels>
-        <label id="LacticAcid"/>
-        <label id="Leucocytes"/>
-        <label id="ERSepsisTriage"/>
-        <label id="AdmissionNC"/>
-        <label id="ERTriage"/>
-        <label id="ReleaseA"/>
-        <label id="ReleaseB"/>
-        <label id="AdmissionIC"/>
         <label id="IVLiquid"/>
-        <label id="ReturnER"/>
-        <label id="ERRegistration"/>
-        <label id="ReleaseC"/>
-        <label id="ReleaseD"/>
-        <label id="IVAntibiotics"/>
-        <label id="ReleaseE"/>
+        <label id="LacticAcid"/>
         <label id="CRP"/>
+        <label id="ERSepsisTriage"/>
+        <label id="ReturnER"/>
+        <label id="ReleaseD"/>
+        <label id="ReleaseC"/>
+        <label id="ReleaseB"/>
+        <label id="ReleaseE"/>
+        <label id="IVAntibiotics"/>
+        <label id="ReleaseA"/>
+        <label id="AdmissionNC"/>
+        <label id="AdmissionIC"/>
+        <label id="ERTriage"/>
+        <label id="ERRegistration"/>
+        <label id="Leucocytes"/>
       </labels>
       <labelMappings>
-        <labelMapping eventId="LacticAcid" labelId="LacticAcid"/>
-        <labelMapping eventId="Leucocytes" labelId="Leucocytes"/>
-        <labelMapping eventId="ERSepsisTriage" labelId="ERSepsisTriage"/>
-        <labelMapping eventId="AdmissionNC" labelId="AdmissionNC"/>
-        <labelMapping eventId="ERTriage" labelId="ERTriage"/>
-        <labelMapping eventId="ReleaseA" labelId="ReleaseA"/>
-        <labelMapping eventId="ReleaseB" labelId="ReleaseB"/>
-        <labelMapping eventId="AdmissionIC" labelId="AdmissionIC"/>
         <labelMapping eventId="IVLiquid" labelId="IVLiquid"/>
-        <labelMapping eventId="ReturnER" labelId="ReturnER"/>
-        <labelMapping eventId="ERRegistration" labelId="ERRegistration"/>
-        <labelMapping eventId="ReleaseC" labelId="ReleaseC"/>
-        <labelMapping eventId="ReleaseD" labelId="ReleaseD"/>
-        <labelMapping eventId="IVAntibiotics" labelId="IVAntibiotics"/>
-        <labelMapping eventId="ReleaseE" labelId="ReleaseE"/>
+        <labelMapping eventId="LacticAcid" labelId="LacticAcid"/>
         <labelMapping eventId="CRP" labelId="CRP"/>
+        <labelMapping eventId="ERSepsisTriage" labelId="ERSepsisTriage"/>
+        <labelMapping eventId="ReturnER" labelId="ReturnER"/>
+        <labelMapping eventId="ReleaseD" labelId="ReleaseD"/>
+        <labelMapping eventId="ReleaseC" labelId="ReleaseC"/>
+        <labelMapping eventId="ReleaseB" labelId="ReleaseB"/>
+        <labelMapping eventId="ReleaseE" labelId="ReleaseE"/>
+        <labelMapping eventId="IVAntibiotics" labelId="IVAntibiotics"/>
+        <labelMapping eventId="ReleaseA" labelId="ReleaseA"/>
+        <labelMapping eventId="AdmissionNC" labelId="AdmissionNC"/>
+        <labelMapping eventId="AdmissionIC" labelId="AdmissionIC"/>
+        <labelMapping eventId="ERTriage" labelId="ERTriage"/>
+        <labelMapping eventId="ERRegistration" labelId="ERRegistration"/>
+        <labelMapping eventId="Leucocytes" labelId="Leucocytes"/>
       </labelMappings>
     </resources>
     <constraints>
       <conditions>
-        <condition sourceId="AdmissionNC" targetId="ERTriage">
+        <condition sourceId="ReturnER" targetId="ReleaseD">
           <custom>
             <waypoints>
-              <waypoint x="965" y="75"/>
-              <waypoint x="1265" y="75"/>
+              <waypoint x="1200" y="75"/>
+              <waypoint x="665.0" y="75"/>
+              <waypoint x="665.0" y="375"/>
+              <waypoint x="130" y="375"/>
             </waypoints>
-            <id id="Relation_AdmissionNC_ERTriage_condition"/>
+            <id id="Relation_ReturnER_ReleaseD_condition"/>
           </custom>
         </condition>
-        <condition sourceId="AdmissionNC" targetId="ERRegistration">
+        <condition sourceId="ReturnER" targetId="ReleaseC">
           <custom>
             <waypoints>
-              <waypoint x="965" y="75"/>
-              <waypoint x="65" y="675"/>
+              <waypoint x="1200" y="75"/>
+              <waypoint x="815.0" y="75"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="430" y="375"/>
             </waypoints>
-            <id id="Relation_AdmissionNC_ERRegistration_condition"/>
+            <id id="Relation_ReturnER_ReleaseC_condition"/>
           </custom>
         </condition>
-        <condition sourceId="ReleaseA" targetId="ERTriage">
+        <condition sourceId="ReturnER" targetId="ReleaseE">
           <custom>
             <waypoints>
-              <waypoint x="65" y="375"/>
-              <waypoint x="1265" y="75"/>
+              <waypoint x="1200" y="75"/>
+              <waypoint x="1115.0" y="75"/>
+              <waypoint x="1115.0" y="375"/>
+              <waypoint x="1030" y="375"/>
             </waypoints>
-            <id id="Relation_ReleaseA_ERTriage_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="ReleaseA" targetId="ERRegistration">
-          <custom>
-            <waypoints>
-              <waypoint x="65" y="375"/>
-              <waypoint x="65" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseA_ERRegistration_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="ReleaseB" targetId="Leucocytes">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="365" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_Leucocytes_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="ReleaseB" targetId="ERSepsisTriage">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="665" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_ERSepsisTriage_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="ReleaseB" targetId="ERTriage">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="1265" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_ERTriage_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="ReleaseB" targetId="ERRegistration">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="65" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_ERRegistration_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="ReleaseB" targetId="CRP">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="65" y="975"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_CRP_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="AdmissionIC" targetId="ERTriage">
-          <custom>
-            <waypoints>
-              <waypoint x="665" y="375"/>
-              <waypoint x="1265" y="75"/>
-            </waypoints>
-            <id id="Relation_AdmissionIC_ERTriage_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="AdmissionIC" targetId="ERRegistration">
-          <custom>
-            <waypoints>
-              <waypoint x="665" y="375"/>
-              <waypoint x="65" y="675"/>
-            </waypoints>
-            <id id="Relation_AdmissionIC_ERRegistration_condition"/>
+            <id id="Relation_ReturnER_ReleaseE_condition"/>
           </custom>
         </condition>
         <condition sourceId="ReturnER" targetId="ReleaseA">
           <custom>
             <waypoints>
-              <waypoint x="1265" y="375"/>
-              <waypoint x="65" y="375"/>
+              <waypoint x="1200" y="75"/>
+              <waypoint x="665.0" y="75"/>
+              <waypoint x="665.0" y="675"/>
+              <waypoint x="130" y="675"/>
             </waypoints>
             <id id="Relation_ReturnER_ReleaseA_condition"/>
           </custom>
@@ -283,89 +219,32 @@
         <condition sourceId="ReturnER" targetId="AdmissionIC">
           <custom>
             <waypoints>
-              <waypoint x="1265" y="375"/>
-              <waypoint x="665" y="375"/>
+              <waypoint x="1200" y="75"/>
+              <waypoint x="965.0" y="75"/>
+              <waypoint x="965.0" y="675"/>
+              <waypoint x="730" y="675"/>
             </waypoints>
             <id id="Relation_ReturnER_AdmissionIC_condition"/>
           </custom>
         </condition>
-        <condition sourceId="ReturnER" targetId="ReleaseC">
+        <condition sourceId="ReleaseD" targetId="CRP">
           <custom>
             <waypoints>
-              <waypoint x="1265" y="375"/>
-              <waypoint x="365" y="675"/>
+              <waypoint x="130" y="375"/>
+              <waypoint x="365.0" y="375"/>
+              <waypoint x="365.0" y="75"/>
+              <waypoint x="600" y="75"/>
             </waypoints>
-            <id id="Relation_ReturnER_ReleaseC_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="ReturnER" targetId="ReleaseD">
-          <custom>
-            <waypoints>
-              <waypoint x="1265" y="375"/>
-              <waypoint x="665" y="675"/>
-            </waypoints>
-            <id id="Relation_ReturnER_ReleaseD_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="ReturnER" targetId="ReleaseE">
-          <custom>
-            <waypoints>
-              <waypoint x="1265" y="375"/>
-              <waypoint x="1265" y="675"/>
-            </waypoints>
-            <id id="Relation_ReturnER_ReleaseE_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="ReleaseC" targetId="Leucocytes">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="365" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseC_Leucocytes_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="ReleaseC" targetId="ERSepsisTriage">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="665" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseC_ERSepsisTriage_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="ReleaseC" targetId="AdmissionNC">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="965" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseC_AdmissionNC_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="ReleaseC" targetId="CRP">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="65" y="975"/>
-            </waypoints>
-            <id id="Relation_ReleaseC_CRP_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="ReleaseD" targetId="Leucocytes">
-          <custom>
-            <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="365" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseD_Leucocytes_condition"/>
+            <id id="Relation_ReleaseD_CRP_condition"/>
           </custom>
         </condition>
         <condition sourceId="ReleaseD" targetId="ERSepsisTriage">
           <custom>
             <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="665" y="75"/>
+              <waypoint x="130" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="515.0" y="75"/>
+              <waypoint x="900" y="75"/>
             </waypoints>
             <id id="Relation_ReleaseD_ERSepsisTriage_condition"/>
           </custom>
@@ -373,44 +252,142 @@
         <condition sourceId="ReleaseD" targetId="AdmissionNC">
           <custom>
             <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="965" y="75"/>
+              <waypoint x="130" y="375"/>
+              <waypoint x="215.0" y="375"/>
+              <waypoint x="215.0" y="675"/>
+              <waypoint x="300" y="675"/>
             </waypoints>
             <id id="Relation_ReleaseD_AdmissionNC_condition"/>
           </custom>
         </condition>
-        <condition sourceId="ReleaseD" targetId="CRP">
+        <condition sourceId="ReleaseD" targetId="Leucocytes">
           <custom>
             <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="65" y="975"/>
+              <waypoint x="65" y="450"/>
+              <waypoint x="65.0" y="450"/>
+              <waypoint x="65.0" y="900"/>
+              <waypoint x="65" y="900"/>
             </waypoints>
-            <id id="Relation_ReleaseD_CRP_condition"/>
+            <id id="Relation_ReleaseD_Leucocytes_condition"/>
           </custom>
         </condition>
-        <condition sourceId="IVAntibiotics" targetId="ERSepsisTriage">
+        <condition sourceId="ReleaseC" targetId="CRP">
           <custom>
             <waypoints>
-              <waypoint x="965" y="675"/>
-              <waypoint x="665" y="75"/>
+              <waypoint x="430" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="515.0" y="75"/>
+              <waypoint x="600" y="75"/>
             </waypoints>
-            <id id="Relation_IVAntibiotics_ERSepsisTriage_condition"/>
+            <id id="Relation_ReleaseC_CRP_condition"/>
           </custom>
         </condition>
-        <condition sourceId="ReleaseE" targetId="Leucocytes">
+        <condition sourceId="ReleaseC" targetId="ERSepsisTriage">
           <custom>
             <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="365" y="75"/>
+              <waypoint x="430" y="375"/>
+              <waypoint x="665.0" y="375"/>
+              <waypoint x="665.0" y="75"/>
+              <waypoint x="900" y="75"/>
             </waypoints>
-            <id id="Relation_ReleaseE_Leucocytes_condition"/>
+            <id id="Relation_ReleaseC_ERSepsisTriage_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="ReleaseC" targetId="AdmissionNC">
+          <custom>
+            <waypoints>
+              <waypoint x="365" y="450"/>
+              <waypoint x="365.0" y="450"/>
+              <waypoint x="365.0" y="600"/>
+              <waypoint x="365" y="600"/>
+            </waypoints>
+            <id id="Relation_ReleaseC_AdmissionNC_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="ReleaseC" targetId="Leucocytes">
+          <custom>
+            <waypoints>
+              <waypoint x="300" y="375"/>
+              <waypoint x="215.0" y="375"/>
+              <waypoint x="215.0" y="975"/>
+              <waypoint x="130" y="975"/>
+            </waypoints>
+            <id id="Relation_ReleaseC_Leucocytes_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="ReleaseB" targetId="CRP">
+          <custom>
+            <waypoints>
+              <waypoint x="665" y="300"/>
+              <waypoint x="665.0" y="300"/>
+              <waypoint x="665.0" y="150"/>
+              <waypoint x="665" y="150"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_CRP_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="ReleaseB" targetId="ERSepsisTriage">
+          <custom>
+            <waypoints>
+              <waypoint x="730" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="815.0" y="75"/>
+              <waypoint x="900" y="75"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_ERSepsisTriage_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="ReleaseB" targetId="ERTriage">
+          <custom>
+            <waypoints>
+              <waypoint x="730" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="815.0" y="675"/>
+              <waypoint x="900" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_ERTriage_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="ReleaseB" targetId="ERRegistration">
+          <custom>
+            <waypoints>
+              <waypoint x="730" y="375"/>
+              <waypoint x="965.0" y="375"/>
+              <waypoint x="965.0" y="675"/>
+              <waypoint x="1200" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_ERRegistration_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="ReleaseB" targetId="Leucocytes">
+          <custom>
+            <waypoints>
+              <waypoint x="600" y="375"/>
+              <waypoint x="365.0" y="375"/>
+              <waypoint x="365.0" y="975"/>
+              <waypoint x="130" y="975"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_Leucocytes_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="ReleaseE" targetId="CRP">
+          <custom>
+            <waypoints>
+              <waypoint x="900" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="815.0" y="75"/>
+              <waypoint x="730" y="75"/>
+            </waypoints>
+            <id id="Relation_ReleaseE_CRP_condition"/>
           </custom>
         </condition>
         <condition sourceId="ReleaseE" targetId="ERSepsisTriage">
           <custom>
             <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="665" y="75"/>
+              <waypoint x="965" y="300"/>
+              <waypoint x="965.0" y="300"/>
+              <waypoint x="965.0" y="150"/>
+              <waypoint x="965" y="150"/>
             </waypoints>
             <id id="Relation_ReleaseE_ERSepsisTriage_condition"/>
           </custom>
@@ -418,580 +395,795 @@
         <condition sourceId="ReleaseE" targetId="AdmissionNC">
           <custom>
             <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="965" y="75"/>
+              <waypoint x="900" y="375"/>
+              <waypoint x="665.0" y="375"/>
+              <waypoint x="665.0" y="675"/>
+              <waypoint x="430" y="675"/>
             </waypoints>
             <id id="Relation_ReleaseE_AdmissionNC_condition"/>
           </custom>
         </condition>
-        <condition sourceId="ReleaseE" targetId="CRP">
+        <condition sourceId="ReleaseE" targetId="Leucocytes">
           <custom>
             <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="65" y="975"/>
+              <waypoint x="900" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="515.0" y="975"/>
+              <waypoint x="130" y="975"/>
             </waypoints>
-            <id id="Relation_ReleaseE_CRP_condition"/>
+            <id id="Relation_ReleaseE_Leucocytes_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="IVAntibiotics" targetId="ERSepsisTriage">
+          <custom>
+            <waypoints>
+              <waypoint x="1200" y="375"/>
+              <waypoint x="1115.0" y="375"/>
+              <waypoint x="1115.0" y="75"/>
+              <waypoint x="1030" y="75"/>
+            </waypoints>
+            <id id="Relation_IVAntibiotics_ERSepsisTriage_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="ReleaseA" targetId="ERTriage">
+          <custom>
+            <waypoints>
+              <waypoint x="130" y="675"/>
+              <waypoint x="515.0" y="675"/>
+              <waypoint x="515.0" y="675"/>
+              <waypoint x="900" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseA_ERTriage_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="ReleaseA" targetId="ERRegistration">
+          <custom>
+            <waypoints>
+              <waypoint x="130" y="675"/>
+              <waypoint x="665.0" y="675"/>
+              <waypoint x="665.0" y="675"/>
+              <waypoint x="1200" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseA_ERRegistration_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="AdmissionNC" targetId="ERTriage">
+          <custom>
+            <waypoints>
+              <waypoint x="430" y="675"/>
+              <waypoint x="665.0" y="675"/>
+              <waypoint x="665.0" y="675"/>
+              <waypoint x="900" y="675"/>
+            </waypoints>
+            <id id="Relation_AdmissionNC_ERTriage_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="AdmissionNC" targetId="ERRegistration">
+          <custom>
+            <waypoints>
+              <waypoint x="430" y="675"/>
+              <waypoint x="815.0" y="675"/>
+              <waypoint x="815.0" y="675"/>
+              <waypoint x="1200" y="675"/>
+            </waypoints>
+            <id id="Relation_AdmissionNC_ERRegistration_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="AdmissionIC" targetId="ERTriage">
+          <custom>
+            <waypoints>
+              <waypoint x="730" y="675"/>
+              <waypoint x="815.0" y="675"/>
+              <waypoint x="815.0" y="675"/>
+              <waypoint x="900" y="675"/>
+            </waypoints>
+            <id id="Relation_AdmissionIC_ERTriage_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="AdmissionIC" targetId="ERRegistration">
+          <custom>
+            <waypoints>
+              <waypoint x="730" y="675"/>
+              <waypoint x="965.0" y="675"/>
+              <waypoint x="965.0" y="675"/>
+              <waypoint x="1200" y="675"/>
+            </waypoints>
+            <id id="Relation_AdmissionIC_ERRegistration_condition"/>
           </custom>
         </condition>
       </conditions>
       <responses/>
       <excludes>
-        <exclude sourceId="ERSepsisTriage" targetId="ERSepsisTriage">
-          <custom>
-            <waypoints>
-              <waypoint x="665" y="75"/>
-              <waypoint x="665" y="75"/>
-            </waypoints>
-            <id id="Relation_ERSepsisTriage_ERSepsisTriage_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseA" targetId="AdmissionNC">
-          <custom>
-            <waypoints>
-              <waypoint x="65" y="375"/>
-              <waypoint x="965" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseA_AdmissionNC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseA" targetId="ERTriage">
-          <custom>
-            <waypoints>
-              <waypoint x="65" y="375"/>
-              <waypoint x="1265" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseA_ERTriage_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseA" targetId="ReleaseA">
-          <custom>
-            <waypoints>
-              <waypoint x="65" y="375"/>
-              <waypoint x="65" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseA_ReleaseA_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseA" targetId="ReleaseB">
-          <custom>
-            <waypoints>
-              <waypoint x="65" y="375"/>
-              <waypoint x="365" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseA_ReleaseB_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseA" targetId="AdmissionIC">
-          <custom>
-            <waypoints>
-              <waypoint x="65" y="375"/>
-              <waypoint x="665" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseA_AdmissionIC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseA" targetId="ReleaseC">
-          <custom>
-            <waypoints>
-              <waypoint x="65" y="375"/>
-              <waypoint x="365" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseA_ReleaseC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseA" targetId="ReleaseD">
-          <custom>
-            <waypoints>
-              <waypoint x="65" y="375"/>
-              <waypoint x="665" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseA_ReleaseD_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseA" targetId="ReleaseE">
-          <custom>
-            <waypoints>
-              <waypoint x="65" y="375"/>
-              <waypoint x="1265" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseA_ReleaseE_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseB" targetId="LacticAcid">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="65" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_LacticAcid_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseB" targetId="Leucocytes">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="365" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_Leucocytes_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseB" targetId="ERTriage">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="1265" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_ERTriage_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseB" targetId="ReleaseA">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="65" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_ReleaseA_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseB" targetId="ReleaseB">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="365" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_ReleaseB_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseB" targetId="AdmissionIC">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="665" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_AdmissionIC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseB" targetId="ReturnER">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="1265" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_ReturnER_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseB" targetId="ReleaseC">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="365" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_ReleaseC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseB" targetId="ReleaseD">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="665" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_ReleaseD_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseB" targetId="ReleaseE">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="1265" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_ReleaseE_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseB" targetId="CRP">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="375"/>
-              <waypoint x="65" y="975"/>
-            </waypoints>
-            <id id="Relation_ReleaseB_CRP_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="AdmissionIC" targetId="ERTriage">
-          <custom>
-            <waypoints>
-              <waypoint x="665" y="375"/>
-              <waypoint x="1265" y="75"/>
-            </waypoints>
-            <id id="Relation_AdmissionIC_ERTriage_exclude"/>
-          </custom>
-        </exclude>
         <exclude sourceId="IVLiquid" targetId="IVLiquid">
           <custom>
             <waypoints>
-              <waypoint x="965" y="375"/>
-              <waypoint x="965" y="375"/>
+              <waypoint x="65" y="150"/>
+              <waypoint x="65" y="175"/>
+              <waypoint x="-25" y="175"/>
+              <waypoint x="-25" y="75"/>
+              <waypoint x="0" y="75"/>
             </waypoints>
             <id id="Relation_IVLiquid_IVLiquid_exclude"/>
           </custom>
         </exclude>
-        <exclude sourceId="ReturnER" targetId="AdmissionNC">
+        <exclude sourceId="ERSepsisTriage" targetId="ERSepsisTriage">
           <custom>
             <waypoints>
-              <waypoint x="1265" y="375"/>
-              <waypoint x="965" y="75"/>
+              <waypoint x="965" y="150"/>
+              <waypoint x="965" y="175"/>
+              <waypoint x="875" y="175"/>
+              <waypoint x="875" y="75"/>
+              <waypoint x="900" y="75"/>
             </waypoints>
-            <id id="Relation_ReturnER_AdmissionNC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReturnER" targetId="ERTriage">
-          <custom>
-            <waypoints>
-              <waypoint x="1265" y="375"/>
-              <waypoint x="1265" y="75"/>
-            </waypoints>
-            <id id="Relation_ReturnER_ERTriage_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReturnER" targetId="ReleaseB">
-          <custom>
-            <waypoints>
-              <waypoint x="1265" y="375"/>
-              <waypoint x="365" y="375"/>
-            </waypoints>
-            <id id="Relation_ReturnER_ReleaseB_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReturnER" targetId="AdmissionIC">
-          <custom>
-            <waypoints>
-              <waypoint x="1265" y="375"/>
-              <waypoint x="665" y="375"/>
-            </waypoints>
-            <id id="Relation_ReturnER_AdmissionIC_exclude"/>
+            <id id="Relation_ERSepsisTriage_ERSepsisTriage_exclude"/>
           </custom>
         </exclude>
         <exclude sourceId="ReturnER" targetId="ReturnER">
           <custom>
             <waypoints>
-              <waypoint x="1265" y="375"/>
-              <waypoint x="1265" y="375"/>
+              <waypoint x="1265" y="150"/>
+              <waypoint x="1265" y="175"/>
+              <waypoint x="1175" y="175"/>
+              <waypoint x="1175" y="75"/>
+              <waypoint x="1200" y="75"/>
             </waypoints>
             <id id="Relation_ReturnER_ReturnER_exclude"/>
           </custom>
         </exclude>
-        <exclude sourceId="ERRegistration" targetId="ERRegistration">
+        <exclude sourceId="ReturnER" targetId="ReleaseB">
           <custom>
             <waypoints>
-              <waypoint x="65" y="675"/>
-              <waypoint x="65" y="675"/>
+              <waypoint x="1200" y="75"/>
+              <waypoint x="965.0" y="75"/>
+              <waypoint x="965.0" y="375"/>
+              <waypoint x="730" y="375"/>
             </waypoints>
-            <id id="Relation_ERRegistration_ERRegistration_exclude"/>
+            <id id="Relation_ReturnER_ReleaseB_exclude"/>
           </custom>
         </exclude>
-        <exclude sourceId="ReleaseC" targetId="LacticAcid">
+        <exclude sourceId="ReturnER" targetId="AdmissionNC">
           <custom>
             <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="65" y="75"/>
+              <waypoint x="1200" y="75"/>
+              <waypoint x="815.0" y="75"/>
+              <waypoint x="815.0" y="675"/>
+              <waypoint x="430" y="675"/>
             </waypoints>
-            <id id="Relation_ReleaseC_LacticAcid_exclude"/>
+            <id id="Relation_ReturnER_AdmissionNC_exclude"/>
           </custom>
         </exclude>
-        <exclude sourceId="ReleaseC" targetId="Leucocytes">
+        <exclude sourceId="ReturnER" targetId="AdmissionIC">
           <custom>
             <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="365" y="75"/>
+              <waypoint x="1200" y="75"/>
+              <waypoint x="965.0" y="75"/>
+              <waypoint x="965.0" y="675"/>
+              <waypoint x="730" y="675"/>
             </waypoints>
-            <id id="Relation_ReleaseC_Leucocytes_exclude"/>
+            <id id="Relation_ReturnER_AdmissionIC_exclude"/>
           </custom>
         </exclude>
-        <exclude sourceId="ReleaseC" targetId="AdmissionNC">
+        <exclude sourceId="ReturnER" targetId="ERTriage">
           <custom>
             <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="965" y="75"/>
+              <waypoint x="1200" y="75"/>
+              <waypoint x="1115.0" y="75"/>
+              <waypoint x="1115.0" y="675"/>
+              <waypoint x="1030" y="675"/>
             </waypoints>
-            <id id="Relation_ReleaseC_AdmissionNC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseC" targetId="ERTriage">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="1265" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseC_ERTriage_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseC" targetId="ReleaseA">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="65" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseC_ReleaseA_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseC" targetId="ReleaseB">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="365" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseC_ReleaseB_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseC" targetId="AdmissionIC">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="665" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseC_AdmissionIC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseC" targetId="ReleaseC">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="365" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseC_ReleaseC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseC" targetId="ReleaseD">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="665" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseC_ReleaseD_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseC" targetId="ReleaseE">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="1265" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseC_ReleaseE_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseC" targetId="CRP">
-          <custom>
-            <waypoints>
-              <waypoint x="365" y="675"/>
-              <waypoint x="65" y="975"/>
-            </waypoints>
-            <id id="Relation_ReleaseC_CRP_exclude"/>
+            <id id="Relation_ReturnER_ERTriage_exclude"/>
           </custom>
         </exclude>
         <exclude sourceId="ReleaseD" targetId="LacticAcid">
           <custom>
             <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="65" y="75"/>
+              <waypoint x="130" y="375"/>
+              <waypoint x="215.0" y="375"/>
+              <waypoint x="215.0" y="75"/>
+              <waypoint x="300" y="75"/>
             </waypoints>
             <id id="Relation_ReleaseD_LacticAcid_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseD" targetId="Leucocytes">
-          <custom>
-            <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="365" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseD_Leucocytes_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseD" targetId="AdmissionNC">
-          <custom>
-            <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="965" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseD_AdmissionNC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseD" targetId="ERTriage">
-          <custom>
-            <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="1265" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseD_ERTriage_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseD" targetId="ReleaseA">
-          <custom>
-            <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="65" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseD_ReleaseA_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseD" targetId="ReleaseB">
-          <custom>
-            <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="365" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseD_ReleaseB_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseD" targetId="AdmissionIC">
-          <custom>
-            <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="665" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseD_AdmissionIC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseD" targetId="ReleaseC">
-          <custom>
-            <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="365" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseD_ReleaseC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseD" targetId="ReleaseD">
-          <custom>
-            <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="665" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseD_ReleaseD_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseD" targetId="ReleaseE">
-          <custom>
-            <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="1265" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseD_ReleaseE_exclude"/>
           </custom>
         </exclude>
         <exclude sourceId="ReleaseD" targetId="CRP">
           <custom>
             <waypoints>
-              <waypoint x="665" y="675"/>
-              <waypoint x="65" y="975"/>
+              <waypoint x="130" y="375"/>
+              <waypoint x="365.0" y="375"/>
+              <waypoint x="365.0" y="75"/>
+              <waypoint x="600" y="75"/>
             </waypoints>
             <id id="Relation_ReleaseD_CRP_exclude"/>
           </custom>
         </exclude>
-        <exclude sourceId="IVAntibiotics" targetId="IVAntibiotics">
+        <exclude sourceId="ReleaseD" targetId="ReleaseD">
           <custom>
             <waypoints>
-              <waypoint x="965" y="675"/>
-              <waypoint x="965" y="675"/>
+              <waypoint x="65" y="450"/>
+              <waypoint x="65" y="475"/>
+              <waypoint x="-25" y="475"/>
+              <waypoint x="-25" y="375"/>
+              <waypoint x="0" y="375"/>
             </waypoints>
-            <id id="Relation_IVAntibiotics_IVAntibiotics_exclude"/>
+            <id id="Relation_ReleaseD_ReleaseD_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseD" targetId="ReleaseC">
+          <custom>
+            <waypoints>
+              <waypoint x="130" y="375"/>
+              <waypoint x="215.0" y="375"/>
+              <waypoint x="215.0" y="375"/>
+              <waypoint x="300" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseD_ReleaseC_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseD" targetId="ReleaseB">
+          <custom>
+            <waypoints>
+              <waypoint x="130" y="375"/>
+              <waypoint x="365.0" y="375"/>
+              <waypoint x="365.0" y="375"/>
+              <waypoint x="600" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseD_ReleaseB_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseD" targetId="ReleaseE">
+          <custom>
+            <waypoints>
+              <waypoint x="130" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="900" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseD_ReleaseE_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseD" targetId="ReleaseA">
+          <custom>
+            <waypoints>
+              <waypoint x="65" y="450"/>
+              <waypoint x="65.0" y="450"/>
+              <waypoint x="65.0" y="600"/>
+              <waypoint x="65" y="600"/>
+            </waypoints>
+            <id id="Relation_ReleaseD_ReleaseA_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseD" targetId="AdmissionNC">
+          <custom>
+            <waypoints>
+              <waypoint x="130" y="375"/>
+              <waypoint x="215.0" y="375"/>
+              <waypoint x="215.0" y="675"/>
+              <waypoint x="300" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseD_AdmissionNC_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseD" targetId="AdmissionIC">
+          <custom>
+            <waypoints>
+              <waypoint x="130" y="375"/>
+              <waypoint x="365.0" y="375"/>
+              <waypoint x="365.0" y="675"/>
+              <waypoint x="600" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseD_AdmissionIC_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseD" targetId="ERTriage">
+          <custom>
+            <waypoints>
+              <waypoint x="130" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="515.0" y="675"/>
+              <waypoint x="900" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseD_ERTriage_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseD" targetId="Leucocytes">
+          <custom>
+            <waypoints>
+              <waypoint x="65" y="450"/>
+              <waypoint x="65.0" y="450"/>
+              <waypoint x="65.0" y="900"/>
+              <waypoint x="65" y="900"/>
+            </waypoints>
+            <id id="Relation_ReleaseD_Leucocytes_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseC" targetId="LacticAcid">
+          <custom>
+            <waypoints>
+              <waypoint x="365" y="300"/>
+              <waypoint x="365.0" y="300"/>
+              <waypoint x="365.0" y="150"/>
+              <waypoint x="365" y="150"/>
+            </waypoints>
+            <id id="Relation_ReleaseC_LacticAcid_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseC" targetId="CRP">
+          <custom>
+            <waypoints>
+              <waypoint x="430" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="515.0" y="75"/>
+              <waypoint x="600" y="75"/>
+            </waypoints>
+            <id id="Relation_ReleaseC_CRP_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseC" targetId="ReleaseD">
+          <custom>
+            <waypoints>
+              <waypoint x="300" y="375"/>
+              <waypoint x="215.0" y="375"/>
+              <waypoint x="215.0" y="375"/>
+              <waypoint x="130" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseC_ReleaseD_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseC" targetId="ReleaseC">
+          <custom>
+            <waypoints>
+              <waypoint x="365" y="450"/>
+              <waypoint x="365" y="475"/>
+              <waypoint x="275" y="475"/>
+              <waypoint x="275" y="375"/>
+              <waypoint x="300" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseC_ReleaseC_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseC" targetId="ReleaseB">
+          <custom>
+            <waypoints>
+              <waypoint x="430" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="600" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseC_ReleaseB_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseC" targetId="ReleaseE">
+          <custom>
+            <waypoints>
+              <waypoint x="430" y="375"/>
+              <waypoint x="665.0" y="375"/>
+              <waypoint x="665.0" y="375"/>
+              <waypoint x="900" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseC_ReleaseE_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseC" targetId="ReleaseA">
+          <custom>
+            <waypoints>
+              <waypoint x="300" y="375"/>
+              <waypoint x="215.0" y="375"/>
+              <waypoint x="215.0" y="675"/>
+              <waypoint x="130" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseC_ReleaseA_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseC" targetId="AdmissionNC">
+          <custom>
+            <waypoints>
+              <waypoint x="365" y="450"/>
+              <waypoint x="365.0" y="450"/>
+              <waypoint x="365.0" y="600"/>
+              <waypoint x="365" y="600"/>
+            </waypoints>
+            <id id="Relation_ReleaseC_AdmissionNC_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseC" targetId="AdmissionIC">
+          <custom>
+            <waypoints>
+              <waypoint x="430" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="515.0" y="675"/>
+              <waypoint x="600" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseC_AdmissionIC_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseC" targetId="ERTriage">
+          <custom>
+            <waypoints>
+              <waypoint x="430" y="375"/>
+              <waypoint x="665.0" y="375"/>
+              <waypoint x="665.0" y="675"/>
+              <waypoint x="900" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseC_ERTriage_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseC" targetId="Leucocytes">
+          <custom>
+            <waypoints>
+              <waypoint x="300" y="375"/>
+              <waypoint x="215.0" y="375"/>
+              <waypoint x="215.0" y="975"/>
+              <waypoint x="130" y="975"/>
+            </waypoints>
+            <id id="Relation_ReleaseC_Leucocytes_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseB" targetId="LacticAcid">
+          <custom>
+            <waypoints>
+              <waypoint x="600" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="515.0" y="75"/>
+              <waypoint x="430" y="75"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_LacticAcid_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseB" targetId="CRP">
+          <custom>
+            <waypoints>
+              <waypoint x="665" y="300"/>
+              <waypoint x="665.0" y="300"/>
+              <waypoint x="665.0" y="150"/>
+              <waypoint x="665" y="150"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_CRP_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseB" targetId="ReturnER">
+          <custom>
+            <waypoints>
+              <waypoint x="730" y="375"/>
+              <waypoint x="965.0" y="375"/>
+              <waypoint x="965.0" y="75"/>
+              <waypoint x="1200" y="75"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_ReturnER_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseB" targetId="ReleaseD">
+          <custom>
+            <waypoints>
+              <waypoint x="600" y="375"/>
+              <waypoint x="365.0" y="375"/>
+              <waypoint x="365.0" y="375"/>
+              <waypoint x="130" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_ReleaseD_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseB" targetId="ReleaseC">
+          <custom>
+            <waypoints>
+              <waypoint x="600" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="430" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_ReleaseC_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseB" targetId="ReleaseB">
+          <custom>
+            <waypoints>
+              <waypoint x="665" y="450"/>
+              <waypoint x="665" y="475"/>
+              <waypoint x="575" y="475"/>
+              <waypoint x="575" y="375"/>
+              <waypoint x="600" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_ReleaseB_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseB" targetId="ReleaseE">
+          <custom>
+            <waypoints>
+              <waypoint x="730" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="900" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_ReleaseE_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseB" targetId="ReleaseA">
+          <custom>
+            <waypoints>
+              <waypoint x="600" y="375"/>
+              <waypoint x="365.0" y="375"/>
+              <waypoint x="365.0" y="675"/>
+              <waypoint x="130" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_ReleaseA_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseB" targetId="AdmissionIC">
+          <custom>
+            <waypoints>
+              <waypoint x="665" y="450"/>
+              <waypoint x="665.0" y="450"/>
+              <waypoint x="665.0" y="600"/>
+              <waypoint x="665" y="600"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_AdmissionIC_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseB" targetId="ERTriage">
+          <custom>
+            <waypoints>
+              <waypoint x="730" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="815.0" y="675"/>
+              <waypoint x="900" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_ERTriage_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseB" targetId="Leucocytes">
+          <custom>
+            <waypoints>
+              <waypoint x="600" y="375"/>
+              <waypoint x="365.0" y="375"/>
+              <waypoint x="365.0" y="975"/>
+              <waypoint x="130" y="975"/>
+            </waypoints>
+            <id id="Relation_ReleaseB_Leucocytes_exclude"/>
           </custom>
         </exclude>
         <exclude sourceId="ReleaseE" targetId="LacticAcid">
           <custom>
             <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="65" y="75"/>
+              <waypoint x="900" y="375"/>
+              <waypoint x="665.0" y="375"/>
+              <waypoint x="665.0" y="75"/>
+              <waypoint x="430" y="75"/>
             </waypoints>
             <id id="Relation_ReleaseE_LacticAcid_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseE" targetId="Leucocytes">
-          <custom>
-            <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="365" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseE_Leucocytes_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseE" targetId="AdmissionNC">
-          <custom>
-            <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="965" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseE_AdmissionNC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseE" targetId="ERTriage">
-          <custom>
-            <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="1265" y="75"/>
-            </waypoints>
-            <id id="Relation_ReleaseE_ERTriage_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseE" targetId="ReleaseA">
-          <custom>
-            <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="65" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseE_ReleaseA_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseE" targetId="ReleaseB">
-          <custom>
-            <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="365" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseE_ReleaseB_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseE" targetId="AdmissionIC">
-          <custom>
-            <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="665" y="375"/>
-            </waypoints>
-            <id id="Relation_ReleaseE_AdmissionIC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseE" targetId="ReleaseC">
-          <custom>
-            <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="365" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseE_ReleaseC_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseE" targetId="ReleaseD">
-          <custom>
-            <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="665" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseE_ReleaseD_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="ReleaseE" targetId="ReleaseE">
-          <custom>
-            <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="1265" y="675"/>
-            </waypoints>
-            <id id="Relation_ReleaseE_ReleaseE_exclude"/>
           </custom>
         </exclude>
         <exclude sourceId="ReleaseE" targetId="CRP">
           <custom>
             <waypoints>
-              <waypoint x="1265" y="675"/>
-              <waypoint x="65" y="975"/>
+              <waypoint x="900" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="815.0" y="75"/>
+              <waypoint x="730" y="75"/>
             </waypoints>
             <id id="Relation_ReleaseE_CRP_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseE" targetId="ReleaseD">
+          <custom>
+            <waypoints>
+              <waypoint x="900" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="130" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseE_ReleaseD_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseE" targetId="ReleaseC">
+          <custom>
+            <waypoints>
+              <waypoint x="900" y="375"/>
+              <waypoint x="665.0" y="375"/>
+              <waypoint x="665.0" y="375"/>
+              <waypoint x="430" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseE_ReleaseC_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseE" targetId="ReleaseB">
+          <custom>
+            <waypoints>
+              <waypoint x="900" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="730" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseE_ReleaseB_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseE" targetId="ReleaseE">
+          <custom>
+            <waypoints>
+              <waypoint x="965" y="450"/>
+              <waypoint x="965" y="475"/>
+              <waypoint x="875" y="475"/>
+              <waypoint x="875" y="375"/>
+              <waypoint x="900" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseE_ReleaseE_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseE" targetId="ReleaseA">
+          <custom>
+            <waypoints>
+              <waypoint x="900" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="515.0" y="675"/>
+              <waypoint x="130" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseE_ReleaseA_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseE" targetId="AdmissionNC">
+          <custom>
+            <waypoints>
+              <waypoint x="900" y="375"/>
+              <waypoint x="665.0" y="375"/>
+              <waypoint x="665.0" y="675"/>
+              <waypoint x="430" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseE_AdmissionNC_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseE" targetId="AdmissionIC">
+          <custom>
+            <waypoints>
+              <waypoint x="900" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="815.0" y="675"/>
+              <waypoint x="730" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseE_AdmissionIC_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseE" targetId="ERTriage">
+          <custom>
+            <waypoints>
+              <waypoint x="965" y="450"/>
+              <waypoint x="965.0" y="450"/>
+              <waypoint x="965.0" y="600"/>
+              <waypoint x="965" y="600"/>
+            </waypoints>
+            <id id="Relation_ReleaseE_ERTriage_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseE" targetId="Leucocytes">
+          <custom>
+            <waypoints>
+              <waypoint x="900" y="375"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="515.0" y="975"/>
+              <waypoint x="130" y="975"/>
+            </waypoints>
+            <id id="Relation_ReleaseE_Leucocytes_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="IVAntibiotics" targetId="IVAntibiotics">
+          <custom>
+            <waypoints>
+              <waypoint x="1265" y="450"/>
+              <waypoint x="1265" y="475"/>
+              <waypoint x="1175" y="475"/>
+              <waypoint x="1175" y="375"/>
+              <waypoint x="1200" y="375"/>
+            </waypoints>
+            <id id="Relation_IVAntibiotics_IVAntibiotics_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseA" targetId="ReleaseD">
+          <custom>
+            <waypoints>
+              <waypoint x="65" y="600"/>
+              <waypoint x="65.0" y="600"/>
+              <waypoint x="65.0" y="450"/>
+              <waypoint x="65" y="450"/>
+            </waypoints>
+            <id id="Relation_ReleaseA_ReleaseD_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseA" targetId="ReleaseC">
+          <custom>
+            <waypoints>
+              <waypoint x="130" y="675"/>
+              <waypoint x="215.0" y="675"/>
+              <waypoint x="215.0" y="375"/>
+              <waypoint x="300" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseA_ReleaseC_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseA" targetId="ReleaseB">
+          <custom>
+            <waypoints>
+              <waypoint x="130" y="675"/>
+              <waypoint x="365.0" y="675"/>
+              <waypoint x="365.0" y="375"/>
+              <waypoint x="600" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseA_ReleaseB_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseA" targetId="ReleaseE">
+          <custom>
+            <waypoints>
+              <waypoint x="130" y="675"/>
+              <waypoint x="515.0" y="675"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="900" y="375"/>
+            </waypoints>
+            <id id="Relation_ReleaseA_ReleaseE_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseA" targetId="ReleaseA">
+          <custom>
+            <waypoints>
+              <waypoint x="65" y="750"/>
+              <waypoint x="65" y="775"/>
+              <waypoint x="-25" y="775"/>
+              <waypoint x="-25" y="675"/>
+              <waypoint x="0" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseA_ReleaseA_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseA" targetId="AdmissionNC">
+          <custom>
+            <waypoints>
+              <waypoint x="130" y="675"/>
+              <waypoint x="215.0" y="675"/>
+              <waypoint x="215.0" y="675"/>
+              <waypoint x="300" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseA_AdmissionNC_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseA" targetId="AdmissionIC">
+          <custom>
+            <waypoints>
+              <waypoint x="130" y="675"/>
+              <waypoint x="365.0" y="675"/>
+              <waypoint x="365.0" y="675"/>
+              <waypoint x="600" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseA_AdmissionIC_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ReleaseA" targetId="ERTriage">
+          <custom>
+            <waypoints>
+              <waypoint x="130" y="675"/>
+              <waypoint x="515.0" y="675"/>
+              <waypoint x="515.0" y="675"/>
+              <waypoint x="900" y="675"/>
+            </waypoints>
+            <id id="Relation_ReleaseA_ERTriage_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="AdmissionIC" targetId="ERTriage">
+          <custom>
+            <waypoints>
+              <waypoint x="730" y="675"/>
+              <waypoint x="815.0" y="675"/>
+              <waypoint x="815.0" y="675"/>
+              <waypoint x="900" y="675"/>
+            </waypoints>
+            <id id="Relation_AdmissionIC_ERTriage_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="ERRegistration" targetId="ERRegistration">
+          <custom>
+            <waypoints>
+              <waypoint x="1265" y="750"/>
+              <waypoint x="1265" y="775"/>
+              <waypoint x="1175" y="775"/>
+              <waypoint x="1175" y="675"/>
+              <waypoint x="1200" y="675"/>
+            </waypoints>
+            <id id="Relation_ERRegistration_ERRegistration_exclude"/>
           </custom>
         </exclude>
       </excludes>
@@ -1002,22 +1194,22 @@
     <marking>
       <executed/>
       <included>
-        <event id="LacticAcid"/>
-        <event id="Leucocytes"/>
-        <event id="ERSepsisTriage"/>
-        <event id="AdmissionNC"/>
-        <event id="ERTriage"/>
-        <event id="ReleaseA"/>
-        <event id="ReleaseB"/>
-        <event id="AdmissionIC"/>
         <event id="IVLiquid"/>
-        <event id="ReturnER"/>
-        <event id="ERRegistration"/>
-        <event id="ReleaseC"/>
-        <event id="ReleaseD"/>
-        <event id="IVAntibiotics"/>
-        <event id="ReleaseE"/>
+        <event id="LacticAcid"/>
         <event id="CRP"/>
+        <event id="ERSepsisTriage"/>
+        <event id="ReturnER"/>
+        <event id="ReleaseD"/>
+        <event id="ReleaseC"/>
+        <event id="ReleaseB"/>
+        <event id="ReleaseE"/>
+        <event id="IVAntibiotics"/>
+        <event id="ReleaseA"/>
+        <event id="AdmissionNC"/>
+        <event id="AdmissionIC"/>
+        <event id="ERTriage"/>
+        <event id="ERRegistration"/>
+        <event id="Leucocytes"/>
       </included>
       <pendingResponses/>
     </marking>

@@ -3,11 +3,12 @@ from typing import Set
 
 
 class RoleDCR_Graph(object):
-    def __init__(self, g: DCR_Graph, template):
+    def __init__(self, g: DCR_Graph):
         self.__g = g
-        self.__principals = template['principals']
-        self.__roles = template['roles']
-        self.__roleAssignments = template['roleAssignments']
+        self.__principals = set()
+        self.__roles = set()
+        self.__roleAssignments = {}
+        self.__readRoleAssignments = {}
 
     @property
     def principals(self) -> Set[str]:
@@ -29,6 +30,13 @@ class RoleDCR_Graph(object):
         roleAssignments(dict): A set representing the principals in the graph
         """
         return self.__roleAssignments
+
+    @property
+    def readRoleAssignments(self):
+        """
+        readRoleAssignments(dict): A set representing the principals in the graph
+        """
+        return self.__readRoleAssignments
 
     def getConstraints(self):
         """
