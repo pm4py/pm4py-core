@@ -1,4 +1,11 @@
 from lxml import etree
+from pm4py.objects.dcr.obj import Relations, dcr_template
+from copy import deepcopy
+
+'''
+The output file is to be visualised using the following link:
+https://hugoalopez-dtu.github.io/dcr-js/
+'''
 
 
 def export_dcr_xml(dcr, output_file_name, dcr_title):
@@ -6,6 +13,9 @@ def export_dcr_xml(dcr, output_file_name, dcr_title):
     dcr : the mined graph
     output_file_name: dcrxml file name without extension
     '''
+
+    dcr = clean_output(dcr)
+
     root = etree.Element("dcrgraph")
     if dcr_title:
         root.set("title", dcr_title)
@@ -28,16 +38,18 @@ def export_dcr_xml(dcr, output_file_name, dcr_title):
     included = etree.SubElement(marking, "included")
     pendingResponse = etree.SubElement(marking, "pendingResponses")
 
+    '''
+    Each event's coordinates for visualisation
+    '''
     xcoord = {}
     ycoord = {}
     x = 0
     y = 0
-
     for event in dcr['events']:
         xcoord[event] = x
         ycoord[event] = y
         x += 300
-        
+
         if x > 1200:
             x = 0
             y += 300
@@ -66,12 +78,7 @@ def export_dcr_xml(dcr, output_file_name, dcr_title):
                 xml_condition.set("targetId", event_prime)
                 xml_condition_custom = etree.SubElement(xml_condition, "custom")
                 xml_waypoints = etree.SubElement(xml_condition_custom, "waypoints")
-                xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
-                xml_waypoint.set("x", str(xcoord[event]+65))
-                xml_waypoint.set("y", str(ycoord[event]+75))
-                xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
-                xml_waypoint.set("x", str(xcoord[event_prime]+65))
-                xml_waypoint.set("y", str(ycoord[event_prime]+75))
+                create_arrows(xml_waypoints, xcoord,ycoord, event, event_prime)
                 xml_custom_id = etree.SubElement(xml_condition_custom, "id")
                 xml_custom_id.set("id", "Relation_" + event + "_" + event_prime + "_condition")
             if event in dcr["responseTo"] and event_prime in dcr["responseTo"][event]:
@@ -80,12 +87,7 @@ def export_dcr_xml(dcr, output_file_name, dcr_title):
                 xml_response.set("targetId", event_prime)
                 xml_response_custom = etree.SubElement(xml_response, "custom")
                 xml_waypoints = etree.SubElement(xml_response_custom, "waypoints")
-                xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
-                xml_waypoint.set("x", str(xcoord[event]+65))
-                xml_waypoint.set("y", str(ycoord[event]+75))
-                xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
-                xml_waypoint.set("x", str(xcoord[event_prime]+65))
-                xml_waypoint.set("y", str(ycoord[event_prime]+75))
+                create_arrows(xml_waypoints, xcoord, ycoord, event, event_prime)
                 xml_custom_id = etree.SubElement(xml_response_custom, "id")
                 xml_custom_id.set("id", "Relation_" + event + "_" + event_prime + "_response")
             if event in dcr["includesTo"] and event_prime in dcr["includesTo"][event]:
@@ -94,12 +96,7 @@ def export_dcr_xml(dcr, output_file_name, dcr_title):
                 xml_include.set("targetId", event_prime)
                 xml_include_custom = etree.SubElement(xml_include, "custom")
                 xml_waypoints = etree.SubElement(xml_include_custom, "waypoints")
-                xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
-                xml_waypoint.set("x", str(xcoord[event]+65))
-                xml_waypoint.set("y", str(ycoord[event]+75))
-                xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
-                xml_waypoint.set("x", str(xcoord[event_prime]+65))
-                xml_waypoint.set("y", str(ycoord[event_prime]+75))
+                create_arrows(xml_waypoints, xcoord, ycoord, event, event_prime)
                 xml_custom_id = etree.SubElement(xml_include_custom, "id")
                 xml_custom_id.set("id", "Relation_" + event + "_" + event_prime + "_include")
             if event in dcr["excludesTo"] and event_prime in dcr["excludesTo"][event]:
@@ -108,12 +105,27 @@ def export_dcr_xml(dcr, output_file_name, dcr_title):
                 xml_exclude.set("targetId", event_prime)
                 xml_exclude_custom = etree.SubElement(xml_exclude, "custom")
                 xml_waypoints = etree.SubElement(xml_exclude_custom, "waypoints")
-                xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
-                xml_waypoint.set("x", str(xcoord[event]+65))
-                xml_waypoint.set("y", str(ycoord[event]+75))
-                xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
-                xml_waypoint.set("x", str(xcoord[event_prime]+65))
-                xml_waypoint.set("y", str(ycoord[event_prime]+75))
+                '''
+                Creates a self-exclude arrow to avoid having just the arrowhead sitting at the centre of the event
+                '''
+                if event == event_prime:
+                    xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
+                    xml_waypoint.set("x", str(xcoord[event]+65))
+                    xml_waypoint.set("y", str(ycoord[event]+150))
+                    xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
+                    xml_waypoint.set("x", str(xcoord[event]+65))
+                    xml_waypoint.set("y", str(ycoord[event]+175))
+                    xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
+                    xml_waypoint.set("x", str(xcoord[event]-25))
+                    xml_waypoint.set("y", str(ycoord[event]+175))
+                    xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
+                    xml_waypoint.set("x", str(xcoord[event]-25))
+                    xml_waypoint.set("y", str(ycoord[event]+75))
+                    xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
+                    xml_waypoint.set("x", str(xcoord[event]))
+                    xml_waypoint.set("y", str(ycoord[event]+75))
+                else:
+                    create_arrows(xml_waypoints, xcoord, ycoord, event, event_prime)
                 xml_custom_id = etree.SubElement(xml_exclude_custom, "id")
                 xml_custom_id.set("id", "Relation_" + event + "_" + event_prime + "_exclude")
 
@@ -129,3 +141,97 @@ def export_dcr_xml(dcr, output_file_name, dcr_title):
 
     tree = etree.ElementTree(root)
     tree.write(output_file_name, pretty_print=True, xml_declaration=True, encoding="utf-8", standalone="yes")
+
+
+'''
+Connects two events with corresponding constraint arrow
+'''
+
+
+def create_arrows(xml_waypoints, xcoord, ycoord, event, event_prime):
+    if xcoord[event] < xcoord[event_prime] and ycoord[event] < ycoord[event_prime]:
+        xoffset = 130
+        xprimeoffset = 0
+        yoffset = 75
+        yprimeoffset = 75
+    elif xcoord[event] < xcoord[event_prime] and ycoord[event] > ycoord[event_prime]:
+        xoffset = 130
+        xprimeoffset = 0
+        yoffset = 75
+        yprimeoffset = 75
+    elif xcoord[event] > xcoord[event_prime] and ycoord[event] < ycoord[event_prime]:
+        xoffset = 0
+        xprimeoffset = 130
+        yoffset = 75
+        yprimeoffset = 75
+    elif xcoord[event] > xcoord[event_prime] and ycoord[event] > ycoord[event_prime]:
+        xoffset = 0
+        xprimeoffset = 130
+        yoffset = 75
+        yprimeoffset = 75
+    elif xcoord[event] == xcoord[event_prime] and ycoord[event] < ycoord[event_prime]:
+        xoffset = 65
+        xprimeoffset = 65
+        yoffset = 150
+        yprimeoffset = 0
+    elif xcoord[event] == xcoord[event_prime] and ycoord[event] > ycoord[event_prime]:
+        xoffset = 65
+        xprimeoffset = 65
+        yoffset = 0
+        yprimeoffset = 150
+    elif xcoord[event] < xcoord[event_prime] and ycoord[event] == ycoord[event_prime]:
+        xoffset = 130
+        xprimeoffset = 0
+        yoffset = 75
+        yprimeoffset = 75
+    elif xcoord[event] > xcoord[event_prime] and ycoord[event] == ycoord[event_prime]:
+        xoffset = 0
+        xprimeoffset = 130
+        yoffset = 75
+        yprimeoffset = 75
+
+    xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
+    xml_waypoint.set("x", str(xcoord[event]+xoffset))
+    xml_waypoint.set("y", str(ycoord[event]+yoffset))
+    xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
+    xml_waypoint.set("x", str((xcoord[event]+xoffset+xcoord[event_prime]+xprimeoffset)/2))
+    xml_waypoint.set("y", str(ycoord[event]+yoffset))
+    xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
+    xml_waypoint.set("x", str((xcoord[event]+xoffset+xcoord[event_prime]+xprimeoffset)/2))
+    xml_waypoint.set("y", str(ycoord[event_prime]+yprimeoffset))
+    xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
+    xml_waypoint.set("x", str(xcoord[event_prime]+xprimeoffset))
+    xml_waypoint.set("y", str(ycoord[event_prime]+yprimeoffset))
+
+
+'''
+Removes spaces to satisfy the dcr-js portal
+'''
+def clean_output(dcr):
+    graph = deepcopy(dcr_template)
+    for k, v in dcr.__dict__.items():
+        item = list(k.split('_'))
+        K = item[len(item)-1]
+        if K in (relation.value for relation in Relations):
+            v_new = {}
+            for k2, v2 in v.items():
+                v_new[k2.strip().replace(' ', '_')] = set([v3.strip().replace(' ', '_') for v3 in v2])
+            graph[K] = v_new
+        elif K in ['conditionsForDelays', 'responseToDeadlines']:
+            v_new = {}
+            for k2, v2 in v.items():
+                v_new[k2.strip().replace(' ', '_')] = set([(v3.strip().replace(' ', '_'), d) for (v3, d) in v2])
+            graph[K] = v_new
+        elif K == 'marking':
+            for k2 in ['executed', 'included', 'pending']:
+                new_v = set([v2.strip().replace(' ', '_') for v2 in dcr.__dict__[k][k2]])
+                graph[K][k2] = new_v
+        elif K in ['subprocesses', 'nestings', 'labelMapping', 'roleAssignments', 'readRoleAssignments']:
+            v_new = {}
+            for k2, v2 in v.items():
+                v_new[k2.strip().replace(' ', '_')] = set([v3.strip().replace(' ', '_') for v3 in v2])
+            graph[K] = v_new
+        else:
+            new_v = set([v2.strip().replace(' ', '_') for v2 in dcr.__dict__[k]])
+            graph[K] = set(new_v)
+    return graph

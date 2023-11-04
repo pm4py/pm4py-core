@@ -30,13 +30,11 @@ dcr_template = {
     'subprocesses': {},
     'nestings': {},
     'labels': set(),
-    # <<<<<<< HEAD
     'labelMapping': {},
     'roles': set(),
     'principals': set(),
     'roleAssignments': {},
     'readRoleAssignments': {}
-    # >>>>>>> 40a38596ee1706d65f38e531c20db84f2ffdedba
 }
 
 

@@ -21,9 +21,10 @@ def apply(dcr_graph, path, variant=XML_SIMPLE, **parameters):
     -----------
     input_log
     variant
-        Variant of the algorithm to use:
-            - DCR_BASIC
-            - DCR_SUBPROCESS_TIMED
+        Variant of the exporter to use:
+            - XML_SIMPLE
+            - XML_DCR_PORTAL
+            - DCR_JS_PORTAL
     parameters
         Algorithm related params
         finaAdditionalConditions: [True or False]
