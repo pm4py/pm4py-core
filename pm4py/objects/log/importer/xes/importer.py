@@ -17,7 +17,7 @@
 import importlib.util
 from enum import Enum
 
-from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line, iterparse_mem_compressed, iterparse_20, chunk_regex
+from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line, iterparse_mem_compressed, iterparse_20, chunk_regex, rustxes
 
 
 class Variants(Enum):
@@ -26,6 +26,7 @@ class Variants(Enum):
     ITERPARSE_MEM_COMPRESSED = iterparse_mem_compressed
     ITERPARSE_20 = iterparse_20
     CHUNK_REGEX = chunk_regex
+    RUSTXES = rustxes
 
 
 if importlib.util.find_spec("lxml"):
@@ -71,6 +72,8 @@ def apply(path, parameters=None, variant=DEFAULT_VARIANT):
         variant = Variants.ITERPARSE_20
     elif variant == "iterparse_mem_compressed":
         variant = Variants.ITERPARSE_MEM_COMPRESSED
+    elif variant == "rustxes":
+        variant = Variants.RUSTXES
 
     log = variant.value.apply(path, parameters=parameters)
 

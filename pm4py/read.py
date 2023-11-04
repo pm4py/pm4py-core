@@ -72,6 +72,8 @@ def read_xes(file_path: str, variant: str = "lxml", return_legacy_log_object: bo
         v = xes_importer.Variants.LINE_BY_LINE
     elif variant == "chunk_regex":
         v = xes_importer.Variants.CHUNK_REGEX
+    elif variant == "rustxes":
+        v = xes_importer.Variants.RUSTXES
 
     from copy import copy
     parameters = copy(kwargs)

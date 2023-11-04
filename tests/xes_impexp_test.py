@@ -51,6 +51,14 @@ class XesImportExportTest(unittest.TestCase):
         log = xes_importer.apply(os.path.join(COMPRESSED_INPUT_DATA, "01_running-example.xes.gz"))
         del log
 
+    def test_rustxes_xes_import(self):
+        log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "receipt.xes"), variant=xes_importer.Variants.RUSTXES)
+        self.assertEqual(len(log), 1434)
+
+    def test_rustxes_xesgz_import(self):
+        log = xes_importer.apply(os.path.join(INPUT_DATA_DIR, "bpic2012.xes.gz"), variant=xes_importer.Variants.RUSTXES)
+        self.assertEqual(len(log), 13087)
+
 
 if __name__ == "__main__":
     unittest.main()
