@@ -5,10 +5,9 @@ from pm4py.algo.conformance.dcr.rules.include import CheckInclude
 from pm4py.algo.conformance.dcr.rules.response import CheckResponse
 
 
-class Checker():
+class Checker:
     """
-        The base Component interface defines operations that can be altered by
-        decorators.
+        interface for checker and decorator
     """
 
     def enabled_checker(self, act, G, deviations, parameters=None) -> None:
@@ -17,7 +16,7 @@ class Checker():
     def all_checker(self, act, event, G, deviations, parameters=None) -> None:
         pass
 
-    def accepting_checker(self, G, deviations, parameters=None) -> None:
+    def accepting_checker(self, G, responses, deviations, parameters=None) -> None:
         pass
 
 
@@ -36,12 +35,12 @@ class ConcreteChecker(Checker):
 
         Parameters
         ----------
+        G
+            DCR Graph
         act
-            the activity that is performed
-        model
-            the DCR graph
+            the activity that is executed
         deviations
-            the list of deviations already found
+            the list of deviations
         parameters
             optional parameters
         """
@@ -49,20 +48,22 @@ class ConcreteChecker(Checker):
         CheckExclude.check_rule(act, G, deviations)
         CheckInclude.check_rule(act, G, deviations)
 
-    def accepting_checker(self, G, deviations, parameters=None) -> None:
+    def accepting_checker(self, G, responses, deviations, parameters=None) -> None:
         """
         Perform a check for rule that requires accepting state
 
         Parameters
         ----------
-        model
-
+        G
+            DCR Graph
+        trace
+            executed trace
         deviations
-            List of deviations in log
+            the list of deviations
         parameters
             Optional, parameter containing keys used
         """
-        CheckResponse.check_rule(G, deviations)
+        CheckResponse.check_rule(G, responses, deviations)
 
 
 class Decorator(Checker):
@@ -76,8 +77,8 @@ class Decorator(Checker):
     def enabled_checker(self, act, G, deviations, parameters=None) -> None:
         self._checker.enabled_checker(act, G, deviations, parameters=parameters)
 
-    def all_checker(self, act, event, G, deviations, parameters=None):
+    def all_checker(self, act, event, G, deviations, parameters=None) -> None:
         self._checker.all_checker(act, event, G, deviations, parameters=parameters)
 
-    def accepting_checker(self, G, deviations, parameters=None) -> None:
+    def accepting_checker(self, G, trace, deviations, parameters=None) -> None:
         self._checker.accepting_checker(G, deviations, parameters=parameters)
