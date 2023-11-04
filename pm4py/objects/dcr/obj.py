@@ -1,7 +1,6 @@
 from enum import Enum
 from typing import Set, Dict
 
-
 class Relations(Enum):
     I = 'includesTo'
     E = 'excludesTo'
@@ -37,14 +36,11 @@ dcr_template = {
     'readRoleAssignments': {}
 }
 
-
 class Marking:
     """
     This class contains the set of all markings M(G), in which it contains three sets:
-    M(G) = P(E) x P(E) x P(E)
-    where P(E) represent the set of included, executed and pending events.
+    M(G) = executed x included x pending
     """
-
     def __init__(self, executed, included, pending) -> None:
         self.__executed = executed
         self.__included = included
@@ -63,7 +59,7 @@ class Marking:
     def pending(self):
         return self.__pending
 
-    def reset(self, events) -> None:
+    def reset(self, initial_marking) -> None:
         """
         Resets the marking of a DCR graph, uses the graphs event to reset included marking
 
@@ -73,13 +69,17 @@ class Marking:
             the events in the DCR Graphs
 
         """
-        self.__executed = set()
-        self.__included = events
-        self.__pending = set()
+        self.__executed = initial_marking.executed
+        self.__included = initial_marking.included
+        self.__pending = initial_marking.pending
 
     # built-in functions for printing a visual string representation
     def __str__(self) -> str:
+        return self.__repr__()
+
+    def __repr__(self):
         return f'{{executed: {self.__executed}, included: {self.__included}, pending: {self.__pending}}}'
+
 
     def __getitem__(self, item):
         for key, value in vars(self).items():
@@ -103,73 +103,49 @@ class DCR_Graph(object):
     """
 
     # initiate the objects: contains events ID, activity, the 4 relations, markings, roles and principals
-    def __init__(self):
+    def __init__(self, template=None):
         # DisCoveR uses bijective labelling, each event has one label
-        self.__events = set()
-        self.__marking = Marking(set(), set(),
-                                 set())
-        self.__labels = set()
-        self.__conditionsFor = {}
-        self.__responseTo = {}
-        self.__includesTo = {}
-        self.__excludesTo = {}
-        self.__labelMapping = {}
+        self.__events = set() if None else template['events']
+        self.__marking = Marking(set(), set(), set()) if None else (
+            Marking(template['marking']['executed'],template['marking']['included'], template['marking']['pending']))
+        self.__labels = set() if None else template['labels']
+        self.__conditionsFor = {} if None else template['conditionsFor']
+        self.__responseTo = {} if None else template['responseTo']
+        self.__includesTo = {} if None else template['includesTo']
+        self.__excludesTo = {} if None else template['excludesTo']
+        self.__labelMapping = {} if None else template['labelMapping']
 
     # @property functions to extract values used for data manipulation and testing
     @property
     def events(self) -> Set[str]:
-        """
-        events(set): A set representing the events in the DCR Graph
-        """
         return self.__events
 
     @property
     def marking(self) -> Marking:
-        """
-        marking(:class: 'Marking'): an instance of the Marking for the DCR graph: M(G) = In(E) x Ex(E) x Pe(E)
-        """
         return self.__marking
 
     @property
     def labels(self) -> Set[str]:
-        """
-        labels(set): A set representing the Activities in the DCR Graph
-        """
         return self.__labels
 
     @property
     def conditionsFor(self) -> Dict[str, Set[str]]:
-        """
-        conditionsFor(dict): A dictonary representing the condition relations between events
-        """
         return self.__conditionsFor
 
     @property
     def responseTo(self) -> Dict[str, Set[str]]:
-        """
-        responseTo(dict): A dictonary representing the response relations between events
-        """
         return self.__responseTo
 
     @property
     def includesTo(self) -> Dict[str, Set[str]]:
-        """
-        includesTo(dict): A dictonary representing the include relations between events
-        """
         return self.__includesTo
 
     @property
     def excludesTo(self) -> Dict[str, Set[str]]:
-        """
-        excludesTo(dict): A dictonary representing the exclude relations between events
-        """
         return self.__excludesTo
 
     @property
     def labelMapping(self) -> Dict[str, Set[str]]:
-        """
-        labelMapping(dict): A dictionary representing the labelMapping from events to mapping is bijective
-        """
         return self.__labelMapping
 
     def getEvent(self, activity: str) -> str:
@@ -213,6 +189,10 @@ class DCR_Graph(object):
     def getConstraints(self) -> int:
         """
         compute constraints in DCR Graph
+            - conditions
+            - responses
+            - includes
+            - excludes
 
         Returns
         -------
@@ -229,12 +209,6 @@ class DCR_Graph(object):
         for i in self.__includesTo.values():
             no += len(i)
         return no
-
-    def reset(self) -> None:
-        """
-        resets the dcr graph
-        """
-        self.__marking.reset(self.events.copy())
 
     def __repr__(self):
         string = ""
@@ -257,3 +231,4 @@ class DCR_Graph(object):
         for key,_ in vars(self).items():
             if item == key.split("_")[-1]:
                 setattr(self,key,value)
+
