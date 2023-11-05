@@ -121,15 +121,15 @@ class DCR_Graph(object):
     # initiate the objects: contains events ID, activity, the 4 relations, markings, roles and principals
     def __init__(self, template=None):
         # DisCoveR uses bijective labelling, each event has one label
-        self.__events = set() if None else template['events']
-        self.__marking = Marking(set(), set(), set()) if None else (
+        self.__events = set() if template is None else template['events']
+        self.__marking = Marking(set(), set(), set()) if template is None else (
             Marking(template['marking']['executed'],template['marking']['included'], template['marking']['pending']))
-        self.__labels = set() if None else template['labels']
-        self.__conditionsFor = {} if None else template['conditionsFor']
-        self.__responseTo = {} if None else template['responseTo']
-        self.__includesTo = {} if None else template['includesTo']
-        self.__excludesTo = {} if None else template['excludesTo']
-        self.__labelMapping = {} if None else template['labelMapping']
+        self.__labels = set() if template is None else template['labels']
+        self.__conditionsFor = {} if template is None else template['conditionsFor']
+        self.__responseTo = {} if template is None else template['responseTo']
+        self.__includesTo = {} if template is None else template['includesTo']
+        self.__excludesTo = {} if template is None else template['excludesTo']
+        self.__labelMapping = {} if template is None else template['labelMapping']
 
     # @property functions to extract values used for data manipulation and testing
     @property
