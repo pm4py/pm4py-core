@@ -348,28 +348,28 @@ class Performance:
             if self.alignment.worst_case_alignment_cost > 0 else 0
         return fitness
 
-        def calculate_precision(self):
-            # Initialize counters for the numerator and denominator of the precision formula
-            matching_behavior = 0
-            total_behavior = 0
+    def calculate_precision(self):
+        # Initialize counters for the numerator and denominator of the precision formula
+        matching_behavior = 0
+        total_behavior = 0
 
-            # Get all activities in the log
-            all_activities_in_log = set(event[self.trace_handler.activity_key] for event in self.trace_handler.trace)
+        # Get all activities in the log
+        all_activities_in_log = set(event[self.trace_handler.activity_key] for event in self.trace_handler.trace)
 
-            # Iterate through each event in the log
-            for event in self.trace_handler.trace:
-                activity = event[self.trace_handler.activity_key]
+        # Iterate through each event in the log
+        for event in self.trace_handler.trace:
+            activity = event[self.trace_handler.activity_key]
 
-                # Check if the event is enabled in the model
-                if self.alignment.graph_handler.is_enabled(activity):
-                    total_behavior += 1
+            # Check if the event is enabled in the model
+            if self.alignment.graph_handler.is_enabled(activity):
+                total_behavior += 1
 
-                    # Check if the event is also present in the log
-                    if activity in all_activities_in_log:
-                        matching_behavior += 1
+                # Check if the event is also present in the log
+                if activity in all_activities_in_log:
+                    matching_behavior += 1
 
-            precision = matching_behavior / total_behavior if total_behavior > 0 else 0.0
-            return precision
+        precision = matching_behavior / total_behavior if total_behavior > 0 else 0.0
+        return precision
 
 
 class Alignment:
