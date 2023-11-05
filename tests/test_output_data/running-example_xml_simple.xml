@@ -1,0 +1,195 @@
+<DCRModel>
+  <title>running-example_xml_simple</title>
+  <graphType>DCRModel</graphType>
+  <roles>
+    <title>User</title>
+    <description>Dummy user</description>
+  </roles>
+  <events>
+    <id>reject request</id>
+    <label>reject request</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>reject request</source>
+    <target>reject request</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>decide</source>
+    <target>reject request</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>reject request</source>
+    <target>decide</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>reject request</source>
+    <target>check ticket</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>reject request</source>
+    <target>pay compensation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>reject request</source>
+    <target>examine casually</target>
+  </rules>
+  <events>
+    <id>decide</id>
+    <label>decide</label>
+  </events>
+  <rules>
+    <type>include</type>
+    <source>decide</source>
+    <target>reject request</target>
+  </rules>
+  <rules>
+    <type>include</type>
+    <source>decide</source>
+    <target>reinitiate request</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>check ticket</source>
+    <target>decide</target>
+  </rules>
+  <rules>
+    <type>include</type>
+    <source>decide</source>
+    <target>pay compensation</target>
+  </rules>
+  <events>
+    <id>register request</id>
+    <label>register request</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>register request</source>
+    <target>register request</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>register request</source>
+    <target>check ticket</target>
+  </rules>
+  <events>
+    <id>examine thoroughly</id>
+    <label>examine thoroughly</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>examine thoroughly</source>
+    <target>decide</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>register request</source>
+    <target>examine thoroughly</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>examine thoroughly</source>
+    <target>examine thoroughly</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>examine thoroughly</source>
+    <target>examine casually</target>
+  </rules>
+  <events>
+    <id>reinitiate request</id>
+    <label>reinitiate request</label>
+  </events>
+  <rules>
+    <type>condition</type>
+    <source>decide</source>
+    <target>reinitiate request</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>reinitiate request</source>
+    <target>reinitiate request</target>
+  </rules>
+  <rules>
+    <type>response</type>
+    <source>reinitiate request</source>
+    <target>check ticket</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>examine casually</source>
+    <target>reinitiate request</target>
+  </rules>
+  <events>
+    <id>check ticket</id>
+    <label>check ticket</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>check ticket</source>
+    <target>decide</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>register request</source>
+    <target>check ticket</target>
+  </rules>
+  <events>
+    <id>pay compensation</id>
+    <label>pay compensation</label>
+  </events>
+  <rules>
+    <type>exclude</type>
+    <source>pay compensation</source>
+    <target>reject request</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>decide</source>
+    <target>pay compensation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>pay compensation</source>
+    <target>decide</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>pay compensation</source>
+    <target>check ticket</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>pay compensation</source>
+    <target>pay compensation</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>examine casually</source>
+    <target>pay compensation</target>
+  </rules>
+  <rules>
+    <type>exclude</type>
+    <source>pay compensation</source>
+    <target>examine casually</target>
+  </rules>
+  <events>
+    <id>examine casually</id>
+    <label>examine casually</label>
+  </events>
+  <rules>
+    <type>response</type>
+    <source>examine casually</source>
+    <target>decide</target>
+  </rules>
+  <rules>
+    <type>condition</type>
+    <source>register request</source>
+    <target>examine casually</target>
+  </rules>
+</DCRModel>
