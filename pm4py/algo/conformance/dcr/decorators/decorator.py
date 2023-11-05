@@ -8,6 +8,21 @@ from typing import List, Any, Dict, Tuple, Optional, Union
 
 class Checker(ABC):
     """
+    An interface for Checker implementations and related decorators.
+
+    This abstract base class defines the fundamental checker methods that must be implemented by concrete
+    checker classes. These methods are aimed at evaluating various conformance rules within a DCR graph.
+
+    Methods
+    -------
+    enabled_checker(act, G, deviations, parameters=None):
+        Abstract method to check rules when an activity is enabled.
+
+    all_checker(act, event, G, deviations, parameters=None):
+        Abstract method to check rules for all types of activities.
+
+    accepting_checker(G, responses, deviations, parameters=None):
+        Abstract method to check for rules requiring an accepting state.
     The checker class provides the methods that must be inherited by the decorators.
     The checker class instantiates the conformance checker methods that will be overwritten to perform the determine possible deviations.
     currently supports:
@@ -97,26 +112,33 @@ class ConcreteChecker(Checker):
 
 class Decorator(Checker):
     """
-    The Decorator class inherits the function that should be decorated from the Checker class.
+    A decorator for Checker objects, providing a flexible mechanism to enhance or modify their behavior.
 
-    This class will instantiate with the checker as an attribute,
-    that then can call the underlying the established methods from the underlying class
+    This class implements the decorator pattern to wrap a Checker object. It overrides the Checker
+    interface methods and can add additional functionality before or after invoking these methods on
+    the wrapped Checker instance.
+
+    Inherits From
+    --------------
+    Checker : The abstract base class for checker implementations.
 
     Attributes
     ----------
-    checker: Checker
-        The checker that will be decorated
+
+    self._checker : Checker
+        The internal Checker instance that is being decorated.
 
     Methods
     -------
-    enabled_checker(e, G, deviations, parameters=None)
-        calls the underlying enabled_checker
-    enabled_checker(e, event, G, deviations, parameters=None)
-        calls the underlying all_checker
-    accepting_checker(G, responses, deviations, parameters=None)
-        calls the underlying accepting_checker
-    """
+    enabled_checker(act, G, deviations, parameters=None):
+        Invokes the enabled_checker method on the decorated Checker instance, potentially adding extra behavior.
 
+    all_checker(act, event, G, deviations, parameters=None):
+        Invokes the all_checker method on the decorated Checker instance, potentially adding extra behavior.
+
+    accepting_checker(G, trace, deviations, parameters=None):
+        Invokes the accepting_checker method on the decorated Checker instance, potentially adding extra behavior.
+    """
     def __init__(self, checker: Checker) -> None:
         """
         Constructs the checker with another checker, such that it can be called
