@@ -932,26 +932,41 @@ def discover_dcr(log: Union[EventLog, pd.DataFrame], process_type: Set[str] = No
                  resource_key: str = "org:resource", group_key: str = "org:group",
                  finaAdditionalConditions: bool = True) -> Tuple[Any, Dict[str, Any]]:
     """
-        Discovers a DCR graph from an event log.
-
-        Implements DCR algorithm described in:
-        C. O. Back, T. Slaats, T. T. Hildebrandt, M. Marquard, "DisCoveR: accurate and efficient discovery of declarative process models"
-
-        :param log: event log / Pandas dataframe
-        :param process_type: provides type of post-processing for the event log, current supports Roles
-        :param activity_key: attribute to be used for the activity
-        :param timestamp_key: attribute to be used for the timestamp
-        :param case_id_key: attribute to be used as case identifier
-        :param group_key: attribute to be used as a role identifier
-        :param resource_key: attribute to be used as a resource identifier
-        :param finaAdditionalConditions: boolean value to specify whether additional conditions should be found
-        :rtype: ``Tuple[Any, dict]``
-
-        .. code-block:: python3
-
-            import pm4py
-
-            G = pm4py.discover_DCR(log)
+    Discovers a DCR graph from an event log based on the DisCoveR algorithm.
+    
+    This method implements the DCR discovery algorithm as described in:
+    C. O. Back, T. Slaats, T. T. Hildebrandt, M. Marquard, "DisCoveR: accurate and efficient discovery of declarative process models".
+    
+    Parameters
+    ----------
+    log : Union[EventLog, pd.DataFrame]
+        The event log or Pandas dataframe containing the event data.
+    process_type : Optional[str]
+        Specifies the type of post-processing for the event log, currently supports Roles.
+    activity_key : str, optional
+        The attribute to be used for the activity, defaults to "concept:name".
+    timestamp_key : str, optional
+        The attribute to be used for the timestamp, defaults to "time:timestamp".
+    case_id_key : str, optional
+        The attribute to be used as the case identifier, defaults to "case:concept:name".
+    group_key : str, optional
+        The attribute to be used as a role identifier, defaults to None.
+    resource_key : str, optional
+        The attribute to be used as a resource identifier, defaults to None.
+    findAdditionalConditions : bool, optional
+        A boolean value specifying whether additional conditions should be found, defaults to True.
+    
+    Returns
+    -------
+    Tuple[Any, dict]
+        A tuple containing the discovered DCR graph and a dictionary with additional information.
+    
+    Examples
+    --------
+    .. code-block:: python3
+    
+        \nimport pm4py\n
+        G, info = pm4py.discover_DCR(log)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]:
         raise Exception(
