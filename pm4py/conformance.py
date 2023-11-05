@@ -176,6 +176,10 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
             # DFG alignments
             from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
             result = dfg_alignment.apply(log, args[0], args[1], args[2], parameters=properties)
+        elif isinstance(args[0], DCR_Graph):
+            # DCR alignments
+            from pm4py.algo.conformance.alignments.dcr import algorithm as dcr_alignment
+            result = dcr_alignment.apply(log, args[0], args[1], args[2], parameters=properties)
 
             return result
     elif len(args) == 1:
@@ -840,3 +844,28 @@ def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DCR_Graph, ac
         return dcr_conformance.get_diagnostics_dataframe(log, result, parameters=properties)
 
     return result
+
+
+def optimal_alignment(
+        log: Union[EventLog, pd.DataFrame],
+        dcr_graph: DCR_Graph,
+        activity_key: str = "concept:name",
+        timestamp_key: str = "time:timestamp",
+        case_key: str = "case:concept:name",
+        role_key: str = "org:role",
+
+) -> Union[Dict[str, Any], List[Tuple[str, Dict[str, Any]]]]:
+
+    if type(log) not in [pd.DataFrame, EventLog]:
+        raise Exception("the method can be applied only to a traditional event log!")
+
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_key, role_key=role_key)
+
+    from pm4py.algo.conformance.alignments.dcr.variants.optimal import TraceAlignment
+
+    trace_alignment = TraceAlignment(dcr_graph, log, parameters=properties)
+
+    alignment_result = trace_alignment.perform_alignment()
+
+    return alignment_result
+

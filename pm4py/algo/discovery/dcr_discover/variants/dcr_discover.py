@@ -31,6 +31,17 @@ from pm4py.objects.dcr.obj import DCR_Graph
 
 # these parameters are used in case of attribute has a custom name, in which case it can be specified on call
 class Parameters(Enum):
+    """
+    An enumeration class to hold parameter keys used for specifying the activity and case identifier keys
+    within a log during the DCR discovery process.
+
+    Attributes
+    ----------
+    ACTIVITY_KEY : str
+        The key used to identify the activity attribute in the event log.
+    CASE_ID_KEY : str
+        The key used to identify the case identifier attribute in the event log.
+    """
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
@@ -45,14 +56,14 @@ def apply(log, findAdditionalConditions=True, parameters = None) -> Tuple[DCR_Gr
         event log (pandas dataframe)
     findAdditionalConditions
         bool value to identify if additional conditions should be mined
-    Parameters
+    parameters
         Possible parameters of the algorithm, including:
         - Parameters.ACTIVITY_KEY
         - Parameters.Case_ID_KEY
     Returns
     -------
     tuple(dict,dict)
-        returns tuple of dictionary containing the dcr_graph and the abstracted log used to mine the graph
+        returns tuple of dictionaries containing the dcr_graph and the abstracted log used to mine the graph
 
     References
     ----------
@@ -66,6 +77,33 @@ def apply(log, findAdditionalConditions=True, parameters = None) -> Tuple[DCR_Gr
 
 
 class Discover:
+    """
+    The Discover class is responsible for mining DCR graphs from event logs.
+
+    Attributes
+    ----------
+    graph : dict
+        A dictionary representing the DCR graph, initialized from a template.
+    logAbstraction : dict
+        A dictionary containing abstracted information from the event log to be mined.
+
+    Methods
+    ----------
+    mine(log: Union[EventLog, pd.DataFrame], findAdditionalConditions: bool = True, parameters: Optional[dict] = None) -> Tuple[DCR_Graph, Dict[str, Any]]:
+        Mines a DCR graph and the log abstraction from an event log.
+
+    createLogAbstraction(log: Union[EventLog, pd.DataFrame], activity_key: str, case_key: str) -> int:
+        Creates an abstraction of the event log to facilitate the mining process.
+
+    parseTrace(trace: List[str]) -> int:
+        Parses a single trace to extract relations between events.
+
+    optimizeRelation(relation: Dict[str, Set[str]]) -> Dict[str, Set[str]]:
+        Optimizes a relation by removing redundant relations based on transitive closure.
+
+    mineFromAbstraction(findAdditionalConditions: bool = True) -> int:
+        Mines DCR constraints from the log abstraction.
+    """
     def __init__(self):
         self.graph = deepcopy(dcr_template)
         self.logAbstraction = {
@@ -80,7 +118,7 @@ class Discover:
         }
 
     def mine(self, log: Union[EventLog,pd.DataFrame], findAdditionalConditions=True, parameters=None) -> Tuple[DCR_Graph,Dict[str, Any]]:
-        '''
+        """
         Method used for calling the underlying mining algorithm used for discovery of DCR Graphs
 
         Parameters
@@ -91,7 +129,6 @@ class Discover:
             Condition for mining additional condition: True (default) or False
 
         parameters
-            Parameters of the algorithm, including:
                 activity_key: optional :class:`str`, used to identify the activities in the log
                 case_id_key: optional :class:`str`,, used to identify the cases executed in the log
 
@@ -101,7 +138,7 @@ class Discover:
             returns a :class:`tuple` of containing:
             - The :class:`pm4py.objects.dcr.obj.DCR_Graph`
             - The log abstraction
-        '''
+        """
         activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
         self.createLogAbstraction(log, activity_key, case_id_key)
@@ -118,23 +155,24 @@ class Discover:
         return G, self.logAbstraction
 
     def createLogAbstraction(self, log, activity_key: str, case_key: str) -> int:
-        '''
+        """
         Performs the mining of abstraction log, will map event log onto a selection of DECLARE templates.
 
         Parameters
         ----------
-        log
-            log: :class:`pm4py.log.log.EventLog` or `pandas.Datafrme`
-        case_id_key
-            case identifier for the cases recorded in the log
-        activity_key
-            activity identifier for the activities recorded in the log
+        log : pm4py.log.log.EventLog or pandas.DataFrame
+            The event log to be abstracted.
+        activity_key : str
+            The attribute key used to identify the activities recorded in the log.
+        case_key : str
+            The attribute key used to identify the cases recorded in the log.
+
         Returns
-        ----------
+        -------
         int
-            0 for success anything else for failure
-        '''
-        #initiate the activities, in DisCoveR, activities and event id is mapped bijectively
+            Returns 0 for success, and any other value for failure.
+        """
+        # initiate the activities, in DisCoveR, activities and event id is mapped bijectively
         activities = get_event_attribute_values(log, activity_key)
         events = set(activities)
 
@@ -142,11 +180,9 @@ class Discover:
         self.logAbstraction['events'] = events.copy()
         log = pm4py.project_on_event_attribute(log, case_id_key=case_key)
 
-
-        #flatten the event log, all traces are equally significant
+        # flatten the event log, all traces are equally significant
         traces = set(tuple(i) for i in log)
         traces = [list(i) for i in traces]
-
 
         self.logAbstraction['traces'] = traces
         self.logAbstraction['atMostOnce'] = events.copy()
@@ -165,12 +201,26 @@ class Discover:
         return 0
 
     def parseTrace(self, trace: List[str]) -> int:
-        '''
-        Parse a trace for mining of DEClARE constraints
+        """
+        Parses a trace to mine DEClARE constraints.
 
-        :param trace: array each trace one row and then events in order
-        :return: 0 if success anything else for failure
-        '''
+        Parameters
+        ----------
+        trace : List[str]
+            A list representing a trace, where each element is an event, and the order of events is maintained.
+
+        Returns
+        -------
+        int
+            Returns 0 on success, and any other value on failure.
+
+        Notes
+        -----
+        This method performs the following key steps:
+        - Identifies and updates predecessor relationships for each event in the trace.
+        - Updates 'atMostOnce', 'precedenceFor', and 'chainPrecedenceFor' sets in the log abstraction based on the trace events.
+        - Computes and updates 'responseTo' sets in the log abstraction based on the events seen before and after each event in the trace.
+        """
         localAtLeastOnce = set()
         localSeenOnlyBefore = {}
         lastEvent = ''
@@ -214,19 +264,22 @@ class Discover:
         return 0
 
     def optimizeRelation(self, relation: Dict[str, Set[str]]) -> Dict[str, Set[str]]:
-        '''
-        Removes redundant relations based on transitive closure,
-        if cond and resp A -> B, B -> C then you can remove an existing relation A -> C
+        """
+        Optimizes a given relation by removing redundant connections based on transitive closure.
+
+        For instance, if there are relations A -> B, B -> C, then an existing relation A -> C can be removed
+        as it is implied by the transitive nature of the other relations.
 
         Parameters
-        -----------
-        relation
-            A conditionFor or responseTo relations
-        Returns
         ----------
-        Dict[str,Set[str]]
-            An optimize version of the input relations
-        '''
+        relation : Dict[str, Set[str]]
+            A dictionary representing a relation, where keys are starting points and values are sets of endpoints.
+
+        Returns
+        -------
+        Dict[str, Set[str]]
+            An optimized version of the input relations, with redundant connections removed.
+        """
         # Sortedlist to avoid possibly non-deterministic behavior due to unordered nature of dict
         sortedList = np.array(list(relation.items()))
         sortedList = sorted(sortedList, key=lambda num: len(num[1]), reverse=True)
@@ -236,19 +289,23 @@ class Discover:
         return dict(sortedList)
 
     def mineFromAbstraction(self, findAdditionalConditions: bool = True) -> int:
-        '''
-        Performs the mining of DCR constraints based on the mine DECLARE template stored in the abstraction log.
+        """
+        Mines DCR constraints based on the DECLARE templates stored in the log abstraction.
+
+        This method initializes a graph and mines conditions, responses, self-exclusions, and additional conditions
+        (if specified) from the log abstraction. It also optimizes the relations by removing redundant relations based
+        on transitive closure.
 
         Parameters
         ----------
-        findAdditionalConditions
-            can be True or False, if no parameter is given, set to True standard is True
+        findAdditionalConditions : bool, optional
+            Specifies whether to mine additional conditions. Default is True.
 
         Returns
-        ----------
+        -------
         int
-            returns 0 if successful any else for failure
-        '''
+            Returns 0 if successful, anything else for failure.
+        """
         # Initialize graph
         # Note that events become an alias, but this is irrelevant since events are never altered
         self.graph['events'] = self.logAbstraction['events'].copy()
@@ -313,9 +370,11 @@ class Discover:
                     self.graph['excludesTo'][s].discard(t)
 
         if findAdditionalConditions:
-            # Mining additional conditions:
-            # Every event, x, that occurs before some event, y, is a possible candidate for a condition x -->* y
-            # This is due to the fact, that in the traces where x does not occur before y, x might be excluded
+            """
+            Mining additional conditions:
+            Every event, x, that occurs before some event, y, is a possible candidate for a condition x -->* y
+            This is due to the fact, that in the traces where x does not occur before y, x might be excluded
+            """
             possibleConditions = deepcopy(self.logAbstraction['predecessor'])
             # Replay entire log, filtering out any invalid conditions
             for trace in self.logAbstraction['traces']:

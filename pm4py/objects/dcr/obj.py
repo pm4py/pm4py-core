@@ -1,3 +1,19 @@
+"""
+This module defines the core components for modelling Declarative Process Models as
+Dynamic Condition Response (DCR) Graphs.
+
+The module encapsulates the essential elements of DCR Graphs, such as events,
+relations, markings, and constraints, providing a foundational framework for
+working with DCR Graphs within PM4Py.
+
+Classes:
+    Relations: An enumeration of possible relations between events in a DCR Graph.
+    Marking: Represents the state of events in terms of executed, included, and pending.
+    DCR_Graph: Encapsulates the structure and behavior of a DCR Graph, offering methods to query and manipulate it.
+
+The `dcr_template` dictionary provides a blueprint for initializing new DCR Graphs with default settings.
+"""
+
 from enum import Enum
 from typing import Set, Dict
 
@@ -130,6 +146,10 @@ class DCR_Graph(object):
         """
         return self.__marking
 
+    @marking.setter
+    def marking(self, value: Marking) -> None:
+        self.__marking = value
+
     @property
     def labels(self) -> Set[str]:
         """
@@ -247,6 +267,9 @@ class DCR_Graph(object):
 
     def __eq__(self, other):
         return self.conditionsFor == other.conditionsFor and self.responseTo == other.responseTo and self.includesTo == other.includesTo and self.excludesTo == other.excludesTo
+
+    def __lt__(self, other):
+        return str(self.obj) < str(other.obj)
 
     def __getitem__(self, item):
         for key, value in vars(self).items():
