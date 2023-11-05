@@ -348,20 +348,28 @@ class Performance:
             if self.alignment.worst_case_alignment_cost > 0 else 0
         return fitness
 
-    def calculate_precision(self):
-        # Convert the trace to a set of activities
-        observed_behavior = set(event[self.trace_handler.activity_key] for event in self.trace_handler.trace)
+        def calculate_precision(self):
+            # Initialize counters for the numerator and denominator of the precision formula
+            matching_behavior = 0
+            total_behavior = 0
 
-        # Get the model behavior by simulating the execution of the model
-        model_behavior = self.get_model_behavior()
+            # Get all activities in the log
+            all_activities_in_log = set(event[self.trace_handler.activity_key] for event in self.trace_handler.trace)
 
-        # Compute the intersection and the union of the observed and model behaviors
-        intersection = observed_behavior.intersection(model_behavior)
-        union = observed_behavior.union(model_behavior)
+            # Iterate through each event in the log
+            for event in self.trace_handler.trace:
+                activity = event[self.trace_handler.activity_key]
 
-        # Compute and return the precision as the size of the intersection divided by the size of the union
-        precision = 1 - len(intersection) / len(union) if union else 1.0
-        return precision
+                # Check if the event is enabled in the model
+                if self.alignment.graph_handler.is_enabled(activity):
+                    total_behavior += 1
+
+                    # Check if the event is also present in the log
+                    if activity in all_activities_in_log:
+                        matching_behavior += 1
+
+            precision = matching_behavior / total_behavior if total_behavior > 0 else 0.0
+            return precision
 
     def get_model_behavior(self):
         # Initialize an empty set to store the model behavior
