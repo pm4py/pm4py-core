@@ -29,13 +29,29 @@ def apply(log, G, parameters) -> RoleDCR_Graph:
     G: :class: `pm4py.objects.dcr.roles.obj.RoleDCR_Graph`
         A DCR graph containing principals, roles and role assignment
     """
-    role_mine = Role_Mining()
+    role_mine = RoleMining()
     return role_mine.mine(log, G, parameters)
 
 
-class Role_Mining:
+class RoleMining:
+    """
+    The RoleMining provides a simple algorithm to mine for organizational data of an event log for DCR graphs
+
+    After initialization, user can call mine(log, G, parameters), which will return a DCR Graph with roles.
+
+    Methods
+    -------
+    mine(log, G, parameters)
+        calls the main mining function, extract roles and principals from the log and perform rol
+
+
+    Notes
+    ------
+    * NaN values are disregarded, if event in log has event with both, it will not store NaN as a role assignment
+    * readRoleAssignment is used as
+    """
     def __init__(self):
-        self.graph = deepcopy(dcr_template)
+        self.graph = {"roles": set(), "principals": set(), "roleAssignments": {}, "principalsAssignments": {}}
 
     def role_assignment_role_to_acitivity(self, log: pd.DataFrame, activity_key: str,
                                           group_key: str, resource_key: str) -> None:
@@ -57,10 +73,9 @@ class Role_Mining:
         act_roles_couple = dict(log.groupby([group_key, activity_key]).size())
         for couple in act_roles_couple:
             self.graph['roleAssignments'][couple[0]] = self.graph['roleAssignments'][couple[0]].union({couple[1]})
-
         act_roles_couple = dict(log.groupby([group_key, resource_key]).size())
         for couple in act_roles_couple:
-            self.graph['readRoleAssignments'][couple[0]] = self.graph['readRoleAssignments'][couple[0]].union({couple[1]})
+            self.graph['principalsAssignments'][couple[0]] = self.graph['principalsAssignments'][couple[0]].union({couple[1]})
 
 
     def mine(self, log: Union[pd.DataFrame, EventLog], G, parameters: Optional[Dict[Any, Any]]):
@@ -81,6 +96,7 @@ class Role_Mining:
         RoleDCR_Graph(G, dcr)
             returns a :class:`pm4py.objects.dcr.roles.obj.RoleDCR_Graph` with organizational attributes
         """
+
         activity_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_ACTIVITY_KEY, parameters,
                                                   xes_constants.DEFAULT_NAME_KEY)
         resource_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_RESOURCE_KEY, parameters,
@@ -106,7 +122,7 @@ class Role_Mining:
         self.graph['roles'] = roles
         for i in self.graph['roles']:
             self.graph['roleAssignments'][i] = set()
-            self.graph['readRoleAssignments'][i] = set()
+            self.graph['principalsAssignments'][i] = set()
 
         self.role_assignment_role_to_acitivity(log, activity_key, group_key, resource_key)
         return RoleDCR_Graph(G, self.graph)

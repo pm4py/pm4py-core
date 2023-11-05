@@ -1,29 +1,30 @@
 from pm4py.algo.conformance.dcr.rules.abc import CheckFrame
-
+from pm4py.objects.dcr.obj import DCR_Graph
+from typing import List, Tuple, Any
 
 class CheckInclude(CheckFrame):
     @classmethod
-    def check_rule(cls, act, G, deviations):
-        '''
+    def check_rule(cls, e: str, G: DCR_Graph, deviations: List[Tuple[str, Any]]):
+        """
         Checks if event violates the include relation
 
         Parameters
         --------------
-        act
-            Activity to be checked
-        G
-            :class: `pm4py.objects.dcr.roles.obj.RoleDCR_Graph` the model being checked
-        deviations
+        e: str
+            current event
+        G: DCR_Graph
+            DCR Graph
+        deviations: List[Tuple[str, Any]]
             List of deviations
 
         Returns
         --------------
-        deviations
+        deviations: List[Tuple[str, Any]]
             List of updated deviation if any were detected
-        '''
-        if act not in G.marking.included:
-            for e in G.includesTo:
-                if act in G.includesTo[e]:
-                    if ['includeViolation', (e, act)] not in deviations:
-                        deviations.append(['includeViolation', (e, act)])
+        """
+        if e not in G.marking.included:
+            for event_prime in G.includesTo:
+                if e in G.includesTo[event_prime]:
+                    if ['includeViolation', (event_prime, e)] not in deviations:
+                        deviations.append(('includeViolation', (event_prime, e)))
         return deviations

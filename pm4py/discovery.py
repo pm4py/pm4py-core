@@ -945,7 +945,7 @@ def discover_dcr(log: Union[EventLog, pd.DataFrame], process_type: Set[str] = No
         :param group_key: attribute to be used as a role identifier
         :param resource_key: attribute to be used as a resource identifier
         :param finaAdditionalConditions: boolean value to specify whether additional conditions should be found
-        :rtype: ``Tuple[DCR_Graph, dict]``
+        :rtype: ``Tuple[Any, dict]``
 
         .. code-block:: python3
 
