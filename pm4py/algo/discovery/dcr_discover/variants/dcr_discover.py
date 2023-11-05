@@ -268,7 +268,7 @@ class Discover:
         Mines DCR constraints based on the DECLARE templates stored in the log abstraction.
 
         This method initializes a graph and mines conditions, responses, self-exclusions, and additional conditions
-        (if specified) from the log abstraction. It also optimizes the relations by removing redundant relations based
+        (if specified) from the user. It also optimizes the relations by removing redundant relations based
         on transitive closure.
 
         Parameters
