@@ -11,7 +11,7 @@ class RoleDCR_Graph(object):
 
     Attributes
     ----------
-    
+
     self.__g : DCRGraph
         The underlying DCR graph structure.
     self.__principals : Set[str]
@@ -25,13 +25,11 @@ class RoleDCR_Graph(object):
 
     Methods
     -------
-    
     getConstraints() -> int:
         Computes the total number of constraints in the DCR graph, including those derived from role assignments.
 
     Parameters
     ----------
-    
     g : DCRGraph
         The underlying DCR graph structure.
     template : dict, optional
@@ -39,7 +37,6 @@ class RoleDCR_Graph(object):
 
     Examples
     --------
-
     dcr_graph = DCRGraph(...)\n
     role_graph = RoleDCR_Graph(dcr_graph, template={\n
         "principals": {"principal1", "principal2"},\n
