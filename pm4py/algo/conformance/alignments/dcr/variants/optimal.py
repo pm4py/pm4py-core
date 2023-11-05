@@ -371,19 +371,6 @@ class Performance:
             precision = matching_behavior / total_behavior if total_behavior > 0 else 0.0
             return precision
 
-    def get_model_behavior(self):
-        # Initialize an empty set to store the model behavior
-        model_behavior = set()
-
-        # Iterate through all events in the model
-        for event in self.alignment.graph_handler.graph.events:
-            # Check if the event is enabled
-            if self.alignment.graph_handler.is_enabled(event):
-                # If the event is enabled, add it to the model behavior set
-                model_behavior.add(event)
-
-        return model_behavior
-
 
 class Alignment:
     def __init__(self, graph_handler: DCRGraphHandler, trace_handler: TraceHandler, parameters: Optional[Dict] = None):
