@@ -382,11 +382,13 @@ def read_ocel2_xml(file_path: str, encoding: str = constants.DEFAULT_ENCODING) -
     return xml_importer.apply(file_path, variant=xml_importer.Variants.OCEL20, parameters={"encoding": encoding})
 
 
-def read_dcr_xml(file_path):
+def read_dcr_xml(file_path, **parameters):
     """
     Reads a DCR graph from an XML file
 
     :param file_path: path to the DCR graph
+    :param parameters: parameters of the importer
+    :rtype: ``DCR``
 
     .. code-block:: python3
 
@@ -397,4 +399,4 @@ def read_dcr_xml(file_path):
     if not os.path.exists(file_path):
         raise Exception("File does not exist")
     from pm4py.objects.dcr.importer import importer as dcr_importer
-    return dcr_importer.apply(file_path)
+    return dcr_importer.apply(file_path, **parameters)

@@ -3,8 +3,16 @@ from lxml import etree
 
 def export_dcr_xml(dcr, output_file_name, dcr_title):
     '''
-    dcr : the mined graph
-    output_file_name: dcrxml file name without extension
+    Writes a DCR graph object to disk in the ``.xml`` file format (exported as ``.xml`` file).
+
+    Parameters
+    -----------
+    dcr
+        the DCR graph
+    output_file_name
+        dcrxml file name
+    dcr_title
+        title of the DCR graph
     '''
     root = etree.Element("dcrgraph")
     if dcr_title:

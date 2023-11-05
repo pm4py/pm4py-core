@@ -2,16 +2,20 @@ from lxml import etree
 from pm4py.objects.dcr.obj import Relations, dcr_template
 from copy import deepcopy
 
-'''
-The output file is to be visualised using the following link:
-https://hugoalopez-dtu.github.io/dcr-js/
-'''
-
 
 def export_dcr_xml(dcr, output_file_name, dcr_title):
     '''
-    dcr : the mined graph
-    output_file_name: dcrxml file name without extension
+    Writes a DCR graph object to disk in the ``.xml`` file format (exported as ``.xml`` file).
+    The file is to be visualised using the following link: https://hugoalopez-dtu.github.io/dcr-js/
+
+    Parameters
+    -----------
+    dcr
+        the DCR graph
+    output_file_name
+        dcrxml file name
+    dcr_title
+        title of the DCR graph
     '''
 
     dcr = clean_output(dcr)
@@ -38,9 +42,7 @@ def export_dcr_xml(dcr, output_file_name, dcr_title):
     included = etree.SubElement(marking, "included")
     pendingResponse = etree.SubElement(marking, "pendingResponses")
 
-    '''
-    Each event's coordinates for visualisation
-    '''
+    # Each event's coordinates for visualisation
     xcoord = {}
     ycoord = {}
     x = 0
@@ -105,9 +107,8 @@ def export_dcr_xml(dcr, output_file_name, dcr_title):
                 xml_exclude.set("targetId", event_prime)
                 xml_exclude_custom = etree.SubElement(xml_exclude, "custom")
                 xml_waypoints = etree.SubElement(xml_exclude_custom, "waypoints")
-                '''
-                Creates a self-exclude arrow to avoid having just the arrowhead sitting at the centre of the event
-                '''
+
+                # Creates a self-exclude arrow to avoid having just the arrowhead sitting at the centre of the event
                 if event == event_prime:
                     xml_waypoint = etree.SubElement(xml_waypoints, "waypoint")
                     xml_waypoint.set("x", str(xcoord[event]+65))
@@ -143,12 +144,8 @@ def export_dcr_xml(dcr, output_file_name, dcr_title):
     tree.write(output_file_name, pretty_print=True, xml_declaration=True, encoding="utf-8", standalone="yes")
 
 
-'''
-Connects two events with corresponding constraint arrow
-'''
-
-
 def create_arrows(xml_waypoints, xcoord, ycoord, event, event_prime):
+    # Helper function that connects two events with corresponding constraint arrow
     if xcoord[event] < xcoord[event_prime] and ycoord[event] < ycoord[event_prime]:
         xoffset = 130
         xprimeoffset = 0
@@ -204,10 +201,8 @@ def create_arrows(xml_waypoints, xcoord, ycoord, event, event_prime):
     xml_waypoint.set("y", str(ycoord[event_prime]+yprimeoffset))
 
 
-'''
-Removes spaces to satisfy the dcr-js portal
-'''
 def clean_output(dcr):
+    # Helper function that removes spaces to satisfy the dcr-js portal
     graph = deepcopy(dcr_template)
     for k, v in dcr.__dict__.items():
         item = list(k.split('_'))

@@ -386,7 +386,7 @@ def write_dcr_xml(dcr_graph, path, variant, dcr_title):
     Writes a DCR graph object to disk in the ``.xml`` file format (exported as ``.xml`` file).
 
     :param dcr: DCR graph object
-    :param file_path: target file path to the XML file
+    :param path: target file path to the XML file
     :param variant: variant of the DCR graph
     :param dcr_title: title of the DCR graph
 

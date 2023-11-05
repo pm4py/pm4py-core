@@ -14,6 +14,7 @@ C = Relations.C.value
 M = Relations.M.value
 
 def parse_element(curr_el, parent, dcr):
+    # Create the DCR graph
     tag = curr_el.tag.lower()
     match tag:
         case 'event':
@@ -216,6 +217,19 @@ def map_labels_to_ids(dcr):
 
 
 def apply(path, parameters=None):
+    '''
+    Reads a DCR graph from an XML file
+
+    Parameters
+    ----------
+    path
+        Path to the XML file
+    
+    Returns
+    -------
+    dcr
+        DCR graph object
+    '''
     if parameters is None:
         parameters = {}
 

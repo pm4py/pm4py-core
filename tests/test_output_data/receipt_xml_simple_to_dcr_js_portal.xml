@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
-<dcrgraph title="reviewing_exported_dcr_js_portal">
+<dcrgraph title="receipt_xml_simple_to_dcr_js_portal">
   <specification>
     <resources>
       <events>
@@ -67,7 +67,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="T14_Determine_document_X_request_unlicensed">
+        <event id="T05_Print_and_send_confirmation_of_receipt">
           <custom>
             <visualization>
               <location xLoc="900" yLoc="300"/>
@@ -75,7 +75,7 @@
             </visualization>
           </custom>
         </event>
-        <event id="T05_Print_and_send_confirmation_of_receipt">
+        <event id="T14_Determine_document_X_request_unlicensed">
           <custom>
             <visualization>
               <location xLoc="1200" yLoc="300"/>
@@ -230,8 +230,8 @@
         <label id="T07-1_Draft_intern_advice_aspect_1"/>
         <label id="Confirmation_of_receipt"/>
         <label id="T02_Check_confirmation_of_receipt"/>
-        <label id="T14_Determine_document_X_request_unlicensed"/>
         <label id="T05_Print_and_send_confirmation_of_receipt"/>
+        <label id="T14_Determine_document_X_request_unlicensed"/>
         <label id="T09-4_Process_or_receive_external_advice_from_party_4"/>
         <label id="T10_Determine_necessity_to_stop_indication"/>
         <label id="T11_Create_document_X_request_unlicensed"/>
@@ -259,8 +259,8 @@
         <labelMapping eventId="T07-1_Draft_intern_advice_aspect_1" labelId="T07-1_Draft_intern_advice_aspect_1"/>
         <labelMapping eventId="Confirmation_of_receipt" labelId="Confirmation_of_receipt"/>
         <labelMapping eventId="T02_Check_confirmation_of_receipt" labelId="T02_Check_confirmation_of_receipt"/>
-        <labelMapping eventId="T14_Determine_document_X_request_unlicensed" labelId="T14_Determine_document_X_request_unlicensed"/>
         <labelMapping eventId="T05_Print_and_send_confirmation_of_receipt" labelId="T05_Print_and_send_confirmation_of_receipt"/>
+        <labelMapping eventId="T14_Determine_document_X_request_unlicensed" labelId="T14_Determine_document_X_request_unlicensed"/>
         <labelMapping eventId="T09-4_Process_or_receive_external_advice_from_party_4" labelId="T09-4_Process_or_receive_external_advice_from_party_4"/>
         <labelMapping eventId="T10_Determine_necessity_to_stop_indication" labelId="T10_Determine_necessity_to_stop_indication"/>
         <labelMapping eventId="T11_Create_document_X_request_unlicensed" labelId="T11_Create_document_X_request_unlicensed"/>
@@ -340,10 +340,10 @@
         <condition sourceId="T13_Adjust_document_X_request_unlicensed" targetId="T05_Print_and_send_confirmation_of_receipt">
           <custom>
             <waypoints>
-              <waypoint x="1265" y="150"/>
-              <waypoint x="1265.0" y="150"/>
-              <waypoint x="1265.0" y="300"/>
-              <waypoint x="1265" y="300"/>
+              <waypoint x="1200" y="75"/>
+              <waypoint x="1115.0" y="75"/>
+              <waypoint x="1115.0" y="375"/>
+              <waypoint x="1030" y="375"/>
             </waypoints>
             <id id="Relation_T13_Adjust_document_X_request_unlicensed_T05_Print_and_send_confirmation_of_receipt_condition"/>
           </custom>
@@ -381,12 +381,23 @@
             <id id="Relation_T02_Check_confirmation_of_receipt_Confirmation_of_receipt_condition"/>
           </custom>
         </condition>
-        <condition sourceId="T14_Determine_document_X_request_unlicensed" targetId="T04_Determine_confirmation_of_receipt">
+        <condition sourceId="T05_Print_and_send_confirmation_of_receipt" targetId="T02_Check_confirmation_of_receipt">
           <custom>
             <waypoints>
               <waypoint x="900" y="375"/>
-              <waypoint x="665.0" y="375"/>
-              <waypoint x="665.0" y="75"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="730" y="375"/>
+            </waypoints>
+            <id id="Relation_T05_Print_and_send_confirmation_of_receipt_T02_Check_confirmation_of_receipt_condition"/>
+          </custom>
+        </condition>
+        <condition sourceId="T14_Determine_document_X_request_unlicensed" targetId="T04_Determine_confirmation_of_receipt">
+          <custom>
+            <waypoints>
+              <waypoint x="1200" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="815.0" y="75"/>
               <waypoint x="430" y="75"/>
             </waypoints>
             <id id="Relation_T14_Determine_document_X_request_unlicensed_T04_Determine_confirmation_of_receipt_condition"/>
@@ -395,23 +406,12 @@
         <condition sourceId="T14_Determine_document_X_request_unlicensed" targetId="T12_Check_document_X_request_unlicensed">
           <custom>
             <waypoints>
-              <waypoint x="900" y="375"/>
-              <waypoint x="515.0" y="375"/>
-              <waypoint x="515.0" y="1275"/>
+              <waypoint x="1200" y="375"/>
+              <waypoint x="665.0" y="375"/>
+              <waypoint x="665.0" y="1275"/>
               <waypoint x="130" y="1275"/>
             </waypoints>
             <id id="Relation_T14_Determine_document_X_request_unlicensed_T12_Check_document_X_request_unlicensed_condition"/>
-          </custom>
-        </condition>
-        <condition sourceId="T05_Print_and_send_confirmation_of_receipt" targetId="T02_Check_confirmation_of_receipt">
-          <custom>
-            <waypoints>
-              <waypoint x="1200" y="375"/>
-              <waypoint x="965.0" y="375"/>
-              <waypoint x="965.0" y="375"/>
-              <waypoint x="730" y="375"/>
-            </waypoints>
-            <id id="Relation_T05_Print_and_send_confirmation_of_receipt_T02_Check_confirmation_of_receipt_condition"/>
           </custom>
         </condition>
         <condition sourceId="T09-4_Process_or_receive_external_advice_from_party_4" targetId="T08_Draft_and_send_request_for_advice">
@@ -472,10 +472,10 @@
         <condition sourceId="T18_Adjust_report_Y_to_stop_indicition" targetId="T05_Print_and_send_confirmation_of_receipt">
           <custom>
             <waypoints>
-              <waypoint x="1030" y="675"/>
-              <waypoint x="1115.0" y="675"/>
-              <waypoint x="1115.0" y="375"/>
-              <waypoint x="1200" y="375"/>
+              <waypoint x="965" y="600"/>
+              <waypoint x="965.0" y="600"/>
+              <waypoint x="965.0" y="450"/>
+              <waypoint x="965" y="450"/>
             </waypoints>
             <id id="Relation_T18_Adjust_report_Y_to_stop_indicition_T05_Print_and_send_confirmation_of_receipt_condition"/>
           </custom>
@@ -524,7 +524,7 @@
             <id id="Relation_T16_Report_reasons_to_hold_request_T07-5_Draft_intern_advice_aspect_5_condition"/>
           </custom>
         </condition>
-        <condition sourceId="T15_Print_document_X_request_unlicensed" targetId="T14_Determine_document_X_request_unlicensed">
+        <condition sourceId="T15_Print_document_X_request_unlicensed" targetId="T05_Print_and_send_confirmation_of_receipt">
           <custom>
             <waypoints>
               <waypoint x="430" y="975"/>
@@ -532,10 +532,10 @@
               <waypoint x="665.0" y="375"/>
               <waypoint x="900" y="375"/>
             </waypoints>
-            <id id="Relation_T15_Print_document_X_request_unlicensed_T14_Determine_document_X_request_unlicensed_condition"/>
+            <id id="Relation_T15_Print_document_X_request_unlicensed_T05_Print_and_send_confirmation_of_receipt_condition"/>
           </custom>
         </condition>
-        <condition sourceId="T15_Print_document_X_request_unlicensed" targetId="T05_Print_and_send_confirmation_of_receipt">
+        <condition sourceId="T15_Print_document_X_request_unlicensed" targetId="T14_Determine_document_X_request_unlicensed">
           <custom>
             <waypoints>
               <waypoint x="430" y="975"/>
@@ -543,7 +543,7 @@
               <waypoint x="815.0" y="375"/>
               <waypoint x="1200" y="375"/>
             </waypoints>
-            <id id="Relation_T15_Print_document_X_request_unlicensed_T05_Print_and_send_confirmation_of_receipt_condition"/>
+            <id id="Relation_T15_Print_document_X_request_unlicensed_T14_Determine_document_X_request_unlicensed_condition"/>
           </custom>
         </condition>
         <condition sourceId="T07-2_Draft_intern_advice_aspect_2" targetId="T06_Determine_necessity_of_stop_advice">
@@ -671,9 +671,9 @@
           <custom>
             <waypoints>
               <waypoint x="130" y="1575"/>
-              <waypoint x="665.0" y="1575"/>
-              <waypoint x="665.0" y="375"/>
-              <waypoint x="1200" y="375"/>
+              <waypoint x="515.0" y="1575"/>
+              <waypoint x="515.0" y="375"/>
+              <waypoint x="900" y="375"/>
             </waypoints>
             <id id="Relation_T09-2_Process_or_receive_external_advice_from_party_2_T05_Print_and_send_confirmation_of_receipt_condition"/>
           </custom>
@@ -749,9 +749,9 @@
         <response sourceId="T14_Determine_document_X_request_unlicensed" targetId="T15_Print_document_X_request_unlicensed">
           <custom>
             <waypoints>
-              <waypoint x="900" y="375"/>
-              <waypoint x="665.0" y="375"/>
-              <waypoint x="665.0" y="975"/>
+              <waypoint x="1200" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="815.0" y="975"/>
               <waypoint x="430" y="975"/>
             </waypoints>
             <id id="Relation_T14_Determine_document_X_request_unlicensed_T15_Print_document_X_request_unlicensed_response"/>
@@ -1017,9 +1017,9 @@
           <custom>
             <waypoints>
               <waypoint x="730" y="75"/>
-              <waypoint x="815.0" y="75"/>
-              <waypoint x="815.0" y="375"/>
-              <waypoint x="900" y="375"/>
+              <waypoint x="965.0" y="75"/>
+              <waypoint x="965.0" y="375"/>
+              <waypoint x="1200" y="375"/>
             </waypoints>
             <id id="Relation_T07-4_Draft_internal_advice_to_hold_for_type_4_T14_Determine_document_X_request_unlicensed_exclude"/>
           </custom>
@@ -1269,57 +1269,12 @@
             <id id="Relation_Confirmation_of_receipt_Confirmation_of_receipt_exclude"/>
           </custom>
         </exclude>
-        <exclude sourceId="T14_Determine_document_X_request_unlicensed" targetId="T04_Determine_confirmation_of_receipt">
-          <custom>
-            <waypoints>
-              <waypoint x="900" y="375"/>
-              <waypoint x="665.0" y="375"/>
-              <waypoint x="665.0" y="75"/>
-              <waypoint x="430" y="75"/>
-            </waypoints>
-            <id id="Relation_T14_Determine_document_X_request_unlicensed_T04_Determine_confirmation_of_receipt_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="T14_Determine_document_X_request_unlicensed" targetId="T02_Check_confirmation_of_receipt">
-          <custom>
-            <waypoints>
-              <waypoint x="900" y="375"/>
-              <waypoint x="815.0" y="375"/>
-              <waypoint x="815.0" y="375"/>
-              <waypoint x="730" y="375"/>
-            </waypoints>
-            <id id="Relation_T14_Determine_document_X_request_unlicensed_T02_Check_confirmation_of_receipt_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="T14_Determine_document_X_request_unlicensed" targetId="T14_Determine_document_X_request_unlicensed">
-          <custom>
-            <waypoints>
-              <waypoint x="965" y="450"/>
-              <waypoint x="965" y="475"/>
-              <waypoint x="875" y="475"/>
-              <waypoint x="875" y="375"/>
-              <waypoint x="900" y="375"/>
-            </waypoints>
-            <id id="Relation_T14_Determine_document_X_request_unlicensed_T14_Determine_document_X_request_unlicensed_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="T14_Determine_document_X_request_unlicensed" targetId="T12_Check_document_X_request_unlicensed">
+        <exclude sourceId="T05_Print_and_send_confirmation_of_receipt" targetId="T03_Adjust_confirmation_of_receipt">
           <custom>
             <waypoints>
               <waypoint x="900" y="375"/>
               <waypoint x="515.0" y="375"/>
-              <waypoint x="515.0" y="1275"/>
-              <waypoint x="130" y="1275"/>
-            </waypoints>
-            <id id="Relation_T14_Determine_document_X_request_unlicensed_T12_Check_document_X_request_unlicensed_exclude"/>
-          </custom>
-        </exclude>
-        <exclude sourceId="T05_Print_and_send_confirmation_of_receipt" targetId="T03_Adjust_confirmation_of_receipt">
-          <custom>
-            <waypoints>
-              <waypoint x="1200" y="375"/>
-              <waypoint x="665.0" y="375"/>
-              <waypoint x="665.0" y="75"/>
+              <waypoint x="515.0" y="75"/>
               <waypoint x="130" y="75"/>
             </waypoints>
             <id id="Relation_T05_Print_and_send_confirmation_of_receipt_T03_Adjust_confirmation_of_receipt_exclude"/>
@@ -1328,9 +1283,9 @@
         <exclude sourceId="T05_Print_and_send_confirmation_of_receipt" targetId="T04_Determine_confirmation_of_receipt">
           <custom>
             <waypoints>
-              <waypoint x="1200" y="375"/>
-              <waypoint x="815.0" y="375"/>
-              <waypoint x="815.0" y="75"/>
+              <waypoint x="900" y="375"/>
+              <waypoint x="665.0" y="375"/>
+              <waypoint x="665.0" y="75"/>
               <waypoint x="430" y="75"/>
             </waypoints>
             <id id="Relation_T05_Print_and_send_confirmation_of_receipt_T04_Determine_confirmation_of_receipt_exclude"/>
@@ -1339,9 +1294,9 @@
         <exclude sourceId="T05_Print_and_send_confirmation_of_receipt" targetId="T02_Check_confirmation_of_receipt">
           <custom>
             <waypoints>
-              <waypoint x="1200" y="375"/>
-              <waypoint x="965.0" y="375"/>
-              <waypoint x="965.0" y="375"/>
+              <waypoint x="900" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="815.0" y="375"/>
               <waypoint x="730" y="375"/>
             </waypoints>
             <id id="Relation_T05_Print_and_send_confirmation_of_receipt_T02_Check_confirmation_of_receipt_exclude"/>
@@ -1350,13 +1305,58 @@
         <exclude sourceId="T05_Print_and_send_confirmation_of_receipt" targetId="T05_Print_and_send_confirmation_of_receipt">
           <custom>
             <waypoints>
+              <waypoint x="965" y="450"/>
+              <waypoint x="965" y="475"/>
+              <waypoint x="875" y="475"/>
+              <waypoint x="875" y="375"/>
+              <waypoint x="900" y="375"/>
+            </waypoints>
+            <id id="Relation_T05_Print_and_send_confirmation_of_receipt_T05_Print_and_send_confirmation_of_receipt_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="T14_Determine_document_X_request_unlicensed" targetId="T04_Determine_confirmation_of_receipt">
+          <custom>
+            <waypoints>
+              <waypoint x="1200" y="375"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="815.0" y="75"/>
+              <waypoint x="430" y="75"/>
+            </waypoints>
+            <id id="Relation_T14_Determine_document_X_request_unlicensed_T04_Determine_confirmation_of_receipt_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="T14_Determine_document_X_request_unlicensed" targetId="T02_Check_confirmation_of_receipt">
+          <custom>
+            <waypoints>
+              <waypoint x="1200" y="375"/>
+              <waypoint x="965.0" y="375"/>
+              <waypoint x="965.0" y="375"/>
+              <waypoint x="730" y="375"/>
+            </waypoints>
+            <id id="Relation_T14_Determine_document_X_request_unlicensed_T02_Check_confirmation_of_receipt_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="T14_Determine_document_X_request_unlicensed" targetId="T14_Determine_document_X_request_unlicensed">
+          <custom>
+            <waypoints>
               <waypoint x="1265" y="450"/>
               <waypoint x="1265" y="475"/>
               <waypoint x="1175" y="475"/>
               <waypoint x="1175" y="375"/>
               <waypoint x="1200" y="375"/>
             </waypoints>
-            <id id="Relation_T05_Print_and_send_confirmation_of_receipt_T05_Print_and_send_confirmation_of_receipt_exclude"/>
+            <id id="Relation_T14_Determine_document_X_request_unlicensed_T14_Determine_document_X_request_unlicensed_exclude"/>
+          </custom>
+        </exclude>
+        <exclude sourceId="T14_Determine_document_X_request_unlicensed" targetId="T12_Check_document_X_request_unlicensed">
+          <custom>
+            <waypoints>
+              <waypoint x="1200" y="375"/>
+              <waypoint x="665.0" y="375"/>
+              <waypoint x="665.0" y="1275"/>
+              <waypoint x="130" y="1275"/>
+            </waypoints>
+            <id id="Relation_T14_Determine_document_X_request_unlicensed_T12_Check_document_X_request_unlicensed_exclude"/>
           </custom>
         </exclude>
         <exclude sourceId="T09-4_Process_or_receive_external_advice_from_party_4" targetId="T03_Adjust_confirmation_of_receipt">
@@ -1687,9 +1687,9 @@
           <custom>
             <waypoints>
               <waypoint x="130" y="975"/>
-              <waypoint x="515.0" y="975"/>
-              <waypoint x="515.0" y="375"/>
-              <waypoint x="900" y="375"/>
+              <waypoint x="665.0" y="975"/>
+              <waypoint x="665.0" y="375"/>
+              <waypoint x="1200" y="375"/>
             </waypoints>
             <id id="Relation_T16_Report_reasons_to_hold_request_T14_Determine_document_X_request_unlicensed_exclude"/>
           </custom>
@@ -1788,9 +1788,9 @@
           <custom>
             <waypoints>
               <waypoint x="730" y="975"/>
-              <waypoint x="815.0" y="975"/>
-              <waypoint x="815.0" y="375"/>
-              <waypoint x="900" y="375"/>
+              <waypoint x="965.0" y="975"/>
+              <waypoint x="965.0" y="375"/>
+              <waypoint x="1200" y="375"/>
             </waypoints>
             <id id="Relation_T07-2_Draft_intern_advice_aspect_2_T14_Determine_document_X_request_unlicensed_exclude"/>
           </custom>
@@ -1908,10 +1908,10 @@
         <exclude sourceId="T07-5_Draft_intern_advice_aspect_5" targetId="T14_Determine_document_X_request_unlicensed">
           <custom>
             <waypoints>
-              <waypoint x="1200" y="975"/>
-              <waypoint x="1115.0" y="975"/>
-              <waypoint x="1115.0" y="375"/>
-              <waypoint x="1030" y="375"/>
+              <waypoint x="1265" y="900"/>
+              <waypoint x="1265.0" y="900"/>
+              <waypoint x="1265.0" y="450"/>
+              <waypoint x="1265" y="450"/>
             </waypoints>
             <id id="Relation_T07-5_Draft_intern_advice_aspect_5_T14_Determine_document_X_request_unlicensed_exclude"/>
           </custom>
@@ -1975,9 +1975,9 @@
           <custom>
             <waypoints>
               <waypoint x="430" y="1275"/>
-              <waypoint x="665.0" y="1275"/>
-              <waypoint x="665.0" y="375"/>
-              <waypoint x="900" y="375"/>
+              <waypoint x="815.0" y="1275"/>
+              <waypoint x="815.0" y="375"/>
+              <waypoint x="1200" y="375"/>
             </waypoints>
             <id id="Relation_T08_Draft_and_send_request_for_advice_T14_Determine_document_X_request_unlicensed_exclude"/>
           </custom>
@@ -2118,10 +2118,10 @@
         <exclude sourceId="T07-3_Draft_intern_advice_hold_for_aspect_3" targetId="T14_Determine_document_X_request_unlicensed">
           <custom>
             <waypoints>
-              <waypoint x="1200" y="1275"/>
-              <waypoint x="1115.0" y="1275"/>
-              <waypoint x="1115.0" y="375"/>
-              <waypoint x="1030" y="375"/>
+              <waypoint x="1265" y="1200"/>
+              <waypoint x="1265.0" y="1200"/>
+              <waypoint x="1265.0" y="450"/>
+              <waypoint x="1265" y="450"/>
             </waypoints>
             <id id="Relation_T07-3_Draft_intern_advice_hold_for_aspect_3_T14_Determine_document_X_request_unlicensed_exclude"/>
           </custom>
@@ -2287,10 +2287,10 @@
         <include sourceId="T05_Print_and_send_confirmation_of_receipt" targetId="T13_Adjust_document_X_request_unlicensed">
           <custom>
             <waypoints>
-              <waypoint x="1265" y="300"/>
-              <waypoint x="1265.0" y="300"/>
-              <waypoint x="1265.0" y="150"/>
-              <waypoint x="1265" y="150"/>
+              <waypoint x="1030" y="375"/>
+              <waypoint x="1115.0" y="375"/>
+              <waypoint x="1115.0" y="75"/>
+              <waypoint x="1200" y="75"/>
             </waypoints>
             <id id="Relation_T05_Print_and_send_confirmation_of_receipt_T13_Adjust_document_X_request_unlicensed_include"/>
           </custom>
@@ -2356,35 +2356,7 @@
   <runtime>
     <marking>
       <executed/>
-      <included>
-        <event id="T03_Adjust_confirmation_of_receipt"/>
-        <event id="T04_Determine_confirmation_of_receipt"/>
-        <event id="T07-4_Draft_internal_advice_to_hold_for_type_4"/>
-        <event id="T09-1_Process_or_receive_external_advice_from_party_1"/>
-        <event id="T13_Adjust_document_X_request_unlicensed"/>
-        <event id="T07-1_Draft_intern_advice_aspect_1"/>
-        <event id="Confirmation_of_receipt"/>
-        <event id="T02_Check_confirmation_of_receipt"/>
-        <event id="T14_Determine_document_X_request_unlicensed"/>
-        <event id="T05_Print_and_send_confirmation_of_receipt"/>
-        <event id="T09-4_Process_or_receive_external_advice_from_party_4"/>
-        <event id="T10_Determine_necessity_to_stop_indication"/>
-        <event id="T11_Create_document_X_request_unlicensed"/>
-        <event id="T18_Adjust_report_Y_to_stop_indicition"/>
-        <event id="T09-3_Process_or_receive_external_advice_from_party_3"/>
-        <event id="T16_Report_reasons_to_hold_request"/>
-        <event id="T15_Print_document_X_request_unlicensed"/>
-        <event id="T07-2_Draft_intern_advice_aspect_2"/>
-        <event id="T06_Determine_necessity_of_stop_advice"/>
-        <event id="T07-5_Draft_intern_advice_aspect_5"/>
-        <event id="T12_Check_document_X_request_unlicensed"/>
-        <event id="T08_Draft_and_send_request_for_advice"/>
-        <event id="T17_Check_report_Y_to_stop_indication"/>
-        <event id="T19_Determine_report_Y_to_stop_indication"/>
-        <event id="T07-3_Draft_intern_advice_hold_for_aspect_3"/>
-        <event id="T09-2_Process_or_receive_external_advice_from_party_2"/>
-        <event id="T20_Print_report_Y_to_stop_indication"/>
-      </included>
+      <included/>
       <pendingResponses/>
     </marking>
   </runtime>
