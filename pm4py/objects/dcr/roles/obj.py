@@ -17,8 +17,6 @@ class RoleDCR_Graph(object):
         A set of role identifiers within the graph.
     __roleAssignments : Dict[str, Set[str]]
         A dictionary where keys are activity identifiers and values are sets of roles assigned to those activities.
-    __readRoleAssignments : Dict[str, Set[str]]
-        A dictionary where keys are activity identifiers and values are sets of roles assigned to those activities.
 
     Methods
     -------
