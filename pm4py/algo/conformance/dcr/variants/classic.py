@@ -155,7 +155,25 @@ class RuleBasedConformance:
         return conf_case
 
     def __transform_pandas_dataframe(self, dataframe: pd.DataFrame, case_id_key: str):
-        # uses a snippet from __transform_dataframe_to_event_stream_new as template to transform pandas dataframe
+        """
+        Transforms a pandas DataFrame into a list of event logs grouped by cases.
+        Uses a snippet from __transform_dataframe_to_event_stream_new as template to transform pandas dataframe
+
+        This function takes a pandas DataFrame where each row represents an event and converts it into a
+        list of lists, where each inner list contains all events related to a single case. The grouping
+        of events into cases is based on the case identifier specified by the 'case_id_key' parameter.
+
+        Parameters:
+        - dataframe (pd.DataFrame): The pandas DataFrame to be transformed.
+        - case_id_key (str): The column name in the DataFrame that acts as the case identifier.
+
+        Returns:
+        - list: A list of event logs, where each event log is a list of events (dictionaries)
+                corresponding to a single case.
+
+        Each event in the event log is represented as a dictionary, where the keys are the column names
+        from the DataFrame and the values are the corresponding values for that event.
+        """
         list_events = []
         columns_names = list(dataframe.columns)
         columns_corr = []
