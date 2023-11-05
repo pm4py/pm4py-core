@@ -804,26 +804,45 @@ def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DCR_Graph, ac
     """
     Applies conformance checking against a DCR model.
 
-    inspired by github implementation:
+    Inspired by the GitHub implementation available at:
     https://github.com/fau-is/cc-dcr/tree/master
 
-    :param log: event log
-    :param dcr_graph: DCR graph
-    :param activity_key: attribute to be used for the activity
-    :param timestamp_key: attribute to be used for the timestamp
-    :param case_id_key: attribute to be used as case identifier
-    :param group_key: attribute to be used as role identifier
-    :param resource_key: attribute to be used as resource identifier
-    :param return_diagnostics_dataframe: if possible, returns a dataframe with the diagnostics (instead of the usual output)
-    :rtype: `DataFrame | List[Tuple[str,Dict[str, Any]]]`
+    Parameters
+    ----------
+    log : EventLog or DataFrame
+        The event log containing the process instances to check against the DCR model.
+    dcr_graph : DCRGraph
+        The DCR model representing the process constraints and behaviors.
+    activity_key : str, optional
+        The attribute key that identifies activities within the event log. Defaults to 'concept:name'.
+    timestamp_key : str, optional
+        The attribute key that identifies timestamps within the event log. Defaults to 'time:timestamp'.
+    case_id_key : str, optional
+        The attribute key that identifies case identifiers within the event log. Defaults to 'case:concept:name'.
+    group_key : str, optional
+        The attribute key that identifies group identifiers within the event log. Defaults to 'org:group'.
+    resource_key : str, optional
+        The attribute key that identifies resource identifiers within the event log. Defaults to 'org:resource'.
+    return_diagnostics_dataframe : bool, optional
+        Determines whether to return a DataFrame containing diagnostic information instead of the usual output.
+        Defaults to False.
 
-    .. code-block:: python3
+    Returns
+    -------
+    Union[DataFrame, List[Tuple[str, Dict[str, Any]]]]
+        If return_diagnostics_dataframe is True, returns a DataFrame with diagnostics for each case in the log.
+        Otherwise, returns a list of tuples with conformance diagnostics.
 
-        import pm4py
+    Examples
+    --------
 
-        log = pm4py.read_xes("C:/receipt.xes")
-        dcr_graph = pm4py.discover_dcr(log)
-        conf_result = pm4py.conformance_dcr(log, dcr_graph)
+    \nimport pm4py\n
+    log = pm4py.read_xes("C:/receipt.xes")\n
+    dcr_graph = pm4py.discover_dcr(log)\n
+    conf_result = pm4py.conformance_dcr(log, dcr_graph)\n
+
+    Note that the function requires a DCR model and an event log as input, and it will return detailed conformance
+    information that can be used for further analysis.
     """
     if type(log) not in [pd.DataFrame, EventLog]: raise Exception(
         "the method can be applied only to a traditional event log!")
@@ -857,6 +876,38 @@ def optimal_alignment(
         role_key: str = "org:role",
 
 ) -> Union[Dict[str, Any], List[Tuple[str, Dict[str, Any]]]]:
+    """
+    Performs optimal trace alignment of an event log against a DCR graph.
+
+    Parameters
+    ----------
+    log : Union[EventLog, pd.DataFrame]
+        The event log to be aligned, represented as an EventLog object or a pandas DataFrame.
+    dcr_graph : DCR_Graph
+        The DCR graph against which the log is to be aligned.
+    activity_key : str, optional
+        The key used to identify activities in the log. Defaults to "concept:name".
+    timestamp_key : str, optional
+        The key used to identify timestamps in the log. Defaults to "time:timestamp".
+    case_key : str, optional
+        The key used to identify case identifiers in the log. Defaults to "case:concept:name".
+    role_key : str, optional
+        The key used to identify organizational roles in the log. Defaults to "org:role".
+
+    Returns
+    -------
+    Union[Dict[str, Any], List[Tuple[str, Dict[str, Any]]]]
+        The alignment result as a dictionary if a single trace is provided, or a list of tuples with the alignment results
+        for each trace in the log.
+
+    Raises
+    ------
+    Exception
+        If the input 'log' is neither an EventLog object nor a pandas DataFrame.
+
+    The function raises an exception if the log is not in the expected format. It processes the log to extract properties
+    based on the specified keys and performs the alignment with the provided DCR graph, returning the alignment results.
+    """
 
     if type(log) not in [pd.DataFrame, EventLog]:
         raise Exception("the method can be applied only to a traditional event log!")

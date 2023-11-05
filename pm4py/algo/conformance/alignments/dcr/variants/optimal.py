@@ -593,20 +593,7 @@ class Alignment:
             raise ValueError("Input must be of type Trace or EventLog")
 
     def apply_log(self, log: Union[pd.DataFrame, EventLog], parameters: Optional[Dict] = None) -> Dict[str, Any]:
-        """
-        Perform alignment on an entire log.
 
-        Parameters
-        ----------
-        log
-            The log to be aligned.
-        parameters
-            Optional parameters for alignment.
-
-        Returns
-        -------
-        A dictionary of alignment results, one per trace in the log.
-        """
         activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
         results = {}
 
@@ -614,13 +601,13 @@ class Alignment:
             case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
             traces = list(log.groupby(case_id_key)[activity_key].apply(tuple))
             for index, trace in enumerate(traces):
-                trace_id = f'trace_{index}'  # Generate a trace_id based on index
-                trace_df = log[log[case_id_key] == trace_id]  # Filter the dataframe to get the trace
+                trace_id = f'trace_{index}'
+                trace_df = log[log[case_id_key] == trace_id]
                 results[trace_id] = self.apply_trace(trace_df, parameters)
         else:
             log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
             for trace in log:
-                trace_id = trace.attributes.get(constants.CASE_CONCEPT_NAME, str(id(trace)))  # Get trace id or use object id as fallback
+                trace_id = trace.attributes.get(constants.CASE_CONCEPT_NAME, str(id(trace)))
                 results[trace_id] = self.apply_trace(trace, parameters)
 
         return results
