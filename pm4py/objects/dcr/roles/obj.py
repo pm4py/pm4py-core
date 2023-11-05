@@ -7,7 +7,7 @@ class RoleDCR_Graph(object):
         self.__principals = set() if None else template.pop("principals", set())
         self.__roles = set() if None else template.pop("roles", set())
         self.__roleAssignments = {} if None else template.pop("roleAssignments", set())
-        self.__readRoleAssignments = {} if None else template.pop("readRoleAssignments", set())
+        self.__principalsAssignment = {} if None else template.pop("principalsAssignments", set())
 
     @property
     def principals(self) -> Set[str]:
@@ -23,7 +23,7 @@ class RoleDCR_Graph(object):
 
     @property
     def readRoleAssignments(self):
-        return self.__readRoleAssignments
+        return self.__principalsAssignment
 
     def getConstraints(self):
         """
