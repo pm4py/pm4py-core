@@ -178,5 +178,3 @@ class Test_discovery_dcr(unittest.TestCase):
 
 
 
-
-
