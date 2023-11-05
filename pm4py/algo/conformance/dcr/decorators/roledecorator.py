@@ -10,6 +10,6 @@ class RoleDecorator(Decorator):
 
     def all_checker(self, act, event, model, deviations, parameters=None):
         self._checker.all_checker(act, event, model, deviations, parameters=parameters)
-        resource_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_RESOURCE_KEY,parameters,xes_constants.DEFAULT_RESOURCE_KEY)
-        role = event[resource_key]
+        group_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_GROUP_KEY,parameters,xes_constants.DEFAULT_GROUP_KEY)
+        role = event[group_key]
         CheckRole.check_rule(act, model, role, deviations)

@@ -799,8 +799,8 @@ from pm4py.objects.dcr.obj import DCR_Graph
 
 
 def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DCR_Graph, activity_key: str = "concept:name",
-                    timestamp_key: str = "time:timestamp", case_key: str = "case:concept:name", role_key: str = "org:role",
-                    return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> DataFrame | list[tuple[str,dict[str, Any]]]:
+                    timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", group_key: str = "org:group", resource_key: str = "org:resource",
+                    return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> DataFrame | List[Tuple[str,Dict[str, Any]]]:
     """
     Applies conformance checking against a DCR model.
 
@@ -812,8 +812,10 @@ def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DCR_Graph, ac
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+    :param group_key: attribute to be used as role identifier
+    :param resource_key: attribute to be used as resource identifier
     :param return_diagnostics_dataframe: if possible, returns a dataframe with the diagnostics (instead of the usual output)
-    :rtype: ``List[Dict[str, Any]]``
+    :rtype: `DataFrame | List[Tuple[str,Dict[str, Any]]]`
 
     .. code-block:: python3
 
@@ -829,13 +831,13 @@ def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DCR_Graph, ac
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key,
-                                       case_id_key=case_key)
+                                       case_id_key=case_id_key)
 
     if return_diagnostics_dataframe:
-        log = convert_to_event_log(log, case_id_key=case_key)
+        log = convert_to_event_log(log, case_id_key=case_id_key)
         case_key = None
 
-    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_key, role_key=role_key)
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, group_key=group_key, resource_key=resource_key)
 
     from pm4py.algo.conformance.dcr import algorithm as dcr_conformance
     result = dcr_conformance.apply(log, dcr_graph, parameters=properties)

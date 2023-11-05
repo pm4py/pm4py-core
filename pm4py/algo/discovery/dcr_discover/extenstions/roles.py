@@ -1,9 +1,10 @@
 import pandas as pd
-from typing import Optional, Any, Union, Dict, Set
+from copy import deepcopy
+from typing import Optional, Any, Union, Dict
 import pm4py
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.objects.dcr.roles.obj import RoleDCR_Graph
-from pm4py.objects.dcr.roles.obj import DCR_Graph
+from pm4py.objects.dcr.obj import dcr_template
 from pm4py.objects.log.obj import EventLog
 
 
@@ -33,55 +34,36 @@ def apply(log, G, parameters) -> RoleDCR_Graph:
 
 
 class Role_Mining:
-    def role_assignment_role_to_acitivity(self, G, log: pd.DataFrame, activity_key: str,
+    def __init__(self):
+        self.graph = deepcopy(dcr_template)
+
+    def role_assignment_role_to_acitivity(self, log: pd.DataFrame, activity_key: str,
                                           group_key: str, resource_key: str) -> None:
         """
         If log has defined roles, mine for role assignment using the a role identifier
 
         Parameters
         ----------
-        G
-            DCR graph
         log
             event log
         activity_key
             attribute to be used as activity identifier
         group_key
-            attribute to be used as role identifier in dcr graphs
+            attribute to be used as role identifier
+        resource_key
+            attribute to be used as resource identifier
         """
         # turn this into a dict that can iterated over
         act_roles_couple = dict(log.groupby([group_key, activity_key]).size())
         for couple in act_roles_couple:
-            G.roleAssignments[couple[0]] = G.roleAssignments[couple[0]].union({couple[1]})
+            self.graph['roleAssignments'][couple[0]] = self.graph['roleAssignments'][couple[0]].union({couple[1]})
 
         act_roles_couple = dict(log.groupby([group_key, resource_key]).size())
         for couple in act_roles_couple:
-            G.readRoleAssignments[couple[0]] = G.readRoleAssignments[couple[0]].union({couple[1]})
-
-    def role_assignment_resource_to_acitivity(self, G, log: pd.DataFrame, activity_key: str,
-                                              resource_key: str) -> None:
-        """
-        if log has no role defined attribute such as org:group or similar defined,
-        resource_key will then be role identifier, inspired by DCRgraphs.net
-
-        Parameters
-        ----------
-        G
-            DCR graph
-        log
-            event log
-        activity_key
-            attribute to be used as activity identifier
-        resource_key
-            attribute to be used as role identifier in dcr graphs
-        """
-        # turn this into a dict that can iterated over
-        act_roles_couple = dict(log.groupby([resource_key, activity_key]).size())
-        for couple in act_roles_couple:
-            G.roleAssignments[couple[0]] = G.roleAssignments[couple[0]].union({couple[1]})
+            self.graph['readRoleAssignments'][couple[0]] = self.graph['readRoleAssignments'][couple[0]].union({couple[1]})
 
 
-    def mine(self, log: Union[pd.DataFrame, EventLog], G: DCR_Graph, parameters: Optional[Dict[Any, Any]]):
+    def mine(self, log: Union[pd.DataFrame, EventLog], G, parameters: Optional[Dict[Any, Any]]):
         """
         Main role mine algorithm, will mine for principals and roles in a DCR graphs, and associated role assignment.
         determine principals, roles and roleAssignment through unique occurrences in log.
@@ -109,38 +91,22 @@ class Role_Mining:
         if not isinstance(log, pd.DataFrame):
             log = pm4py.convert_to_dataframe(log)
 
-        dcr = {'principals': set(), 'roles': set(), 'roleAssignments': {}, 'readRoleAssignments': {}}
-
         keys = set(log.keys())
         if (resource_key not in keys) and (group_key not in keys):
-            return G
+            raise ValueError('input log does not contain attribute identifiers for resources or roles')
 
-        G = RoleDCR_Graph(G)
         # load resources if provided
-        if resource_key in keys:
-            principals = set(log[resource_key].values)
-            principals = set(filter(lambda x: x == x, principals))
-            G.principals.update(principals)
-
+        principals = set(log[resource_key].values)
+        principals = set(filter(lambda x: x == x, principals))
+        self.graph['principals'] = principals
 
         # if no resources are provided, map roles to activities
-        if group_key in keys:
-            roles = set(log[group_key].values)
-            roles = set(filter(lambda x: x == x, roles))
-            G.roles.update(roles)
-            for i in G.roles:
-                G.roleAssignments[i] = set()
-                G.readRoleAssignments[i] = set()
+        roles = set(log[group_key].values)
+        roles = set(filter(lambda x: x == x, roles))
+        self.graph['roles'] = roles
+        for i in self.graph['roles']:
+            self.graph['roleAssignments'][i] = set()
+            self.graph['readRoleAssignments'][i] = set()
 
-        else:
-            G.roles.update(G.principals)
-            for i in G.roles:
-                G.roleAssignments[i] = set()
-
-        # if both roles and resources are provided
-        if (resource_key in keys) and (group_key in keys):
-            self.role_assignment_role_to_acitivity(G, log, activity_key, group_key, resource_key)
-        # if resources are provided, but no roles
-        elif (group_key not in keys) and (resource_key in keys):
-            self.role_assignment_resource_to_acitivity(G, log, activity_key, resource_key)
-        return G
+        self.role_assignment_role_to_acitivity(log, activity_key, group_key, resource_key)
+        return RoleDCR_Graph(G, self.graph)

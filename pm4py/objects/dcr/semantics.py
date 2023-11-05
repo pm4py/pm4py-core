@@ -26,7 +26,7 @@ class DCRSemantics(object):
     @classmethod
     def is_enabled(cls, event, G) -> bool:
         """
-        Function for semantic for checking if event is enabled
+        Verify that the given event is enabled for execution in the DCR graph
 
         Parameters
         ----------
@@ -43,9 +43,7 @@ class DCRSemantics(object):
     @classmethod
     def enabled(cls, dcr) -> Set[str]:
         """
-        enabled returns list based on allowed behavior
-
-        The function uses the semantics for condition checking, if a conditions activity has been executed.
+        Creates a list of enabled events, based on included events and conditions constraints met
 
         Parameters
         ----------
@@ -56,7 +54,7 @@ class DCRSemantics(object):
         :param res: set of enabled activities
         """
         #can be extended to check for milestones
-        res = deepcopy(dcr.marking.included)
+        res = set(dcr.marking.included)
         for e in set(dcr.conditionsFor.keys()).intersection(res):
             if len(dcr.conditionsFor[e].intersection(dcr.marking.included.difference(
                     dcr.marking.executed))) > 0:
@@ -73,14 +71,12 @@ class DCRSemantics(object):
 
         Parameters
         ----------
-        :param event: the event being executed the type activity being executed
-        :param dcr: The current state of DCR graph, with activities and their relatiosn
-
+        :param G: DCR graph
+        :param event: the event being executed
 
         Returns
-        -------
-        :return dcr: return the updated state of DCR graph
-
+        ---------
+        :return: DCR graph with updated marking
         """
         #each event is called for execution is called
         if event in G.marking.pending:
@@ -105,6 +101,17 @@ class DCRSemantics(object):
 
     @classmethod
     def is_accepting(cls, G) -> bool:
+        """
+        Checks if the graph is accepting, no included events are pending
+
+        Parameters
+        ----------
+        :param G: DCR Graph
+
+        Returns
+        ---------
+        :return: True if graph is accepting, false otherwise
+        """
         res = G.marking.pending.intersection(G.marking.included)
         if len(res) > 0:
             return False
@@ -113,179 +120,20 @@ class DCRSemantics(object):
 
     @classmethod
     def is_execution_equivalent(cls, marking1: Marking, marking2: Marking) -> bool:
+        """
+        Verifies if the initial and updated marking is equivalent:
+        M'(G) == M''(G)
+
+        Parameters
+        ----------
+        :param marking1: inital marking
+        :param marking2: updated marking
+        Returns
+        -------
+        :return: return true if equivalent, false otherwise
+        """
         return (
                 marking1.executed == marking2.executed and
                 marking1.included == marking2.included and
                 marking1.pending == marking2.pending
         )
-
-
-"""
-class DcrSemantics(object):
-    def __init__(self, dcr, cmd_print=True) -> None:
-        self.dcr = deepcopy(dcr)
-        self.dict_exe = self.__create_max_executed_time_dict()
-        self.parents_dict = {}
-        self.cmd_print = cmd_print
-        all_events = set(self.dcr['events'])
-        if 'subprocesses' in self.dcr.keys():
-            self.sp_events = set(self.dcr['subprocesses'].keys())
-            self.atomic_events = all_events.difference(self.sp_events)
-            in_sp_events = set()
-            for k, v in self.dcr['subprocesses'].items():
-                in_sp_events = in_sp_events.union(v)
-                for event in v:
-                    self.parents_dict[event] = k
-            self.tl_events = all_events.difference(in_sp_events)
-            self.just_events = self.tl_events.difference(self.sp_events)
-        else:
-            self.sp_events = set()
-            self.atomic_events = all_events
-            self.tl_events = all_events
-            self.just_events = all_events
-        if 'pendingDeadline' not in self.dcr['marking'].keys():
-            self.dcr['marking']['pendingDeadline'] = {}
-        if 'executedTime' not in self.dcr['marking'].keys():
-            self.dcr['marking']['executedTime'] = {}
-
-    def is_accepting(self):
-        pend_incl = self.dcr['marking']['pending'].intersection(self.dcr['marking']['included'])
-        tle_pend_incl = pend_incl.intersection(self.tl_events)
-        res = len(tle_pend_incl) == 0
-        if not res and self.cmd_print:
-            print(f'[!] Not accepting there are pending included events {pend_incl}')
-        return res
-
-    def execute(self, e):
-        if isinstance(e, timedelta):
-            return self.time_step(e)
-        elif isinstance(e, int):
-            return self.time_step(timedelta(e))
-        elif e in self.dcr['events']:  # only atomic events are executable
-            if self.is_enabled(e):
-                self.__weak_execute(e)
-                ancs = self.__get_ancestors(e)
-                for anc in ancs:
-                    if self.is_enabled(anc):
-                        self.__weak_execute(anc)
-                    else:
-                        return False, timedelta(0)
-                return True, timedelta(0)
-            else:
-                print(f'[!] Event {e} not enabled!') if self.cmd_print else None
-                return False, timedelta(0)
-        else:
-            print(
-                f'[!] Event {e} {" does not exist" if e not in self.dcr["events"] else " is not an atomic event"}!') if self.cmd_print else None
-            return False, timedelta(0)
-
-    def enabled_atomic_events(self):
-        return self.enabled().intersection(self.atomic_events)
-
-    def enabled_tl_events(self):
-        return self.enabled().intersection(self.tl_events)
-
-    def enabled_sp_events(self):
-        return self.enabled().intersection(self.sp_events)
-
-    def is_enabled(self, e):
-        return e in self.enabled()
-
-    def enabled(self):
-        res = deepcopy(self.dcr['marking']['included'])
-        for e in set(self.dcr['conditionsFor'].keys()).intersection(res):
-            if len(self.dcr['conditionsFor'][e].intersection(self.dcr['marking']['included']).difference(
-                    self.dcr['marking']['executed'])) > 0:
-                res.discard(e)
-                if e in self.dcr['subprocesses'].keys():
-                    for e_in_sp in self.dcr['subprocesses'][e]:
-                        res.discard(e_in_sp)
-
-        for e in set(self.dcr['conditionsForDelays'].keys()).intersection(res):
-            for (e_prime, k) in self.dcr['conditionsForDelays'][e]:
-                if e_prime in self.dcr['marking']['included'] and e_prime not in self.dcr['marking']['executed']:
-                    res.discard(e)
-                elif e_prime in self.dcr['marking']['included'] and e_prime in self.dcr['marking']['executed']:
-                    if self.dcr['marking']['executedTime'][e_prime] < timedelta(k):
-                        res.discard(e)
-                        if e in self.dcr['subprocesses'].keys():
-                            for e_in_sp in self.dcr['subprocesses'][e]:
-                                res.discard(e_in_sp)
-
-        for e in set(self.dcr['milestonesFor'].keys()).intersection(res):
-            if len(self.dcr['milestonesFor'][e].intersection(
-                    self.dcr['marking']['included'].intersection(self.dcr['marking']['pending']))) > 0:
-                res.discard(e)
-                if e in self.dcr['subprocesses'].keys():
-                    for e_in_sp in self.dcr['subprocesses'][e]:
-                        res.discard(e_in_sp)
-
-        enabled_sps = self.sp_events.intersection(self.dcr['marking']['included'])
-        for s in self.sp_events.difference(enabled_sps):
-            res = res.difference(self.dcr['subprocesses'][s])
-        return res
-
-    def find_next_deadline(self):
-        nextDeadline = None
-        for e in self.dcr['marking']['pendingDeadline']:
-            if (nextDeadline is None) and (e not in self.dcr['marking']['included']):
-                continue
-            if (nextDeadline is None and e in self.dcr['marking']['included']) or (
-                    self.dcr['marking']['pendingDeadline'][e] < nextDeadline and e in self.dcr['marking']['included']):
-                nextDeadline = self.dcr['marking']['pendingDeadline'][e]
-        return nextDeadline
-
-    def find_next_delay(self):
-        nextDelay = None
-        for e in self.dcr['conditionsForDelays']:
-            for (e_prime, k) in self.dcr['conditionsForDelays'][e]:
-                if e_prime in self.dcr['marking']['executed'] and e_prime in self.dcr['marking']['included']:
-                    delay = timedelta(k) - self.dcr['marking']['executedTime'][e_prime]
-                    if delay > timedelta(0) and (nextDelay is None or delay < nextDelay):
-                        nextDelay = delay
-        return nextDelay
-
-    def time_step(self, time):
-        deadline = self.find_next_deadline()
-        if deadline is None or deadline - time >= timedelta(0):
-            for e in self.dcr['marking']['pendingDeadline']:
-                self.dcr['marking']['pendingDeadline'][e] = max(self.dcr['marking']['pendingDeadline'][e] - time,
-                                                                timedelta(0))
-            for e in self.dcr['marking']['executed']:
-                self.dcr['marking']['executedTime'][e] = min(self.dcr['marking']['executedTime'][e] + time,
-                                                             self.dict_exe[e])
-            return (True, time)
-        else:
-            print(f'[!] The time step is not allowed, you are gonna miss a deadline in {deadline}')
-            return (False, time)
-
-    def find_all_ancestors(self):
-        ancestors_dict = {}
-        # for each event find the ancestors
-        for e in self.dcr['events']:
-            ancestors_dict[e] = self.__get_ancestors(e)
-        return ancestors_dict
-
-    def __get_ancestors(self, e, ancestors=None):
-        # first loop set it to an empty set
-        if ancestors is None:
-            ancestors = set()
-        # for each subprocess
-        if 'subprocesses' in self.dcr.keys():
-            for k, v in self.dcr['subprocesses'].items():
-                if e in v:
-                    # if the event is in the subprocess add that key as its ancestor
-                    ancestors.add(k)
-                    # if the key is a top level event we are done
-                    if k in self.tl_events:
-                        break
-                    else:
-                        # if the event is not a top level event then we go into the key of that subprocess and repeat
-                        ancestors = ancestors.union(self.__get_ancestors(k, ancestors))
-        return ancestors
-
-    def __is_effectively_included(self, e, ancestors_dict):
-        return ancestors_dict[e].issubset(self.dcr['marking']['included'])
-        
-    """
-

@@ -1,5 +1,5 @@
 import pandas as pd
-
+from copy import deepcopy
 from pm4py.util import exec_utils, constants, xes_constants
 from typing import Optional, Dict, Any, Union, List
 
@@ -14,16 +14,7 @@ from pm4py.objects.dcr.obj import DCR_Graph
 
 
 class RuleBasedConformance:
-    """
-    Class constructed for the rule based conformance checking
-    """
-
     def __init__(self, checker, semantics):
-        #"""
-        #Class is instantiated with checker and semantics:
-        #    - checker: the decorated checker that contains all methods needed to compute potential deviations
-        #    - semantics: the appropiate semantics used for executing events in a dcr graph
-        #"""
         self.__checker = checker
         self.__semantics = semantics
 
@@ -32,15 +23,12 @@ class RuleBasedConformance:
         """
         The main rule based conformance algorithm
 
-        Parameters
-        ----------
         :param log: event log as a List of lists containing the events with relevant attributes
         :param G: a DCR graph
         :param parameters: Optional parameters use for defining the attributes of an event
 
-        Returns
-        -------
         :return: a list of dictionaries containing the conformance results of each trace
+        :rtype: List[Dict[str, Any]]
         """
         # Create list for accumalating each trace data for conformance
         conf_case = []
@@ -48,15 +36,15 @@ class RuleBasedConformance:
         # number of constraints (the relations between activities)
         total_num_constraints = G.getConstraints()
 
-        #get activity key
+        # get activity key
         activity_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_ACTIVITY_KEY, parameters,
                                                   xes_constants.DEFAULT_NAME_KEY)
 
-
+        initial_marking = deepcopy(G.marking)
         # iterate through all traces in log
         for trace in log:
             # reset dcr graph
-            G.reset()
+            G.marking.reset(deepcopy(initial_marking))
             # create base dict to accumalate trace conformance data
             ret = {'no_constr_total': total_num_constraints, 'deviations': []}
 
@@ -66,7 +54,7 @@ class RuleBasedConformance:
                 # get the event to be executed
                 e = G.getEvent(event[activity_key])
 
-                #check for deviations
+                # check for deviations
                 if e in G.responseTo:
                     for response in G.responseTo[e]:
                         response_origin.append([e, response])
@@ -79,9 +67,9 @@ class RuleBasedConformance:
                 # execute the event
                 G = self.__semantics.execute(G, e)
 
-                if len(response_origin)>0:
+                if len(response_origin) > 0:
                     for i in response_origin:
-                        if e in i[1]:
+                        if e == i[1]:
                             response_origin.remove(i)
 
             # check if run is accepting
@@ -108,20 +96,16 @@ def apply(log: Union[pd.DataFrame, EventLog], dcr,
 
     Parameters
     ---------------
-    log
-        event log
-    dcr
-        DCR Graph
-    parameters
-        Possible parameters of the algorithm, including:
+    :param log: event log as :class: `EventLog` or as pandas Dataframe
+    :param dcr: DCR Graph
+    :param parameters: Possible parameters of the algorithm, including:
         - Parameters.ACTIVITY_KEY => the attribute to be used as activity
         - Parameters.CASE_ID_KEY => the attribute to be used as case identifier
         - Parameters.GROUP_KEY => the attribute to be used as role identifier
 
     Returns
     ---------------
-    conf_res
-        List containing dictionaries with the following keys and values:
+    :return: List containing dictionaries with the following keys and values:
         - no_constr_total: the total number of constraints of the DCR Graphs
         - deviations: the list of deviations
         - no_dev_total: the total number of deviations
@@ -174,13 +158,12 @@ def __apply_Pandas(log, dcr, parameters: Optional[Dict[Union[str, Any], Any]]):
     # check for additional attributes in dcr
     # instantiate decorator associated and append additional column with associated values
     if hasattr(dcr, 'roles'):
-        resource_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_RESOURCE_KEY, parameters,
-                                                  xes_constants.DEFAULT_RESOURCE_KEY)
-        new_log.insert(len(new_log.keys()), resource_key, log[resource_key], True)
+        group_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_GROUP_KEY, parameters,
+                                                  xes_constants.DEFAULT_GROUP_KEY)
+        new_log.insert(len(new_log.keys()), group_key, log[group_key], True)
         checker = RoleDecorator(checker)
 
     log = __transform_pandas_dataframe(new_log, case_id_key)
-
 
     con = RuleBasedConformance(checker, sem)
 
@@ -189,7 +172,6 @@ def __apply_Pandas(log, dcr, parameters: Optional[Dict[Union[str, Any], Any]]):
 
 
 def __transform_pandas_dataframe(dataframe, case_id_key):
-
     # uses a snippet from __transform_dataframe_to_event_stream_new as template to transform pandas dataframe
     list_events = []
     columns_names = list(dataframe.columns)
@@ -211,23 +193,21 @@ def __transform_pandas_dataframe(dataframe, case_id_key):
     log.append(list_events)
     return log
 
-def get_diagnostics_dataframe(log: Union[EventLog, pd.DataFrame], conf_result: List[Dict[str, Any]], parameters=None) -> pd.DataFrame:
+
+def get_diagnostics_dataframe(log: Union[EventLog, pd.DataFrame], conf_result: List[Dict[str, Any]],
+                              parameters=None) -> pd.DataFrame:
     """
     Gets the diagnostics dataframe from a log and the results of conformance checking of DCR graph
 
     Parameters
     ---------------
-    log
-        Event log
-    conf_result
-        Results of conformance checking
-    parameters
-        Optional Parameter to specify case id key
+    :param log: event log as :class: `EventLog` or as pandas Dataframe
+    :param conf_result: Results of conformance checking
+    :param parameters: Optional Parameter to specify case id key
 
     Returns
     ---------------
-    diagn_dataframe
-        Diagnostics dataframe
+    :return: Diagnostics dataframe
     """
 
     if parameters is None:
