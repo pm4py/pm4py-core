@@ -20,7 +20,7 @@ from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.objects.dcr.obj import DCR_Graph
 from pm4py.objects.log.obj import EventLog, Trace
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union, Tuple, List
 from pm4py.util import typing
 import pandas as pd
 
@@ -51,3 +51,27 @@ def apply(obj: Union[EventLog, Trace], G: DCR_Graph, variant=Variants.OPTIMAL, p
         Result of the alignment
     """
     return exec_utils.get_variant(variant).apply(obj, G, parameters=parameters)
+
+
+def get_diagnostics_dataframe(log: Union[EventLog, pd.DataFrame], conf_result: List[Dict[str, Any]], variant=Variants.OPTIMAL, parameters=None) -> pd.DataFrame:
+    """
+    Gets the diagnostics dataframe from a log and the conformance results
+
+    Parameters
+    --------------
+    log
+        Event log
+    conf_result
+        Results of conformance checking
+    variant
+        Variant to be used:
+        - Variants.CLASSIC
+    parameters
+        Variant-specific parameters
+
+    Returns
+    --------------
+    diagn_dataframe
+        Diagnostics dataframe
+    """
+    return exec_utils.get_variant(variant).get_diagnostics_dataframe(log, conf_result, parameters)

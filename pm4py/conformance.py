@@ -848,3 +848,67 @@ def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DCR_Graph, ac
         return dcr_conformance.get_diagnostics_dataframe(log, result, parameters=properties)
 
     return result
+
+def optimal_alignment_dcr(
+        log: Union[EventLog, pd.DataFrame],
+        dcr_graph: DCR_Graph,
+        activity_key: str = "concept:name",
+        timestamp_key: str = "time:timestamp",
+        case_id_key: str = "case:concept:name",
+        return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME
+) -> DataFrame | Any:
+    """
+    Applies optimal alignment against a DCR model.
+
+    Parameters
+    ----------
+    log : EventLog
+        Event log to be used for alignment.
+    dcr_graph : DCRGraph
+        The DCR graph against which the log is aligned.
+    activity_key : str
+        The key to identify activity names in the log.
+    timestamp_key : str
+        The key to identify timestamps in the log.
+    case_id_key : str
+        The key to identify case identifiers in the log.
+    return_diagnostics_dataframe : bool, default False
+        If True, returns a diagnostics dataframe instead of the usual list output.
+
+    Returns
+    -------
+    Union[pd.DataFrame, List[Tuple[str, Dict[str, Any]]]]
+        Depending on the value of `return_diagnostics_dataframe`, returns either
+        a pandas DataFrame with diagnostics or a list of alignment results.
+
+    Raises
+    ------
+    Exception
+        If the log provided is not an instance of EventLog or pandas DataFrame.
+
+    """
+
+    if type(log) not in [pd.DataFrame, EventLog]:
+        raise Exception("The method can be applied only to a traditional event log!")
+
+    from pm4py.algo.conformance.alignments.dcr.variants.optimal import TraceAlignment
+    from pm4py.algo.conformance.alignments.dcr import algorithm as dcr_alignment
+
+    if return_diagnostics_dataframe:
+        log = convert_to_event_log(log, case_id_key=case_id_key)
+        case_id_key = None
+
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    result = dcr_alignment.apply(log, dcr_graph, parameters=properties)
+
+    if return_diagnostics_dataframe:
+        return dcr_alignment.get_diagnostics_dataframe(log, result, parameters=properties)
+
+    # Create an instance of the TraceAlignment class
+    facade = TraceAlignment(dcr_graph, log, parameters=properties)
+
+    # Perform alignment and get the results
+    alignment_result = facade.perform_alignment()
+
+    return alignment_result
