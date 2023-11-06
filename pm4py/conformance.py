@@ -953,7 +953,6 @@ def optimal_alignment_dcr(
     if type(log) not in [pd.DataFrame, EventLog, Trace]:
         raise Exception("The method can be applied only to a traditional event log or Trace!")
 
-    from pm4py.algo.conformance.alignments.dcr.variants.optimal import TraceAlignment
     from pm4py.algo.conformance.alignments.dcr import algorithm as dcr_alignment
 
     if return_diagnostics_dataframe:

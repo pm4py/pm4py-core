@@ -16,7 +16,10 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath('../../'))
-
+sys.path.insert(0, os.path.abspath('../../pm4py/algo/conformance/dcr'))
+sys.path.insert(0, os.path.abspath('../../pm4py/algo/conformance/alignments/dcr'))
+sys.path.insert(0, os.path.abspath('../../pm4py/algo/discovery/dcr_discover'))
+sys.path.insert(0, os.path.abspath('../../pm4py/objects/dcr'))
 # -- Project information -----------------------------------------------------
 
 project = 'pm4py'
@@ -49,6 +52,7 @@ napoleon_google_docstring = False
 napoleon_use_param = False
 napoleon_use_ivar = True
 autodoc_member_order = 'bysource'
+autodoc_inherit_docstring = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -72,7 +76,8 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path .
-exclude_patterns = ['tests', 'scripts']
+exclude_patternss = ['tests', 'scripts', '.rst']
+
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
