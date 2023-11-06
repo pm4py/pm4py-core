@@ -31,24 +31,24 @@ class Checker(ABC):
 
     Methods
     --------
-    enabled_Checker(act, G, deviations, parameters):
+    enabled_Checker(event, graph, deviations, parameters):
         method to determine deviations of non enabled events, i.e events that are not allowed to execute
-    all_checker(act, event, G, deviations, parameters):
+    all_checker(event, event_attributes, graph, deviations, parameters):
         method to determine deviations of event for each execution
-    accepting_checker(G, responses, deviations, parameters):
+    accepting_checker(graph, responses, deviations, parameters):
         method to determine deviations that caused DCR graph to be in a non-accepting state.
     """
 
     @abstractmethod
-    def enabled_checker(self, e: str, G: DCR_Graph, deviations:List[Tuple[str, Any]], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def enabled_checker(self, event: str, graph: DCR_Graph, deviations:List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         pass
 
     @abstractmethod
-    def all_checker(self, e: str, event: dict, G: DCR_Graph, deviations:List[Tuple[str, Any]], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def all_checker(self, event: str, event_attributes: dict, graph: DCR_Graph, deviations:List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         pass
 
     @abstractmethod
-    def accepting_checker(self, G: DCR_Graph, responses:List[Tuple[str, str]], deviations, parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def accepting_checker(self, graph: DCR_Graph, responses: List[Tuple[str, str]], deviations:List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         pass
 
 
@@ -68,46 +68,46 @@ class ConcreteChecker(Checker):
         determine the deviation that caused the DCR graph to be non-accepting after an execution of a trace
     """
 
-    def enabled_checker(self, e: str, G: DCR_Graph, deviations: List[Tuple[str, Any]], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def enabled_checker(self, event: str, graph: DCR_Graph, deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         """
         enabled_checker() is called when an event that is to be executed is not enabled
         Check all the deviations that could be associated with a not enabled event for a base DCR Graph
 
         Parameters
         ----------
-        e: str
+        event: str
             the executed event
-        G: DCR_Graph
+        graph: DCR_Graph
             DCR Graph
-        deviations:
+        deviations: List[Any]
             the list of deviations
-        parameters
+        parameters: Optional[Dict[Union[str, Any], Any]]
             optional parameters
         """
-        CheckCondition.check_rule(e, G, deviations)
-        CheckExclude.check_rule(e, G, deviations)
-        CheckInclude.check_rule(e, G, deviations)
+        CheckCondition.check_rule(event, graph, deviations)
+        CheckExclude.check_rule(event, graph, deviations)
+        CheckInclude.check_rule(event, graph, deviations)
 
-    def all_checker(self, e: str, event: dict, G: DCR_Graph, deviations: List[Tuple[str, Any]], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def all_checker(self, event: str, event_attributes: dict, graph: DCR_Graph, deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         pass
 
-    def accepting_checker(self, G: DCR_Graph, responses: List[Tuple[str, str]], deviations: List[Tuple[str, Any]], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def accepting_checker(self, graph: DCR_Graph, responses: List[Tuple[str, str]], deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         """
         accepting_checker is called when a DCR graph is not accepting after an execution of a trace
         checks all response deviations for a base DCR Graph
 
         Parameters
         ----------
-        G: DCR_Graph
+        graph: DCR_Graph
             DCR Graph
         responses: List[Tuple[str, str]]
             list of response constraint not fulfilled
-        deviations: List[Tuple[str, Any]]
+        deviations: List[Any]
             the list of deviations
         parameters: Optional[Dict[Union[str, Any], Any]]
             Optional, parameter containing keys used
         """
-        CheckResponse.check_rule(G, responses, deviations)
+        CheckResponse.check_rule(graph, responses, deviations)
 
 
 class Decorator(Checker):
@@ -150,55 +150,55 @@ class Decorator(Checker):
         """
         self._checker = checker
 
-    def enabled_checker(self, e: str, G: DCR_Graph, deviations: List[Tuple[str, Any]], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def enabled_checker(self, event: str, graph: DCR_Graph, deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         """
         This method calls enabled_checker() of the underlying class to continue search for cause of deviation between Graph and event Log
 
         Parameters
         ----------
-        e: str
+        event: str
             Current event ID in trace
-        G: DCR_Graph
+        graph: DCR_Graph
             DCR Graph
-        deviations: List[Tuple[str, Any]]
+        deviations: List[Any]
             List of deviations
         parameters: Optional[Dict[Union[str, Any], Any]]
             optional parameters
         """
-        self._checker.enabled_checker(e, G, deviations, parameters=parameters)
+        self._checker.enabled_checker(event, graph, deviations, parameters=parameters)
 
-    def all_checker(self, e: str, event: dict, G: DCR_Graph, deviations: List[Tuple[str, Any]], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def all_checker(self, event: str, event_attributes: dict, graph: DCR_Graph, deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         """
         This method calls all_checker() of the underlying class to continue search for cause of deviation between Graph and event Log
 
         Parameters
         ----------
-        e: str
+        event: str
             Current event ID in trace
-        event: dict
+        event_attributes: dict
             Current event with all attributes
-        G: DCR_Graph
+        graph: DCR_Graph
             DCR Graph
-        deviations: List[Tuple[str, Any]]
+        deviations: List[Any]
             List of deviations
         parameters: Optional[Dict[Union[str, Any], Any]]
             optional parameters
         """
-        self._checker.all_checker(e, event, G, deviations, parameters=parameters)
+        self._checker.all_checker(event, event_attributes, graph, deviations, parameters=parameters)
 
-    def accepting_checker(self, G: DCR_Graph, responses: List[Tuple[str, str]], deviations: List[Tuple[str, Any]], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def accepting_checker(self, graph: DCR_Graph, responses: List[Tuple[str, str]], deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         """
         This method calls accepting_checker() of the underlying class to continue search for cause of deviation between Graph and event Log
 
         Parameters
         ----------
-        G: DCR_Graph
+        graph: DCR_Graph
             DCR Graph
         responses: List[Tuple[str, str]]
             The recorded response relation between events to be executed and it originator
-        deviations: List[Tuple[str, Any]]
+        deviations: List[Any]
             List of deviations
         parameters: Optional[Dict[Union[str, Any], Any]]
             optional parameters
         """
-        self._checker.accepting_checker(G, responses, deviations, parameters=parameters)
+        self._checker.accepting_checker(graph, responses, deviations, parameters=parameters)

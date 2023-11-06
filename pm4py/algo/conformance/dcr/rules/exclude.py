@@ -4,15 +4,15 @@ from typing import List, Tuple, Any
 
 class CheckExclude(CheckFrame):
     @classmethod
-    def check_rule(cls, e: str, G: DCR_Graph, deviations: List[Tuple[str, Any]]):
+    def check_rule(cls, event: str, graph: DCR_Graph, deviations: List[Tuple[str, Any]]):
         '''
         Checks if event violates the exclude relation
 
         Parameters
         --------------
-        e: str
+        event: str
             Current event
-        G: DCR_Graph
+        graph: DCR_Graph
             DCR Graph
         deviations: List[Tuple[str, Any]]
             List of deviations
@@ -23,8 +23,8 @@ class CheckExclude(CheckFrame):
             List of updated deviation if any were detected
         '''
         # if an acitivty has been excluded, but trace tries to execute, exclude violation
-        if e not in G.marking.included:
+        if event not in graph.marking.included:
             #if violation exist, no need to store it
-            if ('excludeViolation', e) not in deviations:
-                deviations.append(('excludeViolation', e))
+            if ('excludeViolation', event) not in deviations:
+                deviations.append(('excludeViolation', event))
         return deviations

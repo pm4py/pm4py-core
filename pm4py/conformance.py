@@ -176,10 +176,12 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
             # DFG alignments
             from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
             result = dfg_alignment.apply(log, args[0], args[1], args[2], parameters=properties)
-        elif isinstance(args[0], DCR_Graph):
+    if len(args) == 2:
+        if isinstance(args[0], DCR_Graph):
             # DCR alignments
+            print(properties)
             from pm4py.algo.conformance.alignments.dcr import algorithm as dcr_alignment
-            result = dcr_alignment.apply(log, args[0], args[1], args[2], parameters=properties)
+            result = dcr_alignment.apply(log, args[0], args[1], parameters=properties)
 
             return result
     elif len(args) == 1:
@@ -835,7 +837,7 @@ def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DCR_Graph, ac
 
     if return_diagnostics_dataframe:
         log = convert_to_event_log(log, case_id_key=case_id_key)
-        case_key = None
+        case_id_key = None
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, group_key=group_key, resource_key=resource_key)
 

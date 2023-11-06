@@ -2,13 +2,14 @@ import pandas as pd
 from copy import deepcopy
 from enum import Enum
 from pm4py.util import exec_utils, constants, xes_constants
-from typing import Optional, Dict, Any, Union, List
+from typing import Optional, Dict, Any, Union, List, Tuple
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.dcr.semantics import DCRSemantics
 from pm4py.objects.dcr.obj import DCR_Graph
 from pm4py.objects.dcr.roles.obj import RoleDCR_Graph
 from pm4py.algo.conformance.dcr.decorators.decorator import ConcreteChecker
 from pm4py.algo.conformance.dcr.decorators.roledecorator import RoleDecorator
+
 
 
 class Parameters(Enum):
@@ -44,6 +45,7 @@ class RuleBasedConformance:
         Example usage:
 
 
+
         Note:
         - The user is expected to have a base understanding of DCR Graphs and rule based conformance checking in context of process mining
 
@@ -58,14 +60,14 @@ class RuleBasedConformance:
             apply_conformance(): performs the replay and computing of conformance of each trace
         """
 
-    def __init__(self, log: Union[EventLog, pd.DataFrame], G: Union[DCR_Graph, RoleDCR_Graph],
+    def __init__(self, log: Union[EventLog, pd.DataFrame], graph: Union[DCR_Graph, RoleDCR_Graph],
                  parameters: Optional[Dict[Union[str, Any], Any]] = None):
-        self.__G = G
+        self.__G = graph
         if isinstance(log, pd.DataFrame):
             log = self.__transform_pandas_dataframe(log, exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters,
                                                                                     constants.CASE_CONCEPT_NAME))
         self.__log = log
-        self.__checker = HandleChecker(G)
+        self.__checker = HandleChecker(graph)
         self.__semantics = DCRSemantics()
         self.__parameters = parameters
 
@@ -210,65 +212,65 @@ class HandleChecker:
 
     Methods
     -----------
-    enabled_checker(e, G, deviations, parameters) -> None:
+    enabled_checker(event, graph, deviations, parameters) -> None:
         Checks for deviations when an activity is not enabled in the DCR Graphs
 
-    all_checker(e, event, G, deviations, parameters) -> None:
+    all_checker(event, event_attributes, graph, deviations, parameters) -> None:
         Check for deviations that can happen when the rule is not dependent on events being enabled
 
-    accepting_checker( G, response_origin, deviations, parameters) -> None:
+    accepting_checker(graph, response_origin, deviations, parameters) -> None:
         Checks for deviations that caused the DCR Graphs to be in an unaccepted State after replay
 
     Parameters
     ----------
-    G: Union[DCR_Graph, RoleDCR_Graph]
+    graph: Union[DCR_Graph, RoleDCR_Graph]
         DCR graph
     """
 
-    def __init__(self, G: Union[DCR_Graph, RoleDCR_Graph]):
+    def __init__(self, graph: Union[DCR_Graph, RoleDCR_Graph]):
         """
         Constructs the CheckHandler, uses the decorator to add functionality depending on input Graph
             - DCR_Graph construct standard checker
             - RoleDCR_Graph Decorate standard checker with Role Checking functionality
         Parameters
         ----------
-        G: Union[DCR_Graph, RoleDCR_Graph]
+        graph: Union[DCR_Graph, RoleDCR_Graph]
             DCR Graph
         """
         self.checker = ConcreteChecker()
         # check for additional attributes in dcr, instantiate decorator associated
-        if hasattr(G, 'roles'):
+        if hasattr(graph, 'roles'):
             self.checker = RoleDecorator(self.checker)
 
-    def enabled_checker(self, e: str, G: Union[DCR_Graph, RoleDCR_Graph], deviations: List[Any],
+    def enabled_checker(self, event: str, graph: Union[DCR_Graph, RoleDCR_Graph], deviations: List[Any],
                         parameters: Optional[Dict[Any, Any]] = None) -> None:
         """
         Enabled checker called when event is not enabled for execution in trace
         Parameters
         ----------
-        e: str
+        event: str
             Current event in trace
-        G: Union[DCR_Graph, RoleDCR_Graph]
+        graph: Union[DCR_Graph, RoleDCR_Graph]
             DCR Graph
         deviations: List[Any]
             List of deviations
         parameters: Optional[Dict[Any, Any]]
             Optional parameters
         """
-        self.checker.enabled_checker(e, G, deviations, parameters=parameters)
+        self.checker.enabled_checker(event, graph, deviations, parameters=parameters)
 
-    def all_checker(self, e: str, event: Dict, G: Union[DCR_Graph, RoleDCR_Graph], deviations: List[Any],
+    def all_checker(self, event: str, event_attributes: Dict, graph: Union[DCR_Graph, RoleDCR_Graph], deviations: List[Any],
                     parameters: Optional[Dict[Any, Any]] = None) -> None:
         """
         All checker called for each event in trace to check if any deviation happens regardless of being enabled
 
         Parameters
         ----------
-        e: str
+        event: str
             Current event in trace
-        event: Dict
+        event_attributes: Dict
             All event information used for conformance checking
-        G: Union[DCR_Graph, RoleDCR_Graph]
+        graph: Union[DCR_Graph, RoleDCR_Graph]
             DCR Graph
         deviations: List[Any]
             List of deviations
@@ -276,26 +278,27 @@ class HandleChecker:
             Optional parameters
 
         """
-        self.checker.all_checker(e, event, G, deviations, parameters=parameters)
+        self.checker.all_checker(event, event_attributes, graph, deviations, parameters=parameters)
 
-    def accepting_checker(self, G: Union[DCR_Graph, RoleDCR_Graph], response_origin: List[List],
+    def accepting_checker(self, graph: Union[DCR_Graph, RoleDCR_Graph], response_origin: List[Tuple[str,str]],
                           deviations: List[Any], parameters: Optional[Dict[Any, Any]] = None) -> None:
         """
         Accepting checker, called when the DCR graph at the end of trace execution is not not accepting
 
         Parameters
         ----------
-        G: Union[DCR_Graph, RoleDCR_Graph]
+        graph: Union[DCR_Graph, RoleDCR_Graph]
             DCR Graph
+        response_origin
         deviations: List[Any]
             List of deviations
         parameters: Optional[Dict[Any, Any]]
             Optional parameters
         """
-        self.checker.accepting_checker(G, response_origin, deviations, parameters=parameters)
+        self.checker.accepting_checker(graph, response_origin, deviations, parameters=parameters)
 
 
-def apply(log: Union[pd.DataFrame, EventLog], G: Union[DCR_Graph, RoleDCR_Graph],
+def apply(log: Union[pd.DataFrame, EventLog], graph: Union[DCR_Graph, RoleDCR_Graph],
           parameters: Optional[Dict[Any, Any]] = None):
     """
     Applies rule based conformance checking against a DCR graph and an event log.
@@ -308,7 +311,7 @@ def apply(log: Union[pd.DataFrame, EventLog], G: Union[DCR_Graph, RoleDCR_Graph]
     -----------
     :param log: Union[pd.DataFrame, EventLog]
         event log as :class: `EventLog` or as pandas Dataframe
-    :param G: Union[DCR_Graph, RoleDCR_Graph]
+    :param graph: Union[DCR_Graph, RoleDCR_Graph]
         DCR Graph
     :param parameters: Optional[Dict[Any, Any]]
         Possible parameters of the algorithm, including:
@@ -334,7 +337,7 @@ def apply(log: Union[pd.DataFrame, EventLog], G: Union[DCR_Graph, RoleDCR_Graph]
     """
     if parameters is None:
         parameters = {}
-    con = RuleBasedConformance(log, G, parameters=parameters)
+    con = RuleBasedConformance(log, graph, parameters=parameters)
     return con.apply_conformance()
 
 
@@ -359,15 +362,16 @@ def get_diagnostics_dataframe(log: Union[EventLog, pd.DataFrame], conf_result: L
     if parameters is None:
         parameters = {}
 
-    case_id_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_CASEID_KEY, parameters,
+    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters,
                                              xes_constants.DEFAULT_TRACEID_KEY)
+
     import pandas as pd
     diagn_stream = []
     for index in range(len(log)):
         case_id = log[index].attributes[case_id_key]
-        no_dev_total = conf_result[index]["no_dev_total"]
-        no_constr_total = conf_result[index]["no_constr_total"]
-        dev_fitness = conf_result[index]["dev_fitness"]
+        no_dev_total = conf_result[index][Outputs.NO_DEV_TOTAL.value]
+        no_constr_total = conf_result[index][Outputs.NO_CONSTR_TOTAL.value]
+        dev_fitness = conf_result[index][Outputs.FITNESS.value]
 
         diagn_stream.append({"case_id": case_id, "no_dev_total": no_dev_total, "no_constr_total": no_constr_total,
                              "dev_fitness": dev_fitness})

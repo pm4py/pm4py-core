@@ -17,21 +17,21 @@ class RoleDecorator(Decorator):
 
     Methods
     --------
-    enabled_checker(e, G, deviations, parameters=None)
+    enabled_checker(event, graph, deviations, parameters=None)
         this method will call the underlying class used to check for deviations
-    all_checker(e, G, deviations, parameters=None)
+    all_checker(event, event_attributes, graph, deviations, parameters=None)
         This method will determine if deviations occurs due to violation of role assignments
     enabled_checker(e, G, deviations, parameters=None)
         this method will call the underlying class used to check for deviations
     """
-    def enabled_checker(self, e: str, G: Union[RoleDCR_Graph, DCR_Graph], deviations, parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
-        self._checker.enabled_checker(e, G, deviations, parameters)
+    def enabled_checker(self, event: str, graph: Union[RoleDCR_Graph, DCR_Graph], deviations: List[Tuple[str, Any]], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+        self._checker.enabled_checker(event, graph, deviations, parameters)
 
-    def all_checker(self, e: str, event: dict, G: Union[RoleDCR_Graph, DCR_Graph], deviations: List[Tuple[str, Any]], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
-        self._checker.all_checker(e, event, G, deviations, parameters=parameters)
+    def all_checker(self, event: str, event_attributes: dict, graph: Union[RoleDCR_Graph, DCR_Graph], deviations: List[Tuple[str, Any]], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+        self._checker.all_checker(event, event_attributes, graph, deviations, parameters=parameters)
         group_key = exec_utils.get_param_value(Parameters.GROUP_KEY,parameters,xes_constants.DEFAULT_GROUP_KEY)
-        role = event[group_key]
-        CheckRole.check_rule(e, G, role, deviations)
+        role = event_attributes[group_key]
+        CheckRole.check_rule(event, graph, role, deviations)
 
-    def accepting_checker(self, G: Union[RoleDCR_Graph, DCR_Graph], responses: List[Tuple[str, str]], deviations: List[Tuple[str, Any]], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
-        self._checker.accepting_checker(G, responses, deviations, parameters)
+    def accepting_checker(self, graph: Union[RoleDCR_Graph, DCR_Graph], responses: List[Tuple[str, str]], deviations: List[Tuple[str, Any]], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+        self._checker.accepting_checker(graph, responses, deviations, parameters)

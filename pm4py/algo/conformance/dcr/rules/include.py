@@ -4,15 +4,15 @@ from typing import List, Tuple, Any
 
 class CheckInclude(CheckFrame):
     @classmethod
-    def check_rule(cls, e: str, G: DCR_Graph, deviations: List[Tuple[str, Any]]):
+    def check_rule(cls, event: str, graph: DCR_Graph, deviations: List[Tuple[str, Any]]):
         """
         Checks if event violates the include relation
 
         Parameters
         --------------
-        e: str
+        event: str
             current event
-        G: DCR_Graph
+        graph: DCR_Graph
             DCR Graph
         deviations: List[Tuple[str, Any]]
             List of deviations
@@ -22,9 +22,9 @@ class CheckInclude(CheckFrame):
         deviations: List[Tuple[str, Any]]
             List of updated deviation if any were detected
         """
-        if e not in G.marking.included:
-            for event_prime in G.includesTo:
-                if e in G.includesTo[event_prime]:
-                    if ['includeViolation', (event_prime, e)] not in deviations:
-                        deviations.append(('includeViolation', (event_prime, e)))
+        if event not in graph.marking.included:
+            for event_prime in graph.includesTo:
+                if event in graph.includesTo[event_prime]:
+                    if ['includeViolation', (event_prime, event)] not in deviations:
+                        deviations.append(('includeViolation', (event_prime, event)))
         return deviations

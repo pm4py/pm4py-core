@@ -4,7 +4,7 @@ from typing import List, Tuple, Any
 
 class CheckRole(CheckFrame):
     @classmethod
-    def check_rule(cls, e: str, G: RoleDCR_Graph, role: str, deviations: List[Tuple[str, Any]]):
+    def check_rule(cls, event: str, graph: RoleDCR_Graph, role: str, deviations: List[Tuple[str, Any]]):
         '''
         Checks if event violates the role assignments
             1.) if event contain role not in model
@@ -12,9 +12,9 @@ class CheckRole(CheckFrame):
 
         Parameters
         --------------
-        e: str
+        event: str
             current event
-        G: RoleDCR_Graph
+        graph: RoleDCR_Graph
             DCR Graph
         role: str
             Role of the event
@@ -25,25 +25,25 @@ class CheckRole(CheckFrame):
         deviations: List[Tuple[str, Any]]
             List of updated deviation if any were detected
         '''
-        if role not in G.roles and role == role:
+        if role not in graph.roles and role == role:
             # if role doesn't exist, means that they do not have authority to perform the action
             if ('roleViolation', role) not in deviations:
                 deviations.append(('roleViolation', role))
             return deviations
         else:
-            temp = {e: set()}
-            for i in G.roleAssignments:
-                if e in G.roleAssignments[i]:
-                    temp[e].add(i)
+            temp = {event: set()}
+            for i in graph.roleAssignments:
+                if event in graph.roleAssignments[i]:
+                    temp[event].add(i)
             # if activity has no role, return, as it can be excuted by anybody
-            if not temp[e]:
+            if not temp[event]:
                 return deviations
             # if event in model has roles
             # violation when:
             # 1) when as event in model does not have role
-            res = temp[e].intersection({role})
+            res = temp[event].intersection({role})
             if not res:
-                if ('roleViolation', (role, e)) not in deviations:
-                    deviations.append(('roleViolation', (role, e)))
+                if ('roleViolation', (role, event)) not in deviations:
+                    deviations.append(('roleViolation', (role, event)))
             return deviations
 
