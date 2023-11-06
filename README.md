@@ -1,83 +1,16 @@
 # A DCR Implementation in pm4py, for discovery, conformance
 Have performed unittest to test for the functionality of the implementation.
-Can be found in the tests/DCR_test folder, such that it could be checked for everything
+Can be found in the tests/DCR_test folder, one can run and understand the usage
 
+documentation has been created in a docs folder, with provided html files in docs/build/html, contains the documentation of the implementation from the simplified interface functions for users, as well for the implementation behind these functions. Currently implemented functionality for process discovery and conformance checking
+
+## Requirements
+Contains the same requirements for installation as provided in [(PM4Py-core)
+Usage](https://github.com/pm4py/pm4py-core/tree/release)
+
+## Installation
 create a a virtual environment in python and
 ```
 pip install -r requirements.text
 ```
 
-documentation has been created in a docs folder, with provided html files in docs/build/html, contains the documentation of the implementation from the simplified interface functions for users, as well for the implementation behind these functions. Currently implemented functionality for process discovery and conformance checking
-
-# Requirements
-Contains the same requirements for installation as provided in [(PM4Py-core)
-Usage](https://github.com/pm4py/pm4py-core/tree/release)
-
-# Installation
-
-
-## A dcr implementation in pm4py
-
-Tested and working with python 3.11.0
-
-Create a python virtual environment and: 
-```
-pip install -r requirements.txt
-```
-
-Check out and run the jupyter notebook from notebooks/pm4py_dcr_example.ipynb
-
-
-The running example is on the sepsis event log.
-
-### Contributors on the dcr extension
-
-[paul-cvp](https://github.com/paul-cvp),[Timmovich](https://github.com/Timmovich)
-
-## From pm4py:
-
-# pm4py
-pm4py is a python library that supports (state-of-the-art) process mining algorithms in python. 
-It is open source (licensed under GPL) and intended to be used in both academia and industry projects.
-pm4py is a product of the Fraunhofer Institute for Applied Information Technology.
-
-## Documentation / API
-The full documentation of pm4py can be found at https://pm4py.fit.fraunhofer.de
-
-## First Example
-A very simple example, to whet your appetite:
-
-```python
-import pm4py
-
-if __name__ == "__main__":
-    log = pm4py.read_xes('<path-to-xes-log-file.xes>')
-    net, initial_marking, final_marking = pm4py.discover_petri_net_inductive(log)
-    pm4py.view_petri_net(net, initial_marking, final_marking, format="svg")
-```
-
-## Installation
-pm4py can be installed on Python 3.9.x / 3.10.x / 3.11.x / 3.12.x by invoking:
-*pip install -U pm4py*
-
-pm4py is also running on older Python environments with different requirements sets, including:
-- Python 3.8 (3.8.10): third_party/old_python_deps/requirements_py38.txt
-
-## Requirements
-pm4py depends on some other Python packages, with different levels of importance:
-* *Essential requirements*: numpy, pandas, deprecation, networkx
-* *Normal requirements* (installed by default with the pm4py package, important for mainstream usage): graphviz, intervaltree, lxml, matplotlib, pydotplus, pytz, scipy, stringdist, tqdm
-* *Optional requirements* (not installed by default): scikit-learn, pyemd, pyvis, jsonschema, polars, openai, pywin32, python-dateutil, requests, workalendar
-
-## Release Notes
-To track the incremental updates, please refer to the *CHANGELOG* file.
-
-## Third Party Dependencies
-As scientific library in the Python ecosystem, we rely on external libraries to offer our features.
-In the */third_party* folder, we list all the licenses of our direct dependencies.
-Please check the */third_party/LICENSES_TRANSITIVE* file to get a full list of all transitive dependencies and the corresponding license.
-
-## Citing pm4py
-If you are using pm4py in your scientific work, please cite pm4py as follows:
-
-Berti, A., van Zelst, S.J., van der Aalst, W.M.P. (2019): Process Mining for Python (PM4Py): Bridging the Gap Between Process-and Data Science. In: Proceedings of the ICPM Demo Track 2019, co-located with 1st International Conference on Process Mining (ICPM 2019), Aachen, Germany, June 24-26, 2019. pp. 13-16 (2019). http://ceur-ws.org/Vol-2374/
