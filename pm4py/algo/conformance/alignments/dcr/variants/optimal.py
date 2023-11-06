@@ -27,7 +27,6 @@ References
 """
 
 import pandas as pd
-import copy
 from copy import deepcopy
 from typing import Optional, Dict, Any, Union, List, Tuple
 from heapq import heappop, heappush
@@ -436,11 +435,11 @@ class Alignment:
                                                                       move_type)
 
         self.closed_markings.add(new_graph.marking)
-        state_representation = (str(new_graph), tuple(map(str, new_trace)))
+        state_representation = (str(new_graph.marking), tuple(map(str, new_trace)))
         if state_representation not in self.visited_states:
             self.visited_states.add(state_representation)
             new_moves = moves + [new_move]
-            heappush(self.open_set, (new_cost, new_graph, new_trace, current, new_moves))
+            heappush(self.open_set, (new_cost, new_graph, new_trace, str(new_graph.marking), new_moves))
 
     def get_new_state(self, curr_cost, curr_graph, curr_trace, event, move_type):
         """
@@ -517,9 +516,8 @@ class Alignment:
             current trace, and the moves made up to this point.
         """
         curr_cost, curr_graph, curr_trace, _, moves = current
-        self.graph_handler.graph = copy.deepcopy(curr_graph)
-        state_repr = (str(self.graph_handler.graph), tuple(map(str, curr_trace)))
-
+        self.graph_handler.graph = deepcopy(curr_graph)
+        state_repr = (str(self.graph_handler.graph.marking), tuple(map(str, curr_trace)))
         return curr_cost, curr_graph, curr_trace, state_repr, moves
 
     def check_accepting_conditions(self, curr_cost, is_accepting):
@@ -586,7 +584,7 @@ class Alignment:
         parameters = {} if parameters is None else parameters
         visited, closed, cost, self.final_alignment, final_cost = 0, 0, 0, None, float('inf')
         self.open_set.append(
-            (cost, self.graph_handler.graph, self.trace_handler.trace, str(self.graph_handler.graph), []))
+            (cost, self.graph_handler.graph, self.trace_handler.trace, str(self.graph_handler.graph.marking), []))
 
         # perform while loop to iterate through all states
         while self.open_set:
@@ -597,7 +595,6 @@ class Alignment:
             if self.skip_current(result) or result is None:
                 continue
             curr_cost, curr_trace, state_repr, moves = result[0], result[2], result[3], result[4]
-
             self.update_closed_and_visited_sets(curr_cost, state_repr)
             closed += 1
             self.trace_handler.trace = curr_trace
