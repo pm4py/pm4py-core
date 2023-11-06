@@ -44,8 +44,8 @@ class RoleDCR_Graph(object):
     role_graph = RoleDCR_Graph(dcr_graph, template={\n
         "principals": {"principal1", "principal2"},\n
         "roles": {"role1", "role2"},\n
-        "roleAssignments": {"activity1": {"role1"}},\n
-        "principalsAssignments": {"activity1": {"principal1"}}\n
+        "roleAssignments": {"role1": {"activity1"}},\n
+        "principalsAssignments": {"role1": {"principal1"}}\n
     })\n
 
     \nAccess role-based attributes\n
