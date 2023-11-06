@@ -28,16 +28,11 @@ from typing import Union, Any, Optional, Dict, Tuple
 class Variants(Enum):
     DCR_BASIC = dcr_discover
     DCR_ROLES = roles
-    # DCR_SUBPROCESS = subprocess
 
 
 DCR_BASIC = Variants.DCR_BASIC
 DCR_ROLES = Variants.DCR_ROLES
 VERSIONS = {DCR_BASIC, DCR_ROLES}
-
-
-# DCR_SUBPROCESS = Variants.DCR_SUBPROCESS
-# VERSIONS = {DCR_BASIC, DCR_ROLES, DCR_SUBPROCESS}
 
 
 def apply(log: Union[EventLog, pd.DataFrame], variant=DCR_BASIC, findAdditionalConditions: bool = True,
@@ -48,8 +43,8 @@ def apply(log: Union[EventLog, pd.DataFrame], variant=DCR_BASIC, findAdditionalC
 
     Parameters
     ---------------
-    log
-        log object (EventLog, pandas dataframe)
+    log: EventLog | pd.DataFrame
+        event log used for discovery
     variant
         Variant of the algorithm to use:
         - DCR_BASIC
@@ -64,9 +59,10 @@ def apply(log: Union[EventLog, pd.DataFrame], variant=DCR_BASIC, findAdditionalC
     parameters
         variant specific parameters
         findAdditionalConditions: [True or False]
+
     Returns
     ---------------
-    dcr graph
+    DCR_GRAPH | RoleDCR_Graph:
         DCR graph (as an object) containing eventId, set of activities, mapping of event to activities,
             condition relations, response relation, include relations and exclude relations.
         possible to return variant of different dcr graph depending on which variant, basic, roles, etc.
@@ -80,11 +76,12 @@ def apply(log: Union[EventLog, pd.DataFrame], variant=DCR_BASIC, findAdditionalC
     """
 
     input_log = deepcopy(log)
-    G, la = exec_utils.get_variant(variant).apply(input_log, findAdditionalConditions=findAdditionalConditions,
+    graph, la = exec_utils.get_variant(variant).apply(input_log, findAdditionalConditions=findAdditionalConditions,
                                                   parameters=parameters)
     if post_process is None:
         post_process = set()
-    if 'roles' in post_process:
-        G = exec_utils.get_variant(DCR_ROLES).apply(input_log, G, parameters=parameters)
 
-    return G, la
+    if 'roles' in post_process:
+        graph = exec_utils.get_variant(DCR_ROLES).apply(input_log, graph, parameters=parameters)
+
+    return graph, la

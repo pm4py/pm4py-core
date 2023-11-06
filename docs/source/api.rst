@@ -31,6 +31,9 @@ Importing object-centric event logs (OCEL2.0) is possible given the following fo
   * ``.sqlite`` specification :meth:`pm4py.read.read_ocel2_sqlite`
   * ``.jsonocel`` specification :meth:`pm4py.read.read_ocel2_json`
 
+Importing Declarative process models is possible with the following formats:
+  * ``.xml`` specificantion :meth:`pm4py.read.read_dcr_xml`
+
 
 Output (:mod:`pm4py.write`)
 -------------------------------------
@@ -55,6 +58,8 @@ Exporting object-centric event logs (OCEL2.0) is possible to the following forma
   * ``.sqlite`` specification :meth:`pm4py.write.write_ocel2_sqlite`
   * ``.jsonocel`` specification :meth:`pm4py.write.write_ocel2_json`
 
+Exporting of declarative process models is possible with the following format:
+  * ``.xml`` specification :meth:`pm4py.write.write_dcr_xml`
 
 Conversion (:mod:`pm4py.convert`)
 -------------------------------------
@@ -412,6 +417,7 @@ Overall List of Methods
    pm4py.read.read_ocel2_xml
    pm4py.read.read_ocel2_sqlite
    pm4py.read.read_ocel2_json
+   pm4py.read.read_dcr_xml
    pm4py.write
    pm4py.write.write_bpmn
    pm4py.write.write_dfg
