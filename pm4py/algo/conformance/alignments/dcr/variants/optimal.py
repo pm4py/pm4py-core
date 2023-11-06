@@ -27,7 +27,7 @@ References
 """
 
 import pandas as pd
-from copy import deepcopy
+from copy import deepcopy, copy
 from typing import Optional, Dict, Any, Union, List, Tuple
 from heapq import heappop, heappush
 from enum import Enum
@@ -386,12 +386,11 @@ class Alignment:
         self.global_min = float('inf')
         self.closed_set = {}
         self.visited_states = set()
-        self.moves = []
         self.new_moves = []
         self.final_alignment = []
         self.closed_markings = set()
 
-    def handle_state(self, curr_cost, curr_graph, curr_trace, current, event, moves, move_type=None):
+    def handle_state(self, curr_cost, curr_graph, curr_trace, event, moves, move_type=None):
         """
         Manages the transition to a new state in the alignment algorithm based on the specified move type.
         It computes the new state, checks for execution equivalency to avoid re-processing, and if unique,
@@ -405,8 +404,6 @@ class Alignment:
             The current state of the DCR graph.
         curr_trace : list
             The current state of the trace.
-        current : tuple
-            The current state representation in the algorithm.
         event : Any
                 The event from the trace that is being considered in the current alignment step.
         moves : list
@@ -499,7 +496,7 @@ class Alignment:
         return new_cost, new_graph, new_trace, new_move
 
     def update_closed_and_visited_sets(self, curr_cost, state_repr):
-        self.closed_set[state_repr] = True
+        self.closed_set[state_repr] = curr_cost
         #if curr_cost <= self.global_min:
         #    self.global_min = curr_cost
 
@@ -578,7 +575,6 @@ class Alignment:
         result = alignment_obj.apply_trace()
         optimal_alignment = result['alignment']
         alignment_cost = result['cost']
-
         """
 
         parameters = {} if parameters is None else parameters
@@ -590,9 +586,8 @@ class Alignment:
         while self.open_set:
             current = heappop(self.open_set)
             visited += 1
-
             result = self.process_current_state(current)
-            if self.skip_current(result) or result is None:
+            if self.skip_current(result) and result is not None:
                 continue
             curr_cost, curr_trace, state_repr, moves = result[0], result[2], result[3], result[4]
             self.update_closed_and_visited_sets(curr_cost, state_repr)
@@ -607,8 +602,10 @@ class Alignment:
         return self.construct_results(visited, closed, final_cost)
 
     def skip_current(self, result):
+        #if state is visited, and cost is the same skip
         curr_cost, state_repr = result[0], result[3]
-        return state_repr in self.closed_set or self.global_min < curr_cost
+        visitCost = self.closed_set.get(state_repr,float("inf"))
+        return visitCost <= curr_cost and visitCost is not float("inf")
 
     def perform_moves(self, curr_cost, current, moves):
         """
@@ -640,12 +637,13 @@ class Alignment:
         first_activity = self.trace_handler.get_first_activity()
         enabled = self.graph_handler.enabled()
         is_enabled = self.graph_handler.is_enabled(first_activity)
+        if first_activity:
+            if is_enabled:
+                self.handle_state(curr_cost, current[1], current[2], first_activity, moves, "sync")
 
-        if is_enabled:
-            self.handle_state(curr_cost, current[1], current[2], current[3], first_activity, moves, "sync")
-        self.handle_state(curr_cost, current[1], current[2], current[3], first_activity, moves, "log")
+            self.handle_state(curr_cost, current[1], current[2], first_activity, moves, "log")
         for event in enabled:
-            self.handle_state(curr_cost, current[1], current[2], current[3], event, moves, "model")
+            self.handle_state(curr_cost, current[1], current[2], event, moves, "model")
 
     def construct_results(self, visited, closed, final_cost):
         """
