@@ -1,8 +1,6 @@
 Installation
 ============
 
-pip
----
 This project is an extension of PM4Py that has already developed the code, in which one can install the this extension pm4py-dcr via a docker file
 
 Docker

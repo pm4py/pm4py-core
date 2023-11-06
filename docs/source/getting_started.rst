@@ -59,6 +59,7 @@ Conformance checking of DCR graph, we choose two different approaches, the rule 
 This will return a list of all the conformance results, if one wishes to compute the fitness of the model itself, one can perform the following:
 
 .. code-block:: python3
+
     import pm4py
 
     if __name__ == "__main__":
@@ -75,6 +76,7 @@ For the alignment approach, we implemented a optimal alignment algorithm, that w
 the conformance.
 
 .. code-block:: python3
+
     import pm4py
 
     if __name__ == "__main__":
