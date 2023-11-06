@@ -58,15 +58,9 @@ def import_xml_tree_from_root(root):
     '''
     Transform the dictionary into a DCR_Graph object
     '''
-    G = DCR_Graph()
-    for k, v in dcr.items():
-        if k == 'marking':
-            for k2, v2 in v.items():
-                G[k][k2] = v2
-        else:
-            G[k] = v
-
-    return G
+    graph = DCR_Graph(dcr)
+    print(graph)
+    return graph
 
 
 def apply(path, parameters=None):
@@ -80,7 +74,7 @@ def apply(path, parameters=None):
 
     Returns
     -------
-    dcr
+    DCR_Graph
         DCR Graph object
     '''
     if parameters is None:
