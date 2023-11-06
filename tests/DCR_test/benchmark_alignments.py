@@ -16,12 +16,13 @@ from pm4py.algo.discovery.dfg.variants import performance
 
 def apply_trace_to_log(training_log, G):
     print("Inside apply_trace_to_log function.")
-    graph_handler = optimal.DCRGraphHandler(G)
-    trace_handler = optimal.TraceHandler(training_log, 'concept:name')
+    #graph_handler = optimal.DCRGraphHandler(G)
+    #optimal.LogAlignment(training_log,G)
+    #trace_handler = optimal.TraceHandler(training_log, 'concept:name')
     print("About to create Alignment object.")
-    alignment_obj = optimal.Alignment(graph_handler, trace_handler)
+    alignment_obj = optimal.LogAlignment(training_log,G)
     print("About to call apply_trace on Alignment object.")
-    return alignment_obj.apply_trace()
+    return alignment_obj.perform_alignment()
 
 
 def benchmark_optimal():
@@ -41,6 +42,7 @@ def benchmark_optimal():
         # Convert DataFrame to EventLog
         if isinstance(training_log, pd.DataFrame):
             training_log = log_converter.apply(training_log)
+            print(len(training_log))
         print("Generating DCR graph...")
         # Generate DCR graph
         dcr_result = apply(training_log, dcr_discover)
@@ -214,8 +216,8 @@ def benchmark_optimal2():
 
 if __name__ == "__main__":
     print("Running benchmark for optimal...")
-    # benchmark_optimal()
-    benchmark_optimal2()
+    benchmark_optimal()
+    # benchmark_optimal2()
     # print("Running benchmark for classc")
     # benchmark_dfg_alignment()
 

@@ -37,10 +37,10 @@ References
 
 import pandas as pd
 import copy
-from typing import Optional, Dict, Any, Union, List
+from copy import deepcopy
+from typing import Optional, Dict, Any, Union, List, Tuple
 from heapq import heappop, heappush
 from enum import Enum
-import time
 
 from pm4py.objects.dcr.obj import DCR_Graph
 from pm4py.objects.dcr.semantics import DCRSemantics
@@ -49,16 +49,88 @@ from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.objects.conversion.log import converter as log_converter
 
 
-class Facade:
+def apply(trace_or_log: Union[pd.DataFrame,EventLog,Trace], graph: DCR_Graph, parameters=None):
+    if isinstance(trace_or_log, Trace):
+        alignment = TraceAlignment(graph, trace_or_log, parameters=parameters)
+        return alignment.perform_alignment()
+    else:
+        alignment = LogAlignment(trace_or_log, parameters=parameters)
+        return alignment.perform_log_alignment(graph, parameters=parameters)
+
+
+class LogAlignment:
     """
-    The Facade class provides a simplified interface to perform optimal alignment for DCR graphs,
+    The LogAlignment provides the simplified interface to perform optimal alignment for DCR graphs, with a provided event log.
+    Calls TraceAlignment for each trace to compute optimal alignment for each trace.
+
+    After intilializing Log alignment, can call perform_log_alignment() to execute the alignment process for all traces in log
+    which returns a list of result for each alignment procedure
+
+    Example usage:
+        Define your instances of DCR graph and trace representation as 'graph' and 'trace'
+        align_log = LogAlignment(log, G)
+        alignment_result = align_log.perform_log_alignment()
+        performance_metrics = facade.get_performance_metrics()
+        print(f"Alignment Result: {alignment_result}")
+        print(f"Performance Metrics: {performance_metrics}")
+
+    Note:
+    - perform_log_alignment() must be called before get_performance_metrics_log(), as the metrics calculation depends on the alignment results.
+    - The user is expected to have a basic understanding of DCR graphs and trace alignment in the context of process mining.
+
+    Attributes:
+         (DCRGraphHandler): Handler for DCR graph operations.
+        trace_handler (TraceHandler): Handler for trace operations.
+        alignment (Alignment): Instance that holds the result of the alignment process, initialized to None.
+
+    Methods:
+        perform_log_alignment(): Performs trace alignment against the DCR graph and returns the list of alignment results.
+        get_performance_metrics_log(): Calculates and returns the fitness and precision performance metrics of all traces.
+    """
+
+    def __init__(self, log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict] = None):
+        activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+        case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+        if isinstance(log, pd.DataFrame):
+            self.traces = list(log.groupby(case_id_key)[activity_key].apply(tuple))
+        else:
+            log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+            self.traces = [tuple(x[activity_key] for x in trace) for trace in log]
+        self.traceAlignments = []
+
+    def perform_log_alignment(self, graph: DCR_Graph, parameters: Optional[Dict] = None):
+        aligned_traces = []
+        for trace in self.traces:
+            trace_alignment = TraceAlignment(graph, trace, parameters=parameters)
+            self.traceAlignments.append(trace_alignment)
+            aligned_traces.append(trace_alignment.perform_alignment())
+        return aligned_traces
+
+    def get_performance_metrics_log(self):
+        # Ensure that alignment has been performed before calculating performance metrics
+        if len(self.traceAlignments) == 0:
+            raise ValueError("Alignment has not been performed yet.")
+        # Calculate and return fitness and precision based on the alignment result
+        conformance = []
+        for traceAlignment in self.traceAlignments:
+            performance = Performance(traceAlignment.alignment, traceAlignment.trace_handler)
+            fitness = performance.calculate_fitness()
+            precision = performance.calculate_precision()
+            conformance.append({ 'fitness': fitness, 'precision': precision})
+
+        return conformance
+
+
+class TraceAlignment:
+    """
+    The TraceAlignment class provides a simplified interface to perform optimal alignment for DCR graphs,
     abstracting the complexity of direct interactions with the DCRGraphHandler, TraceHandler, and Alignment classes.
 
-    Users should initialize the facade with a DCR_Graph object and a trace object, which can be a list of events, a Pandas DataFrame,
+    Users should initialize TraceAlignment with a DCR_Graph object and a trace object, which can be a list of events, a Pandas DataFrame,
     an EventLog, or a Trace. Optional parameters can also be passed to customize the processing, such as specifying custom activity
     and case ID keys.
 
-    After initializing the facade, users can call perform_alignment() to execute the alignment process, which returns the result of
+    After initializing TraceAlignment, users can call perform_alignment() to execute the alignment process, which returns the result of
     the alignment procedure. Once alignment is done, get_performance_metrics() can be used to calculate and retrieve performance
     metrics such as fitness and precision for the alignment.
 
@@ -84,7 +156,7 @@ class Facade:
         get_performance_metrics(): Calculates and returns the fitness and precision performance metrics.
     """
 
-    def __init__(self, graph: DCR_Graph, trace: Union[List[Dict[str, Any]], pd.DataFrame, EventLog, Trace],
+    def __init__(self, graph: DCR_Graph, trace: Union[List[Tuple[str]], pd.DataFrame, EventLog, Trace],
                  parameters: Optional[Dict] = None):
         """
         Initializes the facade with a DCR graph and a trace to be processed.
@@ -188,7 +260,7 @@ class TraceHandler:
 
         Attributes
         ----------
-        trace : Union[List[Dict[str, Any]], pd.DataFrame, EventLog, Trace]
+        trace : Tuple[Any] | Trace
             The trace to be managed and converted. It's stored internally in a list of dictionaries
             regardless of the input format.
         activity_key : str
@@ -208,13 +280,14 @@ class TraceHandler:
 
         Parameters
         ----------
-        trace : Union[List[Dict[str, Any]], pd.DataFrame, EventLog, Trace]
+        trace : Tuple[str] | Trace
             The initial trace data provided in one of the acceptable formats.
         parameters : Optional[Dict]
             Optional parameters for trace conversion. These can define the keys for activity and case ID within
             the trace data and can include other conversion-related parameters.
         """
-    def __init__(self, trace: Union[List[Dict[str, Any]], pd.DataFrame, EventLog, Trace],
+
+    def __init__(self, trace: Union[Tuple[str], Trace],
                  parameters: Optional[Dict] = None):
         """
         Initializes the TraceHandler object, converting the input trace into a standard format
@@ -225,7 +298,7 @@ class TraceHandler:
 
         Parameters
         ----------
-        trace : Union[List[Dict[str, Any]], pd.DataFrame, EventLog, Trace]
+        trace : Tuple[str] | Trace
             The initial trace data provided in one of: Pandas DataFrame, an EventLog, or a single Trace.
         parameters : Optional[Dict]
             Optional parameters for trace conversion. These can define the keys for activity and case ID within
@@ -240,10 +313,8 @@ class TraceHandler:
 
         self.activity_key = parameters.get(Parameters.ACTIVITY_KEY.value, xes_constants.DEFAULT_NAME_KEY)
 
-        if isinstance(trace, pd.DataFrame):
-            self.trace = trace.to_dict('records')
-        elif isinstance(trace, (EventLog, Trace)):
-            self.trace = log_converter.apply(trace, variant=log_converter.Variants.TO_DATA_FRAME).to_dict('records')
+        if isinstance(trace, Trace):
+            self.trace = tuple(event[self.activity_key] for event in trace)
         else:
             self.trace = trace
 
@@ -251,21 +322,7 @@ class TraceHandler:
         return not bool(self.trace)
 
     def get_first_activity(self) -> Any:
-        return self.trace[0][self.activity_key] if self.trace else None
-
-    def convert_trace(self, activity_key, case_id_key, parameters):
-        """
-        Convert the trace to the required format.
-        """
-        if isinstance(self.trace, pd.DataFrame):
-            # Conversion for DataFrame traces
-            self.trace = list(self.trace.groupby(case_id_key)[activity_key].apply(tuple))
-        else:
-            # Conversion for Event Log traces
-            converted_trace = log_converter.apply(self.trace, variant=log_converter.Variants.TO_EVENT_LOG,
-                                                  parameters=parameters)
-            if isinstance(converted_trace, list) and all(isinstance(x, dict) for x in converted_trace):
-                self.trace = converted_trace
+        return self.trace[0] if self.trace else None
 
 
 class DCRGraphHandler:
@@ -304,6 +361,7 @@ class DCRGraphHandler:
         TypeError
             If the provided graph is not an instance of DCR_Graph.
         """
+
     def __init__(self, graph: DCR_Graph):
         if not isinstance(graph, DCR_Graph):
             raise TypeError(f"Expected a DCR_Graph object, got {type(graph)} instead")
@@ -312,11 +370,14 @@ class DCRGraphHandler:
     def is_enabled(self, event: Any) -> bool:
         return DCRSemantics.is_enabled(event, self.graph)
 
+    def enabled(self):
+        return DCRSemantics.enabled(self.graph)
+
     def is_accepting(self) -> bool:
         return DCRSemantics.is_accepting(self.graph)
 
     def execute(self, event: Any, curr_graph) -> Any:
-        new_graph = DCRSemantics.execute(self.graph, event)
+        new_graph = DCRSemantics.execute(curr_graph, event)
         if not new_graph:
             return curr_graph
         return new_graph
@@ -354,16 +415,13 @@ class Performance:
         total_behavior = 0
 
         # Get all activities in the log
-        all_activities_in_log = set(event[self.trace_handler.activity_key] for event in self.trace_handler.trace)
-
+        all_activities_in_log = set([event for event in self.trace_handler.trace])
         # Iterate through each event in the log
         for event in self.trace_handler.trace:
-            activity = event[self.trace_handler.activity_key]
-
+            activity = event
             # Check if the event is enabled in the model
             if self.alignment.graph_handler.is_enabled(activity):
                 total_behavior += 1
-
                 # Check if the event is also present in the log
                 if activity in all_activities_in_log:
                     matching_behavior += 1
@@ -408,7 +466,7 @@ class Alignment:
         self.optimal_alignment_cost = 0
         self.worst_case_alignment_cost = 0
 
-    def handle_state(self, curr_cost, curr_graph, curr_trace, current, moves, move_type=None):
+    def handle_state(self, curr_cost, curr_graph, curr_trace, current, event, moves, move_type=None):
         """
         Manages the transition to a new state in the alignment algorithm based on the specified move type.
         It computes the new state, checks for execution equivalency to avoid re-processing, and if unique,
@@ -446,27 +504,17 @@ class Alignment:
         if moves is None:
             moves = []
 
-        new_cost, new_graph, new_trace, new_move = self.get_new_state(curr_cost, curr_graph, curr_trace, moves,
+        new_cost, new_graph, new_trace, new_move = self.get_new_state(curr_cost, curr_graph, curr_trace, event,
                                                                       move_type)
-
-        is_equivalent = any(
-            DCRSemantics.is_execution_equivalent(new_graph.marking, closed_marking)
-            for closed_marking in self.closed_markings
-        )
-
-        if is_equivalent:
-            return
 
         self.closed_markings.add(new_graph.marking)
         state_representation = (str(new_graph), tuple(map(str, new_trace)))
-
         if state_representation not in self.visited_states:
             self.visited_states.add(state_representation)
-            self.new_moves = moves + [new_move]
+            new_moves = moves + [new_move]
+            heappush(self.open_set, (new_cost, new_graph, new_trace, current, new_moves))
 
-            heappush(self.open_set, (new_cost, new_graph, new_trace, current, self.new_moves))
-
-    def get_new_state(self, curr_cost, curr_graph, curr_trace, moves, move_type):
+    def get_new_state(self, curr_cost, curr_graph, curr_trace, event, move_type):
         """
         Computes the new state of the alignment algorithm based on the current state and
         the specified move type. The new state includes the updated cost, graph, trace,
@@ -500,24 +548,21 @@ class Alignment:
 
         """
         new_cost = curr_cost
-        new_graph = curr_graph
+        new_graph = deepcopy(curr_graph)
         new_trace = curr_trace
         new_move = None
-
         first_activity = self.trace_handler.get_first_activity()
 
         if move_type == "sync":
             new_cost += Parameters.SYNC_COST.value
-            new_move = ('sync', first_activity)
+            new_move = ('sync', event)
             new_trace = curr_trace[1:]
-            if self.graph_handler.is_enabled(first_activity):
-                new_graph = self.graph_handler.execute(first_activity, new_graph)
+            new_graph = self.graph_handler.execute(event, new_graph)
 
         elif move_type == "model":
             new_cost += Parameters.MODEL_COST.value
-            new_move = ('model', first_activity)
-            if self.graph_handler.is_enabled(first_activity):
-                new_graph = self.graph_handler.execute(first_activity, new_graph)
+            new_move = ('model', event)
+            new_graph = self.graph_handler.execute(event, new_graph)
 
         elif move_type == "log":
             new_cost += Parameters.LOG_COST.value
@@ -528,6 +573,12 @@ class Alignment:
         self.worst_case_alignment_cost = len(self.trace_handler.trace) + len(self.graph_handler.graph.events)
 
         return new_cost, new_graph, new_trace, new_move
+
+    def update_closed_and_visited_sets(self, curr_cost, state_repr):
+        self.closed_set[state_repr] = True
+        #if curr_cost <= self.global_min:
+        #    self.global_min = curr_cost
+
 
     def process_current_state(self, current):
         """
@@ -546,11 +597,6 @@ class Alignment:
         state_repr = (str(self.graph_handler.graph), tuple(map(str, curr_trace)))
 
         return curr_cost, curr_graph, curr_trace, state_repr, moves
-
-    def update_closed_and_visited_sets(self, curr_cost, state_repr):
-        self.closed_set[state_repr] = True
-        if curr_cost <= self.global_min:
-            self.global_min = curr_cost
 
     def check_accepting_conditions(self, curr_cost, is_accepting):
         """
@@ -641,31 +687,29 @@ class Alignment:
         """
 
         parameters = {} if parameters is None else parameters
-
-        activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
-        case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
-
-        self.trace_handler.convert_trace(activity_key, case_id_key, parameters)
         visited, closed, cost, self.final_alignment, final_cost = 0, 0, 0, None, float('inf')
-        self.open_set.append((cost, self.graph_handler.graph, self.trace_handler.trace, None, []))
+        self.open_set.append(
+            (cost, self.graph_handler.graph, self.trace_handler.trace, str(self.graph_handler.graph), []))
 
+        # perform while loop to iterate through all state
         while self.open_set:
             current = heappop(self.open_set)
             visited += 1
 
             result = self.process_current_state(current)
+            result is None or self.skip_current(result)
             if result is None or self.skip_current(result):
                 continue
 
             curr_cost, curr_trace, state_repr, moves = result[0], result[2], result[3], result[4]
-            closed += 1
-
             self.update_closed_and_visited_sets(curr_cost, state_repr)
+            closed += 1
             self.trace_handler.trace = curr_trace
-            final_cost = self.check_accepting_conditions(curr_cost, self.graph_handler.is_accepting())
-
             if self.graph_handler.is_accepting() and self.trace_handler.is_empty():
+                self.new_moves = moves
+                final_cost = self.check_accepting_conditions(curr_cost, self.graph_handler.is_accepting())
                 break
+
 
             self.perform_moves(curr_cost, current, moves)
 
@@ -673,7 +717,7 @@ class Alignment:
 
     def skip_current(self, result):
         curr_cost, state_repr = result[0], result[3]
-        return state_repr in self.closed_set or curr_cost > self.global_min
+        return state_repr in self.closed_set or self.global_min < curr_cost
 
     def perform_moves(self, curr_cost, current, moves):
         """
@@ -701,15 +745,16 @@ class Alignment:
             as they are performed.
 
         """
-        first_activity = self.trace_handler.get_first_activity()
-        is_enabled = self.graph_handler.is_enabled(first_activity)
 
-        if first_activity and is_enabled:
-            self.handle_state(curr_cost, current[1], current[2], current[3], moves, "sync")
-        elif is_enabled:
-            self.handle_state(curr_cost, current[1], current[2], current[3], moves, "model")
-        if first_activity:
-            self.handle_state(curr_cost, current[1], current[2], current[3], moves, "log")
+        first_activity = self.trace_handler.get_first_activity()
+        enabled = self.graph_handler.enabled()
+        is_enabled = self.graph_handler.is_enabled(first_activity)
+        if is_enabled:
+            self.handle_state(curr_cost, current[1], current[2], current[3], first_activity, moves, "sync")
+
+        self.handle_state(curr_cost, current[1], current[2], current[3], first_activity, moves, "log")
+        for event in enabled:
+            self.handle_state(curr_cost, current[1], current[2], current[3], event, moves, "model")
 
     def construct_results(self, visited, closed, final_cost):
         """
