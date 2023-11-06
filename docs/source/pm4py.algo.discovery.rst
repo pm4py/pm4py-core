@@ -3,7 +3,6 @@ pm4py.algo.discovery package
 
 .. automodule:: pm4py.algo.discovery
    :members:
-   :undoc-members:
    :show-inheritance:
 
 Subpackages
