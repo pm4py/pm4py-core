@@ -309,9 +309,9 @@ def apply(log: Union[pd.DataFrame, EventLog], graph: Union[DCR_Graph, RoleDCR_Gr
 
     Parameters
     -----------
-    :param log: Union[pd.DataFrame, EventLog]
+    :param log: pd.DataFrame | EventLog
         event log as :class: `EventLog` or as pandas Dataframe
-    :param graph: Union[DCR_Graph, RoleDCR_Graph]
+    :param graph: DCR_Graph | RoleDCR_Graph
         DCR Graph
     :param parameters: Optional[Dict[Any, Any]]
         Possible parameters of the algorithm, including:

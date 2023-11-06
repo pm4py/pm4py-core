@@ -3,7 +3,7 @@ import unittest
 import pandas as pd
 
 import pm4py
-from pm4py.algo.conformance.alignments.dcr.variants.optimal import Alignment, Performance, Facade
+from pm4py.algo.conformance.alignments.dcr.variants.optimal import Alignment, Performance, TraceAlignment, LogAlignment
 from pm4py.algo.discovery.dcr_discover.algorithm import apply
 from pm4py.objects.conversion.log import converter as log_converter
 

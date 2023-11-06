@@ -56,6 +56,22 @@ class Marking:
     """
     This class contains the set of all markings M(G), in which it contains three sets:
     M(G) = executed x included x pending
+
+    Attributes
+    ----------
+    self.__executed: Set[str]
+        The set of executed events
+    self.__included: Set[str]
+        The set of included events
+    self.__pending: Set[str]
+        the set of pending events
+
+    Methods
+    --------
+    reset(self, initial_marking) -> None:
+        Given the initial marking of the DCR Graph, reset the marking, to restart execution of traces
+
+
     """
     def __init__(self, executed, included, pending) -> None:
         self.__executed = executed
@@ -110,12 +126,58 @@ class Marking:
 
 class DCR_Graph(object):
     """
-    The DCR Structure was implemented according to definition 3 in [1].
+    The DCR Structure was implemented according to definition 3 in [1]_.
+    Follows the idea of DCR graph as a set of tuples
+    G = (E,Act,M,->*,*->,->{+,-},l)
+    G graphs consist of a tuple of the events the activities,
+    the marking of executed, included and pending events, all the relations, and the mapping of events to activities.
 
     References
     ----------
     .. [1] Thomas T. Hildebrandt and Raghava Rao Mukkamala, "Declarative Event-BasedWorkflow as Distributed Dynamic Condition Response Graphs",
       Electronic Proceedings in Theoretical Computer Science — 2011, Volume 69, 59–73. `DOI <10.4204/EPTCS.69.5>`_.
+
+    Attributes
+    ----------
+    self.__events: Set[str]
+        The set of all events in graph
+    self.__marking: Marking
+        the marking of the DCR graph loaded in
+    self.__labels: Set[str]
+        The set of activities in Graphs
+    self.__labelMapping: Dict[str, Set[str]]:
+        The set of event and their corresponding activity
+    self.__condiditionsFor: Dict[str, Set[str]]:
+        attribute containing all the conditions relation between events
+    self.__responseTo: Dict[str, Set[str]]:
+        attribute containing all the response relation between events
+    self.__includesTo: Dict[str, Set[str]]:
+        attribute containing all the include relations between events
+    self.__excludesTo: Dict[str, Set[str]]:
+        attribute containing all the exclude relations between events
+
+    Methods
+    --------
+    getEvent(activity) -> str:
+        returns the event of the associated activity
+    getActivity(event) -> str:
+        returns the activity of the given event
+    getConstraints() -> int:
+        returns the size of the model based on number of constraints
+
+    Parameters
+    ----------
+    template : dict, optional
+        A template dictionary to initialize the roles and assignments from, if provided.
+
+    Examples
+    --------
+    call this module and call the following
+    graph = DCR_graph(dcr_template)
+
+    Notes
+    -------
+    * DCR graph can not be initialized with a partially created template, use DCR_template for easy instantiation
     """
 
     # initiate the objects: contains events ID, activity, the 4 relations, markings, roles and principals

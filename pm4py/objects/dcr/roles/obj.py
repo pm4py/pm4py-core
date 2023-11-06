@@ -8,6 +8,12 @@ class RoleDCR_Graph(object):
     This class wraps around a DCR graph structure, extending it with role-based features such as principals,
     roles, role assignments, and principals assignments. It provides an interface to integrate roles into the
     DCR model and to compute role-based constraints as part of the graph.
+    Attributes derived according to dcr graphs with roles in [1]_.
+
+    References
+    ----------
+    .. [1] Thomas T. Hildebrandt and Raghava Rao Mukkamala, "Declarative Event-BasedWorkflow as Distributed Dynamic Condition Response Graphs",
+      Electronic Proceedings in Theoretical Computer Science — 2011, Volume 69, 59–73. `DOI <10.4204/EPTCS.69.5>`_.
 
     Attributes
     ----------
@@ -56,13 +62,14 @@ class RoleDCR_Graph(object):
 
     \nCompute the number of constraints\n
     total_constraints = role_graph.getConstraints()\n
+
     """
     def __init__(self, g, template=None):
         self.__g = g
         self.__principals = set() if None else template.pop("principals", set())
         self.__roles = set() if None else template.pop("roles", set())
         self.__roleAssignments = {} if None else template.pop("roleAssignments", set())
-        self.__principalsAssignment = {} if None else template.pop("principalsAssignments", set())
+        self.__principalsAssignments = {} if None else template.pop("principalsAssignments", set())
 
     @property
     def principals(self) -> Set[str]:
@@ -77,17 +84,18 @@ class RoleDCR_Graph(object):
         return self.__roleAssignments
 
     @property
-    def readRoleAssignments(self):
-        return self.__principalsAssignment
+    def principalsAssignments(self):
+        return self.__principalsAssignments
 
     def getConstraints(self):
         """
-        compute role assignments as constraints in DCR Graph and the underlying graph
+        compute role assignments as constraints in DCR Graph
+        and the constraints in the underlying graph
 
         Returns
         -------
-        no
-            number of constraints
+        int
+            number of constraints in dcr graph
         """
         no = self.__g.getConstraints()
         for i in self.__roleAssignments.values():

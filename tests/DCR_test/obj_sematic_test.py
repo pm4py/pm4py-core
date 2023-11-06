@@ -1,14 +1,9 @@
 import os
-import time
 import unittest
 
 import pm4py
 from pm4py.algo.discovery.dcr_discover.algorithm import apply
-import pandas as pd
-from pm4py.objects.dcr.roles.obj import RoleDCR_Graph
-#from pm4py.objects.dcr.obj import DCR
-#from pm4py.objects.dcr.obj_interface import DCR
-from pm4py.objects.dcr.obj import DCR_Graph
+from pm4py.objects.dcr.obj import DCR_Graph, dcr_template
 
 
 class Test_obj_sematics(unittest.TestCase):
@@ -82,7 +77,6 @@ class Test_obj_sematics(unittest.TestCase):
         from pm4py.objects.dcr.importer.variants.xml_dcr_js import apply as import_apply
         # given a dcr graph and event log
         # we use this as it provides an dcr graph, with eventIDs and labels and label mapping
-        start = time.perf_counter()
         dcr = import_apply('../input_data/DCR_test_Claims/DCR_test_Claims.xml')
         log = pm4py.read_xes('../input_data/DCR_test_Claims/event_log.xes')
         # when labels are retried for the label mapping
@@ -116,3 +110,9 @@ class Test_obj_sematics(unittest.TestCase):
         # we use this as it provides an dcr graph, with eventIDs and labels and label mapping
         dcr = import_apply('../input_data/DCR_js/pendingEvent.xml')
         self.assertEqual(1,len(dcr.marking.pending))
+
+    def test_instantiate_object(self):
+        dcr1 = DCR_Graph()
+        dcr2 = DCR_Graph(dcr_template)
+        #both empty should be equal
+        self.assertEqual(dcr1,dcr2)

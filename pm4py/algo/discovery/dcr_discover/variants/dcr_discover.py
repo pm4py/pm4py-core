@@ -113,15 +113,15 @@ class Discover:
             Condition for mining additional condition: True (default) or False
 
         parameters
-                activity_key: optional :class:`str`, used to identify the activities in the log
-                case_id_key: optional :class:`str`,, used to identify the cases executed in the log
+                activity_key: optional parameter, used to identify the activities in the log
+                case_id_key: optional parameter, used to identify the cases executed in the log
 
         Returns
         -------
         Tuple[DCR_Graph,Dict[str, Any]]
-            returns a :class:`tuple` of containing:
-            - The :class:`pm4py.objects.dcr.obj.DCR_Graph`
-            - The log abstraction
+            returns a tuple containing:
+            - The DCR Graph
+            - The log abstraction used for mining
         """
         activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
@@ -129,13 +129,13 @@ class Discover:
         self.mineFromAbstraction(findAdditionalConditions=findAdditionalConditions)
         return DCR_Graph(self.graph), self.logAbstraction
 
-    def createLogAbstraction(self, log, activity_key: str, case_key: str) -> int:
+    def createLogAbstraction(self, log: [EventLog,pd.DataFrame], activity_key: str, case_key: str) -> int:
         """
         Performs the mining of abstraction log, will map event log onto a selection of DECLARE templates.
 
         Parameters
         ----------
-        log : pm4py.log.log.EventLog or pandas.DataFrame
+        log : EventLog | pd.DataFrame
             The event log to be abstracted.
         activity_key : str
             The attribute key used to identify the activities recorded in the log.
