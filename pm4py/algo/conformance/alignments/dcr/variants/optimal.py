@@ -50,6 +50,22 @@ from pm4py.objects.conversion.log import converter as log_converter
 
 
 def apply(trace_or_log: Union[pd.DataFrame,EventLog,Trace], graph: DCR_Graph, parameters=None):
+    """
+    Applies an alignment operation on a given trace or log against a specified DCR graph.
+
+    Depending on the type of input, this function handles the alignment of a single trace or multiple traces contained
+    in an event log. For a single trace, it creates an instance of TraceAlignment and performs the alignment.
+    For an event log, it initializes a LogAlignment object and aligns each trace contained within.
+
+    Parameters:
+        trace_or_log (Union[pd.DataFrame, EventLog, Trace]): The event log or single trace to align.
+        graph (DCR_Graph): The DCR graph against which the alignment is to be performed.
+        parameters (Optional[Dict]): A dictionary of parameters for the alignment (default is None).
+
+    Returns:
+        - If a single trace is provided, returns the result of the TraceAlignment.
+        - If an event log is provided, returns a list of results from LogAlignment for each trace.
+    """
     if isinstance(trace_or_log, Trace):
         alignment = TraceAlignment(graph, trace_or_log, parameters=parameters)
         return alignment.perform_alignment()
@@ -67,19 +83,19 @@ class LogAlignment:
     which returns a list of result for each alignment procedure
 
     Example usage:
-        Define your instances of DCR graph and trace representation as 'graph' and 'trace'
-        align_log = LogAlignment(log, G)
-        alignment_result = align_log.perform_log_alignment()
-        performance_metrics = facade.get_performance_metrics()
-        print(f"Alignment Result: {alignment_result}")
-        print(f"Performance Metrics: {performance_metrics}")
+        \nDefine your instances of DCR graph and trace representation as 'graph' and 'trace'\n
+        align_log = LogAlignment(log, G)\n
+        alignment_result = align_log.perform_log_alignment()\n
+        performance_metrics = facade.get_performance_metrics()\n
+        print(f"Alignment Result: {alignment_result}")\n
+        print(f"Performance Metrics: {performance_metrics}")\n
 
     Note:
     - perform_log_alignment() must be called before get_performance_metrics_log(), as the metrics calculation depends on the alignment results.
     - The user is expected to have a basic understanding of DCR graphs and trace alignment in the context of process mining.
 
     Attributes:
-         (DCRGraphHandler): Handler for DCR graph operations.
+        (DCRGraphHandler): Handler for DCR graph operations.
         trace_handler (TraceHandler): Handler for trace operations.
         alignment (Alignment): Instance that holds the result of the alignment process, initialized to None.
 
@@ -89,6 +105,23 @@ class LogAlignment:
     """
 
     def __init__(self, log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict] = None):
+        """
+        Initializes the LogAlignment instance for performing alignment of traces in an event log.
+
+        This constructor converts the provided log into a list of traces, each represented as a tuple of activities.
+        It extracts the activities using the 'activity_key' and groups events into traces using the 'case_id_key'.
+
+        Parameters:
+            log (Union[EventLog, pd.DataFrame]): The event log to be aligned. Can be in the form of a pandas DataFrame
+                                                 or an EventLog object.
+            parameters (Optional[Dict]): Optional parameters for the log conversion, such as custom activity and case
+                                         ID keys. The default values are taken from the constants module if not provided.
+
+        Attributes:
+            self.traces (List[Tuple[Any]]): A list of traces where each trace is represented as a tuple of activities.
+            self.traceAlignments (List[TraceAlignment]): A list to store TraceAlignment objects after performing alignment.
+                                                    Initially empty.
+        """
         activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
         if isinstance(log, pd.DataFrame):
@@ -99,6 +132,21 @@ class LogAlignment:
         self.traceAlignments = []
 
     def perform_log_alignment(self, graph: DCR_Graph, parameters: Optional[Dict] = None):
+        """
+        Executes the alignment process for each trace in a log.
+
+        This method iterates over each trace in the log, creates a TraceAlignment object, and performs the alignment.
+
+        Parameters:
+            graph (DCR_Graph): The DCR graph against which the log is to be aligned.
+            parameters (Optional[Dict]): Additional parameters for the alignment process, defaults to None.
+
+        Returns:
+            List: A list of alignment results for each trace in the log.
+
+        Raises:
+            TypeError: If the provided graph is not of type DCR_Graph.
+        """
         aligned_traces = []
         for trace in self.traces:
             trace_alignment = TraceAlignment(graph, trace, parameters=parameters)
@@ -107,6 +155,20 @@ class LogAlignment:
         return aligned_traces
 
     def get_performance_metrics_log(self):
+        """
+        Calculates the performance metrics, specifically fitness and precision, for all aligned traces.
+
+        This method iterates over each stored TraceAlignment instance and uses the Performance class to calculate the
+        fitness and precision for each trace alignment. It aggregates the metrics into a list of dictionaries,
+        each containing the 'fitness' and 'precision' for a corresponding trace alignment.
+
+        Returns:
+            List[Dict[str, float]]: A list of dictionaries where each dictionary contains the 'fitness' and 'precision'
+                                     metrics for a trace alignment.
+
+        Raises:
+            ValueError: If alignment has not been performed prior to calling this method.
+        """
         # Ensure that alignment has been performed before calculating performance metrics
         if len(self.traceAlignments) == 0:
             raise ValueError("Alignment has not been performed yet.")
@@ -391,6 +453,12 @@ class Performance:
         self.alignment = alignment
         self.trace_handler = trace_handler
 
+    def calculate_empty_trace_cost(self, trace):
+        return len(trace) * Parameters.LOG_COST.value
+
+    def calculate_empty_model_cost(self, model):
+        return len(model.events) * Parameters.MODEL_COST.value
+
     def calculate_fitness(self):
         """
         From the Conformance Checking book.
@@ -405,8 +473,13 @@ class Performance:
         float
             The calculated fitness value, where higher values indicate a better fit.
         """
-        fitness = 1 - (self.alignment.optimal_alignment_cost / self.alignment.worst_case_alignment_cost) \
-            if self.alignment.worst_case_alignment_cost > 0 else 0
+        # Calculating the cost of aligning the trace with an empty execution sequence
+        cost_sigma_empty = self.calculate_empty_trace_cost(self.trace_handler.trace)
+
+        min_cost_empty_x = self.calculate_empty_model_cost(self.alignment.graph_handler.graph)
+
+        denominator = cost_sigma_empty + min_cost_empty_x
+        fitness = 1 - (self.alignment.global_min / denominator) if denominator > 0 else 0
         return fitness
 
     def calculate_precision(self):
@@ -414,14 +487,20 @@ class Performance:
         matching_behavior = 0
         total_behavior = 0
 
-        # Get all activities in the log
-        all_activities_in_log = set([event for event in self.trace_handler.trace])
+        all_activities_in_log = set(self.trace_handler.trace)
+
+
         # Iterate through each event in the log
         for event in self.trace_handler.trace:
-            activity = event
+            if isinstance(event, dict):
+                activity = event[self.trace_handler.activity_key]
+            else:
+                activity = event  # event is a string and directly the activity name
+
             # Check if the event is enabled in the model
             if self.alignment.graph_handler.is_enabled(activity):
                 total_behavior += 1
+
                 # Check if the event is also present in the log
                 if activity in all_activities_in_log:
                     matching_behavior += 1
@@ -482,6 +561,8 @@ class Alignment:
             The current state of the trace.
         current : tuple
             The current state representation in the algorithm.
+        event : Any
+                The event from the trace that is being considered in the current alignment step.
         moves : list
             The list of moves made so far.
         move_type : str, optional
@@ -579,7 +660,6 @@ class Alignment:
         #if curr_cost <= self.global_min:
         #    self.global_min = curr_cost
 
-
     def process_current_state(self, current):
         """
         Process the current state in the alignment process.
@@ -634,7 +714,23 @@ class Alignment:
             raise ValueError("Input must be of type Trace or EventLog")
 
     def apply_log(self, log: Union[pd.DataFrame, EventLog], parameters: Optional[Dict] = None) -> Dict[str, Any]:
+        """
+        Processes an event log and applies a specific operation to each trace.
 
+        This method iterates through all traces in the log, converts each trace into a DataFrame (if not already in this format),
+        and then applies a defined operation to the trace by calling the `apply_trace` method. The results are collected in a
+        dictionary, mapping each trace identifier to its corresponding result.
+
+        Parameters:
+            log (Union[pd.DataFrame, EventLog]): The event log to be processed. It can be a pandas DataFrame
+                                                 or an EventLog object.
+            parameters (Optional[Dict]): A dictionary of parameters that control the behavior of the trace processing.
+                                         This can include custom activity and case ID keys, among others.
+
+        Returns:
+            Dict[str, Any]: A dictionary with trace identifiers as keys and the results of applying the operation to each
+                            trace as values.
+        """
         activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
         results = {}
 
@@ -691,7 +787,7 @@ class Alignment:
         self.open_set.append(
             (cost, self.graph_handler.graph, self.trace_handler.trace, str(self.graph_handler.graph), []))
 
-        # perform while loop to iterate through all state
+        # perform while loop to iterate through all states
         while self.open_set:
             current = heappop(self.open_set)
             visited += 1
@@ -709,7 +805,6 @@ class Alignment:
                 self.new_moves = moves
                 final_cost = self.check_accepting_conditions(curr_cost, self.graph_handler.is_accepting())
                 break
-
 
             self.perform_moves(curr_cost, current, moves)
 

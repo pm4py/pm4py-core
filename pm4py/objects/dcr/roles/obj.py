@@ -9,6 +9,13 @@ class RoleDCR_Graph(object):
     roles, role assignments, and principals assignments. It provides an interface to integrate roles into the
     DCR model and to compute role-based constraints as part of the graph.
 
+    Parameters
+    ----------
+    g : DCRGraph
+        The underlying DCR graph structure.
+    template : dict, optional
+        A template dictionary to initialize the roles and assignments from, if provided.
+
     Attributes
     ----------
 
@@ -27,13 +34,6 @@ class RoleDCR_Graph(object):
     -------
     getConstraints() -> int:
         Computes the total number of constraints in the DCR graph, including those derived from role assignments.
-
-    Parameters
-    ----------
-    g : DCRGraph
-        The underlying DCR graph structure.
-    template : dict, optional
-        A template dictionary to initialize the roles and assignments from, if provided.
 
     Examples
     --------

@@ -3,7 +3,7 @@ import unittest
 import pandas as pd
 
 import pm4py
-from pm4py.algo.conformance.alignments.dcr.variants.optimal import Alignment, Performance, Facade
+from pm4py.algo.conformance.alignments.dcr.variants.optimal import Alignment, Performance, TraceAlignment
 from pm4py.algo.discovery.dcr_discover.algorithm import apply
 from pm4py.objects.conversion.log import converter as log_converter
 
@@ -42,9 +42,9 @@ class TestAlignment(unittest.TestCase):
         self.check_alignment_cost(aligned_traces)
 
     def test_final_alignment(self):
-        facade = Facade(self.dcr_graph, self.first_trace)
-        alignment_result = facade.perform_alignment()
-        performance_metrics = facade.get_performance_metrics()
+        trace_alignment = TraceAlignment(self.dcr_graph, self.first_trace)
+        alignment_result = trace_alignment.perform_alignment()
+        performance_metrics = trace_alignment.get_performance_metrics()
 
         self.assertIsNotNone(alignment_result)
         self.assertIsNotNone(performance_metrics)
