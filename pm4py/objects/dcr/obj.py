@@ -16,6 +16,7 @@ The `dcr_template` dictionary provides a blueprint for initializing new DCR Grap
 
 from enum import Enum
 from typing import Set, Dict
+from copy import deepcopy
 
 class Relations(Enum):
     I = 'includesTo'
@@ -244,11 +245,9 @@ class DCR_Graph(object):
         event
             the event ID of activity
         """
-        for event in self.__labelMapping:
-            act = self.__labelMapping[event].pop()
-            self.__labelMapping[event].add(act)
-            if activity == act:
-                return event
+        event = self.__labelMapping[activity].pop()
+        self.__labelMapping[activity].add(event)
+        return event
 
     def getActivity(self, event: str) -> str:
         """
@@ -264,9 +263,11 @@ class DCR_Graph(object):
         activity
             the activity of the event
         """
-        activity = self.__labelMapping[event].pop()
-        self.__labelMapping[event].add(activity)
-        return activity
+        for activity in self.__labelMapping:
+            event_prime = self.__labelMapping[activity].pop()
+            self.__labelMapping[activity].add(event_prime)
+            if event == event_prime:
+                return activity
 
     def getConstraints(self) -> int:
         """
@@ -315,5 +316,4 @@ class DCR_Graph(object):
     def __setitem__(self, item, value):
         for key,_ in vars(self).items():
             if item == key.split("_")[-1]:
-                setattr(self,key,value)
-
+                setattr(self, key, value)
