@@ -4,6 +4,8 @@
 ## pm4py 2.7.8.3 (2023.11.XX)
 
 ### Added
+* d06e2d36558e600208e182f096f07ea86923c1c4
+  * RUSTXES importer variant
 
 ### Changed
 
@@ -16,6 +18,10 @@
   * removed warnings (deprecation) in tests execution
 * a209f0df4c16812ac1109150046357c625253106
   * unneeded workaround in managing datetimes inside Pandas
+* be4b724582512a8bea207252d565b0ee62715f55
+  * PNML importer now returns correctly the parsed stochastic map
+* d587e49961dd9b3db76205da5ce9a9fee893dd79
+  * dropping newlines in process tree parsing
 
 ### Removed
 
@@ -26,6 +32,8 @@
   * in tests and examples, provide possibility to try with different Pandas backends
 * 5424eb9ed576a1ef4f0485ce186b0300bf1ace03
   * example to locate the features for a specific case using pm4py.extract_features_dataframe
+* f72e73285e6309df1d5413b4afa7c821facae2e7
+  * help desk log
 
 ---
 
