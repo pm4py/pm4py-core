@@ -3,7 +3,7 @@ import unittest
 import pandas as pd
 
 import pm4py
-from pm4py.algo.conformance.alignments.dcr.variants.optimal import Alignment, Performance, TraceAlignment, LogAlignment
+from pm4py.algo.conformance.alignments.dcr.variants.optimal import Alignment, TraceAlignment
 from pm4py.algo.discovery.dcr_discover.algorithm import apply
 from pm4py.objects.conversion.log import converter as log_converter
 
@@ -39,17 +39,6 @@ class TestAlignment(unittest.TestCase):
         aligned_traces = alignment_obj.apply_trace()
         self.check_alignment_cost(aligned_traces)
 
-    def test_final_alignment(self):
-        facade = TraceAlignment(self.dcr_graph, self.first_trace)
-        alignment_result = facade.perform_alignment()
-        performance_metrics = facade.get_performance_metrics()
-
-        self.assertIsNotNone(alignment_result)
-        self.assertIsNotNone(performance_metrics)
-
-        print(f"Alignment Result: {alignment_result}")
-        print(f"Performance Metrics: {performance_metrics}")
-
     def test_Check_model_moves(self):
         #remove event from log
         trace = [e["concept:name"] for e in self.first_trace]
@@ -82,14 +71,30 @@ class TestAlignment(unittest.TestCase):
         trace_handler = self.create_trace_handler(trace)
         alignment_obj = Alignment(graph_handler, trace_handler)
         aligned_traces = alignment_obj.apply_trace()
-
         self.check_alignment_cost(aligned_traces)
         self.check_trace_alignment(trace)
 
     def test_log_simple_interface(self):
         log_path = os.path.join("../input_data", "running-example.xes")
         self.log = pm4py.read_xes(log_path)
-        pm4py.conformance_diagnostics_alignments(self.log,self.dcr_graph,pm4py.algo.conformance.alignments.dcr.variants.optimal)
+        res = pm4py.optimal_alignment_dcr(self.log,self.dcr_graph)
+        for i in res:
+            self.assertTrue(i['move_model_fitness'] == 1.0)
+            self.assertTrue(i['move_log_fitness'] == 1.0)
+
+    def test_fitness(self):
+        res = pm4py.optimal_alignment_dcr(self.first_trace,self.dcr_graph)
+        self.assertTrue(res['move_model_fitness'] == 1.0)
+        self.assertTrue(res['move_log_fitness'] == 1.0)
+
+    def test_return_datafrane(self):
+        log_path = os.path.join("../input_data", "running-example.xes")
+        self.log = pm4py.read_xes(log_path)
+        res = pm4py.optimal_alignment_dcr(self.log, self.dcr_graph,return_diagnostics_dataframe=True)
+        self.assertIsInstance(res,pd.DataFrame)
+        for index,row in res.iterrows():
+            self.assertTrue(row['move_model_fitness'] == 1.0)
+            self.assertTrue(row['move_log_fitness'] == 1.0)
 
     @staticmethod
     def create_graph_handler(dcr_graph):
