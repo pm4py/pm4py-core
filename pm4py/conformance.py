@@ -884,8 +884,8 @@ def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DCR_Graph, ac
         import pm4py
 
         log = pm4py.read_xes("C:/receipt.xes")
-        dcr_graph = pm4py.discover_dcr(log)
-        conf_result = pm4py.conformance_dcr(log, dcr_graph)
+        grap, la = pm4py.discover_dcr(log)
+        conf_res = pm4py.conformance_dcr(log, dcr_graph)
     """
     if type(log) not in [pd.DataFrame, EventLog]: raise Exception(
         "the method can be applied only to a traditional event log!")
@@ -912,7 +912,7 @@ def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DCR_Graph, ac
 
 
 def optimal_alignment_dcr(
-        log: Union[EventLog, pd.DataFrame],
+        log: Union[EventLog, pd.DataFrame, Trace],
         dcr_graph: DCR_Graph,
         activity_key: str = "concept:name",
         timestamp_key: str = "time:timestamp",
@@ -924,8 +924,8 @@ def optimal_alignment_dcr(
 
     Parameters
     ----------
-    log : EventLog
-        Event log to be used for alignment.
+    log : EventLog | pd.DataFrame | Trace
+        Event log to be used for alignment. also supports Trace
     dcr_graph : DCRGraph
         The DCR graph against which the log is aligned.
     activity_key : str
@@ -948,6 +948,13 @@ def optimal_alignment_dcr(
     Exception
         If the log provided is not an instance of EventLog or pandas DataFrame.
 
+    Examples
+    --------
+    .. code-block:: python3
+
+        import pm4py
+        graph, la = pm4py.discover_DCR(log)
+        conf_res = pm4py.optimal_alignment_dcr(log,graph)
     """
 
     if type(log) not in [pd.DataFrame, EventLog, Trace]:

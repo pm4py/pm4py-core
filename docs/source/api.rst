@@ -5,13 +5,13 @@ This page provide the overview of the implementation that we have been working o
 Input (:mod:`pm4py.read`)
 ---------------------------------
 Importing DCR Graphs is possible with the following formats:
-  * ``.xml`` specificantion :meth:`pm4py.read.read_dcr_xml`
+  * ``.xml`` specificantion :meth:`pm4py.read.read_dcr_xml`: Imports a *DCR Graph* from a ``.xml`` file
 
 
 Output (:mod:`pm4py.write`)
 -------------------------------------
 Exporting of DCR Graphs possible with the following format:
-  * ``.xml`` specification :meth:`pm4py.write.write_dcr_xml`
+  * ``.xml`` specification :meth:`pm4py.write.write_dcr_xml`: Exports a *DCR Graph* to a ``.xml`` file
 
 
 

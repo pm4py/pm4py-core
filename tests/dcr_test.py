@@ -773,7 +773,7 @@ class TestAlignment(unittest.TestCase):
         expected_cost = model_moves + log_moves
         self.assertEqual(expected_cost, alignment_cost)
 
-    def test_return_datafrane(self):
+    def test_return_datafrane_alignment(self):
         log_path = os.path.join("input_data", "running-example.xes")
         self.log = pm4py.read_xes(log_path)
         res = pm4py.optimal_alignment_dcr(self.log, self.dcr_graph,return_diagnostics_dataframe=True)
@@ -781,7 +781,6 @@ class TestAlignment(unittest.TestCase):
         for index,row in res.iterrows():
             self.assertTrue(row['move_model_fitness'] == 1.0)
             self.assertTrue(row['move_log_fitness'] == 1.0)
-
 
 import os
 import unittest

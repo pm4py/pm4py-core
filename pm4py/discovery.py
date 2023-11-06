@@ -965,8 +965,9 @@ def discover_dcr(log: Union[EventLog, pd.DataFrame], process_type: Set[str] = No
     --------
     .. code-block:: python3
     
-        \nimport pm4py\n
-        G, info = pm4py.discover_DCR(log)
+        import pm4py
+        graph, la = pm4py.discover_DCR(log)
+
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]:
         raise Exception(
