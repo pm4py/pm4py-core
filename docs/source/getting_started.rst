@@ -4,7 +4,8 @@ Getting Started/Examples
 Obtaining a Process Model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For discovering a DCR Graphs process model, one can use the simplified interface created in order to perform underlying algorithm:rx.ist.psu.edu/viewdoc/download?doi=10.1.1.396.197&rep=rep1&type=pdf>`_. Consider the following code snippet. We discover a BPMN model (using a conversion from process tree to BPMN) using the inductive miner, based on the running example event data set.
+For discovering a DCR Graphs process model, one can use the simplified interface created in order to perform the underlying algorithm implemented.
+Consider the following code snippet. Documentation can be found in the different location of the code, similar to how they do it for the other implementations.
 
 .. code-block:: python3
 
