@@ -97,7 +97,7 @@ class Marking:
 
         Parameters
         ----------
-        events
+        initial_marking
             the events in the DCR Graphs
 
         """
