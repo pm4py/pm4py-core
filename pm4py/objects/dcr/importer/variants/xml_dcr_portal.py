@@ -167,7 +167,7 @@ def parse_element(curr_el, parent, dcr):
 def import_xml_tree_from_root(root, white_space_replacement=None):
     dcr = copy.deepcopy(dcr_template)
     dcr = parse_element(root, None, dcr)
-    dcr = clean_input(dcr, white_space_replacement='')
+    dcr = clean_input(dcr, white_space_replacement=' ')
     '''
     Transform the dictionary into a DCR_Graph object
     '''
