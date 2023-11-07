@@ -312,7 +312,6 @@ class Test_conformance_dcr(unittest.TestCase):
         log = self.fix_mobis_event_log(log)
 
         dcr, la = pm4py.discover_dcr(log, process_type='roles', group_key="org:role")
-        from pm4py.algo.conformance.dcr.variants import classic
         from pm4py.algo.conformance.dcr.algorithm import apply as conf_alg
         log = log.replace("Manager", "Boss")
         log = log[log['case:concept:name'] == '3887']
@@ -350,3 +349,12 @@ class Test_conformance_dcr(unittest.TestCase):
             collect += i['dev_fitness']
         collect = collect / len(res)
         self.assertNotEqual(collect, 1.0)
+
+    def test_conformance_with_dcr(self):
+        #test to see if the conformance checker can run an imported graph
+        from pm4py.objects.dcr.importer.variants.xml_dcr_portal import apply as importer
+        dcr = importer("../input_data/DCR_test_Claims/DCR_test_Claims.xml")
+        log = pm4py.read_xes("../input_data/DCR_test_Claims/event_log.xes")
+        log = log[log["lifecycle:transition"] != "complete"]
+        res = pm4py.conformance_dcr(log,dcr)
+

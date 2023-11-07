@@ -245,10 +245,11 @@ class DCR_Graph(object):
         event
             the event ID of activity
         """
-        event = self.__labelMapping.get(activity)
-        if event is not None:
-            event = event.pop()
-            self.__labelMapping[activity].add(event)
+        event = self.__labelMapping.get(activity, "None")
+        if event is "None":
+            return activity
+        event = event.pop()
+        self.__labelMapping[activity].add(event)
         return event
 
     def getActivity(self, event: str) -> str:
@@ -266,12 +267,12 @@ class DCR_Graph(object):
             the activity of the event
         """
         for activity in self.__labelMapping:
-            event_prime = self.__labelMapping.get(activity)
-            if event_prime is not None:
-                event_prime = event_prime.pop()
-                self.__labelMapping[activity].add(event_prime)
+            event_prime = self.__labelMapping[activity]
+            event_prime = event_prime.pop()
+            self.__labelMapping[activity].add(event_prime)
             if event == event_prime:
                 return activity
+        return event
 
     def getConstraints(self) -> int:
         """

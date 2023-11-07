@@ -476,8 +476,6 @@ class Alignment:
         new_graph = deepcopy(curr_graph)
         new_trace = curr_trace
         new_move = None
-        first_activity = self.trace_handler.get_first_activity()
-
         if move_type == "sync":
             new_cost += Parameters.SYNC_COST.value
             new_move = ('sync', event)
@@ -491,7 +489,7 @@ class Alignment:
 
         elif move_type == "log":
             new_cost += Parameters.LOG_COST.value
-            new_move = ('log', first_activity)
+            new_move = ('log', event)
             new_trace = curr_trace[1:]
 
         return new_cost, new_graph, new_trace, new_move
@@ -634,8 +632,7 @@ class Alignment:
             as they are performed.
 
         """
-
-        first_activity = self.trace_handler.get_first_activity()
+        first_activity = self.graph_handler.graph.getEvent(self.trace_handler.get_first_activity())
         enabled = self.graph_handler.enabled()
         is_enabled = self.graph_handler.is_enabled(first_activity)
         if first_activity:

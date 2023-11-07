@@ -3,9 +3,10 @@ import unittest
 import pandas as pd
 
 import pm4py
-from pm4py.algo.conformance.alignments.dcr.variants.optimal import Alignment, TraceAlignment
+from pm4py.algo.conformance.alignments.dcr.variants.optimal import Alignment
 from pm4py.algo.discovery.dcr_discover.algorithm import apply
 from pm4py.objects.conversion.log import converter as log_converter
+from pm4py.objects.dcr.importer.variants.xml_dcr_portal import apply as imp_apply
 
 
 class TestAlignment(unittest.TestCase):
@@ -71,6 +72,7 @@ class TestAlignment(unittest.TestCase):
         trace_handler = self.create_trace_handler(trace)
         alignment_obj = Alignment(graph_handler, trace_handler)
         aligned_traces = alignment_obj.apply_trace()
+        print(aligned_traces)
         self.check_alignment_cost(aligned_traces)
         self.check_trace_alignment(trace)
 
@@ -95,6 +97,14 @@ class TestAlignment(unittest.TestCase):
         for index,row in res.iterrows():
             self.assertTrue(row['move_model_fitness'] == 1.0)
             self.assertTrue(row['move_log_fitness'] == 1.0)
+
+    def test_imported_dcr(self):
+        # test to see if the optimal alignment can run imported dcr
+        from pm4py.objects.dcr.importer.variants.xml_dcr_portal import apply as importer
+        dcr = importer("../input_data/DCR_test_Claims/DCR_test_Claims.xml")
+        log = pm4py.read_xes("../input_data/DCR_test_Claims/event_log.xes")
+        log = log[log["lifecycle:transition"] != "complete"]
+        res = pm4py.optimal_alignment_dcr(log,dcr)
 
     @staticmethod
     def create_graph_handler(dcr_graph):

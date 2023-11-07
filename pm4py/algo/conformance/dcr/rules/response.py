@@ -5,7 +5,7 @@ from typing import List, Tuple, Any
 
 class CheckResponse(CheckFrame):
     @classmethod
-    def check_rule(cls, G: DCR_Graph, responses: List[Tuple[str, str]], deviations: List[Tuple[str, Any]]):
+    def check_rule(cls, graph: DCR_Graph, responses: List[Tuple[str, str]], deviations: List[Tuple[str, Any]]):
         """
         Checks if event violates the response relation.
 
@@ -13,7 +13,7 @@ class CheckResponse(CheckFrame):
 
         Parameters
         --------------
-        G: DCR_Graph
+        graph: DCR_Graph
             DCR graph
         responses:
             responses not yet executed
@@ -26,7 +26,7 @@ class CheckResponse(CheckFrame):
             List of updated deviation if any were detected
         """
         # if activities are pending, and included, thats a response violation
-        if G.marking.included.intersection(G.marking.pending):
+        if graph.marking.included.intersection(graph.marking.pending):
             for pending in responses:
                 deviations.append(('responseViolation', tuple(pending)))
         return deviations
