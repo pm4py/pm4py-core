@@ -49,13 +49,14 @@ if __name__ == "__main__":
     from tests.ocel_filtering_test import OcelFilteringTest
     from tests.ocel_discovery_test import OcelDiscoveryTest
     from tests.simulation_test import SimulationTest
-    from tests.dcr_test import Test_discovery_dcr, TestAlignment, Test_conformance_dcr, Test_obj_sematics
+    from tests.dcr_test import Test_discovery_dcr, TestAlignment, Test_conformance_dcr, Test_obj_sematics, TestDcr
 
     #dcr tests
     conformance_test = Test_conformance_dcr()
     alignment_test = TestAlignment()
     test_obj_sematics = Test_obj_sematics()
     discovery_dcr_test = Test_discovery_dcr()
+    import_export_test = TestDcr()
     #the rest
     ocel_filtering_test = OcelFilteringTest()
     ocel_discovery_test = OcelDiscoveryTest()
