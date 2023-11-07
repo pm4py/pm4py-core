@@ -120,6 +120,23 @@ class TimedSingleRelations(object):
         pend_excl_places_e_prime = self.helper_struct[event_prime]['places']['pending_excluded']
         pending_others = [x[0] for x in pend_places_e_prime if x[1] != event]
         pending_exc_others = [x[0] for x in pend_excl_places_e_prime if x[1] != event]
+
+        # copy 1
+        if len(pend_places_e_prime) > 0:
+            for delta in range(len_delta):
+                tapn, ts = timed_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
+                new_transitions.extend(ts)
+                for t in ts:
+                    tapn, t = timed_utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
+                    pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
+                    pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
+
+                    pn_utils.add_arc_from_to(t, pend_place_e_prime, tapn)
+                    pn_utils.add_arc_from_to(pend_place_e_prime, t, tapn)
+
+                    # for pend_other in pending_others:
+                    #     pn_utils.add_arc_from_to(pend_other, t, tapn, type='inhibitor')
+
         # copy 2
         if inc_place_e_prime and len(pend_excl_places_e_prime) > 0:
             for delta in range(len_delta):
@@ -142,12 +159,12 @@ class TimedSingleRelations(object):
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(t, pend_excl_place_e_prime, tapn)
-                        pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn, type='inhibitor')
+                        # pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn, type='inhibitor')
 
                         pn_utils.add_arc_from_to(pend_exc_other, t, tapn)
 
         # copy 3
-        if inc_place_e_prime and len(pend_excl_places_e_prime)>0:
+        if inc_place_e_prime and len(pend_excl_places_e_prime) > 0:
             for delta in range(len_delta):
                 tapn, ts = timed_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
                 new_transitions.extend(ts)
@@ -157,24 +174,9 @@ class TimedSingleRelations(object):
 
                     pn_utils.add_arc_from_to(t, pend_excl_place_e_prime, tapn)
                     pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn)
-                    for pend_exc_other in pending_exc_others:
-                        pn_utils.add_arc_from_to(pend_exc_other,t,tapn,type='inhibitor')
+                    # for pend_exc_other in pending_exc_others:
+                    #     pn_utils.add_arc_from_to(pend_exc_other,t,tapn,type='inhibitor')
 
-        # copy 1
-        if len(pend_places_e_prime)>0:
-            for delta in range(len_delta):
-                tapn, ts = timed_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
-                new_transitions.extend(ts)
-                for t in ts:
-                    tapn, t = timed_utils.map_existing_transitions_of_copy_0(delta*len_internal, copy_0, t, tapn)
-                    pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
-                    pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
-
-                    pn_utils.add_arc_from_to(t, pend_place_e_prime, tapn)
-                    pn_utils.add_arc_from_to(pend_place_e_prime, t, tapn)
-
-                    for pend_other in pending_others:
-                        pn_utils.add_arc_from_to(pend_other, t, tapn, type='inhibitor')
         # copy 0
         if len(pend_places_e_prime) > 0:
             for pend_other in pending_others:
@@ -182,6 +184,7 @@ class TimedSingleRelations(object):
                     tapn, ts = timed_utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self.mapping_exceptions)
                     new_transitions.extend(ts)
                     for t in ts:
+                        tapn, t = timed_utils.map_existing_transitions_of_copy_0(delta * len_internal, copy_0, t, tapn)
                         pn_utils.add_arc_from_to(t, inc_place_e_prime, tapn)
                         pn_utils.add_arc_from_to(inc_place_e_prime, t, tapn)
 

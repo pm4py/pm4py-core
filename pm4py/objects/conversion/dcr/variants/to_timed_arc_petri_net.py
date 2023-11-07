@@ -364,17 +364,17 @@ def run_specific_dcr():
     here you can write your own graph and run it
     '''
     dcr = {
-        'events': {'A', 'B', 'C', 'D', 'E','F','G','H'},
-        'conditionsFor': {'H': {'B'}},
-        'milestonesFor': {'F':{'B'}},
-        'responseTo': {'C': {'B'}, 'A': {'B'}},
-        'noResponseTo': {'G': {'B'}},
-        'includesTo': {'E': {'B'}},
-        'excludesTo': {'D': {'B'}},
-        'conditionsForDelays': {'H': {'B': 2}},
-        'responseToDeadlines': {'C': {'B': 5}, 'A': {'B': 7}},
+        'events': {'B'},
+        'conditionsFor': {},
+        'milestonesFor': {},
+        'responseTo': {},
+        'noResponseTo': {},
+        'includesTo': {},
+        'excludesTo': {},
+        'conditionsForDelays': {},
+        'responseToDeadlines': {},
         'marking': {'executed': set(),
-                    'included': {'A', 'B', 'C', 'D', 'E','F','G','H'},
+                    'included': {'B'},
                     'pending': {'B'},
                     'pendingDeadline': {'B': 10}
                     }

@@ -5,13 +5,14 @@ from copy import deepcopy
 from itertools import combinations
 
 from pm4py.objects.conversion.dcr.variants.to_petri_net import Dcr2PetriNet
+from pm4py.objects.conversion.dcr.variants.to_timed_arc_petri_net import Dcr2TimedArcPetri
 
 
 def one_permutation_test(key, dcr_graph):
     file_name = key.replace("'", "").replace("(", "").replace(")", "").replace(",", "").replace(" ", "_")
     file_name = file_name + ".tapn"
-    res_path = f"../models/all/{file_name}"
-    d2p = Dcr2PetriNet(postoptimize=False)
+    res_path = f"../../models/all/{file_name}"
+    d2p = Dcr2TimedArcPetri(postoptimize=False)
     tapn = d2p.dcr2tapn(dcr_graph, res_path)
     return tapn, res_path
 
@@ -131,7 +132,7 @@ class MyTestCase(unittest.TestCase):
             file_name = k.replace("'", "").replace("(", "").replace(")", "").replace(",", "").replace(" ", "_")
             file_name = file_name + ".tapn"
             res_path = f"../../models/tests/{file_name}"
-            d2p = Dcr2PetriNet(postoptimize=False)
+            d2p = Dcr2TimedArcPetri(postoptimize=False)
             tapn = d2p.dcr2tapn(v, res_path)
             if k_split[1] != past_k:
                 # print(f'[i] {k}')
@@ -160,14 +161,14 @@ class MyTestCase(unittest.TestCase):
             }
         file_name = "one.tapn"
         res_path = f"../../models/tests/{file_name}"
-        d2p = Dcr2PetriNet(postoptimize=False)
+        d2p = Dcr2TimedArcPetri(postoptimize=False)
         tapn = d2p.dcr2tapn(dcr, res_path)
 
-    def tearDown(self) -> None:
+    # def tearDown(self) -> None:
         # comment this if you don't want to delete the results (the point of these tests is to inspect them in tapaal
-        tests_model_folder = '../../models/tests/'
-        for filename in os.listdir(tests_model_folder):
-            os.remove(os.path.join(tests_model_folder, filename))
+        # tests_model_folder = '../../models/tests/'
+        # for filename in os.listdir(tests_model_folder):
+        #     os.remove(os.path.join(tests_model_folder, filename))
 
 if __name__ == '__main__':
     unittest.main()

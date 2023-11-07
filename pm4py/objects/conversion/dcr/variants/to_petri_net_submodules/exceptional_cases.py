@@ -913,7 +913,7 @@ class ExceptionalCases(object):
                     pn_utils.add_arc_from_to(pend_excl_place_e_prime, t, tapn, type='inhibitor')
                     pn_utils.add_arc_from_to(t, pend_excl_place_e_prime, tapn)
 
-            # copy 2 and 3
+            # copy 3
             for delta in range(len_delta):
                 tapn, ts = utils.create_event_pattern_transitions_and_arcs(tapn, event, self.helper_struct, self)
                 new_transitions.extend(ts)
