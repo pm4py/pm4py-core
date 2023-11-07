@@ -92,6 +92,7 @@ Among *procedural process models*, ``pm4py`` currently supports:
   * :meth:`pm4py.discovery.discover_bpmn_inductive`; discovers a *BPMN model* using the Inductive Miner algorithm.
   * :meth:`pm4py.discovery.discover_heuristics_net`; discovers an *heuristics net* using the Heuristics Miner algorithm.
   * :meth:`pm4py.discovery.discover_footprints`; discovers the *footprints matrix* of the log or the model.
+  * :meth:`pm4py.discovery.discover_powl`; discovers a *partial order workflow language* (POWL) model.
 
 Among *declarative process models*, ``pm4py`` currently supports:
 
@@ -148,7 +149,7 @@ Among the on-screen visualizations, ``pm4py`` currently supports:
   * :meth:`pm4py.vis.view_prefix_tree`; views a *prefix tree*.
   * :meth:`pm4py.vis.view_alignments`; views the *alignments table*.
   * :meth:`pm4py.vis.view_footprints`; views a *footprints table*.
-
+  * :meth:`pm4py.vis.view_powl`; views a *POWL model*.
 
 We offer also some methods to store the visualizations on the disk:
 
@@ -172,6 +173,7 @@ We offer also some methods to store the visualizations on the disk:
   * :meth:`pm4py.vis.save_vis_prefix_tree`; saves the visualization of a *prefix tree*.
   * :meth:`pm4py.vis.save_vis_alignments`; saves the visualization of the *alignments table*.
   * :meth:`pm4py.vis.save_vis_footprints`; saves the visualization of the *footprints table*.
+  * :meth:`pm4py.vis.save_vis_powl`; saves the visualization of a *POWL model*.
 
 
 Statistics (:mod:`pm4py.stats`)
@@ -462,6 +464,7 @@ Overall List of Methods
    pm4py.discovery.discover_declare
    pm4py.discovery.discover_log_skeleton
    pm4py.discovery.discover_batches
+   pm4py.discovery.discover_powl
    pm4py.conformance
    pm4py.conformance.conformance_diagnostics_token_based_replay
    pm4py.conformance.conformance_diagnostics_alignments
@@ -517,6 +520,8 @@ Overall List of Methods
    pm4py.vis.save_vis_alignments
    pm4py.vis.view_footprints
    pm4py.vis.save_vis_footprints
+   pm4py.vis.view_powl
+   pm4py.vis.save_vis_powl
    pm4py.stats
    pm4py.stats.get_start_activities
    pm4py.stats.get_end_activities

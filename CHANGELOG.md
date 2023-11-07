@@ -6,6 +6,8 @@
 ### Added
 * d06e2d36558e600208e182f096f07ea86923c1c4
   * RUSTXES importer variant
+* 7026be7476ed34c138b1046781847cdd9e104715
+  * POWL discovery and visualization in the simplified interface
 
 ### Changed
 

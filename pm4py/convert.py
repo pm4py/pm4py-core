@@ -25,6 +25,7 @@ from copy import deepcopy
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.ocel.obj import OCEL
+from pm4py.objects.powl.obj import POWL
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import Marking
@@ -173,13 +174,13 @@ def convert_to_bpmn(*args: Union[Tuple[PetriNet, Marking, Marking], ProcessTree]
     raise Exception("unsupported conversion of the provided object to BPMN")
 
 
-def convert_to_petri_net(*args: Union[BPMN, ProcessTree, HeuristicsNet, dict]) -> Tuple[PetriNet, Marking, Marking]:
+def convert_to_petri_net(*args: Union[BPMN, ProcessTree, HeuristicsNet, POWL, dict]) -> Tuple[PetriNet, Marking, Marking]:
     """
     Converts an input model to an (accepting) Petri net.
     The input objects can either be a process tree, BPMN model or a Heuristic net.
     The output is a triple, containing the Petri net and the initial and final markings. The markings are only returned if they can be reasonable derived from the input model.
 
-    :param args: process tree or BPMN
+    :param args: process tree, Heuristics net, BPMN or POWL model
     :rtype: ``Tuple[PetriNet, Marking, Marking]``
     
     .. code-block:: python3
@@ -202,6 +203,9 @@ def convert_to_petri_net(*args: Union[BPMN, ProcessTree, HeuristicsNet, dict]) -
     elif isinstance(args[0], HeuristicsNet):
         from pm4py.objects.conversion.heuristics_net.variants import to_petri_net
         return to_petri_net.apply(args[0])
+    elif isinstance(args[0], POWL):
+        from pm4py.objects.conversion.powl import converter
+        return converter.apply(args[0])
     elif isinstance(args[0], dict):
         # DFG
         from pm4py.objects.conversion.dfg.variants import to_petri_net_activity_defines_place

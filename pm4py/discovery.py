@@ -25,6 +25,7 @@ from pandas import DataFrame
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.dfg.obj import DFG
+from pm4py.objects.powl.obj import POWL
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.transition_system.obj import TransitionSystem
 from pm4py.objects.trie.obj import Trie
@@ -808,6 +809,44 @@ def discover_declare(log: Union[EventLog, pd.DataFrame], allowed_templates: Opti
 
     from pm4py.algo.discovery.declare import algorithm as declare_discovery
     return declare_discovery.apply(log, parameters=properties)
+
+
+def discover_powl(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> POWL:
+    """
+    Discovers a POWL model from an event log.
+
+    Reference paper:
+    Kourani, Humam, and Sebastiaan J. van Zelst. "POWL: partially ordered workflow language." International Conference on Business Process Management. Cham: Springer Nature Switzerland, 2023.
+
+    :param log: event log / Pandas dataframe
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``POWL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes('tests/input_data/receipt.xes')
+        powl_model = pm4py.discover_powl(log, activity_key='concept:name')
+        print(powl_model)
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]:
+        raise Exception(
+            "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(
+            log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    import pm4py
+    log = pm4py.convert_to_event_log(log, case_id_key=case_id_key)
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key)
+
+    from pm4py.algo.discovery.powl import algorithm as powl_discovery
+    return powl_discovery.apply(log, parameters=properties)
 
 
 def discover_batches(log: Union[EventLog, pd.DataFrame], merge_distance: int = 15 * 60, min_batch_size: int = 2, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource") -> List[

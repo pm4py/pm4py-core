@@ -35,7 +35,7 @@ from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_p
     discover_petri_net_inductive, discover_process_tree_inductive, discover_heuristics_net, \
     discover_dfg, discover_footprints, discover_eventually_follows_graph, discover_directly_follows_graph, discover_bpmn_inductive, \
     discover_performance_dfg, discover_transition_system, discover_prefix_tree, \
-    discover_temporal_profile, discover_log_skeleton, discover_batches, derive_minimum_self_distance, discover_dfg_typed, discover_declare
+    discover_temporal_profile, discover_log_skeleton, discover_batches, derive_minimum_self_distance, discover_dfg_typed, discover_declare, discover_powl
 from pm4py.conformance import conformance_diagnostics_token_based_replay, conformance_diagnostics_alignments, \
     fitness_token_based_replay, \
     fitness_alignments, precision_token_based_replay, \
@@ -52,7 +52,7 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
     save_vis_events_per_time_graph, view_events_distribution_graph, save_vis_events_distribution_graph, view_performance_dfg, save_vis_performance_dfg, \
     view_ocpn, save_vis_ocpn, view_network_analysis, save_vis_network_analysis, view_transition_system, save_vis_transition_system, \
     view_prefix_tree, save_vis_prefix_tree, view_object_graph, save_vis_object_graph, view_alignments, save_vis_alignments, \
-    view_footprints, save_vis_footprints
+    view_footprints, save_vis_footprints, view_powl, save_vis_powl
 from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
     convert_to_petri_net, convert_to_process_tree, convert_to_reachability_graph, convert_log_to_ocel, convert_ocel_to_networkx, convert_log_to_networkx, \
     convert_log_to_time_intervals, convert_petri_net_to_networkx, convert_petri_net_type
