@@ -1,5 +1,5 @@
 import pm4py
-from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_varaints import POWLDiscoveryVariant
+from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_variants import POWLDiscoveryVariant
 from pm4py.visualization.powl.visualizer import apply as visualize_powl
 from pm4py.algo.discovery.powl import algorithm as powl_disc
 from pm4py.objects.log.importer.xes import importer as xes_importer

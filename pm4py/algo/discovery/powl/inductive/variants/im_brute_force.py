@@ -19,7 +19,7 @@ from typing import Optional, Tuple, List, Dict, Any
 
 from pm4py.algo.discovery.powl.inductive.variants.brute_force.factory import CutFactoryPOBF
 from pm4py.algo.discovery.powl.inductive.variants.im_base import IMBasePOWL, T
-from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_varaints import POWLDiscoveryVariant
+from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_variants import POWLDiscoveryVariant
 from pm4py.objects.powl.obj import POWL
 
 
