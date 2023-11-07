@@ -9,7 +9,8 @@ The calculation of the alignments and graph-trace handling are encapsulated in s
 dedicated classes, thereby facilitating modularity and reuse.
 Central to the module are the following classes:
 
-- `Facade`: Serves as the primary interface for interacting with the algorithm,
+- `LogAlignment`: A simplified interface to perform optimal alignment through the other classes.
+- `TraceAlignment`: Serves as the primary interface for interacting with the algorithm.
   orchestrating the alignment process and providing access to performance metrics.
 - `TraceHandler`: Manages the conversion and handling of event traces, preparing them for alignment.
 - `DCRGraphHandler`: Encapsulates operations and checks on DCR graphs relevant for the alignment.
