@@ -1,7 +1,7 @@
 # Changelog of pm4py
 
 
-## pm4py 2.7.8.3 (2023.11.XX)
+## pm4py 2.7.8.3 (2023.11.10)
 
 ### Added
 * d06e2d36558e600208e182f096f07ea86923c1c4
@@ -10,6 +10,8 @@
   * POWL discovery and visualization in the simplified interface
 
 ### Changed
+* 3f45baf9c0730d90ab35bce4d715b67306b24168
+  * artificial start/end activity symbols specification in the simplified interface
 
 ### Deprecated
 
