@@ -18,7 +18,7 @@
 from pm4py.objects.petri_net.saw_net.obj import StochasticArcWeightNet
 from pm4py.objects.petri_net.stochastic.obj import StochasticPetriNet
 from pm4py.objects.petri_net.saw_net.semantics import GlobalStochasticArcWeightNetSemantics as sawsem_global, LocalStochasticArcWeightNetSemantics as sawsem_local
-from typing import Counter as TCounter, Dict, Tuple
+from typing import Counter as TCounter, Tuple
 from collections import deque
 
 def convert_saw_net_to_stochastic_net_global_semantics(saw: StochasticArcWeightNet) -> StochasticPetriNet:

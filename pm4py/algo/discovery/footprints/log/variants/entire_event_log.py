@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from enum import Enum
 from pm4py.util import xes_constants
 from pm4py.util import constants
 from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
@@ -24,8 +23,8 @@ from pm4py.statistics.end_activities.log import get as get_end_activities
 from pm4py.objects.conversion.log import converter
 from pm4py.util import exec_utils
 from enum import Enum
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import EventLog
 
 
 class Outputs(Enum):

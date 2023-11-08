@@ -14,12 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import importlib.util
 
-import pkgutil
-
-if pkgutil.find_loader("matplotlib"):
+if importlib.util.find_spec("matplotlib"):
     from pm4py.algo.comparison import petrinet
-
-import warnings
-
-warnings.warn("The comparison package will be removed in a future release.")

@@ -27,6 +27,7 @@ from statistics import mean, median
 class Parameters(Enum):
     FORMAT = "format"
     BGCOLOR = "bgcolor"
+    RANKDIR = "rankdir"
     ACT_METRIC = "act_metric"
     EDGE_METRIC = "edge_metric"
     ACT_THRESHOLD = "act_threshold"
@@ -141,6 +142,7 @@ def apply(ocdfg: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) ->
         Parameters of the algorithm:
         - Parameters.FORMAT => the format of the output visualization (default: "png")
         - Parameters.BGCOLOR => the default background color (default: "bgcolor")
+        - Parameters.RANKDIR => direction of the graph ("LR" for left-to-right; "TB" for top-to-bottom)
         - Parameters.ACT_METRIC => the metric to use for the activities. Available values:
             - "events" => number of events (default)
             - "unique_objects" => number of unique objects
@@ -173,6 +175,7 @@ def apply(ocdfg: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) ->
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, constants.DEFAULT_RANKDIR_GVIZ)
     act_metric = exec_utils.get_param_value(Parameters.ACT_METRIC, parameters, "events")
     edge_metric = exec_utils.get_param_value(Parameters.EDGE_METRIC, parameters, "event_couples")
     act_threshold = exec_utils.get_param_value(Parameters.ACT_THRESHOLD, parameters, 0)
@@ -225,6 +228,8 @@ def apply(ocdfg: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) ->
         raise Exception("unsupported performance visualization for unique objects!")
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
+
     viz = Digraph("ocdfg", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     viz.attr('node', shape='ellipse', fixedsize='false')
 
@@ -279,7 +284,7 @@ def apply(ocdfg: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) ->
                         add_end_node(viz, ot, act, len(ea_count[ot][act]), edge_prefix, nodes, annotation,
                                      min_edges_count[ot], max_edges_count[ot])
 
-    viz.attr(rankdir='LR')
+    viz.attr(rankdir=rankdir)
     viz.format = image_format.replace("html", "plain-ext")
 
     return viz

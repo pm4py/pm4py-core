@@ -19,7 +19,7 @@ from pm4py.algo.simulation.montecarlo.variants import petri_semaph_fifo
 from pm4py.util import exec_utils
 from enum import Enum
 from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 import pandas as pd
 from pm4py.objects.conversion.log import converter as log_converter

@@ -37,15 +37,13 @@ from pm4py.algo.discovery.alpha.data_structures import alpha_classic_abstraction
 from pm4py.algo.discovery.alpha.utils import endpoints
 from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.algo.discovery.dfg.variants import native as dfg_inst
-from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.util import exec_utils
 
 from pm4py.util import constants
 from enum import Enum
 from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
-import pandas as pd
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 
 

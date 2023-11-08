@@ -14,12 +14,11 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import graphviz
 import tempfile
 from pm4py.util import exec_utils
 from enum import Enum
 from sklearn import tree
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, Union, List
 import graphviz
 
 
@@ -53,6 +52,7 @@ def apply(clf: tree.DecisionTreeClassifier, feature_names: List[str], classes: L
 
     format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
 
     dot_data = tree.export_graphviz(clf, out_file=None,
                                     feature_names=feature_names,

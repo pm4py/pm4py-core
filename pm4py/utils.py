@@ -18,7 +18,6 @@ __doc__ = """
 """
 
 import datetime
-import warnings
 from typing import Optional, Tuple, Any, Collection, Union, List
 
 import pandas as pd
@@ -27,6 +26,7 @@ from pm4py.objects.log.obj import EventLog, EventStream, Trace, Event
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants, xes_constants, pandas_utils
+import warnings
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 import deprecation
 
@@ -61,6 +61,9 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
     """
     if type(df) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
+    if timest_format is None:
+        timest_format = constants.DEFAULT_TIMESTAMP_PARSE_FORMAT
+
     from pm4py.objects.log.util import dataframe_utils
     if case_id not in df.columns:
         raise Exception(case_id + " column (case ID) is not in the dataframe!")
@@ -89,7 +92,8 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
                            xes_constants.DEFAULT_TIMESTAMP_KEY}, how="any")
 
     if len(df) < prev_length:
-        warnings.warn("Some rows of the Pandas data frame have been removed because of empty case IDs, activity labels, or timestamps to ensure the correct functioning of PM4Py's algorithms.")
+        if constants.SHOW_INTERNAL_WARNINGS:
+            warnings.warn("Some rows of the Pandas data frame have been removed because of empty case IDs, activity labels, or timestamps to ensure the correct functioning of PM4Py's algorithms.")
 
     # make sure the case ID column is of string type
     df[constants.CASE_CONCEPT_NAME] = df[constants.CASE_CONCEPT_NAME].astype("string")
@@ -122,7 +126,7 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
 def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = constants.CASE_CONCEPT_NAME,
                      activity_key: str = xes_constants.DEFAULT_NAME_KEY,
                      timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
-                     start_timestamp_key: str = xes_constants.DEFAULT_START_TIMESTAMP_KEY) -> Union[EventLog, EventStream, pd.DataFrame]:
+                     start_timestamp_key: str = xes_constants.DEFAULT_START_TIMESTAMP_KEY, timest_format: Optional[str] = None) -> Union[EventLog, EventStream, pd.DataFrame]:
     """
     Re-base the log object, changing the case ID, activity and timestamp attributes.
 
@@ -131,6 +135,7 @@ def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = c
     :param activity_key: Activity
     :param timestamp_key: Timestamp
     :param start_timestamp_key: Start timestamp
+    :param timest_format: Timestamp format that is provided to Pandas
     :rtype: ``Union[EventLog, EventStream, pd.DataFrame]``
 
     .. code-block:: python3
@@ -148,17 +153,17 @@ def rebase(log_obj: Union[EventLog, EventStream, pd.DataFrame], case_id: str = c
 
     if isinstance(log_obj, pd.DataFrame):
         return format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
-                                start_timestamp_key=start_timestamp_key)
+                                start_timestamp_key=start_timestamp_key, timest_format=timest_format)
     elif isinstance(log_obj, EventLog):
         log_obj = pm4py.convert_to_dataframe(log_obj)
         log_obj = format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
-                                   start_timestamp_key=start_timestamp_key)
+                                   start_timestamp_key=start_timestamp_key, timest_format=timest_format)
         from pm4py.objects.conversion.log import converter
         return converter.apply(log_obj, variant=converter.Variants.TO_EVENT_LOG)
     elif isinstance(log_obj, EventStream):
         log_obj = pm4py.convert_to_dataframe(log_obj)
         log_obj = format_dataframe(log_obj, case_id=case_id, activity_key=activity_key, timestamp_key=timestamp_key,
-                                   start_timestamp_key=start_timestamp_key)
+                                   start_timestamp_key=start_timestamp_key, timest_format=timest_format)
         return pm4py.convert_to_event_stream(log_obj)
 
 
@@ -345,7 +350,8 @@ def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASS
 def parse_event_log_string(traces: Collection[str], sep: str = ",",
                            activity_key: str = xes_constants.DEFAULT_NAME_KEY,
                            timestamp_key: str = xes_constants.DEFAULT_TIMESTAMP_KEY,
-                           case_id_key: str = constants.CASE_CONCEPT_NAME) -> pd.DataFrame:
+                           case_id_key: str = constants.CASE_CONCEPT_NAME,
+                           return_legacy_log_object: bool = constants.DEFAULT_READ_XES_LEGACY_OBJECT) -> Union[EventLog, pd.DataFrame]:
     """
     Parse a collection of traces expressed as strings
     (e.g., ["A,B,C,D", "A,C,B,D", "A,D"])
@@ -356,6 +362,7 @@ def parse_event_log_string(traces: Collection[str], sep: str = ",",
     :param activity_key: The attribute that should be used as activity
     :param timestamp_key: The attribute that should be used as timestamp
     :param case_id_key: The attribute that should be used as case identifier
+    :param return_legacy_log_object: boolean value enabling returning a log object (default: False)
     :rtype: ``pd.DataFrame``
 
     .. code-block:: python3
@@ -377,7 +384,14 @@ def parse_event_log_string(traces: Collection[str], sep: str = ",",
             timestamps.append(datetime.datetime.fromtimestamp(this_timest))
             this_timest = this_timest + 1
 
-    return pd.DataFrame({case_id_key: cases, activity_key: activitiess, timestamp_key: timestamps})
+    dataframe = pd.DataFrame({case_id_key: cases, activity_key: activitiess, timestamp_key: timestamps})
+
+    if return_legacy_log_object:
+        import pm4py
+
+        return pm4py.convert_to_event_log(dataframe, case_id_key=case_id_key)
+
+    return dataframe
 
 
 def project_on_event_attribute(log: Union[EventLog, pd.DataFrame], attribute_key=xes_constants.DEFAULT_NAME_KEY, case_id_key=None) -> \
@@ -490,12 +504,13 @@ def sample_events(log: Union[EventStream, OCEL], num_events: int) -> Union[Event
 
 def __event_log_deprecation_warning(log):
     if constants.SHOW_EVENT_LOG_DEPRECATION and not hasattr(log, "deprecation_warning_shown"):
-        if isinstance(log, EventLog) or isinstance(log, Trace):
-            warnings.warn("the EventLog class has been deprecated and will be removed in a future release.")
-            log.deprecation_warning_shown = True
-        elif isinstance(log, Trace):
-            warnings.warn("the Trace class has been deprecated and will be removed in a future release.")
-            log.deprecation_warning_shown = True
-        elif isinstance(log, EventStream):
-            warnings.warn("the EventStream class has been deprecated and will be removed in a future release.")
-            log.deprecation_warning_shown = True
+        if constants.SHOW_INTERNAL_WARNINGS:
+            if isinstance(log, EventLog) or isinstance(log, Trace):
+                warnings.warn("the EventLog class has been deprecated and will be removed in a future release.")
+                log.deprecation_warning_shown = True
+            elif isinstance(log, Trace):
+                warnings.warn("the Trace class has been deprecated and will be removed in a future release.")
+                log.deprecation_warning_shown = True
+            elif isinstance(log, EventStream):
+                warnings.warn("the EventStream class has been deprecated and will be removed in a future release.")
+                log.deprecation_warning_shown = True

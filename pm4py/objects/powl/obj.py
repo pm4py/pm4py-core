@@ -18,6 +18,8 @@
 from pm4py.objects.powl.BinaryRelation import BinaryRelation
 from pm4py.objects.powl.constants import STRICT_PARTIAL_ORDER_LABEL
 from pm4py.objects.process_tree.obj import ProcessTree, Operator
+from typing import Optional, Union, List as TList
+
 
 class POWL(ProcessTree):
     def __str__(self) -> str:
@@ -41,7 +43,7 @@ class POWL(ProcessTree):
 class Transition(POWL):
     transition_id: int = 0
 
-    def __init__(self, label: str | None) -> None:
+    def __init__(self, label: Optional[str] = None) -> None:
         super().__init__()
         self._label = label
         self._identifier = Transition.transition_id
@@ -78,7 +80,7 @@ class SilentTransition(Transition):
 
 
 class FrequentTransition(Transition):
-    def __init__(self, label, min_freq: str | int, max_freq: str | int) -> None:
+    def __init__(self, label, min_freq: Union[str, int], max_freq: Union[str, int]) -> None:
         self.min_freq = min_freq
         self.max_freq = max_freq
         if min_freq == 0 and max_freq == "-":
@@ -94,22 +96,22 @@ class FrequentTransition(Transition):
 
 class StrictPartialOrder(POWL):
 
-    def __init__(self, nodes: list[POWL]) -> None:
+    def __init__(self, nodes: TList[POWL]) -> None:
         super().__init__()
         self.operator = Operator.PARTIALORDER
         self._set_order(nodes)
         self.additional_information = None
 
-    def _set_order(self, nodes: list[POWL]) -> None:
+    def _set_order(self, nodes: TList[POWL]) -> None:
         self.order = BinaryRelation(nodes)
 
     def get_order(self) -> BinaryRelation:
         return self.order
 
-    def _set_children(self, children: list[POWL]) -> None:
+    def _set_children(self, children: TList[POWL]) -> None:
         self.order.nodes = children
 
-    def get_children(self) -> list[POWL]:
+    def get_children(self) -> TList[POWL]:
         return self.order.nodes
 
     def __repr__(self) -> str:
@@ -216,17 +218,17 @@ class StrictPartialOrder(POWL):
 
 class Sequence(StrictPartialOrder):
 
-    def __init__(self, nodes: list[POWL]) -> None:
+    def __init__(self, nodes: TList[POWL]) -> None:
         super().__init__(nodes)
         for i in range(len(nodes)):
             for j in range(i+1, len(nodes)):
                 self.partial_order.add_edge(nodes[i], nodes[j])
         self.operator = Operator.SEQUENCE
 
-    def _set_sequence(self, nodes: list[POWL]) -> None:
+    def _set_sequence(self, nodes: TList[POWL]) -> None:
         self._sequence: list[POWL] = nodes
 
-    def get_sequence(self) -> list[POWL]:
+    def get_sequence(self) -> TList[POWL]:
         return self._sequence
 
     def simplify(self) -> "Sequence":
@@ -256,7 +258,7 @@ class Sequence(StrictPartialOrder):
 
 
 class OperatorPOWL(POWL):
-    def __init__(self, operator: Operator, children: list[POWL]) -> None:
+    def __init__(self, operator: Operator, children: TList[POWL]) -> None:
         super().__init__()
         self.operator = operator
         self.children = children

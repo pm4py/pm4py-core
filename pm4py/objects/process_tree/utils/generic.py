@@ -221,7 +221,7 @@ def parse_recursive(string_rep, depth_cache, depth):
     node
         Process tree object
     """
-    string_rep = string_rep.strip()
+    string_rep = string_rep.strip().replace("\r", "").replace("\n", " ")
     node = None
     operator = None
     if string_rep.startswith(pt_op.Operator.LOOP.value):

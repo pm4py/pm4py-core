@@ -18,13 +18,11 @@ from pm4py.objects.process_tree import obj
 from pm4py.objects.process_tree import obj as pt_operator
 from scipy.stats import triang as triangular
 import string
-import math
-import itertools
 from enum import Enum
 from itertools import accumulate as _accumulate, repeat as _repeat
 from bisect import bisect as _bisect
 import random
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from string import ascii_lowercase
 import itertools
 

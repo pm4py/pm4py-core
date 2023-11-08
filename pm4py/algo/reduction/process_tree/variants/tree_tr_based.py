@@ -15,7 +15,6 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from copy import deepcopy
-from enum import Enum
 from typing import Optional, Dict, Any, List, Set
 
 from pm4py.objects.log.obj import Trace

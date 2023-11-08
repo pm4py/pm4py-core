@@ -20,7 +20,7 @@ from pm4py.visualization.process_tree.variants import wo_decoration, symbolic, f
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.visualization.common.gview import serialize, serialize_dot
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any
 from pm4py.objects.process_tree.obj import ProcessTree
 import graphviz
 
@@ -45,6 +45,8 @@ def apply(tree0: ProcessTree, parameters: Optional[Dict[Any, Any]] = None, varia
     parameters
         Possible parameters of the algorithm:
             Parameters.FORMAT -> Format of the image (PDF, PNG, SVG; default PNG)
+            Parameters.BGCOLOR -> Background color to be used (i.e., 'white' or 'transparent')
+            Parameters.RANKDIR -> Direction of the graph ("LR" for left-to-right; "TB" for top-to-bottom)
     variant
         Variant of the algorithm to use:
             - Variants.WO_DECORATION

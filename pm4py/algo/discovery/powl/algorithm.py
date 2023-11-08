@@ -19,7 +19,7 @@ from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
 from pm4py.algo.discovery.powl.inductive.variants.im_base import IMBasePOWL
 from pm4py.algo.discovery.powl.inductive.variants.im_brute_force import BruteForcePOWL
 from pm4py.algo.discovery.powl.inductive.variants.im_cluster import ClusterPOWL
-from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_varaints import POWLDiscoveryVariant
+from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_variants import POWLDiscoveryVariant
 
 from pm4py import util as pmutil
 from pm4py.algo.discovery.inductive.algorithm import Parameters

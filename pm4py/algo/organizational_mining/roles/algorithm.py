@@ -18,8 +18,7 @@ from pm4py.algo.organizational_mining.roles.variants import pandas
 from pm4py.algo.organizational_mining.roles.variants import log
 from pm4py.util import exec_utils
 from enum import Enum
-import pkgutil
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, Union, List
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
 
@@ -59,10 +58,8 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], variant=None, paramet
         parameters = {}
 
     if variant is None:
-        if pkgutil.find_loader("pandas"):
-            import pandas as pd
-            if type(log) is pd.DataFrame:
-                variant = Variants.PANDAS
+        if type(log) is pd.DataFrame:
+            variant = Variants.PANDAS
 
         if variant is None:
             variant = Variants.LOG

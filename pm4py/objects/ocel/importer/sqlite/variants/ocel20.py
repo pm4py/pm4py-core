@@ -24,6 +24,7 @@ import pandas as pd
 from pm4py.objects.ocel.util import ocel_consistency
 from pm4py.objects.ocel.util import filtering_utils
 from pm4py.objects.ocel.validation import ocel20_rel_validation
+from pm4py.util import constants as pm4_constants
 import warnings
 
 
@@ -62,7 +63,8 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
     if validation:
         satisfied, unsatisfied = ocel20_rel_validation.apply(file_path)
         if unsatisfied:
-            warnings.warn("There are unsatisfied OCEL 2.0 constraints in the given relational database: "+str(unsatisfied))
+            if pm4_constants.SHOW_INTERNAL_WARNINGS:
+                warnings.warn("There are unsatisfied OCEL 2.0 constraints in the given relational database: "+str(unsatisfied))
 
             if except_if_invalid:
                 raise Exception("OCEL 2.0 validation failed.")

@@ -22,7 +22,7 @@ from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.util import exec_utils, constants
 from enum import Enum
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY, DEFAULT_ARTIFICIAL_START_ACTIVITY, DEFAULT_ARTIFICIAL_END_ACTIVITY
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 
 class Parameters(Enum):
@@ -114,6 +114,8 @@ def graphviz_visualization(net, image_format="png", initial_marking=None, final_
     font_size = str(font_size)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
+
     viz = Digraph(net.name, filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     if set_rankdir:
         viz.graph_attr['rankdir'] = set_rankdir

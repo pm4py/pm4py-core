@@ -15,8 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.algo.discovery.dfg.variants import native, performance, freq_triples, case_attributes, clean
-import pkgutil
+import importlib.util
 
-if pkgutil.find_loader("polars"):
+if importlib.util.find_spec("polars"):
     from pm4py.algo.discovery.dfg.variants import clean_polars
-

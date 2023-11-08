@@ -17,7 +17,6 @@
 import networkx as nx
 from pm4py.util import exec_utils
 from enum import Enum
-from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.petri_net.utils import petri_utils
 import copy
 import numpy as np
@@ -49,7 +48,7 @@ from pm4py.algo.analysis.woflan.graphs.restricted_coverability_graph.restricted_
 # reachability Graph Creation
 from pm4py.algo.analysis.woflan.graphs.reachability_graph.reachability_graph import apply as reachability_graph
 
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 
 

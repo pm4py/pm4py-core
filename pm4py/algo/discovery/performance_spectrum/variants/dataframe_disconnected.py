@@ -17,13 +17,11 @@
 from enum import Enum
 
 import numpy as np
-import pandas as pd
 
 from pm4py.util import constants, points_subset
 from pm4py.util import exec_utils, pandas_utils
 from pm4py.util import xes_constants as xes
-from typing import Optional, Dict, Any, Union, Tuple, List
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any, Union, List
 import pandas as pd
 
 

@@ -15,7 +15,6 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import tempfile
-import uuid
 from copy import deepcopy, copy
 from enum import Enum
 
@@ -34,6 +33,7 @@ class Parameters(Enum):
     ENABLE_DEEPCOPY = "enable_deepcopy"
     FONT_SIZE = "font_size"
     BGCOLOR = "bgcolor"
+    RANKDIR = "rankdir"
     NUM_EVENTS_PROPERTY = "num_events_property"
     NUM_CASES_PROPERTY = "num_cases_property"
 
@@ -100,10 +100,12 @@ def apply(tree: ProcessTree, parameters: Optional[Dict[Union[str, Parameters], A
     parameters[ROOT_NODE_PARAMETER] = tree
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
 
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, constants.DEFAULT_RANKDIR_GVIZ)
 
-    viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
+    viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor, "rankdir": rankdir})
     viz.attr('node', shape='ellipse', fixedsize='false')
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")

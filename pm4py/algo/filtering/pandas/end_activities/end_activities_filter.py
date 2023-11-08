@@ -14,19 +14,16 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.algo.filtering.common import filtering_constants
-from pm4py.algo.filtering.common.end_activities import end_activities_common
 from pm4py.statistics.end_activities.pandas.get import get_end_activities
 from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.util import xes_constants as xes
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY, GROUPED_DATAFRAME, \
     RETURN_EA_COUNT_DICT_AUTOFILTER
-from pm4py.util.constants import PARAM_MOST_COMMON_VARIANT
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, Union, List
 import pandas as pd
 
 

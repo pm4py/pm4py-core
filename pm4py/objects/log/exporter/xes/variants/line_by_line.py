@@ -15,13 +15,13 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import gzip
-import pkgutil
+import importlib.util
 from enum import Enum
 from io import BytesIO
 
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.util import exec_utils, constants
-from xml.sax.saxutils import escape as sax_escape, quoteattr
+from xml.sax.saxutils import quoteattr
 
 
 class Parameters(Enum):
@@ -211,10 +211,10 @@ def export_log_line_by_line(log, fp_obj, encoding, parameters=None):
     if parameters is None:
         parameters = {}
 
-    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, constants.SHOW_PROGRESS_BAR)
 
     progress = None
-    if pkgutil.find_loader("tqdm") and show_progress_bar:
+    if importlib.util.find_spec("tqdm") and show_progress_bar:
         from tqdm.auto import tqdm
         progress = tqdm(total=len(log), desc="exporting log, completed traces :: ")
 

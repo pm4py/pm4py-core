@@ -21,6 +21,12 @@ import pandas as pd
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel.util import extended_table
 from pm4py.objects.ocel.util import ocel_consistency
+from enum import Enum
+from pm4py.util import exec_utils, constants as pm4_constants
+
+
+class Parameters(Enum):
+    ENCODING = "encoding"
 
 
 def apply(file_path: str, objects_path: str = None, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
@@ -44,11 +50,12 @@ def apply(file_path: str, objects_path: str = None, parameters: Optional[Dict[An
     if parameters is None:
         parameters = {}
 
-    table = pd.read_csv(file_path, index_col=False)
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, pm4_constants.DEFAULT_ENCODING)
+    table = pd.read_csv(file_path, index_col=False, encoding=encoding, dtype_backend=pm4_constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
 
     objects = None
     if objects_path is not None:
-        objects = pd.read_csv(objects_path, index_col=False)
+        objects = pd.read_csv(objects_path, index_col=False, encoding=encoding, dtype_backend=pm4_constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
 
     ocel = extended_table.get_ocel_from_extended_table(table, objects, parameters=parameters)
     ocel = ocel_consistency.apply(ocel, parameters=parameters)

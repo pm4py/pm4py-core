@@ -16,7 +16,7 @@
 '''
 from pm4py.visualization.transition_system.util import visualize_graphviz
 from enum import Enum
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.transition_system.obj import TransitionSystem
 import graphviz
 

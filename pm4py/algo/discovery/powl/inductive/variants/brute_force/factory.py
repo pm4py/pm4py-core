@@ -24,7 +24,7 @@ from pm4py.algo.discovery.powl.inductive.cuts.sequence import POWLStrictSequence
 from pm4py.algo.discovery.powl.inductive.cuts.xor import POWLExclusiveChoiceCutUVCL
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL, IMDataStructure
 from pm4py.algo.discovery.powl.inductive.variants.brute_force.bf_partial_order_cut import BruteForcePartialOrderCutUVCL
-from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_varaints import POWLDiscoveryVariant
+from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_variants import POWLDiscoveryVariant
 from pm4py.objects.powl.obj import POWL
 
 

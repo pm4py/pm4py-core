@@ -19,7 +19,7 @@ from pm4py.algo.simulation.tree_generator.variants import basic, ptandloggenerat
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.objects.process_tree.obj import ProcessTree
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any
 
 
 class Variants(Enum):

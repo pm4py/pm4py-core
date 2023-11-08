@@ -16,6 +16,6 @@
 '''
 from pm4py.algo.simulation import playout
 
-import pkgutil
-if pkgutil.find_loader("tree_generator"):
+import importlib.util
+if importlib.util.find_spec("tree_generator"):
     from pm4py.algo.simulation import tree_generator

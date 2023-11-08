@@ -1,0 +1,117 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "eventTypes": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string" },
+                    "attributes": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": { "type": "string" },
+                                "type": { "type": "string" }
+                            },
+                            "required": ["name", "type"]
+                        }
+                    }
+                },
+                "required": ["name", "attributes"]
+            }
+        },
+        "objectTypes": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string" },
+                    "attributes": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": { "type": "string" },
+                                "type": { "type": "string" }
+                            },
+                            "required": ["name", "type"]
+                        }
+                    }
+                },
+                "required": ["name", "attributes"]
+            }
+        },
+        "events": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "string" },
+                    "type": { "type": "string" },
+                    "time": { "type": "string", "format": "date-time" },
+                    "attributes": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": { "type": "string" },
+                                "value": { "type": "string" }
+                            },
+                            "required": ["name", "value"]
+                        }
+                    },
+                    "relationships": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "objectId": { "type": "string" },
+                                "qualifier": { "type": "string" }
+                            },
+                            "required": ["objectId", "qualifier"]
+                        }
+                    }
+                },
+                "required": ["id", "type", "time"]
+            }
+        },
+        "objects": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "string" },
+                    "type": { "type": "string" },
+                    "relationships": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "objectId": { "type": "string" },
+                                "qualifier": { "type": "string" }
+                            },
+                            "required": ["objectId", "qualifier"]
+                        }
+                    },
+                    "attributes": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": { "type": "string" },
+                                "value": { "type": "string" },
+                                "time": { "type": "string", "format": "date-time" }
+                            },
+                            "required": ["name", "value", "time"]
+                        }
+                    }
+                },
+                "required": ["id", "type"]
+            }
+        }
+    },
+    "required": ["eventTypes", "objectTypes", "events", "objects"]
+}

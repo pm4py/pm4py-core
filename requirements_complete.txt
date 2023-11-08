@@ -12,7 +12,7 @@ networkx
 numpy
 packaging
 pandas
-pillow
+Pillow
 pydotplus
 pyparsing
 python-dateutil
@@ -20,6 +20,6 @@ pytz
 scipy
 six
 sortedcontainers
-stringdist
+StringDist
 tqdm
 tzdata

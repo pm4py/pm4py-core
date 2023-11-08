@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import pkgutil
+import importlib.util
 import random
 import warnings
 from enum import Enum
@@ -86,7 +86,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> EventLo
 
     show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
     progress = None
-    if pkgutil.find_loader("tqdm") and show_progress_bar:
+    if importlib.util.find_spec("tqdm") and show_progress_bar:
         from tqdm.auto import tqdm
         progress = tqdm(total=k, desc="prefix tree construction, completed prefixes of length :: ")
 

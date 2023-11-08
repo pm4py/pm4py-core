@@ -18,7 +18,6 @@
 import numpy as np
 from scipy.optimize import linprog, OptimizeResult
 from typing import Optional, Dict, Any, List
-from enum import Enum
 from pm4py.util import exec_utils
 
 

@@ -23,7 +23,7 @@ from pm4py.objects.transition_system import obj as ts, constants as ts_constants
 from enum import Enum
 from pm4py.util import constants
 from pm4py.objects.transition_system.obj import TransitionSystem
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.conversion.log import converter as log_conversion
 import pandas as pd

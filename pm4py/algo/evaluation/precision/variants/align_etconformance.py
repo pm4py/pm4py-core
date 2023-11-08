@@ -17,17 +17,16 @@
 from pm4py.objects import log as log_lib
 from pm4py.algo.evaluation.precision import utils as precision_utils
 from pm4py.objects.petri_net.utils import align_utils as utils, check_soundness
-from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.petri_net.utils.petri_utils import construct_trace_net
 from pm4py.objects.petri_net.utils.synchronous_product import construct
 from pm4py.statistics.start_activities.log.get import get_start_activities
 from pm4py.objects.petri_net.utils.align_utils import get_visible_transitions_eventually_enabled_by_marking
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants
-import pkgutil
+import importlib.util
 from enum import Enum
 from pm4py.util import constants
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.conversion.log import converter as log_converter
@@ -213,11 +212,11 @@ def align_fake_log_stop_marking(fake_log, net, marking, final_marking, parameter
     if parameters is None:
         parameters = {}
 
-    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, constants.SHOW_PROGRESS_BAR)
     multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, constants.ENABLE_MULTIPROCESSING_DEFAULT)
 
     progress = None
-    if pkgutil.find_loader("tqdm") and show_progress_bar and len(fake_log) > 1:
+    if importlib.util.find_spec("tqdm") and show_progress_bar and len(fake_log) > 1:
         from tqdm.auto import tqdm
         progress = tqdm(total=len(fake_log), desc="computing precision with alignments, completed variants :: ")
 

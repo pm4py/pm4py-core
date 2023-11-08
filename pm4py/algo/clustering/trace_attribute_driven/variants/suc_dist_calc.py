@@ -19,7 +19,7 @@ import numpy as np
 from pm4py.algo.clustering.trace_attribute_driven.util import filter_subsets
 from scipy.spatial.distance import pdist
 from collections import Counter
-from pm4py.util import exec_utils, pandas_utils, constants
+from pm4py.util import exec_utils, pandas_utils
 from enum import Enum
 from pm4py.util import constants
 

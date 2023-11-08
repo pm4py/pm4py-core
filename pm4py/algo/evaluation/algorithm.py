@@ -25,8 +25,8 @@ from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import constants
 from enum import Enum
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 import pandas as pd
 

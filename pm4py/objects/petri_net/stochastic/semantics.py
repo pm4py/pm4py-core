@@ -16,7 +16,7 @@
 '''
 
 import random
-from typing import Collection, Counter, Generic, TypeVar
+from typing import Counter, Generic, TypeVar
 
 from pm4py.objects.petri_net.semantics import PetriNetSemantics
 from pm4py.objects.petri_net.stochastic.obj import StochasticPetriNet

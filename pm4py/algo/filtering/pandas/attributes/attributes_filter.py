@@ -14,19 +14,16 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.statistics.attributes.common import get as attributes_common
-from pm4py.statistics.attributes.pandas.get import get_kde_numeric_attribute_json, get_kde_numeric_attribute, get_kde_date_attribute_json, get_kde_date_attribute, get_attribute_values
+from pm4py.statistics.attributes.pandas.get import get_attribute_values
 from pm4py.util.constants import CASE_CONCEPT_NAME
-from pm4py.algo.filtering.common.filtering_constants import DECREASING_FACTOR
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
-from pm4py.util.constants import PARAM_MOST_COMMON_VARIANT
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, Union, List
 import pandas as pd
 
 

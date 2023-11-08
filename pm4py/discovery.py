@@ -18,7 +18,6 @@ __doc__ = """
 The ``pm4py.discovery`` module contains the process discovery algorithms implemented in ``pm4py``
 """
 
-import warnings
 from typing import Tuple, Union, List, Dict, Any, Optional, Set
 
 import pandas as pd
@@ -26,6 +25,7 @@ from pandas import DataFrame
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.dfg.obj import DFG
+from pm4py.objects.powl.obj import POWL
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.transition_system.obj import TransitionSystem
 from pm4py.objects.trie.obj import Trie
@@ -34,10 +34,10 @@ from pm4py.objects.log.obj import EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
-from pm4py.utils import get_properties, xes_constants, __event_log_deprecation_warning
+from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.util import constants
 import deprecation
-import pkgutil
+import importlib.util
 
 
 def discover_dfg(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:
@@ -131,7 +131,7 @@ def discover_dfg_typed(log: pd.DataFrame, case_id_key: str = "case:concept:name"
         log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     if type(log) is pd.DataFrame:
         return clean.apply(log, parameters)
-    elif pkgutil.find_loader("polars"):
+    elif importlib.util.find_spec("polars"):
         import polars as pl
         if type(log) is pl.DataFrame:
             from pm4py.algo.discovery.dfg.variants import clean_polars
@@ -292,7 +292,7 @@ def discover_petri_net_alpha_plus(log: Union[EventLog, pd.DataFrame], activity_k
     return alpha_miner.apply(log, variant=alpha_miner.Variants.ALPHA_VERSION_PLUS, parameters=get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key))
 
 
-def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame, DFG], multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[
+def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame, DFG], multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, noise_threshold: float = 0.0, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", disable_fallthroughs: bool = False) -> Tuple[
         PetriNet, Marking, Marking]:
     """
     Discovers a Petri net using the inductive miner algorithm.
@@ -307,6 +307,7 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame, DFG], multi_
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+    :param disable_fallthroughs: disable the Inductive Miner fall-throughs
     :rtype: ``Tuple[PetriNet, Marking, Marking]``
 
     .. code-block:: python3
@@ -325,7 +326,7 @@ def discover_petri_net_inductive(log: Union[EventLog, pd.DataFrame, DFG], multi_
             log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     pt = discover_process_tree_inductive(
-        log, noise_threshold, multi_processing=multi_processing, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+        log, noise_threshold, multi_processing=multi_processing, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, disable_fallthroughs=disable_fallthroughs)
     from pm4py.convert import convert_to_petri_net
     return convert_to_petri_net(pt)
 
@@ -374,7 +375,7 @@ def discover_petri_net_heuristics(log: Union[EventLog, pd.DataFrame], dependency
         return heuristics_miner.apply(log, parameters=parameters)
 
 
-def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_threshold: float = 0.0, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> ProcessTree:
+def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_threshold: float = 0.0, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", disable_fallthroughs: bool = False) -> ProcessTree:
     """
     Discovers a process tree using the inductive miner algorithm
 
@@ -388,6 +389,7 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame, DFG], noi
     :param multi_processing: boolean that enables/disables multiprocessing in inductive miner
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+    :param disable_fallthroughs: disable the Inductive Miner fall-throughs
     :rtype: ``ProcessTree``
 
     .. code-block:: python3
@@ -410,6 +412,7 @@ def discover_process_tree_inductive(log: Union[EventLog, pd.DataFrame, DFG], noi
         log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
     parameters["noise_threshold"] = noise_threshold
     parameters["multiprocessing"] = multi_processing
+    parameters["disable_fallthroughs"] = disable_fallthroughs
 
     variant = inductive_miner.Variants.IMf if noise_threshold > 0 else inductive_miner.Variants.IM
 
@@ -556,7 +559,7 @@ def discover_eventually_follows_graph(log: Union[EventLog, pd.DataFrame], activi
         return get.apply(log, parameters=properties)
 
 
-def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_threshold: float = 0.0, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> BPMN:
+def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_threshold: float = 0.0, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", disable_fallthroughs: bool = False) -> BPMN:
     """
     Discovers a BPMN using the Inductive Miner algorithm
 
@@ -570,6 +573,7 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_thres
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+    :param disable_fallthroughs: disable the Inductive Miner fall-throughs
     :rtype: ``BPMN``
 
     .. code-block:: python3
@@ -588,7 +592,7 @@ def discover_bpmn_inductive(log: Union[EventLog, pd.DataFrame, DFG], noise_thres
             log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
     pt = discover_process_tree_inductive(
-        log, noise_threshold, multi_processing=multi_processing, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+        log, noise_threshold, multi_processing=multi_processing, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, disable_fallthroughs=disable_fallthroughs)
     from pm4py.convert import convert_to_bpmn
     return convert_to_bpmn(pt)
 
@@ -805,6 +809,44 @@ def discover_declare(log: Union[EventLog, pd.DataFrame], allowed_templates: Opti
 
     from pm4py.algo.discovery.declare import algorithm as declare_discovery
     return declare_discovery.apply(log, parameters=properties)
+
+
+def discover_powl(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> POWL:
+    """
+    Discovers a POWL model from an event log.
+
+    Reference paper:
+    Kourani, Humam, and Sebastiaan J. van Zelst. "POWL: partially ordered workflow language." International Conference on Business Process Management. Cham: Springer Nature Switzerland, 2023.
+
+    :param log: event log / Pandas dataframe
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``POWL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes('tests/input_data/receipt.xes')
+        powl_model = pm4py.discover_powl(log, activity_key='concept:name')
+        print(powl_model)
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]:
+        raise Exception(
+            "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(
+            log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    import pm4py
+    log = pm4py.convert_to_event_log(log, case_id_key=case_id_key)
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key)
+
+    from pm4py.algo.discovery.powl import algorithm as powl_discovery
+    return powl_discovery.apply(log, parameters=properties)
 
 
 def discover_batches(log: Union[EventLog, pd.DataFrame], merge_distance: int = 15 * 60, min_batch_size: int = 2, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource") -> List[

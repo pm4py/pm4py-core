@@ -17,7 +17,7 @@
 from pm4py.algo.discovery.ocel.interleavings.utils import merge_dataframe_rel_cases
 import pandas as pd
 from typing import Optional, Dict, Any
-from pm4py.util import exec_utils, constants, xes_constants, pandas_utils
+from pm4py.util import exec_utils, constants, xes_constants
 from enum import Enum
 
 

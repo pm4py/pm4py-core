@@ -18,9 +18,9 @@ from pm4py.util import exec_utils
 from enum import Enum
 import tempfile
 from graphviz import Digraph
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any
 from pm4py.objects.bpmn.obj import BPMN
-from pm4py.util import typing, constants
+from pm4py.util import constants
 import graphviz
 
 
@@ -56,12 +56,14 @@ def apply(bpmn_graph: BPMN, parameters: Optional[Dict[Any, Any]] = None) -> grap
     from pm4py.objects.bpmn.util.sorting import get_sorted_nodes_edges
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
-    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "LR")
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, constants.DEFAULT_RANKDIR_GVIZ)
     font_size = exec_utils.get_param_value(Parameters.FONT_SIZE, parameters, 12)
     font_size = str(font_size)
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
+
     viz = Digraph("", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     viz.graph_attr['rankdir'] = rankdir
 

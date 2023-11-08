@@ -18,7 +18,7 @@ import copy
 
 from pm4py.objects.petri_net.utils import petri_utils as pn_utils
 from pm4py.objects.petri_net.obj import PetriNet
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any
 
 
 def _short_circuit_petri_net(net):

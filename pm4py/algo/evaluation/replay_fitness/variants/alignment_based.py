@@ -19,10 +19,9 @@ from pm4py.algo.conformance.alignments.decomposed import algorithm as decomp_ali
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util import constants
-from typing import Optional, Dict, Any, Union, Tuple, List
-from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.objects.petri_net.obj import PetriNet, Marking
-import pandas as pd
 from pm4py.util import typing
 
 

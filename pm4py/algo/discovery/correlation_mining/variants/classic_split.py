@@ -21,7 +21,6 @@ from pm4py.objects.conversion.log import converter
 from pm4py.algo.discovery.correlation_mining.variants import classic
 from collections import Counter
 import numpy as np
-import pandas as pd
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd

@@ -16,18 +16,12 @@
 '''
 from enum import Enum
 
-from pm4py.algo.filtering.common.filtering_constants import DECREASING_FACTOR
-from pm4py.algo.filtering.log.variants import variants_filter
-from pm4py.objects.log.obj import EventLog
-from pm4py.statistics.start_activities.common import get as start_activities_common
-from pm4py.statistics.start_activities.log.get import get_start_activities
-from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 
-from typing import Optional, Dict, Any, Union, Tuple, List
-from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from typing import Optional, Dict, Any, Union, List
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.conversion.log import converter as log_converter
 
 

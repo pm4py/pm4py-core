@@ -10,6 +10,18 @@ def declare_simple():
     declare_simple.execute_script()
 
 
+def variants_paths_duration():
+    from examples import variants_paths_duration
+    print("\n\nvariants_paths_duration")
+    variants_paths_duration.execute_script()
+
+
+def feature_extraction_case_loc():
+    from examples import feature_extraction_case_loc
+    print("\n\nfeature_extraction_case_loc")
+    feature_extraction_case_loc.execute_script()
+
+
 def log_skeleton_manual_constraints():
     from examples import log_skeleton_manual_constraints
     print("\n\nlog_skeleton_manual_constraints")
@@ -772,12 +784,6 @@ def logs_alignments():
     logs_alignment.execute_script()
 
 
-def visualization_serialization():
-    from examples import visualization_serialization
-    print("\n\visualization_serialization")
-    visualization_serialization.execute_script()
-
-
 def orgmining_local_diagn():
     from examples import orgmining_local_diagn
     print("\n\norgmining_local_diagn")
@@ -805,6 +811,10 @@ def process_tree_reduction():
 def execute_script(f):
     try:
         f()
+    except ImportError:
+        import time
+        traceback.print_exc()
+        time.sleep(3)
     except:
         traceback.print_exc()
         input("\npress INPUT if you want to continue")
@@ -812,8 +822,17 @@ def execute_script(f):
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
+import pm4py
+
+pm4py.util.constants.SHOW_PROGRESS_BAR = True
+pm4py.util.constants.SHOW_EVENT_LOG_DEPRECATION = False
+pm4py.util.constants.SHOW_INTERNAL_WARNINGS = False
+#pm4py.util.constants.DEFAULT_TIMESTAMP_PARSE_FORMAT = None
+
 if __name__ == "__main__":
     execute_script(declare_simple)
+    execute_script(variants_paths_duration)
+    execute_script(feature_extraction_case_loc)
     execute_script(log_skeleton_manual_constraints)
     execute_script(stochastic_petri_playout)
     execute_script(trace_attrib_hierarch_cluster)
@@ -890,7 +909,6 @@ if __name__ == "__main__":
     execute_script(process_tree_reduction)
     execute_script(dataframe_prefix_and_fea_extraction)
     execute_script(logs_alignments)
-    execute_script(visualization_serialization)
     execute_script(bpmn_from_pt)
     execute_script(bpmn_import_and_to_petri_net)
     execute_script(tree_playout)

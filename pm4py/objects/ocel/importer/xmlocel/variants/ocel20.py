@@ -36,6 +36,7 @@ class Parameters(Enum):
     INTERNAL_INDEX = constants.PARAM_INTERNAL_INDEX
     QUALIFIER = constants.PARAM_QUALIFIER
     CHANGED_FIELD = constants.PARAM_CHNGD_FIELD
+    ENCODING = "encoding"
 
 
 def parse_xml(value, tag_str_lower, parser):
@@ -56,6 +57,8 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     object_changes_list = []
     o2o_list = []
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, None)
+
     event_id_column = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, constants.DEFAULT_EVENT_ID)
     event_activity_column = exec_utils.get_param_value(Parameters.EVENT_ACTIVITY, parameters, constants.DEFAULT_EVENT_ACTIVITY)
     event_timestamp_column = exec_utils.get_param_value(Parameters.EVENT_TIMESTAMP, parameters,
@@ -69,8 +72,12 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
 
     date_parser = dt_parsing.parser.get()
 
-    parser = etree.XMLParser(remove_comments=True)
-    tree = objectify.parse(file_path, parser=parser)
+    parser = etree.XMLParser(remove_comments=True, encoding=encoding)
+
+    F = open(file_path, "rb")
+    tree = objectify.parse(F, parser=parser)
+    F.close()
+
     root = tree.getroot()
 
     object_type_attributes = {}
@@ -124,7 +131,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                             except:
                                 attribute_type = "string"
                             attribute_text = parse_xml(attribute.text, attribute_type, date_parser)
-                            if attribute_time == "0" or attribute_time == "1970-01-01T00:00:00":
+                            if attribute_time == "0" or attribute_time.startswith("1970-01-01T00:00:00"):
                                 obj_dict[attribute_name] = attribute_text
                             else:
                                 attribute_time = date_parser.apply(attribute_time)

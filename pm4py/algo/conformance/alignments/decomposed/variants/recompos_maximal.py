@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import pkgutil
+import importlib.util
 import sys
 import time
 from copy import copy
@@ -31,7 +31,7 @@ from pm4py.util import variants_util
 from enum import Enum
 from pm4py.util import constants
 
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import typing
@@ -175,7 +175,7 @@ def apply_log(log, list_nets, parameters=None):
     if parameters is None:
         parameters = {}
 
-    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, constants.SHOW_PROGRESS_BAR)
     icache = exec_utils.get_param_value(Parameters.ICACHE, parameters, dict())
     mcache = exec_utils.get_param_value(Parameters.MCACHE, parameters, dict())
 
@@ -185,7 +185,7 @@ def apply_log(log, list_nets, parameters=None):
     variants_idxs = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
 
     progress = None
-    if pkgutil.find_loader("tqdm") and show_progress_bar:
+    if importlib.util.find_spec("tqdm") and show_progress_bar:
         from tqdm.auto import tqdm
         progress = tqdm(total=len(variants_idxs),
                         desc="aligning log with decomposition/recomposition, completed variants :: ")

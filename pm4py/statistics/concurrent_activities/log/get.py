@@ -19,7 +19,7 @@ from enum import Enum
 from pm4py.objects.conversion.log import converter
 from pm4py.objects.log.util import sorting
 from pm4py.util import exec_utils, constants, xes_constants
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog
 
 

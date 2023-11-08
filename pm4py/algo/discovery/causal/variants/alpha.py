@@ -19,7 +19,7 @@ This module contains code that allows us to compute a causal graph, according to
 It expects a dictionary of the form (activity,activity) -> num of occ.
 A causal relation holds between activity a and b, written as a->b, if dfg(a,b) > 0 and dfg(b,a) = 0.
 """
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Dict, Tuple
 
 
 def apply(dfg: Dict[Tuple[str, str], int]) -> Dict[Tuple[str, str], int]:

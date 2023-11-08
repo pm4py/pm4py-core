@@ -18,7 +18,7 @@ from pm4py.algo.discovery.transition_system.variants import view_based
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.objects.transition_system.obj import TransitionSystem
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
 

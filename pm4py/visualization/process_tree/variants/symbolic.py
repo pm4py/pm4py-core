@@ -15,7 +15,6 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import tempfile
-import uuid
 from copy import deepcopy
 from enum import Enum
 
@@ -23,7 +22,7 @@ from graphviz import Graph
 
 from pm4py.objects.process_tree.utils import generic as util
 from pm4py.util import exec_utils, constants
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 from pm4py.objects.process_tree.obj import ProcessTree
 import graphviz
 
@@ -34,6 +33,7 @@ class Parameters(Enum):
     ENABLE_DEEPCOPY = "enable_deepcopy"
     FONT_SIZE = "font_size"
     BGCOLOR = "bgcolor"
+    RANKDIR = "rankdir"
 
 
 def get_color(node, color_map):
@@ -96,10 +96,12 @@ def apply(tree: ProcessTree, parameters: Optional[Dict[Union[str, Parameters], A
         parameters = {}
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
 
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, constants.DEFAULT_RANKDIR_GVIZ)
 
-    viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
+    viz = Graph("pt", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor, "rankdir": rankdir})
     viz.attr('node', shape='ellipse', fixedsize='false')
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")

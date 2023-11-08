@@ -18,7 +18,7 @@ from pm4py.algo.simulation.playout.dfg.variants import classic, performance
 from enum import Enum
 from pm4py.util import exec_utils
 from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+from pm4py.objects.log.obj import EventLog
 
 
 class Variants(Enum):

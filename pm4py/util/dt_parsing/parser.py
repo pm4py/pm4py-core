@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import sys
-import pkgutil
+import importlib.util
 import warnings
 from pm4py.util import constants
 
@@ -42,7 +42,7 @@ if sys.version_info >= (3, 7):
 
     DEFAULT_VARIANT = STRPFROMISO
 
-if pkgutil.find_loader("ciso8601"):
+if importlib.util.find_spec("ciso8601"):
     # ciso8601 variant is included only if ciso8601 installed
     # slowly it will fade out of the default since now Python
     # in the default package includes an equally performing library
@@ -73,8 +73,9 @@ def get(variant=DEFAULT_VARIANT):
     if DEFAULT_VARIANT == STRPFROMISO:
         if not constants.TRIGGERED_DT_PARSING_WARNING:
             if sys.version_info < (3, 11):
-                warnings.warn(
-                    "ISO8601 strings are not fully supported with strpfromiso for Python versions below 3.11")
+                if constants.SHOW_INTERNAL_WARNINGS:
+                    warnings.warn(
+                        "ISO8601 strings are not fully supported with strpfromiso for Python versions below 3.11")
                 constants.TRIGGERED_DT_PARSING_WARNING = True
 
     return VERSIONS[variant]

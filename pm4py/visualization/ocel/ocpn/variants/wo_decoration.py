@@ -68,15 +68,15 @@ def apply(ocpn: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) -> 
 
     image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
     bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
-    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "LR")
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, constants.DEFAULT_RANKDIR_GVIZ)
 
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
+    filename.close()
+
     viz = Digraph("ocdfg", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
     viz.attr('node', shape='ellipse', fixedsize='false')
 
     activities_map = {}
-    source_places = {}
-    target_places = {}
     transition_map = {}
     places = {}
 
@@ -84,24 +84,40 @@ def apply(ocpn: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) -> 
         activities_map[act] = str(uuid.uuid4())
         viz.node(activities_map[act], label=act, shape="box")
 
-    for ot in ocpn["object_types"]:
-        otc = ot_to_color(ot)
-        source_places[ot] = str(uuid.uuid4())
-        target_places[ot] = str(uuid.uuid4())
-        viz.node(source_places[ot], label=ot, shape="ellipse", style="filled", fillcolor=otc)
-        viz.node(target_places[ot], label=ot, shape="underline", fontcolor=otc)
-
     for ot in ocpn["petri_nets"]:
         otc = ot_to_color(ot)
         net, im, fm = ocpn["petri_nets"][ot]
+        all_places_diagn = {}
+        all_trans_diagn = {}
+        if ot in ocpn["tbr_results"]:
+            all_places_diagn = ocpn["tbr_results"][ot][0]
+            all_trans_diagn = ocpn["tbr_results"][ot][1]
+
         for place in net.places:
+            place_id = str(uuid.uuid4())
+            places[place] = place_id
+            place_label = " "
+            place_shape = "circle"
+            place_fontcolor = None
+            place_fillcolor = otc
+
             if place in im:
-                places[place] = source_places[ot]
+                place_label = ot
+                place_shape = "ellipse"
             elif place in fm:
-                places[place] = target_places[ot]
-            else:
-                places[place] = str(uuid.uuid4())
-                viz.node(places[place], label=" ", shape="circle", style="filled", fillcolor=otc)
+                place_label = ot
+                place_shape = "underline"
+                place_fontcolor = otc
+                place_fillcolor = None
+
+            # if the place has some TBR diagnostics, override the label in any case
+            if place in all_places_diagn:
+                this_diagn = all_places_diagn[place]
+                place_label = "p=%d m=%d\nc=%d r=%d" % (
+                    this_diagn['p'], this_diagn['m'], this_diagn['c'], this_diagn['r'])
+
+            viz.node(places[place], label=place_label, shape=place_shape, style="filled" if place_fillcolor is not None else None, fillcolor=place_fillcolor, fontcolor=place_fontcolor)
+
         for trans in net.transitions:
             if trans.label is not None:
                 transition_map[trans] = activities_map[trans.label]
@@ -110,14 +126,21 @@ def apply(ocpn: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) -> 
                 viz.node(transition_map[trans], label=" ", shape="box", style="filled", fillcolor=otc)
 
         for arc in net.arcs:
+            arc_label = " "
             if type(arc.source) is PetriNet.Place:
-                is_double = arc.target.label in ocpn["double_arcs_on_activity"][ot] and ocpn["double_arcs_on_activity"][ot][arc.target.label]
+                is_double = arc.target.label in ocpn["double_arcs_on_activity"][ot] and \
+                            ocpn["double_arcs_on_activity"][ot][arc.target.label]
                 penwidth = "4.0" if is_double else "1.0"
-                viz.edge(places[arc.source], transition_map[arc.target], color=otc, penwidth=penwidth)
+                if arc.target in all_trans_diagn:
+                    arc_label = str(all_trans_diagn[arc.target])
+                viz.edge(places[arc.source], transition_map[arc.target], color=otc, penwidth=penwidth, label=arc_label)
             elif type(arc.source) is PetriNet.Transition:
-                is_double = arc.source.label in ocpn["double_arcs_on_activity"][ot] and ocpn["double_arcs_on_activity"][ot][arc.source.label]
+                is_double = arc.source.label in ocpn["double_arcs_on_activity"][ot] and \
+                            ocpn["double_arcs_on_activity"][ot][arc.source.label]
                 penwidth = "4.0" if is_double else "1.0"
-                viz.edge(transition_map[arc.source], places[arc.target], color=otc, penwidth=penwidth)
+                if arc.source in all_trans_diagn:
+                    arc_label = str(all_trans_diagn[arc.source])
+                viz.edge(transition_map[arc.source], places[arc.target], color=otc, penwidth=penwidth, label=arc_label)
 
     viz.attr(rankdir=rankdir)
     viz.format = image_format.replace("html", "plain-ext")

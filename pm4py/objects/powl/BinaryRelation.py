@@ -17,22 +17,22 @@
 
 import copy
 from itertools import product
-from typing import Hashable, TypeVar
+from typing import Hashable, TypeVar, List as TList, Set as TSet
 
 T = TypeVar('T', bound=Hashable)
 class BinaryRelation:
 
-    def __init__(self, nodes: list[T]):
+    def __init__(self, nodes: TList[T]):
         self._number_nodes = 0
         self._set_nodes(nodes)
         self._edges = [[False for _ in range(self._number_nodes)] for _ in range(self._number_nodes)]
         self._start_nodes = None
         self._end_nodes = None
 
-    def get_nodes(self) -> list[T]:
+    def get_nodes(self) -> TList[T]:
         return self._nodes
 
-    def _set_nodes(self, nodes: list[T]) -> None:
+    def _set_nodes(self, nodes: TList[T]) -> None:
         self._nodes = nodes
         self._map_node_to_id = {}
         self._map_id_to_node = {}
@@ -130,7 +130,7 @@ class BinaryRelation:
     def is_strict_partial_order(self) -> bool:
         return self.is_irreflexive() and self.is_transitive()
 
-    def get_start_nodes(self) -> set[T]:
+    def get_start_nodes(self) -> TSet[T]:
         res = set(self.nodes)
         for i in range(len(self.nodes)):
             for j in range(len(self.nodes)):
@@ -138,7 +138,7 @@ class BinaryRelation:
                     res.discard(self._map_id_to_node[j])
         return res
 
-    def get_end_nodes(self) -> set[T]:
+    def get_end_nodes(self) -> TSet[T]:
         res = set(self.nodes)
         for i in range(len(self.nodes)):
             for j in range(len(self.nodes)):

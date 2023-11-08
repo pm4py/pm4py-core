@@ -23,7 +23,6 @@ import pandas as pd
 import numpy as np
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.log.obj import EventLog, EventStream
-from pm4py.util import constants
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.utils import __event_log_deprecation_warning
 import random

@@ -21,7 +21,7 @@ from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.process_tree.obj import Operator
 from enum import Enum
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 
 
 class Parameters(Enum):

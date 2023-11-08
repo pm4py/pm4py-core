@@ -21,9 +21,7 @@ from typing import Optional, Set
 from copy import copy, deepcopy
 
 from pm4py.objects.log.obj import Trace, Event
-from pm4py.objects.petri_net import properties
 from pm4py.objects.petri_net import semantics, properties
-from pm4py.objects.petri_net.utils.networkx_graph import create_networkx_directed_graph
 from pm4py.objects.petri_net.obj import PetriNet, Marking, ResetNet, InhibitorNet
 from pm4py.objects.petri_net.saw_net.obj import StochasticArcWeightNet
 from pm4py.util import xes_constants as xes_util

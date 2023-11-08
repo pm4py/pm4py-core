@@ -24,8 +24,8 @@ from pm4py.objects.petri_net.utils.align_utils import get_visible_transitions_ev
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util import constants
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.conversion.log import converter as log_converter
 import pandas as pd
@@ -86,7 +86,7 @@ def apply(log: EventLog, net: PetriNet, marking: Marking, final_marking: Marking
                                                       executor.Variants.TOKEN_REPLAY)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, log_lib.util.xes.DEFAULT_NAME_KEY)
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
-    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, True)
+    show_progress_bar = exec_utils.get_param_value(Parameters.SHOW_PROGRESS_BAR, parameters, constants.SHOW_PROGRESS_BAR)
 
     # default value for precision, when no activated transitions (not even by looking at the initial marking) are found
     precision = 1.0

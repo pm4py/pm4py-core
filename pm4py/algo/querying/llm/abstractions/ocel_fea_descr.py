@@ -17,7 +17,7 @@
 
 from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import exec_utils, constants
 from enum import Enum
 import numpy as np
 import pandas as pd

@@ -15,7 +15,6 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import copy
-from pm4py.objects.petri_net import properties
 from pm4py.objects.petri_net.sem_interface import Semantics
 from pm4py.objects.petri_net.obj import ResetNet
 from pm4py.objects.petri_net.obj import InhibitorNet

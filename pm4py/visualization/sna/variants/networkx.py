@@ -41,6 +41,7 @@ def get_temp_file_name(format):
         Format of the target image
     """
     filename = tempfile.NamedTemporaryFile(suffix='.' + format)
+    filename.close()
 
     return filename.name
 

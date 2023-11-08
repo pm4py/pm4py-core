@@ -14,8 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-
-from typing import TypeVar, Optional, Dict, Any, Type
+from typing import TypeVar, Optional, Dict, Any, Type, List as TList
 
 from pm4py.algo.discovery.powl.inductive.base_case.abc import BaseCase
 from pm4py.algo.discovery.powl.inductive.base_case.empty_log import EmptyLogBaseCaseUVCL
@@ -31,7 +30,7 @@ S = TypeVar('S', bound=BaseCase)
 class BaseCaseFactory:
 
     @classmethod
-    def get_base_cases(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> list[Type[S]]:
+    def get_base_cases(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> TList[Type[S]]:
         if type(obj) is IMDataStructureUVCL:
             return [EmptyLogBaseCaseUVCL, SingleActivityBaseCaseUVCL]
         return []

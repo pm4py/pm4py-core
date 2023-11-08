@@ -2,6 +2,7 @@ from pm4py.objects.log.util import dataframe_utils
 import unittest
 import os
 import pandas as pd
+from pm4py.util import constants
 from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 
@@ -12,14 +13,14 @@ class DocTests(unittest.TestCase):
         return log
 
     def load_running_example_df(self):
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         return df
 
     def load_running_example_stream(self):
         from pm4py.objects.conversion.log import converter
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         stream = converter.apply(df, variant=converter.TO_EVENT_STREAM)
         return stream
 
@@ -34,14 +35,14 @@ class DocTests(unittest.TestCase):
         return log
 
     def load_receipt_df(self):
-        df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = pd.read_csv(os.path.join("input_data", "receipt.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         return df
 
     def load_receipt_stream(self):
         from pm4py.objects.conversion.log import converter
-        df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = pd.read_csv(os.path.join("input_data", "receipt.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         stream = converter.apply(df, variant=converter.TO_EVENT_STREAM)
         return stream
 
@@ -75,14 +76,14 @@ class DocTests(unittest.TestCase):
         import pandas as pd
         from pm4py.objects.conversion.log import converter as log_converter
 
-        log_csv = pd.read_csv(os.path.join("input_data", "running-example.csv"), sep=',')
+        log_csv = pd.read_csv(os.path.join("input_data", "running-example.csv"), sep=',', dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         event_log = log_converter.apply(log_csv, variant=log_converter.Variants.TO_EVENT_LOG)
 
     def test_4(self):
         import pandas as pd
         from pm4py.objects.conversion.log import converter as log_converter
 
-        log_csv = pd.read_csv(os.path.join("input_data", "running-example.csv"), sep=',')
+        log_csv = pd.read_csv(os.path.join("input_data", "running-example.csv"), sep=',', dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
         log_csv.rename(columns={'case:concept:name': 'case'}, inplace=True)
         parameters = {log_converter.Variants.TO_EVENT_LOG.value.Parameters.CASE_ID_KEY: 'case'}
         event_log = log_converter.apply(log_csv, parameters=parameters, variant=log_converter.Variants.TO_EVENT_LOG)
@@ -152,37 +153,6 @@ class DocTests(unittest.TestCase):
                                                        max_case_performance=864000, parameters={
                 case_filter.Parameters.CASE_ID_KEY: "case:concept:name",
                 case_filter.Parameters.TIMESTAMP_KEY: "time:timestamp"})
-
-    def test_16(self):
-        from pm4py.algo.filtering.log.start_activities import start_activities_filter
-        log = self.load_running_example_xes()
-        log_start = start_activities_filter.get_start_activities(log)
-        filtered_log = start_activities_filter.apply(log,
-                                                     ["register request"])
-
-    def test_17(self):
-        from pm4py.algo.filtering.pandas.start_activities import start_activities_filter
-        dataframe = self.load_running_example_df()
-        log_start = start_activities_filter.get_start_activities(dataframe)
-        df_start_activities = start_activities_filter.apply(dataframe, ["register request"],
-                                                            parameters={
-                                                                start_activities_filter.Parameters.CASE_ID_KEY: "case:concept:name",
-                                                                start_activities_filter.Parameters.ACTIVITY_KEY: "concept:name"})
-
-    def test_20(self):
-        from pm4py.algo.filtering.log.end_activities import end_activities_filter
-        log = self.load_running_example_xes()
-        end_activities = end_activities_filter.get_end_activities(log)
-        filtered_log = end_activities_filter.apply(log, ["pay compensation"])
-
-    def test_21(self):
-        from pm4py.algo.filtering.pandas.end_activities import end_activities_filter
-        df = self.load_running_example_df()
-        end_acitivites = end_activities_filter.get_end_activities(df)
-        filtered_df = end_activities_filter.apply(df, ["pay compensation"],
-                                                  parameters={
-                                                      end_activities_filter.Parameters.CASE_ID_KEY: "case:concept:name",
-                                                      end_activities_filter.Parameters.ACTIVITY_KEY: "concept:name"})
 
     def test_22(self):
         from pm4py.algo.filtering.log.variants import variants_filter
@@ -302,8 +272,8 @@ class DocTests(unittest.TestCase):
 
     def test_39(self):
         import os
-        df = pd.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df)
+        df = pd.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
 
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
         filtered_df_events = attributes_filter.apply_numeric_events(df, 34, 36,

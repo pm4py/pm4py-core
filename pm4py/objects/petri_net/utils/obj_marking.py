@@ -14,10 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-
-from collections import Counter
 import random
-import traceback
 
 
 class ObjMarking(dict):
