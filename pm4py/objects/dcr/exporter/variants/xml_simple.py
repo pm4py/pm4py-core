@@ -21,7 +21,7 @@ def export_dcr_graph(dcr, root, parents_dict=None, replace_whitespace=''):
                 xml_source.text = event_prime.replace(' ', replace_whitespace)
                 xml_target = etree.SubElement(xml_condition, "target")
                 xml_target.text = event.replace(' ', replace_whitespace)
-                if 'conditionsForDelays' in dcr.keys() and event in dcr['conditionsForDelays'] \
+                if 'conditionsForDelays' in dcr.__dict__.keys() and event in dcr['conditionsForDelays'] \
                         and event_prime in dcr['conditionsForDelays'][event]:
                     time = dcr['conditionsForDelays'][event][event_prime]
                     if time.floor(freq='S').to_numpy() > 0:
@@ -35,7 +35,7 @@ def export_dcr_graph(dcr, root, parents_dict=None, replace_whitespace=''):
                 xml_source.text = event.replace(' ', replace_whitespace)
                 xml_target = etree.SubElement(xml_response, "target")
                 xml_target.text = event_prime.replace(' ', replace_whitespace)
-                if 'responseToDeadlines' in dcr.keys() and event in dcr['responseToDeadlines'] \
+                if 'responseToDeadlines' in dcr.__dict__.keys() and event in dcr['responseToDeadlines'] \
                         and event_prime in dcr['responseToDeadlines'][event]:
                     time = dcr['responseToDeadlines'][event][event_prime]
                     if time.floor(freq='S').to_numpy() > 0:
@@ -74,7 +74,6 @@ def export_dcr_graph(dcr, root, parents_dict=None, replace_whitespace=''):
                 xml_target = etree.SubElement(xml_exclude, "target")
                 xml_target.text = event_prime.replace(' ', replace_whitespace)
 
-        # TODO: ask Morten how to export the marking with XML simple
         # if event in dcr['marking']['executed']:
         #     marking_exec = etree.SubElement(executed, "event")
         #     marking_exec.set("id", event)
@@ -88,8 +87,19 @@ def export_dcr_graph(dcr, root, parents_dict=None, replace_whitespace=''):
 
 def export_dcr_xml(dcr, output_file_name, dcr_title='DCR from pm4py', dcr_description=None,replace_whitespace=''):
     '''
-    dcr : the mined graph
-    output_file_name: dcrxml file name without extension
+    Writes a DCR graph object to disk in the ``.xml`` file format (exported as ``.xml`` file).
+    The file can be imported and visualised in the DCR solutions portal (https://dcrgraphs.net/)
+
+    Parameters
+    -----------
+    dcr
+        the DCR graph
+    output_file_name
+        dcrxml file name
+    dcr_title
+        title of the DCR graph
+    dcr_description
+        description of the DCR graph
     '''
     root = etree.Element("DCRModel")
     if dcr_title:

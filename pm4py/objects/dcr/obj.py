@@ -1,6 +1,22 @@
-from enum import Enum
-from collections import Counter
+"""
+This module defines the core components for modelling Declarative Process Models as
+Dynamic Condition Response (DCR) Graphs.
 
+The module encapsulates the essential elements of DCR Graphs, such as events,
+relations, markings, and constraints, providing a foundational framework for
+working with DCR Graphs within PM4Py.
+
+Classes:
+    Relations: An enumeration of possible relations between events in a DCR Graph.
+    Marking: Represents the state of events in terms of executed, included, and pending.
+    DCR_Graph: Encapsulates the structure and behavior of a DCR Graph, offering methods to query and manipulate it.
+
+The `dcr_template` dictionary provides a blueprint for initializing new DCR Graphs with default settings.
+"""
+
+from enum import Enum
+from typing import Set, Dict
+from copy import deepcopy
 
 class Relations(Enum):
     I = 'includesTo'
@@ -32,426 +48,277 @@ dcr_template = {
     'labels': set(),
     'labelMapping': {},
     'roles': set(),
+    'principals': set(),
     'roleAssignments': {},
     'readRoleAssignments': {}
 }
 
-
-class Marking(object):
+class Marking:
     """
-    This is a per Event marking not a per graph marking
-    """
+    This class contains the set of all markings M(G), in which it contains three sets:
+    M(G) = executed x included x pending
 
+    Attributes
+    ----------
+    self.__executed: Set[str]
+        The set of executed events
+    self.__included: Set[str]
+        The set of included events
+    self.__pending: Set[str]
+        the set of pending events
+
+    Methods
+    --------
+    reset(self, initial_marking) -> None:
+        Given the initial marking of the DCR Graph, reset the marking, to restart execution of traces
+
+
+    """
     def __init__(self, executed, included, pending) -> None:
         self.__executed = executed
         self.__included = included
         self.__pending = pending
-        self.__last_executed = None
-        self.__deadline = None
-        super().__init__()
 
+    # getters and setters for datamanipulation, mainly used for DCR semantics
     @property
     def executed(self):
         return self.__executed
-
-    @executed.setter
-    def executed(self, value):
-        self.__executed = value
 
     @property
     def included(self):
         return self.__included
 
-    @included.setter
-    def included(self, value):
-        self.__included = value
-
     @property
     def pending(self):
         return self.__pending
 
-    @pending.setter
-    def pending(self, value):
-        self.__pending = value
+    def reset(self, initial_marking) -> None:
+        """
+        Resets the marking of a DCR graph, uses the graphs event to reset included marking
 
-    @property
-    def last_executed(self):
-        return self.__last_executed
+        Parameters
+        ----------
+        initial_marking
+            the events in the DCR Graphs
 
-    @last_executed.setter
-    def last_executed(self, value):
-        self.__last_executed = value
+        """
+        self.__executed = initial_marking.executed
+        self.__included = initial_marking.included
+        self.__pending = initial_marking.pending
 
-    @property
-    def deadline(self):
-        return self.__deadline
-
-    @deadline.setter
-    def deadline(self, value):
-        self.__deadline = value
-
+    # built-in functions for printing a visual string representation
     def __str__(self) -> str:
-        return f'( {self.__executed},{self.__included},{self.__pending})'
+        return self.__repr__()
+
+    def __repr__(self):
+        return f'{{executed: {self.__executed}, included: {self.__included}, pending: {self.__pending}}}'
 
 
-class Event(object):
+    def __getitem__(self, item):
+        for key, value in vars(self).items():
+            if item == key.split("_")[-1]:
+                return value
 
-    def __init__(self, id, label, parent, children, marking = Marking(False,True,False)) -> None:
-        """
+    def __setitem__(self, item, value):
+        for key, _ in vars(self).items():
+            if item == key.split("_")[-1]:
+                setattr(self, key, value)
 
-        :param id: id (assumed unique)
-        :param label: label
-        :param parent: parent (a graph or events)
-        :param children: children (a graph or events)
-        :param marking: default just included
-        """
-        self.__children = children
-        self.__loading = False
-        self.__parent = parent
-        self.__id = id
-        self.__label = label
-        self.__events = set()
-        if marking:
-            self.__marking = marking
-        else:
-            self.__marking = Marking(False, True, False)
 
-        self.__conditions = set()
-        self.__responses = set()
-        self.__milestones = set()
-        self.__includes = set()
-        self.__excludes = set()
-        super().__init__()
+class DCR_Graph(object):
+    """
+    The DCR Structure was implemented according to definition 3 in [1]_.
+    Follows the idea of DCR graph as a set of tuples
+    G = (E,Act,M,->*,*->,->{+,-},l)
+    G graphs consist of a tuple of the events the activities,
+    the marking of executed, included and pending events, all the relations, and the mapping of events to activities.
+
+    References
+    ----------
+    .. [1] Thomas T. Hildebrandt and Raghava Rao Mukkamala, "Declarative Event-BasedWorkflow as Distributed Dynamic Condition Response Graphs",
+      Electronic Proceedings in Theoretical Computer Science — 2011, Volume 69, 59–73. `DOI <10.4204/EPTCS.69.5>`_.
+
+    Attributes
+    ----------
+    self.__events: Set[str]
+        The set of all events in graph
+    self.__marking: Marking
+        the marking of the DCR graph loaded in
+    self.__labels: Set[str]
+        The set of activities in Graphs
+    self.__labelMapping: Dict[str, Set[str]]:
+        The set of event and their corresponding activity
+    self.__condiditionsFor: Dict[str, Set[str]]:
+        attribute containing all the conditions relation between events
+    self.__responseTo: Dict[str, Set[str]]:
+        attribute containing all the response relation between events
+    self.__includesTo: Dict[str, Set[str]]:
+        attribute containing all the include relations between events
+    self.__excludesTo: Dict[str, Set[str]]:
+        attribute containing all the exclude relations between events
+
+    Methods
+    --------
+    getEvent(activity) -> str:
+        returns the event of the associated activity
+    getActivity(event) -> str:
+        returns the activity of the given event
+    getConstraints() -> int:
+        returns the size of the model based on number of constraints
+
+    Parameters
+    ----------
+    template : dict, optional
+        A template dictionary to initialize the roles and assignments from, if provided.
+
+    Examples
+    --------
+    call this module and call the following
+    graph = DCR_graph(dcr_template)
+
+    Notes
+    -------
+    * DCR graph can not be initialized with a partially created template, use DCR_template for easy instantiation
+    """
+
+    # initiate the objects: contains events ID, activity, the 4 relations, markings, roles and principals
+    def __init__(self, template=None):
+        # DisCoveR uses bijective labelling, each event has one label
+        self.__events = set() if template is None else template['events']
+        self.__marking = Marking(set(), set(), set()) if template is None else (
+            Marking(template['marking']['executed'],template['marking']['included'], template['marking']['pending']))
+        self.__labels = set() if template is None else template['labels']
+        self.__conditionsFor = {} if template is None else template['conditionsFor']
+        self.__responseTo = {} if template is None else template['responseTo']
+        self.__includesTo = {} if template is None else template['includesTo']
+        self.__excludesTo = {} if template is None else template['excludesTo']
+        self.__labelMapping = {} if template is None else template['labelMapping']
+
+    # @property functions to extract values used for data manipulation and testing
+    @property
+    def events(self) -> Set[str]:
+        return self.__events
 
     @property
-    def marking(self):
+    def marking(self) -> Marking:
         return self.__marking
 
-    @property
-    def conditions(self):
-        return self.__conditions
+    @marking.setter
+    def marking(self, value: Marking) -> None:
+        self.__marking = value
 
     @property
-    def responses(self):
-        return self.__responses
+    def labels(self) -> Set[str]:
+        return self.__labels
 
     @property
-    def milestones(self):
-        return self.__milestones
+    def conditionsFor(self) -> Dict[str, Set[str]]:
+        return self.__conditionsFor
 
     @property
-    def includes(self):
-        return self.__includes
+    def responseTo(self) -> Dict[str, Set[str]]:
+        return self.__responseTo
 
     @property
-    def excludes(self):
-        return self.__excludes
+    def includesTo(self) -> Dict[str, Set[str]]:
+        return self.__includesTo
 
-    def isSubProcess(self):
-        return len(self.__children.events) > 0
+    @property
+    def excludesTo(self) -> Dict[str, Set[str]]:
+        return self.__excludesTo
 
-    def enabled(self):
-        if isinstance(self.__parent, Event):
-            if not self.__parent.enabled():
-                return False
+    @property
+    def labelMapping(self) -> Dict[str, Set[str]]:
+        return self.__labelMapping
 
-        if not self.__marking.included:
-            return False
+    def getEvent(self, activity: str) -> str:
+        """
+        Get the event ID of an activity from graph.
 
-        for e in self.__events:
-            if not e.is_accepting():
-                return False
+        Parameters
+        ----------
+        activity
+            the activity of an event
 
-        for r in self.__conditions:
-            if r.guard:
-                e = r.src
-                if e.marking.included and not e.marking.executed:
-                    return False
-                if r.delay:
-                    if r.delay > e.marking.last_executed:
-                        return False
+        Returns
+        -------
+        event
+            the event ID of activity
+        """
+        event = self.__labelMapping.get(activity, "None")
+        if event is "None":
+            return activity
+        event = event.pop()
+        self.__labelMapping[activity].add(event)
+        return event
 
-        for r in self.__milestones:
-            if r.guard:
-                e = r.src
-                if e.marking.included and e.marking.pending:
-                    return False
+    def getActivity(self, event: str) -> str:
+        """
+        get the activity of an Event
 
-        return True
+        Parameters
+        ----------
+        event
+            event ID
 
-    def canTimeStep(self, diff):
-        if self.__marking.deadline:
-            return self.__marking.deadline <= diff
+        Returns
+        -------
+        activity
+            the activity of the event
+        """
+        for activity in self.__labelMapping:
+            event_prime = self.__labelMapping[activity]
+            event_prime = event_prime.pop()
+            self.__labelMapping[activity].add(event_prime)
+            if event == event_prime:
+                return activity
+        return event
 
-    def timeStep(self, diff):
-        if self.__marking.last_executed:
-            self.__marking.last_executed = self.__marking.last_executed + diff
-        if self.__marking.deadline:
-            self.__marking.deadline = self.__marking.deadline - diff
+    def getConstraints(self) -> int:
+        """
+        compute constraints in DCR Graph
+            - conditions
+            - responses
+            - includes
+            - excludes
 
-    def execute(self):
-        if self.enabled():
-            self.__marking.executed = True
-            self.__marking.pending = False
-            self.__marking.deadline = None
-            self.__marking.last_executed = 0
+        Returns
+        -------
+        no
+            number of constraints
+        """
+        no = 0
+        for i in self.__conditionsFor.values():
+            no += len(i)
+        for i in self.__responseTo.values():
+            no += len(i)
+        for i in self.__excludesTo.values():
+            no += len(i)
+        for i in self.__includesTo.values():
+            no += len(i)
+        return no
 
-            for r in self.__responses:
-                if r.guard:
-                    e = r.trg
-                    e.marking.pending = True
-                    e.marking.deadline = r.deadline
+    def __repr__(self):
+        string = ""
+        for key, value in vars(self).items():
+            string += str(key.split("_")[-1])+": "+str(value)+"\n"
+        return string
 
-            for r in self.__excludes:
-                if r.guard:
-                    e = r.trg
-                    e.marking.included = False
+    def __str__(self):
+        return self.__repr__()
 
-            for r in self.__includes:
-                if r.guard:
-                    e = r.trg
-                    e.marking.included = True
+    def __eq__(self, other):
+        return self.conditionsFor == other.conditionsFor and self.responseTo == other.responseTo and self.includesTo == other.includesTo and self.excludesTo == other.excludesTo
 
-            if isinstance(self.__parent, Event):
-                if self.__parent.enabled():
-                    self.__parent.execute()
+    def __lt__(self, other):
+        return str(self.obj) < str(other.obj)
 
-    def isAccepting(self):
-        return not self.__marking.pending and self.__marking.included
+    def __getitem__(self, item):
+        for key, value in vars(self).items():
+            if item == key.split("_")[-1]:
+                return value
 
-    # TODO figure out what to override so that event comparisons work on names and not on labels (I assume labels are
-    #  displayed and names are hidden)
-    def __eq__(self, o: object) -> bool:
-        if isinstance(o, Event):
-            return self.__id == o.__id
-        elif isinstance(o, str):
-            return self.__id == o
-        else:
-            return super().__eq__(o)
-
-    def __hash__(self) -> int:
-        return self.__id.hash()
-
-class DataEvent(Event):
-
-    def __init__(self, id, label, parent, children, marking=Marking(False, True, False)) -> None:
-        super().__init__(id, label, parent, children, marking)
-
-
-class DCRGraph(object):
-
-    def __init__(self, parent_graph: None) -> None:
-        self.__parent_graph_temp = parent_graph
-        self.__parent = None
-        self.__events = set()
-
-    def parent_graph(self):
-        if self.__parent is None:
-            return self.__parent_graph_temp
-        else:
-            return self.__parent
-
-    def root(self):
-        if self.parent_graph():
-            return self.parent_graph().root()
-        else:
-            return self
-
-    def remove_event(self, old: Event):
-        self.__events.remove(old)
-        for e in self.__events:
-            e.children.remove_event(old)
-
-    def replace_event(self, old: Event, new: Event):
-        if old in self.__events:
-            for r in old.conditions:
-                new.conditions.add(r)
-            for r in old.milestones:
-                new.milestones.add(r)
-            for r in old.responses:
-                new.responses.add(r)
-            for r in old.includes:
-                new.includes.add(r)
-            for r in old.excludes:
-                new.excludes.add(r)
-            self.__events.remove(old)
-            for e in self.__events:
-                self.replace_in_relation(e.conditions, old, new)
-                self.replace_in_relation(e.milestones, old, new)
-                self.replace_in_relation(e.responses, old, new)
-                self.replace_in_relation(e.includes, old, new)
-                self.replace_in_relation(e.excludes, old, new)
-
-    def replace_in_relation(self, relation, old, new):
-        for e in relation:
-            if e == old:
-                relation.remove(old)
-                relation.add(new)
-
-    def has_event(self, new):
-        return self.get_event(new) in self.__events
-
-    def get_event(self, new):
-        '''
-        Get an event based on name or if it is an Event object with the name in it
-        :param new: name of the event (which is unique, unlike the label which can be whatever)
-        :return:
-        '''
-        if new in self.__events:
-            if isinstance(new, Event):
-                return new
-            elif isinstance(new, str):
-                for e in self.__events:
-                    if e == new:
-                        return e
-        for e in self.__events:
-            if e.children.get_event(new):
-                return e.children.get_event(new)
-        return None
-
-    def add_loading_event(self, new):
-        if self.has_event(new):
-            return self.get_event(new)
-        elif self.root().has_event(new):
-            return self.root().get_event(new)
-
-        e = self.add_event(new)
-        e.loading = True
-        return e
-
-    def add_event(self, id, label, marking, graph):
-        '''
-        :param id: id
-        :param label: label
-        :param marking: marking
-        :param graph: DCRGraph
-        :return:
-        '''
-        if self.has_event(id) or self.root().has_event(id):
-            if self.has_event(id):
-                e = self.get_event(id)
-            else:
-                e = self.root().get_event(id)
-
-            if not e.loading:
-                pass  # TODO make an error or exception
-            else:
-                self.remove_event(e)
-                self.root().remove_event(e)
-                e.label = label
-                e.parent = self
-                e.children = graph
-        else:
-            e = Event(id, label, self, graph)
-
-        graph.parent = e
-        e.marking.executed = marking.executed
-        e.marking.included = marking.included
-        e.marking.pending = marking.pending
-        if marking.deadline:
-            e.marking.deadline = marking.deadline
-        if marking.last_executed:
-            e.marking.last_executed = marking.last_executed
-        self.__events.add(e)
-
-        return e
-
-    def check_src_and_trg_exist(self, src, trg):
-        if not self.root().has_event(src):
-            eSrc = self.add_loading_event(src)
-        else:
-            eSrc = self.root().get_event(src)
-
-        if not self.root().has_event(trg):
-            eTrg = self.add_loading_event(trg)
-        else:
-            eTrg = self.root().getEvent(trg)
-        return eSrc, eTrg
-
-    def add_condition(self, src, trg, delay, guard=True):
-        '''
-        src -->* trg
-        '''
-        eSrc, eTrg = self.check_src_and_trg_exist(src, trg)
-        eTrg.conditions.add({'src': eSrc, 'delay': delay, 'guard': guard})
-
-    def add_milestone(self, src, trg, guard=True):
-        '''
-         src --><> trg
-        '''
-        eSrc, eTrg = self.check_src_and_trg_exist(src, trg)
-        eTrg.milestones.add({'src': eSrc, 'guard': guard})
-
-    def add_response(self, src, trg, deadline, guard=True):
-        '''
-        src *--> trg
-        '''
-        eSrc, eTrg = self.check_src_and_trg_exist(src, trg)
-        eSrc.responses.add({'trg': eTrg, 'deadline': deadline, 'guard': guard})
-
-    def add_include(self, src, trg, guard=True):
-        '''
-        src -->+ trg
-        '''
-        eSrc, eTrg = self.check_src_and_trg_exist(src, trg)
-        eSrc.includes.add({'trg': eTrg, 'guard': guard})
-
-    def add_exclude(self, src, trg, guard=True):
-        '''
-        src -->% trg
-        :return:
-        '''
-        eSrc, eTrg = self.check_src_and_trg_exist(src, trg)
-        eSrc.excludes.add({'trg': eTrg, 'guard': guard})
-
-    def execute(self, event):
-        if self.has_event(event):
-            self.get_event(event).execute()
-
-    def is_accepting(self):
-        for e in self.__events:
-            if not e.is_accepting():
-                return False
-        return True
-
-    def can_time_step(self, diff):
-        for e in self.__events:
-            if not e.can_time_step(diff):
-                return False
-        return True
-
-    def time_step(self, diff):
-        for e in self.__events:
-            e.time_step(diff)
-
-    def status(self):
-        res = []
-        for e in self.__events:
-            res.append({'executed': e.marking.executed,
-                        'pending': e.marking.pending,
-                        'included': e.marking.included,
-                        'enabled': e.enabled(),
-                        'name': e.name,
-                        'lastExecuted': e.marking.last_executed,
-                        'deadline': e.marking.deadline,
-                        'label': e.label
-                        })
-            for s in e.children.status():
-                s['label'] = f'{e.label}.{s.label}'
-                res.append(s)
-
-        return res
-
-class DCRGraphSubprocess(DCRGraph):
-    def __init__(self, parent_graph: None) -> None:
-        super().__init__(parent_graph)
-
-class DCRGraphNesting(DCRGraphSubprocess):
-
-    def __init__(self, parent_graph: None) -> None:
-        super().__init__(parent_graph)
-
-
-class DCRGraphSpawn(DCRGraph):
-    def __init__(self, parent_graph: None) -> None:
-        super().__init__(parent_graph)
+    def __setitem__(self, item, value):
+        for key,_ in vars(self).items():
+            if item == key.split("_")[-1]:
+                setattr(self, key, value)

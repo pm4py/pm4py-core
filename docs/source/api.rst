@@ -17,6 +17,7 @@ Additional file formats that are currently supported by pm4py are:
   * ``.dfg`` files; File format specifying *directly follows graphs* (also referred to as *process maps*) :meth:`pm4py.read.read_dfg`
   * ``.pnml`` files; File format specifying *Petri net* models :meth:`pm4py.read.read_pnml`
   * ``.ptml`` files; File format specifying *Process Tree* models :meth:`pm4py.read.read_ptml`
+  * ``.xml`` files; File format specifying *Dynamic Condition Response (DCR) Graphs* :meth:`pm4py.read.read_dcr_xml`
 
 Importing object-centric event logs is possible given the following formats:
 
@@ -40,7 +41,9 @@ Similarly to event data importing, ``pm4py`` supports export functionalities to:
   * ``.dfg`` files,  :meth:`pm4py.write.write_dfg`
   * ``.pnml`` files, :meth:`pm4py.write.write_pnml`
   * ``.ptml`` files, :meth:`pm4py.write.write_ptml`
-  * ``.xes`` files. :meth:`pm4py.write.write_xes`
+  * ``.xes`` files, :meth:`pm4py.write.write_xes`
+  * ``.xml`` files. File format specifying *Dynamic Condition Response (DCR) Graphs* :meth:`pm4py.write.write_dcr_xml`
+
 
 Exporting object-centric event logs is possible to the following formats:
 
@@ -91,14 +94,13 @@ Among *procedural process models*, ``pm4py`` currently supports:
   * :meth:`pm4py.discovery.discover_process_tree_inductive`; discovers a *process tree* using the Inductive Miner algorithm.
   * :meth:`pm4py.discovery.discover_bpmn_inductive`; discovers a *BPMN model* using the Inductive Miner algorithm.
   * :meth:`pm4py.discovery.discover_heuristics_net`; discovers an *heuristics net* using the Heuristics Miner algorithm.
-  * :meth:`pm4py.discovery.discover_footprints`; discovers the *footprints matrix* of the log or the model.
-  * :meth:`pm4py.discovery.discover_powl`; discovers a *partial order workflow language* (POWL) model.
 
 Among *declarative process models*, ``pm4py`` currently supports:
 
   * :meth:`pm4py.discovery.discover_declare`; discovers a *DECLARE* model.
   * :meth:`pm4py.discovery.discover_log_skeleton`; discovers a *log skeleton*.
   * :meth:`pm4py.discovery.discover_temporal_profile`; discovers a *temporal profile*.
+  * :meth:`pm4py.discovery.discover_dcr`; discovers a *DCR Graph*.
 
 
 Conformance Checking (:mod:`pm4py.conformance`)
@@ -108,13 +110,10 @@ Among procedural process models, ``pm4py`` currently supports:
 
   * :meth:`pm4py.conformance.conformance_diagnostics_token_based_replay`; token-based replay between the event log and a *Petri net*.
   * :meth:`pm4py.conformance.conformance_diagnostics_alignments`; alignment-based replay between the event log and a *Petri net*.
-  * :meth:`pm4py.conformance.conformance_diagnostics_footprints`; footprints-based conformance diagnostics.
   * :meth:`pm4py.conformance.fitness_token_based_replay`; evaluation of the fitness between an event log and a *Petri net* using token-based replay.
   * :meth:`pm4py.conformance.fitness_alignments`; evaluation of the fitness between an event log and a *Petri net* using alignments.
-  * :meth:`pm4py.conformance.fitness_footprints`; evaluation of the fitness based on footprints.
   * :meth:`pm4py.conformance.precision_token_based_replay`; evaluation of the precision between an event log and a *Petri net* using token-based replay.
   * :meth:`pm4py.conformance.precision_alignments`; evaluation of the precision between an event log and a *Petri net* using alignments.
-  * :meth:`pm4py.conformance.precision_footprints`; evaluation of the precision based on footprints.
   * :meth:`pm4py.conformance.replay_prefix_tbr`; replays a prefix (list of activities) on a given *Petri net*, using Token-Based Replay.
 
 Among declarative process models, ``pm4py`` currently supports:
@@ -122,6 +121,8 @@ Among declarative process models, ``pm4py`` currently supports:
   * :meth:`pm4py.conformance.conformance_log_skeleton`; conformance checking using the *log skeleton*.
   * :meth:`pm4py.conformance.conformance_declare`; conformance checking using a *DECLARE model*.
   * :meth:`pm4py.conformance.conformance_temporal_profile`; conformance checking using the *temporal profile*.
+  * :meth:`pm4py.conformance.conformance_dcr`; conformance checking using the *DCR Graph*
+  * :meth:`pm4py.conformance.optimal_alignment_dcr`; conformance checking using the *DCR Graph*
 
 
 Visualization (:mod:`pm4py.vis`)
@@ -149,7 +150,7 @@ Among the on-screen visualizations, ``pm4py`` currently supports:
   * :meth:`pm4py.vis.view_prefix_tree`; views a *prefix tree*.
   * :meth:`pm4py.vis.view_alignments`; views the *alignments table*.
   * :meth:`pm4py.vis.view_footprints`; views a *footprints table*.
-  * :meth:`pm4py.vis.view_powl`; views a *POWL model*.
+
 
 We offer also some methods to store the visualizations on the disk:
 
@@ -173,7 +174,6 @@ We offer also some methods to store the visualizations on the disk:
   * :meth:`pm4py.vis.save_vis_prefix_tree`; saves the visualization of a *prefix tree*.
   * :meth:`pm4py.vis.save_vis_alignments`; saves the visualization of the *alignments table*.
   * :meth:`pm4py.vis.save_vis_footprints`; saves the visualization of the *footprints table*.
-  * :meth:`pm4py.vis.save_vis_powl`; saves the visualization of a *POWL model*.
 
 
 Statistics (:mod:`pm4py.stats`)
@@ -187,8 +187,6 @@ Different statistics that could be computed on top of event logs are proposed, i
   * :meth:`pm4py.stats.get_event_attribute_values`; gets the values of an *attribute at the event level* of the event log.
   * :meth:`pm4py.stats.get_trace_attribute_values`; gets the values of an *attribute at the trace level* of the event log.
   * :meth:`pm4py.stats.get_variants`; gets the *variants* of the event log.
-  * :meth:`pm4py.stats.split_by_process_variant`; splits an event log into sub-dataframes for each process variant.
-  * :meth:`pm4py.stats.get_variants_paths_duration`; method that associates to a log object a Pandas dataframe aggregated by variants and positions (inside the variant).
   * :meth:`pm4py.stats.get_case_arrival_average`; gets the *average case arrival rate* from the event log.
   * :meth:`pm4py.stats.get_cycle_time`; gets the *cycle time* from the event log.
   * :meth:`pm4py.stats.get_all_case_durations`; gets the list of *case durations* for the cases of the event log.
@@ -411,6 +409,7 @@ Overall List of Methods
    pm4py.read.read_dfg
    pm4py.read.read_pnml
    pm4py.read.read_ptml
+   pm4py.read.read_dcr_xml
    pm4py.read.read_xes
    pm4py.read.read_ocel_csv
    pm4py.read.read_ocel_jsonocel
@@ -424,6 +423,7 @@ Overall List of Methods
    pm4py.write.write_dfg
    pm4py.write.write_pnml
    pm4py.write.write_ptml
+   pm4py.write.write_dcr_xml
    pm4py.write.write_xes
    pm4py.write.write_ocel_csv
    pm4py.write.write_ocel_jsonocel
@@ -464,17 +464,16 @@ Overall List of Methods
    pm4py.discovery.discover_declare
    pm4py.discovery.discover_log_skeleton
    pm4py.discovery.discover_batches
-   pm4py.discovery.discover_powl
+   pm4py.discovery.discover_dcr
    pm4py.conformance
    pm4py.conformance.conformance_diagnostics_token_based_replay
    pm4py.conformance.conformance_diagnostics_alignments
-   pm4py.conformance.conformance_diagnostics_footprints
+   pm4py.conformance.conformance_dcr
+   pm4py.conformance.optimal_alignment_dcr
    pm4py.conformance.fitness_token_based_replay
    pm4py.conformance.fitness_alignments
-   pm4py.conformance.fitness_footprints
    pm4py.conformance.precision_token_based_replay
    pm4py.conformance.precision_alignments
-   pm4py.conformance.precision_footprints
    pm4py.conformance.replay_prefix_tbr
    pm4py.conformance.conformance_temporal_profile
    pm4py.conformance.conformance_declare
@@ -520,8 +519,6 @@ Overall List of Methods
    pm4py.vis.save_vis_alignments
    pm4py.vis.view_footprints
    pm4py.vis.save_vis_footprints
-   pm4py.vis.view_powl
-   pm4py.vis.save_vis_powl
    pm4py.stats
    pm4py.stats.get_start_activities
    pm4py.stats.get_end_activities
@@ -531,8 +528,6 @@ Overall List of Methods
    pm4py.stats.get_trace_attribute_values
    pm4py.stats.get_variants
    pm4py.stats.get_variants_as_tuples
-   pm4py.stats.split_by_process_variant
-   pm4py.stats.get_variants_paths_duration
    pm4py.stats.get_minimum_self_distances
    pm4py.stats.get_minimum_self_distance_witnesses
    pm4py.stats.get_case_arrival_average

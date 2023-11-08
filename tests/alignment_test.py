@@ -71,6 +71,7 @@ class AlignmentTest(unittest.TestCase):
         tree = pm4py.discover_process_tree_inductive(log, noise_threshold=0.2)
         al = pm4py.conformance_diagnostics_alignments(log, tree, return_diagnostics_dataframe=False)
 
+
     def test_tree_align_reviewing_classifier_different_key(self):
         import pm4py
         log = xes_importer.apply("compressed_input_data/04_reviewing.xes.gz")

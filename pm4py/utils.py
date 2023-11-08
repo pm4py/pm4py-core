@@ -276,6 +276,7 @@ def get_properties(log, activity_key: str = "concept:name", timestamp_key: str =
     :param resource_key: (if provided) attribute to be used as resource
     :param group_key: (if provided) attribute to be used as group identifier
     :rtype: ``Dict``
+
     """
     __event_log_deprecation_warning(log)
 

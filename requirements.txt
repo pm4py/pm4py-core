@@ -12,4 +12,7 @@ pytz
 scipy
 stringdist
 tqdm
-jupyterlab
+python-dateutil
+setuptools
+psutil
+isodate~

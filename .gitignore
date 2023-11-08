@@ -137,9 +137,3 @@ dmypy.json
 
 # Renovate bot
 renovate.json5
-# project specific
-datasets/
-models/
-notebooks_projects/
-personal_projects/
-nirdizati/

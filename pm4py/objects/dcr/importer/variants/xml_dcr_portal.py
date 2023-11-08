@@ -4,7 +4,7 @@ import isodate
 
 from pm4py.util import constants
 from copy import deepcopy
-from pm4py.objects.dcr.obj import Relations, dcr_template
+from pm4py.objects.dcr.obj import Relations, dcr_template, DCR_Graph
 
 I = Relations.I.value
 E = Relations.E.value
@@ -14,6 +14,7 @@ C = Relations.C.value
 M = Relations.M.value
 
 def parse_element(curr_el, parent, dcr):
+    # Create the DCR graph
     tag = curr_el.tag.lower()
     match tag:
         case 'event':
@@ -166,8 +167,12 @@ def parse_element(curr_el, parent, dcr):
 def import_xml_tree_from_root(root, white_space_replacement=None):
     dcr = copy.deepcopy(dcr_template)
     dcr = parse_element(root, None, dcr)
-    dcr = clean_input(dcr, white_space_replacement='')
-    return dcr
+    dcr = clean_input(dcr, white_space_replacement=' ')
+    '''
+    Transform the dictionary into a DCR_Graph object
+    '''
+    graph = DCR_Graph(dcr)
+    return graph
 
 
 def clean_input(dcr, white_space_replacement=None):
@@ -178,12 +183,14 @@ def clean_input(dcr, white_space_replacement=None):
         if k in [I, E, C, R, M, N]:
             v_new = {}
             for k2, v2 in v.items():
-                v_new[k2.strip().replace(' ', white_space_replacement)] = set([v3.strip().replace(' ', white_space_replacement) for v3 in v2])
+                v_new[k2.strip().replace(' ', white_space_replacement)] = set(
+                    [v3.strip().replace(' ', white_space_replacement) for v3 in v2])
             dcr[k] = v_new
         elif k in ['conditionsForDelays', 'responseToDeadlines']:
             v_new = {}
             for k2, v2 in v.items():
-                v_new[k2.strip().replace(' ', white_space_replacement)] = set([(v3.strip().replace(' ', white_space_replacement),d) for (v3,d) in v2])
+                v_new[k2.strip().replace(' ', white_space_replacement)] = set(
+                    [(v3.strip().replace(' ', white_space_replacement), d) for (v3, d) in v2])
             dcr[k] = v_new
         elif k == 'marking':
             for k2 in ['executed', 'included', 'pending']:
@@ -192,7 +199,8 @@ def clean_input(dcr, white_space_replacement=None):
         elif k in ['subprocesses', 'nestings', 'labelMapping', 'roleAssignments', 'readRoleAssignments']:
             v_new = {}
             for k2, v2 in v.items():
-                v_new[k2.strip().replace(' ', white_space_replacement)] = set([v3.strip().replace(' ', white_space_replacement) for v3 in v2])
+                v_new[k2.strip().replace(' ', white_space_replacement)] = set(
+                    [v3.strip().replace(' ', white_space_replacement) for v3 in v2])
             dcr[k] = v_new
         else:
             new_v = set([v2.strip().replace(' ', white_space_replacement) for v2 in dcr[k]])
@@ -205,6 +213,19 @@ def map_labels_to_ids(dcr):
 
 
 def apply(path, parameters=None):
+    '''
+    Reads a DCR graph from an XML file
+
+    Parameters
+    ----------
+    path
+        Path to the XML file
+
+    Returns
+    -------
+    dcr
+        DCR graph object
+    '''
     if parameters is None:
         parameters = {}
 

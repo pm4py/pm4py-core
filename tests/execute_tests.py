@@ -22,7 +22,8 @@ if __name__ == "__main__":
                      "DiagnDfConfChecking", "ProcessModelEvaluationTests", "DecisionTreeTest", "GraphsForming",
                      "HeuMinerTest", "MainFactoriesTest", "AlgorithmTest", "LogFilteringTest",
                      "DataframePrefilteringTest", "StatisticsLogTest", "StatisticsDfTest", "TransitionSystemTest",
-                     "ImpExpFromString", "WoflanTest", "OcelFilteringTest", "OcelDiscoveryTest"]
+                     "ImpExpFromString", "WoflanTest", "OcelFilteringTest", "OcelDiscoveryTest",
+                     "DcrImportExportTest", "DcrSemanticsTest", "DcrDiscoveryTest", "DcrConformanceTest", "DcrAlignmentTest"]
 
     if "SimplifiedInterfaceTest" in enabled_tests:
         from tests.simplified_interface import SimplifiedInterfaceTest
@@ -193,5 +194,30 @@ if __name__ == "__main__":
         from tests.ocel_discovery_test import OcelDiscoveryTest
 
         ocel_discovery_test = OcelDiscoveryTest()
+
+    if "DcrImportExportTest" in enabled_tests:
+        from tests.dcr_test import TestDcr
+
+        import_export_test = TestDcr()
+
+    if "DcrSemanticsTest" in enabled_tests:
+        from tests.dcr_test import Test_obj_sematics
+
+        test_obj_sematics = Test_obj_sematics()
+
+    if "DcrDiscoveryTest" in enabled_tests:
+        from tests.dcr_test import Test_discovery_dcr
+
+        discovery_dcr_test = Test_discovery_dcr()
+
+    if "DcrConformanceTest" in enabled_tests:
+        from tests.dcr_test import Test_conformance_dcr
+
+        conformance_test = Test_conformance_dcr()
+
+    if "DcrAlignmentTest" in enabled_tests:
+        from tests.dcr_test import TestAlignment
+
+        alignment_test = TestAlignment()
 
     unittest.main()
