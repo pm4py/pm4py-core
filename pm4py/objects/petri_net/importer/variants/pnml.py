@@ -14,23 +14,25 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import os
+import tempfile
 import time
 
 from lxml import etree, objectify
 
+from pm4py.meta import VERSION
 from pm4py.objects.petri_net.utils import final_marking
 from pm4py.objects.petri_net.obj import PetriNet, Marking, ResetNet, InhibitorNet, ResetInhibitorNet
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.util import constants, exec_utils
-import warnings
 from enum import Enum
+import warnings
 
 
 class Parameters(Enum):
     ENCODING = "encoding"
     AUTO_GUESS_FINAL_MARKING = "auto_guess_final_marking"
-    RETURN_STOCHASTIC_MAP = "return_stochastic_map"
 
 
 def import_net(input_file_path, parameters=None):
@@ -56,14 +58,8 @@ def import_net(input_file_path, parameters=None):
     if parameters is None:
         parameters = {}
 
-    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, None)
-
-    parser = etree.XMLParser(remove_comments=True, encoding=encoding)
-
-    F = open(input_file_path, "rb")
-    tree = objectify.parse(F, parser=parser)
-    F.close()
-
+    parser = etree.XMLParser(remove_comments=True)
+    tree = objectify.parse(input_file_path, parser=parser)
     root = tree.getroot()
 
     return import_net_from_xml_object(root, parameters=parameters)
@@ -117,7 +113,6 @@ def import_net_from_xml_object(root, parameters=None):
         parameters = {}
 
     auto_guess_final_marking = exec_utils.get_param_value(Parameters.AUTO_GUESS_FINAL_MARKING, parameters, True)
-    return_stochastic_information = exec_utils.get_param_value(Parameters.RETURN_STOCHASTIC_MAP, parameters, False)
 
     net = PetriNet('imported_' + str(time.time()))
     marking = Marking()
@@ -128,7 +123,7 @@ def import_net_from_xml_object(root, parameters=None):
     finalmarkings = None
     variables = None
 
-    stochastic_map = {}
+    stochastic_information = {}
 
     for child in root:
         nett = child
@@ -273,8 +268,6 @@ def import_net_from_xml_object(root, parameters=None):
 
                 if random_variable is not None:
                     trans_dict[trans_id].properties[constants.STOCHASTIC_DISTRIBUTION] = random_variable
-                    stochastic_map[trans_dict[trans_id]] = random_variable
-
                 if position_X is not None and position_Y is not None and dimension_X is not None and dimension_Y is not None:
                     trans_dict[trans_id].properties[constants.LAYOUT_INFORMATION_PETRI] = (
                         (position_X, position_Y), (dimension_X, dimension_Y))
@@ -347,10 +340,6 @@ def import_net_from_xml_object(root, parameters=None):
             # generate the final marking in the case has not been found
             fmarking = final_marking.discover_final_marking(net)
         else:
-            if constants.SHOW_INTERNAL_WARNINGS:
-                warnings.warn("the Petri net has been imported without a specified final marking. Please create it using the method pm4py.generate_marking")
-
-    if return_stochastic_information:
-        return net, marking, fmarking, stochastic_map
+            warnings.warn("the Petri net has been imported without a specified final marking. Please create it using the method pm4py.generate_marking")
 
     return net, marking, fmarking

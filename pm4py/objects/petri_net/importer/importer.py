@@ -16,15 +16,17 @@
 '''
 from enum import Enum
 
-from pm4py.objects.petri_net.importer.variants import pnml
+from pm4py.objects.petri_net.importer.variants import pnml, tapn
 from pm4py.util import exec_utils
 
 
 class Variants(Enum):
     PNML = pnml
+    TAPN = tapn
 
 
 PNML = Variants.PNML
+TAPN = Variants.TAPN
 
 
 def apply(input_file_path, variant=PNML, parameters=None):
