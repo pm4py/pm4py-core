@@ -389,7 +389,7 @@ class Alignment:
         self.visited_states = set()
         self.new_moves = []
         self.final_alignment = []
-        self.closed_markings = set()
+        self.initial_marking = deepcopy(self.graph_handler.graph.marking)
 
     def handle_state(self, curr_cost, curr_graph, curr_trace, event, moves, move_type=None):
         """
@@ -432,14 +432,13 @@ class Alignment:
         new_cost, new_graph, new_trace, new_move = self.get_new_state(curr_cost, curr_graph, curr_trace, event,
                                                                       move_type)
 
-        self.closed_markings.add(new_graph.marking)
-        state_representation = (str(new_graph.marking), tuple(map(str, new_trace)))
+        state_representation = (str(new_graph), tuple(map(str, new_trace)))
         if state_representation not in self.visited_states:
             self.visited_states.add(state_representation)
             new_moves = moves + [new_move]
-            heappush(self.open_set, (new_cost, new_graph, new_trace, str(new_graph.marking), new_moves))
+            heappush(self.open_set,(new_cost, new_graph, new_trace, str(new_graph), new_moves))
 
-    def get_new_state(self, curr_cost, curr_graph, curr_trace, event, move_type):
+    def get_new_state(self, curr_cost, curr_marking, curr_trace, event, move_type):
         """
         Computes the new state of the alignment algorithm based on the current state and
         the specified move type. The new state includes the updated cost, graph, trace,
@@ -473,7 +472,8 @@ class Alignment:
 
         """
         new_cost = curr_cost
-        new_graph = deepcopy(curr_graph)
+        self.graph_handler.graph.marking = deepcopy(curr_marking)
+        new_graph = self.graph_handler.graph
         new_trace = curr_trace
         new_move = None
         if move_type == "sync":
@@ -492,12 +492,10 @@ class Alignment:
             new_move = ('log', event)
             new_trace = curr_trace[1:]
 
-        return new_cost, new_graph, new_trace, new_move
+        return new_cost, deepcopy(new_graph.marking), new_trace, new_move
 
     def update_closed_and_visited_sets(self, curr_cost, state_repr):
         self.closed_set[state_repr] = curr_cost
-        #if curr_cost <= self.global_min:
-        #    self.global_min = curr_cost
 
     def process_current_state(self, current):
         """
@@ -511,10 +509,10 @@ class Alignment:
             The current state, which is a tuple containing the current cost, current graph,
             current trace, and the moves made up to this point.
         """
-        curr_cost, curr_graph, curr_trace, _, moves = current
-        self.graph_handler.graph = deepcopy(curr_graph)
+        curr_cost, curr_marking, curr_trace, _, moves = current
+        self.graph_handler.graph.marking = deepcopy(curr_marking)
         state_repr = (str(self.graph_handler.graph.marking), tuple(map(str, curr_trace)))
-        return curr_cost, curr_graph, curr_trace, state_repr, moves
+        return curr_cost, curr_marking, curr_trace, state_repr, moves
 
     def check_accepting_conditions(self, curr_cost, is_accepting):
         """
@@ -532,16 +530,12 @@ class Alignment:
         float
             The final cost if the accepting conditions are met; `float('inf')` otherwise.
         """
-        final_cost = float('inf')
         if is_accepting:
             if curr_cost <= self.global_min:
                 self.global_min = curr_cost
                 self.final_alignment = self.new_moves
-                final_cost = curr_cost
 
-            if final_cost < self.global_min:
-                self.global_min = final_cost
-        return final_cost
+        return self.global_min
 
 
     def apply_trace(self, parameters=None):
@@ -576,10 +570,9 @@ class Alignment:
         alignment_cost = result['cost']
         """
 
-        parameters = {} if parameters is None else parameters
         visited, closed, cost, self.final_alignment, final_cost = 0, 0, 0, None, float('inf')
         self.open_set.append(
-            (cost, self.graph_handler.graph, self.trace_handler.trace, str(self.graph_handler.graph.marking), []))
+            (cost, deepcopy(self.graph_handler.graph.marking), self.trace_handler.trace, str(self.graph_handler.graph.marking), []))
 
         # perform while loop to iterate through all states
         while self.open_set:
@@ -595,7 +588,7 @@ class Alignment:
             if self.graph_handler.is_accepting() and self.trace_handler.is_empty():
                 self.new_moves = moves
                 final_cost = self.check_accepting_conditions(curr_cost, self.graph_handler.is_accepting())
-                break
+
             self.perform_moves(curr_cost, current, moves)
 
         return self.construct_results(visited, closed, final_cost)
@@ -632,13 +625,14 @@ class Alignment:
             as they are performed.
 
         """
-        first_activity = self.graph_handler.graph.getEvent(self.trace_handler.get_first_activity())
+        self.graph_handler.graph.marking = current[1]
+        first_activity = self.graph_handler.graph.get_event(self.trace_handler.get_first_activity())
         enabled = self.graph_handler.enabled()
         is_enabled = self.graph_handler.is_enabled(first_activity)
         if first_activity:
             if is_enabled:
                 self.handle_state(curr_cost, current[1], current[2], first_activity, moves, "sync")
-
+                return
             self.handle_state(curr_cost, current[1], current[2], first_activity, moves, "log")
         for event in enabled:
             self.handle_state(curr_cost, current[1], current[2], event, moves, "model")
@@ -668,6 +662,8 @@ class Alignment:
             - 'model move fitness': the fitness provided that model moves are used
             - 'log move fitness': the fitness provided by the log moves
         """
+
+        self.graph_handler.graph.marking = self.initial_marking
         model_moves = 0
         log_moves = 0
         sync_moves = 0
