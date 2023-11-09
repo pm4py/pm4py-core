@@ -1023,15 +1023,16 @@ class TestImportExportDCR(unittest.TestCase):
 
     def test_xes_to_xml_dcr_portal_to_dcr_js_portal(self):
         event_log_file = os.path.join("input_data", "running-example.xes")
-        self.export_file_dcr_portal(event_log_file)
         log = pm4py.read_xes(event_log_file)
         dcr, _ = apply(log)
 
         self.test_file = os.path.join("test_output_data", "running-example_dcr_portal.xml")
-        pm4py.write_dcr_xml(dcr_graph=dcr,path=self.test_file,variant=dcr_exporter.XML_DCR_PORTAL, dcr_title='running-example_dcr_portal')
+        pm4py.write_dcr_xml(dcr_graph=dcr, path=self.test_file, variant=dcr_exporter.XML_DCR_PORTAL,
+                            dcr_title='running-example_dcr_portal')
         dcr_imported_after_export = pm4py.read_dcr_xml(self.test_file)
         self.second_test_file = os.path.join("test_output_data", "running-example_dcr_js_portal.xml")
-        pm4py.write_dcr_xml(dcr_graph=dcr_imported_after_export,path=self.second_test_file,variant=dcr_exporter.DCR_JS_PORTAL, dcr_title='running-example_dcr_js_portal')
+        pm4py.write_dcr_xml(dcr_graph=dcr_imported_after_export, path=self.second_test_file,
+                            variant=dcr_exporter.DCR_JS_PORTAL, dcr_title='running-example_dcr_js_portal')
 
         del dcr
         del log
