@@ -49,15 +49,8 @@ if __name__ == "__main__":
     from tests.ocel_filtering_test import OcelFilteringTest
     from tests.ocel_discovery_test import OcelDiscoveryTest
     from tests.simulation_test import SimulationTest
-    from tests.dcr_test import Test_discovery_dcr, TestAlignment, Test_conformance_dcr, Test_obj_sematics, TestDcr
+    from tests.dcr_test import Test_discovery_dcr, TestAlignment, TestConformanceDCR, TestObjSematics, TestImportExportDCR
 
-    #dcr tests
-    conformance_test = Test_conformance_dcr()
-    alignment_test = TestAlignment()
-    test_obj_sematics = Test_obj_sematics()
-    discovery_dcr_test = Test_discovery_dcr()
-    import_export_test = TestDcr()
-    #the rest
     ocel_filtering_test = OcelFilteringTest()
     ocel_discovery_test = OcelDiscoveryTest()
     test_ts = TransitionSystemTest()
@@ -92,5 +85,12 @@ if __name__ == "__main__":
     diagn_dataframe_test = DiagnDfConfChecking()
     simplified_test = SimplifiedInterfaceTest()
     simplified_2_test = SimplifiedInterface2Test()
+
+    #dcr tests
+    conformance_test = TestConformanceDCR()
+    alignment_test = TestAlignment()
+    test_obj_sematics = TestObjSematics()
+    discovery_dcr_test = Test_discovery_dcr()
+    import_export_test = TestImportExportDCR()
 
     unittest.main()
