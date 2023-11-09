@@ -1,0 +1,465 @@
+activity;case;start;end;org:role;org:resource;travel_start;travel_end;cost
+pay expenses;1;16.01.2017 13:29;16.01.2017 13:40;Accounting;FI12;;;167,52
+pay expenses;5;16.01.2017 08:38;16.01.2017 08:48;Accounting;JH2172;;;262,11
+calculate payments;6;04.01.2017 06:59;16.01.2017 09:40;Accounting;WE5108;;;413,14
+pay expenses;6;06.02.2017 09:27;06.02.2017 09:36;Accounting;WE5108;;;413,14
+send original documents to archive;7;01.01.2017 03:46;09.01.2017 06:23;Employee;UL2786;;;
+calculate payments;7;04.01.2017 05:46;12.01.2017 08:51;Accounting;JK6642;;;92
+pay expenses;7;27.01.2017 12:04;27.01.2017 12:11;Accounting;JK6642;;;92
+pay expenses;8;15.01.2017 02:03;19.01.2017 08:55;Accounting;JK6642;;;162,57
+pay expenses;10;01.01.2017 04:10;05.01.2017 09:43;Accounting;VA7847;;;463,48
+send original documents to archive;13;06.01.2017 03:48;09.01.2017 06:40;Employee;JB8510;;;
+calculate payments;13;28.01.2017 05:48;31.01.2017 08:34;Accounting;JK6642;;;115,89
+pay expenses;13;09.02.2017 08:10;09.02.2017 08:15;Accounting;JK6642;;;115,89
+send original documents to archive;16;02.01.2017 03:58;06.01.2017 06:21;Employee;US369;;;
+calculate payments;16;19.01.2017 07:02;23.01.2017 09:45;Accounting;FI12;;;275,51
+pay expenses;16;30.01.2017 10:28;30.01.2017 10:35;Accounting;FI12;;;275,51
+calculate payments;19;10.01.2017 05:48;02.02.2017 08:12;Accounting;GR7476;;;229,44
+pay expenses;19;13.02.2017 07:59;13.02.2017 08:06;Accounting;GR7476;;;229,44
+calculate payments;20;14.01.2017 05:54;26.01.2017 08:53;Accounting;JK6642;;;408,42
+pay expenses;20;02.02.2017 08:06;02.02.2017 08:10;Accounting;JK6642;;;408,42
+file travel expense report;21;02.01.2017 06:26;02.01.2017 06:35;Employee;VP4411;;;
+confirm travel expense report;21;02.01.2017 06:35;02.01.2017 06:38;Employee;VP4411;;;
+decide on travel expense approval;21;02.01.2017 13:03;02.01.2017 13:04;Manager;LV1269;;;
+send request for travel expense correction;21;02.01.2017 13:04;02.01.2017 13:05;;;;;
+correct travel expense report;21;04.01.2017 12:07;04.01.2017 12:41;Employee;VP4411;;;
+decide on travel expense approval;21;04.01.2017 13:01;04.01.2017 13:04;Manager;LV1269;;;
+send original documents to archive;21;09.01.2017 05:59;09.01.2017 06:58;Employee;VP4411;;;
+calculate payments;21;19.01.2017 15:38;19.01.2017 16:24;Accounting;FI12;;;316,18
+pay expenses;21;26.01.2017 07:59;26.01.2017 08:08;Accounting;FI12;;;316,18
+send original documents to archive;25;06.01.2017 03:52;09.01.2017 06:32;Employee;EX1339;;;
+calculate payments;25;24.01.2017 05:52;27.01.2017 08:41;Accounting;WE5108;;;198,13
+pay expenses;25;09.02.2017 08:25;09.02.2017 08:29;Accounting;WE5108;;;198,13
+pay expenses;26;23.01.2017 08:20;23.01.2017 08:24;Accounting;JK6642;;;83,53
+send original documents to archive;28;05.01.2017 03:57;09.01.2017 06:43;Employee;UD8289;;;
+calculate payments;28;09.02.2017 06:12;13.02.2017 08:33;Accounting;VA7847;;;220,08
+pay expenses;28;20.02.2017 14:17;20.02.2017 14:23;Accounting;VA7847;;;220,08
+check if expense documents exist;29;17.01.2017 10:14;17.01.2017 10:40;Employee;MV9004;09.01.2017;11.01.2017;
+file travel expense report;29;17.01.2017 10:40;17.01.2017 10:53;Employee;MV9004;09.01.2017;11.01.2017;
+confirm travel expense report;29;17.01.2017 10:53;17.01.2017 10:55;Employee;MV9004;09.01.2017;11.01.2017;
+decide on travel expense approval;29;17.01.2017 13:00;17.01.2017 13:05;Manager;TJ5159;09.01.2017;11.01.2017;
+send request for travel expense correction;29;17.01.2017 13:05;17.01.2017 13:07;;;09.01.2017;11.01.2017;
+correct travel expense report;29;23.01.2017 05:59;23.01.2017 06:46;Employee;MV9004;09.01.2017;11.01.2017;
+decide on travel expense approval;29;23.01.2017 13:02;23.01.2017 13:04;Manager;TJ5159;09.01.2017;11.01.2017;
+send request for travel expense correction;29;23.01.2017 13:04;23.01.2017 13:06;;;09.01.2017;11.01.2017;
+correct travel expense report;29;30.01.2017 05:59;30.01.2017 06:24;Employee;MV9004;09.01.2017;11.01.2017;
+decide on travel expense approval;29;30.01.2017 13:01;30.01.2017 13:07;Manager;TJ5159;09.01.2017;11.01.2017;
+send request for travel expense correction;29;30.01.2017 13:07;30.01.2017 13:08;;;09.01.2017;11.01.2017;
+correct travel expense report;29;03.02.2017 14:16;03.02.2017 15:11;Employee;MV9004;09.01.2017;11.01.2017;
+decide on travel expense approval;29;06.02.2017 12:59;06.02.2017 13:02;Manager;TJ5159;09.01.2017;11.01.2017;
+calculate payments;29;23.02.2017 08:18;23.02.2017 08:37;Accounting;JH2172;09.01.2017;11.01.2017;221,83
+send original documents to archive;29;27.02.2017 05:59;27.02.2017 06:04;Employee;MV9004;09.01.2017;11.01.2017;
+pay expenses;29;20.03.2017 08:58;20.03.2017 09:04;Accounting;JH2172;09.01.2017;11.01.2017;221,83
+correct travel expense report;30;01.01.2017 12:30;03.01.2017 15:24;Employee;HX8114;;;
+decide on travel expense approval;30;04.01.2017 12:59;04.01.2017 13:03;Manager;CV4719;;;
+send original documents to archive;30;19.01.2017 16:51;19.01.2017 17:28;Employee;HX8114;;;
+calculate payments;30;30.01.2017 08:24;30.01.2017 09:15;Accounting;GR7476;;;315,91
+pay expenses;30;02.02.2017 07:59;02.02.2017 08:09;Accounting;GR7476;;;315,91
+pay expenses;32;16.01.2017 09:24;16.01.2017 09:31;Accounting;WO40;;;115,8
+send original documents to archive;35;02.01.2017 04:00;06.01.2017 06:23;Employee;KG9386;;;
+calculate payments;35;07.01.2017 06:00;11.01.2017 08:14;Accounting;WO40;;;378,77
+pay expenses;35;23.01.2017 08:05;23.01.2017 08:08;Accounting;WO40;;;378,77
+calculate payments;37;20.02.2017 08:00;22.02.2017 10:53;Accounting;WE5108;;;140,18
+pay expenses;37;27.02.2017 07:59;27.02.2017 08:08;Accounting;WE5108;;;140,18
+pay expenses;38;08.01.2017 06:33;09.01.2017 08:37;Accounting;VA7847;;;132,59
+decide on travel expense approval;40;01.01.2017 15:08;02.01.2017 13:00;Manager;OX4346;;;
+send original documents to archive;40;05.01.2017 20:57;05.01.2017 21:33;Employee;TI3640;;;
+calculate payments;40;03.02.2017 07:59;03.02.2017 08:29;Accounting;VA7847;;;156,55
+pay expenses;40;20.02.2017 09:51;20.02.2017 09:59;Accounting;VA7847;;;156,55
+pay expenses;41;09.01.2017 01:32;11.01.2017 08:03;Accounting;CX8911;;;193,51
+check if expense documents exist;42;06.01.2017 05:59;06.01.2017 06:07;Employee;FA8394;02.01.2017;02.01.2017;
+upload travel expense documents;42;06.01.2017 06:07;06.01.2017 06:15;Employee;FA8394;02.01.2017;02.01.2017;
+file travel expense report;42;06.01.2017 06:15;06.01.2017 06:26;Employee;FA8394;02.01.2017;02.01.2017;
+confirm travel expense report;42;06.01.2017 06:26;06.01.2017 06:27;Employee;FA8394;02.01.2017;02.01.2017;
+decide on travel expense approval;42;06.01.2017 12:59;06.01.2017 13:03;Manager;YS1169;02.01.2017;02.01.2017;
+send original documents to archive;42;16.01.2017 05:59;16.01.2017 06:45;Employee;FA8394;02.01.2017;02.01.2017;
+calculate payments;42;07.02.2017 08:04;07.02.2017 08:58;Accounting;WE5108;02.01.2017;02.01.2017;29,83
+pay expenses;42;20.02.2017 08:08;20.02.2017 08:15;Accounting;WE5108;02.01.2017;02.01.2017;29,83
+pay expenses;44;11.01.2017 07:59;11.01.2017 08:05;Accounting;WO40;;;317,35
+pay expenses;45;17.01.2017 01:26;20.01.2017 08:05;Accounting;FQ3758;;;150,2
+calculate payments;46;04.01.2017 05:51;12.01.2017 08:41;Accounting;CX8911;;;308,39
+pay expenses;46;31.01.2017 07:59;31.01.2017 08:07;Accounting;CX8911;;;308,39
+upload travel expense documents;48;02.01.2017 06:30;02.01.2017 06:35;Employee;UL7105;;;
+file travel expense report;48;02.01.2017 06:35;02.01.2017 06:45;Employee;UL7105;;;
+confirm travel expense report;48;02.01.2017 06:45;02.01.2017 06:47;Employee;UL7105;;;
+decide on travel expense approval;48;02.01.2017 13:04;02.01.2017 13:09;Manager;OX4346;;;
+send original documents to archive;48;04.01.2017 05:59;04.01.2017 06:29;Employee;UL7105;;;
+calculate payments;48;06.02.2017 09:08;06.02.2017 09:27;Accounting;GR7476;;;203,31
+pay expenses;48;20.02.2017 09:43;20.02.2017 09:53;Accounting;GR7476;;;203,31
+pay expenses;49;30.01.2017 08:21;30.01.2017 08:24;Accounting;GR7476;;;161,51
+pay expenses;50;12.01.2017 07:59;12.01.2017 08:06;Accounting;GR7476;;;424,45
+decide on travel expense approval;51;01.01.2017 17:18;02.01.2017 13:02;Manager;OX4346;;;
+send request for travel expense correction;51;02.01.2017 13:02;02.01.2017 13:03;;;;;
+correct travel expense report;51;09.01.2017 08:25;09.01.2017 08:48;Employee;VP8299;;;
+decide on travel expense approval;51;09.01.2017 13:08;09.01.2017 13:10;Manager;OX4346;;;
+send original documents to archive;51;17.01.2017 05:59;17.01.2017 06:13;Employee;VP8299;;;
+calculate payments;51;06.02.2017 07:59;06.02.2017 08:51;Accounting;CX8911;;;390,19
+pay expenses;51;13.02.2017 07:59;13.02.2017 08:11;Accounting;CX8911;;;390,19
+pay expenses;53;02.01.2017 03:19;06.01.2017 09:38;Accounting;WO40;;;382,49
+calculate payments;56;16.02.2017 06:02;20.02.2017 08:21;Accounting;JK6642;;;216,16
+pay expenses;56;06.03.2017 10:06;06.03.2017 10:12;Accounting;JK6642;;;216,16
+pay expenses;57;06.01.2017 02:09;09.01.2017 08:44;Accounting;FI12;;;280,82
+send original documents to archive;58;01.01.2017 17:33;04.01.2017 19:54;Employee;YX6007;;;
+calculate payments;58;13.01.2017 07:10;16.01.2017 09:44;Accounting;JK6642;;;300,35
+pay expenses;58;30.01.2017 07:59;30.01.2017 08:06;Accounting;JK6642;;;300,35
+pay expenses;59;23.01.2017 08:41;23.01.2017 08:52;Accounting;GU1789;;;478,24
+pay expenses;60;20.01.2017 07:59;20.01.2017 08:04;Accounting;FQ3758;;;260,23
+pay expenses;62;12.01.2017 02:07;16.01.2017 08:54;Accounting;FI12;;;76,44
+pay expenses;64;10.01.2017 10:33;10.01.2017 10:37;Accounting;JH2172;;;397,62
+check if expense documents exist;65;06.02.2017 05:59;06.02.2017 07:03;Employee;KH123;20.01.2017;22.01.2017;
+file travel expense report;65;06.02.2017 07:03;06.02.2017 07:16;Employee;KH123;20.01.2017;22.01.2017;
+confirm travel expense report;65;06.02.2017 07:16;06.02.2017 07:18;Employee;KH123;20.01.2017;22.01.2017;
+decide on travel expense approval;65;06.02.2017 13:12;06.02.2017 13:14;Manager;JH852;20.01.2017;22.01.2017;
+send original documents to archive;65;13.02.2017 05:59;13.02.2017 06:30;Employee;KH123;20.01.2017;22.01.2017;
+calculate payments;65;23.02.2017 07:59;23.02.2017 08:58;Accounting;FI12;20.01.2017;22.01.2017;146,07
+pay expenses;65;06.03.2017 09:08;06.03.2017 09:20;Accounting;FI12;20.01.2017;22.01.2017;146,07
+upload travel expense documents;66;02.01.2017 06:28;02.01.2017 06:38;Employee;TQ6233;;;
+file travel expense report;66;02.01.2017 06:38;02.01.2017 06:59;Employee;TQ6233;;;
+confirm travel expense report;66;02.01.2017 06:59;02.01.2017 07:02;Employee;TQ6233;;;
+decide on travel expense approval;66;02.01.2017 13:06;02.01.2017 13:12;Manager;MA6233;;;
+send original documents to archive;66;02.01.2017 17:15;02.01.2017 17:24;Employee;TQ6233;;;
+calculate payments;66;23.02.2017 08:37;23.02.2017 09:26;Accounting;GR7476;;;68,31
+pay expenses;66;13.03.2017 08:08;13.03.2017 08:18;Accounting;GR7476;;;68,31
+decide on travel expense approval;69;02.01.2017 13:01;02.01.2017 13:03;Manager;TD8091;;;
+send original documents to archive;69;09.01.2017 05:59;09.01.2017 06:21;Employee;RV949;;;
+calculate payments;69;24.01.2017 07:59;24.01.2017 08:35;Accounting;WE5108;;;320,27
+pay expenses;69;01.02.2017 07:59;01.02.2017 08:07;Accounting;WE5108;;;320,27
+pay expenses;71;06.01.2017 07:59;06.01.2017 08:03;Accounting;WO40;;;375,6
+calculate payments;72;07.01.2017 05:50;11.01.2017 08:37;Accounting;GR7476;;;133,13
+pay expenses;72;13.01.2017 10:06;13.01.2017 10:14;Accounting;GR7476;;;133,13
+upload travel expense documents;74;06.01.2017 06:05;06.01.2017 06:20;Employee;TC1862;;;
+file travel expense report;74;06.01.2017 06:20;06.01.2017 06:30;Employee;TC1862;;;
+confirm travel expense report;74;06.01.2017 06:30;06.01.2017 06:30;Employee;TC1862;;;
+decide on travel expense approval;74;06.01.2017 12:59;06.01.2017 13:03;Manager;MA6233;;;
+send request for travel expense correction;74;06.01.2017 13:03;06.01.2017 13:05;;;;;
+correct travel expense report;74;16.01.2017 05:59;16.01.2017 07:16;Employee;TC1862;;;
+decide on travel expense approval;74;16.01.2017 13:06;16.01.2017 13:09;Manager;MA6233;;;
+send request for travel expense correction;74;16.01.2017 13:09;16.01.2017 13:09;;;;;
+correct travel expense report;74;24.01.2017 11:07;24.01.2017 12:06;Employee;TC1862;;;
+decide on travel expense approval;74;24.01.2017 13:00;24.01.2017 13:04;Manager;MA6233;;;
+send original documents to archive;74;25.01.2017 15:48;25.01.2017 16:30;Employee;TC1862;;;
+calculate payments;74;13.02.2017 11:58;13.02.2017 12:44;Accounting;WO40;;;21,99
+pay expenses;74;08.03.2017 08:22;08.03.2017 08:29;Accounting;WO40;;;21,99
+calculate payments;75;04.01.2017 06:53;16.01.2017 09:39;Accounting;WO40;;;420,26
+pay expenses;75;23.01.2017 07:59;23.01.2017 08:07;Accounting;WO40;;;420,26
+pay expenses;76;05.01.2017 01:04;06.01.2017 08:04;Accounting;CX8911;;;228,7
+pay expenses;78;16.01.2017 14:27;16.01.2017 14:34;Accounting;FI12;;;193,31
+check if expense documents exist;80;16.01.2017 07:40;16.01.2017 07:44;Employee;PR6751;07.01.2017;11.01.2017;
+file travel expense report;80;16.01.2017 07:44;16.01.2017 07:58;Employee;PR6751;07.01.2017;11.01.2017;
+confirm travel expense report;80;16.01.2017 07:58;16.01.2017 08:00;Employee;PR6751;07.01.2017;11.01.2017;
+decide on travel expense approval;80;16.01.2017 13:07;16.01.2017 13:10;Manager;TF7102;07.01.2017;11.01.2017;
+send original documents to archive;80;16.01.2017 14:14;16.01.2017 14:40;Employee;PR6751;07.01.2017;11.01.2017;
+calculate payments;80;06.02.2017 09:32;06.02.2017 10:11;Accounting;GU1789;07.01.2017;11.01.2017;320,96
+pay expenses;80;13.02.2017 09:45;13.02.2017 09:50;Accounting;GU1789;07.01.2017;11.01.2017;320,96
+pay expenses;83;18.01.2017 08:15;18.01.2017 08:19;Accounting;JK6642;;;358,63
+pay expenses;85;11.01.2017 07:59;11.01.2017 08:11;Accounting;JH2172;;;82,42
+send original documents to archive;86;01.01.2017 03:50;02.01.2017 06:29;Employee;PN2841;;;
+calculate payments;86;12.02.2017 05:56;13.02.2017 08:36;Accounting;FI12;;;317,81
+pay expenses;86;27.02.2017 09:13;27.02.2017 09:17;Accounting;FI12;;;317,81
+calculate payments;87;25.01.2017 06:33;06.02.2017 09:30;Accounting;GR7476;;;452,3
+pay expenses;87;28.02.2017 08:56;28.02.2017 09:04;Accounting;GR7476;;;452,3
+calculate payments;88;06.01.2017 05:50;16.01.2017 08:54;Accounting;WO40;;;367,72
+pay expenses;88;30.01.2017 09:46;30.01.2017 09:50;Accounting;WO40;;;367,72
+check if expense documents exist;89;11.01.2017 20:19;11.01.2017 21:05;Employee;TJ5159;10.01.2017;11.01.2017;
+upload travel expense documents;89;11.01.2017 21:05;11.01.2017 21:10;Employee;TJ5159;10.01.2017;11.01.2017;
+file travel expense report;89;11.01.2017 21:10;11.01.2017 21:23;Employee;TJ5159;10.01.2017;11.01.2017;
+confirm travel expense report;89;11.01.2017 21:23;11.01.2017 21:27;Employee;TJ5159;10.01.2017;11.01.2017;
+decide on travel expense approval;89;12.01.2017 12:59;12.01.2017 13:02;Manager;CN787;10.01.2017;11.01.2017;
+send original documents to archive;89;25.01.2017 12:33;25.01.2017 12:44;Employee;TJ5159;10.01.2017;11.01.2017;
+calculate payments;89;16.02.2017 08:06;16.02.2017 08:43;Accounting;FI12;10.01.2017;11.01.2017;169,13
+pay expenses;89;06.03.2017 09:59;06.03.2017 10:06;Accounting;FI12;10.01.2017;11.01.2017;169,13
+check if expense documents exist;91;09.01.2017 17:28;09.01.2017 18:08;Employee;PT8559;31.12.2016;02.01.2017;
+file travel expense report;91;09.01.2017 18:08;09.01.2017 18:14;Employee;PT8559;31.12.2016;02.01.2017;
+confirm travel expense report;91;09.01.2017 18:14;09.01.2017 18:18;Employee;PT8559;31.12.2016;02.01.2017;
+decide on travel expense approval;91;10.01.2017 12:59;10.01.2017 13:03;Manager;YS1169;31.12.2016;02.01.2017;
+send request for travel expense correction;91;10.01.2017 13:03;10.01.2017 13:05;;;31.12.2016;02.01.2017;
+correct travel expense report;91;19.01.2017 05:59;19.01.2017 06:22;Employee;PT8559;31.12.2016;02.01.2017;
+decide on travel expense approval;91;19.01.2017 12:59;19.01.2017 13:02;Manager;YS1169;31.12.2016;02.01.2017;
+send original documents to archive;91;26.01.2017 05:59;26.01.2017 06:08;Employee;PT8559;31.12.2016;02.01.2017;
+calculate payments;91;06.02.2017 10:02;06.02.2017 10:54;Accounting;GU1789;31.12.2016;02.01.2017;473,52
+pay expenses;91;14.02.2017 13:34;14.02.2017 13:40;Accounting;GU1789;31.12.2016;02.01.2017;473,52
+calculate payments;93;14.01.2017 05:48;24.01.2017 08:32;Accounting;FQ3758;;;194,64
+pay expenses;93;31.01.2017 07:59;31.01.2017 08:08;Accounting;FQ3758;;;194,64
+pay expenses;94;16.01.2017 09:17;16.01.2017 09:25;Accounting;WE5108;;;422,48
+calculate payments;95;10.01.2017 05:48;18.01.2017 08:16;Accounting;CX8911;;;295,33
+pay expenses;95;23.01.2017 08:54;23.01.2017 09:04;Accounting;CX8911;;;295,33
+send original documents to archive;96;08.01.2017 16:37;09.01.2017 19:01;Employee;TQ4585;;;
+calculate payments;96;15.01.2017 05:47;16.01.2017 08:30;Accounting;FQ3758;;;293,78
+pay expenses;96;30.01.2017 08:59;30.01.2017 09:10;Accounting;FQ3758;;;293,78
+upload travel expense documents;97;02.01.2017 06:49;02.01.2017 07:11;Employee;NH6775;;;
+file travel expense report;97;02.01.2017 07:11;02.01.2017 07:16;Employee;NH6775;;;
+confirm travel expense report;97;02.01.2017 07:16;02.01.2017 07:19;Employee;NH6775;;;
+decide on travel expense approval;97;02.01.2017 13:10;02.01.2017 13:14;Manager;CV4719;;;
+send original documents to archive;97;17.01.2017 17:32;17.01.2017 18:16;Employee;NH6775;;;
+calculate payments;97;06.02.2017 08:37;06.02.2017 08:54;Accounting;GR7476;;;337,97
+pay expenses;97;13.02.2017 09:29;13.02.2017 09:38;Accounting;GR7476;;;337,97
+check if expense documents exist;100;30.01.2017 05:59;30.01.2017 06:16;Employee;GT6397;22.01.2017;23.01.2017;
+upload travel expense documents;100;30.01.2017 06:16;30.01.2017 06:32;Employee;GT6397;22.01.2017;23.01.2017;
+file travel expense report;100;30.01.2017 06:32;30.01.2017 06:42;Employee;GT6397;22.01.2017;23.01.2017;
+confirm travel expense report;100;30.01.2017 06:42;30.01.2017 06:42;Employee;GT6397;22.01.2017;23.01.2017;
+decide on travel expense approval;100;30.01.2017 13:05;30.01.2017 13:07;Manager;CV4719;22.01.2017;23.01.2017;
+send original documents to archive;100;02.02.2017 05:59;02.02.2017 06:51;Employee;GT6397;22.01.2017;23.01.2017;
+calculate payments;100;10.03.2017 11:41;10.03.2017 12:13;Accounting;WO40;22.01.2017;23.01.2017;89,7
+pay expenses;100;31.03.2017 08:06;31.03.2017 09:17;Accounting;WO40;22.01.2017;23.01.2017;89,7
+check if expense documents exist;101;05.01.2017 13:05;05.01.2017 13:53;Employee;EX4174;31.12.2016;02.01.2017;
+file travel expense report;101;05.01.2017 13:53;05.01.2017 13:57;Employee;EX4174;31.12.2016;02.01.2017;
+confirm travel expense report;101;05.01.2017 13:57;05.01.2017 14:01;Employee;EX4174;31.12.2016;02.01.2017;
+decide on travel expense approval;101;06.01.2017 12:59;06.01.2017 13:04;Manager;JH852;31.12.2016;02.01.2017;
+send original documents to archive;101;16.01.2017 05:59;16.01.2017 06:38;Employee;EX4174;31.12.2016;02.01.2017;
+calculate payments;101;01.02.2017 07:59;01.02.2017 08:28;Accounting;CX8911;31.12.2016;02.01.2017;373,88
+pay expenses;101;13.02.2017 07:59;13.02.2017 08:06;Accounting;CX8911;31.12.2016;02.01.2017;373,88
+pay expenses;102;18.01.2017 07:59;18.01.2017 08:05;Accounting;FQ3758;;;184,68
+pay expenses;103;08.01.2017 07:26;12.01.2017 14:26;Accounting;WO40;;;315,1
+pay expenses;104;12.01.2017 02:27;16.01.2017 08:52;Accounting;CX8911;;;163,47
+file travel request;105;17.01.2017 11:17;17.01.2017 11:23;Employee;JB8510;10.01.2017;15.01.2017;451,64
+check if travel request needs preliminary price inquiry;105;17.01.2017 11:23;17.01.2017 11:24;Employee;JB8510;10.01.2017;15.01.2017;
+decide on approval requirements;105;17.01.2017 11:24;17.01.2017 11:24;Employee;JB8510;10.01.2017;15.01.2017;
+check if booking is necessary;105;17.01.2017 11:24;17.01.2017 11:40;Travel Department;KS9688;10.01.2017;15.01.2017;
+check if expense documents exist;105;18.01.2017 05:59;18.01.2017 06:31;Employee;JB8510;10.01.2017;15.01.2017;
+upload travel expense documents;105;18.01.2017 06:31;18.01.2017 06:39;Employee;JB8510;10.01.2017;15.01.2017;
+file travel expense report;105;18.01.2017 06:39;18.01.2017 06:54;Employee;JB8510;10.01.2017;15.01.2017;
+confirm travel expense report;105;18.01.2017 06:54;18.01.2017 06:57;Employee;JB8510;10.01.2017;15.01.2017;
+decide on travel expense approval;105;18.01.2017 12:59;18.01.2017 13:03;Manager;MA6233;10.01.2017;15.01.2017;
+send original documents to archive;105;06.02.2017 05:59;06.02.2017 06:45;Employee;JB8510;10.01.2017;15.01.2017;
+calculate payments;105;10.03.2017 11:13;10.03.2017 11:52;Accounting;WO40;10.01.2017;15.01.2017;451,64
+pay expenses;105;17.03.2017 08:06;17.03.2017 08:11;Accounting;WO40;10.01.2017;15.01.2017;451,64
+pay expenses;106;13.01.2017 07:59;13.01.2017 08:05;Accounting;FQ3758;;;192,83
+check if expense documents exist;107;04.01.2017 08:21;04.01.2017 08:53;Employee;VL1846;02.01.2017;03.01.2017;
+upload travel expense documents;107;04.01.2017 08:53;04.01.2017 09:01;Employee;VL1846;02.01.2017;03.01.2017;
+file travel expense report;107;04.01.2017 09:01;04.01.2017 09:08;Employee;VL1846;02.01.2017;03.01.2017;
+confirm travel expense report;107;04.01.2017 09:08;04.01.2017 09:10;Employee;VL1846;02.01.2017;03.01.2017;
+decide on travel expense approval;107;04.01.2017 13:00;04.01.2017 13:05;Manager;MA6233;02.01.2017;03.01.2017;
+send request for travel expense correction;107;04.01.2017 13:05;04.01.2017 13:06;;;02.01.2017;03.01.2017;
+correct travel expense report;107;09.01.2017 05:59;09.01.2017 06:36;Employee;VL1846;02.01.2017;03.01.2017;
+decide on travel expense approval;107;09.01.2017 13:01;09.01.2017 13:05;Manager;MA6233;02.01.2017;03.01.2017;
+send original documents to archive;107;27.01.2017 05:59;27.01.2017 06:27;Employee;VL1846;02.01.2017;03.01.2017;
+calculate payments;107;27.01.2017 07:59;27.01.2017 08:43;Accounting;FI12;02.01.2017;03.01.2017;204,71
+pay expenses;107;13.02.2017 08:19;13.02.2017 08:27;Accounting;FI12;02.01.2017;03.01.2017;204,71
+pay expenses;108;09.01.2017 08:25;09.01.2017 08:37;Accounting;CX8911;;;102,03
+pay expenses;112;05.01.2017 01:21;09.01.2017 08:04;Accounting;VA7847;;;338,34
+file travel expense report;114;02.01.2017 06:04;02.01.2017 06:10;Employee;GD8003;;;
+confirm travel expense report;114;02.01.2017 06:10;02.01.2017 06:13;Employee;GD8003;;;
+decide on travel expense approval;114;02.01.2017 12:59;02.01.2017 13:05;Manager;CV4719;;;
+send original documents to archive;114;03.01.2017 05:59;03.01.2017 06:03;Employee;GD8003;;;
+calculate payments;114;06.03.2017 07:59;06.03.2017 08:53;Accounting;CX8911;;;310,81
+pay expenses;114;23.03.2017 07:59;23.03.2017 08:09;Accounting;CX8911;;;310,81
+calculate payments;117;06.01.2017 06:11;01.02.2017 08:54;Accounting;VA7847;;;408,89
+pay expenses;117;16.02.2017 07:59;16.02.2017 08:04;Accounting;VA7847;;;408,89
+check if expense documents exist;118;17.01.2017 06:50;17.01.2017 07:06;Employee;ES644;11.01.2017;12.01.2017;
+upload travel expense documents;118;17.01.2017 07:06;17.01.2017 07:13;Employee;ES644;11.01.2017;12.01.2017;
+file travel expense report;118;17.01.2017 07:13;17.01.2017 07:20;Employee;ES644;11.01.2017;12.01.2017;
+confirm travel expense report;118;17.01.2017 07:20;17.01.2017 07:24;Employee;ES644;11.01.2017;12.01.2017;
+decide on travel expense approval;118;17.01.2017 12:59;17.01.2017 13:04;Manager;DY1868;11.01.2017;12.01.2017;
+send original documents to archive;118;26.01.2017 06:39;26.01.2017 07:15;Employee;ES644;11.01.2017;12.01.2017;
+calculate payments;118;08.03.2017 07:59;08.03.2017 08:26;Accounting;FI12;11.01.2017;12.01.2017;125,89
+pay expenses;118;13.03.2017 15:48;13.03.2017 15:59;Accounting;FI12;11.01.2017;12.01.2017;125,89
+decide on travel expense approval;121;01.01.2017 16:04;02.01.2017 13:01;Manager;YS1169;;;
+send request for travel expense correction;121;02.01.2017 13:01;02.01.2017 13:02;;;;;
+correct travel expense report;121;10.01.2017 06:38;10.01.2017 07:05;Employee;DM7475;;;
+decide on travel expense approval;121;10.01.2017 12:59;10.01.2017 13:01;Manager;YS1169;;;
+send request for travel expense correction;121;10.01.2017 13:01;10.01.2017 13:02;;;;;
+correct travel expense report;121;16.01.2017 05:59;16.01.2017 06:34;Employee;DM7475;;;
+decide on travel expense approval;121;16.01.2017 13:00;16.01.2017 13:07;Manager;YS1169;;;
+send original documents to archive;121;30.01.2017 05:59;30.01.2017 06:15;Employee;DM7475;;;
+calculate payments;121;14.02.2017 08:05;14.02.2017 08:20;Accounting;FI12;;;140,46
+pay expenses;121;20.02.2017 09:41;20.02.2017 09:50;Accounting;FI12;;;140,46
+check if expense documents exist;122;19.01.2017 05:59;19.01.2017 06:42;Employee;IM8241;12.01.2017;12.01.2017;
+file travel expense report;122;19.01.2017 06:42;19.01.2017 06:47;Employee;IM8241;12.01.2017;12.01.2017;
+confirm travel expense report;122;19.01.2017 06:47;19.01.2017 06:50;Employee;IM8241;12.01.2017;12.01.2017;
+decide on travel expense approval;122;19.01.2017 13:00;19.01.2017 13:01;Manager;YS1169;12.01.2017;12.01.2017;
+send request for travel expense correction;122;19.01.2017 13:01;19.01.2017 13:02;;;12.01.2017;12.01.2017;
+correct travel expense report;122;25.01.2017 05:59;25.01.2017 06:08;Employee;IM8241;12.01.2017;12.01.2017;
+decide on travel expense approval;122;25.01.2017 12:59;25.01.2017 13:01;Manager;YS1169;12.01.2017;12.01.2017;
+send request for travel expense correction;122;25.01.2017 13:01;25.01.2017 13:02;;;12.01.2017;12.01.2017;
+correct travel expense report;122;03.02.2017 05:59;03.02.2017 06:16;Employee;IM8241;12.01.2017;12.01.2017;
+decide on travel expense approval;122;03.02.2017 12:59;03.02.2017 13:00;Manager;YS1169;12.01.2017;12.01.2017;
+send original documents to archive;122;13.02.2017 05:59;13.02.2017 06:36;Employee;IM8241;12.01.2017;12.01.2017;
+calculate payments;122;27.02.2017 09:23;27.02.2017 09:43;Accounting;FQ3758;12.01.2017;12.01.2017;41,79
+pay expenses;122;10.03.2017 08:13;10.03.2017 08:17;Accounting;FQ3758;12.01.2017;12.01.2017;41,79
+pay expenses;125;23.01.2017 09:40;23.01.2017 09:44;Accounting;WE5108;;;455,84
+check if expense documents exist;126;05.01.2017 14:10;05.01.2017 14:34;Employee;LB3142;31.12.2016;01.01.2017;
+file travel expense report;126;05.01.2017 14:34;05.01.2017 14:44;Employee;LB3142;31.12.2016;01.01.2017;
+confirm travel expense report;126;05.01.2017 14:44;05.01.2017 14:45;Employee;LB3142;31.12.2016;01.01.2017;
+decide on travel expense approval;126;06.01.2017 12:59;06.01.2017 13:00;Manager;CV4719;31.12.2016;01.01.2017;
+send request for travel expense correction;126;06.01.2017 13:00;06.01.2017 13:01;;;31.12.2016;01.01.2017;
+correct travel expense report;126;11.01.2017 18:32;11.01.2017 19:02;Employee;LB3142;31.12.2016;01.01.2017;
+decide on travel expense approval;126;12.01.2017 12:59;12.01.2017 13:03;Manager;CV4719;31.12.2016;01.01.2017;
+send request for travel expense correction;126;12.01.2017 13:03;12.01.2017 13:04;;;31.12.2016;01.01.2017;
+correct travel expense report;126;16.01.2017 05:59;16.01.2017 06:27;Employee;LB3142;31.12.2016;01.01.2017;
+decide on travel expense approval;126;16.01.2017 12:59;16.01.2017 13:05;Manager;CV4719;31.12.2016;01.01.2017;
+send original documents to archive;126;30.01.2017 16:33;30.01.2017 17:06;Employee;LB3142;31.12.2016;01.01.2017;
+calculate payments;126;23.02.2017 08:38;23.02.2017 09:06;Accounting;WE5108;31.12.2016;01.01.2017;417,19
+pay expenses;126;03.03.2017 14:32;03.03.2017 14:44;Accounting;WE5108;31.12.2016;01.01.2017;417,19
+pay expenses;131;18.01.2017 01:32;19.01.2017 08:12;Accounting;FI12;;;59,89
+pay expenses;132;23.01.2017 08:58;23.01.2017 09:05;Accounting;WE5108;;;401,11
+calculate payments;133;12.01.2017 08:08;23.01.2017 11:16;Accounting;CX8911;;;399,16
+pay expenses;133;14.02.2017 07:59;14.02.2017 08:08;Accounting;CX8911;;;399,16
+calculate payments;134;29.01.2017 12:43;07.02.2017 15:38;Accounting;GR7476;;;421,42
+decide on request;134;29.01.2017 13:23;29.01.2017 13:26;Manager;IC4569;;;
+pay expenses;134;03.03.2017 07:59;03.03.2017 08:05;Accounting;GR7476;;;421,42
+upload travel expense documents;136;02.01.2017 06:20;02.01.2017 06:29;Employee;JB8510;;;
+file travel expense report;136;02.01.2017 06:29;02.01.2017 06:38;Employee;JB8510;;;
+confirm travel expense report;136;02.01.2017 06:38;02.01.2017 06:41;Employee;JB8510;;;
+decide on travel expense approval;136;02.01.2017 13:04;02.01.2017 13:07;Manager;MA6233;;;
+send original documents to archive;136;05.01.2017 21:57;05.01.2017 22:24;Employee;JB8510;;;
+calculate payments;136;02.02.2017 08:27;02.02.2017 09:17;Accounting;WE5108;;;300,58
+pay expenses;136;13.02.2017 08:51;13.02.2017 08:58;Accounting;WE5108;;;300,58
+check if expense documents exist;139;01.01.2017 19:43;04.01.2017 12:33;Employee;WU3070;;;
+upload travel expense documents;139;04.01.2017 12:33;04.01.2017 12:48;Employee;WU3070;;;
+file travel expense report;139;04.01.2017 12:48;04.01.2017 12:55;Employee;WU3070;;;
+confirm travel expense report;139;04.01.2017 12:55;04.01.2017 12:59;Employee;WU3070;;;
+decide on travel expense approval;139;04.01.2017 13:02;04.01.2017 13:03;Manager;CV4719;;;
+send request for travel expense correction;139;04.01.2017 13:03;04.01.2017 13:04;;;;;
+correct travel expense report;139;05.01.2017 05:59;05.01.2017 06:54;Employee;WU3070;;;
+decide on travel expense approval;139;05.01.2017 12:59;05.01.2017 13:02;Manager;CV4719;;;
+send request for travel expense correction;139;05.01.2017 13:02;05.01.2017 13:03;;;;;
+correct travel expense report;139;09.01.2017 05:59;09.01.2017 06:21;Employee;WU3070;;;
+decide on travel expense approval;139;09.01.2017 12:59;09.01.2017 13:01;Manager;CV4719;;;
+send request for travel expense correction;139;09.01.2017 13:01;09.01.2017 13:03;;;;;
+correct travel expense report;139;10.01.2017 15:17;10.01.2017 15:51;Employee;WU3070;;;
+decide on travel expense approval;139;11.01.2017 12:59;11.01.2017 13:01;Manager;CV4719;;;
+send original documents to archive;139;26.01.2017 05:59;26.01.2017 06:04;Employee;WU3070;;;
+calculate payments;139;30.01.2017 07:59;30.01.2017 08:24;Accounting;WO40;;;251,48
+pay expenses;139;01.02.2017 07:59;01.02.2017 08:08;Accounting;WO40;;;251,48
+upload travel expense documents;141;02.01.2017 06:34;02.01.2017 06:46;Employee;WQ9024;;;
+file travel expense report;141;02.01.2017 06:46;02.01.2017 06:55;Employee;WQ9024;;;
+confirm travel expense report;141;02.01.2017 06:55;02.01.2017 06:57;Employee;WQ9024;;;
+decide on travel expense approval;141;02.01.2017 13:05;02.01.2017 13:09;Manager;IC4569;;;
+send original documents to archive;141;09.01.2017 05:59;09.01.2017 06:44;Employee;WQ9024;;;
+calculate payments;141;02.02.2017 08:18;02.02.2017 09:11;Accounting;FI12;;;113,09
+pay expenses;141;14.02.2017 12:50;14.02.2017 13:01;Accounting;FI12;;;113,09
+calculate payments;142;12.01.2017 06:46;16.01.2017 09:44;Accounting;GU1789;;;342,27
+pay expenses;142;23.01.2017 08:22;23.01.2017 08:32;Accounting;GU1789;;;342,27
+pay expenses;143;13.01.2017 12:32;13.01.2017 12:36;Accounting;FQ3758;;;31,99
+check if expense documents exist;144;12.01.2017 13:09;12.01.2017 13:48;Employee;TV9271;03.01.2017;04.01.2017;
+upload travel expense documents;144;12.01.2017 13:48;12.01.2017 14:07;Employee;TV9271;03.01.2017;04.01.2017;
+file travel expense report;144;12.01.2017 14:07;12.01.2017 14:14;Employee;TV9271;03.01.2017;04.01.2017;
+confirm travel expense report;144;12.01.2017 14:14;12.01.2017 14:16;Employee;TV9271;03.01.2017;04.01.2017;
+decide on travel expense approval;144;13.01.2017 12:59;13.01.2017 13:02;Manager;TF7102;03.01.2017;04.01.2017;
+send original documents to archive;144;16.01.2017 07:28;16.01.2017 08:06;Employee;TV9271;03.01.2017;04.01.2017;
+calculate payments;144;02.02.2017 08:12;02.02.2017 08:56;Accounting;FQ3758;03.01.2017;04.01.2017;200,74
+pay expenses;144;08.02.2017 12:35;08.02.2017 12:43;Accounting;FQ3758;03.01.2017;04.01.2017;200,74
+upload travel expense documents;146;02.01.2017 11:21;02.01.2017 11:52;Employee;TJ5159;;;
+file travel expense report;146;02.01.2017 11:52;02.01.2017 11:55;Employee;TJ5159;;;
+confirm travel expense report;146;02.01.2017 11:55;02.01.2017 11:59;Employee;TJ5159;;;
+decide on travel expense approval;146;02.01.2017 13:12;02.01.2017 13:17;Manager;CN787;;;
+send original documents to archive;146;09.01.2017 05:59;09.01.2017 06:30;Employee;TJ5159;;;
+calculate payments;146;18.01.2017 10:50;18.01.2017 11:41;Accounting;FQ3758;;;86,87
+pay expenses;146;30.01.2017 09:45;30.01.2017 09:50;Accounting;FQ3758;;;86,87
+check if expense documents exist;148;30.01.2017 05:59;30.01.2017 06:20;Employee;KB279;19.01.2017;21.01.2017;
+upload travel expense documents;148;30.01.2017 06:20;30.01.2017 06:38;Employee;KB279;19.01.2017;21.01.2017;
+file travel expense report;148;30.01.2017 06:38;30.01.2017 06:44;Employee;KB279;19.01.2017;21.01.2017;
+confirm travel expense report;148;30.01.2017 06:44;30.01.2017 06:45;Employee;KB279;19.01.2017;21.01.2017;
+decide on travel expense approval;148;30.01.2017 13:05;30.01.2017 13:07;Manager;MA6233;19.01.2017;21.01.2017;
+send request for travel expense correction;148;30.01.2017 13:07;30.01.2017 13:08;;;19.01.2017;21.01.2017;
+correct travel expense report;148;01.02.2017 16:21;01.02.2017 17:21;Employee;KB279;19.01.2017;21.01.2017;
+decide on travel expense approval;148;02.02.2017 12:59;02.02.2017 13:03;Manager;MA6233;19.01.2017;21.01.2017;
+send request for travel expense correction;148;02.02.2017 13:03;02.02.2017 13:05;;;19.01.2017;21.01.2017;
+correct travel expense report;148;09.02.2017 05:59;09.02.2017 06:55;Employee;KB279;19.01.2017;21.01.2017;
+decide on travel expense approval;148;09.02.2017 12:59;09.02.2017 13:03;Manager;MA6233;19.01.2017;21.01.2017;
+send original documents to archive;148;20.02.2017 05:59;20.02.2017 06:46;Employee;KB279;19.01.2017;21.01.2017;
+calculate payments;148;03.03.2017 07:59;03.03.2017 08:17;Accounting;FQ3758;19.01.2017;21.01.2017;201,99
+pay expenses;148;13.03.2017 08:06;13.03.2017 08:10;Accounting;FQ3758;19.01.2017;21.01.2017;201,99
+pay expenses;149;23.01.2017 09:11;23.01.2017 09:21;Accounting;GR7476;;;231,89
+check if expense documents exist;150;23.01.2017 18:43;23.01.2017 18:58;Employee;DG2973;16.01.2017;18.01.2017;
+file travel expense report;150;23.01.2017 18:58;23.01.2017 19:10;Employee;DG2973;16.01.2017;18.01.2017;
+confirm travel expense report;150;23.01.2017 19:10;23.01.2017 19:14;Employee;DG2973;16.01.2017;18.01.2017;
+decide on travel expense approval;150;24.01.2017 12:59;24.01.2017 13:00;Manager;OX4346;16.01.2017;18.01.2017;
+send original documents to archive;150;01.02.2017 12:06;01.02.2017 12:59;Employee;DG2973;16.01.2017;18.01.2017;
+calculate payments;150;23.02.2017 08:06;23.02.2017 09:01;Accounting;WE5108;16.01.2017;18.01.2017;187
+pay expenses;150;13.03.2017 09:34;13.03.2017 09:44;Accounting;WE5108;16.01.2017;18.01.2017;187
+pay expenses;152;16.01.2017 09:12;16.01.2017 09:21;Accounting;WE5108;;;507,66
+pay expenses;153;04.01.2017 01:39;06.01.2017 08:09;Accounting;WO40;;;319,82
+check if expense documents exist;155;05.01.2017 10:48;05.01.2017 11:26;Employee;LT5904;02.01.2017;03.01.2017;
+file travel expense report;155;05.01.2017 11:26;05.01.2017 11:35;Employee;LT5904;02.01.2017;03.01.2017;
+confirm travel expense report;155;05.01.2017 11:35;05.01.2017 11:37;Employee;LT5904;02.01.2017;03.01.2017;
+decide on travel expense approval;155;05.01.2017 12:59;05.01.2017 13:05;Manager;OX4346;02.01.2017;03.01.2017;
+send original documents to archive;155;23.01.2017 20:52;23.01.2017 21:15;Employee;LT5904;02.01.2017;03.01.2017;
+calculate payments;155;25.01.2017 08:08;25.01.2017 08:43;Accounting;GU1789;02.01.2017;03.01.2017;136,61
+pay expenses;155;01.02.2017 08:09;01.02.2017 08:19;Accounting;GU1789;02.01.2017;03.01.2017;136,61
+pay expenses;158;08.02.2017 08:03;08.02.2017 08:11;Accounting;WE5108;;;401,39
+pay expenses;159;16.01.2017 09:11;16.01.2017 09:17;Accounting;GR7476;;;286,95
+check if expense documents exist;160;31.01.2017 06:51;31.01.2017 07:22;Employee;MG8921;25.01.2017;30.01.2017;
+upload travel expense documents;160;31.01.2017 07:22;31.01.2017 07:35;Employee;MG8921;25.01.2017;30.01.2017;
+file travel expense report;160;31.01.2017 07:35;31.01.2017 07:47;Employee;MG8921;25.01.2017;30.01.2017;
+confirm travel expense report;160;31.01.2017 07:47;31.01.2017 07:48;Employee;MG8921;25.01.2017;30.01.2017;
+decide on travel expense approval;160;31.01.2017 12:59;31.01.2017 13:05;Manager;MA6233;25.01.2017;30.01.2017;
+send original documents to archive;160;06.02.2017 05:59;06.02.2017 06:13;Employee;MG8921;25.01.2017;30.01.2017;
+calculate payments;160;13.03.2017 15:02;13.03.2017 15:46;Accounting;VA7847;25.01.2017;30.01.2017;469,72
+pay expenses;160;15.03.2017 09:02;15.03.2017 09:08;Accounting;VA7847;25.01.2017;30.01.2017;469,72
+pay expenses;161;11.01.2017 07:59;11.01.2017 08:08;Accounting;VA7847;;;444,97
+check if expense documents exist;162;18.01.2017 05:59;18.01.2017 06:19;Employee;EJ489;06.01.2017;08.01.2017;
+upload travel expense documents;162;18.01.2017 06:19;18.01.2017 06:39;Employee;EJ489;06.01.2017;08.01.2017;
+file travel expense report;162;18.01.2017 06:39;18.01.2017 06:57;Employee;EJ489;06.01.2017;08.01.2017;
+confirm travel expense report;162;18.01.2017 06:57;18.01.2017 06:58;Employee;EJ489;06.01.2017;08.01.2017;
+decide on travel expense approval;162;18.01.2017 13:00;18.01.2017 13:06;Manager;IC4569;06.01.2017;08.01.2017;
+send original documents to archive;162;18.01.2017 14:33;18.01.2017 15:08;Employee;EJ489;06.01.2017;08.01.2017;
+calculate payments;162;15.02.2017 08:28;15.02.2017 08:55;Accounting;VA7847;06.01.2017;08.01.2017;167,33
+pay expenses;162;27.02.2017 07:59;27.02.2017 08:12;Accounting;VA7847;06.01.2017;08.01.2017;167,33
+pay expenses;163;23.01.2017 08:18;23.01.2017 08:22;Accounting;CX8911;;;398,87
+send original documents to archive;164;05.01.2017 03:57;09.01.2017 06:32;Employee;SC954;;;
+calculate payments;164;19.01.2017 07:05;23.01.2017 09:32;Accounting;VA7847;;;432,88
+pay expenses;164;01.02.2017 07:59;01.02.2017 08:09;Accounting;VA7847;;;432,88
+pay expenses;165;05.01.2017 07:59;05.01.2017 08:07;Accounting;FQ3758;;;370,48
+pay expenses;168;30.01.2017 07:59;30.01.2017 08:07;Accounting;WO40;;;348,9
+pay expenses;169;16.01.2017 08:36;16.01.2017 08:41;Accounting;VA7847;;;441,13
+pay expenses;170;19.01.2017 11:06;19.01.2017 11:12;Accounting;GR7476;;;14,88
+send original documents to archive;172;09.01.2017 03:46;10.01.2017 06:36;Employee;GD8003;;;
+calculate payments;172;30.01.2017 11:27;31.01.2017 13:51;Accounting;CX8911;;;281,5
+pay expenses;172;21.02.2017 07:59;21.02.2017 08:03;Accounting;CX8911;;;281,5
+check if expense documents exist;173;23.01.2017 05:59;23.01.2017 06:09;Employee;WC3219;13.01.2017;13.01.2017;
+upload travel expense documents;173;23.01.2017 06:09;23.01.2017 06:24;Employee;WC3219;13.01.2017;13.01.2017;
+file travel expense report;173;23.01.2017 06:24;23.01.2017 06:29;Employee;WC3219;13.01.2017;13.01.2017;
+confirm travel expense report;173;23.01.2017 06:29;23.01.2017 06:30;Employee;WC3219;13.01.2017;13.01.2017;
+decide on travel expense approval;173;23.01.2017 12:59;23.01.2017 13:01;Manager;IC4569;13.01.2017;13.01.2017;
+send original documents to archive;173;27.01.2017 08:11;27.01.2017 08:34;Employee;WC3219;13.01.2017;13.01.2017;
+calculate payments;173;13.02.2017 09:33;13.02.2017 10:01;Accounting;FI12;13.01.2017;13.01.2017;87,39
+pay expenses;173;27.02.2017 08:43;27.02.2017 08:54;Accounting;FI12;13.01.2017;13.01.2017;87,39
+pay expenses;174;09.01.2017 09:16;09.01.2017 09:21;Accounting;GU1789;;;328,8
+check if expense documents exist;176;23.01.2017 10:39;23.01.2017 11:07;Employee;FF2228;14.01.2017;15.01.2017;
+upload travel expense documents;176;23.01.2017 11:07;23.01.2017 11:20;Employee;FF2228;14.01.2017;15.01.2017;
+file travel expense report;176;23.01.2017 11:20;23.01.2017 11:27;Employee;FF2228;14.01.2017;15.01.2017;
+confirm travel expense report;176;23.01.2017 11:27;23.01.2017 11:29;Employee;FF2228;14.01.2017;15.01.2017;
+decide on travel expense approval;176;23.01.2017 13:08;23.01.2017 13:11;Manager;TD8091;14.01.2017;15.01.2017;
+send original documents to archive;176;30.01.2017 05:59;30.01.2017 06:17;Employee;FF2228;14.01.2017;15.01.2017;
+calculate payments;176;13.02.2017 09:46;13.02.2017 10:01;Accounting;VA7847;14.01.2017;15.01.2017;166,25
+pay expenses;176;07.03.2017 12:38;07.03.2017 12:46;Accounting;VA7847;14.01.2017;15.01.2017;166,25
+pay expenses;177;09.01.2017 07:59;09.01.2017 08:09;Accounting;GU1789;;;70,3
+send original documents to archive;178;08.01.2017 03:51;09.01.2017 06:05;Employee;WW43;;;
+calculate payments;178;31.01.2017 12:44;01.02.2017 15:06;Accounting;CX8911;;;473,92
+pay expenses;178;17.02.2017 08:06;17.02.2017 08:17;Accounting;CX8911;;;473,92
+check if expense documents exist;180;12.01.2017 10:12;12.01.2017 10:47;Employee;UL2786;07.01.2017;10.01.2017;
+upload travel expense documents;180;12.01.2017 10:47;12.01.2017 10:53;Employee;UL2786;07.01.2017;10.01.2017;
+file travel expense report;180;12.01.2017 10:53;12.01.2017 10:57;Employee;UL2786;07.01.2017;10.01.2017;
+confirm travel expense report;180;12.01.2017 10:57;12.01.2017 11:00;Employee;UL2786;07.01.2017;10.01.2017;
+decide on travel expense approval;180;12.01.2017 13:02;12.01.2017 13:07;Manager;JH852;07.01.2017;10.01.2017;
+send request for travel expense correction;180;12.01.2017 13:07;12.01.2017 13:08;;;07.01.2017;10.01.2017;
+correct travel expense report;180;16.01.2017 05:59;16.01.2017 06:08;Employee;UL2786;07.01.2017;10.01.2017;
+decide on travel expense approval;180;16.01.2017 12:59;16.01.2017 13:02;Manager;JH852;07.01.2017;10.01.2017;
+send original documents to archive;180;24.01.2017 12:01;24.01.2017 12:18;Employee;UL2786;07.01.2017;10.01.2017;
+calculate payments;180;15.02.2017 08:19;15.02.2017 08:39;Accounting;CX8911;07.01.2017;10.01.2017;408,36
+pay expenses;180;28.02.2017 07:59;28.02.2017 08:08;Accounting;CX8911;07.01.2017;10.01.2017;408,36
+pay expenses;181;18.01.2017 08:14;18.01.2017 08:26;Accounting;GU1789;;;442,03
+pay expenses;183;25.01.2017 07:59;25.01.2017 08:07;Accounting;JH2172;;;303,21
+check if expense documents exist;184;01.01.2017 03:49;02.01.2017 06:31;Employee;XB2350;;;
+file travel expense report;184;02.01.2017 06:31;02.01.2017 06:35;Employee;XB2350;;;
+confirm travel expense report;184;02.01.2017 06:35;02.01.2017 06:37;Employee;XB2350;;;
+decide on travel expense approval;184;02.01.2017 13:03;02.01.2017 13:07;Manager;LV1269;;;
+send original documents to archive;184;06.01.2017 09:39;06.01.2017 10:03;Employee;XB2350;;;
+calculate payments;184;31.01.2017 15:29;31.01.2017 16:17;Accounting;GR7476;;;61,38
+pay expenses;184;10.02.2017 14:27;10.02.2017 14:39;Accounting;GR7476;;;61,38
+pay expenses;186;30.01.2017 09:14;30.01.2017 09:22;Accounting;JH2172;;;180
+send original documents to archive;187;08.01.2017 03:56;12.01.2017 06:15;Employee;EH1220;;;
+calculate payments;187;12.01.2017 07:14;16.01.2017 10:09;Accounting;WO40;;;436,18
+pay expenses;187;31.01.2017 07:59;31.01.2017 08:11;Accounting;WO40;;;436,18
+check if expense documents exist;188;08.01.2017 06:35;09.01.2017 06:15;Employee;LM6330;;;
+upload travel expense documents;188;09.01.2017 06:15;09.01.2017 06:25;Employee;LM6330;;;
+file travel expense report;188;09.01.2017 06:25;09.01.2017 06:35;Employee;LM6330;;;
+confirm travel expense report;188;09.01.2017 06:35;09.01.2017 06:39;Employee;LM6330;;;
+decide on travel expense approval;188;09.01.2017 13:02;09.01.2017 13:06;Manager;IC4569;;;
+send request for travel expense correction;188;09.01.2017 13:06;09.01.2017 13:06;;;;;
+correct travel expense report;188;10.01.2017 05:59;10.01.2017 06:12;Employee;LM6330;;;
+decide on travel expense approval;188;10.01.2017 12:59;10.01.2017 13:03;Manager;IC4569;;;
+send original documents to archive;188;26.01.2017 21:33;26.01.2017 21:54;Employee;LM6330;;;
+calculate payments;188;20.02.2017 08:42;20.02.2017 08:56;Accounting;FQ3758;;;200,55
+pay expenses;188;06.03.2017 09:31;06.03.2017 09:38;Accounting;FQ3758;;;200,55
