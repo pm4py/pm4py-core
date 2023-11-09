@@ -22,6 +22,17 @@ def feature_extraction_case_loc():
     feature_extraction_case_loc.execute_script()
 
 
+def powl_discovery():
+    from examples import powl_discovery
+    print("\n\npowl_discovery")
+    powl_discovery.execute_script()
+
+
+def powl_parsing():
+    from examples import powl_parsing
+    print("\n\npowl_parsing")
+    powl_parsing.execute_script()
+
 def log_skeleton_manual_constraints():
     from examples import log_skeleton_manual_constraints
     print("\n\nlog_skeleton_manual_constraints")
@@ -833,6 +844,8 @@ if __name__ == "__main__":
     execute_script(declare_simple)
     execute_script(variants_paths_duration)
     execute_script(feature_extraction_case_loc)
+    execute_script(powl_discovery)
+    execute_script(powl_parsing)
     execute_script(log_skeleton_manual_constraints)
     execute_script(stochastic_petri_playout)
     execute_script(trace_attrib_hierarch_cluster)
