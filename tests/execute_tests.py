@@ -196,24 +196,24 @@ if __name__ == "__main__":
         ocel_discovery_test = OcelDiscoveryTest()
 
     if "DcrImportExportTest" in enabled_tests:
-        from tests.dcr_test import TestDcr
+        from tests.dcr_test import TestImportExportDCR
 
-        import_export_test = TestDcr()
+        import_export_test = TestImportExportDCR()
 
     if "DcrSemanticsTest" in enabled_tests:
-        from tests.dcr_test import Test_obj_sematics
+        from tests.dcr_test import TestObjSematics
 
-        test_obj_sematics = Test_obj_sematics()
+        test_obj_sematics = TestObjSematics()
 
     if "DcrDiscoveryTest" in enabled_tests:
-        from tests.dcr_test import Test_discovery_dcr
+        from tests.dcr_test import TestDiscoveryDCR
 
-        discovery_dcr_test = Test_discovery_dcr()
+        discovery_dcr_test = TestDiscoveryDCR()
 
     if "DcrConformanceTest" in enabled_tests:
-        from tests.dcr_test import Test_conformance_dcr
+        from tests.dcr_test import TestConformanceDCR
 
-        conformance_test = Test_conformance_dcr()
+        conformance_test = TestConformanceDCR()
 
     if "DcrAlignmentTest" in enabled_tests:
         from tests.dcr_test import TestAlignment
