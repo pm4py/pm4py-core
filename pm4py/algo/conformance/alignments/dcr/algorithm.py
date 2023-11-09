@@ -18,7 +18,7 @@
 from pm4py.algo.conformance.alignments.dcr.variants import optimal
 from enum import Enum
 from pm4py.util import exec_utils
-from pm4py.objects.dcr.obj import DCR_Graph
+from pm4py.objects.dcr.obj import DcrGraph
 from pm4py.objects.log.obj import EventLog, Trace
 from typing import Optional, Dict, Any, Union, Tuple, List
 from pm4py.util import typing
@@ -29,7 +29,7 @@ class Variants(Enum):
     OPTIMAL = optimal
 
 
-def apply(obj: Union[EventLog, Trace], G: DCR_Graph, variant=Variants.OPTIMAL, parameters: Optional[Dict[Any, Any]] = None) -> Union[typing.AlignmentResult, typing.ListAlignments]:
+def apply(obj: Union[EventLog, Trace], G: DcrGraph, variant=Variants.OPTIMAL, parameters: Optional[Dict[Any, Any]] = None) -> Union[typing.AlignmentResult, typing.ListAlignments]:
     """
     Applies the alignment algorithm provided a log/trace object, and a DCR graph.
 
