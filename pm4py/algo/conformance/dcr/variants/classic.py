@@ -62,7 +62,7 @@ class RuleBasedConformance:
 
     def __init__(self, log: Union[EventLog, pd.DataFrame], graph: Union[DCR_Graph, RoleDCR_Graph],
                  parameters: Optional[Dict[Union[str, Any], Any]] = None):
-        self.__G = graph
+        self.__g = graph
         if isinstance(log, pd.DataFrame):
             log = self.__transform_pandas_dataframe(log, exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters,
                                                                                     constants.CASE_CONCEPT_NAME))
@@ -104,17 +104,17 @@ class RuleBasedConformance:
         conf_case = []
 
         # number of constraints (the relations between activities)
-        total_num_constraints = self.__G.getConstraints()
+        total_num_constraints = self.__g.get_constraints()
 
         # get activity key
         activity_key = exec_utils.get_param_value(constants.PARAMETER_CONSTANT_ACTIVITY_KEY, self.__parameters,
                                                   xes_constants.DEFAULT_NAME_KEY)
 
-        initial_marking = deepcopy(self.__G.marking)
+        initial_marking = deepcopy(self.__g.marking)
         # iterate through all traces in log
         for trace in self.__log:
             # reset dcr graph
-            self.__G.marking.reset(deepcopy(initial_marking))
+            self.__g.marking.reset(deepcopy(initial_marking))
             # create base dict to accumalate trace conformance data
             ret = {Outputs.NO_CONSTR_TOTAL.value: total_num_constraints, Outputs.DEVIATIONS.value: []}
 
@@ -122,21 +122,21 @@ class RuleBasedConformance:
             # iterate through all events in a trace
             for event in trace:
                 # get the event to be executed
-                e = self.__G.getEvent(event[activity_key])
+                e = self.__g.get_event(event[activity_key])
                 # check for deviations
-                if e in self.__G.responseTo:
-                    for response in self.__G.responseTo[e]:
+                if e in self.__g.responses:
+                    for response in self.__g.responses[e]:
                         response_origin.append((e, response))
 
-                self.__checker.all_checker(e, event, self.__G, ret[Outputs.DEVIATIONS.value],
+                self.__checker.all_checker(e, event, self.__g, ret[Outputs.DEVIATIONS.value],
                                            parameters=self.__parameters)
 
-                if not self.__semantics.is_enabled(e, self.__G):
-                    self.__checker.enabled_checker(e, self.__G, ret[Outputs.DEVIATIONS.value],
+                if not self.__semantics.is_enabled(e, self.__g):
+                    self.__checker.enabled_checker(e, self.__g, ret[Outputs.DEVIATIONS.value],
                                                    parameters=self.__parameters)
 
                 # execute the event
-                self.__semantics.execute(self.__G, e)
+                self.__semantics.execute(self.__g, e)
 
                 if len(response_origin) > 0:
                     for i in response_origin:
@@ -144,8 +144,8 @@ class RuleBasedConformance:
                             response_origin.remove(i)
 
             # check if run is accepting
-            if not self.__semantics.is_accepting(self.__G):
-                self.__checker.accepting_checker(self.__G, response_origin, ret[Outputs.DEVIATIONS.value],
+            if not self.__semantics.is_accepting(self.__g):
+                self.__checker.accepting_checker(self.__g, response_origin, ret[Outputs.DEVIATIONS.value],
                                                  parameters=self.__parameters)
 
             # compute the conformance for the trace

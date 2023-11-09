@@ -124,6 +124,9 @@ class Marking:
             if item == key.split("_")[-1]:
                 setattr(self, key, value)
 
+    def __lt__(self, other):
+        return str(self) < str(other)
+
 
 class DCR_Graph(object):
     """
@@ -212,26 +215,26 @@ class DCR_Graph(object):
         return self.__labels
 
     @property
-    def conditionsFor(self) -> Dict[str, Set[str]]:
+    def conditions(self) -> Dict[str, Set[str]]:
         return self.__conditionsFor
 
     @property
-    def responseTo(self) -> Dict[str, Set[str]]:
+    def responses(self) -> Dict[str, Set[str]]:
         return self.__responseTo
 
     @property
-    def includesTo(self) -> Dict[str, Set[str]]:
+    def includes(self) -> Dict[str, Set[str]]:
         return self.__includesTo
 
     @property
-    def excludesTo(self) -> Dict[str, Set[str]]:
+    def excludes(self) -> Dict[str, Set[str]]:
         return self.__excludesTo
 
     @property
-    def labelMapping(self) -> Dict[str, Set[str]]:
+    def label_mapping(self) -> Dict[str, Set[str]]:
         return self.__labelMapping
 
-    def getEvent(self, activity: str) -> str:
+    def get_event(self, activity: str) -> str:
         """
         Get the event ID of an activity from graph.
 
@@ -252,7 +255,7 @@ class DCR_Graph(object):
         self.__labelMapping[activity].add(event)
         return event
 
-    def getActivity(self, event: str) -> str:
+    def get_activity(self, event: str) -> str:
         """
         get the activity of an Event
 
@@ -274,7 +277,7 @@ class DCR_Graph(object):
                 return activity
         return event
 
-    def getConstraints(self) -> int:
+    def get_constraints(self) -> int:
         """
         compute constraints in DCR Graph
             - conditions
@@ -308,7 +311,7 @@ class DCR_Graph(object):
         return self.__repr__()
 
     def __eq__(self, other):
-        return self.conditionsFor == other.conditionsFor and self.responseTo == other.responseTo and self.includesTo == other.includesTo and self.excludesTo == other.excludesTo
+        return self.conditions == other.conditions and self.responses == other.responses and self.includes == other.includes and self.excludes == other.excludes
 
     def __lt__(self, other):
         return str(self.obj) < str(other.obj)

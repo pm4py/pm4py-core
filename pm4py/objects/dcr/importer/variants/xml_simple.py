@@ -59,7 +59,6 @@ def import_xml_tree_from_root(root):
     Transform the dictionary into a DCR_Graph object
     '''
     graph = DCR_Graph(dcr)
-    print(graph)
     return graph
 
 

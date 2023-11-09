@@ -14,10 +14,10 @@ class complianceResult:
     contains function to compute the value for the confusion matrix
     '''
     def __init__(self):
-        self.__truePositive = 0
-        self.__falsePositive = 0
-        self.__trueNegative = 0
-        self.__falseNegative = 0
+        self.truePositive = 0
+        self.falsePositive = 0
+        self.trueNegative = 0
+        self.falseNegative = 0
 
     def addTraceResult(self,expectedResult,actualResult):
         '''
@@ -34,35 +34,35 @@ class complianceResult:
         '''
         if actualResult == True:
             if expectedResult == True:
-                self.__truePositive += 1
+                self.truePositive += 1
             else:
-                self.__falsePositive += 1
+                self.falsePositive += 1
         else:
             if expectedResult == True:
-                self.__falseNegative += 1
+                self.falseNegative += 1
             else:
-                self.__trueNegative += 1
+                self.trueNegative += 1
 
     def computeAccuracy(self) -> float:
         #returns how accurate the model is according to expected behavior:
         #acc. = (TP+TN)/(TP+TN+FP+FN)
-        return (self.__truePositive+self.__trueNegative)/(self.__trueNegative+self.__truePositive+self.__falseNegative+self.__falsePositive)
+        return (self.truePositive+self.trueNegative)/(self.trueNegative+self.truePositive+self.falseNegative+self.falsePositive)
 
     def computePrecision(self) -> float:
         # prec. = (TP)/(TP+FP)
         #returns value of how precise the model reflect the expected behavior
-        return (self.__truePositive)/(self.__truePositive+self.__falsePositive)
+        return (self.truePositive)/(self.truePositive+self.falsePositive)
 
     def computeRecall(self) -> float:
         #recall = (TP)/(TP+FN)
         #return value of how well the model has captured expected behavior
-        return (self.__truePositive)/(self.__falseNegative+self.__truePositive)
+        return (self.truePositive)/(self.falseNegative+self.truePositive)
 
     def get_f_score(self) -> Tuple[int, int, int, int]:
-        return self.__truePositive,self.__falsePositive,self.__trueNegative,self.__falseNegative
+        return self.truePositive,self.falsePositive,self.trueNegative,self.falseNegative
 
 
-class compliancechecker:
+class ComplianceChecker:
     """
     The compliance checker, will take in, a dcr graph and a ground truth log
 
@@ -77,18 +77,31 @@ class compliancechecker:
 
     if trace can be executed return dcr graph and marking, check if the graph is accepting
     """
+    def apply(self, graph, gt_log):
+        compliance_res = self.compliant_traces(graph, gt_log)
+        precision = compliance_res.computePrecision()
+        accuracy = compliance_res.computeAccuracy()
+        recall = compliance_res.computeRecall()
+        return (precision, accuracy, recall, compliance_res.truePositive, compliance_res.falsePositive,
+                compliance_res.trueNegative, compliance_res.falseNegative)
 
-    def compliant_traces(self,dcr,gt_log, parameters=None):
+    def compliant_traces(self, graph, gt_log):
         #Eventlog and pandas dataframe requires two different approaches
         compliance_res = complianceResult()
+        sem = DCRSemantics()
+        initial_marking = deepcopy(graph.marking)
         for trace in gt_log:
-            sem = DCRSemantics
-            res = sem.run(deepcopy(dcr), trace)
-            if res is None:
+            actual_value = True
+            for e in trace:
+                if not sem.is_enabled(e['concept:name'], graph):
+                    actual_value = False
+                else:
+                    graph = sem.execute(graph, e['concept:name'])
+            graph.marking.reset(deepcopy(initial_marking))
+            if not sem.is_accepting(graph):
                 compliance_res.addTraceResult(trace.attributes['pdc:isPos'], False)
             else:
-                actualResult = sem.is_accepting(res)
-                compliance_res.addTraceResult(trace.attributes['pdc:isPos'], actualResult)
+                compliance_res.addTraceResult(trace.attributes['pdc:isPos'], actual_value)
         return compliance_res
 
 

@@ -77,14 +77,14 @@ class RoleDCR_Graph(object):
         return self.__roles
 
     @property
-    def roleAssignments(self):
+    def role_assignments(self):
         return self.__roleAssignments
 
     @property
-    def principalsAssignments(self):
+    def principals_assignments(self):
         return self.__principalsAssignments
 
-    def getConstraints(self):
+    def get_constraints(self):
         """
         compute role assignments as constraints in DCR Graph
         and the constraints in the underlying graph
@@ -94,7 +94,7 @@ class RoleDCR_Graph(object):
         int
             number of constraints in dcr graph
         """
-        no = self.__g.getConstraints()
+        no = self.__g.get_constraints()
         for i in self.__roleAssignments.values():
             no += len(i)
         return no

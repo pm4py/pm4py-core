@@ -32,8 +32,8 @@ class CheckRole(CheckFrame):
             return deviations
         else:
             temp = {event: set()}
-            for i in graph.roleAssignments:
-                if event in graph.roleAssignments[i]:
+            for i in graph.role_assignments:
+                if event in graph.role_assignments[i]:
                     temp[event].add(i)
             # if activity has no role, return, as it can be excuted by anybody
             if not temp[event]:
