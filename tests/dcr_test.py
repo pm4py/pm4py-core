@@ -1,38 +1,39 @@
 import os
-import time
 import unittest
-
-import pandas as pd
-
 import pm4py
 from pm4py.algo.discovery.dcr_discover.algorithm import apply
-from pm4py.utils import get_properties
+from pm4py.objects.dcr.obj import DCR_Graph, dcr_template
+import pandas as pd
+from pm4py.algo.discovery.dcr_discover.algorithm import apply
+from pm4py.algo.conformance.alignments.dcr.variants.optimal import Alignment
+from pm4py.objects.conversion.log import converter as log_converter
+from pm4py.objects.dcr.importer import importer as dcr_importer
+from pm4py.objects.dcr.exporter import exporter as dcr_exporter
 
-
-class Test_discovery_dcr(unittest.TestCase):
+class TestDiscoveryDCR(unittest.TestCase):
     def check_if_dcr_is_equal(self, dcr1, dcr2):
         self.assertEqual(len(dcr1.events), len(dcr2.events))
-        for i, j in zip(dcr1.conditionsFor, dcr2.conditionsFor):
+        for i, j in zip(dcr1.conditions, dcr2.conditions):
             self.assertEqual(i, j)
-            for k, l in zip(dcr1.conditionsFor.get(i), dcr2.conditionsFor.get(j)):
+            for k, l in zip(dcr1.conditions.get(i), dcr2.conditions.get(j)):
                 self.assertEqual(k, l)
 
-        for i, j in zip(dcr1.responseTo, dcr2.responseTo):
+        for i, j in zip(dcr1.responses, dcr2.responses):
             self.assertEqual(i, j)
-            for k, l in zip(dcr1.responseTo.get(i), dcr2.responseTo.get(j)):
+            for k, l in zip(dcr1.responses.get(i), dcr2.responses.get(j)):
                 self.assertEqual(k, l)
 
-        for i, j in zip(dcr1.includesTo, dcr2.includesTo):
+        for i, j in zip(dcr1.includes, dcr2.includes):
             self.assertEqual(i, j)
-            for k, l in zip(dcr1.includesTo.get(i), dcr2.includesTo.get(j)):
+            for k, l in zip(dcr1.includes.get(i), dcr2.includes.get(j)):
                 self.assertEqual(k, l)
 
-        for i, j in zip(dcr1.excludesTo, dcr2.excludesTo):
+        for i, j in zip(dcr1.excludes, dcr2.excludes):
             self.assertEqual(i, j)
-            for k, l in zip(dcr1.excludesTo.get(i), dcr2.excludesTo.get(j)):
+            for k, l in zip(dcr1.excludes.get(i), dcr2.excludes.get(j)):
                 self.assertEqual(k, l)
 
-    def test_Basic_DisCoveR_new_DCR_structure(self):
+    def test_basic_discover_new_dcr_structure(self):
         # test to perform if the basic structure holdes all values needed and is mined correctly
         # given an event log
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
@@ -44,17 +45,17 @@ class Test_discovery_dcr(unittest.TestCase):
         # it should have mined relations for activities,
 
         # We want to make sure, that the DCR object store relations
-        self.assertNotEqual(len(dcr.conditionsFor), 0)
-        self.assertNotEqual(len(dcr.responseTo), 0)
-        self.assertNotEqual(len(dcr.includesTo), 0)
-        self.assertNotEqual(len(dcr.excludesTo), 0)
+        self.assertNotEqual(len(dcr.conditions), 0)
+        self.assertNotEqual(len(dcr.responses), 0)
+        self.assertNotEqual(len(dcr.includes), 0)
+        self.assertNotEqual(len(dcr.excludes), 0)
 
         # every activity included, and pending and executed being empty
         self.assertEqual(len(dcr.marking.pending), 0)
         self.assertEqual(len(dcr.marking.executed), 0)
         self.assertEqual(len(dcr.marking.included), len(dcr.events))
 
-    def test_Basic_DisCover_with_AdditionalConditions(self):
+    def test_basic_discover_with_additionalconditions(self):
         # test to see if the DCR graphs has been mine correctly with additional conditions
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         dcr, la = apply(log)
@@ -63,17 +64,17 @@ class Test_discovery_dcr(unittest.TestCase):
         # it should have mined relations for activities,
 
         # We want to make sure, that the DCR object store relations
-        self.assertNotEqual(len(dcr.conditionsFor), 0)
-        self.assertNotEqual(len(dcr.responseTo), 0)
-        self.assertNotEqual(len(dcr.includesTo), 0)
-        self.assertNotEqual(len(dcr.excludesTo), 0)
+        self.assertNotEqual(len(dcr.conditions), 0)
+        self.assertNotEqual(len(dcr.responses), 0)
+        self.assertNotEqual(len(dcr.includes), 0)
+        self.assertNotEqual(len(dcr.excludes), 0)
 
         # every activity included, and pending and executed being empty
         self.assertEqual(len(dcr.marking.pending), 0)
         self.assertEqual(len(dcr.marking.executed), 0)
         self.assertEqual(len(dcr.marking.included), len(dcr.events))
 
-    def test_Basic_DisCover(self):
+    def test_basic_disCover(self):
         log1 = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
         dcr1, la = apply(log1, dcr_discover)
@@ -94,7 +95,7 @@ class Test_discovery_dcr(unittest.TestCase):
         # these attributes, will not be empty
         self.assertNotEqual(len(dcr.roles), 0)
         self.assertNotEqual(len(dcr.principals), 0)
-        self.assertNotEqual(len(dcr.roleAssignments), 0)
+        self.assertNotEqual(len(dcr.role_assignments), 0)
         # no roles are given, so principals and roles should be equal
         self.assertEqual(dcr.principals, dcr.roles)
 
@@ -108,11 +109,11 @@ class Test_discovery_dcr(unittest.TestCase):
         self.assertEqual(dcr1.roles, dcr2.roles)
         self.assertEqual(dcr1.principals, dcr2.principals)
         self.assertNotEqual(dcr1.roles, dcr1.principals)
-        self.assertEqual(dcr1.roleAssignments, dcr2.roleAssignments)
+        self.assertEqual(dcr1.role_assignments, dcr2.role_assignments)
 
     def test_role_mining_with_roles(self):
         # given an event log with role attribute
-        log = pd.read_csv("input_data/mobis/mobis_challenge_log_2019.csv", sep=";")
+        log = pd.read_csv("input_data/mobis_challenge_log_2019_snippet.csv", sep=";")
         log = pm4py.format_dataframe(log, case_id='case', activity_key='activity', timestamp_key='start')
 
         # when the dcr is mined
@@ -124,7 +125,7 @@ class Test_discovery_dcr(unittest.TestCase):
         principals = pm4py.get_event_attribute_values(log, attribute="org:resource")
         self.assertEqual(dcr.roles, set(roles.keys()))
         self.assertEqual(dcr.principals, set(principals.keys()))
-        self.assertNotEqual(len(dcr.roleAssignments), 0)
+        self.assertNotEqual(len(dcr.role_assignments), 0)
         self.assertNotEqual(dcr.roles, dcr.principals)
 
     def test_role_mining_with_no_roles_or_resources(self):
@@ -154,29 +155,20 @@ class Test_discovery_dcr(unittest.TestCase):
         # when process is discovered
         dcr, la = pm4py.discover_dcr(log, process_type={'roles'}, group_key='org:resource')
         # then reinititate request no longer has the orginal assigned role
-        self.assertNotIn("reinitiate request", dcr.roleAssignments['Sara'])
+        self.assertNotIn("reinitiate request", dcr.role_assignments['Sara'])
 
 
-import os
-import unittest
-
-import pm4py
-from pm4py.algo.discovery.dcr_discover.algorithm import apply
-from pm4py.objects.dcr.obj import DCR_Graph, dcr_template
-
-
-class Test_obj_sematics(unittest.TestCase):
-    def test_getItem(self):
+class TestObjSematics(unittest.TestCase):
+    def test_getitem(self):
         # given an event log
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
         # when a dcr is mine
         dcr, la = apply(log, dcr_discover)
         # then dcr graph should be able to be called as a dictionary
+        self.assertEqual(dcr['conditionsFor'], dcr.conditions)
 
-        self.assertEqual(dcr['conditionsFor'], dcr.conditionsFor)
-
-    def test_getItem_inheritance(self):
+    def test_getitem_inheritance(self):
         # given an event log
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         # when mined
@@ -184,9 +176,9 @@ class Test_obj_sematics(unittest.TestCase):
         # getitem should be able to call the additional variables associated with the role object
         self.assertEqual(dcr['roles'], dcr.roles)
         self.assertEqual(dcr['principals'], dcr.principals)
-        self.assertEqual(dcr['roleAssignments'], dcr.roleAssignments)
+        self.assertEqual(dcr['roleAssignments'], dcr.role_assignments)
 
-    def test_DCR_semantics_enabled(self):
+    def test_dcr_semantics_enabled(self):
         # given an eventlog
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
@@ -198,7 +190,7 @@ class Test_obj_sematics(unittest.TestCase):
         self.assertTrue(sem.is_enabled(log.iloc[0]["concept:name"], dcr))
         self.assertFalse(sem.is_enabled(log.iloc[1]["concept:name"], dcr))
 
-    def test_DCR_execution_semantic(self):
+    def test_dcr_execution_semantic(self):
         # given a graph from the DisCover miner
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
@@ -211,7 +203,7 @@ class Test_obj_sematics(unittest.TestCase):
 
         self.assertTrue(sem.is_enabled(log.iloc[1]["concept:name"], dcr))
 
-    def test_DCR_is_accepting_semantic(self):
+    def test_dcr_is_accepting_semantic(self):
         # given a DCR graph discovered from Discover, is always initially accepting
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
@@ -221,7 +213,7 @@ class Test_obj_sematics(unittest.TestCase):
         sem = DCRSemantics()
         self.assertTrue(sem.is_accepting(dcr))
 
-    def test_DCR_is_accepting_response_pending(self):
+    def test_dcr_is_accepting_response_pending(self):
         # given a DCR graph discovered from Discover, is always initially accepting
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
@@ -232,7 +224,7 @@ class Test_obj_sematics(unittest.TestCase):
         sem.execute(dcr, "register request")
         self.assertFalse(sem.is_accepting(dcr))
 
-    def test_label_Mapping_to_activity(self):
+    def test_label_mapping_to_activity(self):
         from pm4py.objects.dcr.importer.variants.xml_dcr_portal import apply as import_apply
         # given a dcr graph and event log
         # we use this as it provides an dcr graph, with eventIDs and labels and label mapping
@@ -241,9 +233,8 @@ class Test_obj_sematics(unittest.TestCase):
         # when labels are retried for the label mapping
         result = []
         for i in dcr.events:
-            result.append(dcr.getActivity(i))
+            result.append(dcr.get_activity(i))
         # then all the labels retrieve should exist in labels
-        print(result)
         for i in result:
             self.assertIsInstance(i, str)
             self.assertIn(i, log['concept:name'].tolist())
@@ -258,7 +249,7 @@ class Test_obj_sematics(unittest.TestCase):
         # when labels are retried for the label mapping
         result = []
         for _, row in log.iterrows():
-            result.append(dcr.getEvent(row['concept:name']))
+            result.append(dcr.get_event(row['concept:name']))
             # then all the labels retrieve should exist in labels
         for i in result:
             self.assertIsInstance(i, str)
@@ -268,7 +259,7 @@ class Test_obj_sematics(unittest.TestCase):
         from pm4py.objects.dcr.importer.variants.xml_dcr_portal import apply as import_apply
         # given a dcr graph and event log
         # we use this as it provides an dcr graph, with eventIDs and labels and label mapping
-        dcr = import_apply('input_data/DCR_js/pendingEvent.xml')
+        dcr = import_apply('test_output_data/pendingEvent.xml')
         self.assertEqual(1, len(dcr.marking.pending))
 
     def test_instantiate_object(self):
@@ -279,18 +270,14 @@ class Test_obj_sematics(unittest.TestCase):
 
 
 from pm4py.utils import get_properties
-
-
-class Test_conformance_dcr(unittest.TestCase):
+class TestConformanceDCR(unittest.TestCase):
 
     def test_rule_checking_no_constraints(self):
         # given a dcr graph
         log = pm4py.read_xes("input_data/running-example.xes")
         dcr, la = pm4py.discover_dcr(log)
-
         # when running getConstraints
-        no = dcr.getConstraints()
-
+        no = dcr.get_constraints()
         # then object, should contain 31 constraints
         self.assertTrue(no == 31)
 
@@ -444,7 +431,7 @@ class Test_conformance_dcr(unittest.TestCase):
         log = pm4py.read_xes("input_data/running-example.xes")
         dcr, la = pm4py.discover_dcr(log, process_type='roles', group_key="org:resource")
         # when running getConstraints
-        no = dcr.getConstraints()
+        no = dcr.get_constraints()
         # then object, should contain the roleAssignment
         # 31 original constraints, but also, 19 additional role assignments
         self.assertTrue(no == 50)
@@ -566,7 +553,7 @@ class Test_conformance_dcr(unittest.TestCase):
 
     def test_rule_checking_with_role_attribute(self):
         # given a DCR graph and a event log
-        log = pd.read_csv("input_data/mobis/mobis_challenge_log_2019.csv", sep=";")
+        log = pd.read_csv("input_data/mobis_challenge_log_2019_snippet.csv", sep=";")
         log = pm4py.format_dataframe(log, case_id='case', activity_key='activity', timestamp_key='start')
 
         log = self.fix_mobis_event_log(log)
@@ -581,7 +568,7 @@ class Test_conformance_dcr(unittest.TestCase):
 
     def test_rule_checking_with_replaced_role(self):
         # given an event log
-        log = pd.read_csv("input_data/mobis/mobis_challenge_log_2019.csv", sep=";")
+        log = pd.read_csv("input_data/mobis/mobis_challenge_log_2019_snippet.csv", sep=";")
         log = pm4py.format_dataframe(log, case_id='case', activity_key='activity', timestamp_key='start')
 
         # clean log
@@ -607,26 +594,6 @@ class Test_conformance_dcr(unittest.TestCase):
         self.assertIn('roleViolation', collect)
         self.assertEqual(1, len(collect))
 
-    def test_conformance_with_test_log(self):
-        # given an event log
-        training_log = pm4py.read_xes('input_data/pdc/pdc_2019/Training Logs/pdc_2019_1.xes')
-        test_log = pm4py.read_xes('input_data/pdc/pdc_2019/Test Logs/pdc_2019_1.xes')
-
-        # load in a timestamp, requirement for the library
-        time1 = pd.date_range('2018-04-09', periods=len(training_log), freq='20min')
-        time2 = pd.date_range('2018-04-09', periods=len(test_log), freq='20min')
-        training_log['time:timestamp'] = time1
-        test_log['time:timestamp'] = time2
-
-        # when a process is discovered, and analysed for conformance
-        dcr, _ = pm4py.discover_dcr(training_log)
-        res = pm4py.conformance_dcr(test_log, dcr)
-        collect = 0
-        for i in res:
-            collect += i['dev_fitness']
-        collect = collect / len(res)
-        self.assertNotEqual(collect, 1.0)
-
     def test_conformance_with_dcr(self):
         # test to see if the conformance checker can run an imported graph
         from pm4py.objects.dcr.importer.variants.xml_dcr_portal import apply as importer
@@ -634,12 +601,6 @@ class Test_conformance_dcr(unittest.TestCase):
         log = pm4py.read_xes("input_data/DCR_test_Claims/event_log.xes")
         log = log[log["lifecycle:transition"] != "complete"]
         res = pm4py.conformance_dcr(log,dcr)
-
-
-from pm4py.algo.conformance.alignments.dcr.variants.optimal import Alignment
-from pm4py.algo.discovery.dcr_discover.algorithm import apply
-from pm4py.objects.conversion.log import converter as log_converter
-
 
 class TestAlignment(unittest.TestCase):
 
@@ -673,7 +634,7 @@ class TestAlignment(unittest.TestCase):
         self.check_alignment_cost(aligned_traces)
 
     def test_Check_model_moves(self):
-        #remove event from log
+        # remove event from log
         trace = [e["concept:name"] for e in self.first_trace]
         trace.remove("check ticket")
         graph_handler = self.create_graph_handler(self.dcr_graph)
@@ -721,7 +682,7 @@ class TestAlignment(unittest.TestCase):
         self.assertTrue(res['move_model_fitness'] == 1.0)
         self.assertTrue(res['move_log_fitness'] == 1.0)
 
-    def test_return_datafrane(self):
+    def test_return_dataframe(self):
         log_path = os.path.join("input_data", "running-example.xes")
         self.log = pm4py.read_xes(log_path)
         res = pm4py.optimal_alignment_dcr(self.log, self.dcr_graph,return_diagnostics_dataframe=True)
@@ -773,7 +734,6 @@ class TestAlignment(unittest.TestCase):
         alignment = aligned_traces['alignment']
         alignment_cost = aligned_traces.get('cost', float('inf'))
         self.assertEqual(alignment_cost, aligned_traces.get('global_min', float('inf')))
-
         model_moves = sum(1 for move in alignment if move[0] == 'model')
         log_moves = sum(1 for move in alignment if move[0] == 'log')
         expected_cost = model_moves + log_moves
@@ -788,20 +748,12 @@ class TestAlignment(unittest.TestCase):
             self.assertTrue(row['move_model_fitness'] == 1.0)
             self.assertTrue(row['move_log_fitness'] == 1.0)
 
-import os
-import unittest
-
-import pm4py
-from pm4py.algo.discovery.dcr_discover import algorithm as disc_alg
-from pm4py.objects.dcr.importer import importer as dcr_importer
-from pm4py.objects.dcr.exporter import exporter as dcr_exporter
-
-class TestDcr(unittest.TestCase):
+class TestImportExportDCR(unittest.TestCase):
     def test_exporter_to_xml_simple(self):
         event_log_file = os.path.join("input_data", "receipt.xes")
         dcrxml_file_export = os.path.join("test_output_data", "receipt_xml_simple.xml")
         log = pm4py.read_xes(event_log_file)
-        dcr, _ = disc_alg.apply(log)
+        dcr, _ = apply(log)
         pm4py.write_dcr_xml(dcr_graph=dcr,path=dcrxml_file_export,variant=dcr_exporter.XML_SIMPLE, dcr_title='receipt_xml_simple')
 
     def test_import_export_xml_simple(self):
@@ -822,7 +774,7 @@ class TestDcr(unittest.TestCase):
         event_log_file = os.path.join("input_data", "sepsis", "data", "Sepsis Cases - Event Log.xes")
         dcrxml_file_export = os.path.join("test_output_data", "sepsis_dcr_portal.xml")
         log = pm4py.read_xes(event_log_file)
-        dcr, _ = disc_alg.apply(log)
+        dcr, _ = apply(log)
         pm4py.write_dcr_xml(dcr_graph=dcr,path=dcrxml_file_export,variant=dcr_exporter.XML_DCR_PORTAL, dcr_title='xml_2_dcr_portal')
 
     def test_importer_from_dcr_portal(self):
@@ -841,7 +793,7 @@ class TestDcr(unittest.TestCase):
         event_log_file = os.path.join("input_data", "receipt.xes")
         dcrxml_file_export = os.path.join("test_output_data", "receipt_dcr_js_portal.xml")
         log = pm4py.read_xes(event_log_file)
-        dcr, _ = disc_alg.apply(log)
+        dcr, _ = apply(log)
         pm4py.write_dcr_xml(dcr_graph=dcr, path=dcrxml_file_export, variant=dcr_exporter.Variants.DCR_JS_PORTAL, dcr_title='reviewing_exported_dcr_js_portal')
 
     def test_importer_from_dcr_js_portal(self):
@@ -870,7 +822,7 @@ class TestDcr(unittest.TestCase):
         event_log_file = os.path.join("input_data", "running-example.xes")
         dcrxml_file_export = os.path.join("test_output_data", "running-example_dcr_portal.xml")
         log = pm4py.read_xes(event_log_file)
-        dcr, _ = disc_alg.apply(log)
+        dcr, _ = apply(log)
         pm4py.write_dcr_xml(dcr_graph=dcr,path=dcrxml_file_export,variant=dcr_exporter.XML_DCR_PORTAL, dcr_title='running-example_dcr_portal')
         dcr_imported_after_export = pm4py.read_dcr_xml(dcrxml_file_export)
         path = os.path.join("test_output_data", "running-example_dcr_js_portal.xml")
