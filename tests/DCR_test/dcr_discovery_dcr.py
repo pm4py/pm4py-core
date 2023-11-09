@@ -8,7 +8,7 @@ from pm4py.algo.discovery.dcr_discover.algorithm import apply
 from pm4py.utils import get_properties
 
 
-class Test_discovery_dcr(unittest.TestCase):
+class TestDiscoveryDCR(unittest.TestCase):
     def check_if_dcr_is_equal(self, dcr1, dcr2):
         self.assertEqual(len(dcr1.events), len(dcr2.events))
         for i, j in zip(dcr1.conditionsFor, dcr2.conditionsFor):
@@ -21,9 +21,9 @@ class Test_discovery_dcr(unittest.TestCase):
             for k, l in zip(dcr1.responseTo.get(i), dcr2.responseTo.get(j)):
                 self.assertEqual(k, l)
 
-        for i, j in zip(dcr1.includesTo, dcr2.includesTo):
+        for i, j in zip(dcr1.includes, dcr2.includes):
             self.assertEqual(i, j)
-            for k, l in zip(dcr1.includesTo.get(i), dcr2.includesTo.get(j)):
+            for k, l in zip(dcr1.includes.get(i), dcr2.includes.get(j)):
                 self.assertEqual(k, l)
 
         for i, j in zip(dcr1.excludesTo, dcr2.excludesTo):
@@ -32,7 +32,7 @@ class Test_discovery_dcr(unittest.TestCase):
                 self.assertEqual(k, l)
 
 
-    def test_Basic_DisCoveR_new_DCR_structure(self):
+    def test_basic_discover_new_dcr_structure(self):
         #test to perform if the basic structure holdes all values needed and is mined correctly
         # given an event log
         log = pm4py.read_xes(os.path.join("../input_data", "running-example.xes"))
@@ -46,7 +46,7 @@ class Test_discovery_dcr(unittest.TestCase):
         # We want to make sure, that the DCR object store relations
         self.assertNotEqual(len(dcr.conditionsFor), 0)
         self.assertNotEqual(len(dcr.responseTo), 0)
-        self.assertNotEqual(len(dcr.includesTo), 0)
+        self.assertNotEqual(len(dcr.includes), 0)
         self.assertNotEqual(len(dcr.excludesTo), 0)
 
         # every activity included, and pending and executed being empty
@@ -55,7 +55,7 @@ class Test_discovery_dcr(unittest.TestCase):
         self.assertEqual(len(dcr.marking.included), len(dcr.events))
 
 
-    def test_Basic_DisCover_with_AdditionalConditions(self):
+    def test_basic_disCover_with_additionalconditions(self):
         #test to see if the DCR graphs has been mine correctly with additional conditions
         log = pm4py.read_xes(os.path.join("../input_data", "running-example.xes"))
         dcr, la = apply(log)
@@ -66,7 +66,7 @@ class Test_discovery_dcr(unittest.TestCase):
         # We want to make sure, that the DCR object store relations
         self.assertNotEqual(len(dcr.conditionsFor),0)
         self.assertNotEqual(len(dcr.responseTo),0)
-        self.assertNotEqual(len(dcr.includesTo),0)
+        self.assertNotEqual(len(dcr.includes),0)
         self.assertNotEqual(len(dcr.excludesTo),0)
 
         # every activity included, and pending and executed being empty
@@ -75,7 +75,7 @@ class Test_discovery_dcr(unittest.TestCase):
         self.assertEqual(len(dcr.marking.included), len(dcr.events))
 
 
-    def test_Basic_DisCover(self):
+    def test_basic_disCover(self):
         log1 = pm4py.read_xes(os.path.join("../input_data", "running-example.xes"))
         from pm4py.algo.discovery.dcr_discover.variants import dcr_discover
         dcr1, la = apply(log1, dcr_discover)
@@ -128,7 +128,7 @@ class Test_discovery_dcr(unittest.TestCase):
         principals = pm4py.get_event_attribute_values(log, attribute="org:resource")
         self.assertEqual(dcr.roles, set(roles.keys()))
         self.assertEqual(dcr.principals, set(principals.keys()))
-        self.assertNotEqual(len(dcr.roleAssignments), 0)
+        self.assertNotEqual(len(dcr.role_assignments), 0)
         self.assertNotEqual(dcr.roles, dcr.principals)
 
 
