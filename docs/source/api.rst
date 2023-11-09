@@ -379,6 +379,7 @@ Utilities (:mod:`pm4py.utils`)
 Other algorithms, which do not belong to the aforementioned categories, are collected in this section:
 
   * :meth:`pm4py.utils.parse_process_tree`; parses a process tree from a string.
+  * :meth:`pm4py.utils.parse_powl_model_string`; parses a POWL model from a string.
   * :meth:`pm4py.utils.parse_event_log_string`; parses an event log from a collection of comma-separated traces.
   * :meth:`pm4py.utils.project_on_event_attribute`; projects an event log on top of a given attribute (e.g., the activity), obtaining a list of list of values for the attribute.
   * :meth:`pm4py.utils.sample_cases`; samples a traditional event log returning the specified amount of cases.
@@ -663,6 +664,7 @@ Overall List of Methods
    pm4py.utils
    pm4py.utils.rebase
    pm4py.utils.parse_process_tree
+   pm4py.utils.parse_powl_model_string
    pm4py.utils.serialize
    pm4py.utils.deserialize
    pm4py.utils.parse_event_log_string

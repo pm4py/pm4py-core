@@ -21,7 +21,7 @@ from pm4py import analysis, conformance, convert, discovery, filtering, hof, ml,
 from pm4py.read import read_xes, read_dfg, read_bpmn, read_pnml, read_ptml, read_ocel, read_ocel_csv, read_ocel_xml, read_ocel_json, read_ocel_sqlite, read_ocel2, read_ocel2_sqlite, read_ocel2_xml
 from pm4py.write import write_xes, write_dfg, write_bpmn, write_pnml, write_ptml, write_ocel, write_ocel_json, write_ocel_csv, write_ocel_xml, write_ocel_sqlite, write_ocel2, write_ocel2_sqlite, write_ocel2_xml
 from pm4py.utils import format_dataframe, parse_process_tree, serialize, deserialize, set_classifier, parse_event_log_string, project_on_event_attribute, \
-    sample_cases, sample_events, rebase
+    sample_cases, sample_events, rebase, parse_powl_model_string
 from pm4py.filtering import filter_log_relative_occurrence_event_attribute, filter_start_activities, filter_end_activities, filter_variants, \
     filter_directly_follows_relation, filter_time_range, \
     filter_eventually_follows_relation, filter_event_attribute_values, filter_trace_attribute_values, \

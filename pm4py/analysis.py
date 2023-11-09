@@ -23,7 +23,7 @@ from pm4py.objects.log.obj import Trace, EventLog, EventStream
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.utils import __event_log_deprecation_warning
 from pm4py.objects.petri_net.obj import PetriNet, Marking
-from pm4py.utils import get_properties, pandas_utils
+from pm4py.utils import get_properties, pandas_utils, constants
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 
 import pandas as pd
@@ -219,7 +219,7 @@ def cluster_log(log: Union[EventLog, EventStream, pd.DataFrame], sklearn_cluster
     return clusterer.apply(log, parameters=properties)
 
 
-def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
+def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", artificial_start=constants.DEFAULT_ARTIFICIAL_START_ACTIVITY, artificial_end=constants.DEFAULT_ARTIFICIAL_END_ACTIVITY) -> Union[EventLog, pd.DataFrame]:
     """
     Inserts the artificial start/end activities in an event log / Pandas dataframe
 
@@ -227,6 +227,8 @@ def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame], activity_key
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
+    :param artificial_start: the symbol to be used as artificial start activity
+    :param artificial_end: the symbol to be used as artificial end activity
     :rtype: ``Union[EventLog, pd.DataFrame]``
 
     .. code-block:: python3
@@ -240,6 +242,9 @@ def insert_artificial_start_end(log: Union[EventLog, pd.DataFrame], activity_key
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
+    properties[constants.PARAM_ARTIFICIAL_START_ACTIVITY] = artificial_start
+    properties[constants.PARAM_ARTIFICIAL_END_ACTIVITY] = artificial_end
+
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
         from pm4py.objects.log.util import dataframe_utils
