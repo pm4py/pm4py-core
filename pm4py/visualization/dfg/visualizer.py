@@ -21,9 +21,7 @@ from enum import Enum
 from pm4py.util import exec_utils
 from copy import deepcopy
 from pm4py.visualization.common.gview import serialize, serialize_dot
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
-from pm4py.util import typing
+from typing import Optional, Dict, Any, Tuple
 import graphviz
 from pm4py.objects.log.obj import EventLog
 

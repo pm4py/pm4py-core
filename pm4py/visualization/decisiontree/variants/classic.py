@@ -14,12 +14,11 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import graphviz
 import tempfile
 from pm4py.util import exec_utils
 from enum import Enum
 from sklearn import tree
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, Union, List
 import graphviz
 
 

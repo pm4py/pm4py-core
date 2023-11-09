@@ -25,7 +25,7 @@ from pm4py.algo.discovery.inductive.variants.abc import InductiveMinerFramework
 from pm4py.algo.discovery.powl.inductive.base_case.factory import BaseCaseFactory
 from pm4py.algo.discovery.powl.inductive.cuts.factory import CutFactory
 from pm4py.algo.discovery.powl.inductive.fall_through.factory import FallThroughFactory
-from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_varaints import POWLDiscoveryVariant
+from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_variants import POWLDiscoveryVariant
 
 from pm4py.objects.powl.obj import POWL, StrictPartialOrder, Sequence
 

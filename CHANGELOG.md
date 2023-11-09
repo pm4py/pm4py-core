@@ -1,5 +1,72 @@
 # Changelog of pm4py
 
+
+## pm4py 2.7.8.3 (2023.11.XX)
+
+### Added
+* d06e2d36558e600208e182f096f07ea86923c1c4
+  * RUSTXES importer variant
+* 7026be7476ed34c138b1046781847cdd9e104715
+  * POWL discovery and visualization in the simplified interface
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 2e5d06da05e8e961b3f99a0194bd8bf072ce1e32
+  * fixed rebase with timestamp format specification
+* 753202cee239e62e47a29fd1bc8658f8f36a39d1
+  * removed warnings (deprecation) in tests execution
+* a209f0df4c16812ac1109150046357c625253106
+  * unneeded workaround in managing datetimes inside Pandas
+* be4b724582512a8bea207252d565b0ee62715f55
+  * PNML importer now returns correctly the parsed stochastic map
+* d587e49961dd9b3db76205da5ce9a9fee893dd79
+  * dropping newlines in process tree parsing
+
+### Removed
+
+### Other
+* 6e3b855c30479d2311458f9732732fc30a248270
+  * changed execute_tests.py format
+* c62f6fd480b67e466e4c906927413b9f2c87aff4
+  * in tests and examples, provide possibility to try with different Pandas backends
+* 5424eb9ed576a1ef4f0485ce186b0300bf1ace03
+  * example to locate the features for a specific case using pm4py.extract_features_dataframe
+* f72e73285e6309df1d5413b4afa7c821facae2e7
+  * help desk log
+
+---
+
+
+## pm4py 2.7.8.2 (2023.10.18)
+
+### Added
+
+### Changed
+* d219db5ece5ce68239b217072bf04ac576ded062
+  * refactoring DFG utility to also output
+    variant-specific paths statistics on request
+* 86cbdb103410a692c15e35a1723f7107e573656e
+  * removing unused imports throughout the code
+* c37cdd31bfbd5742d769fa7a00cea2615e679e2e
+  * increased test coverage by testing also the old EventLog methods
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+* 26ee9d9311f353327184f3f4b91378a1aa2cdc9d
+  * dependencies sheet script
+
+
+---
+
+
 ## pm4py 2.7.8.1 (2023.10.12)
 
 ### Added

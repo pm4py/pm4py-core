@@ -19,7 +19,7 @@ from pm4py.statistics.variants.log import get as variants_module
 from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.random_variables.random_variable import RandomVariable
 from pm4py.objects.petri_net.utils import performance_map
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import exec_utils, xes_constants
 from pm4py.algo.conformance.tokenreplay import algorithm as executor
 
 from enum import Enum

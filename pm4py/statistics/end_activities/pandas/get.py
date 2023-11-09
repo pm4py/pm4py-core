@@ -20,7 +20,7 @@ from pm4py.util.constants import GROUPED_DATAFRAME
 from pm4py.util import exec_utils
 from pm4py.util import constants
 from enum import Enum
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Optional, Dict, Any, Union
 import pandas as pd
 
 

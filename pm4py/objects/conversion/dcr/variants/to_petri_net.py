@@ -131,7 +131,7 @@ class Dcr2PetriNet(object):
                 changed_places.add(state)
 
         parallel_places = set()
-        places_to_rename = {}
+        # places_to_rename = {}
         ps_to_remove = tapn.places.difference(changed_places)
         # if G:
         #     for event in G['events']:
@@ -247,7 +247,7 @@ class Dcr2PetriNet(object):
             for event_prime in G['excludesTo'][event]:
                 tapn = sr.create_exclude_pattern(event, event_prime, tapn)
                 if self.debug:
-                    self.export_debug_net(tapn, m, tapn_path, f'{induction_step}excludesTo', pn_export_format)
+                    self.export_debug_net(tapn, m, tapn_path, f'{induction_step}{event}excludesTo{event_prime}', pn_export_format)
                     induction_step += 1
         for event in G['responseTo']:
             for event_prime in G['responseTo'][event]:
@@ -267,6 +267,10 @@ class Dcr2PetriNet(object):
         if self.print_steps:
             print('[i] handle all relation exceptions')
         tapn = self.mapping_exceptions.map_exceptional_cases_between_events(tapn, m)
+
+        if self.debug:
+            self.export_debug_net(tapn, m, tapn_path, f'{induction_step}exceptions', pn_export_format)
+            induction_step += 1
 
         # post-optimize based on the petri net reachability graph
         if self.postoptimize:
@@ -333,29 +337,38 @@ def clean_input(dcr, white_space_replacement=None):
             dcr[k] = new_v
     return dcr
 
+
 if __name__ == "__main__":
     # run_specific_dcr()
-    # import pm4py
-    # from pm4py.algo.discovery.dcr_discover import algorithm as dcr_discover
-    from pm4py.objects.dcr.importer import importer as dcr_importer
-    #
-    # # sepsis_log_path = '/home/vco/Datasets/Sepsis Cases - Event Log.xes'
-    # # sepsis = pm4py.read_xes(sepsis_log_path)
-    # # dcr_sepsis, _ = dcr_discover.apply(sepsis)
-    # # dcr_sepsis = clean_input(dcr_sepsis)
-    # # dcr_sepsis_only_conditions = deepcopy(dcr_sepsis)
-    # # dcr_sepsis_only_conditions['excludesTo'] = {}
-    # # dcr_sepsis_only_excludes = deepcopy(dcr_sepsis)
-    # # dcr_sepsis_only_excludes['conditionsFor'] = {}
+    import pm4py
+    from pm4py.algo.discovery.dcr_discover import algorithm as dcr_discover
+    from pm4py.objects.dcr.exporter import exporter as dcr_exporter
+
+    # dcr = {
+    #     'events': {'A', 'B', 'C'},
+    #     'conditionsFor': {'B': {'A'}},
+    #     'milestonesFor': {},
+    #     'responseTo': {},
+    #     'noResponseTo': {},
+    #     'includesTo': {},
+    #     'excludesTo': {'B': {'A', 'B', 'C'}, 'A': {'A', 'B', 'C'}, 'C': {'A','B','C'}},
+    #     'conditionsForDelays': {},
+    #     'responseToDeadlines': {},
+    #     'marking': {'executed': {},
+    #                 'included': {'A', 'B', 'C'},
+    #                 'pending': {},
+    #                 'pendingDeadline': {}
+    #                 }
+    # }
+
+    sepsis_log = pm4py.read_xes('/home/vco/Datasets/Sepsis Cases - Event Log.xes', return_legacy_log_object=True)
+    dcr_sepsis, _ = dcr_discover.apply(sepsis_log)
+    dcr_sepsis = clean_input(dcr_sepsis, '')
     path = '/home/vco/Projects/pm4py-dcr/models/'
-    dcr_sepsis_exceptions = dcr_importer.apply(path+'sepsis_relA.xml')
-    d2p = Dcr2PetriNet(preoptimize=True, postoptimize=False, map_unexecutable_events=False, debug=False)
-    file_name = 'sepsis_relA.tapn'
+    dcr_exporter.apply(dcr_sepsis, path+'sepsis.xml')
+    d2p = Dcr2PetriNet(preoptimize=True, postoptimize=True, map_unexecutable_events=False, debug=False)
+    file_name = 'sepsis.tapn'
     d2p.print_steps = True
-    tapn = d2p.dcr2tapn(dcr_sepsis_exceptions, path+file_name)
-    # # d2p = Dcr2PetriNet(preoptimize=True, postoptimize=True, map_unexecutable_events=False, debug=False)
-    # # file_name = 'sepsis_only_conditions.tapn'
-    # # tapn = d2p.dcr2tapn(dcr_sepsis_only_conditions, path+file_name)
-    # # d2p = Dcr2PetriNet(preoptimize=True, postoptimize=True, map_unexecutable_events=False, debug=False)
-    # # file_name = 'sepsis_only_excludes.tapn'
-    # # tapn = d2p.dcr2tapn(dcr_sepsis_only_excludes, path+file_name)
+    tapn = d2p.dcr2tapn(dcr_sepsis, path+file_name)
+    # file_name = 'me.tapn'
+    # tapn = d2p.dcr2tapn(dcr, path+file_name)

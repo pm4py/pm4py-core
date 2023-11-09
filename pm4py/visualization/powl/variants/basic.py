@@ -20,7 +20,7 @@ from enum import Enum
 from graphviz import Digraph
 from pm4py.objects.powl.constants import SILENT_TRANSITION_LABEL
 from pm4py.objects.process_tree.obj import Operator
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, constants
 from typing import Optional, Dict, Any, Union
 from pm4py.objects.powl.obj import POWL, Transition, SilentTransition, StrictPartialOrder, OperatorPOWL
 
@@ -36,6 +36,8 @@ class Parameters(Enum):
     ENABLE_DEEPCOPY = "enable_deepcopy"
     FONT_SIZE = "font_size"
     BGCOLOR = "bgcolor"
+    RANKDIR = "rankdir"
+
 
 def apply(powl: POWL, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Digraph:
     """
@@ -56,10 +58,17 @@ def apply(powl: POWL, parameters: Optional[Dict[Union[str, Parameters], Any]] = 
     if parameters is None:
         parameters = {}
 
+    image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
+    color_map = exec_utils.get_param_value(Parameters.COLOR_MAP, parameters, {})
+    bgcolor = exec_utils.get_param_value(Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR)
+    rankdir = exec_utils.get_param_value(Parameters.RANKDIR, parameters, "TB")
+
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     filename.close()
 
-    viz = Digraph("powl", filename=filename.name, engine='dot')
+    viz = Digraph("powl", filename=filename.name, engine='dot', graph_attr={'bgcolor': bgcolor})
+    viz.graph_attr['rankdir'] = rankdir
+
     viz.attr('node', shape='ellipse', fixedsize='false')
     viz.attr(nodesep='1')
     viz.attr(ranksep='1')
@@ -67,13 +76,11 @@ def apply(powl: POWL, parameters: Optional[Dict[Union[str, Parameters], Any]] = 
     viz.attr(overlap='scale')
     viz.attr(splines='true')
 
-    image_format = exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")
-    color_map = exec_utils.get_param_value(Parameters.COLOR_MAP, parameters, {})
-
     repr_powl(powl, viz, color_map, parameters)
-    viz.format = image_format
+    viz.format = image_format.replace("html", "plain-ext")
 
     return viz
+
 
 def get_color(node, color_map):
     """

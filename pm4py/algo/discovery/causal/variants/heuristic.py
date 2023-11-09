@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Dict, Tuple
 
 
 def apply(dfg: Dict[Tuple[str, str], int]) -> Dict[Tuple[str, str], float]:

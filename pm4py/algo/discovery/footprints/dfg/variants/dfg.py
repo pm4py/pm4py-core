@@ -16,7 +16,7 @@
 '''
 from pm4py.objects.dfg import utils
 from enum import Enum
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Tuple
 
 
 class Outputs(Enum):

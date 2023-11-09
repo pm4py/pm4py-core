@@ -19,7 +19,7 @@ from pm4py.util import string_distance
 import numpy as np
 from pyemd import emd
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, Union, List
 
 
 class Parameters:

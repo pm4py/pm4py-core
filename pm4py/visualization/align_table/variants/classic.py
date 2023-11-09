@@ -20,8 +20,8 @@ import tempfile
 from pm4py.statistics.variants.log import get as variants_get
 from pm4py.util import exec_utils
 from enum import Enum
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any
+from pm4py.objects.log.obj import EventLog
 from pm4py.util import typing
 import graphviz
 

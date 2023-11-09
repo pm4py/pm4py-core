@@ -17,7 +17,7 @@
 from pm4py.algo.discovery.causal.variants import alpha, heuristic
 from enum import Enum
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Dict, Tuple
 
 
 class Variants(Enum):

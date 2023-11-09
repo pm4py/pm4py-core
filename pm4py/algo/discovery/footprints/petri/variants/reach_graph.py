@@ -17,7 +17,7 @@
 from pm4py.objects.petri_net.utils import reachability_graph
 import itertools
 from enum import Enum
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 
 

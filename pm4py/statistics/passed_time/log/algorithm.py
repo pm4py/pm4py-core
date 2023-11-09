@@ -17,7 +17,7 @@
 from pm4py.statistics.passed_time.log.variants import pre, post, prepost
 from enum import Enum
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Optional, Dict, Any
 from pm4py.objects.log.obj import EventLog
 
 

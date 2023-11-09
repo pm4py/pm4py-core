@@ -24,7 +24,6 @@ from pm4py import util as pm4pyutil
 from pm4py.algo.analysis.marking_equation.variants import classic as marking_equation
 from pm4py.objects.log import obj as log_implementation
 from pm4py.objects.petri_net.utils import align_utils as utils
-from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.petri_net.utils.incidence_matrix import construct as inc_mat_construct
 from pm4py.objects.petri_net.utils.synchronous_product import construct_cost_aware, construct
 from pm4py.objects.petri_net import semantics
@@ -35,11 +34,10 @@ from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.petri_net import properties
 
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import Trace
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import typing
-import pandas as pd
 
 
 class Parameters(Enum):

@@ -19,7 +19,7 @@ from enum import Enum
 from pm4py.util import constants, xes_constants, pandas_utils, exec_utils
 import numpy as np
 from collections import Counter
-from pm4py.util import variants_util
+from typing import Tuple, Dict, Collection
 
 
 class Parameters(Enum):
@@ -29,9 +29,20 @@ class Parameters(Enum):
     INDEX_KEY = "index_key"
 
 
-def apply(dataframe: pd.DataFrame, parameters=None):
+def apply(dataframe: pd.DataFrame, parameters=None) -> Tuple[Dict[Collection[str], int], Dict[str, Collection[str]]]:
     """
-    Returns the variants from a Pandas dataframe (through Numpy)
+    Efficient method returning the variants from a Pandas dataframe (through Numpy)
+
+    Minimum viable example:
+
+        import pandas as pd
+        import pm4py
+        from pm4py.objects.log.util import pandas_numpy_variants
+
+        dataframe = pd.read_csv('tests/input_data/receipt.csv')
+        dataframe = pm4py.format_dataframe(dataframe)
+        variants_dict, case_variant = pandas_numpy_variants.apply(dataframe)
+
 
     Parameters
     ------------------
@@ -48,6 +59,8 @@ def apply(dataframe: pd.DataFrame, parameters=None):
     ------------------
     variants_dict
         Dictionary associating to each variant the number of occurrences in the dataframe
+    case_variant
+        Dictionary associating to each case identifier the corresponding variant
     """
     if parameters is None:
         parameters = {}
@@ -66,14 +79,17 @@ def apply(dataframe: pd.DataFrame, parameters=None):
     activities = dataframe[activity_key].to_numpy()
 
     c_unq, c_ind, c_counts = np.unique(cases, return_index=True, return_counts=True)
-    variants = Counter()
+    variants_counter = Counter()
+    case_variant = dict()
 
     for i in range(len(c_ind)):
         si = c_ind[i]
         ei = si + c_counts[i]
         acts = tuple(activities[si:ei])
-        variants[acts] += 1
+        variants_counter[acts] += 1
+        case_variant[c_unq[i]] = acts
 
-    variants = {x: y for x, y in variants.items()}
+    # return as Python dictionary
+    variants_dict = {x: y for x, y in variants_counter.items()}
 
-    return variants
+    return variants_dict, case_variant

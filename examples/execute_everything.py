@@ -10,6 +10,18 @@ def declare_simple():
     declare_simple.execute_script()
 
 
+def variants_paths_duration():
+    from examples import variants_paths_duration
+    print("\n\nvariants_paths_duration")
+    variants_paths_duration.execute_script()
+
+
+def feature_extraction_case_loc():
+    from examples import feature_extraction_case_loc
+    print("\n\nfeature_extraction_case_loc")
+    feature_extraction_case_loc.execute_script()
+
+
 def log_skeleton_manual_constraints():
     from examples import log_skeleton_manual_constraints
     print("\n\nlog_skeleton_manual_constraints")
@@ -819,6 +831,8 @@ pm4py.util.constants.SHOW_INTERNAL_WARNINGS = False
 
 if __name__ == "__main__":
     execute_script(declare_simple)
+    execute_script(variants_paths_duration)
+    execute_script(feature_extraction_case_loc)
     execute_script(log_skeleton_manual_constraints)
     execute_script(stochastic_petri_playout)
     execute_script(trace_attrib_hierarch_cluster)

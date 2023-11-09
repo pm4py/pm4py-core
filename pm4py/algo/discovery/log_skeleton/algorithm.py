@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.algo.discovery.log_skeleton.variants import classic
 from enum import Enum
 from pm4py.util import exec_utils

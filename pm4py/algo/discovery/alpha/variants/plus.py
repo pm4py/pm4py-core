@@ -17,16 +17,14 @@
 import time
 
 from pm4py import util as pmutil
-from pm4py.objects.log.obj import EventLog, Trace
+from pm4py.objects.log.obj import Trace
 from pm4py.util import xes_constants as xes_util
-from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to, remove_place, remove_transition
 from pm4py.util import exec_utils
 from enum import Enum
 from copy import deepcopy
 from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
-import pandas as pd
+from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 
 

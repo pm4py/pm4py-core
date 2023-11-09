@@ -15,7 +15,6 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import random
-from copy import copy
 
 from pm4py.objects.log.obj import EventStream, EventLog
 

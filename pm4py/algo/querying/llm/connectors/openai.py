@@ -37,6 +37,7 @@ def apply(query: str, parameters: Optional[Dict[Any, Any]] = None) -> str:
 
     openai.api_key = api_key
 
-    messages = [{"role": "user", "content": query}]
-    response = openai.ChatCompletion.create(model=model, messages=messages)
+    message = {"role": "user", "content": query}
+
+    response = openai.ChatCompletion.create(model=model, messages=[message])
     return response["choices"][0]["message"]["content"]

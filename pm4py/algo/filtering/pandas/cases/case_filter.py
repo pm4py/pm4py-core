@@ -14,12 +14,11 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-import pandas as pd
 from pm4py.util import constants, xes_constants
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
-from typing import Optional, Dict, Any, Union, Tuple, List
+from typing import Optional, Dict, Any, Union
 import pandas as pd
 from pm4py.util.business_hours import soj_time_business_hours_diff
 

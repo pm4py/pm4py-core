@@ -15,7 +15,6 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from collections import Counter
-from enum import Enum
 
 from pm4py.util import constants, exec_utils
 from pm4py.util import xes_constants as xes_util

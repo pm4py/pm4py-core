@@ -19,8 +19,8 @@ from pm4py.algo.simulation.playout.process_tree.variants import extensive, topbo
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.objects.process_tree.obj import ProcessTree
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any
+from pm4py.objects.log.obj import EventLog
 
 
 class Variants(Enum):

@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.algo.discovery.dfg.variants import native, performance
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Optional, Dict, Any
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.conversion.log import converter as log_converter
 

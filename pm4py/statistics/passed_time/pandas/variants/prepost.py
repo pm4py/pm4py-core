@@ -14,15 +14,13 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY, \
-    PARAMETER_CONSTANT_TIMESTAMP_KEY
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY, DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics as pandas
 from pm4py.util import exec_utils
 from pm4py.util import constants
 from enum import Enum
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Optional, Dict, Any
 import pandas as pd
 
 

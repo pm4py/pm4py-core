@@ -16,16 +16,13 @@
 '''
 from enum import Enum
 
-from pm4py.algo.filtering.common import filtering_constants
-from pm4py.algo.filtering.log.variants import variants_filter
-from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes
 from pm4py.util.constants import PARAMETER_CONSTANT_ATTRIBUTE_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY, DEFAULT_VARIANT_SEP
 import sys
 
 from typing import Optional, Dict, Any, Union, Tuple, List
-from pm4py.objects.log.obj import EventLog, EventStream, Trace
+from pm4py.objects.log.obj import EventLog, Trace
 from pm4py.objects.conversion.log import converter as log_converter
 
 

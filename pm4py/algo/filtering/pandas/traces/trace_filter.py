@@ -20,6 +20,7 @@ from pm4py.statistics.traces.generic.pandas.case_statistics import get_variants_
 from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY, PARAMETER_CONSTANT_ACTIVITY_KEY
 from enum import Enum
 from pm4py.util import exec_utils
+from pm4py.algo.filtering.common.traces.infix_to_regex import translate_infix_to_regex
 from copy import copy
 from typing import Optional, Dict, Any, Union, List
 import pandas as pd
@@ -85,22 +86,3 @@ def apply(df: pd.DataFrame, admitted_traces: List[List[str]],
 
     ret.attrs = copy(df.attrs) if hasattr(df, 'attrs') else {}
     return ret
-
-
-def translate_infix_to_regex(infix):
-    regex = "^"
-    for i, act in enumerate(infix):
-        is_last_activity = i == (len(infix) - 1)
-        if act == "...":
-            if is_last_activity:
-                regex = f"{regex[:-1]}(,[^,]*)*"
-            else:
-                regex = f"{regex}([^,]*,)*"
-        else:
-            if is_last_activity:
-                regex = f"{regex}{act}"
-            else:
-                regex = f"{regex}{act},"
-
-    regex = f"{regex}$"
-    return regex

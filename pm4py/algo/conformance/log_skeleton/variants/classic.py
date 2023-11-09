@@ -16,12 +16,10 @@
 '''
 from pm4py.objects.log.util import xes
 from pm4py.algo.discovery.log_skeleton import trace_skel
-from pm4py.objects.log.obj import EventLog, Trace, Event
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import xes_constants
 from pm4py.util import variants_util
-from enum import Enum
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Optional, Dict, Any, Union, List, Set
 from pm4py.objects.log.obj import EventLog, Trace
 import pandas as pd
 

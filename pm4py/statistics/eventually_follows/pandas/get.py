@@ -18,7 +18,7 @@ from enum import Enum
 
 from pm4py.algo.discovery.dfg.adapters.pandas.df_statistics import get_partial_order_dataframe
 from pm4py.util import exec_utils, constants, xes_constants
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Optional, Dict, Any, Union, Tuple
 import pandas as pd
 
 

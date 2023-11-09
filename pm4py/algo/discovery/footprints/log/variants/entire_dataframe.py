@@ -14,14 +14,13 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from enum import Enum
 from pm4py.util import xes_constants
 from pm4py.util import constants
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.util import exec_utils, pandas_utils
 from pm4py.algo.discovery.causal import algorithm as causal_discovery
 from enum import Enum
-from typing import Optional, Dict, Any, Union, Tuple
+from typing import Optional, Dict, Any, Union
 import pandas as pd
 
 

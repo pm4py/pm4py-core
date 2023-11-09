@@ -22,7 +22,6 @@ import pandas as pd
 from pm4py.algo.organizational_mining import util
 from pm4py.objects.log.obj import EventLog
 from pm4py.util import constants
-from pm4py.objects.org.roles.obj import Role
 
 
 class Parameters(Enum):

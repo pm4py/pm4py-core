@@ -18,13 +18,12 @@ from collections import Counter
 from enum import Enum
 
 from pm4py.algo.discovery.log_skeleton import trace_skel
-from pm4py.objects.log.obj import EventLog
 from pm4py.objects.log.util import xes
 from pm4py.util import exec_utils
 from pm4py.util import variants_util
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_CASEID_KEY, CASE_CONCEPT_NAME
-from typing import Optional, Dict, Any, Union, Tuple, List
-from pm4py.objects.log.obj import EventLog, EventStream
+from typing import Optional, Dict, Any, Union
+from pm4py.objects.log.obj import EventLog
 import pandas as pd
 
 

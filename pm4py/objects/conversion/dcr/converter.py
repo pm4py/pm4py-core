@@ -16,12 +16,13 @@
 '''
 from enum import Enum
 
-from pm4py.objects.conversion.dcr.variants import to_petri_net
+from pm4py.objects.conversion.dcr.variants import to_petri_net, to_timed_arc_petri_net
 from pm4py.util import exec_utils
 
 
 class Variants(Enum):
     TO_PETRI_NET = to_petri_net
+    TO_TIMED_ARC_PETRI_NET = to_timed_arc_petri_net
 
 
 DEFAULT_VARIANT = Variants.TO_PETRI_NET

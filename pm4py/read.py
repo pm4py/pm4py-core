@@ -61,24 +61,31 @@ def read_xes(file_path: str, variant: str = "lxml", return_legacy_log_object: bo
     v = xes_importer.Variants.LINE_BY_LINE
     if importlib.util.find_spec("lxml"):
         v = xes_importer.Variants.ITERPARSE
+
     if variant == "iterparse_20":
         v = xes_importer.Variants.ITERPARSE_20
+    elif variant == "iterparse":
+        v = xes_importer.Variants.ITERPARSE
     elif variant == "iterparse_mem_compressed":
         v = xes_importer.Variants.ITERPARSE_MEM_COMPRESSED
     elif variant == "line_by_line":
         v = xes_importer.Variants.LINE_BY_LINE
     elif variant == "chunk_regex":
         v = xes_importer.Variants.CHUNK_REGEX
+    elif variant == "rustxes":
+        v = xes_importer.Variants.RUSTXES
 
     from copy import copy
     parameters = copy(kwargs)
     parameters["encoding"] = encoding
+    parameters["return_legacy_log_object"] = return_legacy_log_object
 
     log = xes_importer.apply(file_path, variant=v, parameters=parameters)
-    if return_legacy_log_object:
-        return log
-    log = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
-    log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format="ISO8601")
+
+    if type(log) is EventLog and not return_legacy_log_object:
+        log = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
+        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format="ISO8601")
+
     return log
 
 

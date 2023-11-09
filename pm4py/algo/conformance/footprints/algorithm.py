@@ -17,7 +17,7 @@
 from enum import Enum
 from pm4py.algo.conformance.footprints.variants import log_model, log_extensive, trace_extensive
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple, List, Set
+from typing import Optional, Dict, Any, Union, List
 
 
 class Variants(Enum):

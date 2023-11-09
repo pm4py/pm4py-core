@@ -18,10 +18,8 @@
 from pm4py.algo.evaluation.simplicity.variants import arc_degree, extended_cardoso, extended_cyclomatic
 from enum import Enum
 from pm4py.util import exec_utils
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.objects.log.obj import EventLog, EventStream
-from pm4py.objects.petri_net.obj import PetriNet, Marking
-import pandas as pd
+from typing import Optional, Dict, Any
+from pm4py.objects.petri_net.obj import PetriNet
 
 
 class Variants(Enum):

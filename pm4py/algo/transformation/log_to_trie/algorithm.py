@@ -21,8 +21,7 @@ from pm4py.objects.log.obj import EventLog
 from pm4py.objects.trie.obj import Trie
 from pm4py.statistics.variants.log import get as get_variants_log
 from pm4py.statistics.variants.pandas import get as get_variants_pandas
-from typing import Optional, Dict, Any, Union, Tuple
-from pm4py.util import variants_util, constants
+from typing import Optional, Dict, Any, Union
 import pandas as pd
 
 

@@ -18,11 +18,10 @@ __doc__ = """
 The ``pm4py.filtering`` module contains the filtering features offered in ``pm4py``
 """
 
-from typing import List, Union, Set, List, Tuple, Collection, Any, Dict, Optional
+from typing import Union, Set, List, Tuple, Collection, Any, Dict, Optional
 
 import pandas as pd
 
-from pm4py.meta import VERSION as PM4PY_CURRENT_VERSION
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.util import constants, xes_constants
 import warnings

@@ -73,7 +73,7 @@ def apply(path, parameters=None):
 
     Returns
     -------
-    DcrGraph
+    DCR_Graph
         DCR Graph object
     '''
     if parameters is None:

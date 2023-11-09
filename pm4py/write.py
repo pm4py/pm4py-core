@@ -318,7 +318,7 @@ def write_ocel2(ocel: OCEL, file_path: str, encoding: str = constants.DEFAULT_EN
 
 def write_ocel2_json(ocel: OCEL, file_path: str, encoding: str = constants.DEFAULT_ENCODING):
     """
-    Writes an OCEL2.0 object to disk to an ``XML`` file (exported as ``.jsonocel`` file).
+    Writes an OCEL2.0 object to disk to an ``JSON`` file (exported as ``.jsonocel`` file).
 
     :param ocel: OCEL object
     :param file_path: target file path to the JSON file
