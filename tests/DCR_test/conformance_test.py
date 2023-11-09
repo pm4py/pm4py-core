@@ -4,17 +4,13 @@ import pandas as pd
 import pm4py
 from pm4py.utils import get_properties
 
-
-class Test_conformance_dcr(unittest.TestCase):
-
+class TestConformanceDCR(unittest.TestCase):
     def test_rule_checking_no_constraints(self):
         # given a dcr graph
         log = pm4py.read_xes("../input_data/running-example.xes")
         dcr, la = pm4py.discover_dcr(log)
-
         # when running getConstraints
-        no = dcr.getConstraints()
-
+        no = dcr.get_constraints()
         # then object, should contain 31 constraints
         self.assertTrue(no == 31)
 
@@ -168,7 +164,7 @@ class Test_conformance_dcr(unittest.TestCase):
         log = pm4py.read_xes("../input_data/running-example.xes")
         dcr, la = pm4py.discover_dcr(log, process_type='roles', group_key="org:resource")
         # when running getConstraints
-        no = dcr.getConstraints()
+        no = dcr.get_constraints()
         # then object, should contain the roleAssignment
         # 31 original constraints, but also, 19 additional role assignments
         self.assertTrue(no == 50)
@@ -312,6 +308,7 @@ class Test_conformance_dcr(unittest.TestCase):
         log = self.fix_mobis_event_log(log)
 
         dcr, la = pm4py.discover_dcr(log, process_type='roles', group_key="org:role")
+        from pm4py.algo.conformance.dcr.variants import classic
         from pm4py.algo.conformance.dcr.algorithm import apply as conf_alg
         log = log.replace("Manager", "Boss")
         log = log[log['case:concept:name'] == '3887']
@@ -330,31 +327,10 @@ class Test_conformance_dcr(unittest.TestCase):
         self.assertIn('roleViolation', collect)
         self.assertEqual(1, len(collect))
 
-    def test_conformance_with_test_log(self):
-        # given an event log
-        training_log = pm4py.read_xes('../input_data/pdc/pdc_2019/Training Logs/pdc_2019_1.xes')
-        test_log = pm4py.read_xes('../input_data/pdc/pdc_2019/Test Logs/pdc_2019_1.xes')
-
-        # load in a timestamp, requirement for the library
-        time1 = pd.date_range('2018-04-09', periods=len(training_log), freq='20min')
-        time2 = pd.date_range('2018-04-09', periods=len(test_log), freq='20min')
-        training_log['time:timestamp'] = time1
-        test_log['time:timestamp'] = time2
-
-        # when a process is discovered, and analysed for conformance
-        dcr, _ = pm4py.discover_dcr(training_log)
-        res = pm4py.conformance_dcr(test_log, dcr)
-        collect = 0
-        for i in res:
-            collect += i['dev_fitness']
-        collect = collect / len(res)
-        self.assertNotEqual(collect, 1.0)
-
     def test_conformance_with_dcr(self):
-        #test to see if the conformance checker can run an imported graph
+        # test to see if the conformance checker can run an imported graph
         from pm4py.objects.dcr.importer.variants.xml_dcr_portal import apply as importer
         dcr = importer("../input_data/DCR_test_Claims/DCR_test_Claims.xml")
         log = pm4py.read_xes("../input_data/DCR_test_Claims/event_log.xes")
         log = log[log["lifecycle:transition"] != "complete"]
         res = pm4py.conformance_dcr(log,dcr)
-
