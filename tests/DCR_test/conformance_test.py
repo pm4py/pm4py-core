@@ -35,7 +35,6 @@ class TestConformanceDCR(unittest.TestCase):
         log = pm4py.read_xes(os.path.join("../input_data", "running-example.xes"))
 
         # when process is discovered, check conformance to return dianostics
-        from pm4py.algo.discovery.dcr_discover.algorithm import apply
         dcr, la = pm4py.discover_dcr(log)
         res = conformance_dcr(log, dcr, return_diagnostics_dataframe=True)
         # then the models should have perfect fitness
@@ -196,7 +195,6 @@ class TestConformanceDCR(unittest.TestCase):
         # Given an event log and discovering a dcr
         log = pm4py.read_xes(os.path.join("../input_data", "running-example.xes"))
         dcr, la = pm4py.discover_dcr(log, process_type='roles', group_key="org:resource")
-        from pm4py.algo.conformance.dcr.variants import classic
         from pm4py.algo.conformance.dcr.algorithm import apply as conf_alg
         # when the roles are changed and conformance is performed
         log = log.replace("Mike", "Brenda")
@@ -215,7 +213,6 @@ class TestConformanceDCR(unittest.TestCase):
         # Given an event log and discovering a dcr
         log = pm4py.read_xes(os.path.join("../input_data", "running-example.xes"))
         dcr, la = pm4py.discover_dcr(log, process_type='roles', group_key="org:resource")
-        from pm4py.algo.conformance.dcr.variants import classic
         from pm4py.algo.conformance.dcr.algorithm import apply as conf_alg
         # when the roles are changed and conformance is performed
         log = log.replace("Sara", "Mike")
@@ -235,7 +232,6 @@ class TestConformanceDCR(unittest.TestCase):
         # Given an event log and discovering a dcr
         log = pm4py.read_xes(os.path.join("../input_data", "running-example.xes"))
         dcr, la = pm4py.discover_dcr(log, process_type='roles', group_key="org:resource")
-        from pm4py.algo.conformance.dcr.variants import classic
         from pm4py.algo.conformance.dcr.algorithm import apply as conf_alg
         # when the roles are changed and conformance is performed
         log = log.replace("Sara", float("nan"))
@@ -308,7 +304,6 @@ class TestConformanceDCR(unittest.TestCase):
         log = self.fix_mobis_event_log(log)
 
         dcr, la = pm4py.discover_dcr(log, process_type='roles', group_key="org:role")
-        from pm4py.algo.conformance.dcr.variants import classic
         from pm4py.algo.conformance.dcr.algorithm import apply as conf_alg
         log = log.replace("Manager", "Boss")
         log = log[log['case:concept:name'] == '3887']

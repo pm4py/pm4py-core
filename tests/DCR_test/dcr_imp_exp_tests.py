@@ -6,7 +6,7 @@ from pm4py.algo.discovery.dcr_discover import algorithm as disc_alg
 from pm4py.objects.dcr.importer import importer as dcr_importer
 from pm4py.objects.dcr.exporter import exporter as dcr_exporter
 
-class TestDcr(unittest.TestCase):
+class TestImportExportDCR(unittest.TestCase):
 
     #TODO: create a dict DCR graph and the same graph in the portal
     # it has to have: all relations + self relations + time
@@ -90,6 +90,7 @@ class TestDcr(unittest.TestCase):
         path = os.path.join("../test_output_data", "running-example_dcr_js_portal.xml")
         pm4py.write_dcr_xml(dcr_graph=dcr_imported_after_export,path=path,variant=dcr_exporter.DCR_JS_PORTAL, dcr_title='running-example_dcr_js_portal')
         os.remove(dcrxml_file_export)
+
 
 if __name__ == '__main__':
     unittest.main()
