@@ -3,7 +3,7 @@ from pm4py.algo.conformance.dcr.rules.condition import CheckCondition
 from pm4py.algo.conformance.dcr.rules.exclude import CheckExclude
 from pm4py.algo.conformance.dcr.rules.include import CheckInclude
 from pm4py.algo.conformance.dcr.rules.response import CheckResponse
-from pm4py.objects.dcr.obj import DCR_Graph
+from pm4py.objects.dcr.obj import DcrGraph
 from typing import List, Any, Dict, Tuple, Optional, Union
 
 class Checker(ABC):
@@ -40,15 +40,15 @@ class Checker(ABC):
     """
 
     @abstractmethod
-    def enabled_checker(self, event: str, graph: DCR_Graph, deviations:List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def enabled_checker(self, event: str, graph: DcrGraph, deviations:List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         pass
 
     @abstractmethod
-    def all_checker(self, event: str, event_attributes: dict, graph: DCR_Graph, deviations:List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def all_checker(self, event: str, event_attributes: dict, graph: DcrGraph, deviations:List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         pass
 
     @abstractmethod
-    def accepting_checker(self, graph: DCR_Graph, responses: List[Tuple[str, str]], deviations:List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def accepting_checker(self, graph: DcrGraph, responses: List[Tuple[str, str]], deviations:List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         pass
 
 
@@ -68,7 +68,7 @@ class ConcreteChecker(Checker):
         determine the deviation that caused the DCR graph to be non-accepting after an execution of a trace
     """
 
-    def enabled_checker(self, event: str, graph: DCR_Graph, deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def enabled_checker(self, event: str, graph: DcrGraph, deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         """
         enabled_checker() is called when an event that is to be executed is not enabled
         Check all the deviations that could be associated with a not enabled event for a base DCR Graph
@@ -77,7 +77,7 @@ class ConcreteChecker(Checker):
         ----------
         event: str
             the executed event
-        graph: DCR_Graph
+        graph: DcrGraph
             DCR Graph
         deviations: List[Any]
             the list of deviations
@@ -88,17 +88,17 @@ class ConcreteChecker(Checker):
         CheckExclude.check_rule(event, graph, deviations)
         CheckInclude.check_rule(event, graph, deviations)
 
-    def all_checker(self, event: str, event_attributes: dict, graph: DCR_Graph, deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def all_checker(self, event: str, event_attributes: dict, graph: DcrGraph, deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         pass
 
-    def accepting_checker(self, graph: DCR_Graph, responses: List[Tuple[str, str]], deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def accepting_checker(self, graph: DcrGraph, responses: List[Tuple[str, str]], deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         """
         accepting_checker is called when a DCR graph is not accepting after an execution of a trace
         checks all response deviations for a base DCR Graph
 
         Parameters
         ----------
-        graph: DCR_Graph
+        graph: DcrGraph
             DCR Graph
         responses: List[Tuple[str, str]]
             list of response constraint not fulfilled
@@ -150,7 +150,7 @@ class Decorator(Checker):
         """
         self._checker = checker
 
-    def enabled_checker(self, event: str, graph: DCR_Graph, deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def enabled_checker(self, event: str, graph: DcrGraph, deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         """
         This method calls enabled_checker() of the underlying class to continue search for cause of deviation between Graph and event Log
 
@@ -158,7 +158,7 @@ class Decorator(Checker):
         ----------
         event: str
             Current event ID in trace
-        graph: DCR_Graph
+        graph: DcrGraph
             DCR Graph
         deviations: List[Any]
             List of deviations
@@ -167,7 +167,7 @@ class Decorator(Checker):
         """
         self._checker.enabled_checker(event, graph, deviations, parameters=parameters)
 
-    def all_checker(self, event: str, event_attributes: dict, graph: DCR_Graph, deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def all_checker(self, event: str, event_attributes: dict, graph: DcrGraph, deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         """
         This method calls all_checker() of the underlying class to continue search for cause of deviation between Graph and event Log
 
@@ -177,7 +177,7 @@ class Decorator(Checker):
             Current event ID in trace
         event_attributes: dict
             Current event with all attributes
-        graph: DCR_Graph
+        graph: DcrGraph
             DCR Graph
         deviations: List[Any]
             List of deviations
@@ -186,13 +186,13 @@ class Decorator(Checker):
         """
         self._checker.all_checker(event, event_attributes, graph, deviations, parameters=parameters)
 
-    def accepting_checker(self, graph: DCR_Graph, responses: List[Tuple[str, str]], deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
+    def accepting_checker(self, graph: DcrGraph, responses: List[Tuple[str, str]], deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:
         """
         This method calls accepting_checker() of the underlying class to continue search for cause of deviation between Graph and event Log
 
         Parameters
         ----------
-        graph: DCR_Graph
+        graph: DcrGraph
             DCR Graph
         responses: List[Tuple[str, str]]
             The recorded response relation between events to be executed and it originator

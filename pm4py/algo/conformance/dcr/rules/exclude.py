@@ -1,10 +1,10 @@
 from pm4py.algo.conformance.dcr.rules.abc import CheckFrame
-from pm4py.objects.dcr.obj import DCR_Graph
+from pm4py.objects.dcr.obj import DcrGraph
 from typing import List, Tuple, Any
 
 class CheckExclude(CheckFrame):
     @classmethod
-    def check_rule(cls, event: str, graph: DCR_Graph, deviations: List[Tuple[str, Any]]):
+    def check_rule(cls, event: str, graph: DcrGraph, deviations: List[Tuple[str, Any]]):
         '''
         Checks if event violates the exclude relation
 
@@ -12,7 +12,7 @@ class CheckExclude(CheckFrame):
         --------------
         event: str
             Current event
-        graph: DCR_Graph
+        graph: DcrGraph
             DCR Graph
         deviations: List[Tuple[str, Any]]
             List of deviations

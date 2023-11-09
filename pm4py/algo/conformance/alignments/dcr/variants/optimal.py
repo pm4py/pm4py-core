@@ -33,7 +33,7 @@ from typing import Optional, Dict, Any, Union, List, Tuple
 from heapq import heappop, heappush
 from enum import Enum
 
-from pm4py.objects.dcr.obj import DCR_Graph
+from pm4py.objects.dcr.obj import DcrGraph
 from pm4py.objects.dcr.semantics import DCRSemantics
 from pm4py.util import constants, xes_constants, exec_utils
 from pm4py.objects.log.obj import EventLog, Trace
@@ -92,7 +92,7 @@ class LogAlignment:
             self.traces = [tuple(x[activity_key] for x in trace) for trace in log]
         self.traceAlignments = []
 
-    def perform_log_alignment(self, graph: DCR_Graph, parameters: Optional[Dict] = None):
+    def perform_log_alignment(self, graph: DcrGraph, parameters: Optional[Dict] = None):
         """
         Processes an event log and applies a specific operation to each trace.
 
@@ -100,7 +100,7 @@ class LogAlignment:
         and store it in a list
 
         Parameters:
-            graph (DCR_Graph): the event log used for aligning the traces
+            graph (DcrGraph): the event log used for aligning the traces
             parameters (Optional[Dict]): A dictionary of parameters that control the behavior of the trace processing.
                                          This can include custom activity and case ID keys, among others.
 
@@ -143,7 +143,7 @@ class TraceAlignment:
         perform_alignment(): Performs trace alignment against the DCR graph and returns the alignment result.
     """
 
-    def __init__(self, graph: DCR_Graph, trace: Union[List[Tuple[str]], pd.DataFrame, EventLog, Trace],
+    def __init__(self, graph: DcrGraph, trace: Union[List[Tuple[str]], pd.DataFrame, EventLog, Trace],
                  parameters: Optional[Dict] = None):
         """
         Initializes the facade with a DCR graph and a trace to be processed.
@@ -154,7 +154,7 @@ class TraceAlignment:
 
         Parameters
         ----------
-        graph : DCR_Graph
+        graph : DcrGraph
             The DCR graph against which the trace will be aligned. The graph should
             encapsulate the behavior model.
         trace : Union[List[Dict[str, Any]], pd.DataFrame, EventLog, Trace]
@@ -312,7 +312,7 @@ class DCRGraphHandler:
 
         Attributes
         ----------
-        graph : DCR_Graph
+        graph : DcrGraph
             The DCR graph on which the operations are to be performed.
 
         Methods
@@ -329,7 +329,7 @@ class DCRGraphHandler:
 
         Parameters
         ----------
-        graph : DCR_Graph
+        graph : DcrGraph
             An instance of a DCR_Graph object which the handler will manage and manipulate.
 
         Raises
@@ -338,8 +338,8 @@ class DCRGraphHandler:
             If the provided graph is not an instance of DCR_Graph.
         """
 
-    def __init__(self, graph: DCR_Graph):
-        if not isinstance(graph, DCR_Graph):
+    def __init__(self, graph: DcrGraph):
+        if not isinstance(graph, DcrGraph):
             raise TypeError(f"Expected a DCR_Graph object, got {type(graph)} instead")
         self.graph = graph
 
@@ -401,7 +401,7 @@ class Alignment:
         ----------
         curr_cost : int
             The current cost of the alignment.
-        curr_graph : DCR_Graph
+        curr_graph : DcrGraph
             The current state of the DCR graph.
         curr_trace : list
             The current state of the trace.
@@ -448,7 +448,7 @@ class Alignment:
         ----------
         curr_cost : int
             The current cost of the alignment.
-        curr_graph : DCR_Graph
+        curr_graph : DcrGraph
             The current state of the DCR graph.
         curr_trace : list
             The current state of the trace.
@@ -681,7 +681,7 @@ class Alignment:
             Outputs.LOG_MOVE_FITNESS.value: 1 - log_moves / (log_moves + sync_moves)
         }
 
-def apply(trace_or_log: Union[pd.DataFrame,EventLog,Trace], graph: DCR_Graph, parameters=None):
+def apply(trace_or_log: Union[pd.DataFrame,EventLog,Trace], graph: DcrGraph, parameters=None):
     """
     Applies an alignment operation on a given trace or log against a specified DCR graph.
 
@@ -691,7 +691,7 @@ def apply(trace_or_log: Union[pd.DataFrame,EventLog,Trace], graph: DCR_Graph, pa
 
     Parameters:
         trace_or_log (Union[pd.DataFrame, EventLog, Trace]): The event log or single trace to align.
-        graph (DCR_Graph): The DCR graph against which the alignment is to be performed.
+        graph (DcrGraph): The DCR graph against which the alignment is to be performed.
         parameters (Optional[Dict]): A dictionary of parameters for the alignment (default is None).
 
     Returns:

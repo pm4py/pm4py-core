@@ -1,11 +1,11 @@
 from pm4py.algo.conformance.dcr.rules.abc import CheckFrame
 from typing import Union
-from pm4py.objects.dcr.obj import DCR_Graph
+from pm4py.objects.dcr.obj import DcrGraph
 from typing import List, Tuple, Any
 
 class CheckResponse(CheckFrame):
     @classmethod
-    def check_rule(cls, graph: DCR_Graph, responses: List[Tuple[str, str]], deviations: List[Tuple[str, Any]]):
+    def check_rule(cls, graph: DcrGraph, responses: List[Tuple[str, str]], deviations: List[Tuple[str, Any]]):
         """
         Checks if event violates the response relation.
 
@@ -13,7 +13,7 @@ class CheckResponse(CheckFrame):
 
         Parameters
         --------------
-        graph: DCR_Graph
+        graph: DcrGraph
             DCR graph
         responses:
             responses not yet executed

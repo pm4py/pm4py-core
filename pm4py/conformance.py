@@ -849,13 +849,13 @@ List[Set[Any]]:
     return result
 
 
-from pm4py.objects.dcr.obj import DCR_Graph
+from pm4py.objects.dcr.obj import DcrGraph
 
 
 # parameters: Optional[Dict[Any, Any]] = None
 
 
-def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DCR_Graph, activity_key: str = "concept:name",
+def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DcrGraph, activity_key: str = "concept:name",
                     timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name",
                     group_key: str = "org:group", resource_key: str = "org:resource",
                     return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> DataFrame | \
@@ -913,7 +913,7 @@ def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DCR_Graph, ac
 
 def optimal_alignment_dcr(
         log: Union[EventLog, pd.DataFrame, Trace],
-        dcr_graph: DCR_Graph,
+        dcr_graph: DcrGraph,
         activity_key: str = "concept:name",
         timestamp_key: str = "time:timestamp",
         case_id_key: str = "case:concept:name",

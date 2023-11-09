@@ -1,7 +1,7 @@
 from typing import Set
 
 
-class RoleDCR_Graph(object):
+class RoledcrGraph(object):
     """
     A class representing a Role-based DCR graph.
 
@@ -61,8 +61,8 @@ class RoleDCR_Graph(object):
     total_constraints = role_graph.getConstraints()\n
 
     """
-    def __init__(self, g, template=None):
-        self.__g = g
+    def __init__(self, graph, template=None):
+        self.__graph = graph
         self.__principals = set() if None else template.pop("principals", set())
         self.__roles = set() if None else template.pop("roles", set())
         self.__roleAssignments = {} if None else template.pop("roleAssignments", set())
@@ -94,25 +94,26 @@ class RoleDCR_Graph(object):
         int
             number of constraints in dcr graph
         """
-        no = self.__g.get_constraints()
+        no = self.__graph.get_constraints()
         for i in self.__roleAssignments.values():
             no += len(i)
         return no
 
     def __repr__(self):
-        string = str(self.__g)
+        string = str(self.__graph)
         for key, value in vars(self).items():
-            if value is self.__g:
+            if value is self.__graph:
                 continue
             string += str(key.split("_")[-1])+": "+str(value)+"\n"
         return string
 
     def __getattr__(self, name):
-        return getattr(self.__g, name)
+        return getattr(self.__graph, name)
 
     def __getitem__(self, item):
-        if hasattr(self.__g, item):
-            return self.__g[item]
+        if hasattr(self.__graph, item):
+            return self.__graph[item]
         for key, value in vars(self).items():
             if item == key.split("_")[-1]:
                 return value
+        return set()

@@ -10,7 +10,7 @@ from enum import Enum
 from typing import Tuple, Dict, Set, Any, List, Union
 from pm4py.util import exec_utils, constants, xes_constants
 from pm4py.objects.log.obj import EventLog
-from pm4py.objects.dcr.obj import DCR_Graph
+from pm4py.objects.dcr.obj import DcrGraph
 
 
 # these parameters are used in case of attribute has a custom name, in which case it can be specified on call
@@ -30,7 +30,7 @@ class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
 
 
-def apply(log, findAdditionalConditions=True, parameters = None) -> Tuple[DCR_Graph,Dict[str, Any]]:
+def apply(log, findAdditionalConditions=True, parameters = None) -> Tuple[DcrGraph,Dict[str, Any]]:
     """
     Discovers a DCR graph model from an event log, using algorithm described in [1]_.
 
@@ -101,7 +101,7 @@ class Discover:
             'successor': {}
         }
 
-    def mine(self, log: Union[EventLog,pd.DataFrame], findAdditionalConditions=True, parameters=None) -> Tuple[DCR_Graph,Dict[str, Any]]:
+    def mine(self, log: Union[EventLog,pd.DataFrame], findAdditionalConditions=True, parameters=None) -> Tuple[DcrGraph,Dict[str, Any]]:
         """
         Method used for calling the underlying mining algorithm used for discovery of DCR Graphs
 
@@ -118,7 +118,7 @@ class Discover:
 
         Returns
         -------
-        Tuple[DCR_Graph,Dict[str, Any]]
+        Tuple[DcrGraph,Dict[str, Any]]
             returns a tuple containing:
             - The DCR Graph
             - The log abstraction used for mining
@@ -127,7 +127,7 @@ class Discover:
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
         self.createLogAbstraction(log, activity_key, case_id_key)
         self.mineFromAbstraction(findAdditionalConditions=findAdditionalConditions)
-        return DCR_Graph(self.graph), self.logAbstraction
+        return DcrGraph(self.graph), self.logAbstraction
 
     def createLogAbstraction(self, log: [EventLog,pd.DataFrame], activity_key: str, case_key: str) -> int:
         """

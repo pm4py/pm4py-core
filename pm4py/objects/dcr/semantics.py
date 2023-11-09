@@ -52,8 +52,8 @@ class DCRSemantics(object):
         """
         #can be extended to check for milestones
         res = set(graph.marking.included)
-        for e in set(graph.conditionsFor.keys()).intersection(res):
-            if len(graph.conditionsFor[e].intersection(graph.marking.included.difference(
+        for e in set(graph.conditions.keys()).intersection(res):
+            if len(graph.conditions[e].intersection(graph.marking.included.difference(
                     graph.marking.executed))) > 0:
                 res.discard(e)
         return res
@@ -82,16 +82,16 @@ class DCRSemantics(object):
 
         #the following if statements are used to provide to update DCR graph
         # depeding on prime event structure within conditions relations
-        if event in graph.excludesTo:
-            for e_prime in graph.excludesTo[event]:
+        if event in graph.excludes:
+            for e_prime in graph.excludes[event]:
                 graph.marking.included.discard(e_prime)
 
-        if event in graph.includesTo:
-            for e_prime in graph.includesTo[event]:
+        if event in graph.includes:
+            for e_prime in graph.includes[event]:
                 graph.marking.included.add(e_prime)
 
-        if event in graph.responseTo:
-            for e_prime in graph.responseTo[event]:
+        if event in graph.responses:
+            for e_prime in graph.responses[event]:
                 graph.marking.pending.add(e_prime)
 
         return graph

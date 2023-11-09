@@ -128,7 +128,7 @@ class Marking:
         return str(self) < str(other)
 
 
-class DCR_Graph(object):
+class DcrGraph(object):
     """
     The DCR Structure was implemented according to definition 3 in [1]_.
     Follows the idea of DCR graph as a set of tuples
@@ -320,6 +320,7 @@ class DCR_Graph(object):
         for key, value in vars(self).items():
             if item == key.split("_")[-1]:
                 return value
+        return set()
 
     def __setitem__(self, item, value):
         for key,_ in vars(self).items():

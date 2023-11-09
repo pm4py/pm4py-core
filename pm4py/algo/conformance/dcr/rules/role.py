@@ -1,10 +1,10 @@
 from pm4py.algo.conformance.dcr.rules.abc import CheckFrame
-from pm4py.objects.dcr.roles.obj import RoleDCR_Graph
+from pm4py.objects.dcr.roles.obj import RoledcrGraph
 from typing import List, Tuple, Any
 
 class CheckRole(CheckFrame):
     @classmethod
-    def check_rule(cls, event: str, graph: RoleDCR_Graph, role: str, deviations: List[Tuple[str, Any]]):
+    def check_rule(cls, event: str, graph: RoledcrGraph, role: str, deviations: List[Tuple[str, Any]]):
         '''
         Checks if event violates the role assignments
             1.) if event contain role not in model
@@ -14,7 +14,7 @@ class CheckRole(CheckFrame):
         --------------
         event: str
             current event
-        graph: RoleDCR_Graph
+        graph: RoledcrGraph
             DCR Graph
         role: str
             Role of the event

@@ -4,7 +4,7 @@ import isodate
 
 from pm4py.util import constants
 from copy import deepcopy
-from pm4py.objects.dcr.obj import Relations, dcr_template, DCR_Graph
+from pm4py.objects.dcr.obj import Relations, dcr_template, DcrGraph
 
 I = Relations.I.value
 E = Relations.E.value
@@ -58,7 +58,7 @@ def import_xml_tree_from_root(root):
     '''
     Transform the dictionary into a DCR_Graph object
     '''
-    graph = DCR_Graph(dcr)
+    graph = DcrGraph(dcr)
     return graph
 
 
@@ -73,7 +73,7 @@ def apply(path, parameters=None):
 
     Returns
     -------
-    DCR_Graph
+    DcrGraph
         DCR Graph object
     '''
     if parameters is None:
