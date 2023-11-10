@@ -109,7 +109,7 @@ class LogAlignment:
         aligned_traces = []
         for trace in self.traces:
             trace_alignment = TraceAlignment(graph, trace, parameters=parameters)
-            self.traceAlignments.append(trace_alignment)
+            self.trace_alignments.append(trace_alignment)
             aligned_traces.append(trace_alignment.perform_alignment())
         return aligned_traces
 
