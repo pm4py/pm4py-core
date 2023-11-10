@@ -383,6 +383,7 @@ class Alignment:
         self.trace_handler = TraceHandler(trace_handler.trace, parameters)
 
         self.open_set = []
+        self.max_cost = []
         self.global_min = float('inf')
         self.closed_set = {}
         self.visited_states = set()
@@ -578,15 +579,20 @@ class Alignment:
             current = heappop(self.open_set)
             visited += 1
             result = self.process_current_state(current)
+            #if the state has already been visited, and associated cost with the state is lower than skip
             if self.skip_current(result) and result is not None:
                 continue
             curr_cost, curr_trace, state_repr, moves = result[0], result[2], result[3], result[4]
+            #if curr_cost is greater than final cost, no reason to explore this branch
+            if curr_cost > final_cost:
+                continue
             self.update_closed_and_visited_sets(curr_cost, state_repr)
             closed += 1
             self.trace_handler.trace = curr_trace
             if self.graph_handler.is_accepting() and self.trace_handler.is_empty():
                 self.new_moves = moves
                 final_cost = self.check_accepting_conditions(curr_cost, self.graph_handler.is_accepting())
+                self.max_cost = final_cost
 
             self.perform_moves(curr_cost, current, moves)
 
