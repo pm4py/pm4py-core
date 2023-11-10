@@ -1042,19 +1042,19 @@ class TestImportExportDCR(unittest.TestCase):
         log = pm4py.read_xes(event_log_file)
         dcr, _ = apply(log)
         pm4py.write_dcr_xml(dcr_graph=dcr, path=self.test_file, variant=dcr_exporter.XML_SIMPLE,
-                            dcr_title='receipt_xml_simple')
+                            dcr_title='xml_simple')
 
     def export_file_dcr_portal(self, event_log_file):
         log = pm4py.read_xes(event_log_file)
         dcr, _ = apply(log)
         pm4py.write_dcr_xml(dcr_graph=dcr, path=self.test_file, variant=dcr_exporter.XML_DCR_PORTAL,
-                            dcr_title='xml_2_dcr_portal')
+                            dcr_title='xml_dcr_portal')
 
     def export_file_dcr_js(self, event_log_file):
         log = pm4py.read_xes(event_log_file)
         dcr, _ = apply(log)
         pm4py.write_dcr_xml(dcr_graph=dcr, path=self.test_file, variant=dcr_exporter.DCR_JS_PORTAL,
-                            dcr_title='receipt_xml_simple')
+                            dcr_title='xml_dcr_js')
 
     def tearDown(self) -> None:
         os.remove("input_data/Sepsis cases - Event Log.xes.gz")
