@@ -678,7 +678,7 @@ class Alignment:
             Outputs.CLOSED.value: closed,
             Outputs.GLOBAL_MIN.value: self.global_min,
             Outputs.MODEL_MOVE_FITNESS.value: 1 - model_moves/(model_moves+sync_moves) if model_moves > 0 else 1,
-            Outputs.LOG_MOVE_FITNESS.value: 1 - log_moves / (log_moves + sync_moves) if model_moves > 0 else 1
+            Outputs.LOG_MOVE_FITNESS.value: 1 - log_moves / (log_moves + sync_moves) if log_moves > 0 else 1
         }
 
 def apply(trace_or_log: Union[pd.DataFrame,EventLog,Trace], graph: DcrGraph, parameters=None):
