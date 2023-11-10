@@ -26,6 +26,7 @@ References
     in Business Process Management, Springer International Publishing, 2023, pp. 3-19.
     DOI <https://doi.org/10.1007/978-3-031-41620-0_1>_.
 """
+import time
 
 import pandas as pd
 from copy import deepcopy, copy
@@ -110,6 +111,7 @@ class LogAlignment:
         for trace in self.traces:
             trace_alignment = TraceAlignment(graph, trace, parameters=parameters)
             self.trace_alignments.append(trace_alignment)
+            start = time.perf_counter()
             aligned_traces.append(trace_alignment.perform_alignment())
         return aligned_traces
 
@@ -383,6 +385,7 @@ class Alignment:
         self.trace_handler = TraceHandler(trace_handler.trace, parameters)
 
         self.open_set = []
+        self.max_cost = []
         self.global_min = float('inf')
         self.closed_set = {}
         self.visited_states = set()
@@ -568,7 +571,6 @@ class Alignment:
         optimal_alignment = result['alignment']
         alignment_cost = result['cost']
         """
-
         visited, closed, cost, self.final_alignment, final_cost = 0, 0, 0, None, float('inf')
         self.open_set.append(
             (cost, deepcopy(self.graph_handler.graph.marking), self.trace_handler.trace, str(self.graph_handler.graph.marking), []))
@@ -578,18 +580,22 @@ class Alignment:
             current = heappop(self.open_set)
             visited += 1
             result = self.process_current_state(current)
+            #if the state has already been visited, and associated cost with the state is lower than skip
             if self.skip_current(result) and result is not None:
                 continue
             curr_cost, curr_trace, state_repr, moves = result[0], result[2], result[3], result[4]
+            #if curr_cost is greater than final cost, no reason to explore this branch
+            if curr_cost > final_cost:
+                continue
             self.update_closed_and_visited_sets(curr_cost, state_repr)
             closed += 1
             self.trace_handler.trace = curr_trace
             if self.graph_handler.is_accepting() and self.trace_handler.is_empty():
                 self.new_moves = moves
                 final_cost = self.check_accepting_conditions(curr_cost, self.graph_handler.is_accepting())
+                self.max_cost = final_cost
 
             self.perform_moves(curr_cost, current, moves)
-
         return self.construct_results(visited, closed, final_cost)
 
     def skip_current(self, result):
@@ -670,6 +676,7 @@ class Alignment:
             sync_moves += 1 if move[0] == 'sync' else 0
             model_moves += 1 if move[0] == 'model' else 0
             log_moves += 1 if move[0] == 'log' else 0
+        print(self.final_alignment)
         return {
             Outputs.ALIGNMENT.value: self.final_alignment,
             Outputs.COST.value: final_cost,
