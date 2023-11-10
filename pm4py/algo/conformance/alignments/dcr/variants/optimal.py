@@ -50,19 +50,18 @@ class LogAlignment:
 
     Example usage:
         \nDefine your instances of DCR graph and trace representation as 'graph' and 'trace'\n
-        align_log = LogAlignment(log, G)\n
-        alignment_result = align_log.perform_log_alignment()\n
+        align_log = LogAlignment(log, parameters)\n
+        alignment_result = align_log.perform_log_alignment(graph, parameters)\n
 
     Note:
     - The user is expected to have a basic understanding of DCR graphs and trace alignment in the context of process mining.
 
     Attributes:
-        (DCRGraphHandler): Handler for DCR graph operations.
-        trace_handler (TraceHandler): Handler for trace operations.
-        alignment (Alignment): Instance that holds the result of the alignment process, initialized to None.
+        traces (TraceHandler): the list of traces as tuples.
+        Trace_alignments (Alignment): Instance that holds the result of the alignment processes, initialized as an empty list [].
 
     Methods:
-        perform_log_alignment(): Performs trace alignment against the DCR graph and returns the list of alignment results.
+        perform_log_alignment(graph, parameters): Performs trace alignment for a log against the DCR graph and returns the list of alignment results.
     """
 
     def __init__(self, log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict] = None):
@@ -90,7 +89,7 @@ class LogAlignment:
         else:
             log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
             self.traces = [tuple(x[activity_key] for x in trace) for trace in log]
-        self.traceAlignments = []
+        self.trace_alignments = []
 
     def perform_log_alignment(self, graph: DcrGraph, parameters: Optional[Dict] = None):
         """
