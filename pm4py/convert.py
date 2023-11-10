@@ -195,6 +195,9 @@ def convert_to_petri_net(*args: Union[BPMN, ProcessTree, HeuristicsNet, POWL, di
         # the object is already a Petri net
         return args[0], args[1], args[2]
     elif isinstance(args[0], ProcessTree):
+        if isinstance(args[0], POWL):
+            from pm4py.objects.conversion.powl import converter
+            return converter.apply(args[0])
         from pm4py.objects.conversion.process_tree.variants import to_petri_net
         return to_petri_net.apply(args[0])
     elif isinstance(args[0], BPMN):
@@ -203,9 +206,6 @@ def convert_to_petri_net(*args: Union[BPMN, ProcessTree, HeuristicsNet, POWL, di
     elif isinstance(args[0], HeuristicsNet):
         from pm4py.objects.conversion.heuristics_net.variants import to_petri_net
         return to_petri_net.apply(args[0])
-    elif isinstance(args[0], POWL):
-        from pm4py.objects.conversion.powl import converter
-        return converter.apply(args[0])
     elif isinstance(args[0], dict):
         # DFG
         from pm4py.objects.conversion.dfg.variants import to_petri_net_activity_defines_place
