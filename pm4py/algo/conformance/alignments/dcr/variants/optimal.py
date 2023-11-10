@@ -57,8 +57,8 @@ class LogAlignment:
     - The user is expected to have a basic understanding of DCR graphs and trace alignment in the context of process mining.
 
     Attributes:
-        traces (TraceHandler): the list of traces as tuples.
-        Trace_alignments (Alignment): Instance that holds the result of the alignment processes, initialized as an empty list [].
+        traces (list): the list of traces as tuples.
+        Trace_alignments (list[Alignment]): Instance that holds the result of the alignment processes, initialized as an empty list [].
 
     Methods:
         perform_log_alignment(graph, parameters): Performs trace alignment for a log against the DCR graph and returns the list of alignment results.
