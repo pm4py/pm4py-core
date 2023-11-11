@@ -812,14 +812,16 @@ class TestAlignment(unittest.TestCase):
         for i in align_res:
             self.assertTrue(i['move_model_fitness'] == 1.0)
             self.assertTrue(i['move_log_fitness'] == 1.0)
-
+            self.assertTrue(align_res['align_fitness'] == 1.0)
         del log_path
         del align_res
 
     def test_fitness(self):
         align_res = pm4py.optimal_alignment_dcr(self.first_trace, self.dcr)
+        print(align_res)
         self.assertTrue(align_res['move_model_fitness'] == 1.0)
         self.assertTrue(align_res['move_log_fitness'] == 1.0)
+        self.assertTrue(align_res['align_fitness'] == 1.0)
         del align_res
 
     def test_return_dataframe(self):
@@ -830,6 +832,7 @@ class TestAlignment(unittest.TestCase):
         for index,row in align_res.iterrows():
             self.assertTrue(row['move_model_fitness'] == 1.0)
             self.assertTrue(row['move_log_fitness'] == 1.0)
+            self.assertTrue(row['align_fitness'] == 1.0)
         del log_path
         del align_res
 
@@ -881,6 +884,7 @@ class TestAlignment(unittest.TestCase):
         for index,row in res.iterrows():
             self.assertTrue(row['move_model_fitness'] == 1.0)
             self.assertTrue(row['move_log_fitness'] == 1.0)
+            self.assertTrue(row['align_fitness'] == 1.0)
 
 class TestImportExportDCR(unittest.TestCase):
 
