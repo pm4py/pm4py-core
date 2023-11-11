@@ -79,8 +79,6 @@ class LogAlignment:
 
         Attributes:
             self.traces (List[Tuple[Any]]): A list of traces where each trace is represented as a tuple of activities.
-            self.traceAlignments (List[TraceAlignment]): A list to store TraceAlignment objects after performing alignment.
-                                                    Initially empty.
         """
         activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
@@ -109,8 +107,7 @@ class LogAlignment:
         aligned_traces = []
         for trace in self.traces:
             trace_alignment = TraceAlignment(graph, trace, parameters=parameters)
-            self.trace_alignments.append(trace_alignment)
-            aligned_traces.append(trace_alignment.perform_alignment())
+            aligned_traces = aligned_traces + trace_alignment.perform_alignment()
         return aligned_traces
 
 class TraceAlignment:
@@ -187,15 +184,15 @@ class TraceAlignment:
         self.alignment = Alignment(self.graph_handler, self.trace_handler)
         self.result = self.alignment.apply_trace()
         self.get_performance_metrics()
-        return self.result
+        return [self.result]
 
     def get_performance_metrics(self):
         # Ensure that alignment has been performed before calculating performance metrics
         # Calculate and return fitness and precision based on the alignment result
         performance = Performance(self.alignment, self.graph_handler, self.trace_handler)
-        fitness = performance.calculate_fitness()
-        self.result[Outputs.ALIGN_FITNESS.value] = fitness
-        print(self.result[Outputs.ALIGN_FITNESS.value])
+        fitness_bwc = performance.calculate_fitness()
+        self.result[Outputs.ALIGN_FITNESS.value] = fitness_bwc[0]
+        self.result[Outputs.BEST_WORST_COST.value] = fitness_bwc[1]
 
 
 
@@ -236,7 +233,8 @@ class Outputs(Enum):
     VISITED = "visited_states"
     CLOSED = "closed"
     GLOBAL_MIN = "global_min"
-    ALIGN_FITNESS = 'align_fitness'
+    ALIGN_FITNESS = 'fitness'
+    BEST_WORST_COST = "bwc"
 
 class Performance:
     def __init__(self, alignment, graph_handler, trace_handler):
@@ -244,7 +242,7 @@ class Performance:
         self.graph_hanlder = graph_handler
         self.trace_handler = trace_handler
 
-    def calculate_fitness(self):
+    def calculate_fitness(self) -> Tuple:
         """
         From the Conformance Checking book [1].
         Calculate the fitness of the alignment based on the optimal and worst-case costs.
@@ -267,13 +265,11 @@ class Performance:
         self.trace_handler.trace = ()
 
         # compute worst_best_alignment
-        worst_best_alignment = Alignment(self.graph_hanlder, self.trace_handler)
-        worst_best_result = worst_best_alignment.apply_trace()
-        worst_case_alignment_cost = (worst_case_trace + worst_best_result[Outputs.COST.value])
-
-        fitness = 1 - (self.alignment.global_min / (worst_case_trace + (worst_best_result[Outputs.COST.value]))) \
-            if worst_case_alignment_cost > 0 else 0
-        return fitness
+        best_worst_alignment = Alignment(self.graph_hanlder, self.trace_handler)
+        best_worst_result = best_worst_alignment.apply_trace()
+        bwc = (worst_case_trace + best_worst_result[Outputs.COST.value])
+        fitness = 1 - (self.alignment.global_min / (worst_case_trace + bwc) if bwc > 0 else 0)
+        return fitness, bwc
 
 
 class TraceHandler:
@@ -530,18 +526,18 @@ class Alignment:
         new_move = None
         if move_type == "sync":
             new_cost += Parameters.SYNC_COST.value
-            new_move = ('sync', event)
+            new_move = (event, event)
             new_trace = curr_trace[1:]
             new_graph = self.graph_handler.execute(event, new_graph)
 
         elif move_type == "model":
             new_cost += Parameters.MODEL_COST.value
-            new_move = ('model', event)
+            new_move = (event, ">>")
             new_graph = self.graph_handler.execute(event, new_graph)
 
         elif move_type == "log":
             new_cost += Parameters.LOG_COST.value
-            new_move = ('log', event)
+            new_move = (">>", event)
             new_trace = curr_trace[1:]
 
         return new_cost, deepcopy(new_graph.marking), new_trace, new_move
@@ -720,8 +716,6 @@ class Alignment:
             - 'log move fitness': the fitness provided by the log moves
         """
         self.graph_handler.graph.marking = self.initial_marking
-        log_moves = 0
-        sync_moves = 0
         return {
             Outputs.ALIGNMENT.value: self.final_alignment,
             Outputs.COST.value: final_cost,

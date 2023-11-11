@@ -810,14 +810,14 @@ class TestAlignment(unittest.TestCase):
         self.log = pm4py.read_xes(log_path)
         align_res = pm4py.optimal_alignment_dcr(self.log, self.dcr)
         for row in align_res:
-            self.assertTrue(row['align_fitness'] == 1.0)
+            self.assertTrue(row['fitness'] == 1.0)
         del log_path
         del align_res
 
     def test_fitness(self):
         align_res = pm4py.optimal_alignment_dcr(self.first_trace, self.dcr)
-        print(align_res)
-        self.assertTrue(align_res['align_fitness'] == 1.0)
+        for row in align_res:
+            self.assertTrue(row['fitness'] == 1.0)
         del align_res
 
     def test_return_dataframe(self):
@@ -866,8 +866,8 @@ class TestAlignment(unittest.TestCase):
         alignment = aligned_traces['alignment']
         alignment_cost = aligned_traces.get('cost', float('inf'))
         self.assertEqual(alignment_cost, aligned_traces.get('global_min', float('inf')))
-        model_moves = sum(1 for move in alignment if move[0] == 'model')
-        log_moves = sum(1 for move in alignment if move[0] == 'log')
+        model_moves = sum(1 for move in alignment if move[0] == '>>')
+        log_moves = sum(1 for move in alignment if move[1] == '>>')
         expected_cost = model_moves + log_moves
         self.assertEqual(expected_cost, alignment_cost)
 
