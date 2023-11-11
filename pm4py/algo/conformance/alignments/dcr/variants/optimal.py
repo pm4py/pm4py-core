@@ -264,13 +264,15 @@ class Performance:
         ----------
         * [1] C. Josep et al., "Conformance Checking Software",  Springer International Publishing, 65-74, 2018. `DOI <https://doi.org/10.1007/978-3-319-99414-7>`_.
         """
-        print("hello")
+        # run model with empty trace
         worst_case_trace = len(self.trace_handler.trace)
         self.trace_handler.trace = ()
+
+        # compute worst_best_alignment
         worst_best_alignment = Alignment(self.graph_hanlder, self.trace_handler)
         worst_best_result = worst_best_alignment.apply_trace()
         worst_case_alignment_cost = (worst_case_trace + worst_best_result[Outputs.COST.value])
-        print(worst_case_alignment_cost)
+
         fitness = 1 - (self.alignment.global_min / (worst_case_trace + (worst_best_result[Outputs.COST.value]))) \
             if worst_case_alignment_cost > 0 else 0
         return fitness
