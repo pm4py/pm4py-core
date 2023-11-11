@@ -236,8 +236,6 @@ class Outputs(Enum):
     VISITED = "visited_states"
     CLOSED = "closed"
     GLOBAL_MIN = "global_min"
-    MODEL_MOVE_FITNESS = 'move_model_fitness'
-    LOG_MOVE_FITNESS = 'move_log_fitness'
     ALIGN_FITNESS = 'align_fitness'
 
 class Performance:
@@ -722,21 +720,14 @@ class Alignment:
             - 'log move fitness': the fitness provided by the log moves
         """
         self.graph_handler.graph.marking = self.initial_marking
-        model_moves = 0
         log_moves = 0
         sync_moves = 0
-        for move in self.final_alignment:
-            sync_moves += 1 if move[0] == 'sync' else 0
-            model_moves += 1 if move[0] == 'model' else 0
-            log_moves += 1 if move[0] == 'log' else 0
         return {
             Outputs.ALIGNMENT.value: self.final_alignment,
             Outputs.COST.value: final_cost,
             Outputs.VISITED.value: visited,
             Outputs.CLOSED.value: closed,
             Outputs.GLOBAL_MIN.value: self.global_min,
-            Outputs.MODEL_MOVE_FITNESS.value: 1 - model_moves/(model_moves+sync_moves) if model_moves > 0 else 1,
-            Outputs.LOG_MOVE_FITNESS.value: 1 - log_moves / (log_moves + sync_moves) if log_moves > 0 else 1
         }
 
 def apply(trace_or_log: Union[pd.DataFrame,EventLog,Trace], graph: DcrGraph, parameters=None):
@@ -795,9 +786,7 @@ def get_diagnostics_dataframe(log: EventLog, conf_result: List[Dict[str, Any]], 
     diagn_stream = []
     for index in range(len(log)):
         case_id = log[index].attributes[case_id_key]
-        log_move_Fitness = conf_result[index][Outputs.LOG_MOVE_FITNESS.value]
-        model_move_fitness = conf_result[index][Outputs.MODEL_MOVE_FITNESS.value]
         align_fitness = conf_result[index][Outputs.ALIGN_FITNESS.value]
-        diagn_stream.append({"case_id": case_id, "align_fitness": align_fitness , "move_log_fitness": log_move_Fitness, "move_model_fitness": model_move_fitness})
+        diagn_stream.append({"case_id": case_id, "align_fitness": align_fitness})
 
     return pd.DataFrame(diagn_stream)
