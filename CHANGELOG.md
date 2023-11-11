@@ -1,15 +1,21 @@
 # Changelog of pm4py
 
 
-## pm4py 2.7.8.3 (2023.11.XX)
+## pm4py 2.7.8.3 (2023.11.09)
 
 ### Added
 * d06e2d36558e600208e182f096f07ea86923c1c4
   * RUSTXES importer variant
 * 7026be7476ed34c138b1046781847cdd9e104715
   * POWL discovery and visualization in the simplified interface
+* 40cd57230a5b0a9fd7821c71cbc2a17b0608e962
+  * POWL parser from model string
 
 ### Changed
+* 3f45baf9c0730d90ab35bce4d715b67306b24168
+  * artificial start/end activity symbols specification in the simplified interface
+* 215d6a67065074fb516b397a6b9e018cb41cf114
+  * ocel_to_nx is now OCEL 2.0 compliant
 
 ### Deprecated
 

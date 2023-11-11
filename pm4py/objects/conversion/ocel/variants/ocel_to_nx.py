@@ -24,6 +24,7 @@ from pm4py.util import exec_utils
 
 class Parameters(Enum):
     INCLUDE_DF = "include_df"
+    INCLUDE_OBJECT_CHANGES = "include_object_changes"
 
 
 def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> nx.DiGraph:
@@ -51,6 +52,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> nx.DiGraph
         parameters = {}
 
     include_df = exec_utils.get_param_value(Parameters.INCLUDE_DF, parameters, True)
+    include_object_changes = exec_utils.get_param_value(Parameters.INCLUDE_OBJECT_CHANGES, parameters, True)
 
     G = nx.DiGraph()
 
@@ -64,17 +66,37 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> nx.DiGraph
         obj["type"] = "object"
         G.add_node(obj[ocel.object_id_column], attr=obj)
 
-    relations = ocel.relations[[ocel.event_id_column, ocel.object_id_column]]
+    rel_cols = {ocel.event_id_column, ocel.object_id_column, ocel.qualifier}
+
+    relations = ocel.relations[list(rel_cols)]
     stream = relations.to_dict("records")
     for rel in stream:
-        G.add_edge(rel[ocel.event_id_column], rel[ocel.object_id_column], attr={"type": "REL"})
+        qualifier = rel[ocel.qualifier]
+        if qualifier is None:
+            qualifier = ''
+        G.add_edge(rel[ocel.event_id_column], rel[ocel.object_id_column], attr={"type": "E2O", "qualifier": qualifier})
+
+    obj_relations = ocel.o2o[[ocel.object_id_column, ocel.object_id_column + '_2', ocel.qualifier]]
+    stream = obj_relations.to_dict("records")
+    for rel in stream:
+        qualifier = rel[ocel.qualifier]
+        if qualifier is None:
+            qualifier = ''
+        G.add_edge(rel[ocel.object_id_column], rel[ocel.object_id_column + '_2'],
+                   attr={"type": "O2O", "qualifier": qualifier})
 
     if include_df:
         lifecycle = relations.groupby(ocel.object_id_column).agg(list).to_dict()[ocel.event_id_column]
         for obj in lifecycle:
             lif = lifecycle[obj]
-            for i in range(len(lif)-1):
+            for i in range(len(lif) - 1):
+                G.add_edge(lif[i], lif[i + 1], attr={"type": "DF", "object": obj})
 
-                G.add_edge(lif[i], lif[i+1], attr={"type": "DF", "object": obj})
+    if include_object_changes:
+        object_changes = ocel.object_changes.to_dict("records")
+        for i in range(len(object_changes)):
+            change_id = "@@change##%d" % i
+            G.add_node(change_id, attr=object_changes[i])
+            G.add_edge(object_changes[i][ocel.object_id_column], change_id)
 
     return G

@@ -24,6 +24,7 @@ import pandas as pd
 
 from pm4py.objects.log.obj import EventLog, EventStream, Trace, Event
 from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.powl.obj import POWL
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants, xes_constants, pandas_utils
 import warnings
@@ -182,6 +183,33 @@ def parse_process_tree(tree_string: str) -> ProcessTree:
     """
     from pm4py.objects.process_tree.utils.generic import parse
     return parse(tree_string)
+
+
+def parse_powl_model_string(powl_string: str) -> POWL:
+    """
+    Parse a POWL model from a string representation of the process model
+    (with the same format as the __repr__ and __str__ methods of the POWL model)
+
+    :param powl_string: POWL model expressed as a string (__repr__ of the POWL model)
+    :rtype: ``POWL``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        powl_model = pm4py.parse_powl_model_string('PO=(nodes={ NODE1, NODE2, NODE3 }, order={ NODE1-->NODE2 }')
+        print(powl_model)
+
+    Parameters
+    ----------
+    powl_string
+
+    Returns
+    -------
+
+    """
+    from pm4py.objects.powl import parser
+    return parser.parse_powl_model_string(powl_string)
 
 
 def serialize(*args) -> Tuple[str, bytes]:
