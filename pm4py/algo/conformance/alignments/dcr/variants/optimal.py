@@ -140,6 +140,7 @@ class TraceAlignment:
 
     Methods:
         perform_alignment(): Performs trace alignment against the DCR graph and returns the alignment result.
+        get_performance_metrics(): Calculates and returns the alignment fitness.
     """
 
     def __init__(self, graph: DcrGraph, trace: Union[List[Tuple[str]], pd.DataFrame, EventLog, Trace],
@@ -179,11 +180,23 @@ class TraceAlignment:
         self.graph_handler = DCRGraphHandler(graph)
         self.trace_handler = TraceHandler(trace, parameters)
         self.alignment = None  # This will hold an instance of Alignment class after perform_alignment is called
+        self.result = None
 
     def perform_alignment(self):
         # Perform the alignment process and store the result in the self.alignment attribute
         self.alignment = Alignment(self.graph_handler, self.trace_handler)
-        return self.alignment.apply_trace()
+        self.result = self.alignment.apply_trace()
+        self.get_performance_metrics()
+        return self.result
+
+    def get_performance_metrics(self):
+        # Ensure that alignment has been performed before calculating performance metrics
+        # Calculate and return fitness and precision based on the alignment result
+        performance = Performance(self.alignment, self.graph_handler, self.trace_handler)
+        fitness = performance.calculate_fitness()
+        self.result[Outputs.ALIGN_FITNESS.value] = fitness
+        print(self.result[Outputs.ALIGN_FITNESS.value])
+
 
 
 class Parameters(Enum):
@@ -214,6 +227,9 @@ class Outputs(Enum):
         VISITED: The key for accessing the number of visited states during the alignment process.
         CLOSED: The key for accessing the number of closed states during the alignment process.
         GLOBAL_MIN: The key for accessing the global minimum cost encountered during the alignment.
+        MODEL_MOVE_FITNESS = the key for accessing the model move fitness
+        LOG_MOVE_FITNESS = the key for accessing the log move fitness
+        ALIGN_FITNESS = the key for accessing the alignment fitness
     """
     ALIGNMENT = "alignment"
     COST = "cost"
@@ -222,6 +238,42 @@ class Outputs(Enum):
     GLOBAL_MIN = "global_min"
     MODEL_MOVE_FITNESS = 'move_model_fitness'
     LOG_MOVE_FITNESS = 'move_log_fitness'
+    ALIGN_FITNESS = 'align_fitness'
+
+class Performance:
+    def __init__(self, alignment, graph_handler, trace_handler):
+        self.alignment = alignment
+        self.graph_hanlder = graph_handler
+        self.trace_handler = trace_handler
+
+    def calculate_fitness(self):
+        """
+        From the Conformance Checking book [1].
+        Calculate the fitness of the alignment based on the optimal and worst-case costs.
+
+        The fitness is calculated as one minus the ratio of the optimal alignment cost to
+        the worst-case alignment cost. If the worst-case alignment cost is zero,
+        fitness is set to zero to avoid division by zero.
+
+        Returns
+        -------
+        float
+            The calculated fitness value, where higher values indicate a better fit.
+
+        References
+        ----------
+        * [1] C. Josep et al., "Conformance Checking Software",  Springer International Publishing, 65-74, 2018. `DOI <https://doi.org/10.1007/978-3-319-99414-7>`_.
+        """
+        print("hello")
+        worst_case_trace = len(self.trace_handler.trace)
+        self.trace_handler.trace = ()
+        worst_best_alignment = Alignment(self.graph_hanlder, self.trace_handler)
+        worst_best_result = worst_best_alignment.apply_trace()
+        worst_case_alignment_cost = (worst_case_trace + worst_best_result[Outputs.COST.value])
+        print(worst_case_alignment_cost)
+        fitness = 1 - (self.alignment.global_min / (worst_case_trace + (worst_best_result[Outputs.COST.value]))) \
+            if worst_case_alignment_cost > 0 else 0
+        return fitness
 
 
 class TraceHandler:
@@ -383,7 +435,7 @@ class Alignment:
         self.trace_handler = TraceHandler(trace_handler.trace, parameters)
 
         self.open_set = []
-        self.max_cost = []
+        self.max_cost = 0
         self.global_min = float('inf')
         self.closed_set = {}
         self.visited_states = set()
@@ -667,7 +719,6 @@ class Alignment:
             - 'model move fitness': the fitness provided that model moves are used
             - 'log move fitness': the fitness provided by the log moves
         """
-
         self.graph_handler.graph.marking = self.initial_marking
         model_moves = 0
         log_moves = 0
@@ -743,7 +794,8 @@ def get_diagnostics_dataframe(log: EventLog, conf_result: List[Dict[str, Any]], 
     for index in range(len(log)):
         case_id = log[index].attributes[case_id_key]
         log_move_Fitness = conf_result[index][Outputs.LOG_MOVE_FITNESS.value]
-        no_constr_total = conf_result[index][Outputs.MODEL_MOVE_FITNESS.value]
-        diagn_stream.append({"case_id": case_id, "move_log_fitness": log_move_Fitness, "move_model_fitness": no_constr_total})
+        model_move_fitness = conf_result[index][Outputs.MODEL_MOVE_FITNESS.value]
+        align_fitness = conf_result[index][Outputs.ALIGN_FITNESS.value]
+        diagn_stream.append({"case_id": case_id, "align_fitness": align_fitness , "move_log_fitness": log_move_Fitness, "move_model_fitness": model_move_fitness})
 
     return pd.DataFrame(diagn_stream)
