@@ -258,7 +258,7 @@ class Performance:
 
         References
         ----------
-        * [1] C. Josep et al., "Conformance Checking Software",  Springer International Publishing, 65-74, 2018. `DOI <https://doi.org/10.1007/978-3-319-99414-7>`_.
+        * [1] C. Josep et al., "Conformance Checking Software",  Springer International Publishing, 82-91, 2018. `DOI <https://doi.org/10.1007/978-3-319-99414-7>`_.
         """
         # run model with empty trace
         worst_case_trace = len(self.trace_handler.trace)
