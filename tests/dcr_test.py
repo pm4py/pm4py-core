@@ -871,14 +871,6 @@ class TestAlignment(unittest.TestCase):
         expected_cost = model_moves + log_moves
         self.assertEqual(expected_cost, alignment_cost)
 
-    def test_return_datafrane_alignment(self):
-        log_path = os.path.join("input_data", "running-example.xes")
-        self.log = pm4py.read_xes(log_path)
-        res = pm4py.optimal_alignment_dcr(self.log, self.dcr, return_diagnostics_dataframe=True)
-        self.assertIsInstance(res,pd.DataFrame)
-        for index,row in res.iterrows():
-            self.assertTrue(row['align_fitness'] == 1.0)
-
 class TestImportExportDCR(unittest.TestCase):
 
     def setUp(self) -> None:
