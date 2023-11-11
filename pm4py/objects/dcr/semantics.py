@@ -114,23 +114,3 @@ class DCRSemantics(object):
             return False
         else:
             return True
-
-    @classmethod
-    def is_execution_equivalent(cls, marking1: Marking, marking2: Marking) -> bool:
-        """
-        Verifies if the initial and updated marking is equivalent:
-        M'(G) == M''(G)
-
-        Parameters
-        ----------
-        :param marking1: inital marking
-        :param marking2: updated marking
-        Returns
-        -------
-        :return: return true if equivalent, false otherwise
-        """
-        return (
-                marking1.executed == marking2.executed and
-                marking1.included == marking2.included and
-                marking1.pending == marking2.pending
-        )
