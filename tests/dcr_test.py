@@ -319,7 +319,7 @@ class TestObjSematics(unittest.TestCase):
         from pm4py.objects.dcr.importer.variants.xml_dcr_portal import apply as import_apply
         # given a dcr graph and event log
         # we use this as it provides an dcr graph, with eventIDs and labels and label mapping
-        dcr = import_apply('test_output_data/pendingEvent.xml')
+        dcr = import_apply('input_data/pendingEvent.xml')
         self.assertEqual(1, len(dcr.marking.pending))
 
         del dcr
