@@ -11,6 +11,7 @@ class Variants(Enum):
 
 XML_SIMPLE = Variants.XML_SIMPLE
 XML_DCR_PORTAL = Variants.XML_DCR_PORTAL
+DCR_JS_PORTAL = Variants.XML_DCR_PORTAL
 
 
 def apply(path, variant=XML_DCR_PORTAL, parameters=None):
