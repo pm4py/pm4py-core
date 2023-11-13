@@ -827,7 +827,7 @@ class TestAlignment(unittest.TestCase):
         self.assertIsInstance(align_res,pd.DataFrame)
 
         for index,row in align_res.iterrows():
-            self.assertTrue(row['align_fitness'] == 1.0)
+            self.assertTrue(row['fitness'] == 1.0)
         del log_path
         del align_res
 
@@ -885,7 +885,7 @@ class TestImportExportDCR(unittest.TestCase):
 
     def test_exporter_to_xml_simple(self):
         event_log_file = os.path.join("input_data", "receipt.xes")
-        self.test_file = os.path.join("test_output_data", "receipt_xml_simple.xml")
+        self.test_file = os.path.join("input_data", "receipt_xml_simple.xml")
         log = pm4py.read_xes(event_log_file)
         dcr, _ = apply(log)
         pm4py.write_dcr_xml(dcr_graph=dcr,path=self.test_file,variant=dcr_exporter.XML_SIMPLE, dcr_title='receipt_xml_simple')
@@ -895,7 +895,7 @@ class TestImportExportDCR(unittest.TestCase):
 
     def test_import_export_xml_simple(self):
         event_log_file = os.path.join("input_data", "receipt.xes")
-        self.test_file = os.path.join("test_output_data", "receipt_xml_simple.xml")
+        self.test_file = os.path.join("input_data", "receipt_xml_simple.xml")
         self.export_file_simple(event_log_file)
         dcr = pm4py.read_dcr_xml(self.test_file, variant=dcr_importer.Variants.XML_SIMPLE)
         pm4py.write_dcr_xml(dcr_graph=dcr,path=self.test_file,variant=dcr_exporter.Variants.XML_SIMPLE, dcr_title='receipt_xml_simple_exported')
@@ -908,20 +908,20 @@ class TestImportExportDCR(unittest.TestCase):
     # Events are not included (dashed lines) in the portal
     def test_xml_simple_to_dcr_js_portal(self):
         event_log_file = os.path.join("input_data", "receipt.xes")
-        self.test_file = os.path.join("test_output_data", "receipt_xml_simple.xml")
+        self.test_file = os.path.join("input_data", "receipt_xml_simple.xml")
         self.export_file_simple(event_log_file)
         dcr = pm4py.read_dcr_xml(self.test_file, variant=dcr_importer.Variants.XML_SIMPLE)
 
         os.remove(self.test_file)
 
-        self.test_file = os.path.join("test_output_data", "receipt_xml_simple_to_dcr_js_portal.xml")
+        self.test_file = os.path.join("input_data", "receipt_xml_simple_to_dcr_js_portal.xml")
         pm4py.write_dcr_xml(dcr_graph=dcr,path=self.test_file,variant=dcr_exporter.Variants.DCR_JS_PORTAL, dcr_title='receipt_xml_simple_to_dcr_js_portal')
 
         del dcr
 
     def test_exporter_to_dcr_portal(self):
         event_log_file = os.path.join("input_data","Sepsis cases - Event Log.xes.gz")
-        self.test_file = os.path.join("test_output_data", "sepsis_dcr_portal.xml")
+        self.test_file = os.path.join("input_data", "sepsis_dcr_portal.xml")
         log = pm4py.read_xes(event_log_file)
         dcr, _ = apply(log)
         pm4py.write_dcr_xml(dcr_graph=dcr,path=self.test_file,variant=dcr_exporter.XML_DCR_PORTAL, dcr_title='xml_2_dcr_portal')
@@ -932,9 +932,9 @@ class TestImportExportDCR(unittest.TestCase):
 
     def test_importer_from_dcr_portal(self):
         event_log_file = os.path.join("input_data", "Sepsis cases - Event Log.xes.gz")
-        self.test_file = os.path.join("test_output_data", "sepsis_dcr_portal.xml")
+        self.test_file = os.path.join("input_data", "sepsis_dcr_portal.xml")
         self.export_file_dcr_portal(event_log_file)
-        dcr = pm4py.read_dcr_xml(os.path.join("test_output_data", "sepsis_dcr_portal.xml"))
+        dcr = pm4py.read_dcr_xml(os.path.join("input_data", "sepsis_dcr_portal.xml"))
         self.assertIsNotNone(dcr)
 
         del event_log_file
@@ -942,10 +942,10 @@ class TestImportExportDCR(unittest.TestCase):
 
     def test_import_export_dcr_portal(self):
 
-        self.test_file = os.path.join("test_output_data", "sepsis_dcr_portal.xml")
+        self.test_file = os.path.join("input_data", "sepsis_dcr_portal.xml")
         self.export_file_dcr_portal(self.sepsis)
         dcr = pm4py.read_dcr_xml(self.test_file)
-        self.second_test_file = os.path.join("test_output_data", "sepsis_dcr_portal_exported.xml")
+        self.second_test_file = os.path.join("input_data", "sepsis_dcr_portal_exported.xml")
         pm4py.write_dcr_xml(dcr_graph=dcr,path=self.second_test_file,variant=dcr_exporter.XML_DCR_PORTAL, dcr_title='sepsis_dcr_portal_exported_xml')
         dcr_imported_after_export = pm4py.read_dcr_xml(self.second_test_file)
         self.assertEqual(len(dcr.__dict__), len(dcr_imported_after_export.__dict__))
@@ -955,7 +955,7 @@ class TestImportExportDCR(unittest.TestCase):
 
     def test_exporter_to_dcr_js_portal(self):
         event_log_file = os.path.join("input_data", "receipt.xes")
-        self.test_file = os.path.join("test_output_data", "receipt_dcr_js_portal.xml")
+        self.test_file = os.path.join("input_data", "receipt_dcr_js_portal.xml")
         log = pm4py.read_xes(event_log_file)
         dcr, _ = apply(log)
         pm4py.write_dcr_xml(dcr_graph=dcr, path=self.test_file, variant=dcr_exporter.Variants.DCR_JS_PORTAL, dcr_title='reviewing_exported_dcr_js_portal')
@@ -965,12 +965,12 @@ class TestImportExportDCR(unittest.TestCase):
 
     def test_importer_from_dcr_js_portal(self):
         event_log_file = os.path.join("input_data", "receipt.xes")
-        self.test_file = os.path.join("test_output_data", "receipt_dcr_js_portal.xml")
+        self.test_file = os.path.join("input_data", "receipt_dcr_js_portal.xml")
         log = pm4py.read_xes(event_log_file)
         dcr, _ = apply(log)
         pm4py.write_dcr_xml(dcr_graph=dcr, path=self.test_file, variant=dcr_exporter.Variants.DCR_JS_PORTAL,
                             dcr_title='reviewing_exported_dcr_js_portal')
-        dcr = pm4py.read_dcr_xml(os.path.join("test_output_data", "receipt_dcr_js_portal.xml"))
+        dcr = pm4py.read_dcr_xml(os.path.join("input_data", "receipt_dcr_js_portal.xml"))
         self.assertIsNotNone(dcr)
 
         del dcr
@@ -979,10 +979,10 @@ class TestImportExportDCR(unittest.TestCase):
 
     def test_import_export_dcr_js_portal(self):
         event_log_file = os.path.join("input_data","receipt.xes")
-        self.test_file = os.path.join("test_output_data", "receipt_dcr_js_portal.xml")
+        self.test_file = os.path.join("input_data", "receipt_dcr_js_portal.xml")
         self.export_file_dcr_js(event_log_file)
         dcr = pm4py.read_dcr_xml(self.test_file)
-        self.second_test_file = os.path.join("test_output_data", "receipt_dcr_js_portal_exported.xml")
+        self.second_test_file = os.path.join("input_data", "receipt_dcr_js_portal_exported.xml")
         pm4py.write_dcr_xml(dcr_graph=dcr,path=self.second_test_file,variant=dcr_exporter.DCR_JS_PORTAL, dcr_title='receipt_dcr_js_portal_exported')
         dcr_imported_after_export = pm4py.read_dcr_xml(self.second_test_file)
         self.assertEqual(len(dcr.__dict__), len(dcr_imported_after_export.__dict__))
@@ -991,21 +991,21 @@ class TestImportExportDCR(unittest.TestCase):
         del dcr_imported_after_export
 
     def test_xml_dcr_portal_to_dcr_js_portal(self):
-        self.test_file = os.path.join("test_output_data", "sepsis_dcr_portal.xml")
+        self.test_file = os.path.join("input_data", "sepsis_dcr_portal.xml")
         self.export_file_dcr_portal(self.sepsis)
         dcr = pm4py.read_dcr_xml(self.test_file)
-        self.second_test_file = os.path.join("test_output_data", "sepsis_dcr_js_portal.xml")
+        self.second_test_file = os.path.join("input_data", "sepsis_dcr_js_portal.xml")
         pm4py.write_dcr_xml(dcr_graph=dcr,path=self.second_test_file,variant=dcr_exporter.DCR_JS_PORTAL, dcr_title='sepsis_dcr_js_portal')
 
         del dcr
 
     def test_dcr_js_portal_to_xml_dcr_portal(self):
         event_log_file = os.path.join("input_data","receipt.xes")
-        self.test_file = os.path.join("test_output_data", "receipt_dcr_js_portal.xml")
+        self.test_file = os.path.join("input_data", "receipt_dcr_js_portal.xml")
         self.export_file_dcr_js(event_log_file)
         dcr = pm4py.read_dcr_xml(self.test_file)
 
-        self.second_test_file = os.path.join("test_output_data", "receipt_dcr_xml_portal.xml")
+        self.second_test_file = os.path.join("input_data", "receipt_dcr_xml_portal.xml")
         pm4py.write_dcr_xml(dcr_graph=dcr,path=self.second_test_file,variant=dcr_exporter.XML_DCR_PORTAL, dcr_title='receipt_dcr_xml_portal')
 
         del dcr
@@ -1015,11 +1015,11 @@ class TestImportExportDCR(unittest.TestCase):
         log = pm4py.read_xes(event_log_file)
         dcr, _ = apply(log)
 
-        self.test_file = os.path.join("test_output_data", "running-example_dcr_portal.xml")
+        self.test_file = os.path.join("input_data", "running-example_dcr_portal.xml")
         pm4py.write_dcr_xml(dcr_graph=dcr, path=self.test_file, variant=dcr_exporter.XML_DCR_PORTAL,
                             dcr_title='running-example_dcr_portal')
         dcr_imported_after_export = pm4py.read_dcr_xml(self.test_file)
-        self.second_test_file = os.path.join("test_output_data", "running-example_dcr_js_portal.xml")
+        self.second_test_file = os.path.join("input_data", "running-example_dcr_js_portal.xml")
         pm4py.write_dcr_xml(dcr_graph=dcr_imported_after_export, path=self.second_test_file,
                             variant=dcr_exporter.DCR_JS_PORTAL, dcr_title='running-example_dcr_js_portal')
 
