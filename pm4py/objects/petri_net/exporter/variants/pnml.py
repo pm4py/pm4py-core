@@ -22,7 +22,7 @@ from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.petri_net.obj import PetriNet, ResetNet, InhibitorNet
 from pm4py.objects.petri_net import properties as petri_properties
 from pm4py.util import constants, exec_utils
-
+from enum import Enum
 
 
 class Parameters(Enum):
