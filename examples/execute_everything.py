@@ -840,15 +840,10 @@ def main():
     pm4py.util.constants.SHOW_EVENT_LOG_DEPRECATION = False
     pm4py.util.constants.SHOW_INTERNAL_WARNINGS = False
     #pm4py.util.constants.DEFAULT_TIMESTAMP_PARSE_FORMAT = None
-
-    execute_script(declare_simple)
-    execute_script(variants_paths_duration)
-    execute_script(feature_extraction_case_loc)
+    
     execute_script(powl_discovery)
     execute_script(powl_parsing)
-    execute_script(log_skeleton_manual_constraints)
     execute_script(stochastic_petri_playout)
-    execute_script(trace_attrib_hierarch_cluster)
     execute_script(simplified_interface)
     execute_script(read_write_ocel)
     execute_script(discovery_data_petri_net)
@@ -954,6 +949,11 @@ def main():
     execute_script(align_approx_pt)
     execute_script(visualization_processtree)
     execute_script(visualization_align_table)
+    execute_script(declare_simple)
+    execute_script(variants_paths_duration)
+    execute_script(feature_extraction_case_loc)
+    execute_script(log_skeleton_manual_constraints)
+    execute_script(trace_attrib_hierarch_cluster)
     execute_script(streaming_conformance_footprints)
     execute_script(streaming_conformance_tbr)
     execute_script(streaming_csv_reader_event_stream)
