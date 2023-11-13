@@ -23,177 +23,178 @@ enabled_tests = ["SimplifiedInterfaceTest", "SimplifiedInterface2Test", "DocTest
                  "DataframePrefilteringTest", "StatisticsLogTest", "StatisticsDfTest", "TransitionSystemTest",
                  "ImpExpFromString", "WoflanTest", "OcelFilteringTest", "OcelDiscoveryTest"]
 
+loader = unittest.TestLoader()
 suite = unittest.TestSuite()
 
 if "SimplifiedInterfaceTest" in enabled_tests:
     from tests.simplified_interface import SimplifiedInterfaceTest
 
-    suite.addTest(unittest.makeSuite(SimplifiedInterfaceTest))
+    suite.addTests(loader.loadTestsFromTestCase(SimplifiedInterfaceTest))
 
 if "SimplifiedInterface2Test" in enabled_tests:
     from tests.simplified_interface_2 import SimplifiedInterface2Test
 
-    suite.addTest(unittest.makeSuite(SimplifiedInterface2Test))
+    suite.addTests(loader.loadTestsFromTestCase(SimplifiedInterface2Test))
 
 if "DocTests" in enabled_tests:
     from tests.doc_tests import DocTests
 
-    suite.addTest(unittest.makeSuite(DocTests))
+    suite.addTests(loader.loadTestsFromTestCase(DocTests))
 
 if "RoleDetectionTest" in enabled_tests:
     from tests.role_detection import RoleDetectionTest
 
-    suite.addTest(unittest.makeSuite(RoleDetectionTest))
+    suite.addTests(loader.loadTestsFromTestCase(RoleDetectionTest))
 
 if "PassedTimeTest" in enabled_tests:
     from tests.passed_time import PassedTimeTest
 
-    suite.addTest(unittest.makeSuite(PassedTimeTest))
+    suite.addTests(loader.loadTestsFromTestCase(PassedTimeTest))
 
 if "Pm4pyImportPackageTest" in enabled_tests:
     from tests.imp_everything import Pm4pyImportPackageTest
 
-    suite.addTest(unittest.makeSuite(Pm4pyImportPackageTest))
+    suite.addTests(loader.loadTestsFromTestCase(Pm4pyImportPackageTest))
 
 if "XesImportExportTest" in enabled_tests:
     from tests.xes_impexp_test import XesImportExportTest
 
-    suite.addTest(unittest.makeSuite(XesImportExportTest))
+    suite.addTests(loader.loadTestsFromTestCase(XesImportExportTest))
 
 if "CsvImportExportTest" in enabled_tests:
     from tests.csv_impexp_test import CsvImportExportTest
 
-    suite.addTest(unittest.makeSuite(CsvImportExportTest))
+    suite.addTests(loader.loadTestsFromTestCase(CsvImportExportTest))
 
 if "OtherPartsTests" in enabled_tests:
     from tests.other_tests import OtherPartsTests
 
-    suite.addTest(unittest.makeSuite(OtherPartsTests))
+    suite.addTests(loader.loadTestsFromTestCase(OtherPartsTests))
 
 if "AlphaMinerTest" in enabled_tests:
     from tests.alpha_test import AlphaMinerTest
 
-    suite.addTest(unittest.makeSuite(AlphaMinerTest))
+    suite.addTests(loader.loadTestsFromTestCase(AlphaMinerTest))
 
 if "InductiveMinerTest" in enabled_tests:
     from tests.inductive_test import InductiveMinerTest
 
-    suite.addTest(unittest.makeSuite(InductiveMinerTest))
+    suite.addTests(loader.loadTestsFromTestCase(InductiveMinerTest))
 
 if "InductiveMinerTreeTest" in enabled_tests:
     from tests.inductive_tree_test import InductiveMinerTreeTest
 
-    suite.addTest(unittest.makeSuite(InductiveMinerTreeTest))
+    suite.addTests(loader.loadTestsFromTestCase(InductiveMinerTreeTest))
 
 if "AlignmentTest" in enabled_tests:
     from tests.alignment_test import AlignmentTest
 
-    suite.addTest(unittest.makeSuite(AlignmentTest))
+    suite.addTests(loader.loadTestsFromTestCase(AlignmentTest))
 
 if "DfgTests" in enabled_tests:
     from tests.dfg_tests import DfgTests
 
-    suite.addTest(unittest.makeSuite(DfgTests))
+    suite.addTests(loader.loadTestsFromTestCase(DfgTests))
 
 if "SnaTests" in enabled_tests:
     from tests.sna_test import SnaTests
 
-    suite.addTest(unittest.makeSuite(SnaTests))
+    suite.addTests(loader.loadTestsFromTestCase(SnaTests))
 
 if "PetriImportExportTest" in enabled_tests:
     from tests.petri_imp_exp_test import PetriImportExportTest
 
-    suite.addTest(unittest.makeSuite(PetriImportExportTest))
+    suite.addTests(loader.loadTestsFromTestCase(PetriImportExportTest))
 
 if "BPMNTests" in enabled_tests:
     from tests.bpmn_tests import BPMNTests
 
-    suite.addTest(unittest.makeSuite(BPMNTests))
+    suite.addTests(loader.loadTestsFromTestCase(BPMNTests))
 
 if "ETCTest" in enabled_tests:
     from tests.etc_tests import ETCTest
 
-    suite.addTest(unittest.makeSuite(ETCTest))
+    suite.addTests(loader.loadTestsFromTestCase(ETCTest))
 
 if "DiagnDfConfChecking" in enabled_tests:
     from tests.diagn_df_conf_checking import DiagnDfConfChecking
 
-    suite.addTest(unittest.makeSuite(DiagnDfConfChecking))
+    suite.addTests(loader.loadTestsFromTestCase(DiagnDfConfChecking))
 
 if "ProcessModelEvaluationTests" in enabled_tests:
     from tests.evaluation_tests import ProcessModelEvaluationTests
 
-    suite.addTest(unittest.makeSuite(ProcessModelEvaluationTests))
+    suite.addTests(loader.loadTestsFromTestCase(ProcessModelEvaluationTests))
 
 if "DecisionTreeTest" in enabled_tests:
     from tests.dec_tree_test import DecisionTreeTest
 
-    suite.addTest(unittest.makeSuite(DecisionTreeTest))
+    suite.addTests(loader.loadTestsFromTestCase(DecisionTreeTest))
 
 if "GraphsForming" in enabled_tests:
     from tests.graphs_forming import GraphsForming
 
-    suite.addTest(unittest.makeSuite(GraphsForming))
+    suite.addTests(loader.loadTestsFromTestCase(GraphsForming))
 
 if "HeuMinerTest" in enabled_tests:
     from tests.heuminer_test import HeuMinerTest
 
-    suite.addTest(unittest.makeSuite(HeuMinerTest))
+    suite.addTests(loader.loadTestsFromTestCase(HeuMinerTest))
 
 if "MainFactoriesTest" in enabled_tests:
     from tests.main_fac_test import MainFactoriesTest
 
-    suite.addTest(unittest.makeSuite(MainFactoriesTest))
+    suite.addTests(loader.loadTestsFromTestCase(MainFactoriesTest))
 
 if "AlgorithmTest" in enabled_tests:
     from tests.algorithm_test import AlgorithmTest
 
-    suite.addTest(unittest.makeSuite(AlgorithmTest))
+    suite.addTests(loader.loadTestsFromTestCase(AlgorithmTest))
 
 if "LogFilteringTest" in enabled_tests:
     from tests.filtering_log_test import LogFilteringTest
 
-    suite.addTest(unittest.makeSuite(LogFilteringTest))
+    suite.addTests(loader.loadTestsFromTestCase(LogFilteringTest))
 
 if "DataframePrefilteringTest" in enabled_tests:
     from tests.filtering_pandas_test import DataframePrefilteringTest
 
-    suite.addTest(unittest.makeSuite(DataframePrefilteringTest))
+    suite.addTests(loader.loadTestsFromTestCase(DataframePrefilteringTest))
 
 if "StatisticsLogTest" in enabled_tests:
     from tests.statistics_log_test import StatisticsLogTest
 
-    suite.addTest(unittest.makeSuite(StatisticsLogTest))
+    suite.addTests(loader.loadTestsFromTestCase(StatisticsLogTest))
 
 if "StatisticsDfTest" in enabled_tests:
     from tests.statistics_df_test import StatisticsDfTest
 
-    suite.addTest(unittest.makeSuite(StatisticsDfTest))
+    suite.addTests(loader.loadTestsFromTestCase(StatisticsDfTest))
 
 if "TransitionSystemTest" in enabled_tests:
     from tests.trans_syst_tests import TransitionSystemTest
 
-    suite.addTest(unittest.makeSuite(TransitionSystemTest))
+    suite.addTests(loader.loadTestsFromTestCase(TransitionSystemTest))
 
 if "ImpExpFromString" in enabled_tests:
     from tests.imp_exp_from_string import ImpExpFromString
 
-    suite.addTest(unittest.makeSuite(ImpExpFromString))
+    suite.addTests(loader.loadTestsFromTestCase(ImpExpFromString))
 
 if "WoflanTest" in enabled_tests:
     from tests.woflan_tests import WoflanTest
 
-    suite.addTest(unittest.makeSuite(WoflanTest))
+    suite.addTests(loader.loadTestsFromTestCase(WoflanTest))
 
 if "OcelFilteringTest" in enabled_tests:
     from tests.ocel_filtering_test import OcelFilteringTest
 
-    suite.addTest(unittest.makeSuite(OcelFilteringTest))
+    suite.addTests(loader.loadTestsFromTestCase(OcelFilteringTest))
 
 if "OcelDiscoveryTest" in enabled_tests:
     from tests.ocel_discovery_test import OcelDiscoveryTest
 
-    suite.addTest(unittest.makeSuite(OcelDiscoveryTest))
+    suite.addTests(loader.loadTestsFromTestCase(OcelDiscoveryTest))
 
 
 def main():
