@@ -11,6 +11,8 @@
   * refactor default alignments variant specification
 * 0b7489571184096bacd195dd824af7c88a57c551
   * refactoring examples (default image format specification)
+* de7ab79e285ed5aeb4f4b447fd7f8f1eabb9669c
+  * refactoring unit tests entrypoint
 
 ### Deprecated
 
