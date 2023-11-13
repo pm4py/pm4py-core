@@ -12,6 +12,7 @@
 * 0b7489571184096bacd195dd824af7c88a57c551
   * refactoring examples (default image format specification)
 * de7ab79e285ed5aeb4f4b447fd7f8f1eabb9669c
+  d6ef339b32c2e8439815ea589dab1bc0a9e5c851
   * refactoring unit tests entrypoint
 
 ### Deprecated
