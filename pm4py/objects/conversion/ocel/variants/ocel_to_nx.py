@@ -3,6 +3,7 @@ from pm4py.objects.ocel.obj import OCEL
 import networkx as nx
 from typing import Optional, Dict, Any
 from pm4py.util import exec_utils
+from pm4py.objects.conversion.log.variants import to_event_stream
 
 
 class Parameters(Enum):
@@ -40,13 +41,15 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> nx.DiGraph
     G = nx.DiGraph()
 
     stream = ocel.events.to_dict("records")
+    stream = to_event_stream.__postprocess_stream(stream)
     for ev in stream:
-        ev["type"] = "event"
+        ev["type"] = "EVENT"
         G.add_node(ev[ocel.event_id_column], attr=ev)
 
     stream = ocel.objects.to_dict("records")
+    stream = to_event_stream.__postprocess_stream(stream)
     for obj in stream:
-        obj["type"] = "object"
+        obj["type"] = "OBJECT"
         G.add_node(obj[ocel.object_id_column], attr=obj)
 
     rel_cols = {ocel.event_id_column, ocel.object_id_column, ocel.qualifier}
@@ -80,6 +83,6 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> nx.DiGraph
         for i in range(len(object_changes)):
             change_id = "@@change##%d" % i
             G.add_node(change_id, attr=object_changes[i])
-            G.add_edge(object_changes[i][ocel.object_id_column], change_id)
+            G.add_edge(change_id, object_changes[i][ocel.object_id_column])
 
     return G
