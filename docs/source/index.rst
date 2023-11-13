@@ -6,7 +6,9 @@ Welcome to pm4py's Documentation!
 A simple example of ``pm4py`` in action:
 
 .. code-block:: python
+
    import pm4py
+
    if __name__ == "__main__":
        log = pm4py.read_xes('<path-to-xes-log-file.xes>')
        process_model = pm4py.discover_bpmn_inductive(log)
@@ -16,6 +18,7 @@ In this documentation, you can find all relevant information to set up ``pm4py``
 Please consult the Contents listed below to navigate the documentation.
 
 Happy #processmining!
+
 
 Contents
 --------
