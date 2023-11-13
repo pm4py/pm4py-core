@@ -44,7 +44,8 @@ DEFAULT_EVENT_INDEX_KEY = "@@event_index"
 DEFAULT_FLOW_TIME = "@@flow_time"
 DEFAULT_CLASSIFIER_ATTRIBUTE = "@@classifier"
 
-DEFAULT_ENCODING = "utf-8"
+DEFAULT_ENCODING = get_param_from_env("PM4PY_DEFAULT_ENCODING", "utf-8")
+DEFAULT_XES_PARSER = get_param_from_env("PM4PY_DEFAULT_XES_PARSER", "iterparse" if importlib.util.find_spec("lxml") else "chunk_regex")
 
 PARAM_ARTIFICIAL_START_ACTIVITY = "pm4py:param:art_start_act"
 PARAM_ARTIFICIAL_END_ACTIVITY = "pm4py:param:art_end_act"
