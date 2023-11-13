@@ -1,5 +1,7 @@
 import pm4py
 from pm4py.objects.process_tree.obj import ProcessTree, Operator
+from examples import examples_conf
+
 
 
 def execute_script():
@@ -27,7 +29,7 @@ def execute_script():
     parallel.children.append(leaf_E)
     parallel.children.append(leaf_F)
 
-    pm4py.view_process_tree(root, format="svg")
+    pm4py.view_process_tree(root, format=examples_conf.TARGET_IMG_FORMAT)
 
     # remove leaf_C from choice
     choice.children.remove(leaf_C)
@@ -36,7 +38,7 @@ def execute_script():
     parallel.children.remove(
         [parallel.children[i] for i in range(len(parallel.children)) if parallel.children[i].label == "E"][0])
 
-    pm4py.view_process_tree(root, format="svg")
+    pm4py.view_process_tree(root, format=examples_conf.TARGET_IMG_FORMAT)
 
 
 if __name__ == "__main__":

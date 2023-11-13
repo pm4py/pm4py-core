@@ -1,6 +1,7 @@
 import pm4py
 from pm4py.algo.filtering.dfg import dfg_filtering
 from pm4py.algo.simulation.playout.dfg.variants import classic as dfg_playout
+from examples import examples_conf
 import os
 
 
@@ -18,9 +19,9 @@ def execute_script():
     print(len(simulated_log))
     print(sum(x.attributes["probability"] for x in simulated_log))
     # shows the two DFGs to show that they are identical
-    pm4py.view_dfg(dfg, sa, ea, log=log, format="svg")
+    pm4py.view_dfg(dfg, sa, ea, log=log, format=examples_conf.TARGET_IMG_FORMAT)
     new_dfg, new_sa, new_ea = pm4py.discover_dfg(simulated_log)
-    pm4py.view_dfg(new_dfg, new_sa, new_ea, log=simulated_log, format="svg")
+    pm4py.view_dfg(new_dfg, new_sa, new_ea, log=simulated_log, format=examples_conf.TARGET_IMG_FORMAT)
     for trace in simulated_log:
         print(list(x["concept:name"] for x in trace))
         print(trace.attributes["probability"], dfg_playout.get_trace_probability(trace, dfg, sa, ea))

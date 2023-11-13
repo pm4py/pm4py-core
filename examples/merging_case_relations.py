@@ -2,6 +2,7 @@ import pandas as pd
 import pm4py
 from pm4py.util import constants
 from pm4py.algo.merging.case_relations import algorithm as case_relations_merging
+from examples import examples_conf
 import os
 
 
@@ -13,7 +14,7 @@ def execute_script():
     case_relations = pd.read_csv(os.path.join("..", "tests", "input_data", "interleavings", "case_relations.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
     merged = case_relations_merging.apply(dataframe1, dataframe2, case_relations)
     dfg, sa, ea = pm4py.discover_dfg(merged)
-    pm4py.view_dfg(dfg, sa, ea, format="svg")
+    pm4py.view_dfg(dfg, sa, ea, format=examples_conf.TARGET_IMG_FORMAT)
 
 
 if __name__ == "__main__":
