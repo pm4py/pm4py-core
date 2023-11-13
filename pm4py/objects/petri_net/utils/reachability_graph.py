@@ -89,7 +89,7 @@ def marking_flow_petri(net, im, return_eventually_enabled=False, parameters=None
             outgoing_transitions[m][t] = nm
             if nm not in incoming_transitions:
                 incoming_transitions[nm] = set()
-                if nm not in active and hash(nm):
+                if nm not in active:
                     active.append(nm)
             incoming_transitions[nm].add(t)
 

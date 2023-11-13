@@ -18,7 +18,6 @@ import time
 
 from lxml import etree, objectify
 
-
 from pm4py.objects.petri_net.utils import final_marking
 from pm4py.objects.petri_net.obj import PetriNet, Marking, ResetNet, InhibitorNet, ResetInhibitorNet
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
@@ -31,6 +30,7 @@ from enum import Enum
 class Parameters(Enum):
     ENCODING = "encoding"
     AUTO_GUESS_FINAL_MARKING = "auto_guess_final_marking"
+    RETURN_STOCHASTIC_MAP = "return_stochastic_map"
 
 
 def import_net(input_file_path, parameters=None):
@@ -350,7 +350,7 @@ def import_net_from_xml_object(root, parameters=None):
             if constants.SHOW_INTERNAL_WARNINGS:
                 warnings.warn("the Petri net has been imported without a specified final marking. Please create it using the method pm4py.generate_marking")
 
-            if return_stochastic_information:
-                return net, marking, fmarking, stochastic_map
+        if return_stochastic_information:
+            return net, marking, fmarking, stochastic_map
 
     return net, marking, fmarking
