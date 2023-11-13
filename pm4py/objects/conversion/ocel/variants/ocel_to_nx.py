@@ -103,6 +103,6 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> nx.DiGraph
             change_dict = copy(object_changes[i])
             change_dict["type"] = "CHANGE"
             G.add_node(change_id, attr=change_dict)
-            G.add_edge(change_id, object_changes[i][ocel.object_id_column])
+            G.add_edge(change_id, object_changes[i][ocel.object_id_column], attr={"type": "CHANGE"})
 
     return G
