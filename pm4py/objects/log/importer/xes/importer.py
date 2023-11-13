@@ -1,21 +1,5 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
-import importlib.util
 from enum import Enum
+from pm4py.util import constants
 
 from pm4py.objects.log.importer.xes.variants import iterparse, line_by_line, iterparse_mem_compressed, iterparse_20, chunk_regex, rustxes
 
@@ -29,13 +13,30 @@ class Variants(Enum):
     RUSTXES = rustxes
 
 
-if importlib.util.find_spec("lxml"):
-    DEFAULT_VARIANT = Variants.ITERPARSE
-else:
-    DEFAULT_VARIANT = Variants.CHUNK_REGEX
+def __get_variant(variant_str: str):
+    variant = Variants.CHUNK_REGEX
+
+    if variant_str == 'nonstandard':
+        variant = Variants.LINE_BY_LINE
+    elif variant_str == 'iterparse':
+        variant = Variants.ITERPARSE
+    elif variant_str == 'lxml':
+        variant = Variants.ITERPARSE
+    elif variant_str == 'chunk_regex':
+        variant = Variants.CHUNK_REGEX
+    elif variant_str == "line_by_line":
+        variant = Variants.LINE_BY_LINE
+    elif variant_str == "iterparse_20":
+        variant = Variants.ITERPARSE_20
+    elif variant_str == "iterparse_mem_compressed":
+        variant = Variants.ITERPARSE_MEM_COMPRESSED
+    elif variant_str == "rustxes":
+        variant = Variants.RUSTXES
+
+    return variant
 
 
-def apply(path, parameters=None, variant=DEFAULT_VARIANT):
+def apply(path, parameters=None, variant=constants.DEFAULT_XES_PARSER):
     """
     Import a XES log into a EventLog object
 
@@ -60,30 +61,18 @@ def apply(path, parameters=None, variant=DEFAULT_VARIANT):
     log
         Trace log object
     """
-    if variant == 'nonstandard':
-        variant = Variants.LINE_BY_LINE
-    elif variant == 'iterparse':
-        variant = Variants.ITERPARSE
-    elif variant == 'chunk_regex':
-        variant = Variants.CHUNK_REGEX
-    elif variant == "line_by_line":
-        variant = Variants.LINE_BY_LINE
-    elif variant == "iterparse_20":
-        variant = Variants.ITERPARSE_20
-    elif variant == "iterparse_mem_compressed":
-        variant = Variants.ITERPARSE_MEM_COMPRESSED
-    elif variant == "rustxes":
-        variant = Variants.RUSTXES
+    if parameters is None:
+        parameters = {}
+
+    if type(variant) is str:
+        variant = __get_variant(variant)
 
     log = variant.value.apply(path, parameters=parameters)
 
     return log
 
-    #from pm4py.objects.conversion.log import converter as log_converter
-    #return log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME, parameters=parameters)
 
-
-def deserialize(log_string, parameters=None, variant=DEFAULT_VARIANT):
+def deserialize(log_string, parameters=None, variant=constants.DEFAULT_XES_PARSER):
     """
     Deserialize a text/binary string representing a XES log
 
@@ -110,5 +99,8 @@ def deserialize(log_string, parameters=None, variant=DEFAULT_VARIANT):
     """
     if parameters is None:
         parameters = {}
+
+    if type(variant) is str:
+        variant = __get_variant(variant)
 
     return variant.value.import_from_string(log_string, parameters=parameters)

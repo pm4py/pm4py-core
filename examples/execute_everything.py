@@ -831,24 +831,19 @@ def execute_script(f):
         input("\npress INPUT if you want to continue")
 
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
+def main():
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
-import pm4py
+    import pm4py
 
-pm4py.util.constants.SHOW_PROGRESS_BAR = True
-pm4py.util.constants.SHOW_EVENT_LOG_DEPRECATION = False
-pm4py.util.constants.SHOW_INTERNAL_WARNINGS = False
-#pm4py.util.constants.DEFAULT_TIMESTAMP_PARSE_FORMAT = None
-
-if __name__ == "__main__":
-    execute_script(declare_simple)
-    execute_script(variants_paths_duration)
-    execute_script(feature_extraction_case_loc)
+    pm4py.util.constants.SHOW_PROGRESS_BAR = True
+    pm4py.util.constants.SHOW_EVENT_LOG_DEPRECATION = False
+    pm4py.util.constants.SHOW_INTERNAL_WARNINGS = False
+    #pm4py.util.constants.DEFAULT_TIMESTAMP_PARSE_FORMAT = None
+    
     execute_script(powl_discovery)
     execute_script(powl_parsing)
-    execute_script(log_skeleton_manual_constraints)
     execute_script(stochastic_petri_playout)
-    execute_script(trace_attrib_hierarch_cluster)
     execute_script(simplified_interface)
     execute_script(read_write_ocel)
     execute_script(discovery_data_petri_net)
@@ -954,6 +949,11 @@ if __name__ == "__main__":
     execute_script(align_approx_pt)
     execute_script(visualization_processtree)
     execute_script(visualization_align_table)
+    execute_script(declare_simple)
+    execute_script(variants_paths_duration)
+    execute_script(feature_extraction_case_loc)
+    execute_script(log_skeleton_manual_constraints)
+    execute_script(trace_attrib_hierarch_cluster)
     execute_script(streaming_conformance_footprints)
     execute_script(streaming_conformance_tbr)
     execute_script(streaming_csv_reader_event_stream)
@@ -962,3 +962,7 @@ if __name__ == "__main__":
     execute_script(streaming_xes_reader_trace_stream)
     execute_script(monte_carlo_dfg)
     execute_script(monte_carlo_petri_net)
+
+
+if __name__ == "__main__":
+    main()

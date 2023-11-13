@@ -10,6 +10,7 @@ from pm4py.algo.filtering.log.paths import paths_filter
 from pm4py.util.vis_utils import human_readable_stat
 from pm4py.algo.filtering.log.variants import variants_filter
 from pm4py.statistics.variants.log import get as variants_get
+from examples import examples_conf
 import os
 
 
@@ -51,7 +52,7 @@ def execute_script():
     # print(conf_occ)
     conf_colors = tree_visualization.apply(tree, conf)
     if True:
-        gviz = pt_visualizer.apply(tree, parameters={"format": "svg",
+        gviz = pt_visualizer.apply(tree, parameters={"format": examples_conf.TARGET_IMG_FORMAT,
                                                      pt_visualizer.Variants.WO_DECORATION.value.Parameters.COLOR_MAP: conf_colors,
                                                      pt_visualizer.Variants.WO_DECORATION.value.Parameters.ENABLE_DEEPCOPY: False})
         pt_visualizer.view(gviz)

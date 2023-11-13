@@ -1,4 +1,5 @@
 import pm4py
+from examples import examples_conf
 
 
 def execute_script():
@@ -17,7 +18,7 @@ def execute_script():
     print(len(powl_string), len(powl_string2))
 
     # represents the parsed model on the screen
-    pm4py.view_powl(powl_model2, format="svg")
+    pm4py.view_powl(powl_model2, format=examples_conf.TARGET_IMG_FORMAT)
 
 
 if __name__ == "__main__":

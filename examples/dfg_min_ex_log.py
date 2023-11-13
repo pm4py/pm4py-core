@@ -11,6 +11,7 @@ from pm4py.statistics.eventually_follows.log import get as efg_get
 from pm4py.util import constants
 from pm4py.visualization.dfg import visualizer as dfg_vis_fact
 from pm4py.visualization.petri_net import visualizer as pn_vis
+from examples import examples_conf
 
 
 def execute_script():
@@ -22,7 +23,7 @@ def execute_script():
     parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = "time:timestamp"
     parameters[constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = "concept:name"
     parameters["strict"] = False
-    parameters["format"] = "svg"
+    parameters["format"] = examples_conf.TARGET_IMG_FORMAT
     start_activities = sa_get.get_start_activities(log, parameters=parameters)
     end_activities = ea_get.get_end_activities(log, parameters=parameters)
     parameters["start_activities"] = start_activities

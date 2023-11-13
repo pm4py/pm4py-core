@@ -38,7 +38,7 @@ The ``pm4py.read`` module contains all funcationality related to reading files/o
 """
 
 
-def read_xes(file_path: str, variant: str = "lxml", return_legacy_log_object: bool = constants.DEFAULT_READ_XES_LEGACY_OBJECT, encoding: str = constants.DEFAULT_ENCODING, **kwargs) -> Union[DataFrame, EventLog]:
+def read_xes(file_path: str, variant: Optional[str] = None, return_legacy_log_object: bool = constants.DEFAULT_READ_XES_LEGACY_OBJECT, encoding: str = constants.DEFAULT_ENCODING, **kwargs) -> Union[DataFrame, EventLog]:
     """
     Reads an event log stored in XES format (see `xes-standard <https://xes-standard.org/>`_)
     Returns a table (``pandas.DataFrame``) view of the event log.
@@ -57,14 +57,18 @@ def read_xes(file_path: str, variant: str = "lxml", return_legacy_log_object: bo
     """
     if not os.path.exists(file_path):
         raise Exception("File does not exist")
-    from pm4py.objects.log.importer.xes import importer as xes_importer
-    v = xes_importer.Variants.LINE_BY_LINE
-    if importlib.util.find_spec("lxml"):
-        v = xes_importer.Variants.ITERPARSE
 
+    if variant is None:
+        variant = constants.DEFAULT_XES_PARSER
+
+    from pm4py.objects.log.importer.xes import importer as xes_importer
+
+    v = xes_importer.Variants.CHUNK_REGEX
     if variant == "iterparse_20":
         v = xes_importer.Variants.ITERPARSE_20
     elif variant == "iterparse":
+        v = xes_importer.Variants.ITERPARSE
+    elif variant == "lxml":
         v = xes_importer.Variants.ITERPARSE
     elif variant == "iterparse_mem_compressed":
         v = xes_importer.Variants.ITERPARSE_MEM_COMPRESSED

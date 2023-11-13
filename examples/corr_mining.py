@@ -6,6 +6,7 @@ from pm4py.objects.log.util import dataframe_utils
 from pm4py.statistics.sojourn_time.pandas import get as soj_time_get
 from pm4py.statistics.start_activities.pandas import get as sa_get
 from pm4py.statistics.end_activities.pandas import get as ea_get
+from examples import examples_conf
 
 from pm4py.visualization.dfg import visualizer as dfg_vis
 
@@ -17,7 +18,7 @@ def execute_script():
     parameters = {}
     parameters[constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY] = "start_timestamp"
     parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = "time:timestamp"
-    parameters["format"] = "svg"
+    parameters["format"] = examples_conf.TARGET_IMG_FORMAT
     start_activities = sa_get.get_start_activities(df, parameters=parameters)
     end_activities = ea_get.get_end_activities(df, parameters=parameters)
     parameters["start_activities"] = start_activities
