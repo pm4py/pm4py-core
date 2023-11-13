@@ -1,5 +1,29 @@
 # Changelog of pm4py
 
+## pm4py 2.7.8.4 (2023.11.XX)
+
+### Added
+
+### Changed
+* a18ed64b90881e15d3ce561dcd7ecc0a56fe5039
+  * refactor default XES importer variant specification
+* b0d6fbd1c5c23506fb3648511326e83a3c3f89fe
+  * refactor default alignments variant specification
+* 0b7489571184096bacd195dd824af7c88a57c551
+  * refactoring examples (default image format specification)
+
+### Deprecated
+
+### Fixed
+* e74700dd9d8b965f7cfdb355d03cd582f8da4b2b
+  * fixed POWL objects conversion
+
+### Removed
+
+### Other
+
+---
+
 
 ## pm4py 2.7.8.3 (2023.11.09)
 
