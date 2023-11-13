@@ -83,7 +83,7 @@ def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_mark
 
 
 def view_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW,
-                         aggregation_measure="mean", bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+                         aggregation_measure="mean", bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, soj_time: Optional[Dict[str, float]] = None):
     """
     Views a performance DFG
 
@@ -94,6 +94,7 @@ def view_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict
     :param aggregation_measure: Aggregation measure (default: mean): mean, median, min, max, sum, stdev
     :param bgcolor: Background color of the visualization (default: white)
     :param rankdir: sets the direction of the graph ("LR" for left-to-right; "TB" for top-to-bottom)
+    :param soj_time: (optional) provides the activities' sojourn times, used to decorate the graph
 
     .. code-block:: python3
 
@@ -113,12 +114,12 @@ def view_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict
     parameters[dfg_parameters.AGGREGATION_MEASURE] = aggregation_measure
     parameters["bgcolor"] = bgcolor
     parameters["rankdir"] = rankdir
-    gviz = dfg_perf_visualizer.apply(dfg, parameters=parameters)
+    gviz = dfg_perf_visualizer.apply(dfg, soj_time=soj_time, parameters=parameters)
     dfg_visualizer.view(gviz)
 
 
 def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str,
-                         aggregation_measure="mean", bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+                         aggregation_measure="mean", bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, soj_time: Optional[Dict[str, float]] = None):
     """
     Saves the visualization of a performance DFG
 
@@ -129,6 +130,7 @@ def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: 
     :param aggregation_measure: Aggregation measure (default: mean): mean, median, min, max, sum, stdev
     :param bgcolor: Background color of the visualization (default: white)
     :param rankdir: sets the direction of the graph ("LR" for left-to-right; "TB" for top-to-bottom)
+    :param soj_time: (optional) provides the activities' sojourn times, used to decorate the graph
 
     .. code-block:: python3
 
@@ -149,7 +151,7 @@ def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: 
     parameters[dfg_parameters.AGGREGATION_MEASURE] = aggregation_measure
     parameters["bgcolor"] = bgcolor
     parameters["rankdir"] = rankdir
-    gviz = dfg_perf_visualizer.apply(dfg, parameters=parameters)
+    gviz = dfg_perf_visualizer.apply(dfg, soj_time=soj_time, parameters=parameters)
     dfg_visualizer.save(gviz, file_path)
 
 
