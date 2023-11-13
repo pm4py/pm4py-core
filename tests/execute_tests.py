@@ -14,15 +14,15 @@ pm4py.util.constants.SHOW_EVENT_LOG_DEPRECATION = False
 pm4py.util.constants.SHOW_INTERNAL_WARNINGS = False
 # pm4py.util.constants.DEFAULT_TIMESTAMP_PARSE_FORMAT = None
 
-    enabled_tests = ["SimplifiedInterfaceTest", "SimplifiedInterface2Test", "DocTests", "RoleDetectionTest",
-                     "PassedTimeTest", "Pm4pyImportPackageTest", "XesImportExportTest", "CsvImportExportTest",
-                     "OtherPartsTests", "AlphaMinerTest", "InductiveMinerTest", "InductiveMinerTreeTest",
-                     "AlignmentTest", "DfgTests", "SnaTests", "PetriImportExportTest", "BPMNTests", "ETCTest",
-                     "DiagnDfConfChecking", "ProcessModelEvaluationTests", "DecisionTreeTest", "GraphsForming",
-                     "HeuMinerTest", "MainFactoriesTest", "AlgorithmTest", "LogFilteringTest",
-                     "DataframePrefilteringTest", "StatisticsLogTest", "StatisticsDfTest", "TransitionSystemTest",
-                     "ImpExpFromString", "WoflanTest", "OcelFilteringTest", "OcelDiscoveryTest",
-                     "DcrImportExportTest", "DcrSemanticsTest", "DcrDiscoveryTest", "DcrConformanceTest", "DcrAlignmentTest"]
+enabled_tests = ["SimplifiedInterfaceTest", "SimplifiedInterface2Test", "DocTests", "RoleDetectionTest",
+                 "PassedTimeTest", "Pm4pyImportPackageTest", "XesImportExportTest", "CsvImportExportTest",
+                 "OtherPartsTests", "AlphaMinerTest", "InductiveMinerTest", "InductiveMinerTreeTest",
+                 "AlignmentTest", "DfgTests", "SnaTests", "PetriImportExportTest", "BPMNTests", "ETCTest",
+                 "DiagnDfConfChecking", "ProcessModelEvaluationTests", "DecisionTreeTest", "GraphsForming",
+                 "HeuMinerTest", "MainFactoriesTest", "AlgorithmTest", "LogFilteringTest",
+                 "DataframePrefilteringTest", "StatisticsLogTest", "StatisticsDfTest", "TransitionSystemTest",
+                 "ImpExpFromString", "WoflanTest", "OcelFilteringTest", "OcelDiscoveryTest",
+                 "DcrImportExportTest", "DcrSemanticsTest", "DcrDiscoveryTest", "DcrConformanceTest", "DcrAlignmentTest"]
 
 loader = unittest.TestLoader()
 suite = unittest.TestSuite()
