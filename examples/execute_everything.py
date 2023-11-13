@@ -831,16 +831,16 @@ def execute_script(f):
         input("\npress INPUT if you want to continue")
 
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
+def main():
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 
-import pm4py
+    import pm4py
 
-pm4py.util.constants.SHOW_PROGRESS_BAR = True
-pm4py.util.constants.SHOW_EVENT_LOG_DEPRECATION = False
-pm4py.util.constants.SHOW_INTERNAL_WARNINGS = False
-#pm4py.util.constants.DEFAULT_TIMESTAMP_PARSE_FORMAT = None
+    pm4py.util.constants.SHOW_PROGRESS_BAR = True
+    pm4py.util.constants.SHOW_EVENT_LOG_DEPRECATION = False
+    pm4py.util.constants.SHOW_INTERNAL_WARNINGS = False
+    #pm4py.util.constants.DEFAULT_TIMESTAMP_PARSE_FORMAT = None
 
-if __name__ == "__main__":
     execute_script(declare_simple)
     execute_script(variants_paths_duration)
     execute_script(feature_extraction_case_loc)
@@ -962,3 +962,7 @@ if __name__ == "__main__":
     execute_script(streaming_xes_reader_trace_stream)
     execute_script(monte_carlo_dfg)
     execute_script(monte_carlo_petri_net)
+
+
+if __name__ == "__main__":
+    main()
