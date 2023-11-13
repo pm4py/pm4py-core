@@ -80,7 +80,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
         if "attributes" in obj and obj["attributes"]:
             for x in obj["attributes"]:
                 if x["name"] in dct["ocel:ovmap"]:
-                    legacy_obj["ocel:objectChanges"].append({"ocel:oid": obj["id"], "ocel:type": obj["type"], "ocel:name": x["name"], "ocel:value": x["value"], "ocel:timestamp": x["time"]})
+                    legacy_obj["ocel:objectChanges"].append({"ocel:oid": obj["id"], "ocel:type": obj["type"], "ocel:field": x["name"], x["name"]: x["value"], "ocel:timestamp": x["time"]})
                 else:
                     dct["ocel:ovmap"][x["name"]] = x["value"]
         dct["ocel:o2o"] = []
