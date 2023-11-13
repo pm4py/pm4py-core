@@ -152,45 +152,9 @@ def remove_place(net: PetriNet, place: PetriNet.Place) -> PetriNet:
         net.places.remove(place)
     return net
 
-def check_arc_exists(source, target, tapn:PetriNet):
-    if source in tapn.arc_matrix and target in tapn.arc_matrix[source]:
-        return tapn.arc_matrix[source][target]
-    else:
-        return False
 
-def add_arc_from_to(fr, to, net: PetriNet, weight=1, type=None, with_check=False) -> PetriNet.Arc:
+def add_arc_from_to(fr, to, net: PetriNet, weight=1, type=None) -> PetriNet.Arc:
     """
-    TODO: merge add_arc_from_to into add_arc_from_to_newer
-    Adds an arc from a specific element to another element in some net. Assumes from and to are in the net!
-
-    Parameters
-    ----------
-    fr: transition/place from
-    to:  transition/place to
-    net: net to use
-    weight: weight associated to the arc
-
-    Returns
-    -------
-    None
-    """
-    a = PetriNet.Arc(fr, to, weight)
-    if with_check and (fr and to):
-       with_check = check_arc_exists(fr, to, net)
-    if (fr and to) and not with_check:  # and not check_arc_exists(fr,to,net):
-        if type is not None:
-            a.properties[properties.ARCTYPE] = type
-        net.arcs.add(a)
-        fr.out_arcs.add(a)
-        to.in_arcs.add(a)
-        if fr not in net.arc_matrix:
-            net.arc_matrix[fr] = {}
-        net.arc_matrix[fr][to] = True
-
-    return a
-def add_arc_from_to_newer(fr, to, net: PetriNet, weight=1, type=None) -> PetriNet.Arc:
-    """
-    TODO: merge add_arc_from_to into add_arc_from_to_newer
     Adds an arc from a specific element to another element in some net. Assumes from and to are in the net!
 
     Parameters
