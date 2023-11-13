@@ -300,12 +300,10 @@ def get_properties(log, activity_key: str = "concept:name", timestamp_key: str =
     :param log: Log object
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
-    :param start_timestamp_key: (optional) attribute to be used for the start timestamp
     :param case_id_key: attribute to be used as case identifier
     :param resource_key: (if provided) attribute to be used as resource
     :param group_key: (if provided) attribute to be used as group identifier
     :rtype: ``Dict``
-
     """
     __event_log_deprecation_warning(log)
 
