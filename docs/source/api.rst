@@ -378,6 +378,7 @@ Utilities (:mod:`pm4py.utils`)
 
 Other algorithms, which do not belong to the aforementioned categories, are collected in this section:
 
+  * :meth:`pm4py.utils.format_dataframe`; ensure the correct formatting of the Pandas dataframe.
   * :meth:`pm4py.utils.parse_process_tree`; parses a process tree from a string.
   * :meth:`pm4py.utils.parse_powl_model_string`; parses a POWL model from a string.
   * :meth:`pm4py.utils.parse_event_log_string`; parses an event log from a collection of comma-separated traces.
@@ -665,6 +666,7 @@ Overall List of Methods
    pm4py.utils.rebase
    pm4py.utils.parse_process_tree
    pm4py.utils.parse_powl_model_string
+   pm4py.utils.format_dataframe
    pm4py.utils.serialize
    pm4py.utils.deserialize
    pm4py.utils.parse_event_log_string
