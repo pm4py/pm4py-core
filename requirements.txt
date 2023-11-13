@@ -12,7 +12,3 @@ pytz
 scipy
 stringdist
 tqdm
-python-dateutil
-setuptools
-psutil
-isodate~

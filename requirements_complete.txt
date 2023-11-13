@@ -23,6 +23,3 @@ sortedcontainers
 StringDist
 tqdm
 tzdata
-setuptools
-psutil
-isodate
