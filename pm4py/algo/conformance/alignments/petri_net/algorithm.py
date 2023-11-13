@@ -64,20 +64,6 @@ class Parameters(Enum):
     EXPONENT="theta"
 
 
-
-DEFAULT_VARIANT = Variants.VERSION_DIJKSTRA_LESS_MEMORY
-if solver.DEFAULT_LP_SOLVER_VARIANT is not None:
-    DEFAULT_VARIANT = Variants.VERSION_STATE_EQUATION_A_STAR
-
-VERSION_STATE_EQUATION_A_STAR = Variants.VERSION_STATE_EQUATION_A_STAR
-VERSION_DIJKSTRA_NO_HEURISTICS = Variants.VERSION_DIJKSTRA_NO_HEURISTICS
-VERSION_DIJKSTRA_LESS_MEMORY = Variants.VERSION_DIJKSTRA_LESS_MEMORY
-VERSION_DISCOUNTED_A_STAR = Variants.VERSION_DISCOUNTED_A_STAR
-
-VERSIONS = {Variants.VERSION_DIJKSTRA_NO_HEURISTICS, Variants.VERSION_DIJKSTRA_NO_HEURISTICS,
-            Variants.VERSION_DIJKSTRA_LESS_MEMORY,VERSION_DISCOUNTED_A_STAR}
-
-
 def __variant_mapper(variant):
     if type(variant) is str:
         if variant == "Variants.VERSION_STATE_EQUATION_A_STAR":
@@ -90,6 +76,18 @@ def __variant_mapper(variant):
             variant = Variants.VERSION_DIJKSTRA_LESS_MEMORY
 
     return variant
+
+
+DEFAULT_VARIANT = Variants.VERSION_DIJKSTRA_LESS_MEMORY
+if solver.DEFAULT_LP_SOLVER_VARIANT is not None:
+    DEFAULT_VARIANT = __variant_mapper(constants.DEFAULT_ALIGNMENTS_VARIANT)
+
+VERSION_STATE_EQUATION_A_STAR = Variants.VERSION_STATE_EQUATION_A_STAR
+VERSION_DIJKSTRA_NO_HEURISTICS = Variants.VERSION_DIJKSTRA_NO_HEURISTICS
+VERSION_DIJKSTRA_LESS_MEMORY = Variants.VERSION_DIJKSTRA_LESS_MEMORY
+
+VERSIONS = {Variants.VERSION_DIJKSTRA_NO_HEURISTICS, Variants.VERSION_DIJKSTRA_NO_HEURISTICS,
+            Variants.VERSION_DIJKSTRA_LESS_MEMORY}
 
 
 def apply(obj: Union[EventLog, EventStream, pd.DataFrame, Trace], petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT) -> Union[typing.AlignmentResult, typing.ListAlignments]:

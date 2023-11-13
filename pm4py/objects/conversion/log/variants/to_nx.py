@@ -63,6 +63,8 @@ def apply(log_obj: Union[EventLog, EventStream, pd.DataFrame], parameters: Optio
     case_id_attribute = exec_utils.get_param_value(Parameters.CASE_ID_ATTRIBUTE, parameters, "concept:name")
     other_case_attributes_as_nodes = exec_utils.get_param_value(Parameters.OTHER_CASE_ATTRIBUTES_AS_NODES, parameters, None)
     event_attributes_as_nodes = exec_utils.get_param_value(Parameters.EVENT_ATTRIBUTES_AS_NODES, parameters, None)
+
+    parameters["stream_postprocessing"] = True
     log_obj = to_event_log.apply(log_obj, parameters=parameters)
 
     if event_attributes_as_nodes is None:

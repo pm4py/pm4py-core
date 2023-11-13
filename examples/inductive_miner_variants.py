@@ -4,6 +4,7 @@ from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.util.compression.dtypes import UVCL
 from pm4py.algo.discovery.inductive.variants.imf import IMFUVCL
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
+from examples import examples_conf
 
 
 def execute_script():
@@ -16,9 +17,9 @@ def execute_script():
     imfuvcl = IMFUVCL(parameters)
 
     tree = imfuvcl.apply(IMDataStructureUVCL(uvcl), parameters=parameters)
-    pm4py.view_process_tree(tree, format="svg")
+    pm4py.view_process_tree(tree, format=examples_conf.TARGET_IMG_FORMAT)
     net, im, fm = pm4py.convert_to_petri_net(tree)
-    pm4py.view_petri_net(net, im, fm, format="svg")
+    pm4py.view_petri_net(net, im, fm, format=examples_conf.TARGET_IMG_FORMAT)
 
 
 if __name__ == "__main__":
