@@ -4,6 +4,7 @@ import networkx as nx
 from typing import Optional, Dict, Any
 from pm4py.util import exec_utils
 from pm4py.objects.conversion.log.variants import to_event_stream
+from copy import copy
 
 
 class Parameters(Enum):
@@ -82,7 +83,9 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> nx.DiGraph
         object_changes = ocel.object_changes.to_dict("records")
         for i in range(len(object_changes)):
             change_id = "@@change##%d" % i
-            G.add_node(change_id, attr=object_changes[i])
+            change_dict = copy(object_changes[i])
+            change_dict["type"] = "CHANGE"
+            G.add_node(change_id, attr=change_dict)
             G.add_edge(change_id, object_changes[i][ocel.object_id_column])
 
     return G
