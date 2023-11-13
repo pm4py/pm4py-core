@@ -5,7 +5,7 @@ PM4Py depends upon. This is a best effort attempt to describe the library's depe
 libraries are added/removed.
 
 | Name | URL | License | Version |
-| --------------------------- | ------------------------------------------------------------ | ----------------------- | ------------------- |
+| --------------------------- | ------------------------------------------------------------ | --------------------- | ------------------- |
 | colorama | https://pypi.org/project/colorama | BSD License | 0.4.6 |
 | contourpy | https://pypi.org/project/contourpy | BSD License | 1.1.1 |
 | cycler | https://pypi.org/project/cycler | BSD License | 0.12.1 |
@@ -15,11 +15,11 @@ libraries are added/removed.
 | intervaltree | https://pypi.org/project/intervaltree | Apache Software License (Apache License, Version 2.0) | 3.1.0 |
 | kiwisolver | https://pypi.org/project/kiwisolver | BSD License | 1.4.5 |
 | lxml | https://pypi.org/project/lxml | BSD License (BSD-3-Clause) | 4.9.3 |
-| matplotlib | https://pypi.org/project/matplotlib | Python Software Foundation License (PSF) | 3.8.0 |
-| networkx | https://pypi.org/project/networkx | BSD License | 3.2 |
+| matplotlib | https://pypi.org/project/matplotlib | Python Software Foundation License (PSF) | 3.8.1 |
+| networkx | https://pypi.org/project/networkx | BSD License | 3.2.1 |
 | numpy | https://pypi.org/project/numpy | BSD License | 1.26.1 |
 | packaging | https://pypi.org/project/packaging | Apache Software License, BSD License | 23.2 |
-| pandas | https://pypi.org/project/pandas | BSD License | 2.1.1 |
+| pandas | https://pypi.org/project/pandas | BSD License | 2.1.2 |
 | Pillow | https://pypi.org/project/Pillow | Historical Permission Notice and Disclaimer (HPND) (HPND) | 10.1.0 |
 | pydotplus | https://pypi.org/project/pydotplus | MIT License (UNKNOWN) | 2.0.2 |
 | pyparsing | https://pypi.org/project/pyparsing | MIT License | 3.1.1 |

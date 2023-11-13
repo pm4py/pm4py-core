@@ -4,6 +4,7 @@ from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.visualization.petri_net import visualizer as pn_vis
 from pm4py.objects.conversion.process_tree import converter as process_tree_converter
+from examples import examples_conf
 
 
 def execute_script():
@@ -15,13 +16,13 @@ def execute_script():
     net, initial_marking, final_marking = process_tree_converter.apply(process_tree)
     # get visualization
     variant = pn_vis.Variants.PERFORMANCE
-    parameters_viz = {pn_vis.Variants.PERFORMANCE.value.Parameters.AGGREGATION_MEASURE: "mean", pn_vis.Variants.PERFORMANCE.value.Parameters.FORMAT: "svg"}
+    parameters_viz = {pn_vis.Variants.PERFORMANCE.value.Parameters.AGGREGATION_MEASURE: "mean", pn_vis.Variants.PERFORMANCE.value.Parameters.FORMAT: examples_conf.TARGET_IMG_FORMAT}
     gviz = pn_vis.apply(net, initial_marking, final_marking, log=log, variant=variant,
                         parameters=parameters_viz)
     pn_vis.view(gviz)
     # do another visualization with frequency
     variant = pn_vis.Variants.FREQUENCY
-    parameters_viz = {pn_vis.Variants.FREQUENCY.value.Parameters.FORMAT: "svg"}
+    parameters_viz = {pn_vis.Variants.FREQUENCY.value.Parameters.FORMAT: examples_conf.TARGET_IMG_FORMAT}
     gviz = pn_vis.apply(net, initial_marking, final_marking, log=log, variant=variant,
                         parameters=parameters_viz)
     pn_vis.view(gviz)

@@ -3,7 +3,7 @@ import os
 import pm4py
 from pm4py.util import constants
 import pandas as pd
-
+from examples import examples_conf
 
 def execute_script():
     ENABLE_VISUALIZATION = True
@@ -58,12 +58,12 @@ def execute_script():
     pm4py.save_vis_performance_spectrum(log1, ["register request", "decide"], "ps.png")
 
     if ENABLE_VISUALIZATION:
-        pm4py.view_petri_net(petri_alpha, im_alpha, fm_alpha, format="svg")
-        pm4py.view_petri_net(petri_inductive, im_inductive, fm_inductive, format="svg")
-        pm4py.view_petri_net(petri_heuristics, im_heuristics, fm_heuristics, format="svg")
-        pm4py.view_process_tree(tree_inductive, format="svg")
-        pm4py.view_heuristics_net(heu_net, format="svg")
-        pm4py.view_dfg(dfg, dfg_sa, dfg_ea, format="svg")
+        pm4py.view_petri_net(petri_alpha, im_alpha, fm_alpha, format=examples_conf.TARGET_IMG_FORMAT)
+        pm4py.view_petri_net(petri_inductive, im_inductive, fm_inductive, format=examples_conf.TARGET_IMG_FORMAT)
+        pm4py.view_petri_net(petri_heuristics, im_heuristics, fm_heuristics, format=examples_conf.TARGET_IMG_FORMAT)
+        pm4py.view_process_tree(tree_inductive, format=examples_conf.TARGET_IMG_FORMAT)
+        pm4py.view_heuristics_net(heu_net, format=examples_conf.TARGET_IMG_FORMAT)
+        pm4py.view_dfg(dfg, dfg_sa, dfg_ea, format=examples_conf.TARGET_IMG_FORMAT)
 
     aligned_traces = pm4py.conformance_diagnostics_alignments(log1, petri_inductive, im_inductive, fm_inductive, return_diagnostics_dataframe=False)
     replayed_traces = pm4py.conformance_diagnostics_token_based_replay(log1, petri_inductive, im_inductive, fm_inductive, return_diagnostics_dataframe=False)
@@ -107,8 +107,8 @@ def execute_script():
     print("cases overlap log = ", pm4py.get_case_overlap(log2))
     print("cycle time df = ", pm4py.get_cycle_time(df2, case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp"))
     print("cycle time log = ", pm4py.get_cycle_time(log2))
-    pm4py.view_events_distribution_graph(df2, case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp", format="svg")
-    pm4py.view_events_distribution_graph(log2, format="svg")
+    pm4py.view_events_distribution_graph(df2, case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp", format=examples_conf.TARGET_IMG_FORMAT)
+    pm4py.view_events_distribution_graph(log2, format=examples_conf.TARGET_IMG_FORMAT)
 
     print("variants log = ", pm4py.get_variants_as_tuples(log2))
     print("variants df = ", pm4py.get_variants_as_tuples(df2, case_id_key="case:concept:name", activity_key="concept:name", timestamp_key="time:timestamp"))
@@ -176,8 +176,8 @@ def execute_script():
     footprints = pm4py.discover_footprints(log1)
     alignments = pm4py.conformance_diagnostics_alignments(log1, petri_inductive, im_inductive, fm_inductive, return_diagnostics_dataframe=False)
 
-    pm4py.view_footprints(footprints, format="svg")
-    pm4py.view_alignments(log1, alignments, format="svg")
+    pm4py.view_footprints(footprints, format=examples_conf.TARGET_IMG_FORMAT)
+    pm4py.view_alignments(log1, alignments, format=examples_conf.TARGET_IMG_FORMAT)
 
     pm4py.save_vis_footprints(footprints, "footprints.png")
     pm4py.save_vis_alignments(log1, aligned_traces, "alignments.png")
