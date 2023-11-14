@@ -99,7 +99,7 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
         obj = json_object["objects"][obj_idx[oid]]
 
         obj["attributes"].append(
-            {"name": change["ocel:name"], "time": change["ocel:timestamp"], "value": change["ocel:value"]})
+            {"name": change["ocel:field"], "time": change["ocel:timestamp"], "value": change[change["ocel:field"]]})
 
         json_object["objects"][obj_idx[oid]] = obj
 

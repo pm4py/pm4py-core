@@ -25,11 +25,14 @@
 * e74700dd9d8b965f7cfdb355d03cd582f8da4b2b
   * fixed POWL objects conversion
 * e56444ad44a94ece5bd239983165d0754b15a713
-  * bug fix JSON-OCEL(2.0) importer
+  7205aeaa94ad885a9271c359780aa9fac00dee39
+  * bug fix JSON-OCEL(2.0) importer/exporter
 
 ### Removed
 
 ### Other
+* 911d5f8630504c3234b716713a58498ead38d2bb
+  * converting back NX DiGraph to OCEL/EventLog
 
 ---
 
