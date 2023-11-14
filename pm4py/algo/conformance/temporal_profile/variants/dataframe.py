@@ -72,7 +72,7 @@ def apply(df: pd.DataFrame, temporal_profile: typing.TemporalProfile,
                                       "@@max": y[0] + zeta * y[1], "@@mean": y[0], "@@std": y[1]} for x, y in
                                      temporal_profile.items()])
 
-    cases = list(df[case_id_key].unique())
+    cases = df[case_id_key].unique().tolist()
     ret = [[] for c in cases]
     efg = get_partial_order_dataframe(df, activity_key=activity_key, timestamp_key=timestamp_key,
                                       start_timestamp_key=start_timestamp_key, case_id_glue=case_id_key,

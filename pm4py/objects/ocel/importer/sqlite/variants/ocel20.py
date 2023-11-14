@@ -58,8 +58,8 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
     EVENTS = pd.read_sql("SELECT * FROM event", conn)
     OBJECTS = pd.read_sql("SELECT * FROM object", conn)
 
-    etypes = sorted(list(EVENTS["ocel_type"].unique()))
-    otypes = sorted(list(OBJECTS["ocel_type"].unique()))
+    etypes = sorted(EVENTS["ocel_type"].unique())
+    otypes = sorted(OBJECTS["ocel_type"].unique())
 
     EVENTS = EVENTS.to_dict("records")
     OBJECTS = OBJECTS.to_dict("records")

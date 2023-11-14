@@ -38,7 +38,7 @@ def sample_ocel_events(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) 
     event_id_column = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, ocel.event_id_column)
     num_entities = exec_utils.get_param_value(Parameters.NUM_ENTITIES, parameters, 100)
 
-    events = list(ocel.events[event_id_column].unique())
+    events = ocel.events[event_id_column].unique().to_numpy().tolist()
     num_events = min(len(events), num_entities)
 
     random.shuffle(events)
@@ -77,7 +77,7 @@ def sample_ocel_objects(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None)
     object_id_column = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, ocel.object_id_column)
     num_entities = exec_utils.get_param_value(Parameters.NUM_ENTITIES, parameters, 100)
 
-    objects = list(ocel.objects[object_id_column].unique())
+    objects = ocel.objects[object_id_column].unique().to_numpy().tolist()
     num_objects = min(len(objects), num_entities)
 
     random.shuffle(objects)

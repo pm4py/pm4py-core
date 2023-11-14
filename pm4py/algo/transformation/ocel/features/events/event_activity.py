@@ -23,9 +23,9 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ordered_events = list(ocel.events[ocel.event_id_column])
+    ordered_events = ocel.events[ocel.event_id_column].to_numpy()
 
-    activities = list(ocel.events[ocel.event_activity].unique())
+    activities = ocel.events[ocel.event_activity].unique().to_numpy().tolist()
 
     data = []
     feature_names = ["@@event_act_"+act for act in activities]

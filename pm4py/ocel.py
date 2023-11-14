@@ -26,7 +26,7 @@ def ocel_get_object_types(ocel: OCEL) -> List[str]:
 
         object_types = pm4py.ocel_get_object_types(ocel)
     """
-    return list(ocel.objects[ocel.object_type_column].unique())
+    return ocel.objects[ocel.object_type_column].unique().to_numpy().tolist()
 
 
 def ocel_get_attribute_names(ocel: OCEL) -> List[str]:
@@ -146,8 +146,8 @@ def ocel_objects_summary(ocel: OCEL) -> pd.DataFrame:
     objects_summary = objects_summary.join(lif_end_tim)
     objects_summary = objects_summary.reset_index()
     objects_summary["lifecycle_duration"] = (objects_summary["lifecycle_end"] - objects_summary["lifecycle_start"]).dt.total_seconds()
-    ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].apply(list).to_dict()
-    objects_ids = set(ocel.objects[ocel.object_id_column].unique())
+    ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].agg(list).to_dict()
+    objects_ids = ocel.objects[ocel.object_id_column].unique().to_numpy().tolist()
     graph = {o: set() for o in objects_ids}
     for ev in ev_rel_obj:
         rel_obj = ev_rel_obj[ev]
@@ -176,7 +176,7 @@ def ocel_objects_interactions_summary(ocel: OCEL) -> pd.DataFrame:
     """
     obj_types = ocel.objects.groupby(ocel.object_id_column)[ocel.object_type_column].first().to_dict()
     eve_activities = ocel.events.groupby(ocel.event_id_column)[ocel.event_activity].first().to_dict()
-    ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].apply(list).to_dict()
+    ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].agg(list).to_dict()
     stream = []
     for ev in ev_rel_obj:
         rel_obj = ev_rel_obj[ev]

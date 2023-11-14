@@ -73,17 +73,19 @@ class SimplifiedInterfaceTest(unittest.TestCase):
     def test_read_dfg(self):
         dfg, sa, ea = pm4py.read_dfg("input_data/running-example.dfg")
 
-    def test_alignments(self):
+    def test_alignments_simpl_interface(self):
         for legacy_obj in [True, False]:
-            log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=legacy_obj)
-            net, im, fm = pm4py.discover_petri_net_inductive(log)
-            aligned_traces = pm4py.conformance_diagnostics_alignments(log, net, im, fm, return_diagnostics_dataframe=False)
+            for diagn_df in [True, False]:
+                log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=legacy_obj)
+                net, im, fm = pm4py.discover_petri_net_inductive(log)
+                aligned_traces = pm4py.conformance_diagnostics_alignments(log, net, im, fm, return_diagnostics_dataframe=diagn_df)
 
-    def test_tbr(self):
+    def test_tbr_simpl_interface(self):
         for legacy_obj in [True, False]:
-            log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=legacy_obj)
-            net, im, fm = pm4py.discover_petri_net_inductive(log)
-            replayed_traces = pm4py.conformance_diagnostics_token_based_replay(log, net, im, fm, return_diagnostics_dataframe=False)
+            for diagn_df in [True, False]:
+                log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=legacy_obj)
+                net, im, fm = pm4py.discover_petri_net_inductive(log)
+                replayed_traces = pm4py.conformance_diagnostics_token_based_replay(log, net, im, fm, return_diagnostics_dataframe=diagn_df)
 
     def test_fitness_alignments(self):
         for legacy_obj in [True, False]:
@@ -264,29 +266,32 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         res = pm4py.solve_extended_marking_equation(log[0], sync_net, sync_im, sync_fm)
         self.assertIsNotNone(res)
 
-    def test_alignments_tree(self):
+    def test_alignments_tree_simpl_interface(self):
         import pm4py
         for legacy_obj in [True, False]:
-            log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"), return_legacy_log_object=legacy_obj)
-            tree = pm4py.read_ptml(os.path.join("input_data", "running-example.ptml"))
-            res = pm4py.conformance_diagnostics_alignments(log, tree, return_diagnostics_dataframe=False)
-            self.assertIsNotNone(res)
+            for diagn_df in [True, False]:
+                log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"), return_legacy_log_object=legacy_obj)
+                tree = pm4py.read_ptml(os.path.join("input_data", "running-example.ptml"))
+                res = pm4py.conformance_diagnostics_alignments(log, tree, return_diagnostics_dataframe=diagn_df)
+                self.assertIsNotNone(res)
 
-    def test_alignments_dfg(self):
+    def test_alignments_dfg_simpl_interface(self):
         import pm4py
         for legacy_obj in [True, False]:
-            log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"), return_legacy_log_object=legacy_obj)
-            dfg, sa, ea = pm4py.read_dfg(os.path.join("input_data", "running-example.dfg"))
-            res = pm4py.conformance_diagnostics_alignments(log, dfg, sa, ea, return_diagnostics_dataframe=False)
-            self.assertIsNotNone(res)
+            for diagn_df in [True, False]:
+                log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"), return_legacy_log_object=legacy_obj)
+                dfg, sa, ea = pm4py.read_dfg(os.path.join("input_data", "running-example.dfg"))
+                res = pm4py.conformance_diagnostics_alignments(log, dfg, sa, ea, return_diagnostics_dataframe=diagn_df)
+                self.assertIsNotNone(res)
 
-    def test_alignments_bpmn(self):
+    def test_alignments_bpmn_simpl_interface(self):
         import pm4py
         for legacy_obj in [True, False]:
-            log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"), return_legacy_log_object=legacy_obj)
-            bpmn_graph = pm4py.read_bpmn(os.path.join("input_data", "running-example.bpmn"))
-            res = pm4py.conformance_diagnostics_alignments(log, bpmn_graph, return_diagnostics_dataframe=False)
-            self.assertIsNotNone(res)
+            for diagn_df in [True, False]:
+                log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"), return_legacy_log_object=legacy_obj)
+                bpmn_graph = pm4py.read_bpmn(os.path.join("input_data", "running-example.bpmn"))
+                res = pm4py.conformance_diagnostics_alignments(log, bpmn_graph, return_diagnostics_dataframe=diagn_df)
+                self.assertIsNotNone(res)
 
     def test_discovery_inductive_bpmn(self):
         import pm4py
@@ -541,19 +546,21 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
         pm4py.discover_batches(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp", resource_key="Resource")
 
-    def test_log_skeleton_log(self):
+    def test_log_skeleton_log_simplified_interface(self):
         for legacy_obj in [True, False]:
-            log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=legacy_obj)
-            model = pm4py.discover_log_skeleton(log)
-            pm4py.conformance_log_skeleton(log, model, return_diagnostics_dataframe=False)
+            for diagn_df in [True, False]:
+                log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=legacy_obj)
+                model = pm4py.discover_log_skeleton(log)
+                pm4py.conformance_log_skeleton(log, model, return_diagnostics_dataframe=diagn_df)
 
-    def test_log_skeleton_df(self):
-        dataframe = pd.read_csv("input_data/running-example-transformed.csv", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
-        dataframe["CaseID"] = dataframe["CaseID"].astype("string")
+    def test_log_skeleton_df_simplified_interface(self):
+        for diagn_df in [True, False]:
+            dataframe = pd.read_csv("input_data/running-example-transformed.csv", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+            dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True, format="ISO8601")
+            dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
-        model = pm4py.discover_log_skeleton(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
-        pm4py.conformance_log_skeleton(dataframe, model, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp", return_diagnostics_dataframe=False)
+            model = pm4py.discover_log_skeleton(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
+            pm4py.conformance_log_skeleton(dataframe, model, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp", return_diagnostics_dataframe=diagn_df)
 
     def test_temporal_profile_log(self):
         for legacy_obj in [True, False]:
@@ -913,25 +920,28 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         ocel = pm4py.read_ocel("input_data/ocel/example_log.csv")
         pm4py.discover_oc_petri_net(ocel)
 
-    def test_conformance_alignments_pn_log(self):
+    def test_conformance_alignments_pn_log_simplified_interface(self):
         for legacy_obj in [True, False]:
-            log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=legacy_obj)
-            net, im, fm = pm4py.discover_petri_net_inductive(log)
-            pm4py.conformance_diagnostics_alignments(log, net, im, fm, return_diagnostics_dataframe=False)
+            for diagn_df in [True, False]:
+                log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=legacy_obj)
+                net, im, fm = pm4py.discover_petri_net_inductive(log)
+                pm4py.conformance_diagnostics_alignments(log, net, im, fm, return_diagnostics_dataframe=diagn_df)
 
-    def test_conformance_alignments_pn_df(self):
-        dataframe = pd.read_csv("input_data/running-example-transformed.csv", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
-        dataframe["CaseID"] = dataframe["CaseID"].astype("string")
+    def test_conformance_alignments_pn_df_simplified_interface(self):
+        for diagn_df in [True, False]:
+            dataframe = pd.read_csv("input_data/running-example-transformed.csv", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+            dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+            dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
-        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
-        pm4py.conformance_diagnostics_alignments(dataframe, net, im, fm, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp", return_diagnostics_dataframe=False)
+            net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
+            pm4py.conformance_diagnostics_alignments(dataframe, net, im, fm, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp", return_diagnostics_dataframe=diagn_df)
 
     def test_conformance_diagnostics_fp_log(self):
         for legacy_obj in [True, False]:
             log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=legacy_obj)
             tree = pm4py.discover_process_tree_inductive(log)
             pm4py.conformance_diagnostics_footprints(log, tree)
+
     def test_fitness_fp_log(self):
         for legacy_obj in [True, False]:
             log = pm4py.read_xes("input_data/running-example.xes", return_legacy_log_object=legacy_obj)
@@ -984,12 +994,13 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
         pm4py.discover_performance_dfg(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
 
-    def test_new_tbr_df(self):
-        dataframe = pd.read_csv("input_data/running-example-transformed.csv", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
-        dataframe["CaseID"] = dataframe["CaseID"].astype("string")
-        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
-        pm4py.conformance_diagnostics_token_based_replay(dataframe, net, im, fm, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp", return_diagnostics_dataframe=False)
+    def test_new_tbr_df_simpl_interface(self):
+        for ret_df in [True, False]:
+            dataframe = pd.read_csv("input_data/running-example-transformed.csv", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+            dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+            dataframe["CaseID"] = dataframe["CaseID"].astype("string")
+            net, im, fm = pm4py.discover_petri_net_inductive(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
+            pm4py.conformance_diagnostics_token_based_replay(dataframe, net, im, fm, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp", return_diagnostics_dataframe=ret_df)
 
     def test_new_tbr_fitness_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
@@ -1005,12 +1016,13 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         net, im, fm = pm4py.discover_petri_net_inductive(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
         pm4py.precision_token_based_replay(dataframe, net, im, fm, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
 
-    def test_new_align_df(self):
-        dataframe = pd.read_csv("input_data/running-example-transformed.csv", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
-        dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
-        dataframe["CaseID"] = dataframe["CaseID"].astype("string")
-        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
-        pm4py.conformance_diagnostics_alignments(dataframe, net, im, fm, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp", return_diagnostics_dataframe=False)
+    def test_new_align_df_simpl_interface(self):
+        for diagn_df in [True, False]:
+            dataframe = pd.read_csv("input_data/running-example-transformed.csv", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+            dataframe["Timestamp"] = pd.to_datetime(dataframe["Timestamp"], utc=True)
+            dataframe["CaseID"] = dataframe["CaseID"].astype("string")
+            net, im, fm = pm4py.discover_petri_net_inductive(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
+            pm4py.conformance_diagnostics_alignments(dataframe, net, im, fm, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp", return_diagnostics_dataframe=diagn_df)
 
     def test_new_align_fitness_df(self):
         dataframe = pd.read_csv("input_data/running-example-transformed.csv", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)

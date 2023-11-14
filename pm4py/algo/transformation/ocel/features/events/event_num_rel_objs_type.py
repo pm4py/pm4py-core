@@ -24,11 +24,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ordered_events = list(ocel.events[ocel.event_id_column])
+    ordered_events = ocel.events[ocel.event_id_column].to_numpy()
 
     rel_objs = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].agg(list).to_dict()
 
-    object_types = list(ocel.objects[ocel.object_type_column].unique())
+    object_types = ocel.objects[ocel.object_type_column].unique().to_numpy()
 
     object_type_association = ocel.objects[[ocel.object_id_column, ocel.object_type_column]].to_dict("records")
     object_type_association = {x[ocel.object_id_column]: x[ocel.object_type_column] for x in object_type_association}

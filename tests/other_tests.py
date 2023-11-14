@@ -331,6 +331,36 @@ class OtherPartsTests(unittest.TestCase):
         log = pm4py.read_xes("input_data/running-example.xes")
         next_activity_target, next_activities = log_to_target.apply(log, variant=log_to_target.Variants.NEXT_ACTIVITY)
 
+    def test_ocel_split_cc_non_simpl_interface(self):
+        import pm4py
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        from pm4py.algo.transformation.ocel.split_ocel import algorithm as split_ocel
+        res = split_ocel.apply(ocel, variant=split_ocel.Variants.CONNECTED_COMPONENTS)
+
+    def test_ocel_split_ancestors_non_simpl_interface(self):
+        import pm4py
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        from pm4py.algo.transformation.ocel.split_ocel import algorithm as split_ocel
+        res = split_ocel.apply(ocel, parameters={"object_type": "order"}, variant=split_ocel.Variants.ANCESTORS_DESCENDANTS)
+
+    def test_ocel_object_features_non_simpl_interface(self):
+        import pm4py
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        from pm4py.algo.transformation.ocel.features.objects import algorithm as ocel_fea
+        res = ocel_fea.apply(ocel)
+
+    def test_ocel_event_features_non_simpl_interface(self):
+        import pm4py
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        from pm4py.algo.transformation.ocel.features.events import algorithm as ocel_fea
+        res = ocel_fea.apply(ocel)
+
+    def test_ocel_event_object_features_non_simpl_interface(self):
+        import pm4py
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        from pm4py.algo.transformation.ocel.features.events_objects import algorithm as ocel_fea
+        res = ocel_fea.apply(ocel)
+
 
 if __name__ == "__main__":
     unittest.main()

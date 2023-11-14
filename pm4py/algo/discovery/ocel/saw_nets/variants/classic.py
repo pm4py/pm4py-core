@@ -148,7 +148,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
         parameters = {}
 
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
-    obj_types = set(ocel.objects[object_type].unique())
+    obj_types = ocel.objects[object_type].unique().to_numpy().tolist()
 
     disc_parameters = copy(parameters)
     # disables the fallthroughs, as computing the model on a myriad of different object types

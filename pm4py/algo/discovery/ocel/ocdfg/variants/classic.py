@@ -78,8 +78,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
     event_activity = exec_utils.get_param_value(Parameters.EVENT_ACTIVITY, parameters, ocel.event_activity)
 
     ret = {}
-    ret["activities"] = set(ocel.events[event_activity].unique())
-    ret["object_types"] = set(ocel.objects[object_type].unique())
+    ret["activities"] = set(ocel.events[event_activity].unique().to_numpy().tolist())
+    ret["object_types"] = set(ocel.objects[object_type].unique().to_numpy().tolist())
 
     ret["edges"] = {}
     ret["edges"]["event_couples"] = edge_metrics.aggregate_ev_couples(edges)

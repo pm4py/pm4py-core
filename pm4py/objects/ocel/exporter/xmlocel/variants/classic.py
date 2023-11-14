@@ -57,7 +57,7 @@ def apply(ocel: OCEL, target_path: str, parameters: Optional[Dict[Any, Any]] = N
 
     ocel = ocel_consistency.apply(ocel, parameters=parameters)
 
-    all_object_types = list(ocel.objects[object_type].unique())
+    all_object_types = ocel.objects[object_type].unique().to_numpy().tolist()
     all_attribute_names = attributes_names.get_attribute_names(ocel, parameters=parameters)
     global_event_items = ocel.globals[
         constants.OCEL_GLOBAL_EVENT] if constants.OCEL_GLOBAL_EVENT in ocel.globals else constants.DEFAULT_GLOBAL_EVENT

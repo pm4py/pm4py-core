@@ -44,8 +44,8 @@ def apply(ocel: OCEL, file_path: str, parameters: Optional[Dict[Any, Any]] = Non
     OBJECTS = OBJECTS.drop_duplicates()
     OBJECTS.to_sql("object", conn, index=False)
 
-    event_types = sorted(list(set(EVENTS["ocel_type"].unique())))
-    object_types = sorted(list(set(OBJECTS["ocel_type"].unique())))
+    event_types = sorted(EVENTS["ocel_type"].unique().to_numpy().tolist())
+    object_types = sorted(OBJECTS["ocel_type"].unique().to_numpy().tolist())
 
     EVENT_CORR_TYPE = pd.DataFrame({"ocel_type": event_types, "ocel_type_map": event_types})
     OBJECT_CORR_TYPE = pd.DataFrame({"ocel_type": object_types, "ocel_type_map": object_types})
@@ -63,8 +63,8 @@ def apply(ocel: OCEL, file_path: str, parameters: Optional[Dict[Any, Any]] = Non
     O2O = ocel.o2o.rename(columns={object_id: "ocel_source_id", object_id+"_2": "ocel_target_id", qualifier: "ocel_qualifier"})
     O2O.to_sql("object_object", conn, index=False)
 
-    e_types = sorted(list(ocel.events[event_activity].unique()))
-    o_types = sorted(list(ocel.objects[object_type].unique()))
+    e_types = sorted(ocel.events[event_activity].unique().to_numpy().tolist())
+    o_types = sorted(ocel.objects[object_type].unique().to_numpy().tolist())
 
     for act in e_types:
         df = ocel.events[ocel.events[event_activity] == act].dropna(how="all", axis="columns")

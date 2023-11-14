@@ -35,7 +35,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     event_id = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, ocel.event_id_column)
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
 
-    object_types = set(ocel.objects[object_type].unique())
+    object_types = ocel.objects[object_type].unique().to_numpy()
 
     ret = {}
 

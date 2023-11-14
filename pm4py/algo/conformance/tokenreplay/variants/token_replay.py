@@ -971,7 +971,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
         trans_map[t.label] = t
 
     if type(log) is pd.DataFrame:
-        traces = list(log.groupby(case_id_key)[activity_key].apply(tuple))
+        traces = log.groupby(case_id_key)[activity_key].agg(tuple).to_numpy().tolist()
     else:
         traces = [tuple(x[activity_key] for x in trace) for trace in log]
 

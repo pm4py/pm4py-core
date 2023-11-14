@@ -74,7 +74,7 @@ class OCEL(object):
         for ot in object_types:
             table[ot_prefix + ot] = \
                 self.relations[self.relations[self.object_type_column] == ot].groupby(self.event_id_column)[
-                    self.object_id_column].apply(list)
+                    self.object_id_column].agg(list)
         table = table.reset_index()
         return table
 

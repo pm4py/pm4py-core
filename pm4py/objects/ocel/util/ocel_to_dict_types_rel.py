@@ -50,8 +50,8 @@ def apply(ocel: OCEL) -> Dict[str, Dict[Union[str, Tuple[str, str]], pd.DataFram
 
         Value: a Pandas dataframe (dense table).
     """
-    ev_types_list = list(ocel.events[ocel.event_activity].unique())
-    obj_types_list = list(ocel.objects[ocel.object_type_column].unique())
+    ev_types_list = ocel.events[ocel.event_activity].unique().to_numpy().tolist()
+    obj_types_list = ocel.objects[ocel.object_type_column].unique().to_numpy().tolist()
     e2o_list = list(ocel.relations.groupby([ocel.event_activity, ocel.object_type_column]).size().to_dict())
 
     obj_type_map = ocel.objects[[ocel.object_id_column, ocel.object_type_column]].to_dict("records")
@@ -61,7 +61,7 @@ def apply(ocel: OCEL) -> Dict[str, Dict[Union[str, Tuple[str, str]], pd.DataFram
     overall_o2o[ocel.object_type_column+"_2"] = overall_o2o[ocel.object_id_column+"_2"].map(obj_type_map)
 
     o2o_list = list(overall_o2o.groupby([ocel.object_type_column, ocel.object_type_column+"_2"]).size().to_dict())
-    changes_list = list(ocel.object_changes[ocel.object_type_column].unique())
+    changes_list = ocel.object_changes[ocel.object_type_column].unique().to_numpy().tolist()
 
     dct_types_rel = {"ev_types": {}, "obj_types": {}, "e2o": {}, "o2o": {}, "changes": {}}
 

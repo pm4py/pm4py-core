@@ -24,13 +24,13 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ordered_events = list(ocel.events[ocel.event_id_column])
+    ordered_events = ocel.events[ocel.event_id_column].to_numpy()
 
-    object_types = list(ocel.objects[ocel.object_type_column].unique())
+    object_types = ocel.objects[ocel.object_type_column].unique().to_numpy()
 
     map_endpoints = {}
     for ot in object_types:
-        map_endpoints[ot] = set(ot_endpoints.filter_start_events_per_object_type(ocel, ot, parameters=parameters).events[ocel.event_id_column])
+        map_endpoints[ot] = set(ot_endpoints.filter_start_events_per_object_type(ocel, ot, parameters=parameters).events[ocel.event_id_column].to_numpy().tolist())
 
     feature_names = ["@@event_start_"+ot for ot in object_types]
     data = []

@@ -604,7 +604,7 @@ def interaction_two_resources(df: pd.DataFrame, t1: Union[datetime, str], t2: Un
     last_df = df.groupby(case_id_key).last().reset_index()
     last_df = last_df[last_df[timestamp_key] >= t1]
     last_df = last_df[last_df[timestamp_key] < t2]
-    cases = set(last_df[case_id_key].unique())
+    cases = last_df[case_id_key].unique()
     df = df[df[case_id_key].isin(cases)]
 
     return df[case_id_key].nunique()

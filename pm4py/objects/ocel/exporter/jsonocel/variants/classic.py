@@ -28,7 +28,7 @@ def get_base_json_object(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None
     object_id = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, ocel.object_id_column)
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
 
-    all_object_types = list(ocel.objects[object_type].unique())
+    all_object_types = ocel.objects[object_type].unique().to_numpy().tolist()
     all_attribute_names = attributes_names.get_attribute_names(ocel, parameters=parameters)
     global_event_items = ocel.globals[
         constants.OCEL_GLOBAL_EVENT] if constants.OCEL_GLOBAL_EVENT in ocel.globals else constants.DEFAULT_GLOBAL_EVENT

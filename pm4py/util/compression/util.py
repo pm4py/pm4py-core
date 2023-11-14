@@ -68,7 +68,7 @@ def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:
     if type(log) is pd.DataFrame:
         log = log.loc[:, [key, df_glue, df_sorting_criterion_key]]
     lookup = list(set([x for xs in [[e[key] for e in t] for t in log]
-                       for x in xs])) if type(log) is EventLog else list(log[key].unique())
+                       for x in xs])) if type(log) is EventLog else log[key].unique()
     lookup_inv = {lookup[i]: i for i in range(len(lookup))}
     if type(log) is EventLog:
         return [[lookup_inv[t[i][key]] for i in range(0, len(t))] for t in log], lookup
@@ -124,7 +124,7 @@ def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = 
     for key in keys:
         if key not in uncompressed:
             lookup[key] = list(set([x for xs in [[e[key] for e in t] for t in log]
-                                    for x in xs])) if type(log) is EventLog else list(log[key].unique())
+                                    for x in xs])) if type(log) is EventLog else log[key].unique()
             lookup_inv[key] = {lookup[key][i]: i for i in range(len(lookup[key]))}
     if type(log) is EventLog:
         encoded = list()

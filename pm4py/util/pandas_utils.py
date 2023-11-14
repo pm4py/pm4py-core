@@ -138,7 +138,7 @@ def insert_feature_activity_position_in_trace(df: pd.DataFrame, case_id: str = c
         Pandas dataframe
     """
     df = insert_ev_in_tr_index(df, case_id=case_id)
-    activities = set(df[activity_key].unique())
+    activities = df[activity_key].unique().to_numpy()
     for act in activities:
         df[prefix + act] = df[activity_key].apply(lambda x: np.nan if x == act else -1)
         df[prefix + act] = df[prefix + act].fillna(df[constants.DEFAULT_INDEX_IN_TRACE_KEY])

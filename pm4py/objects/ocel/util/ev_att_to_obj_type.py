@@ -53,7 +53,7 @@ def apply(ocel: OCEL, param: str, parameters: Optional[Dict[Any, Any]] = None):
     new_ocel = deepcopy(ocel)
     new_ocel.events[param] = new_ocel.events[param].astype(str)
     ev_param = new_ocel.events.dropna(subset=[param])[[event_id, event_activity, event_timestamp, param]]
-    vals = set(ev_param[param].unique())
+    vals = set(ev_param[param].unique().to_numpy().tolist())
     ev_param = ev_param.rename(columns={param: object_id})
     ev_param[object_type] = param
 
