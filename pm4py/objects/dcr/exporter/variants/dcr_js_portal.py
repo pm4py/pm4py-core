@@ -19,6 +19,11 @@ def export_dcr_xml(dcr, output_file_name, dcr_title):
     '''
 
     dcr = clean_output(dcr)
+    event_labels = list(dcr['labelMapping'].keys())
+    event_ids = []
+    for event in list(dcr['labelMapping'].values()):
+        for event_id in event:
+            event_ids.append(event_id)
 
     root = etree.Element("dcrgraph")
     if dcr_title:
@@ -71,10 +76,11 @@ def export_dcr_xml(dcr, output_file_name, dcr_title):
         xml_label.set("id", event)
         xml_labelMapping = etree.SubElement(labelMappings, "labelMapping")
         xml_labelMapping.set("eventId", event)
-        xml_labelMapping.set("labelId", event)
+        label_id = event_labels[event_ids.index(event)]
+        xml_labelMapping.set("labelId", label_id)
 
         for event_prime in dcr['events']:
-            if event in dcr["conditionsFor"] and event_prime in dcr["conditionsFor"][event]:
+            if event_prime in dcr["conditionsFor"] and event in dcr["conditionsFor"][event_prime]:
                 xml_condition = etree.SubElement(conditions, "condition")
                 xml_condition.set("sourceId", event)
                 xml_condition.set("targetId", event_prime)
