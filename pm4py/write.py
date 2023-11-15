@@ -47,7 +47,6 @@ def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str, case_id_key: s
 
         pm4py.write_xes(log, '<path_to_export_to>', case_id_key='case:concept:name')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):

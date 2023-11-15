@@ -60,8 +60,6 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
         dataframe = pd.read_csv('event_log.csv')
         dataframe = pm4py.format_dataframe(dataframe, case_id_key='case:concept:name', activity_key='concept:name', timestamp_key='time:timestamp', start_timestamp_key='start_timestamp', timest_format='%Y-%m-%d %H:%M:%S')
     """
-    if type(df) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     if timest_format is None:
         timest_format = constants.DEFAULT_TIMESTAMP_PARSE_FORMAT
 
@@ -350,7 +348,6 @@ def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASS
     :param classifier_attribute: The attribute of the event that should store the concatenation of the attribute values for the given classifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     if type(classifier) is list:
@@ -454,7 +451,6 @@ List[List[str]]:
 
         list_list_activities = pm4py.project_on_event_attribute(dataframe, 'concept:name')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     output = []

@@ -73,7 +73,6 @@ def abstract_dfg(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_len: i
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
         print(pm4py.llm.abstract_dfg(log))
     """
-    if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
 
     parameters = get_properties(
@@ -112,7 +111,6 @@ def abstract_variants(log_obj: Union[pd.DataFrame, EventLog, EventStream], max_l
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
         print(pm4py.llm.abstract_variants(log))
     """
-    if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
 
     parameters = get_properties(
@@ -225,7 +223,6 @@ def abstract_event_stream(log_obj: Union[pd.DataFrame, EventLog, EventStream], m
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
         print(pm4py.llm.abstract_event_stream(log))
     """
-    if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
 
     parameters = get_properties(
@@ -279,7 +276,6 @@ def abstract_log_attributes(log_obj: Union[pd.DataFrame, EventLog, EventStream],
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
         print(pm4py.llm.abstract_log_attributes(log))
     """
-    if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
 
     parameters = get_properties(
@@ -308,7 +304,6 @@ def abstract_log_features(log_obj: Union[pd.DataFrame, EventLog, EventStream], m
         log = pm4py.read_xes("tests/input_data/roadtraffic100traces.xes")
         print(pm4py.llm.abstract_log_features(log))
     """
-    if type(log_obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log_obj)
 
     parameters = get_properties(

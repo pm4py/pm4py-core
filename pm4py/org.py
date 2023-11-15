@@ -50,7 +50,6 @@ def discover_handover_of_work_network(log: Union[EventLog, pd.DataFrame], beta=0
 
         metric = pm4py.discover_handover_of_work_network(dataframe, resource_key='org:resource', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     from pm4py.algo.organizational_mining.sna import algorithm as sna
@@ -79,7 +78,6 @@ def discover_working_together_network(log: Union[EventLog, pd.DataFrame], resour
 
         metric = pm4py.discover_working_together_network(dataframe, resource_key='org:resource', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, resource_key=resource_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -108,7 +106,6 @@ def discover_activity_based_resource_similarity(log: Union[EventLog, pd.DataFram
 
         act_res_sim = pm4py.discover_activity_based_resource_similarity(dataframe, resource_key='org:resource', activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, resource_key=resource_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -137,7 +134,6 @@ def discover_subcontracting_network(log: Union[EventLog, pd.DataFrame], n=2, res
 
         metric = pm4py.discover_subcontracting_network(dataframe, resource_key='org:resource', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     from pm4py.algo.organizational_mining.sna import algorithm as sna
@@ -171,7 +167,6 @@ def discover_organizational_roles(log: Union[EventLog, pd.DataFrame], activity_k
 
         roles = pm4py.discover_organizational_roles(dataframe, resource_key='org:resource', activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, resource_key=resource_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -226,7 +221,6 @@ def discover_network_analysis(log: Union[pd.DataFrame, EventLog, EventStream], o
 
         net_ana = pm4py.discover_network_analysis(dataframe, out_column='case:concept:name', in_column='case:concept:name', node_column_source='org:resource', node_column_target='org:resource', edge_column='concept:name')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
