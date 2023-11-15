@@ -16,7 +16,7 @@ class CsvImportExportTest(unittest.TestCase):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
-        df = pd.read_csv(os.path.join(INPUT_DATA_DIR, "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = pd.read_csv(os.path.join(INPUT_DATA_DIR, "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         event_log = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
         event_log = sorting.sort_timestamp(event_log)
@@ -36,7 +36,7 @@ class CsvImportExportTest(unittest.TestCase):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
-        df = pd.read_csv(os.path.join(INPUT_DATA_DIR, "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = pd.read_csv(os.path.join(INPUT_DATA_DIR, "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         event_log = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
         event_log = sorting.sort_timestamp(event_log)
@@ -49,7 +49,7 @@ class CsvImportExportTest(unittest.TestCase):
         event_log_transformed = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM)
         df = log_conversion.apply(event_log_transformed, variant=log_conversion.TO_DATA_FRAME)
         df.to_csv(os.path.join(OUTPUT_DATA_DIR, "running-example-exported.csv"))
-        df = pd.read_csv(os.path.join(OUTPUT_DATA_DIR, "running-example-exported.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = pd.read_csv(os.path.join(OUTPUT_DATA_DIR, "running-example-exported.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         event_log_imported_after_export = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
         log_imported_after_export = log_conversion.apply(

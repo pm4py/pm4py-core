@@ -6,7 +6,7 @@ from pm4py.util import pandas_utils, constants
 
 def execute_script():
     # loads a dataframe. setup dates
-    df = pd.read_csv("../tests/input_data/receipt.csv", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+    df = pd.read_csv("../tests/input_data/receipt.csv")
     df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
     print(df)
     # insert the case index in the dataframe

@@ -5,7 +5,7 @@ import os
 
 
 def execute_script():
-    dataframe = pd.read_csv(os.path.join("..", "tests", "input_data", "receipt.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+    dataframe = pd.read_csv(os.path.join("..", "tests", "input_data", "receipt.csv"))
     dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True, format="ISO8601")
     # prints the summary of the positions of two activities
     print(pm4py.get_activity_position_summary(dataframe, "Confirmation of receipt"))
