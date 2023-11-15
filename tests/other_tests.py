@@ -361,6 +361,42 @@ class OtherPartsTests(unittest.TestCase):
         from pm4py.algo.transformation.ocel.features.events_objects import algorithm as ocel_fea
         res = ocel_fea.apply(ocel)
 
+    def test_ocel_interaction_graph_non_simpl_interface(self):
+        import pm4py
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
+        object_interaction_graph.apply(ocel)
+
+    def test_ocel_descendants_graph_non_simpl_interface(self):
+        import pm4py
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        from pm4py.algo.transformation.ocel.graphs import object_descendants_graph
+        object_descendants_graph.apply(ocel)
+
+    def test_ocel_inheritance_graph_non_simpl_interface(self):
+        import pm4py
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        from pm4py.algo.transformation.ocel.graphs import object_inheritance_graph
+        object_inheritance_graph.apply(ocel)
+
+    def test_ocel_cobirth_graph_non_simpl_interface(self):
+        import pm4py
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        from pm4py.algo.transformation.ocel.graphs import object_cobirth_graph
+        object_cobirth_graph.apply(ocel)
+
+    def test_ocel_codeath_graph_non_simpl_interface(self):
+        import pm4py
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        from pm4py.algo.transformation.ocel.graphs import object_codeath_graph
+        object_codeath_graph.apply(ocel)
+
+    def test_ocel_description_non_simpl_interface(self):
+        import pm4py
+        ocel = pm4py.read_ocel("input_data/ocel/example_log.jsonocel")
+        from pm4py.algo.transformation.ocel.description.variants import variant1
+        variant1.apply(ocel)
+
 
 if __name__ == "__main__":
     unittest.main()
