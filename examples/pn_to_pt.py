@@ -6,6 +6,7 @@ from pm4py.algo.analysis.woflan import algorithm as woflan
 from pm4py.algo.analysis.workflow_net import algorithm as is_wf_net
 from pm4py.objects.conversion.process_tree import converter as pt_converter
 from pm4py.objects.conversion.wf_net import converter as wf_net_converter
+from examples import examples_conf
 
 
 def execute_script():
@@ -41,7 +42,7 @@ def execute_script():
     try:
         tree_inductive = wf_net_converter.apply(inductive_petri_net, inductive_im, inductive_fm)
         print(tree_inductive)
-        pm4py.view_process_tree(tree_inductive, format="svg")
+        pm4py.view_process_tree(tree_inductive, format=examples_conf.TARGET_IMG_FORMAT)
     except:
         traceback.print_exc()
 

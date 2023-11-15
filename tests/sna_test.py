@@ -26,7 +26,7 @@ class SnaTests(unittest.TestCase):
         # that by construction of the unittest package have to be expressed in such way
         self.dummy_variable = "dummy_value"
 
-        log = pd.read_csv(os.path.join("..", "tests", "input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        log = pd.read_csv(os.path.join("..", "tests", "input_data", "running-example.csv"))
         log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format="ISO8601")
 
         hw_values = sna_alg.apply(log, variant=sna_alg.Variants.HANDOVER_PANDAS)
@@ -76,7 +76,7 @@ class SnaTests(unittest.TestCase):
 
     def test_res_profiles_df(self):
         from pm4py.algo.organizational_mining.resource_profiles import algorithm
-        log = pd.read_csv(os.path.join("..", "tests", "input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        log = pd.read_csv(os.path.join("..", "tests", "input_data", "running-example.csv"))
         log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format="ISO8601")
         algorithm.distinct_activities(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sara")
         algorithm.activity_frequency(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sara", "decide")

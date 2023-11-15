@@ -46,7 +46,7 @@ class MainFactoriesTest(unittest.TestCase):
                                  variant=xes_importer.Variants.ITERPARSE_MEM_COMPRESSED)
 
     def test_alphaminer_stream(self):
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         stream = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
         net, im, fm = alpha_miner.apply(stream)
@@ -59,7 +59,7 @@ class MainFactoriesTest(unittest.TestCase):
         sim = simplicity.apply(net)
 
     def test_alphaminer_df(self):
-        log = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        log = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format="ISO8601")
         net, im, fm = alpha_miner.apply(log)
         aligned_traces_tr = tr_alg.apply(log, net, im, fm)
@@ -83,7 +83,7 @@ class MainFactoriesTest(unittest.TestCase):
         sim = simplicity.apply(net)
 
     def test_inductiveminer_df(self):
-        log = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        log = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format="ISO8601")
         process_tree = inductive_miner.apply(log)
         net, im, fm = process_tree_converter.apply(process_tree)
@@ -107,7 +107,7 @@ class MainFactoriesTest(unittest.TestCase):
         sim = simplicity.apply(net)
 
     def test_heu_stream(self):
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         stream = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
         net, im, fm = heuristics_miner.apply(stream)
@@ -120,7 +120,7 @@ class MainFactoriesTest(unittest.TestCase):
         sim = simplicity.apply(net)
 
     def test_heu_df(self):
-        log = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        log = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format="ISO8601")
         net, im, fm = heuristics_miner.apply(log)
         aligned_traces_tr = tr_alg.apply(log, net, im, fm)
@@ -136,13 +136,13 @@ class MainFactoriesTest(unittest.TestCase):
         dfg = dfg_mining.apply(log)
 
     def test_dfg_stream(self):
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         stream = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
         dfg = dfg_mining.apply(stream)
 
     def test_dfg_df(self):
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         dfg = dfg_mining.apply(df)
 
@@ -151,18 +151,18 @@ class MainFactoriesTest(unittest.TestCase):
         ts = ts_disc.apply(log)
 
     def test_ts_stream(self):
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         stream = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
         ts = ts_disc.apply(stream)
 
     def test_ts_df(self):
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         ts = ts_disc.apply(df)
 
     def test_csvimp_xesexp(self):
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
         log0 = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
         log = log_conversion.apply(log0, variant=log_conversion.TO_EVENT_LOG)
@@ -184,7 +184,7 @@ class MainFactoriesTest(unittest.TestCase):
         os.remove('ru.xes')
 
     def test_pdimp_xesexp(self):
-        log0 = pd.read_csv(os.path.join("input_data", "running-example.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        log0 = pd.read_csv(os.path.join("input_data", "running-example.csv"))
         log0 = dataframe_utils.convert_timestamp_columns_in_df(log0, timest_format="ISO8601")
         log = log_conversion.apply(log0, variant=log_conversion.TO_EVENT_LOG)
         stream = log_conversion.apply(log0, variant=log_conversion.TO_EVENT_STREAM)

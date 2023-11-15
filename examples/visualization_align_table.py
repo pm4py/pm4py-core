@@ -4,6 +4,7 @@ from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
 from pm4py.visualization.align_table import visualizer
 from pm4py.objects.conversion.process_tree import converter as process_tree_converter
+from examples import examples_conf
 
 
 def execute_script():
@@ -12,7 +13,7 @@ def execute_script():
     net, im, fm = process_tree_converter.apply(process_tree)
     aligned_traces = alignments.apply(log, net, im, fm)
     gviz = visualizer.apply(log, aligned_traces,
-                            parameters={visualizer.Variants.CLASSIC.value.Parameters.FORMAT: "svg"})
+                            parameters={visualizer.Variants.CLASSIC.value.Parameters.FORMAT: examples_conf.TARGET_IMG_FORMAT})
     visualizer.view(gviz)
 
 
