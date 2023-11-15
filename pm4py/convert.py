@@ -9,6 +9,7 @@ from copy import deepcopy
 
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.ocel.obj import OCEL
+from pm4py.objects.powl.obj import POWL
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
 from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import Marking
@@ -38,7 +39,6 @@ def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: str
        dataframe = pm4py.format_dataframe(dataframe, case_id_column='case:concept:name', activity_column='concept:name', timestamp_column='time:timestamp')
        log = pm4py.convert_to_event_log(dataframe)
     """
-    if type(obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(obj):
         check_pandas_dataframe_columns(obj, case_id_key=case_id_key)
@@ -71,8 +71,6 @@ def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: str
        event_stream = pm4py.convert_to_event_stream(log)
 
     """
-    if type(obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     if check_is_pandas_dataframe(obj):
         check_pandas_dataframe_columns(obj, case_id_key=case_id_key)
 
@@ -102,8 +100,6 @@ def convert_to_dataframe(obj: Union[EventStream, EventLog], **kwargs) -> pd.Data
        log = pm4py.read_xes("tests/input_data/running-example.xes")
        dataframe = pm4py.convert_to_dataframe(log)
     """
-    if type(obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     if check_is_pandas_dataframe(obj):
         check_pandas_dataframe_columns(obj)
 
@@ -157,13 +153,13 @@ def convert_to_bpmn(*args: Union[Tuple[PetriNet, Marking, Marking], ProcessTree]
     raise Exception("unsupported conversion of the provided object to BPMN")
 
 
-def convert_to_petri_net(*args: Union[BPMN, ProcessTree, HeuristicsNet, dict]) -> Tuple[PetriNet, Marking, Marking]:
+def convert_to_petri_net(*args: Union[BPMN, ProcessTree, HeuristicsNet, POWL, dict]) -> Tuple[PetriNet, Marking, Marking]:
     """
     Converts an input model to an (accepting) Petri net.
     The input objects can either be a process tree, BPMN model or a Heuristic net.
     The output is a triple, containing the Petri net and the initial and final markings. The markings are only returned if they can be reasonable derived from the input model.
 
-    :param args: process tree or BPMN
+    :param args: process tree, Heuristics net, BPMN or POWL model
     :rtype: ``Tuple[PetriNet, Marking, Marking]``
     
     .. code-block:: python3
@@ -178,6 +174,9 @@ def convert_to_petri_net(*args: Union[BPMN, ProcessTree, HeuristicsNet, dict]) -
         # the object is already a Petri net
         return args[0], args[1], args[2]
     elif isinstance(args[0], ProcessTree):
+        if isinstance(args[0], POWL):
+            from pm4py.objects.conversion.powl import converter
+            return converter.apply(args[0])
         from pm4py.objects.conversion.process_tree.variants import to_petri_net
         return to_petri_net.apply(args[0])
     elif isinstance(args[0], BPMN):
@@ -279,9 +278,6 @@ def convert_log_to_ocel(log: Union[EventLog, EventStream, pd.DataFrame], activit
         ocel = pm4py.convert_log_to_ocel(log, activity_column='concept:name', timestamp_column='time:timestamp',
                         object_types=['case:concept:name'])
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]:
-        raise Exception(
-            "the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     if isinstance(log, EventStream):
@@ -372,8 +368,6 @@ def convert_log_to_time_intervals(log: Union[EventLog, pd.DataFrame], filter_act
         time_intervals = pm4py.convert_log_to_time_intervals(log, ('Confirmation of receipt', 'T02 Check confirmation of receipt'))
         print(len(time_intervals))
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception(
-        "the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)

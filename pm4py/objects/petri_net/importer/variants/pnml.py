@@ -14,6 +14,7 @@ from enum import Enum
 class Parameters(Enum):
     ENCODING = "encoding"
     AUTO_GUESS_FINAL_MARKING = "auto_guess_final_marking"
+    RETURN_STOCHASTIC_MAP = "return_stochastic_map"
 
 
 def import_net(input_file_path, parameters=None):
@@ -102,6 +103,7 @@ def import_net_from_xml_object(root, parameters=None):
         parameters = {}
 
     auto_guess_final_marking = exec_utils.get_param_value(Parameters.AUTO_GUESS_FINAL_MARKING, parameters, True)
+    return_stochastic_information = exec_utils.get_param_value(Parameters.RETURN_STOCHASTIC_MAP, parameters, False)
 
     net = PetriNet('imported_' + str(time.time()))
     marking = Marking()
@@ -112,7 +114,7 @@ def import_net_from_xml_object(root, parameters=None):
     finalmarkings = None
     variables = None
 
-    stochastic_information = {}
+    stochastic_map = {}
 
     for child in root:
         nett = child
@@ -257,6 +259,8 @@ def import_net_from_xml_object(root, parameters=None):
 
                 if random_variable is not None:
                     trans_dict[trans_id].properties[constants.STOCHASTIC_DISTRIBUTION] = random_variable
+                    stochastic_map[trans_dict[trans_id]] = random_variable
+
                 if position_X is not None and position_Y is not None and dimension_X is not None and dimension_Y is not None:
                     trans_dict[trans_id].properties[constants.LAYOUT_INFORMATION_PETRI] = (
                         (position_X, position_Y), (dimension_X, dimension_Y))
@@ -331,5 +335,8 @@ def import_net_from_xml_object(root, parameters=None):
         else:
             if constants.SHOW_INTERNAL_WARNINGS:
                 warnings.warn("the Petri net has been imported without a specified final marking. Please create it using the method pm4py.generate_marking")
+
+    if return_stochastic_information:
+        return net, marking, fmarking, stochastic_map
 
     return net, marking, fmarking

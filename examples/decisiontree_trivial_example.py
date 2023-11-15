@@ -6,6 +6,7 @@ from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import get_class_representation
 from pm4py.algo.transformation.log_to_features import algorithm as log_to_features
 from pm4py.visualization.decisiontree import visualizer as dt_vis
+from examples import examples_conf
 
 
 def execute_script():
@@ -20,7 +21,7 @@ def execute_script():
     clf = tree.DecisionTreeClassifier(max_depth=7)
     clf.fit(data, target)
     # visualize the decision tree
-    gviz = dt_vis.apply(clf, feature_names, classes, parameters={dt_vis.Variants.CLASSIC.value.Parameters.FORMAT: "svg"})
+    gviz = dt_vis.apply(clf, feature_names, classes, parameters={dt_vis.Variants.CLASSIC.value.Parameters.FORMAT: examples_conf.TARGET_IMG_FORMAT})
     dt_vis.view(gviz)
 
     # gets classes representation by trace duration (threshold between the two classes = 200D)
@@ -29,7 +30,7 @@ def execute_script():
     clf = tree.DecisionTreeClassifier(max_depth=7)
     clf.fit(data, target)
     # visualize the decision tree
-    gviz = dt_vis.apply(clf, feature_names, classes, parameters={dt_vis.Variants.CLASSIC.value.Parameters.FORMAT: "svg"})
+    gviz = dt_vis.apply(clf, feature_names, classes, parameters={dt_vis.Variants.CLASSIC.value.Parameters.FORMAT: examples_conf.TARGET_IMG_FORMAT})
     dt_vis.view(gviz)
 
 
