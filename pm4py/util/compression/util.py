@@ -60,9 +60,6 @@ def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:
     :param df_glue: key to use for combining events into traces when the input is a dataframe.
     :param df_sorting_criterion_key: key to use as a sorting criterion for traces (typically timestamps)
     """
-    if type(log) not in {EventLog, pd.DataFrame}:
-        raise TypeError('%s provided, expecting %s or %s' %
-                        (str(type(log)), str(EventLog), str(pd.DataFrame)))
     if type(log) is pd.DataFrame:
         log = log.loc[:, [key, df_glue, df_sorting_criterion_key]]
     lookup = list(set([x for xs in [[e[key] for e in t] for t in log]
@@ -70,7 +67,7 @@ def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:
     lookup_inv = {lookup[i]: i for i in range(len(lookup))}
     if type(log) is EventLog:
         return [[lookup_inv[t[i][key]] for i in range(0, len(t))] for t in log], lookup
-    elif type(log) is pd.DataFrame:
+    else:
         log[key] = log[key].map(lookup_inv)
         cl = list()
         log = log.sort_values(by=[df_glue, df_sorting_criterion_key])
@@ -106,9 +103,6 @@ def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = 
     :param uncompressed: columns that need to be included in the compression yet need not to be compressed
 
     """
-    if type(log) not in {EventLog, pd.DataFrame}:
-        raise TypeError('%s provided, expecting %s or %s' %
-                        (str(type(log)), str(EventLog), str(pd.DataFrame)))
     if type(log) is pd.DataFrame:
         retain = copy.copy(keys)
         if df_glue not in retain:
