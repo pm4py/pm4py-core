@@ -31,7 +31,6 @@ def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float
 
         train_df, test_df = pm4py.split_train_test(dataframe, train_percentage=0.75)
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
@@ -70,7 +69,6 @@ def get_prefixes_from_log(log: Union[EventLog, pd.DataFrame], length: int, case_
 
         trimmed_df = pm4py.get_prefixes_from_log(dataframe, length=5, case_id_key='case:concept:name')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
@@ -104,8 +102,6 @@ def extract_outcome_enriched_dataframe(log: Union[EventLog, pd.DataFrame], activ
         enriched_df = pm4py.extract_outcome_enriched_dataframe(log, activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name', start_timestamp_key='time:timestamp')
 
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception(
-        "the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
@@ -143,7 +139,6 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
 
         features_df = pm4py.extract_features_dataframe(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     parameters = {}
@@ -250,7 +245,6 @@ def extract_temporal_features_dataframe(log: Union[EventLog, pd.DataFrame], grou
 
         temporal_features_df = pm4py.extract_temporal_features_dataframe(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -289,7 +283,6 @@ def extract_target_vector(log: Union[EventLog, pd.DataFrame], variant: str, acti
         vector_rem_time, class_rem_time = pm4py.extract_target_vector(log, 'remaining_time', activity_key='concept:name', timestamp_key='time:timestamp', case_id_key='case:concept:name')
 
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
