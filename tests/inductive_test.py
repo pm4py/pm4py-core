@@ -32,7 +32,7 @@ class InductiveMinerTest(unittest.TestCase):
         if ".xes" in log_name:
             log = xes_importer.apply(log_name)
         else:
-            df = pd.read_csv(log_name, dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+            df = pd.read_csv(log_name)
             df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
             log = log_conversion.apply(df, variant=log_conversion.Variants.TO_EVENT_LOG)
         process_tree = inductive_miner.apply(log)
