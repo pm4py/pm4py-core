@@ -12,7 +12,7 @@ def execute_script():
     log1 = pm4py.read_xes("../tests/input_data/running-example.xes")
 
     # reads a CSV into a dataframe
-    df = pd.read_csv("../tests/input_data/running-example.csv", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+    df = pd.read_csv("../tests/input_data/running-example.csv")
     df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True, format="ISO8601")
     df["case:concept:name"] = df["case:concept:name"].astype("string")
 

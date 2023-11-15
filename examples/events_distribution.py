@@ -9,7 +9,7 @@ from examples import examples_conf
 
 
 def execute_script():
-    df = pd.read_csv(os.path.join("..", "tests", "input_data", "receipt.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+    df = pd.read_csv(os.path.join("..", "tests", "input_data", "receipt.csv"))
     df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True, format="ISO8601")
     # plots the distribution of the events over the days of a month
     x0, y0 = attr_get.get_events_distribution(df, distr_type="days_month")
