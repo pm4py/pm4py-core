@@ -8,6 +8,7 @@ from pm4py.algo.conformance.alignments.dfg import algorithm as dfg_alignment
 from pm4py.statistics.attributes.log import get
 from pm4py.visualization.dfg import visualizer
 from pm4py.objects.petri_net.utils import align_utils
+from examples import examples_conf
 
 
 def execute_script():
@@ -32,7 +33,7 @@ def execute_script():
     print(sum(x["visited_states"] for x in aligned_traces))
     print(sum(x["cost"] // align_utils.STD_MODEL_LOG_MOVE_COST for x in aligned_traces))
     gviz = visualizer.apply(dfg, activities_count=ac, parameters={"start_activities": sa, "end_activities": ea,
-                                                                  "format": "svg"})
+                                                                  "format": examples_conf.TARGET_IMG_FORMAT})
     visualizer.view(gviz)
     cc = time.time()
     aligned_traces2 = petri_alignments.apply(log, net, im, fm,

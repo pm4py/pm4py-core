@@ -1,6 +1,7 @@
 import pm4py
 from pm4py.objects.petri_net.obj import ResetInhibitorNet
 from pm4py.objects.petri_net.utils import petri_utils
+from examples import examples_conf
 import uuid
 import os
 
@@ -20,7 +21,7 @@ def execute_script():
         net.places.add(new_place)
         petri_utils.add_arc_from_to(new_place, trans, net, type=None)
         im[new_place] = 1
-    pm4py.view_petri_net(net, im, fm, format="svg")
+    pm4py.view_petri_net(net, im, fm, format=examples_conf.TARGET_IMG_FORMAT)
     # ensure that superset of the final marking (given the huge number of remaining tokens) are also considered valid
     new_log2 = pm4py.play_out(net, im, fm, parameters={"add_only_if_fm_is_reached": True, "fm_leq_accepted": True})
     print(len(new_log2))

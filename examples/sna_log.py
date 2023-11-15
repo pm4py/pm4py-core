@@ -3,6 +3,7 @@ import os
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.organizational_mining.sna import algorithm as sna_algorithm
 from pm4py.visualization.sna import visualizer as pn_vis
+from examples import examples_conf
 
 
 def execute_script():
@@ -14,10 +15,10 @@ def execute_script():
     ja_values = sna_algorithm.apply(log, variant=sna_algorithm.Variants.JOINTACTIVITIES_LOG)
 
     gviz_sub = pn_vis.apply(sub_values, variant=pn_vis.Variants.NETWORKX,
-                            parameters={pn_vis.Variants.NETWORKX.value.Parameters.FORMAT: "svg"})
+                            parameters={pn_vis.Variants.NETWORKX.value.Parameters.FORMAT: examples_conf.TARGET_IMG_FORMAT})
     gviz_hw = pn_vis.apply(hw_values, variant=pn_vis.Variants.PYVIS)
     gviz_wt = pn_vis.apply(wt_values, variant=pn_vis.Variants.NETWORKX,
-                           parameters={pn_vis.Variants.NETWORKX.value.Parameters.FORMAT: "svg"})
+                           parameters={pn_vis.Variants.NETWORKX.value.Parameters.FORMAT: examples_conf.TARGET_IMG_FORMAT})
     gviz_ja = pn_vis.apply(ja_values, variant=pn_vis.Variants.PYVIS)
 
     pn_vis.view(gviz_sub, variant=pn_vis.Variants.NETWORKX)
