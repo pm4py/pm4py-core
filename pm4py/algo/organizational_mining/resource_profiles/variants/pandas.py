@@ -5,7 +5,7 @@ from typing import Union, Optional, Dict, Any, Tuple
 import pandas as pd
 import pytz
 
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import exec_utils, constants, xes_constants, pandas_utils
 from statistics import mean
 
 
@@ -604,7 +604,7 @@ def interaction_two_resources(df: pd.DataFrame, t1: Union[datetime, str], t2: Un
     last_df = df.groupby(case_id_key).last().reset_index()
     last_df = last_df[last_df[timestamp_key] >= t1]
     last_df = last_df[last_df[timestamp_key] < t2]
-    cases = last_df[case_id_key].unique()
+    cases = pandas_utils.format_unique(last_df[case_id_key].unique())
     df = df[df[case_id_key].isin(cases)]
 
     return df[case_id_key].nunique()

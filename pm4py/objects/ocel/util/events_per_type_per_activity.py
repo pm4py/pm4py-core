@@ -1,4 +1,4 @@
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from enum import Enum
 from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any
@@ -43,8 +43,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
     object_id = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, ocel.object_id_column)
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
 
-    activities = ocel.events[event_activity].unique().to_numpy().tolist()
-    object_types = ocel.objects[object_type].unique().to_numpy().tolist()
+    activities = pandas_utils.format_unique(ocel.events[event_activity].unique())
+    object_types = pandas_utils.format_unique(ocel.objects[object_type].unique())
 
     ret = {}
 

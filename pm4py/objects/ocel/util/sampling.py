@@ -1,5 +1,5 @@
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from pm4py.objects.ocel import constants
 import random
 from pm4py.objects.ocel.util import filtering_utils
@@ -38,7 +38,7 @@ def sample_ocel_events(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) 
     event_id_column = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, ocel.event_id_column)
     num_entities = exec_utils.get_param_value(Parameters.NUM_ENTITIES, parameters, 100)
 
-    events = ocel.events[event_id_column].unique().to_numpy().tolist()
+    events = pandas_utils.format_unique(ocel.events[event_id_column].unique())
     num_events = min(len(events), num_entities)
 
     random.shuffle(events)
@@ -77,7 +77,7 @@ def sample_ocel_objects(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None)
     object_id_column = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, ocel.object_id_column)
     num_entities = exec_utils.get_param_value(Parameters.NUM_ENTITIES, parameters, 100)
 
-    objects = ocel.objects[object_id_column].unique().to_numpy().tolist()
+    objects = pandas_utils.format_unique(ocel.objects[object_id_column].unique())
     num_objects = min(len(objects), num_entities)
 
     random.shuffle(objects)

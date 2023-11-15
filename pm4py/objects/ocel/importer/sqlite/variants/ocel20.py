@@ -3,7 +3,7 @@ from typing import Optional, Dict, Any
 
 from pm4py.objects.ocel import constants
 from pm4py.objects.ocel.obj import OCEL
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 import pandas as pd
 from pm4py.objects.ocel.util import ocel_consistency
 from pm4py.objects.ocel.util import filtering_utils
@@ -58,8 +58,8 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
     EVENTS = pd.read_sql("SELECT * FROM event", conn)
     OBJECTS = pd.read_sql("SELECT * FROM object", conn)
 
-    etypes = sorted(EVENTS["ocel_type"].unique())
-    otypes = sorted(OBJECTS["ocel_type"].unique())
+    etypes = sorted(pandas_utils.format_unique(EVENTS["ocel_type"].unique()))
+    otypes = sorted(pandas_utils.format_unique(OBJECTS["ocel_type"].unique()))
 
     EVENTS = EVENTS.to_dict("records")
     OBJECTS = OBJECTS.to_dict("records")

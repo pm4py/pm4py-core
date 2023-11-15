@@ -1,6 +1,7 @@
 from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any
 from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
+from pm4py.util import pandas_utils
 
 
 def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
@@ -26,7 +27,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
 
     ordered_objects = ocel.objects[ocel.object_id_column].to_numpy()
 
-    object_types = ocel.objects[ocel.object_type_column].unique().to_numpy()
+    object_types = pandas_utils.format_unique(ocel.objects[ocel.object_type_column].unique())
 
     object_type_association = ocel.objects[[ocel.object_id_column, ocel.object_type_column]].to_dict("records")
     object_type_association = {x[ocel.object_id_column]: x[ocel.object_type_column] for x in object_type_association}

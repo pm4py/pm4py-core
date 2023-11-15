@@ -4,7 +4,7 @@ import pandas as pd
 
 from pm4py.algo.conformance.temporal_profile.variants import log, dataframe
 from pm4py.objects.log.obj import EventLog
-from pm4py.util import typing, exec_utils, constants, xes_constants
+from pm4py.util import typing, exec_utils, constants, xes_constants, pandas_utils
 from pm4py.objects.conversion.log import converter as log_converter
 from enum import Enum
 
@@ -74,7 +74,7 @@ def get_diagnostics_dataframe(elog: Union[EventLog, pd.DataFrame], conf_result: 
 
     if type(elog) is pd.DataFrame:
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
-        cases = elog[case_id_key].unique().to_numpy().tolist()
+        cases = pandas_utils.format_unique(elog[case_id_key].unique())
     else:
         elog = log_converter.apply(elog, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, xes_constants.DEFAULT_TRACEID_KEY)

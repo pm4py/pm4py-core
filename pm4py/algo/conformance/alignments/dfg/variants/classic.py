@@ -122,7 +122,7 @@ def apply_log(log, dfg, sa, ea, parameters=None):
 
     if type(log) is pd.DataFrame:
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
-        traces = log.groupby(case_id_key)[activity_key].agg(tuple).to_numpy().tolist()
+        traces = log.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist()
     else:
         log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
         traces = [tuple(x[activity_key] for x in trace) for trace in log]
