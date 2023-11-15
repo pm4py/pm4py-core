@@ -5,7 +5,7 @@ import os
 
 
 def execute_script():
-    dataframe = pd.read_csv(os.path.join("..", "tests", "input_data", "ocel", "VBFA.zip"), compression="zip", dtype="str", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+    dataframe = pd.read_csv(os.path.join("..", "tests", "input_data", "ocel", "VBFA.zip"), compression="zip", dtype="str")
     dataframe["time:timestamp"] = dataframe["ERDAT"] + " " + dataframe["ERZET"]
     dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], format="%Y%m%d %H%M%S")
     dataframe["RFWRT"] = dataframe["RFWRT"].astype(float)

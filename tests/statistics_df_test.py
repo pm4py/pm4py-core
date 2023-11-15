@@ -7,7 +7,7 @@ import pandas as pd
 
 class StatisticsDfTest(unittest.TestCase):
     def get_dataframe(self):
-        dataframe = pd.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        dataframe = pd.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"))
         dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
         return dataframe
 
@@ -52,7 +52,7 @@ class StatisticsDfTest(unittest.TestCase):
 
     def test_batch_detection(self):
         from pm4py.algo.discovery.batches.variants import pandas as pandas_batches
-        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
         dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
         pandas_batches.apply(dataframe)
 

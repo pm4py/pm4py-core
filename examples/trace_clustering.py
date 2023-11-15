@@ -1,5 +1,6 @@
 import pm4py
 import os
+from examples import examples_conf
 
 
 def execute_script():
@@ -12,7 +13,7 @@ def execute_script():
     for clust_log in pm4py.cluster_log(dataframe, sklearn_clusterer=clusterer):
         print(clust_log)
         process_tree = pm4py.discover_process_tree_inductive(clust_log)
-        pm4py.view_process_tree(process_tree, format="svg")
+        pm4py.view_process_tree(process_tree, format=examples_conf.TARGET_IMG_FORMAT)
 
 
 if __name__ == "__main__":

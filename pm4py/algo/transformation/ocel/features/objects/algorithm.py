@@ -2,6 +2,7 @@ from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any, List
 from enum import Enum
 from pm4py.util import exec_utils
+import time
 from pm4py.algo.transformation.ocel.features.objects import object_lifecycle_length, object_lifecycle_duration, object_degree_centrality, object_general_descendants_graph, object_general_interaction_graph, object_general_inheritance_graph, object_cobirth_graph, object_codeath_graph, object_lifecycle_activities, object_str_attributes, object_num_attributes, objects_interaction_graph_ot, object_work_in_progress, related_events_features, related_activities_features, obj_con_in_graph_features, object_lifecycle_unq_act, object_lifecycle_paths
 
 
@@ -106,6 +107,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
 
     filter_per_type = exec_utils.get_param_value(Parameters.FILTER_PER_TYPE, parameters, None)
 
+    T0 = time.time_ns()
+
     ordered_objects = list(ocel.objects[ocel.object_id_column])
 
     datas = [[] for x in ordered_objects]
@@ -114,9 +117,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_object_lifecycle_length:
         if debug:
             print("computing enable_object_lifecycle_length")
+        t0 = time.time_ns()
         data, feature_names = object_lifecycle_length.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_object_lifecycle_length")
+            print("computed enable_object_lifecycle_length", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -124,9 +129,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_object_lifecycle_duration:
         if debug:
             print("computing enable_object_lifecycle_duration")
+        t0 = time.time_ns()
         data, feature_names = object_lifecycle_duration.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_object_lifecycle_duration")
+            print("computed enable_object_lifecycle_duration", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -134,9 +141,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_object_degree_centrality:
         if debug:
             print("computing enable_object_degree_centrality")
+        t0 = time.time_ns()
         data, feature_names = object_degree_centrality.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_object_degree_centrality")
+            print("computed enable_object_degree_centrality", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -144,9 +153,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_object_general_interaction_graph:
         if debug:
             print("computing enable_object_general_interaction_graph")
+        t0 = time.time_ns()
         data, feature_names = object_general_interaction_graph.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_object_general_interaction_graph")
+            print("computed enable_object_general_interaction_graph", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -154,9 +165,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_object_general_descendants_graph:
         if debug:
             print("computing enable_object_general_descendants_graph")
+        t0 = time.time_ns()
         data, feature_names = object_general_descendants_graph.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_object_general_descendants_graph")
+            print("computed enable_object_general_descendants_graph", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -164,9 +177,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_object_general_inheritance_graph:
         if debug:
             print("computing enable_object_general_inheritance_graph")
+        t0 = time.time_ns()
         data, feature_names = object_general_inheritance_graph.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_object_general_inheritance_graph")
+            print("computed enable_object_general_inheritance_graph", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -174,9 +189,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_object_cobirth_graph:
         if debug:
             print("computing enable_object_cobirth_graph")
+        t0 = time.time_ns()
         data, feature_names = object_cobirth_graph.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_object_cobirth_graph")
+            print("computed enable_object_cobirth_graph", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -184,9 +201,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_object_codeath_graph:
         if debug:
             print("computing enable_object_codeath_graph")
+        t0 = time.time_ns()
         data, feature_names = object_codeath_graph.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_object_codeath_graph")
+            print("computed enable_object_codeath_graph", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -194,9 +213,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_object_lifecycle_activities:
         if debug:
             print("computing enable_object_lifecycle_activities")
+        t0 = time.time_ns()
         data, feature_names = object_lifecycle_activities.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_object_lifecycle_activities")
+            print("computed enable_object_lifecycle_activities", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -204,9 +225,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_object_str_attributes:
         if debug:
             print("computing enable_object_str_attributes")
+        t0 = time.time_ns()
         data, feature_names = object_str_attributes.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_object_str_attributes")
+            print("computed enable_object_str_attributes", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -214,9 +237,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_object_num_attributes:
         if debug:
             print("computing enable_object_num_attributes")
+        t0 = time.time_ns()
         data, feature_names = object_num_attributes.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_object_num_attributes")
+            print("computed enable_object_num_attributes", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -224,9 +249,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_object_interaction_graph_ot:
         if debug:
             print("computing enable_object_interaction_graph_ot")
+        t0 = time.time_ns()
         data, feature_names = objects_interaction_graph_ot.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_object_interaction_graph_ot")
+            print("computed enable_object_interaction_graph_ot", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -234,9 +261,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_work_in_progress:
         if debug:
             print("computing enable_work_in_progress")
+        t0 = time.time_ns()
         data, feature_names = object_work_in_progress.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_work_in_progress")
+            print("computed enable_work_in_progress", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -244,9 +273,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_object_lifecycle_unq_act:
         if debug:
             print("computing enable_object_lifecycle_unq_act")
+        t0 = time.time_ns()
         data, feature_names = object_lifecycle_unq_act.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_object_lifecycle_unq_act")
+            print("computed enable_object_lifecycle_unq_act", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -254,9 +285,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_related_events_features:
         if debug:
             print("computing enable_related_events_features")
+        t0 = time.time_ns()
         data, feature_names = related_events_features.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_related_events_features")
+            print("computed enable_related_events_features", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -264,9 +297,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_related_activities_features:
         if debug:
             print("computing enable_related_activities_features")
+        t0 = time.time_ns()
         data, feature_names = related_activities_features.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_related_activities_features")
+            print("computed enable_related_activities_features", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -274,9 +309,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_obj_con_in_graph_features:
         if debug:
             print("computing enable_obj_con_in_graph_features")
+        t0 = time.time_ns()
         data, feature_names = obj_con_in_graph_features.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_obj_con_in_graph_features")
+            print("computed enable_obj_con_in_graph_features", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -284,9 +321,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if enable_object_lifecycle_paths:
         if debug:
             print("computing enable_object_lifecycle_paths")
+        t0 = time.time_ns()
         data, feature_names = object_lifecycle_paths.apply(ocel, parameters=parameters)
+        t1 = time.time_ns()
         if debug:
-            print("computed enable_object_lifecycle_paths")
+            print("computed enable_object_lifecycle_paths", "%.4f" % ((t1-t0)/10**9))
         feature_namess = feature_namess + feature_names
         for i in range(len(data)):
             datas[i] = datas[i] + data[i]
@@ -296,6 +335,10 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
         object_type = {x[ocel.object_id_column]: x[ocel.object_type_column] for x in object_type}
         idxs = [i for i in range(len(ordered_objects)) if object_type[ordered_objects[i]] == filter_per_type]
         datas = [datas[i] for i in idxs]
+
+    T1 = time.time_ns()
+    if debug:
+        print("Total time: %.4f" % ((T1-T0)/10**9))
 
     return datas, feature_namess
 
