@@ -6,7 +6,8 @@ from pm4py.algo.discovery.footprints import algorithm as footprints_discovery
 from pm4py.algo.conformance.footprints import algorithm as footprints_conformance
 from pm4py.visualization.footprints import visualizer as fp_visualizer
 import os
-from copy import deepcopy
+from examples import examples_conf
+
 
 
 def execute_script():
@@ -40,7 +41,7 @@ def execute_script():
     # the relations that appear inside the entire log)
     fp_log_entire = footprints_discovery.apply(log, variant=footprints_discovery.Variants.ENTIRE_EVENT_LOG)
     # visualize the footprint table
-    gviz = fp_visualizer.apply(fp_log_entire, fp_net, parameters={"format": "svg"})
+    gviz = fp_visualizer.apply(fp_log_entire, fp_net, parameters={"format": examples_conf.TARGET_IMG_FORMAT})
     fp_visualizer.view(gviz)
 
 

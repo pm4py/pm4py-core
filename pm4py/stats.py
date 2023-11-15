@@ -34,7 +34,6 @@ def get_start_activities(log: Union[EventLog, pd.DataFrame], activity_key: str =
 
         start_activities = pm4py.get_start_activities(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -64,7 +63,6 @@ def get_end_activities(log: Union[EventLog, pd.DataFrame], activity_key: str = "
 
         end_activities = pm4py.get_end_activities(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -91,7 +89,6 @@ def get_event_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
 
         event_attributes = pm4py.get_event_attributes(dataframe)
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
@@ -115,7 +112,6 @@ def get_trace_attributes(log: Union[EventLog, pd.DataFrame]) -> List[str]:
 
         trace_attributes = pm4py.get_trace_attributes(dataframe)
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     from pm4py.util import constants
@@ -143,7 +139,6 @@ def get_event_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
 
         activities = pm4py.get_event_attribute_values(dataframe, 'concept:name', case_id_key='case:concept:name')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     parameters = get_properties(log, case_id_key=case_id_key)
@@ -172,7 +167,6 @@ def get_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
 
         tr_attr_values = pm4py.get_trace_attribute_values(dataframe, 'case:attribute', case_id_key='case:concept:name')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     parameters = get_properties(log, case_id_key=case_id_key)
@@ -234,7 +228,6 @@ def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame], activity_key: str
 
         variants = pm4py.get_variants_as_tuples(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -276,8 +269,6 @@ def split_by_process_variant(log: Union[EventLog, pd.DataFrame], activity_key: s
             print(variant)
             print(subdf)
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception(
-        "the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     import pm4py
@@ -300,6 +291,7 @@ def split_by_process_variant(log: Union[EventLog, pd.DataFrame], activity_key: s
 def get_variants_paths_duration(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name",
                                 timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name",
                                 variant_column: str = "@@variant_column",
+                                variant_count: str = "@@variant_count",
                                 index_in_trace_column: str = "@@index_in_trace",
                                 cumulative_occ_path_column: str = "@@cumulative_occ_path_column",
                                 times_agg: str = "mean") -> pd.DataFrame:
@@ -319,6 +311,7 @@ def get_variants_paths_duration(log: Union[EventLog, pd.DataFrame], activity_key
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
     :param variant_column: name of the utility column that stores the variant's tuple
+    :param variant_count: name of the utility column that stores the variant's number of occurrences
     :param index_in_trace_column: name of the utility column that stores the index of the event in the case
     :param cumulative_occ_path_column: name of the column that stores the cumulative occurrences of the path inside the case
     :param times_agg: aggregation (mean, median) to be used
@@ -335,8 +328,6 @@ def get_variants_paths_duration(log: Union[EventLog, pd.DataFrame], activity_key
         var_paths_durs = pm4py.get_variants_paths_duration(dataframe)
         print(var_paths_durs)
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception(
-        "the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
     check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
@@ -345,7 +336,7 @@ def get_variants_paths_duration(log: Union[EventLog, pd.DataFrame], activity_key
                                                           case_id_key=case_id_key, variant_column=variant_column,
                                                           index_in_trace_column=index_in_trace_column):
         from pm4py.statistics.eventually_follows.pandas import get as eventually_follows
-        dir_follo_dataframe = eventually_follows.get_partial_order_dataframe(filtered_log, activity_key=activity_key,
+        dir_follo_dataframe = eventually_follows.get_partial_order_dataframe(filtered_log.copy(), activity_key=activity_key,
                                                                              timestamp_key=timestamp_key,
                                                                              case_id_glue=case_id_key,
                                                                              sort_caseid_required=False,
@@ -361,11 +352,16 @@ def get_variants_paths_duration(log: Union[EventLog, pd.DataFrame], activity_key
         dir_follo_dataframe[activity_key + "_2"] = dir_follo_dataframe[index_in_trace_column].apply(
             lambda x: variant[x + 1])
         dir_follo_dataframe[variant_column] = dir_follo_dataframe[index_in_trace_column].apply(lambda x: variant)
+        dir_follo_dataframe[variant_count] = filtered_log[case_id_key].nunique()
 
         list_to_concat.append(dir_follo_dataframe)
 
-    return pd.concat(list_to_concat)
+    dataframe = pd.concat(list_to_concat)
+    dataframe[index_in_trace_column] = -dataframe[index_in_trace_column]
+    dataframe = dataframe.sort_values([variant_count, variant_column, index_in_trace_column], ascending=False)
+    dataframe[index_in_trace_column] = -dataframe[index_in_trace_column]
 
+    return dataframe
 
 def get_stochastic_language(*args, **kwargs) -> Dict[List[str], float]:
     """
@@ -417,7 +413,6 @@ def get_minimum_self_distances(log: Union[EventLog, pd.DataFrame], activity_key:
 
         msd = pm4py.get_minimum_self_distances(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     '''
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
@@ -450,7 +445,6 @@ def get_minimum_self_distance_witnesses(log: Union[EventLog, pd.DataFrame], acti
 
         msd_wit = pm4py.get_minimum_self_distance_witnesses(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):
@@ -477,7 +471,6 @@ def get_case_arrival_average(log: Union[EventLog, pd.DataFrame], activity_key: s
 
         case_arr_avg = pm4py.get_case_arrival_average(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -510,7 +503,6 @@ def get_rework_cases_per_activity(log: Union[EventLog, pd.DataFrame], activity_k
 
         rework = pm4py.get_rework_cases_per_activity(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -541,7 +533,6 @@ def get_case_overlap(log: Union[EventLog, pd.DataFrame], activity_key: str = "co
 
         overlap = pm4py.get_case_overlap(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -582,7 +573,6 @@ def get_cycle_time(log: Union[EventLog, pd.DataFrame], activity_key: str = "conc
 
         cycle_time = pm4py.get_cycle_time(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -614,7 +604,6 @@ def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: b
 
         case_durations = pm4py.get_all_case_durations(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -649,7 +638,6 @@ def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business
 
         duration = pm4py.get_case_duration(dataframe, 'case 1', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
@@ -724,7 +712,6 @@ def get_activity_position_summary(log: Union[EventLog, pd.DataFrame], activity: 
 
         act_pos = pm4py.get_activity_position_summary(dataframe, 'Act. A', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):

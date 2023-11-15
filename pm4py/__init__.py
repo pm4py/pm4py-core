@@ -5,7 +5,7 @@ from pm4py import analysis, conformance, convert, discovery, filtering, hof, ml,
 from pm4py.read import read_xes, read_dfg, read_bpmn, read_pnml, read_ptml, read_ocel, read_ocel_csv, read_ocel_xml, read_ocel_json, read_ocel_sqlite, read_ocel2, read_ocel2_sqlite, read_ocel2_xml
 from pm4py.write import write_xes, write_dfg, write_bpmn, write_pnml, write_ptml, write_ocel, write_ocel_json, write_ocel_csv, write_ocel_xml, write_ocel_sqlite, write_ocel2, write_ocel2_sqlite, write_ocel2_xml
 from pm4py.utils import format_dataframe, parse_process_tree, serialize, deserialize, set_classifier, parse_event_log_string, project_on_event_attribute, \
-    sample_cases, sample_events, rebase
+    sample_cases, sample_events, rebase, parse_powl_model_string
 from pm4py.filtering import filter_log_relative_occurrence_event_attribute, filter_start_activities, filter_end_activities, filter_variants, \
     filter_directly_follows_relation, filter_time_range, \
     filter_eventually_follows_relation, filter_event_attribute_values, filter_trace_attribute_values, \
@@ -19,7 +19,7 @@ from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_p
     discover_petri_net_inductive, discover_process_tree_inductive, discover_heuristics_net, \
     discover_dfg, discover_footprints, discover_eventually_follows_graph, discover_directly_follows_graph, discover_bpmn_inductive, \
     discover_performance_dfg, discover_transition_system, discover_prefix_tree, \
-    discover_temporal_profile, discover_log_skeleton, discover_batches, derive_minimum_self_distance, discover_dfg_typed, discover_declare
+    discover_temporal_profile, discover_log_skeleton, discover_batches, derive_minimum_self_distance, discover_dfg_typed, discover_declare, discover_powl
 from pm4py.conformance import conformance_diagnostics_token_based_replay, conformance_diagnostics_alignments, \
     fitness_token_based_replay, \
     fitness_alignments, precision_token_based_replay, \
@@ -36,7 +36,7 @@ from pm4py.vis import view_petri_net, save_vis_petri_net, view_dfg, save_vis_dfg
     save_vis_events_per_time_graph, view_events_distribution_graph, save_vis_events_distribution_graph, view_performance_dfg, save_vis_performance_dfg, \
     view_ocpn, save_vis_ocpn, view_network_analysis, save_vis_network_analysis, view_transition_system, save_vis_transition_system, \
     view_prefix_tree, save_vis_prefix_tree, view_object_graph, save_vis_object_graph, view_alignments, save_vis_alignments, \
-    view_footprints, save_vis_footprints
+    view_footprints, save_vis_footprints, view_powl, save_vis_powl
 from pm4py.convert import convert_to_event_log, convert_to_event_stream, convert_to_dataframe, convert_to_bpmn, \
     convert_to_petri_net, convert_to_process_tree, convert_to_reachability_graph, convert_log_to_ocel, convert_ocel_to_networkx, convert_log_to_networkx, \
     convert_log_to_time_intervals, convert_petri_net_to_networkx, convert_petri_net_type
