@@ -365,8 +365,6 @@ def __dotted_attribute_selection(log: Union[EventLog, pd.DataFrame], attributes)
     """
     Default attribute selection for the dotted chart
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
 
@@ -417,8 +415,6 @@ def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", a
     """
     format = str(format).lower()
 
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
 
@@ -467,7 +463,6 @@ def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, at
         pm4py.save_vis_dotted_chart(dataframe, 'dotted.png', attributes=['time:timestamp', 'concept:name', 'org:resource'])
     """
     file_path = str(file_path)
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
@@ -563,8 +558,6 @@ def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "
     """
     format = str(format).lower()
 
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
         from pm4py.statistics.traces.generic.pandas import case_statistics
@@ -595,7 +588,6 @@ def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: 
         pm4py.save_vis_case_duration_graph(dataframe, 'duration.png', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     file_path = str(file_path)
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
@@ -629,8 +621,6 @@ def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str =
     """
     format = str(format).lower()
 
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
         from pm4py.statistics.attributes.pandas import get as attributes_get
@@ -661,7 +651,6 @@ def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path
         pm4py.save_vis_events_per_time_graph(dataframe, 'ev_time.png', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     file_path = str(file_path)
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
@@ -703,8 +692,6 @@ def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: Li
     """
     format = str(format).lower()
 
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
 
@@ -741,7 +728,6 @@ def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities
         pm4py.save_vis_performance_spectrum(dataframe, ['Act. A', 'Act. C', 'Act. D'], 'perf_spec.png', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     file_path = str(file_path)
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
@@ -761,8 +747,6 @@ def __builds_events_distribution_graph(log: Union[EventLog, pd.DataFrame], param
     """
     Internal method to build the events distribution graph
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     if distr_type == "days_month":
         title = "Distribution of the Events over the Days of a Month";
         x_axis = "Day of month";
@@ -822,8 +806,6 @@ def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_typ
     """
     format = str(format).lower()
 
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
 
@@ -859,7 +841,6 @@ def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_
         pm4py.save_vis_events_distribution_graph(dataframe, 'ev_distr_graph.png', distr_type='days_week', activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
     """
     file_path = str(file_path)
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)
