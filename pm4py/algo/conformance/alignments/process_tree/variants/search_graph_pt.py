@@ -307,7 +307,7 @@ def apply_multiprocessing(obj: Union[EventLog, Trace, pd.DataFrame], pt: Process
             if type(obj) is pd.DataFrame:
                 case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters,
                                                          constants.CASE_CONCEPT_NAME)
-                traces = obj.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist()
+                traces = obj.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist(); traces = [tuple(x) for x in traces]
             else:
                 obj = log_converter.apply(obj, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
                 traces = [tuple(x[activity_key] for x in case) for case in obj]
@@ -369,7 +369,7 @@ def apply(obj: Union[EventLog, Trace, pd.DataFrame], pt: ProcessTree, parameters
         ret = []
         if type(obj) is pd.DataFrame:
             case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
-            traces = obj.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist()
+            traces = obj.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist(); traces = [tuple(x) for x in traces]
         else:
             obj = log_converter.apply(obj, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
             traces = [tuple(x[activity_key] for x in case) for case in obj]
