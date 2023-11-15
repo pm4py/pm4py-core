@@ -44,8 +44,6 @@ def format_dataframe(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAM
         dataframe = pd.read_csv('event_log.csv')
         dataframe = pm4py.format_dataframe(dataframe, case_id_key='case:concept:name', activity_key='concept:name', timestamp_key='time:timestamp', start_timestamp_key='start_timestamp', timest_format='%Y-%m-%d %H:%M:%S')
     """
-    if type(df) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     if timest_format is None:
         timest_format = constants.DEFAULT_TIMESTAMP_PARSE_FORMAT
 
@@ -277,13 +275,14 @@ def deserialize(ser_obj: Tuple[str, bytes]) -> Any:
         return dfg_importer.deserialize(ser_obj[1])
 
 
-def get_properties(log, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource", group_key: Optional[str] = None, **kwargs):
+def get_properties(log, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource", group_key: Optional[str] = None, start_timestamp_key: Optional[str] = None, **kwargs):
     """
     Gets the properties from a log object
 
     :param log: Log object
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
+    :param start_timestamp_key: (optional) attribute to be used for the start timestamp
     :param case_id_key: attribute to be used as case identifier
     :param resource_key: (if provided) attribute to be used as resource
     :param group_key: (if provided) attribute to be used as group identifier
@@ -303,6 +302,9 @@ def get_properties(log, activity_key: str = "concept:name", timestamp_key: str =
 
     if timestamp_key is not None:
         parameters[constants.PARAMETER_CONSTANT_TIMESTAMP_KEY] = timestamp_key
+
+    if start_timestamp_key is not None:
+        parameters[constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY] = start_timestamp_key
 
     if case_id_key is not None:
         parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] = case_id_key
@@ -330,7 +332,6 @@ def set_classifier(log, classifier, classifier_attribute=constants.DEFAULT_CLASS
     :param classifier_attribute: The attribute of the event that should store the concatenation of the attribute values for the given classifier
     :rtype: ``Union[EventLog, pd.DataFrame]``
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     if type(classifier) is list:
@@ -434,7 +435,6 @@ List[List[str]]:
 
         list_list_activities = pm4py.project_on_event_attribute(dataframe, 'concept:name')
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     output = []

@@ -9,7 +9,7 @@ def execute_script():
     log = pm4py.read_xes(os.path.join("..", "tests", "input_data", "receipt.xes"))
     pm4py.view_performance_spectrum(log, ["Confirmation of receipt", "T04 Determine confirmation of receipt",
                                          "T10 Determine necessity to stop indication"], format=examples_conf.TARGET_IMG_FORMAT)
-    df = pd.read_csv(os.path.join("..", "tests", "input_data", "receipt.csv"), dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+    df = pd.read_csv(os.path.join("..", "tests", "input_data", "receipt.csv"))
     df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True, format="ISO8601")
     pm4py.view_performance_spectrum(df, ["Confirmation of receipt", "T04 Determine confirmation of receipt",
                                          "T10 Determine necessity to stop indication"], format=examples_conf.TARGET_IMG_FORMAT)

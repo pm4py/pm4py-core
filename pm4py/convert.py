@@ -39,7 +39,6 @@ def convert_to_event_log(obj: Union[pd.DataFrame, EventStream], case_id_key: str
        dataframe = pm4py.format_dataframe(dataframe, case_id_column='case:concept:name', activity_column='concept:name', timestamp_column='time:timestamp')
        log = pm4py.convert_to_event_log(dataframe)
     """
-    if type(obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
 
     if check_is_pandas_dataframe(obj):
         check_pandas_dataframe_columns(obj, case_id_key=case_id_key)
@@ -72,8 +71,6 @@ def convert_to_event_stream(obj: Union[EventLog, pd.DataFrame], case_id_key: str
        event_stream = pm4py.convert_to_event_stream(log)
 
     """
-    if type(obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     if check_is_pandas_dataframe(obj):
         check_pandas_dataframe_columns(obj, case_id_key=case_id_key)
 
@@ -103,8 +100,6 @@ def convert_to_dataframe(obj: Union[EventStream, EventLog], **kwargs) -> pd.Data
        log = pm4py.read_xes("tests/input_data/running-example.xes")
        dataframe = pm4py.convert_to_dataframe(log)
     """
-    if type(obj) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
-
     if check_is_pandas_dataframe(obj):
         check_pandas_dataframe_columns(obj)
 
@@ -283,9 +278,6 @@ def convert_log_to_ocel(log: Union[EventLog, EventStream, pd.DataFrame], activit
         ocel = pm4py.convert_log_to_ocel(log, activity_column='concept:name', timestamp_column='time:timestamp',
                         object_types=['case:concept:name'])
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]:
-        raise Exception(
-            "the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     if isinstance(log, EventStream):
@@ -376,8 +368,6 @@ def convert_log_to_time_intervals(log: Union[EventLog, pd.DataFrame], filter_act
         time_intervals = pm4py.convert_log_to_time_intervals(log, ('Confirmation of receipt', 'T02 Check confirmation of receipt'))
         print(len(time_intervals))
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception(
-        "the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, case_id_key=case_id_key, timestamp_key=timestamp_key)

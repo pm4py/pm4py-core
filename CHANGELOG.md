@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.7.8.4 (2023.11.XX)
+## pm4py 2.7.8.4 (2023.11.15)
 
 ### Added
 
@@ -14,16 +14,25 @@
 * de7ab79e285ed5aeb4f4b447fd7f8f1eabb9669c
   d6ef339b32c2e8439815ea589dab1bc0a9e5c851
   * refactoring unit tests entrypoint
+* 47407dfdba5976abb78559072905745eb5d37e92
+  51993c9a2282f0096e113dfc76b76b46b608bd33
+  28f891287d0d61280fb745854c30dc7c301a4c36
+  * small changes OCEL to NetworkX conversion
 
 ### Deprecated
 
 ### Fixed
 * e74700dd9d8b965f7cfdb355d03cd582f8da4b2b
   * fixed POWL objects conversion
+* e56444ad44a94ece5bd239983165d0754b15a713
+  7205aeaa94ad885a9271c359780aa9fac00dee39
+  * bug fix JSON-OCEL(2.0) importer/exporter
 
 ### Removed
 
 ### Other
+* 911d5f8630504c3234b716713a58498ead38d2bb
+  * converting back NX DiGraph to OCEL/EventLog
 
 ---
 
