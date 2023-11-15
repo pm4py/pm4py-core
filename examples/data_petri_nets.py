@@ -5,6 +5,7 @@ from pm4py.algo.conformance.alignments.petri_net import algorithm as alignments
 from pm4py.objects.petri_net.data_petri_nets import semantics
 from pm4py.objects.petri_net.data_petri_nets.data_marking import DataMarking
 from pm4py.objects.log.importer.xes import importer as xes_importer
+from examples import examples_conf
 
 
 def get_trans_by_name(net, name):
@@ -17,7 +18,7 @@ def get_trans_by_name(net, name):
 def execute_script():
     log = xes_importer.apply(os.path.join("..", "tests", "input_data", "roadtraffic100traces.xes"))
     net, im, fm = pm4py.read_pnml(os.path.join("..", "tests", "input_data", "data_petri_net.pnml"), auto_guess_final_marking=True)
-    pm4py.view_petri_net(net, im, fm, format="svg")
+    pm4py.view_petri_net(net, im, fm, format=examples_conf.TARGET_IMG_FORMAT)
     aligned_traces = alignments.apply(log, net, im, fm, variant=alignments.Variants.VERSION_DIJKSTRA_LESS_MEMORY, parameters={"ret_tuple_as_trans_desc": True})
     for index, trace in enumerate(log):
         aligned_trace = aligned_traces[index]

@@ -3,6 +3,7 @@ from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.algo.decision_mining import algorithm
 from pm4py.visualization.decisiontree import visualizer as visualizer
 from pm4py.objects.conversion.process_tree import converter as process_tree_converter
+from examples import examples_conf
 import os
 
 
@@ -15,7 +16,7 @@ def execute_script():
     clf, feature_names, classes = algorithm.get_decision_tree(log, net, im, fm, decision_point="p_10")
     # we can visualize the decision tree
     gviz = visualizer.apply(clf, feature_names, classes,
-                            parameters={visualizer.Variants.CLASSIC.value.Parameters.FORMAT: "svg"})
+                            parameters={visualizer.Variants.CLASSIC.value.Parameters.FORMAT: examples_conf.TARGET_IMG_FORMAT})
     visualizer.view(gviz)
 
 
