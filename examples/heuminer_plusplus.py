@@ -8,7 +8,7 @@ import pandas as pd
 
 
 def execute_script():
-    df = pd.read_csv("../tests/input_data/interval_event_log.csv", dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+    df = pd.read_csv("../tests/input_data/interval_event_log.csv")
     df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True, format="ISO8601")
     df["start_timestamp"] = pd.to_datetime(df["start_timestamp"], utc=True, format="ISO8601")
     log = pm4py.read_xes("../tests/input_data/interval_event_log.xes")

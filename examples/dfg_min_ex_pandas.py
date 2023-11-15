@@ -18,7 +18,7 @@ from examples import examples_conf
 
 def execute_script():
     log_path = os.path.join("..", "tests", "input_data", "interval_event_log.csv")
-    dataframe = pd.read_csv(log_path, dtype_backend=constants.DEFAULT_PANDAS_PARSING_DTYPE_BACKEND)
+    dataframe = pd.read_csv(log_path)
     log_path = os.path.join("..", "tests", "input_data", "reviewing.xes")
     log = pm4py.read_xes(log_path)
     dataframe = pm4py.convert_to_dataframe(log)
