@@ -53,7 +53,8 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     st_eq_ct = start_timestamp_key == timestamp_key
     if start_timestamp_key is None:
         start_timestamp_key = xes_constants.DEFAULT_START_TIMESTAMP_KEY
-        df[start_timestamp_key] = df[timestamp_key]
+        if start_timestamp_key not in df.columns:
+            df[start_timestamp_key] = df[timestamp_key]
         st_eq_ct = True
 
     # to increase the speed of the approaches reduce dataframe to case, activity (and possibly complete timestamp)
