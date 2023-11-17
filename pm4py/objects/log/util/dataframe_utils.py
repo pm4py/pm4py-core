@@ -194,7 +194,7 @@ def sample_dataframe(df, parameters=None):
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     max_no_cases = exec_utils.get_param_value(Parameters.MAX_NO_CASES, parameters, 100)
 
-    case_ids = list(df[case_id_key].unique())
+    case_ids = pandas_utils.format_unique(df[case_id_key].unique())
     case_id_to_retain = points_subset.pick_chosen_points_list(min(max_no_cases, len(case_ids)), case_ids)
 
     return df[df[case_id_key].isin(case_id_to_retain)]
@@ -307,10 +307,10 @@ def select_string_column(df: pd.DataFrame, fea_df: pd.DataFrame, col: str,
     fea_df
         Feature dataframe (desidered output)
     """
-    vals = df[col].unique()
+    vals = pandas_utils.format_unique(df[col].unique())
     for val in vals:
         if val is not None:
-            filt_df_cases = df[df[col] == val][case_id_key].unique()
+            filt_df_cases = pandas_utils.format_unique(df[df[col] == val][case_id_key].unique())
             new_col = col + "_" + val.encode('ascii', errors='ignore').decode('ascii').replace(" ", "")
             fea_df[new_col] = fea_df[case_id_key].isin(filt_df_cases)
             fea_df[new_col] = fea_df[new_col].astype("int")
@@ -343,7 +343,7 @@ def get_features_df(df: pd.DataFrame, list_columns: List[str],
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     add_case_identifier_column = exec_utils.get_param_value(Parameters.ADD_CASE_IDENTIFIER_COLUMN, parameters, False)
 
-    fea_df = pd.DataFrame({case_id_key: sorted(list(df[case_id_key].unique()))})
+    fea_df = pd.DataFrame({case_id_key: sorted(pandas_utils.format_unique(df[case_id_key].unique()))})
     for col in list_columns:
         if "obj" in str(df[col].dtype) or "str" in str(df[col].dtype):
             fea_df = select_string_column(df, fea_df, col, case_id_key=case_id_key)

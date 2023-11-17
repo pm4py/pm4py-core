@@ -7,7 +7,7 @@ from typing import Union, Set, List, Tuple, Collection, Any, Dict, Optional
 import pandas as pd
 
 from pm4py.objects.log.obj import EventLog, EventStream
-from pm4py.util import constants, xes_constants
+from pm4py.util import constants, xes_constants, pandas_utils
 import warnings
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties, __event_log_deprecation_warning
@@ -952,7 +952,7 @@ def filter_ocel_object_types(ocel: OCEL, obj_types: Collection[str], positive: b
             filtered_ocel.objects = filtered_ocel.objects[~filtered_ocel.objects[filtered_ocel.object_type_column].isin(obj_types)]
         return filtering_utils.propagate_object_filtering(filtered_ocel)
     else:
-        object_ids = ocel.objects[ocel.objects[ocel.object_type_column].isin(obj_types)][ocel.object_id_column].unique()
+        object_ids = pandas_utils.format_unique(ocel.objects[ocel.objects[ocel.object_type_column].isin(obj_types)][ocel.object_id_column].unique())
         return filter_ocel_objects(ocel, object_ids, level=level, positive=positive)
 
 
@@ -975,8 +975,8 @@ def filter_ocel_objects(ocel: OCEL, object_identifiers: Collection[str], positiv
     """
     object_identifiers = set(object_identifiers)
     if level > 1:
-        ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].apply(list).to_dict()
-        objects_ids = set(ocel.objects[ocel.object_id_column].unique())
+        ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].agg(list).to_dict()
+        objects_ids = ocel.objects[ocel.object_id_column].to_numpy().tolist()
         graph = {o: set() for o in objects_ids}
         for ev in ev_rel_obj:
             rel_obj = ev_rel_obj[ev]
@@ -1166,8 +1166,8 @@ def filter_ocel_cc_activity(ocel: OCEL, activity: str) -> OCEL:
         ocel = pm4py.read_ocel('log.jsonocel')
         filtered_ocel = pm4py.filter_ocel_cc_activity(ocel, 'Create Order')
     """
-    evs = set(ocel.events[ocel.events[ocel.event_activity] == activity][ocel.event_id_column])
-    objs = set(ocel.relations[ocel.relations[ocel.event_id_column].isin(evs)][ocel.object_id_column].unique())
+    evs = ocel.events[ocel.events[ocel.event_activity] == activity][ocel.event_id_column].to_numpy().tolist()
+    objs = pandas_utils.format_unique(ocel.relations[ocel.relations[ocel.event_id_column].isin(evs)][ocel.object_id_column].unique())
 
     from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
     import networkx as nx

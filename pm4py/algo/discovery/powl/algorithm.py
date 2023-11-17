@@ -33,8 +33,6 @@ def apply(obj: Union[EventLog, pd.DataFrame, UVCL], parameters: Optional[Dict[An
           variant=POWLDiscoveryVariant.CLUSTER, simplify_using_frequent_transitions=False) -> POWL:
     if parameters is None:
         parameters = {}
-    if type(obj) not in [EventLog, pd.DataFrame, UVCL]:
-        raise TypeError('Incorrect data type as an input (should be an event log or dataframe)')
     ack = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
     tk = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)
     cidk = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, pmutil.constants.CASE_CONCEPT_NAME)
