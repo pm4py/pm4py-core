@@ -264,12 +264,11 @@ class Performance:
         # run model with empty trace
         worst_case_trace = len(self.trace_handler.trace)
         self.trace_handler.trace = ()
-
         # compute worst_best_alignment
         best_worst_alignment = Alignment(self.graph_hanlder, self.trace_handler)
         best_worst_result = best_worst_alignment.apply_trace()
         bwc = (worst_case_trace + best_worst_result[Outputs.COST.value])
-        fitness = 1 - (self.alignment.global_min / (worst_case_trace + bwc) if bwc > 0 else 0)
+        fitness = 1 - (self.alignment.global_min / (bwc) if bwc > 0 else 0)
         return fitness, bwc
 
 
