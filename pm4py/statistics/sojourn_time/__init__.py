@@ -1,1 +1,1 @@
-from pm4py.statistics.sojourn_time import log, pandas
+from pm4py.statistics.service_time import *

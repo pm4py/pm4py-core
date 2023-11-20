@@ -114,6 +114,16 @@ def insert_ev_in_tr_index(df: pd.DataFrame, case_id: str = constants.CASE_CONCEP
     return df
 
 
+def format_unique(values):
+    try:
+        values = values.to_numpy()
+    except:
+        pass
+
+    values = values.tolist()
+    return values
+
+
 def insert_feature_activity_position_in_trace(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAME,
                                       activity_key: str = xes_constants.DEFAULT_NAME_KEY, prefix="@@position_"):
     """
@@ -138,7 +148,7 @@ def insert_feature_activity_position_in_trace(df: pd.DataFrame, case_id: str = c
         Pandas dataframe
     """
     df = insert_ev_in_tr_index(df, case_id=case_id)
-    activities = set(df[activity_key].unique())
+    activities = format_unique(df[activity_key].unique())
     for act in activities:
         df[prefix + act] = df[activity_key].apply(lambda x: np.nan if x == act else -1)
         df[prefix + act] = df[prefix + act].fillna(df[constants.DEFAULT_INDEX_IN_TRACE_KEY])

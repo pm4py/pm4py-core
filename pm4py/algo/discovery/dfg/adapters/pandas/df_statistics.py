@@ -53,7 +53,8 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     st_eq_ct = start_timestamp_key == timestamp_key
     if start_timestamp_key is None:
         start_timestamp_key = xes_constants.DEFAULT_START_TIMESTAMP_KEY
-        df[start_timestamp_key] = df[timestamp_key]
+        if start_timestamp_key not in df.columns:
+            df[start_timestamp_key] = df[timestamp_key]
         st_eq_ct = True
 
     # to increase the speed of the approaches reduce dataframe to case, activity (and possibly complete timestamp)
@@ -139,7 +140,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
             for key in dfg_performance_mean:
                 dfg_performance[key] = {"mean": dfg_performance_mean[key], "median": dfg_performance_median[key], "max": dfg_performance_max[key], "min": dfg_performance_min[key], "sum": dfg_performance_sum[key], "stdev": dfg_performance_std[key]}
         elif perf_aggregation_key == "raw_values":
-            dfg_performance = directly_follows_grouping.apply(list).to_dict()
+            dfg_performance = directly_follows_grouping.agg(list).to_dict()
         else:
             dfg_performance = directly_follows_grouping.agg(perf_aggregation_key).to_dict()
 

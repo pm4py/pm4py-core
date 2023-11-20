@@ -22,8 +22,8 @@ from pm4py.statistics.end_activities.log import get as log_ea
 from pm4py.statistics.end_activities.pandas import get as pd_ea
 from pm4py.statistics.eventually_follows.log import get as efg_get
 from pm4py.statistics.eventually_follows.pandas import get as pd_efg
-from pm4py.statistics.sojourn_time.log import get as soj_get
-from pm4py.statistics.sojourn_time.pandas import get as pd_soj_time
+from pm4py.statistics.service_time.log import get as soj_get
+from pm4py.statistics.service_time.pandas import get as pd_soj_time
 from pm4py.statistics.start_activities.log import get as log_sa
 from pm4py.statistics.start_activities.pandas import get as pd_sa
 from pm4py.util import exec_utils, constants, xes_constants as xes
