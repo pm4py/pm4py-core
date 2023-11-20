@@ -924,17 +924,17 @@ def filter_activity_done_different_resources(log: Union[EventLog, pd.DataFrame],
         return ltl_checker.attr_value_different_persons(log, activity, parameters=properties)
 
 
-def filter_traces(log: Union[EventLog, pd.DataFrame], admitted_traces: List[List[str]], positive: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
+def filter_trace_segments(log: Union[EventLog, pd.DataFrame], admitted_traces: List[List[str]], positive: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[EventLog, pd.DataFrame]:
     """
     Filters an event log on a set of traces. A trace is a sequence of activities and "...", in which:
     - a "..." before an activity tells that other activities can precede the given activity
     - a "..." after an activity tells that other activities can follow the given activity
 
     For example:
-    - pm4py.filter_traces(log, [["A", "B"]]) <- filters only the cases of the event log having exactly the process variant A,B
-    - pm4py.filter_traces(log, [["...", "A", "B"]]) <- filters only the cases of the event log ending with the activities A,B
-    - pm4py.filter_traces(log, [["A", "B", "..."]]) <- filters only the cases of the event log starting with the activities A,B
-    - pm4py.filter_traces(log, [["...", "A", "B", "C", "..."], ["...", "D", "E", "F", "..."]]
+    - pm4py.filter_trace_segments(log, [["A", "B"]]) <- filters only the cases of the event log having exactly the process variant A,B
+    - pm4py.filter_trace_segments(log, [["...", "A", "B"]]) <- filters only the cases of the event log ending with the activities A,B
+    - pm4py.filter_trace_segments(log, [["A", "B", "..."]]) <- filters only the cases of the event log starting with the activities A,B
+    - pm4py.filter_trace_segments(log, [["...", "A", "B", "C", "..."], ["...", "D", "E", "F", "..."]]
                                 <- filters only the cases of the event log in which at any point
                                     there is A followed by B followed by C, and in which at any other point there is
                                     D followed by E followed by F
@@ -953,7 +953,7 @@ def filter_traces(log: Union[EventLog, pd.DataFrame], admitted_traces: List[List
 
         log = pm4py.read_xes("tests/input_data/running-example.xes")
 
-        filtered_log = pm4py.filter_traces(log, [["...", "check ticket", "decide", "reinitiate request", "..."]])
+        filtered_log = pm4py.filter_trace_segments(log, [["...", "check ticket", "decide", "reinitiate request", "..."]])
         print(filtered_log)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
