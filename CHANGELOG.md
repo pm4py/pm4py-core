@@ -13,6 +13,8 @@
   * Filtering on trace segments
 * 9dedaba837e561640a122e50927f7f5b13d4a334
   * Utility to get frequent trace segments
+* 19c53e1fcf06c0566a3c697aec37f13345365d04
+  * Utility for the computation of service times
 
 ### Changed
 * fb0d9fb049f128bd979c962db54e3a305ecf5f09
@@ -25,7 +27,8 @@
 ### Removed
 
 ### Other
-
+* 19c53e1fcf06c0566a3c697aec37f13345365d04
+  * refactored 'sojourn time' mis-spelling to 'service time' throughout the project
 
 ---
 
