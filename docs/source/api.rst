@@ -218,6 +218,7 @@ Different methods are offered in pm4py for traditional event logs (.xes, .csv), 
   * :meth:`pm4py.filtering.filter_variants_by_coverage_percentage`; filters an event log keeping the variants covering the specified percentage of cases.
   * :meth:`pm4py.filtering.filter_prefixes`; filters the prefixes of an activity.
   * :meth:`pm4py.filtering.filter_suffixes`; filters the suffixes of an activity.
+  * :meth:`pm4py.filtering.filter_trace_segments`; filters on the given traces (segments of activities).
   * :meth:`pm4py.filtering.filter_four_eyes_principle`; apply the *Four-Eyes principle* on the event log (LTL).
   * :meth:`pm4py.filtering.filter_activity_done_different_resources`; filters the cases where an activity is repeated by different resources (LTL).
 
@@ -556,6 +557,7 @@ Overall List of Methods
    pm4py.filtering.filter_variants_by_coverage_percentage
    pm4py.filtering.filter_prefixes
    pm4py.filtering.filter_suffixes
+   pm4py.filtering.filter_trace_segments
    pm4py.filtering.filter_ocel_event_attribute
    pm4py.filtering.filter_ocel_object_attribute
    pm4py.filtering.filter_ocel_object_types_allowed_activities
