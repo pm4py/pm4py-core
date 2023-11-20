@@ -18,7 +18,6 @@ def apply(query: str, parameters: Optional[Dict[Any, Any]] = None) -> str:
 
     import openai
 
-    openai.api_key = api_key
     client = openai.OpenAI(api_key=api_key)
 
     message = {"role": "user", "content": query}
