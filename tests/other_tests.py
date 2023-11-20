@@ -156,17 +156,17 @@ class OtherPartsTests(unittest.TestCase):
         from pm4py.algo.simulation.playout.process_tree import algorithm as tree_playout
         new_log = tree_playout.apply(tree, variant=tree_playout.Variants.EXTENSIVE)
 
-    def test_sojourn_time_xes(self):
+    def test_service_time_xes(self):
         log = xes_importer.apply(os.path.join("input_data", "interval_event_log.xes"))
-        from pm4py.statistics.sojourn_time.log import get
+        from pm4py.statistics.service_time.log import get
         soj_time = get.apply(log, parameters={get.Parameters.START_TIMESTAMP_KEY: "start_timestamp"})
 
-    def test_sojourn_time_pandas(self):
+    def test_service_time_pandas(self):
         import pandas as pd
         dataframe = pd.read_csv(os.path.join("input_data", "interval_event_log.csv"))
         from pm4py.objects.log.util import dataframe_utils
         dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
-        from pm4py.statistics.sojourn_time.pandas import get
+        from pm4py.statistics.service_time.pandas import get
         soj_time = get.apply(dataframe, parameters={get.Parameters.START_TIMESTAMP_KEY: "start_timestamp"})
 
     def test_concurrent_activities_xes(self):

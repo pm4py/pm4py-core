@@ -23,7 +23,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ordered_events = list(ocel.events[ocel.event_id_column])
+    ordered_events = ocel.events[ocel.event_id_column].to_numpy()
 
     data = []
     feature_names = ["@@event_timestamp", "@@event_timestamp_dayofweek", "@@event_timestamp_hour", "@@event_timestamp_month", "@@event_timestamp_day"]

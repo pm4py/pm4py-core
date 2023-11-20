@@ -109,7 +109,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
 
     T0 = time.time_ns()
 
-    ordered_objects = list(ocel.objects[ocel.object_id_column])
+    ordered_objects = ocel.objects[ocel.object_id_column].to_numpy()
 
     datas = [[] for x in ordered_objects]
     feature_namess = []
@@ -365,7 +365,7 @@ def transform_features_to_dict_dict(ocel: OCEL, data: List[List[float]], feature
     if parameters is None:
         parameters = {}
 
-    objects = list(ocel.objects[ocel.object_id_column])
+    objects = ocel.objects[ocel.object_id_column].to_numpy()
     ret = {}
     i = 0
     while i < len(data):

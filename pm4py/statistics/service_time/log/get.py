@@ -23,7 +23,7 @@ DIFF_KEY = "@@diff"
 
 def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, float]:
     """
-    Gets the sojourn time per activity on an event log object
+    Gets the service time per activity on an event log object
 
     Parameters
     --------------
@@ -50,7 +50,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
     Returns
     --------------
     soj_time_dict
-        Sojourn time dictionary
+        Service time dictionary
     """
     if parameters is None:
         parameters = {}
