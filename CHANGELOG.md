@@ -1,5 +1,25 @@
 # Changelog of pm4py
 
+
+## pm4py 2.7.9.1 (2023.XX.YY)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+* f6d15493110e613321214fbf4465fc561e42a698
+  * method to project DFG/edit distance alignments on log
+
+---
+
+
 ## pm4py 2.7.9 (2023.11.20)
 
 ### Added
