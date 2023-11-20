@@ -13,7 +13,7 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.statistics.attributes.log.select import select_attributes_from_log_for_tree
 from pm4py.statistics.variants.log import get as variants_module
 from pm4py.util import constants, xes_constants
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from pm4py.visualization.decisiontree.util import dt_to_string
 import pandas as pd
 
@@ -510,7 +510,7 @@ def encode_target(df, target_column):
     targets -- list of target names.
     """
     df_mod = df.copy()
-    targets = df_mod[target_column].unique()
+    targets = pandas_utils.format_unique(df_mod[target_column].unique())
     map_to_int = {name: n for n, name in enumerate(targets)}
     df_mod["Target"] = df_mod[target_column].replace(map_to_int)
 

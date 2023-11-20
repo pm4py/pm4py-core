@@ -2,7 +2,7 @@ from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any
 from enum import Enum
 from pm4py.objects.ocel import constants
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from copy import deepcopy
 import pandas as pd
 
@@ -53,7 +53,7 @@ def apply(ocel: OCEL, param: str, parameters: Optional[Dict[Any, Any]] = None):
     new_ocel = deepcopy(ocel)
     new_ocel.events[param] = new_ocel.events[param].astype(str)
     ev_param = new_ocel.events.dropna(subset=[param])[[event_id, event_activity, event_timestamp, param]]
-    vals = set(ev_param[param].unique())
+    vals = pandas_utils.format_unique(ev_param[param].unique())
     ev_param = ev_param.rename(columns={param: object_id})
     ev_param[object_type] = param
 

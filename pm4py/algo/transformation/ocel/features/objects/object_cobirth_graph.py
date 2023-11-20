@@ -24,7 +24,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ordered_objects = list(ocel.objects[ocel.object_id_column])
+    ordered_objects = ocel.objects[ocel.object_id_column].to_numpy()
 
     g0 = object_cobirth_graph.apply(ocel, parameters=parameters)
     conn = {}

@@ -26,7 +26,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ordered_objects = list(ocel.objects[ocel.object_id_column])
+    ordered_objects = ocel.objects[ocel.object_id_column].to_numpy()
     first_object_timestamp = ocel.relations.groupby(ocel.object_id_column).first()[ocel.event_timestamp].to_dict()
     last_object_timestamp = ocel.relations.groupby(ocel.object_id_column).last()[ocel.event_timestamp].to_dict()
 

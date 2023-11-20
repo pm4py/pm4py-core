@@ -28,7 +28,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     data_objects, feature_names_objects = object_based_features.apply(ocel, parameters=parameters)
     dct_dct_objects = object_based_features.transform_features_to_dict_dict(ocel, data_objects, feature_names_objects, parameters=parameters)
 
-    ordered_events = list(ocel.events[ocel.event_id_column])
+    ordered_events = ocel.events[ocel.event_id_column].to_numpy()
 
     stream = ocel.relations[[ocel.event_id_column, ocel.object_id_column]].to_dict("records")
     ev_rel_objs = {}

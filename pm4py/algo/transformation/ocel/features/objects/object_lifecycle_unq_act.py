@@ -23,7 +23,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ordered_objects = list(ocel.objects[ocel.object_id_column])
+    ordered_objects = ocel.objects[ocel.object_id_column].to_numpy()
     lifecycle_unq = ocel.relations.groupby([ocel.object_id_column, ocel.event_activity]).first().reset_index()
     lifecycle_unq = lifecycle_unq.groupby(ocel.object_id_column).size().to_dict()
 

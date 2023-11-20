@@ -303,7 +303,7 @@ def __get_variants_structure(log, parameters):
 
     if type(log) is pd.DataFrame:
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
-        traces = list(log.groupby(case_id_key)[activity_key].apply(tuple))
+        traces = log.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist(); traces = [tuple(x) for x in traces]
         for idx, trace in enumerate(traces):
             if trace not in variants_idxs:
                 variants_idxs[trace] = [idx]
