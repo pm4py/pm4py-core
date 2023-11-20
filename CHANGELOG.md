@@ -3,8 +3,16 @@
 ## pm4py 2.7.9 (2023.11.17)
 
 ### Added
+* e5bb3b43b47217128763157c9e64ba6b39b1672f
+  * OCEL event types-to-object types visualizer
+* be7e28440da6f69bfdad43b724931277f04efdbc
+  * NetworkX visualization utility
+* a17bb8e103b3ee46e46bef17885149070bf7e048
+  * Context-based activity label splitting approach (BPM 2023)
 
 ### Changed
+* fb0d9fb049f128bd979c962db54e3a305ecf5f09
+  * Refactoring Pandas calls in pm4py
 
 ### Deprecated
 
