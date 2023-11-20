@@ -9,6 +9,10 @@
   * NetworkX visualization utility
 * a17bb8e103b3ee46e46bef17885149070bf7e048
   * Context-based activity label splitting approach (BPM 2023)
+* 6583504c6056c43868fe1158744fcc7655270dec
+  * Filtering on trace segments
+* 9dedaba837e561640a122e50927f7f5b13d4a334
+  * Utility to get frequent trace segments
 
 ### Changed
 * fb0d9fb049f128bd979c962db54e3a305ecf5f09
