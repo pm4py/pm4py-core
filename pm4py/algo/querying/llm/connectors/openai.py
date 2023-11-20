@@ -24,4 +24,5 @@ def apply(query: str, parameters: Optional[Dict[Any, Any]] = None) -> str:
     message = {"role": "user", "content": query}
 
     response = client.chat.completions.create(model=model, messages=[message])
-    return response["choices"][0]["message"]["content"]
+
+    return response.choices[0].message.content
