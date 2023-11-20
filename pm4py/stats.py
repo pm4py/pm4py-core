@@ -586,9 +586,9 @@ def get_cycle_time(log: Union[EventLog, pd.DataFrame], activity_key: str = "conc
         return cycle_time.apply(log, parameters=properties)
 
 
-def get_sojourn_time(log: Union[EventLog, pd.DataFrame], aggregation_measure: str = "mean", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", start_timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, float]:
+def get_service_time(log: Union[EventLog, pd.DataFrame], aggregation_measure: str = "mean", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", start_timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, float]:
     """
-    Gets the activities' (average/median/...) sojourn time in the provided event log
+    Gets the activities' (average/median/...) service time in the provided event log
 
     :param log: event log
     :param aggregation_measure: the aggregation to be used (mean, median, min, max, sum)
@@ -603,10 +603,10 @@ def get_sojourn_time(log: Union[EventLog, pd.DataFrame], aggregation_measure: st
         import pm4py
 
         log = pm4py.read_xes('tests/input_data/interval_event_log.xes')
-        mean_soj_time = pm4py.stats.get_sojourn_time(log, start_timestamp_key='start_timestamp', aggregation_measure='mean')
-        print(mean_soj_time)
-        median_soj_time = pm4py.stats.get_sojourn_time(log, start_timestamp_key='start_timestamp', aggregation_measure='median')
-        print(median_soj_time)
+        mean_serv_time = pm4py.stats.get_service_time(log, start_timestamp_key='start_timestamp', aggregation_measure='mean')
+        print(mean_serv_time)
+        median_serv_time = pm4py.stats.get_service_time(log, start_timestamp_key='start_timestamp', aggregation_measure='median')
+        print(median_serv_time)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
@@ -616,11 +616,11 @@ def get_sojourn_time(log: Union[EventLog, pd.DataFrame], aggregation_measure: st
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, start_timestamp_key=start_timestamp_key)
-        from pm4py.statistics.service_time.pandas import get as soj_time_get
-        return soj_time_get.apply(log, parameters=properties)
+        from pm4py.statistics.service_time.pandas import get as serv_time_get
+        return serv_time_get.apply(log, parameters=properties)
     else:
-        from pm4py.statistics.service_time.log import get as soj_time_get
-        return soj_time_get.apply(log, parameters=properties)
+        from pm4py.statistics.service_time.log import get as serv_time_get
+        return serv_time_get.apply(log, parameters=properties)
 
 
 def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, business_hour_slots=constants.DEFAULT_BUSINESS_HOUR_SLOTS, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[float]:
