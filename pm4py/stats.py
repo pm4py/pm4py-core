@@ -603,9 +603,9 @@ def get_service_time(log: Union[EventLog, pd.DataFrame], aggregation_measure: st
         import pm4py
 
         log = pm4py.read_xes('tests/input_data/interval_event_log.xes')
-        mean_serv_time = pm4py.stats.get_service_time(log, start_timestamp_key='start_timestamp', aggregation_measure='mean')
+        mean_serv_time = pm4py.get_service_time(log, start_timestamp_key='start_timestamp', aggregation_measure='mean')
         print(mean_serv_time)
-        median_serv_time = pm4py.stats.get_service_time(log, start_timestamp_key='start_timestamp', aggregation_measure='median')
+        median_serv_time = pm4py.get_service_time(log, start_timestamp_key='start_timestamp', aggregation_measure='median')
         print(median_serv_time)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
