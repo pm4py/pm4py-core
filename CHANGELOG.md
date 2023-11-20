@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.7.9 (2023.11.17)
+## pm4py 2.7.9 (2023.11.20)
 
 ### Added
 * e5bb3b43b47217128763157c9e64ba6b39b1672f
@@ -19,6 +19,8 @@
 ### Changed
 * fb0d9fb049f128bd979c962db54e3a305ecf5f09
   * Refactoring Pandas calls in pm4py
+* 36e19d3f48dabf03509cf87ae6508c0576b089b4
+  * adapt openai calls to v1 migration
 
 ### Deprecated
 
