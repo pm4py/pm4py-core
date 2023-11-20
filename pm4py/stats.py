@@ -654,7 +654,7 @@ def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business
         return cd[case_id]["caseDuration"]
 
 
-def get_traces(log: Union[EventLog, pd.DataFrame], min_occ: int, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> TCounter:
+def get_frequent_trace_segments(log: Union[EventLog, pd.DataFrame], min_occ: int, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> TCounter:
     """
     Get the traces (segments of activities) from an event log object.
     Each trace is preceded and followed by "...", reminding that the trace/segment
@@ -672,7 +672,7 @@ def get_traces(log: Union[EventLog, pd.DataFrame], min_occ: int, activity_key: s
         import pm4py
 
         log = pm4py.read_xes("tests/input_data/receipt.xes")
-        traces = pm4py.get_traces(log, 100)
+        traces = pm4py.get_frequent_trace_segments(log, min_occ=100)
         print(traces)
     """
     if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
@@ -685,8 +685,18 @@ def get_traces(log: Union[EventLog, pd.DataFrame], min_occ: int, activity_key: s
     from prefixspan import PrefixSpan
 
     projection = pm4py.utils.project_on_event_attribute(log, attribute_key=activity_key, case_id_key=case_id_key)
-    traces = PrefixSpan(projection).frequent(min_occ)
-    traces = Counter({tuple(["..."] + x[1] + ["..."]): x[0] for x in traces})
+    traces0 = PrefixSpan(projection).frequent(min_occ)
+    traces = {}
+    for x in traces0:
+        trace = ["..."]
+        for i in range(len(x[1])):
+            if i > 0:
+                trace.append("...")
+            trace.append(x[1][i])
+        trace.append("...")
+        trace = tuple(trace)
+        traces[trace] = x[0]
+    traces = Counter(traces)
 
     return traces
 
