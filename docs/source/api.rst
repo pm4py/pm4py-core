@@ -189,6 +189,7 @@ Different statistics that could be computed on top of event logs are proposed, i
   * :meth:`pm4py.stats.get_variants`; gets the *variants* of the event log.
   * :meth:`pm4py.stats.split_by_process_variant`; splits an event log into sub-dataframes for each process variant.
   * :meth:`pm4py.stats.get_variants_paths_duration`; method that associates to a log object a Pandas dataframe aggregated by variants and positions (inside the variant).
+  * :meth:`pm4py.stats.get_frequent_trace_segments`; gets the *traces* (segments of activities) of the event log.
   * :meth:`pm4py.stats.get_case_arrival_average`; gets the *average case arrival rate* from the event log.
   * :meth:`pm4py.stats.get_cycle_time`; gets the *cycle time* from the event log.
   * :meth:`pm4py.stats.get_all_case_durations`; gets the list of *case durations* for the cases of the event log.
@@ -536,6 +537,7 @@ Overall List of Methods
    pm4py.stats.get_cycle_time
    pm4py.stats.get_all_case_durations
    pm4py.stats.get_case_duration
+   pm4py.stats.get_frequent_trace_segments
    pm4py.stats.get_activity_position_summary
    pm4py.stats.get_stochastic_language
    pm4py.filtering

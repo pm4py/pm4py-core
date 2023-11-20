@@ -4,6 +4,7 @@ The ``pm4py.stats`` module contains the statistics offered in ``pm4py``
 
 from typing import Dict, Union, List, Tuple, Collection, Iterator
 from typing import Set, Optional
+from typing import Counter as TCounter
 from collections import Counter
 
 import pandas as pd
@@ -651,6 +652,53 @@ def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business
         from pm4py.statistics.traces.generic.log import case_statistics
         cd = case_statistics.get_cases_description(log, parameters=properties)
         return cd[case_id]["caseDuration"]
+
+
+def get_frequent_trace_segments(log: Union[EventLog, pd.DataFrame], min_occ: int, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> TCounter:
+    """
+    Get the traces (segments of activities) from an event log object.
+    Each trace is preceded and followed by "...", reminding that the trace/segment
+    can be preceded and followed by any other set of activities.
+
+    :param log: event log
+    :param min_occ: minimum number of occurrence of a trace in order to be included
+    :param activity_key: the attribute to be used as activity
+    :param timestamp_key: the attribute to be used as timestamp
+    :param case_id_key: the attribute to be used as case identifier (for Pandas dataframes)
+    :rtype: ``TCounter``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("tests/input_data/receipt.xes")
+        traces = pm4py.get_frequent_trace_segments(log, min_occ=100)
+        print(traces)
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    import pm4py.utils
+    from prefixspan import PrefixSpan
+
+    projection = pm4py.utils.project_on_event_attribute(log, attribute_key=activity_key, case_id_key=case_id_key)
+    traces0 = PrefixSpan(projection).frequent(min_occ)
+    traces = {}
+    for x in traces0:
+        trace = ["..."]
+        for i in range(len(x[1])):
+            if i > 0:
+                trace.append("...")
+            trace.append(x[1][i])
+        trace.append("...")
+        trace = tuple(trace)
+        traces[trace] = x[0]
+    traces = Counter(traces)
+
+    return traces
 
 
 def get_activity_position_summary(log: Union[EventLog, pd.DataFrame], activity: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[int, int]:

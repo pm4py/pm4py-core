@@ -45,7 +45,7 @@ from pm4py.analysis import cluster_log, check_soundness, compute_emd, solve_mark
     reduce_petri_net_invisibles, reduce_petri_net_implicit_places, insert_case_arrival_finish_rate, insert_case_service_waiting_time, get_enabled_transitions
 from pm4py.stats import get_start_activities, get_end_activities, get_event_attributes, get_event_attribute_values, get_variants, \
     get_trace_attributes, get_variants_as_tuples, get_trace_attribute_values, get_case_arrival_average, \
-    get_minimum_self_distances, get_minimum_self_distance_witnesses, \
+    get_minimum_self_distances, get_minimum_self_distance_witnesses, get_frequent_trace_segments, \
     get_case_arrival_average, get_rework_cases_per_activity, get_case_overlap, get_cycle_time, \
     get_all_case_durations, get_case_duration, get_activity_position_summary, get_stochastic_language, \
     split_by_process_variant, get_variants_paths_duration
