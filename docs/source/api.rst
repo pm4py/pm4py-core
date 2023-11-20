@@ -195,6 +195,7 @@ Different statistics that could be computed on top of event logs are proposed, i
   * :meth:`pm4py.stats.get_all_case_durations`; gets the list of *case durations* for the cases of the event log.
   * :meth:`pm4py.stats.get_case_duration`; gets the *case duration* of a specific case in the log.
   * :meth:`pm4py.stats.get_stochastic_language`; gets the *stochastic language* of an event log or a process model.
+  * :meth:`pm4py.stats.get_service_time`; gets the average *service time* per activity.
 
 
 Filtering (:mod:`pm4py.filtering`)
@@ -538,6 +539,7 @@ Overall List of Methods
    pm4py.stats.get_all_case_durations
    pm4py.stats.get_case_duration
    pm4py.stats.get_frequent_trace_segments
+   pm4py.stats.get_service_time
    pm4py.stats.get_activity_position_summary
    pm4py.stats.get_stochastic_language
    pm4py.filtering
