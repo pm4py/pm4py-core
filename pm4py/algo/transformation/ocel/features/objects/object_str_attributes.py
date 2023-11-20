@@ -34,7 +34,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     data = []
     feature_names = []
 
-    ordered_objects = list(ocel.objects[ocel.object_id_column])
+    ordered_objects = ocel.objects[ocel.object_id_column].to_numpy()
     object_str_attributes = exec_utils.get_param_value(Parameters.OBJECT_STR_ATTRIBUTES, parameters, None)
 
     if object_str_attributes is not None:

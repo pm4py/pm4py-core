@@ -43,7 +43,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame],
 
     if type(log) is pd.DataFrame:
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
-        control_flow_log = list(log.groupby(case_id_key)[activity_key].apply(list))
+        control_flow_log = list(log.groupby(case_id_key)[activity_key].agg(list))
     else:
         log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
         control_flow_log = log_util.log.project_traces(log, activity_key)

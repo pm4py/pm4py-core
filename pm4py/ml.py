@@ -35,7 +35,7 @@ def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
-        cases = set(log[case_id_key].unique())
+        cases = pandas_utils.format_unique(log[case_id_key].unique())
         train_cases = set()
         test_cases = set()
         for c in cases:

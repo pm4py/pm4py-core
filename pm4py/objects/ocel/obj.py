@@ -1,7 +1,7 @@
 from enum import Enum
 
 from pm4py.objects.ocel import constants
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 import pandas as pd
 import numpy as np
 from copy import copy, deepcopy
@@ -69,12 +69,12 @@ class OCEL(object):
         Transforms the current OCEL data structure into a Pandas dataframe containing the events with their
         attributes and the related objects per object type.
         """
-        object_types = self.relations[self.object_type_column].unique()
+        object_types = pandas_utils.format_unique(self.relations[self.object_type_column].unique())
         table = self.events.copy().set_index(self.event_id_column)
         for ot in object_types:
             table[ot_prefix + ot] = \
                 self.relations[self.relations[self.object_type_column] == ot].groupby(self.event_id_column)[
-                    self.object_id_column].apply(list)
+                    self.object_id_column].agg(list)
         table = table.reset_index()
         return table
 
@@ -102,7 +102,7 @@ class OCEL(object):
     def is_ocel20(self):
         unique_qualifiers = []
         if self.qualifier in self.relations.columns:
-            unique_qualifiers = [x for x in self.relations[self.qualifier].unique() if not self.__check_is_nan(x)]
+            unique_qualifiers = [x for x in pandas_utils.format_unique(self.relations[self.qualifier].unique()) if not self.__check_is_nan(x)]
 
         return len(self.o2o) > 0 or len(self.object_changes) > 0 or len(unique_qualifiers) > 0
 
