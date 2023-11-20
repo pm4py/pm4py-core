@@ -21,7 +21,7 @@ DIFF_KEY = "@@diff"
 
 def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, float]:
     """
-    Gets the sojourn time per activity on a Pandas dataframe
+    Gets the service time per activity on a Pandas dataframe
 
     Parameters
     --------------
@@ -48,7 +48,7 @@ def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Union[str, Paramete
     Returns
     --------------
     soj_time_dict
-        Sojourn time dictionary
+        Service time dictionary
     """
     if parameters is None:
         parameters = {}

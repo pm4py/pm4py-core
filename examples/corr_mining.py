@@ -3,7 +3,7 @@ from pm4py.util import constants
 
 from pm4py.algo.discovery.correlation_mining import algorithm as correlation_miner
 from pm4py.objects.log.util import dataframe_utils
-from pm4py.statistics.sojourn_time.pandas import get as soj_time_get
+from pm4py.statistics.service_time.pandas import get as soj_time_get
 from pm4py.statistics.start_activities.pandas import get as sa_get
 from pm4py.statistics.end_activities.pandas import get as ea_get
 from examples import examples_conf

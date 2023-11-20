@@ -7,7 +7,7 @@ from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.objects.conversion.dfg import converter as dfg_conv
 from pm4py.statistics.attributes.pandas import get as att_get
 from pm4py.statistics.end_activities.pandas import get as ea_get
-from pm4py.statistics.sojourn_time.pandas import get as soj_time_get
+from pm4py.statistics.service_time.pandas import get as soj_time_get
 from pm4py.statistics.concurrent_activities.pandas import get as conc_act_get
 from pm4py.statistics.eventually_follows.pandas import get as efg_get
 from pm4py.statistics.start_activities.pandas import get as sa_get

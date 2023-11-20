@@ -616,10 +616,10 @@ def get_sojourn_time(log: Union[EventLog, pd.DataFrame], aggregation_measure: st
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, start_timestamp_key=start_timestamp_key)
-        from pm4py.statistics.sojourn_time.pandas import get as soj_time_get
+        from pm4py.statistics.service_time.pandas import get as soj_time_get
         return soj_time_get.apply(log, parameters=properties)
     else:
-        from pm4py.statistics.sojourn_time.log import get as soj_time_get
+        from pm4py.statistics.service_time.log import get as soj_time_get
         return soj_time_get.apply(log, parameters=properties)
 
 
