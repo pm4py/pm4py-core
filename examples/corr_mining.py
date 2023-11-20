@@ -26,10 +26,10 @@ def execute_script():
     soj_time = soj_time_get.apply(df, parameters=parameters)
     dfg, performance_dfg = correlation_miner.apply(df, variant=correlation_miner.Variants.CLASSIC,
                                                    parameters=parameters)
-    gviz_freq = dfg_vis.apply(dfg, activities_count=act_count, soj_time=soj_time, variant=dfg_vis.Variants.FREQUENCY,
+    gviz_freq = dfg_vis.apply(dfg, activities_count=act_count, serv_time=soj_time, variant=dfg_vis.Variants.FREQUENCY,
                               parameters=parameters)
     dfg_vis.view(gviz_freq)
-    gviz_perf = dfg_vis.apply(performance_dfg, activities_count=act_count, soj_time=soj_time,
+    gviz_perf = dfg_vis.apply(performance_dfg, activities_count=act_count, serv_time=soj_time,
                               variant=dfg_vis.Variants.PERFORMANCE,
                               parameters=parameters)
     dfg_vis.view(gviz_perf)

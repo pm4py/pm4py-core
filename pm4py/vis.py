@@ -114,7 +114,7 @@ def view_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict
     parameters[dfg_parameters.AGGREGATION_MEASURE] = aggregation_measure
     parameters["bgcolor"] = bgcolor
     parameters["rankdir"] = rankdir
-    gviz = dfg_perf_visualizer.apply(dfg, soj_time=soj_time, parameters=parameters)
+    gviz = dfg_perf_visualizer.apply(dfg, serv_time=soj_time, parameters=parameters)
     dfg_visualizer.view(gviz)
 
 
@@ -151,7 +151,7 @@ def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: 
     parameters[dfg_parameters.AGGREGATION_MEASURE] = aggregation_measure
     parameters["bgcolor"] = bgcolor
     parameters["rankdir"] = rankdir
-    gviz = dfg_perf_visualizer.apply(dfg, soj_time=soj_time, parameters=parameters)
+    gviz = dfg_perf_visualizer.apply(dfg, serv_time=soj_time, parameters=parameters)
     dfg_visualizer.save(gviz, file_path)
 
 

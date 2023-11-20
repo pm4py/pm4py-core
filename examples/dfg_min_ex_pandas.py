@@ -45,10 +45,10 @@ def execute_script():
     print(efg)
     dfg_freq, dfg_perf = df_statistics.get_dfg_graph(dataframe, measure="both", start_timestamp_key="start_timestamp")
     dfg_gv_freq = dfg_vis_fact.apply(dfg_freq, activities_count=att_count, variant=dfg_vis_fact.Variants.FREQUENCY,
-                                     soj_time=soj_time, parameters=parameters)
+                                     serv_time=soj_time, parameters=parameters)
     dfg_vis_fact.view(dfg_gv_freq)
     dfg_gv_perf = dfg_vis_fact.apply(dfg_perf, activities_count=att_count, variant=dfg_vis_fact.Variants.PERFORMANCE,
-                                     soj_time=soj_time, parameters=parameters)
+                                     serv_time=soj_time, parameters=parameters)
     dfg_vis_fact.view(dfg_gv_perf)
     net, im, fm = dfg_conv.apply(dfg_freq)
     gviz = pn_vis.apply(net, im, fm, parameters=parameters)
