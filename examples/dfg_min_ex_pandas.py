@@ -2,7 +2,7 @@ import os
 
 import pm4py
 import pandas as pd
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.objects.conversion.dfg import converter as dfg_conv
 from pm4py.statistics.attributes.pandas import get as att_get
@@ -18,7 +18,7 @@ from examples import examples_conf
 
 def execute_script():
     log_path = os.path.join("..", "tests", "input_data", "interval_event_log.csv")
-    dataframe = pd.read_csv(log_path)
+    dataframe = pandas_utils.read_csv(log_path)
     log_path = os.path.join("..", "tests", "input_data", "reviewing.xes")
     log = pm4py.read_xes(log_path)
     dataframe = pm4py.convert_to_dataframe(log)

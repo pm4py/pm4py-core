@@ -7,7 +7,7 @@ from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.log.exporter.xes import exporter as xes_exporter
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import insert_classifier
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 from pm4py.visualization.dfg import visualizer as dfg_vis
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))

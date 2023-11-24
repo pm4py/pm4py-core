@@ -387,9 +387,9 @@ def sample_ocel_connected_components(ocel: OCEL, connected_components: int = 1,
             objects = cc.objects
             relations = cc.relations
         else:
-            events = pd.concat([events, cc.events])
-            objects = pd.concat([objects, cc.objects])
-            relations = pd.concat([relations, cc.relations])
+            events = pandas_utils.concat([events, cc.events])
+            objects = pandas_utils.concat([objects, cc.objects])
+            relations = pandas_utils.concat([relations, cc.relations])
 
     return OCEL(events, objects, relations)
 
@@ -481,7 +481,7 @@ def ocel_sort_by_additional_column(ocel: OCEL, additional_column: str, primary_c
     ocel.events["@@index"] = ocel.events.index
     ocel.events = ocel.events.sort_values([primary_column, additional_column, "@@index"])
     del ocel.events["@@index"]
-    ocel.events.reset_index(inplace=True, drop=True)
+    ocel.events = ocel.events.reset_index(drop=True)
     return ocel
 
 

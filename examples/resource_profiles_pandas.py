@@ -1,13 +1,13 @@
 import pandas as pd
 import pm4py
-from pm4py.util import pandas_utils
+from pm4py.util import pandas_utils, constants
 import os
 from pm4py.algo.organizational_mining.resource_profiles import algorithm
 
 
 def execute_script():
-    log = pd.read_csv(os.path.join("..", "tests", "input_data", "running-example.csv"))
-    log["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(log["time:timestamp"], utc=True, format="ISO8601")
+    log = pandas_utils.read_csv(os.path.join("..", "tests", "input_data", "running-example.csv"))
+    log["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(log["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
     # Metric RBI 1.1: Number of distinct activities done by a resource in a given time interval [t1, t2)
     print(algorithm.distinct_activities(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sara"))
     # Metric RBI 1.3: Fraction of completions of a given activity a, by a given resource r,

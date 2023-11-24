@@ -190,7 +190,7 @@ def apply(log: Union[EventLog, pd.DataFrame], net: PetriNet, initial_marking: Ma
     X = pandas_utils.instantiate_dataframe(x)
     X = pd.get_dummies(data=X, columns=list(str_attributes))
     X2 = pandas_utils.instantiate_dataframe(x2)
-    X = pd.concat([X, X2], axis=1)
+    X = pandas_utils.concat([X, X2], axis=1)
     Y = pandas_utils.instantiate_dataframe(y, columns=["Name"])
     Y, targets = encode_target(Y, "Name")
     y = Y['Target']

@@ -6,8 +6,8 @@ from pm4py.util import pandas_utils, constants
 
 def execute_script():
     # loads a dataframe. setup dates
-    df = pd.read_csv("../tests/input_data/receipt.csv")
-    df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
+    df = pandas_utils.read_csv("../tests/input_data/receipt.csv")
+    df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
     print(df)
     # insert the case index in the dataframe
     df = pandas_utils.insert_ev_in_tr_index(df, case_id="case:concept:name", column_name="@@index_in_trace")

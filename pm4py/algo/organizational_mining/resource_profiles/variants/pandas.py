@@ -35,7 +35,7 @@ def get_dt_from_string(dt: Union[datetime, str]) -> datetime:
         dt = datetime.strptime(dt, "%Y-%m-%d %H:%M:%S")
 
     dt = dt.replace(tzinfo=pytz.utc)
-    dt = pandas_utils.dataframe_column_string_to_datetime(dt, utc=True)
+    dt = pandas_utils.dataframe_column_string_to_datetime(dt, utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
 
     return dt
 
@@ -314,7 +314,7 @@ def __insert_start_from_previous_event(df: pd.DataFrame, parameters: Optional[Di
     shifted_df = df[[case_id_key, timestamp_key]].shift(1)
     shifted_df.columns = [x + "_2" for x in shifted_df.columns]
 
-    concat_df = pd.concat([df, shifted_df], axis=1)
+    concat_df = pandas_utils.concat([df, shifted_df], axis=1)
     concat_df = concat_df[concat_df[case_id_key] == concat_df[case_id_key + "_2"]][
         [constants.DEFAULT_INDEX_KEY, timestamp_key + "_2"]]
 

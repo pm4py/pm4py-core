@@ -501,7 +501,7 @@ def form_rules_dataframe(log: Union[EventLog, pd.DataFrame],
             dataframe.append(rules)
 
     dataframe = pandas_utils.instantiate_dataframe(dataframe)
-    dataframe.fillna(0, inplace=True)
+    dataframe = dataframe.fillna(0)
     columns = set(dataframe.columns)
 
     dataframe = absence_template(dataframe, columns, activities, allowed_templates)

@@ -212,7 +212,7 @@ def extract_ocel_features(ocel: OCEL, obj_type: str, enable_object_lifecycle_pat
     data, feature_names = ocel_feature_extraction.apply(ocel, parameters=parameters)
 
     dataframe = pandas_utils.instantiate_dataframe(data, columns=feature_names)
-    dataframe.dropna(how="any", axis=1, inplace=True)
+    dataframe = dataframe.dropna(how="any", axis=1)
     dataframe = dataframe.select_dtypes(include=np.number)
 
     if include_obj_id:

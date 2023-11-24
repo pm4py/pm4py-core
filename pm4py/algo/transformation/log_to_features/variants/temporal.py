@@ -98,5 +98,5 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
         final_values.append(dct)
 
     dataframe = pandas_utils.instantiate_dataframe(final_values)
-    dataframe.fillna(0, inplace=True)
+    dataframe = dataframe.fillna(0)
     return dataframe

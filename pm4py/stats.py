@@ -356,7 +356,7 @@ def get_variants_paths_duration(log: Union[EventLog, pd.DataFrame], activity_key
 
         list_to_concat.append(dir_follo_dataframe)
 
-    dataframe = pd.concat(list_to_concat)
+    dataframe = pandas_utils.concat(list_to_concat)
     dataframe[index_in_trace_column] = -dataframe[index_in_trace_column]
     dataframe = dataframe.sort_values([variant_count, variant_column, index_in_trace_column], ascending=False)
     dataframe[index_in_trace_column] = -dataframe[index_in_trace_column]

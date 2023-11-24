@@ -248,9 +248,9 @@ def from_interleavings(df1: pd.DataFrame, df2: pd.DataFrame, interleavings: pd.D
     del events1[ocel_constants.DEFAULT_OBJECT_ID]
     del events2[ocel_constants.DEFAULT_OBJECT_ID]
 
-    events = pd.concat([events1, events2])
-    objects = pd.concat([objects1, objects2])
-    relations = pd.concat([relations1, relations2, relations3, relations4])
+    events = pandas_utils.concat([events1, events2])
+    objects = pandas_utils.concat([objects1, objects2])
+    relations = pandas_utils.concat([relations1, relations2, relations3, relations4])
 
     events = events.sort_values([ocel_constants.DEFAULT_EVENT_TIMESTAMP, ocel_constants.DEFAULT_EVENT_ID])
     relations = relations.sort_values([ocel_constants.DEFAULT_EVENT_TIMESTAMP, ocel_constants.DEFAULT_EVENT_ID])
@@ -324,7 +324,7 @@ def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.Data
     events = pandas_utils.instantiate_dataframe(events)
     objects = pandas_utils.instantiate_dataframe(objects)
     relations = pandas_utils.instantiate_dataframe(relations)
-    relations.drop_duplicates(subset=[ocel_constants.DEFAULT_EVENT_ID, ocel_constants.DEFAULT_OBJECT_ID], inplace=True)
+    relations = relations.drop_duplicates(subset=[ocel_constants.DEFAULT_EVENT_ID, ocel_constants.DEFAULT_OBJECT_ID])
 
     ocel = OCEL(events=events, objects=objects, relations=relations)
     ocel = ocel_consistency.apply(ocel)

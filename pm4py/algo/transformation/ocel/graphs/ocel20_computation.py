@@ -64,6 +64,6 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     o2o = [{ocel.object_id_column: x[0], ocel.object_id_column+"_2": x[1], ocel.qualifier: x[2]} for x in o2o]
     ocel = copy(ocel)
     o2o = pandas_utils.instantiate_dataframe(o2o)
-    ocel.o2o = pd.concat([ocel.o2o, o2o])
+    ocel.o2o = pandas_utils.concat([ocel.o2o, o2o])
 
     return ocel

@@ -5,7 +5,7 @@ from dateutil import parser
 
 import pm4py
 from pm4py.objects.ocel.obj import OCEL
-from pm4py.util import pandas_utils
+from pm4py.util import constants, pandas_utils
 import os
 
 

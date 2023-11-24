@@ -135,7 +135,7 @@ def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = 
         for key in keys:
             log[key] = log[key].map(lookup_inv[key])
         cl = list()
-        log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
+        log = log.sort_values(by=[df_glue, df_sorting_criterion_key])
         retain = copy.copy(keys)
         retain.extend([u for u in uncompressed if u not in retain])
         encoded_values = list(log[retain].itertuples(index=False, name=None))

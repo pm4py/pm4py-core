@@ -2,7 +2,7 @@ import json, logging
 import importlib.util
 
 from pm4py.util.points_subset import pick_chosen_points_list
-from pm4py.util import exec_utils, pandas_utils
+from pm4py.util import exec_utils, pandas_utils, constants
 from enum import Enum
 
 
@@ -170,7 +170,7 @@ def get_kde_date_attribute(values, parameters=None):
             [x.replace(tzinfo=None).timestamp() for x in red_values])
         density = gaussian_kde(int_values)
         xs = np.linspace(min(int_values), max(int_values), graph_points)
-        xs_transf = pandas_utils.dataframe_column_string_to_datetime(xs * 10 ** 9)
+        xs_transf = pandas_utils.dataframe_column_string_to_datetime(xs * 10 ** 9, utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
 
         return [xs_transf, density(xs)]
     else:

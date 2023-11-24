@@ -2,7 +2,7 @@ from pm4py.objects.log.util import dataframe_utils
 import unittest
 import os
 import pandas as pd
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
 
@@ -13,14 +13,14 @@ class DocTests(unittest.TestCase):
         return log
 
     def load_running_example_df(self):
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
+        df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         return df
 
     def load_running_example_stream(self):
         from pm4py.objects.conversion.log import converter
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
+        df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         stream = converter.apply(df, variant=converter.TO_EVENT_STREAM)
         return stream
 
@@ -35,14 +35,14 @@ class DocTests(unittest.TestCase):
         return log
 
     def load_receipt_df(self):
-        df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
+        df = pandas_utils.read_csv(os.path.join("input_data", "receipt.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         return df
 
     def load_receipt_stream(self):
         from pm4py.objects.conversion.log import converter
-        df = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
+        df = pandas_utils.read_csv(os.path.join("input_data", "receipt.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         stream = converter.apply(df, variant=converter.TO_EVENT_STREAM)
         return stream
 
@@ -73,18 +73,16 @@ class DocTests(unittest.TestCase):
                                  variant=variant, parameters=parameters)
 
     def test_3(self):
-        import pandas as pd
         from pm4py.objects.conversion.log import converter as log_converter
 
-        log_csv = pd.read_csv(os.path.join("input_data", "running-example.csv"), sep=',')
+        log_csv = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"), sep=',')
         event_log = log_converter.apply(log_csv, variant=log_converter.Variants.TO_EVENT_LOG)
 
     def test_4(self):
-        import pandas as pd
         from pm4py.objects.conversion.log import converter as log_converter
 
-        log_csv = pd.read_csv(os.path.join("input_data", "running-example.csv"), sep=',')
-        log_csv.rename(columns={'case:concept:name': 'case'}, inplace=True)
+        log_csv = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"), sep=',')
+        log_csv = log_csv.rename(columns={'case:concept:name': 'case'})
         parameters = {log_converter.Variants.TO_EVENT_LOG.value.Parameters.CASE_ID_KEY: 'case'}
         event_log = log_converter.apply(log_csv, parameters=parameters, variant=log_converter.Variants.TO_EVENT_LOG)
 
@@ -272,8 +270,8 @@ class DocTests(unittest.TestCase):
 
     def test_39(self):
         import os
-        df = pd.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
+        df = pandas_utils.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
 
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
         filtered_df_events = attributes_filter.apply_numeric_events(df, 34, 36,

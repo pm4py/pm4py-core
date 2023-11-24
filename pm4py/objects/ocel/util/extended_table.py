@@ -5,7 +5,7 @@ import pandas as pd
 
 from pm4py.objects.ocel import constants
 from pm4py.objects.ocel.obj import OCEL
-from pm4py.util import exec_utils, pandas_utils
+from pm4py.util import exec_utils, pandas_utils, constants as pm4_constants
 
 
 class Parameters(Enum):
@@ -77,12 +77,12 @@ def get_ocel_from_extended_table(df: pd.DataFrame, objects_df: Optional[Dict[Any
     del objects
 
     df = df[list(non_object_type_columns)]
-    df[event_timestamp] = pandas_utils.dataframe_column_string_to_datetime(df[event_timestamp])
+    df[event_timestamp] = pandas_utils.dataframe_column_string_to_datetime(df[event_timestamp], utc=pm4_constants.ENABLE_DATETIME_COLUMNS_UTC, format=pm4_constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
 
     df[internal_index] = df.index
     relations[internal_index] = relations.index
 
-    relations[event_timestamp] = pandas_utils.dataframe_column_string_to_datetime(relations[event_timestamp])
+    relations[event_timestamp] = pandas_utils.dataframe_column_string_to_datetime(relations[event_timestamp], utc=pm4_constants.ENABLE_DATETIME_COLUMNS_UTC, format=pm4_constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
 
     df = df.sort_values([event_timestamp, internal_index])
     relations = relations.sort_values([event_timestamp, internal_index])

@@ -89,7 +89,7 @@ def apply(ocel: OCEL, file_path: str, parameters: Optional[Dict[Any, Any]] = Non
         if len(df2) > 0:
             del df2[object_type]
             df2 = df2.rename(columns={object_id: "ocel_id", event_timestamp: "ocel_time", changed_field: "ocel_changed_field"})
-            df = pd.concat([df, df2], axis=0)
+            df = pandas_utils.concat([df, df2], axis=0)
 
         df["ocel_id"] = df["ocel_id"].astype("string")
 

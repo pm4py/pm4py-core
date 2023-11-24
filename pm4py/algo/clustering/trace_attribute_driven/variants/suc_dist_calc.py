@@ -108,7 +108,7 @@ def suc_sim(var_list_1, var_list_2, log1, log2, freq_thres, num, parameters=None
             df_1 = occu_var_suc(max_var[i], parameters={"binarize": False})
             for j in range(min_len):
                 df_2 = occu_var_suc(min_var[j], parameters={"binarize": False})
-                df = pd.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
+                df = pandas_utils.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
                 # cosine similarity is used to calculate trace similarity
                 dist_vec[j] = (pdist(np.array([df['freq_x'].values, df['freq_y'].values]), 'cosine')[0])
 
@@ -186,7 +186,7 @@ def suc_sim_dual(var_list_1, var_list_2, log1, log2, freq_thres, num, parameters
             df_1 = occu_var_suc(max_var[i], parameters={"binarize": False})
             for j in range(min_len):
                 df_2 = occu_var_suc(min_var[j], parameters={"binarize": False})
-                df = pd.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
+                df = pandas_utils.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
                 # cosine similarity is used to calculate trace similarity
                 dist_vec[j] = (pdist(np.array([df['freq_x'].values, df['freq_y'].values]), 'cosine')[0])
                 dist_matrix[i][j] = dist_vec[j]
@@ -265,7 +265,7 @@ def suc_sim_percent(log1, log2, percent_1, percent_2):
             df_1 = occu_var_suc(max_var[i], parameters={"binarize": False})
             for j in range(min_len):
                 df_2 = occu_var_suc(min_var[j], parameters={"binarize": False})
-                df = pd.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
+                df = pandas_utils.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
                 # cosine similarity is used to calculate trace similarity
                 dist_vec[j] = (pdist(np.array([df['freq_x'].values, df['freq_y'].values]), 'cosine')[0])
                 if (np.isnan(dist_vec[j]) == True):
@@ -331,7 +331,7 @@ def suc_sim_percent_avg(log1, log2, percent_1, percent_2):
         df_1 = occu_var_suc(max_var[i], parameters={"binarize": False})
         for j in range(min_len):
             df_2 = occu_var_suc(min_var[j], parameters={"binarize": False})
-            df = pd.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
+            df = pandas_utils.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
             # cosine similarity is used to calculate trace similarity
             dist_vec[j] = (pdist(np.array([df['freq_x'].values, df['freq_y'].values]), 'cosine')[0])
             if (np.isnan(dist_vec[j]) == True):

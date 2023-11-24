@@ -2,7 +2,7 @@ from datetime import datetime
 import pm4py
 from pm4py.objects.ocel.obj import OCEL
 import pandas as pd
-from pm4py.util import pandas_utils
+from pm4py.util import pandas_utils, constants
 import os
 
 
@@ -115,16 +115,16 @@ def execute_script():
     objects = pandas_utils.instantiate_dataframe(objects)
     relations = pandas_utils.instantiate_dataframe(relations)
 
-    events.sort_values("ocel:timestamp", inplace=True)
-    relations.sort_values("ocel:timestamp", inplace=True)
+    events = events.sort_values("ocel:timestamp")
+    relations = relations.sort_values("ocel:timestamp")
 
     ocel = OCEL()
     ocel.events = events
     ocel.objects = objects
     ocel.relations = relations
 
-    ocel.events.dropna(subset=["ocel:timestamp"], inplace=True)
-    ocel.relations.dropna(subset=["ocel:timestamp"], inplace=True)
+    ocel.events = ocel.events.dropna(subset=["ocel:timestamp"])
+    ocel.relations = ocel.relations.dropna(subset=["ocel:timestamp"])
 
     pm4py.write_ocel(ocel, "chinook.jsonocel")
     ocel = pm4py.read_ocel("chinook.jsonocel")

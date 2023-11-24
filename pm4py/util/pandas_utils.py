@@ -259,6 +259,18 @@ def dataframe_column_string_to_datetime(*args, **kwargs):
     return pd.to_datetime(*args, **kwargs)
 
 
+def read_csv(*args, **kwargs):
+    return pd.read_csv(*args, **kwargs)
+
+
+def concat(*args, **kwargs):
+    return pd.concat(*args, **kwargs)
+
+
+def merge(*args, **kwargs):
+    return pd.merge(*args, **kwargs)
+
+
 def check_pandas_dataframe_columns(df, activity_key=None, case_id_key=None, timestamp_key=None, start_timestamp_key=None):
     """
     Checks if the dataframe contains all the required columns.

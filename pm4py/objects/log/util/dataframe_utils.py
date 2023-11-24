@@ -161,9 +161,9 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None)
                 try:
                     if timest_format is None:
                         # makes operations faster if non-ISO8601 but anyhow regular dates are provided
-                        df[col] = pandas_utils.dataframe_column_string_to_datetime(df[col], utc=True)
+                        df[col] = pandas_utils.dataframe_column_string_to_datetime(df[col], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
                     else:
-                        df[col] = pandas_utils.dataframe_column_string_to_datetime(df[col], utc=True, format=timest_format)
+                        df[col] = pandas_utils.dataframe_column_string_to_datetime(df[col], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=timest_format)
                 except:
                     # print("exception converting column: "+str(col))
                     pass
@@ -444,7 +444,7 @@ def insert_artificial_start_end(df0: pd.DataFrame, parameters: Optional[Dict[Any
     start_df[activity_key] = artificial_start_activity
     end_df[activity_key] = artificial_end_activity
 
-    df = pd.concat([start_df, df, end_df])
+    df = pandas_utils.concat([start_df, df, end_df])
     df = pandas_utils.insert_index(df, index_key)
     df = df.sort_values([case_id_key, timestamp_key, index_key])
 

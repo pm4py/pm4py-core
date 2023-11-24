@@ -152,7 +152,7 @@ def get_cases_description(df: pd.DataFrame, parameters: Optional[Dict[Union[str,
     last_eve_df = grouped_df.last()
     del grouped_df
     last_eve_df.columns = [str(col) + '_2' for col in first_eve_df.columns]
-    stacked_df = pd.concat([first_eve_df, last_eve_df], axis=1)
+    stacked_df = pandas_utils.concat([first_eve_df, last_eve_df], axis=1)
     del first_eve_df
     del last_eve_df
     del stacked_df[case_id_glue]
@@ -250,7 +250,7 @@ def get_variants_df_with_case_duration(df, parameters=None):
     last_eve_df = grouped_df.last()
     del grouped_df
     last_eve_df.columns = [str(col) + '_2' for col in first_eve_df.columns]
-    stacked_df = pd.concat([first_eve_df, last_eve_df], axis=1)
+    stacked_df = pandas_utils.concat([first_eve_df, last_eve_df], axis=1)
     del first_eve_df
     del last_eve_df
     del stacked_df[case_id_glue]
@@ -263,7 +263,7 @@ def get_variants_df_with_case_duration(df, parameters=None):
     else:
         stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
         stacked_df['caseDuration'] = stacked_df['caseDuration'].dt.total_seconds()
-    new_df = pd.concat([df1, stacked_df], axis=1)
+    new_df = pandas_utils.concat([df1, stacked_df], axis=1)
     del df1
     del stacked_df
     return new_df
