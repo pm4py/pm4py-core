@@ -3,14 +3,13 @@ from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
 from pm4py.visualization.petri_net.variants import wo_decoration, alignments, greedy_decoration_performance, \
     greedy_decoration_frequency, token_decoration_performance, token_decoration_frequency
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from enum import Enum
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
 from pm4py.objects.log.util import dataframe_utils
-from pm4py.visualization.common.gview import serialize, serialize_dot
 import graphviz
 
 
@@ -36,7 +35,7 @@ def apply(net: PetriNet, initial_marking: Marking = None, final_marking: Marking
     if parameters is None:
         parameters = {}
     if log is not None:
-        if isinstance(log, pd.DataFrame):
+        if pandas_utils.check_is_pandas_dataframe(log):
             log = dataframe_utils.convert_timestamp_columns_in_df(log)
 
         log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)

@@ -5,8 +5,8 @@ from pm4py.objects.log import obj as log_instance
 from pm4py.objects.conversion.log import constants
 from copy import copy
 from pm4py.util import constants as pm4_constants
-import numpy as np
-from datetime import datetime
+from pm4py.util import pandas_utils
+
 
 class Parameters(Enum):
     DEEP_COPY = constants.DEEPCOPY
@@ -38,8 +38,9 @@ def apply(log, parameters=None):
 
     if parameters is None:
         parameters = dict()
-    if isinstance(log, pd.DataFrame):
+    if pandas_utils.check_is_pandas_dataframe(log):
         return log
+
     if type(log) is log_instance.EventLog:
         new_parameters = copy(parameters)
         new_parameters["deepcopy"] = False

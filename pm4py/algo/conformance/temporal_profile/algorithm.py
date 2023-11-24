@@ -45,7 +45,7 @@ def apply(elog: Union[EventLog, pd.DataFrame], temporal_profile: typing.Temporal
         - 3) The time passed between the occurrence of the source activity and the target activity
         - 4) The value of (time passed - mean)/std for this occurrence (zeta).
     """
-    if type(elog) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(elog):
         return dataframe.apply(elog, temporal_profile, parameters=parameters)
     else:
         elog = log_converter.apply(elog, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
@@ -72,7 +72,7 @@ def get_diagnostics_dataframe(elog: Union[EventLog, pd.DataFrame], conf_result: 
     if parameters is None:
         parameters = {}
 
-    if type(elog) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
         cases = pandas_utils.format_unique(elog[case_id_key].unique())
     else:
