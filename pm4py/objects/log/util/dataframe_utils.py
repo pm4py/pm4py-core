@@ -161,9 +161,9 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None)
                 try:
                     if timest_format is None:
                         # makes operations faster if non-ISO8601 but anyhow regular dates are provided
-                        df[col] = pd.to_datetime(df[col], utc=True)
+                        df[col] = pandas_utils.dataframe_column_string_to_datetime(df[col], utc=True)
                     else:
-                        df[col] = pd.to_datetime(df[col], utc=True, format=timest_format)
+                        df[col] = pandas_utils.dataframe_column_string_to_datetime(df[col], utc=True, format=timest_format)
                 except:
                     # print("exception converting column: "+str(col))
                     pass
@@ -343,7 +343,7 @@ def get_features_df(df: pd.DataFrame, list_columns: List[str],
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     add_case_identifier_column = exec_utils.get_param_value(Parameters.ADD_CASE_IDENTIFIER_COLUMN, parameters, False)
 
-    fea_df = pd.DataFrame({case_id_key: sorted(pandas_utils.format_unique(df[case_id_key].unique()))})
+    fea_df = pandas_utils.instantiate_dataframe({case_id_key: sorted(pandas_utils.format_unique(df[case_id_key].unique()))})
     for col in list_columns:
         if "obj" in str(df[col].dtype) or "str" in str(df[col].dtype):
             fea_df = select_string_column(df, fea_df, col, case_id_key=case_id_key)

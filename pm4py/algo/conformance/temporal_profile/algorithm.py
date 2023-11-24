@@ -94,6 +94,6 @@ def get_diagnostics_dataframe(elog: Union[EventLog, pd.DataFrame], conf_result: 
             throughput.append(el[2])
             num_st_devs.append(el[3])
 
-    dataframe = pd.DataFrame({"case": case, "source_activity": source_activities, "target_activity": target_activities, "throughput": throughput, "num_st_devs": num_st_devs})
+    dataframe = pandas_utils.instantiate_dataframe({"case": case, "source_activity": source_activities, "target_activity": target_activities, "throughput": throughput, "num_st_devs": num_st_devs})
 
     return dataframe

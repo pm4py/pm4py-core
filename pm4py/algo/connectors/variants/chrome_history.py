@@ -4,7 +4,7 @@ from datetime import datetime
 import pandas as pd
 from enum import Enum
 from typing import Optional, Dict, Any
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 
 
 class Parameters(Enum):
@@ -62,7 +62,7 @@ def apply(parameters: Optional[Dict[Any, str]] = None) -> pd.DataFrame:
         curs.close()
         conn.close()
 
-    dataframe = pd.DataFrame(events)
+    dataframe = pandas_utils.instantiate_dataframe(events)
     if len(dataframe) > 0:
         dataframe["@@index"] = dataframe.index
         dataframe = dataframe.sort_values(["time:timestamp", "@@index"])

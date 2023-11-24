@@ -397,7 +397,7 @@ def parse_event_log_string(traces: Collection[str], sep: str = ",",
             timestamps.append(datetime.datetime.fromtimestamp(this_timest))
             this_timest = this_timest + 1
 
-    dataframe = pd.DataFrame({case_id_key: cases, activity_key: activitiess, timestamp_key: timestamps})
+    dataframe = pandas_utils.instantiate_dataframe({case_id_key: cases, activity_key: activitiess, timestamp_key: timestamps})
 
     if return_legacy_log_object:
         import pm4py

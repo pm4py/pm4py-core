@@ -1,5 +1,6 @@
 from typing import Optional, Dict
 from pm4py.algo.connectors.util import mail as mail_utils
+from pm4py.util import pandas_utils
 import pandas as pd
 from datetime import datetime
 from typing import List, Any
@@ -99,7 +100,7 @@ def apply(parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
     if progress is not None:
         progress.close()
 
-    dataframe = pd.DataFrame(events)
+    dataframe = pandas_utils.instantiate_dataframe(events)
     dataframe["@@index"] = dataframe.index
     dataframe = dataframe.sort_values(["time:timestamp", "@@index"])
     dataframe["@@case_index"] = dataframe.groupby("case:concept:name", sort=False).ngroup()

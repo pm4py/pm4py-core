@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 from pm4py.statistics.attributes.pandas import get as attr_get
 from pm4py.visualization.graphs import visualizer
 from examples import examples_conf
@@ -10,7 +10,7 @@ from examples import examples_conf
 
 def execute_script():
     df = pd.read_csv(os.path.join("..", "tests", "input_data", "receipt.csv"))
-    df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True, format="ISO8601")
+    df["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(df["time:timestamp"], utc=True, format="ISO8601")
     # plots the distribution of the events over the days of a month
     x0, y0 = attr_get.get_events_distribution(df, distr_type="days_month")
     gviz = visualizer.apply(x0, y0, variant=visualizer.Variants.BARPLOT,

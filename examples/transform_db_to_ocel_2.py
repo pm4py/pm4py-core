@@ -5,6 +5,7 @@ from dateutil import parser
 
 import pm4py
 from pm4py.objects.ocel.obj import OCEL
+from pm4py.util import pandas_utils
 import os
 
 
@@ -59,7 +60,7 @@ def execute_script():
         rel2["ocel:type"] = "Employee"
         relations.append(rel2)
 
-    ocel = OCEL(events=pd.DataFrame(events), objects=pd.DataFrame(objects), relations=pd.DataFrame(relations))
+    ocel = OCEL(events=pandas_utils.instantiate_dataframe(events), objects=pandas_utils.instantiate_dataframe(objects), relations=pandas_utils.instantiate_dataframe(relations))
     pm4py.write_ocel(ocel, "log1.jsonocel")
 
     events = None
@@ -141,7 +142,7 @@ def execute_script():
             rel4["ocel:type"] = "Order"
             relations.append(rel4)
 
-    ocel = OCEL(events=pd.DataFrame(events), objects=pd.DataFrame(objects), relations=pd.DataFrame(relations))
+    ocel = OCEL(events=pandas_utils.instantiate_dataframe(events), objects=pandas_utils.instantiate_dataframe(objects), relations=pandas_utils.instantiate_dataframe(relations))
     pm4py.write_ocel(ocel, "log2.jsonocel")
 
     os.remove("log1.jsonocel")

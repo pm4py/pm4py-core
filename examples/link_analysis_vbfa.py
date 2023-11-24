@@ -1,5 +1,5 @@
 import pandas as pd
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 from pm4py.algo.discovery.ocel.link_analysis import algorithm as link_analysis
 import os
 
@@ -7,7 +7,7 @@ import os
 def execute_script():
     dataframe = pd.read_csv(os.path.join("..", "tests", "input_data", "ocel", "VBFA.zip"), compression="zip", dtype="str")
     dataframe["time:timestamp"] = dataframe["ERDAT"] + " " + dataframe["ERZET"]
-    dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], format="%Y%m%d %H%M%S")
+    dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], format="%Y%m%d %H%M%S")
     dataframe["RFWRT"] = dataframe["RFWRT"].astype(float)
     dataframe = link_analysis.apply(dataframe, parameters={"out_column": "VBELN", "in_column": "VBELV",
                                                            "sorting_column": "time:timestamp", "propagate": True})

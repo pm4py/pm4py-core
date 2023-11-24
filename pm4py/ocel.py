@@ -187,8 +187,7 @@ def ocel_objects_interactions_summary(ocel: OCEL) -> pd.DataFrame:
                                   ocel.object_id_column: o1, ocel.object_type_column: obj_types[o1],
                                   ocel.object_id_column+"_2": o2, ocel.object_type_column+"_2": obj_types[o2]})
 
-    import pandas as pd
-    return pd.DataFrame(stream)
+    return pandas_utils.instantiate_dataframe(stream)
 
 
 def discover_ocdfg(ocel: OCEL, business_hours=False, business_hour_slots=constants.DEFAULT_BUSINESS_HOUR_SLOTS) -> Dict[str, Any]:

@@ -36,21 +36,21 @@ class OCEL(object):
         self.changed_field = exec_utils.get_param_value(Parameters.CHANGED_FIELD, parameters, constants.DEFAULT_CHNGD_FIELD)
 
         if events is None:
-            events = pd.DataFrame({self.event_id_column: [], self.event_activity: [], self.event_timestamp: []})
+            events = pandas_utils.instantiate_dataframe({self.event_id_column: [], self.event_activity: [], self.event_timestamp: []})
         if objects is None:
-            objects = pd.DataFrame({self.object_id_column: [], self.object_type_column: []})
+            objects = pandas_utils.instantiate_dataframe({self.object_id_column: [], self.object_type_column: []})
         if relations is None:
-            relations = pd.DataFrame(
+            relations = pandas_utils.instantiate_dataframe(
                 {self.event_id_column: [], self.event_activity: [], self.event_timestamp: [], self.object_id_column: [],
                  self.object_type_column: []})
         if globals is None:
             globals = {}
         if o2o is None:
-            o2o = pd.DataFrame({self.object_id_column: [], self.object_id_column+"_2": [], self.qualifier: []})
+            o2o = pandas_utils.instantiate_dataframe({self.object_id_column: [], self.object_id_column+"_2": [], self.qualifier: []})
         if e2e is None:
-            e2e = pd.DataFrame({self.event_id_column: [], self.event_id_column+"_2": [], self.qualifier: []})
+            e2e = pandas_utils.instantiate_dataframe({self.event_id_column: [], self.event_id_column+"_2": [], self.qualifier: []})
         if object_changes is None:
-            object_changes = pd.DataFrame({self.object_id_column: [], self.object_type_column: [], self.event_timestamp: [], self.changed_field: []})
+            object_changes = pandas_utils.instantiate_dataframe({self.object_id_column: [], self.object_type_column: [], self.event_timestamp: [], self.changed_field: []})
         if self.qualifier not in relations:
             relations[self.qualifier] = [None] * len(relations)
 

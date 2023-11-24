@@ -1199,4 +1199,4 @@ def get_diagnostics_dataframe(log: EventLog, tbr_output: typing.ListAlignments, 
 
         diagn_stream.append({"case_id": case_id, "is_fit": is_fit, "trace_fitness": trace_fitness, "missing": missing, "remaining": remaining, "produced": produced, "consumed": consumed})
 
-    return pd.DataFrame(diagn_stream)
+    return pandas_utils.instantiate_dataframe(diagn_stream)

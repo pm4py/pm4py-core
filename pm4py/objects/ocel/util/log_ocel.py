@@ -2,7 +2,7 @@ from enum import Enum
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
 from typing import Optional, Dict, Any, Collection, Union
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import exec_utils, constants, xes_constants, pandas_utils
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel import constants as ocel_constants
 from pm4py.objects.conversion.log import converter as log_converter
@@ -80,9 +80,9 @@ def from_traditional_log(log: EventLog, parameters: Optional[Dict[Any, Any]] = N
                  ocel_constants.DEFAULT_EVENT_TIMESTAMP: timestamp, ocel_constants.DEFAULT_OBJECT_ID: case_id,
                  ocel_constants.DEFAULT_OBJECT_TYPE: target_object_type})
 
-    events = pd.DataFrame(events)
-    objects = pd.DataFrame(objects)
-    relations = pd.DataFrame(relations)
+    events = pandas_utils.instantiate_dataframe(events)
+    objects = pandas_utils.instantiate_dataframe(objects)
+    relations = pandas_utils.instantiate_dataframe(relations)
 
     return OCEL(events=events, objects=objects, relations=relations)
 
@@ -321,9 +321,9 @@ def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.Data
             except:
                 pass
 
-    events = pd.DataFrame(events)
-    objects = pd.DataFrame(objects)
-    relations = pd.DataFrame(relations)
+    events = pandas_utils.instantiate_dataframe(events)
+    objects = pandas_utils.instantiate_dataframe(objects)
+    relations = pandas_utils.instantiate_dataframe(relations)
     relations.drop_duplicates(subset=[ocel_constants.DEFAULT_EVENT_ID, ocel_constants.DEFAULT_OBJECT_ID], inplace=True)
 
     ocel = OCEL(events=events, objects=objects, relations=relations)

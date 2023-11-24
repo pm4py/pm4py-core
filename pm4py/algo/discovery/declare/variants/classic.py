@@ -4,7 +4,7 @@ from pm4py.algo.discovery.declare.templates import *
 import pandas as pd
 from typing import Union, Dict, Optional, Any, Tuple, Collection, Set, List
 from typing import Counter as TCounter
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import exec_utils, constants, xes_constants, pandas_utils
 from collections import Counter
 
 
@@ -500,7 +500,7 @@ def form_rules_dataframe(log: Union[EventLog, pd.DataFrame],
         for i in range(occs):
             dataframe.append(rules)
 
-    dataframe = pd.DataFrame(dataframe)
+    dataframe = pandas_utils.instantiate_dataframe(dataframe)
     dataframe.fillna(0, inplace=True)
     columns = set(dataframe.columns)
 

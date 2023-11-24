@@ -162,7 +162,6 @@ class OtherPartsTests(unittest.TestCase):
         soj_time = get.apply(log, parameters={get.Parameters.START_TIMESTAMP_KEY: "start_timestamp"})
 
     def test_service_time_pandas(self):
-        import pandas as pd
         dataframe = pd.read_csv(os.path.join("input_data", "interval_event_log.csv"))
         from pm4py.objects.log.util import dataframe_utils
         dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
@@ -175,7 +174,6 @@ class OtherPartsTests(unittest.TestCase):
         conc_act = get.apply(log, parameters={get.Parameters.START_TIMESTAMP_KEY: "start_timestamp"})
 
     def test_concurrent_activities_pandas(self):
-        import pandas as pd
         dataframe = pd.read_csv(os.path.join("input_data", "interval_event_log.csv"))
         from pm4py.objects.log.util import dataframe_utils
         dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
@@ -188,7 +186,6 @@ class OtherPartsTests(unittest.TestCase):
         efg = get.apply(log, parameters={get.Parameters.START_TIMESTAMP_KEY: "start_timestamp"})
 
     def test_efg_pandas(self):
-        import pandas as pd
         dataframe = pd.read_csv(os.path.join("input_data", "interval_event_log.csv"))
         from pm4py.objects.log.util import dataframe_utils
         dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
@@ -251,10 +248,9 @@ class OtherPartsTests(unittest.TestCase):
         self.assertTrue(compression_util.get_variants(cl))
 
     def test_projection_univariate_df(self):
-        import pandas as pd
         from pm4py.util.compression import util as compression_util
         dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True, format="ISO8601")
+        dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], utc=True, format="ISO8601")
         cl = compression_util.project_univariate(dataframe, "concept:name")
         # just verify that the set is non-empty
         self.assertTrue(compression_util.get_start_activities(cl))
@@ -276,10 +272,9 @@ class OtherPartsTests(unittest.TestCase):
         self.assertTrue(compression_util.get_variants(cl))
 
     def test_compression_univariate_df(self):
-        import pandas as pd
         from pm4py.util.compression import util as compression_util
         dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True, format="ISO8601")
+        dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], utc=True, format="ISO8601")
         cl, lookup = compression_util.compress_univariate(dataframe, "concept:name")
         # just verify that the set is non-empty
         self.assertTrue(compression_util.get_start_activities(cl))
@@ -301,10 +296,9 @@ class OtherPartsTests(unittest.TestCase):
         self.assertTrue(compression_util.get_variants(cl))
 
     def test_compression_multivariate_df(self):
-        import pandas as pd
         from pm4py.util.compression import util as compression_util
         dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        dataframe["time:timestamp"] = pd.to_datetime(dataframe["time:timestamp"], utc=True, format="ISO8601")
+        dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], utc=True, format="ISO8601")
         cl, lookup = compression_util.compress_multivariate(dataframe, ["concept:name", "org:resource"])
         # just verify that the set is non-empty
         self.assertTrue(compression_util.get_start_activities(cl))

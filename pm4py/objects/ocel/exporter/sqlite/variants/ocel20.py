@@ -47,8 +47,8 @@ def apply(ocel: OCEL, file_path: str, parameters: Optional[Dict[Any, Any]] = Non
     event_types = sorted(pandas_utils.format_unique(EVENTS["ocel_type"].unique()))
     object_types = sorted(pandas_utils.format_unique(OBJECTS["ocel_type"].unique()))
 
-    EVENT_CORR_TYPE = pd.DataFrame({"ocel_type": event_types, "ocel_type_map": event_types})
-    OBJECT_CORR_TYPE = pd.DataFrame({"ocel_type": object_types, "ocel_type_map": object_types})
+    EVENT_CORR_TYPE = pandas_utils.instantiate_dataframe({"ocel_type": event_types, "ocel_type_map": event_types})
+    OBJECT_CORR_TYPE = pandas_utils.instantiate_dataframe({"ocel_type": object_types, "ocel_type_map": object_types})
 
     if enable_names_stripping:
         EVENT_CORR_TYPE["ocel_type_map"] = EVENT_CORR_TYPE["ocel_type_map"].apply(lambda x: names_stripping.apply(x))

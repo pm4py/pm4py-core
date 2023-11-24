@@ -1,5 +1,5 @@
 from typing import Optional, Dict, Any
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from enum import Enum
 from pm4py.algo.connectors.util import mail as mail_utils
 import pandas as pd
@@ -76,7 +76,7 @@ def apply(parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
     if progress is not None:
         progress.close()
 
-    dataframe = pd.DataFrame(events)
+    dataframe = pandas_utils.instantiate_dataframe(events)
     dataframe["@@index"] = dataframe.index
     dataframe = dataframe.sort_values(["time:timestamp", "@@index"])
     dataframe["@@case_index"] = dataframe.groupby("case:concept:name", sort=False).ngroup()

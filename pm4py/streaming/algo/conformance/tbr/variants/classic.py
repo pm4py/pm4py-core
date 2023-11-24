@@ -4,6 +4,7 @@ import logging
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.streaming.algo.interface import StreamingAlgorithm
 from pm4py.objects.petri_net import semantics
+from pm4py.util import pandas_utils
 from copy import copy
 import sys
 
@@ -429,7 +430,7 @@ class TbrStreamingConformance(StreamingAlgorithm):
             is_fit = missing == 0
             diagn_stream.append({"case": case, "is_fit": is_fit, "missing": missing})
 
-        return pd.DataFrame(diagn_stream)
+        return pandas_utils.instantiate_dataframe(diagn_stream)
 
 
 def apply(net, im, fm, parameters=None):

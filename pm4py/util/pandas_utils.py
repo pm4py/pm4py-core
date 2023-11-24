@@ -248,8 +248,15 @@ def check_is_pandas_dataframe(log):
     boolean
         Is dataframe?
     """
-    import pandas as pd
     return type(log) is pd.DataFrame
+
+
+def instantiate_dataframe(*args, **kwargs):
+    return pd.DataFrame(*args, **kwargs)
+
+
+def dataframe_column_string_to_datetime(*args, **kwargs):
+    return pd.to_datetime(*args, **kwargs)
 
 
 def check_pandas_dataframe_columns(df, activity_key=None, case_id_key=None, timestamp_key=None, start_timestamp_key=None):

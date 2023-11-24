@@ -5,7 +5,7 @@ from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_s
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY, PARAMETER_CONSTANT_CASEID_KEY
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from copy import copy
 from typing import Optional, Dict, Any, Union
 import pandas as pd
@@ -47,8 +47,8 @@ def filter_traces_contained(df: pd.DataFrame, dt1: Union[str, datetime.datetime]
     dt2 = get_dt_from_string(dt2)
     dt1 = dt1.replace(tzinfo=pytz.utc)
     dt2 = dt2.replace(tzinfo=pytz.utc)
-    dt1 = pd.to_datetime(dt1, utc=True)
-    dt2 = pd.to_datetime(dt2, utc=True)
+    dt1 = pandas_utils.dataframe_column_string_to_datetime(dt1, utc=True)
+    dt2 = pandas_utils.dataframe_column_string_to_datetime(dt2, utc=True)
     grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
     first = grouped_df.first()
     last = grouped_df.last()
@@ -94,8 +94,8 @@ def filter_traces_intersecting(df: pd.DataFrame, dt1: Union[str, datetime.dateti
     dt2 = get_dt_from_string(dt2)
     dt1 = dt1.replace(tzinfo=pytz.utc)
     dt2 = dt2.replace(tzinfo=pytz.utc)
-    dt1 = pd.to_datetime(dt1, utc=True)
-    dt2 = pd.to_datetime(dt2, utc=True)
+    dt1 = pandas_utils.dataframe_column_string_to_datetime(dt1, utc=True)
+    dt2 = pandas_utils.dataframe_column_string_to_datetime(dt2, utc=True)
     grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
     first = grouped_df.first()
     last = grouped_df.last()
@@ -145,8 +145,8 @@ def apply_events(df: pd.DataFrame, dt1: Union[str, datetime.datetime], dt2: Unio
     dt2 = get_dt_from_string(dt2)
     dt1 = dt1.replace(tzinfo=pytz.utc)
     dt2 = dt2.replace(tzinfo=pytz.utc)
-    dt1 = pd.to_datetime(dt1, utc=True)
-    dt2 = pd.to_datetime(dt2, utc=True)
+    dt1 = pandas_utils.dataframe_column_string_to_datetime(dt1, utc=True)
+    dt2 = pandas_utils.dataframe_column_string_to_datetime(dt2, utc=True)
 
     ret = df[df[timestamp_key] >= dt1]
     ret = ret[ret[timestamp_key] <= dt2]
@@ -190,8 +190,8 @@ def filter_traces_attribute_in_timeframe(df: pd.DataFrame, attribute: str, attri
     dt2 = get_dt_from_string(dt2)
     dt1 = dt1.replace(tzinfo=pytz.utc)
     dt2 = dt2.replace(tzinfo=pytz.utc)
-    dt1 = pd.to_datetime(dt1, utc=True)
-    dt2 = pd.to_datetime(dt2, utc=True)
+    dt1 = pandas_utils.dataframe_column_string_to_datetime(dt1, utc=True)
+    dt2 = pandas_utils.dataframe_column_string_to_datetime(dt2, utc=True)
     
     filtered = df[df[attribute] == attribute_value]
     filtered = filtered[filtered[timestamp_key] >= dt1]

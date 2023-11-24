@@ -91,7 +91,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
 
     event_types_coll = pd.concat(event_types_coll)
     event_types_coll[event_activity] = event_types_coll[event_id].map(events_id_type)
-    event_types_coll[event_timestamp] = pd.to_datetime(event_types_coll[event_timestamp])
+    event_types_coll[event_timestamp] = pandas_utils.dataframe_column_string_to_datetime(event_types_coll[event_timestamp])
     object_types_coll = pd.concat(object_types_coll)
     object_types_coll[object_type] = object_types_coll[object_id].map(objects_id_type)
     object_types_coll = object_types_coll.rename(columns={"ocel_changed_field": changed_field})
@@ -133,7 +133,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
     del E2O[internal_index]
 
     if object_changes is not None:
-        object_changes[event_timestamp] = pd.to_datetime(object_changes[event_timestamp])
+        object_changes[event_timestamp] = pandas_utils.dataframe_column_string_to_datetime(object_changes[event_timestamp])
         object_changes[internal_index] = object_changes.index
         object_changes = object_changes.sort_values([event_timestamp, internal_index])
         del object_changes[internal_index]

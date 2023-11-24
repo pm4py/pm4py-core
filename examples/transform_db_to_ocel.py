@@ -2,6 +2,7 @@ from datetime import datetime
 import pm4py
 from pm4py.objects.ocel.obj import OCEL
 import pandas as pd
+from pm4py.util import pandas_utils
 import os
 
 
@@ -110,9 +111,9 @@ def execute_script():
         relation = {"ocel:eid": "evemphired"+str(e), "ocel:activity": "Employee Hired", "ocel:timestamp": employee[e]["HireDate"], "ocel:type": "employee", "ocel:oid": "emp"+str(e)}
         relations.append(relation)
 
-    events = pd.DataFrame(events)
-    objects = pd.DataFrame(objects)
-    relations = pd.DataFrame(relations)
+    events = pandas_utils.instantiate_dataframe(events)
+    objects = pandas_utils.instantiate_dataframe(objects)
+    relations = pandas_utils.instantiate_dataframe(relations)
 
     events.sort_values("ocel:timestamp", inplace=True)
     relations.sort_values("ocel:timestamp", inplace=True)

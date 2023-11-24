@@ -35,7 +35,7 @@ def get_dt_from_string(dt: Union[datetime, str]) -> datetime:
         dt = datetime.strptime(dt, "%Y-%m-%d %H:%M:%S")
 
     dt = dt.replace(tzinfo=pytz.utc)
-    dt = pd.to_datetime(dt, utc=True)
+    dt = pandas_utils.dataframe_column_string_to_datetime(dt, utc=True)
 
     return dt
 

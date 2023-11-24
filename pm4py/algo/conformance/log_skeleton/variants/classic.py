@@ -308,4 +308,4 @@ def get_diagnostics_dataframe(log, conf_result, parameters=None):
 
         diagn_stream.append({"case_id": case_id, "no_dev_total": no_dev_total, "no_constr_total": no_constr_total, "dev_fitness": dev_fitness})
 
-    return pd.DataFrame(diagn_stream)
+    return pandas_utils.instantiate_dataframe(diagn_stream)
