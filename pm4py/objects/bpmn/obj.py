@@ -338,8 +338,43 @@ class BPMN(object):
             BPMN.BPMNNode.__init__(self, id, name, in_arcs, out_arcs, process=process)
 
     class Task(Activity):
-        def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None):
+        class Argument(object):
+            def __init__(self, type=None, payload=None):
+                self.__type = type
+                self.__payload = payload
+
+            def get_type(self):
+                return self.__type
+
+            def get_payload(self):
+                return self.__payload
+
+        def __init__(self, id="", name="", arguments=None, in_arcs=None, out_arcs=None, process=None):
+            self.__arguments = arguments
             BPMN.Activity.__init__(self, id, name, in_arcs, out_arcs, process=process)
+
+        def get_arguments(self):
+            return self.__arguments
+
+    class UserTask(Task):
+        def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None):
+            BPMN.Task.__init__(self, id, name, in_arcs, out_arcs, process=process)
+
+    class ScriptTask(Task):
+        def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None):
+            BPMN.Task.__init__(self, id, name, in_arcs, out_arcs, process=process)
+
+    class ServiceTask(Task):
+        def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None):
+            BPMN.Task.__init__(self, id, name, in_arcs, out_arcs, process=process)
+
+    class SendTask(Task):
+        def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None):
+            BPMN.Task.__init__(self, id, name, in_arcs, out_arcs, process=process)
+
+    class ReceiveTask(Task):
+        def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None):
+            BPMN.Task.__init__(self, id, name, in_arcs, out_arcs, process=process)
 
     class SubProcess(Activity):
         def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None, depth=None):
@@ -367,7 +402,8 @@ class BPMN(object):
             self.__gateway_direction = direction
 
     class ParallelGateway(Gateway):
-        def __init__(self, id="", name="", gateway_direction=None, in_arcs=None, out_arcs=None, process=None):
+        def __init__(self, id="", name="", complex=None, gateway_direction=None, in_arcs=None, out_arcs=None, process=None):
+            self.__complex = complex if complex is not None else dict(wait=-1, cancel="last")
             gateway_direction = gateway_direction if gateway_direction is not None else BPMN.Gateway.Direction.UNSPECIFIED
             BPMN.Gateway.__init__(self, id, name, gateway_direction, in_arcs, out_arcs, process=process)
 
