@@ -24,7 +24,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ordered_events = ocel.events[ocel.event_id_column].to_numpy()
+    ordered_events = parameters["ordered_events"] if "ordered_events" in parameters else ocel.events[ocel.event_id_column].to_numpy()
 
     activities = pandas_utils.format_unique(ocel.events[ocel.event_activity].unique())
 

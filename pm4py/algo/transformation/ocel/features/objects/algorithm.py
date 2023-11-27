@@ -110,6 +110,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     T0 = time.time_ns()
 
     ordered_objects = ocel.objects[ocel.object_id_column].to_numpy()
+    parameters["ordered_objects"] = ordered_objects
 
     datas = [[] for x in ordered_objects]
     feature_namess = []

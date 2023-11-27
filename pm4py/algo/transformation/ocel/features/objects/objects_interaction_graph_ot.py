@@ -25,7 +25,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ordered_objects = ocel.objects[ocel.object_id_column].to_numpy()
+    ordered_objects = parameters["ordered_objects"] if "ordered_objects" in parameters else ocel.objects[
+        ocel.object_id_column].to_numpy()
 
     object_types = pandas_utils.format_unique(ocel.objects[ocel.object_type_column].unique())
 
