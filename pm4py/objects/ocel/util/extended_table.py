@@ -79,8 +79,8 @@ def get_ocel_from_extended_table(df: pd.DataFrame, objects_df: Optional[Dict[Any
     df = df[list(non_object_type_columns)]
     df[event_timestamp] = pandas_utils.dataframe_column_string_to_datetime(df[event_timestamp], utc=pm4_constants.ENABLE_DATETIME_COLUMNS_UTC, format=pm4_constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
 
-    df[internal_index] = df.index
-    relations[internal_index] = relations.index
+    df = pandas_utils.insert_index(df, internal_index, copy_dataframe=False, reset_index=False)
+    relations = pandas_utils.insert_index(relations, internal_index, reset_index=False, copy_dataframe=False)
 
     relations[event_timestamp] = pandas_utils.dataframe_column_string_to_datetime(relations[event_timestamp], utc=pm4_constants.ENABLE_DATETIME_COLUMNS_UTC, format=pm4_constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
 

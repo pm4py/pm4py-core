@@ -79,8 +79,8 @@ def get_base_ocel(json_obj: Any, parameters: Optional[Dict[Any, Any]] = None):
     objects = pandas_utils.instantiate_dataframe(objects)
     relations = pandas_utils.instantiate_dataframe(relations)
 
-    events[internal_index] = events.index
-    relations[internal_index] = relations.index
+    events = pandas_utils.insert_index(events, internal_index, reset_index=False, copy_dataframe=False)
+    relations = pandas_utils.insert_index(relations, internal_index, reset_index=False, copy_dataframe=False)
 
     events = events.sort_values([event_timestamp, internal_index])
     relations = relations.sort_values([event_timestamp, internal_index])

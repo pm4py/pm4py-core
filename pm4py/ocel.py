@@ -478,7 +478,7 @@ def ocel_sort_by_additional_column(ocel: OCEL, additional_column: str, primary_c
         ocel = pm4py.ocel_sort_by_additional_column(ocel, 'ordering')
 
     """
-    ocel.events["@@index"] = ocel.events.index
+    ocel.events = pandas_utils.insert_index(ocel.events, "@@index", reset_index=False, copy_dataframe=False)
     ocel.events = ocel.events.sort_values([primary_column, additional_column, "@@index"])
     del ocel.events["@@index"]
     ocel.events = ocel.events.reset_index(drop=True)

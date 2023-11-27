@@ -26,7 +26,7 @@ def occu_suc(dfg, filter_percent):
     :return: dataframe of direct succession relationship with frequency
     '''
 
-    df = pd.DataFrame.from_dict(dict(dfg), orient='index', columns=['freq'])
+    df = pandas_utils.instantiate_dataframe_from_dict(dict(dfg), orient='index', columns=['freq'])
     df = df.sort_values(axis=0, by=['freq'], ascending=False)
     df = df.reset_index().rename(columns={'index': 'suc'})
     # delete duplicated successions
@@ -53,7 +53,7 @@ def occu_var_suc(var_list, parameters=None):
 
     comb_list = [var_list[i] + constants.DEFAULT_VARIANT_SEP + var_list[i + 1] for i in range(len(var_list) - 1)]
     result = Counter(comb_list)  # count number of occurrence of each element
-    df = pd.DataFrame.from_dict(dict(result), orient='index', columns=['freq'])
+    df = pandas_utils.instantiate_dataframe_from_dict(dict(result), orient='index', columns=['freq'])
     df = df.reset_index().rename(columns={'index': 'direct_suc'})
     if (binarize):
         # Binarize succession frequency (optional)

@@ -108,7 +108,7 @@ def sublog_percent(log, upper_percent, parameters=None):
 
     variants_count = case_statistics.get_variant_statistics(log)
     variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
-    df = pd.DataFrame.from_dict(variants_count)
+    df = pandas_utils.instantiate_dataframe_from_dict(variants_count)
     # calculate the cumunative sum
     csum = np.array(df['count']).cumsum()
     csum = csum / csum[-1]
@@ -137,7 +137,7 @@ def sublog_percent2actlist(log, upper_percent, parameters=None):
 
     variants_count = case_statistics.get_variant_statistics(log)
     variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
-    df = pd.DataFrame.from_dict(variants_count)
+    df = pandas_utils.instantiate_dataframe_from_dict(variants_count)
     # calculate the cumunative sum
     csum = np.array(df['count']).cumsum()
     csum = csum / csum[-1]
@@ -166,7 +166,7 @@ def sublog_percent2varlist(log, upper_percent, parameters=None):
 
     variants_count = case_statistics.get_variant_statistics(log)
     variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
-    df = pd.DataFrame.from_dict(variants_count)
+    df = pandas_utils.instantiate_dataframe_from_dict(variants_count)
     # calculate the cumunative sum
     csum = np.array(df['count']).cumsum()
     csum = csum / csum[-1]
@@ -260,7 +260,7 @@ def sublog2df_num(log, num):
     '''
     variants_count = case_statistics.get_variant_statistics(log)
     variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
-    df = pd.DataFrame.from_dict(variants_count)
+    df = pandas_utils.instantiate_dataframe_from_dict(variants_count)
     df_w_count = df.iloc[0:num, :]
     return df_w_count
 
@@ -274,7 +274,7 @@ def sublog2df(log, freq_thres, num):
     '''
     variants_count = case_statistics.get_variant_statistics(log)
     variants_count = sorted(variants_count, key=lambda x: x['count'], reverse=True)
-    df = pd.DataFrame.from_dict(variants_count)
+    df = pandas_utils.instantiate_dataframe_from_dict(variants_count)
     df_w_count_1 = df[df['count'] >= freq_thres]
     df_w_count_2 = df.iloc[0:num, :]
     # take union of two dataframes
@@ -316,11 +316,11 @@ def act_dist(var_list_1, var_list_2, log1, log2, freq_thres):
         if i < min_len:
             for j in range(0, i + 1):
                 result = Counter(max_var[i])  # count number of occurrence of each element
-                df_1 = pd.DataFrame.from_dict(dict(result), orient='index',
+                df_1 = pandas_utils.instantiate_dataframe_from_dict(dict(result), orient='index',
                                               columns=['freq_1'])  # convert dict to dataframe
                 df_1 = df_1.reset_index().rename(columns={'index': 'var'})
                 result = Counter(min_var[j])  # count number of occurrence of each element
-                df_2 = pd.DataFrame.from_dict(dict(result), orient='index', columns=['freq_2'])
+                df_2 = pandas_utils.instantiate_dataframe_from_dict(dict(result), orient='index', columns=['freq_2'])
                 df_2 = df_2.reset_index().rename(columns={'index': 'var'})
                 df = pandas_utils.merge(df_1, df_2, how='outer', on='var').fillna(
                     0)  # merge two variants and replace empty value by zero
@@ -337,10 +337,10 @@ def act_dist(var_list_1, var_list_2, log1, log2, freq_thres):
         if i >= min_len:
             for j in range(min_len):
                 result = Counter(max_var[i])  # count number of occurrence of each element
-                df_1 = pd.DataFrame.from_dict(dict(result), orient='index', columns=['freq_1'])
+                df_1 = pandas_utils.instantiate_dataframe_from_dict(dict(result), orient='index', columns=['freq_1'])
                 df_1 = df_1.reset_index().rename(columns={'index': 'var'})
                 result = Counter(min_var[j])  # count number of occurrence of each element
-                df_2 = pd.DataFrame.from_dict(dict(result), orient='index', columns=['freq_2'])
+                df_2 = pandas_utils.instantiate_dataframe_from_dict(dict(result), orient='index', columns=['freq_2'])
                 df_2 = df_2.reset_index().rename(columns={'index': 'var'})
                 df = pandas_utils.merge(df_1, df_2, how='outer', on='var').fillna(0)
                 df['prod'] = df.apply(lambda x: x['freq_1'] * x['freq_2'], axis=1)

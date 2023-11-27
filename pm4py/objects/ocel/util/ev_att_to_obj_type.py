@@ -62,7 +62,7 @@ def apply(ocel: OCEL, param: str, parameters: Optional[Dict[Any, Any]] = None):
     new_ocel.objects = pandas_utils.concat([new_ocel.objects, new_objects_df])
     new_ocel.relations = pandas_utils.concat([new_ocel.relations, ev_param])
 
-    new_ocel.relations[internal_index] = new_ocel.relations.index
+    new_ocel.relations = pandas_utils.insert_index(new_ocel.relations, internal_index, reset_index=False, copy_dataframe=False)
 
     new_ocel.relations = new_ocel.relations.sort_values([event_timestamp, internal_index])
 

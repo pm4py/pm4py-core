@@ -63,7 +63,7 @@ def apply(parameters: Optional[Dict[Any, str]] = None) -> pd.DataFrame:
 
     dataframe = pandas_utils.instantiate_dataframe(events)
     if len(dataframe) > 0:
-        dataframe["@@index"] = dataframe.index
+        dataframe = pandas_utils.insert_index(dataframe, "@@index", copy_dataframe=False, reset_index=False)
         dataframe = dataframe.sort_values(["time:timestamp", "@@index"])
         dataframe["@@case_index"] = dataframe.groupby("case:concept:name", sort=False).ngroup()
         dataframe = dataframe.sort_values(["@@case_index", "time:timestamp", "@@index"])

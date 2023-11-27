@@ -214,7 +214,7 @@ def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="tim
         df = df.reset_index(drop=True)
 
     if event_index not in df.columns:
-        df[event_index] = df.index
+        df = pandas_utils.insert_index(df, event_index, copy_dataframe=False, reset_index=False)
 
     df = df.set_index(case_id_glue)
 

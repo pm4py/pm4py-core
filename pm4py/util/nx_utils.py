@@ -223,8 +223,8 @@ def nx_to_ocel(nx_graph: nx.DiGraph, parameters: Optional[Dict[Any, Any]] = None
     object_changes = pandas_utils.instantiate_dataframe(object_changes) if object_changes else None
 
     internal_index = "@@index"
-    events[internal_index] = events.index
-    relations[internal_index] = relations.index
+    events = pandas_utils.insert_index(events, internal_index, reset_index=False, copy_dataframe=False)
+    relations = pandas_utils.insert_index(relations, internal_index, reset_index=False, copy_dataframe=False)
 
     events = events.sort_values(["ocel:timestamp", internal_index])
     relations = relations.sort_values(["ocel:timestamp", internal_index])

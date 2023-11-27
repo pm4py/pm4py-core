@@ -25,7 +25,7 @@ def occu_var_act(var_list):
     :return:
     '''
     result = Counter(var_list)  # count number of occurrence of each element
-    df = pd.DataFrame.from_dict(dict(result), orient='index', columns=['freq'])
+    df = pandas_utils.instantiate_dataframe_from_dict(dict(result), orient='index', columns=['freq'])
     df = df.reset_index().rename(columns={'index': 'var'})
 
     return df
