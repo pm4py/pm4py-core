@@ -282,14 +282,19 @@ def instantiate_dataframe_from_records(*args, **kwargs):
 
 
 def dataframe_column_string_to_datetime(*args, **kwargs):
+    if importlib.util.find_spec("cudf") or constants.TEST_CUDF_DATAFRAMES_ENVIRONMENT:
+        if DATAFRAME == pd:
+            format = kwargs["format"] if "format" in kwargs else None
+            if format not in [None, 'mixed', 'ISO8601']:
+                kwargs["exact"] = False
+
     return DATAFRAME.to_datetime(*args, **kwargs)
 
 
 def read_csv(*args, **kwargs):
-    if kwargs:
-        if importlib.util.find_spec("cudf") or constants.TEST_CUDF_DATAFRAMES_ENVIRONMENT:
-            if "encoding" in kwargs:
-                del kwargs["encoding"]
+    if importlib.util.find_spec("cudf") or constants.TEST_CUDF_DATAFRAMES_ENVIRONMENT:
+        if kwargs and "encoding" in kwargs:
+            del kwargs["encoding"]
 
     return DATAFRAME.read_csv(*args, **kwargs)
 
