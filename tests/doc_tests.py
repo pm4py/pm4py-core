@@ -933,10 +933,11 @@ class DocTests(unittest.TestCase):
     def test_business_hours(self):
         from pm4py.util.business_hours import BusinessHours
         from datetime import datetime
+        from pm4py.util.dt_parsing.variants import strpfromiso
         from pm4py.util import constants
 
-        st = datetime.fromtimestamp(100000000)
-        et = datetime.fromtimestamp(200000000)
+        st = strpfromiso.fix_naivety(datetime.fromtimestamp(100000000))
+        et = strpfromiso.fix_naivety(datetime.fromtimestamp(200000000))
         bh_object = BusinessHours(st, et)
         worked_time = bh_object.get_seconds()
 

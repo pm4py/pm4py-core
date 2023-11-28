@@ -14,7 +14,7 @@ from pm4py.objects.log.importer.xes import importer as xes_importer
 class SimplifiedInterfaceTest(unittest.TestCase):
     def test_csv(self):
         df = pandas_utils.read_csv("input_data/running-example.csv")
-        df["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(df["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(df["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         df["case:concept:name"] = df["case:concept:name"].astype("string")
 
         log2 = pm4py.convert_to_event_log(df)
@@ -193,7 +193,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_new_statistics_df(self):
         df = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        df["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(df["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(df["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         df["CaseID"] = df["CaseID"].astype("string")
 
         pm4py.discover_eventually_follows_graph(df, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
@@ -207,7 +207,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_serialization_dataframe(self):
         df = pandas_utils.read_csv("input_data/running-example.csv")
-        df["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(df["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(df["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         ser = pm4py.serialize(df)
         df2 = pm4py.deserialize(ser)
 
@@ -358,7 +358,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_rebase(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         dataframe = pm4py.rebase(dataframe, activity_key="Activity", case_id="CaseID", timestamp_key="Timestamp", timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
@@ -381,7 +381,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_sample_cases_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.sample_cases(dataframe, 2, case_id_key="CaseID")
@@ -393,7 +393,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_sample_events_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.sample_events(dataframe, 2)
@@ -413,7 +413,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_artificial_start_end_dataframe(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.insert_artificial_start_end(dataframe, activity_key="Activity", timestamp_key="Timestamp", case_id_key="CaseID")
@@ -441,7 +441,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_split_train_test_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.split_train_test(dataframe, train_percentage=0.6, case_id_key="CaseID")
@@ -453,7 +453,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_get_prefixes_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.get_prefixes_from_log(dataframe, 3, case_id_key="CaseID")
@@ -469,7 +469,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_hw_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_handover_of_work_network(dataframe, resource_key="Resource", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -481,7 +481,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_wt_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_working_together_network(dataframe, resource_key="Resource", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -493,7 +493,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_act_based_res_sim_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_activity_based_resource_similarity(dataframe, activity_key="Activity", resource_key="Resource", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -505,7 +505,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_subcontracting_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_subcontracting_network(dataframe, resource_key="Resource", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -517,7 +517,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_roles_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_organizational_roles(dataframe, activity_key="Activity", resource_key="Resource", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -529,7 +529,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_network_analysis_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_network_analysis(dataframe, "CaseID", "CaseID", "Resource", "Resource", "Activity", sorting_column="Timestamp", timestamp_column="Timestamp")
@@ -541,7 +541,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_discover_batches_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_batches(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp", resource_key="Resource")
@@ -556,7 +556,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
     def test_log_skeleton_df_simplified_interface(self):
         for diagn_df in [True, False]:
             dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-            dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+            dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
             dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
             model = pm4py.discover_log_skeleton(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -570,7 +570,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_temporal_profile_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         model = pm4py.discover_temporal_profile(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -589,7 +589,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
         pm4py.ocel_flattening(ocel, "order")
     def test_stats_var_tuples_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.get_variants_as_tuples(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -601,7 +601,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_stats_cycle_time_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.get_cycle_time(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -613,7 +613,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_stats_case_durations_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.get_all_case_durations(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -625,7 +625,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_stats_case_duration_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.get_case_duration(dataframe, "1", activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -637,7 +637,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_stats_act_pos_summary_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.get_activity_position_summary(dataframe, "check ticket", activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -649,7 +649,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_act_done_diff_res_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_activity_done_different_resources(dataframe, "check ticket", activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp", resource_key="Resource")
@@ -661,7 +661,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_four_eyes_principle_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_four_eyes_principle(dataframe, "register request", "check ticket", activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp", resource_key="Resource")
@@ -673,7 +673,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_rel_occ_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_log_relative_occurrence_event_attribute(dataframe, 0.8, attribute_key="Activity", level="cases", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -685,7 +685,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_start_activities_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_start_activities(dataframe, ["register request"], activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -697,7 +697,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_end_activities_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_end_activities(dataframe, ["pay compensation"], activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -709,7 +709,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_eve_attr_values_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_event_attribute_values(dataframe, "Activity", ["register request", "pay compensation", "reject request"], case_id_key="CaseID")
@@ -726,7 +726,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_variant_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_variants(dataframe, [('register request', 'examine casually', 'check ticket', 'decide', 'reinitiate request', 'examine thoroughly', 'check ticket', 'decide', 'pay compensation')], activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -738,7 +738,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_dfg_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_directly_follows_relation(dataframe, [("register request", "check ticket")], activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -750,7 +750,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_efg_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_eventually_follows_relation(dataframe, [("register request", "check ticket")], activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -762,7 +762,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_time_range_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_time_range(dataframe, "2009-01-01 01:00:00", "2011-01-01 01:00:00", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -774,7 +774,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_between_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_between(dataframe, "check ticket", "decide", activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -786,7 +786,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_case_size_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_case_size(dataframe, 10, 20, case_id_key="CaseID")
@@ -798,7 +798,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_case_performance_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_case_performance(dataframe, 86400, 8640000, case_id_key="CaseID", timestamp_key="Timestamp")
@@ -810,7 +810,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_act_rework_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_activities_rework(dataframe, "check ticket", activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -822,7 +822,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_paths_perf_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_paths_performance(dataframe, ("register request", "check ticket"), 86400, 864000, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -834,7 +834,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_vars_top_k_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_variants_top_k(dataframe, 1, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -846,7 +846,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_vars_coverage(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_variants_by_coverage_percentage(dataframe, 0.1, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -858,7 +858,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_prefixes_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_prefixes(dataframe, "check ticket", activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -870,7 +870,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_filter_suffixes_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.filter_suffixes(dataframe, "check ticket", activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -882,7 +882,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_discover_perf_dfg_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_performance_dfg(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -899,7 +899,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_discover_ts_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_transition_system(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -911,7 +911,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_discover_pref_tree_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.discover_prefix_tree(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -930,7 +930,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
     def test_conformance_alignments_pn_df_simplified_interface(self):
         for diagn_df in [True, False]:
             dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-            dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+            dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
             dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
             net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -965,53 +965,53 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_fea_ext_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
 
         pm4py.extract_features_dataframe(dataframe, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp", resource_key="Resource")
 
     def test_new_alpha_miner_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
         pm4py.discover_petri_net_alpha(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
 
     def test_new_heu_miner_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
         pm4py.discover_petri_net_heuristics(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
 
     def test_new_dfg_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
         pm4py.discover_dfg(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
 
     def test_new_perf_dfg_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
         pm4py.discover_performance_dfg(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
 
     def test_new_tbr_df_simpl_interface(self):
         for ret_df in [True, False]:
             dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-            dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+            dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
             dataframe["CaseID"] = dataframe["CaseID"].astype("string")
             net, im, fm = pm4py.discover_petri_net_inductive(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
             pm4py.conformance_diagnostics_token_based_replay(dataframe, net, im, fm, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp", return_diagnostics_dataframe=ret_df)
 
     def test_new_tbr_fitness_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
         net, im, fm = pm4py.discover_petri_net_inductive(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
         pm4py.fitness_token_based_replay(dataframe, net, im, fm, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
 
     def test_new_tbr_precision_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
         net, im, fm = pm4py.discover_petri_net_inductive(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
         pm4py.precision_token_based_replay(dataframe, net, im, fm, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
@@ -1019,21 +1019,21 @@ class SimplifiedInterfaceTest(unittest.TestCase):
     def test_new_align_df_simpl_interface(self):
         for diagn_df in [True, False]:
             dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-            dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+            dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
             dataframe["CaseID"] = dataframe["CaseID"].astype("string")
             net, im, fm = pm4py.discover_petri_net_inductive(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
             pm4py.conformance_diagnostics_alignments(dataframe, net, im, fm, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp", return_diagnostics_dataframe=diagn_df)
 
     def test_new_align_fitness_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
         net, im, fm = pm4py.discover_petri_net_inductive(dataframe, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
         pm4py.fitness_alignments(dataframe, net, im, fm, case_id_key="CaseID", activity_key="Activity", timestamp_key="Timestamp")
 
     def test_new_align_precision_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
         net, im, fm = pm4py.discover_petri_net_inductive(dataframe, case_id_key="CaseID", activity_key="Activity",
                                                          timestamp_key="Timestamp")
@@ -1041,7 +1041,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_vis_case_duration_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
         target = os.path.join("test_output_data", "case_duration.svg")
         pm4py.save_vis_case_duration_graph(dataframe, target, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -1049,7 +1049,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_vis_ev_time_graph_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
         target = os.path.join("test_output_data", "ev_graph_graph.svg")
         pm4py.save_vis_events_per_time_graph(dataframe, target, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")
@@ -1057,7 +1057,7 @@ class SimplifiedInterfaceTest(unittest.TestCase):
 
     def test_vis_ev_distr_graph_df(self):
         dataframe = pandas_utils.read_csv("input_data/running-example-transformed.csv")
-        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+        dataframe["Timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["Timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
         dataframe["CaseID"] = dataframe["CaseID"].astype("string")
         target = os.path.join("test_output_data", "ev_distr_graph.svg")
         pm4py.save_vis_events_distribution_graph(dataframe, target, activity_key="Activity", case_id_key="CaseID", timestamp_key="Timestamp")

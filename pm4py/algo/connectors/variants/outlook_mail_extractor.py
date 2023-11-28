@@ -3,6 +3,7 @@ from pm4py.algo.connectors.util import mail as mail_utils
 from pm4py.util import pandas_utils
 import pandas as pd
 from datetime import datetime
+from pm4py.util.dt_parsing.variants import strpfromiso
 from typing import List, Any
 import importlib.util
 import traceback
@@ -44,7 +45,7 @@ def get_events(box, prefix, progress) -> List[Dict[str, Any]]:
             if cla in correspondence:
                 cla = prefix + correspondence[cla]
                 subject = str(it.Subject)
-                timestamp = datetime.fromtimestamp(it.CreationTime.timestamp())
+                timestamp = strpfromiso.fix_naivety(datetime.fromtimestamp(it.CreationTime.timestamp()))
                 sender = "EMPTY"
                 try:
                     sender = str(it.Sender.Name)

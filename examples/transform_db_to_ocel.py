@@ -3,6 +3,7 @@ import pm4py
 from pm4py.objects.ocel.obj import OCEL
 import pandas as pd
 from pm4py.util import pandas_utils, constants
+from pm4py.util.dt_parsing.variants import strpfromiso
 import os
 
 
@@ -12,7 +13,7 @@ def extract_invoices(cursor):
 
     invoices = {}
     for res in cursor.fetchall():
-        dct = {"ocel:oid": "inv"+str(res[0]), "ocel:type": "invoice", "CustomerId": res[0], "InvoiceId": res[1], "InvoiceDate": datetime.fromisoformat(res[2]), "BillingAddress": res[3],
+        dct = {"ocel:oid": "inv"+str(res[0]), "ocel:type": "invoice", "CustomerId": res[0], "InvoiceId": res[1], "InvoiceDate": strpfromiso.apply(res[2]), "BillingAddress": res[3],
              "BillingCity": res[4], "BillingCountry": res[5], "BillingPostalCode": res[6]}
 
         invoices[res[0]] = dct
@@ -47,7 +48,7 @@ def extract_employee(cursor):
     employee = {}
 
     for res in cursor.fetchall():
-        dct = {"ocel:oid": "emp"+str(res[0]), "ocel:type": "employee", "EmployeeId": res[0], "LastName": res[1], "FirstName": res[2], "Title": res[3], "ReportsTo": res[4], "BirthDate": datetime.fromisoformat(res[5]), "HireDate": datetime.fromisoformat(res[6]), "Address": res[7], "City": res[8], "State": res[9], "Country": res[10], "PostalCode": res[11], "Phone": res[12], "Fax": res[13], "Email": res[14]}
+        dct = {"ocel:oid": "emp"+str(res[0]), "ocel:type": "employee", "EmployeeId": res[0], "LastName": res[1], "FirstName": res[2], "Title": res[3], "ReportsTo": res[4], "BirthDate": strpfromiso.apply(res[5]), "HireDate": strpfromiso.apply(res[6]), "Address": res[7], "City": res[8], "State": res[9], "Country": res[10], "PostalCode": res[11], "Phone": res[12], "Fax": res[13], "Email": res[14]}
 
         employee[res[0]] = dct
 

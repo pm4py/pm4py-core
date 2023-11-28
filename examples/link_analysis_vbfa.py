@@ -7,7 +7,7 @@ import os
 def execute_script():
     dataframe = pandas_utils.read_csv(os.path.join("..", "tests", "input_data", "ocel", "VBFA.zip"), compression="zip", dtype="str")
     dataframe["time:timestamp"] = dataframe["ERDAT"] + " " + dataframe["ERZET"]
-    dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], format="%Y%m%d %H%M%S", utc=constants.ENABLE_DATETIME_COLUMNS_UTC)
+    dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], format="%Y%m%d %H%M%S", utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
     dataframe["RFWRT"] = dataframe["RFWRT"].astype(float)
     dataframe = link_analysis.apply(dataframe, parameters={"out_column": "VBELN", "in_column": "VBELV",
                                                            "sorting_column": "time:timestamp", "propagate": True})

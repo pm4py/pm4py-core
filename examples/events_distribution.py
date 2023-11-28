@@ -10,7 +10,7 @@ from examples import examples_conf
 
 def execute_script():
     df = pandas_utils.read_csv(os.path.join("..", "tests", "input_data", "receipt.csv"))
-    df["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(df["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+    df["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(df["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
     # plots the distribution of the events over the days of a month
     x0, y0 = attr_get.get_events_distribution(df, distr_type="days_month")
     gviz = visualizer.apply(x0, y0, variant=visualizer.Variants.BARPLOT,

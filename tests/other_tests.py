@@ -250,7 +250,7 @@ class OtherPartsTests(unittest.TestCase):
     def test_projection_univariate_df(self):
         from pm4py.util.compression import util as compression_util
         dataframe = pandas_utils.read_csv(os.path.join("input_data", "receipt.csv"))
-        dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         cl = compression_util.project_univariate(dataframe, "concept:name")
         # just verify that the set is non-empty
         self.assertTrue(compression_util.get_start_activities(cl))
@@ -274,7 +274,7 @@ class OtherPartsTests(unittest.TestCase):
     def test_compression_univariate_df(self):
         from pm4py.util.compression import util as compression_util
         dataframe = pandas_utils.read_csv(os.path.join("input_data", "receipt.csv"))
-        dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         cl, lookup = compression_util.compress_univariate(dataframe, "concept:name")
         # just verify that the set is non-empty
         self.assertTrue(compression_util.get_start_activities(cl))
@@ -298,7 +298,7 @@ class OtherPartsTests(unittest.TestCase):
     def test_compression_multivariate_df(self):
         from pm4py.util.compression import util as compression_util
         dataframe = pandas_utils.read_csv(os.path.join("input_data", "receipt.csv"))
-        dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
         cl, lookup = compression_util.compress_multivariate(dataframe, ["concept:name", "org:resource"])
         # just verify that the set is non-empty
         self.assertTrue(compression_util.get_start_activities(cl))

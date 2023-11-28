@@ -13,6 +13,7 @@ from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants, xes_constants, pandas_utils
 import warnings
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
+from pm4py.util.dt_parsing.variants import strpfromiso
 import deprecation
 
 
@@ -394,7 +395,7 @@ def parse_event_log_string(traces: Collection[str], sep: str = ",",
         for act in activities:
             cases.append(str(index))
             activitiess.append(act)
-            timestamps.append(datetime.datetime.fromtimestamp(this_timest))
+            timestamps.append(strpfromiso.fix_naivety(datetime.datetime.fromtimestamp(this_timest)))
             this_timest = this_timest + 1
 
     dataframe = pandas_utils.instantiate_dataframe({case_id_key: cases, activity_key: activitiess, timestamp_key: timestamps})

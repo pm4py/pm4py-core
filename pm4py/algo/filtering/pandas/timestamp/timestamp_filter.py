@@ -1,5 +1,3 @@
-import pytz
-
 from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
@@ -45,10 +43,8 @@ def filter_traces_contained(df: pd.DataFrame, dt1: Union[str, datetime.datetime]
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
-    dt1 = dt1.replace(tzinfo=pytz.utc)
-    dt2 = dt2.replace(tzinfo=pytz.utc)
-    dt1 = pandas_utils.dataframe_column_string_to_datetime(dt1, utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
-    dt2 = pandas_utils.dataframe_column_string_to_datetime(dt2, utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
+    dt1 = pandas_utils.dataframe_column_string_to_datetime(dt1, utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
+    dt2 = pandas_utils.dataframe_column_string_to_datetime(dt2, utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
     grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
     first = grouped_df.first()
     last = grouped_df.last()
@@ -92,10 +88,8 @@ def filter_traces_intersecting(df: pd.DataFrame, dt1: Union[str, datetime.dateti
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
-    dt1 = dt1.replace(tzinfo=pytz.utc)
-    dt2 = dt2.replace(tzinfo=pytz.utc)
-    dt1 = pandas_utils.dataframe_column_string_to_datetime(dt1, utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
-    dt2 = pandas_utils.dataframe_column_string_to_datetime(dt2, utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
+    dt1 = pandas_utils.dataframe_column_string_to_datetime(dt1, utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
+    dt2 = pandas_utils.dataframe_column_string_to_datetime(dt2, utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
     grouped_df = df[[case_id_glue, timestamp_key]].groupby(df[case_id_glue])
     first = grouped_df.first()
     last = grouped_df.last()
@@ -143,10 +137,8 @@ def apply_events(df: pd.DataFrame, dt1: Union[str, datetime.datetime], dt2: Unio
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, DEFAULT_TIMESTAMP_KEY)
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
-    dt1 = dt1.replace(tzinfo=pytz.utc)
-    dt2 = dt2.replace(tzinfo=pytz.utc)
-    dt1 = pandas_utils.dataframe_column_string_to_datetime(dt1, utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
-    dt2 = pandas_utils.dataframe_column_string_to_datetime(dt2, utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
+    dt1 = pandas_utils.dataframe_column_string_to_datetime(dt1, utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
+    dt2 = pandas_utils.dataframe_column_string_to_datetime(dt2, utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
 
     ret = df[df[timestamp_key] >= dt1]
     ret = ret[ret[timestamp_key] <= dt2]
@@ -188,10 +180,8 @@ def filter_traces_attribute_in_timeframe(df: pd.DataFrame, attribute: str, attri
     
     dt1 = get_dt_from_string(dt1)
     dt2 = get_dt_from_string(dt2)
-    dt1 = dt1.replace(tzinfo=pytz.utc)
-    dt2 = dt2.replace(tzinfo=pytz.utc)
-    dt1 = pandas_utils.dataframe_column_string_to_datetime(dt1, utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
-    dt2 = pandas_utils.dataframe_column_string_to_datetime(dt2, utc=constants.ENABLE_DATETIME_COLUMNS_UTC, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
+    dt1 = pandas_utils.dataframe_column_string_to_datetime(dt1, utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
+    dt2 = pandas_utils.dataframe_column_string_to_datetime(dt2, utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
     
     filtered = df[df[attribute] == attribute_value]
     filtered = filtered[filtered[timestamp_key] >= dt1]
