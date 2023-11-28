@@ -286,6 +286,11 @@ def dataframe_column_string_to_datetime(*args, **kwargs):
 
 
 def read_csv(*args, **kwargs):
+    if kwargs:
+        if importlib.util.find_spec("cudf") or constants.TEST_CUDF_DATAFRAMES_ENVIRONMENT:
+            if "encoding" in kwargs:
+                del kwargs["encoding"]
+
     return DATAFRAME.read_csv(*args, **kwargs)
 
 
