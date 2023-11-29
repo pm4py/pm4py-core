@@ -1,6 +1,5 @@
 import os
 import unittest
-import pandas as pd
 from pm4py.algo.discovery.log_skeleton import algorithm as lsk_alg
 from pm4py.algo.conformance.log_skeleton import algorithm as lsk_conf_alg
 from pm4py.objects.process_tree.importer import importer as ptree_importer
@@ -74,7 +73,7 @@ class OtherPartsTests(unittest.TestCase):
 
     def test_performance_spectrum_df(self):
         df = pandas_utils.read_csv(os.path.join("input_data", "receipt.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         pspectr = df_pspectrum.apply(df, ["T02 Check confirmation of receipt", "T03 Adjust confirmation of receipt"],
                                      1000, {})
 
@@ -125,7 +124,7 @@ class OtherPartsTests(unittest.TestCase):
 
     def test_footprints_tree_df(self):
         df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         from pm4py.algo.discovery.inductive import algorithm as inductive_miner
         log = converter.apply(df, variant=converter.Variants.TO_EVENT_LOG)
         tree = inductive_miner.apply(log)
@@ -164,7 +163,7 @@ class OtherPartsTests(unittest.TestCase):
     def test_service_time_pandas(self):
         dataframe = pandas_utils.read_csv(os.path.join("input_data", "interval_event_log.csv"))
         from pm4py.objects.log.util import dataframe_utils
-        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         from pm4py.statistics.service_time.pandas import get
         soj_time = get.apply(dataframe, parameters={get.Parameters.START_TIMESTAMP_KEY: "start_timestamp"})
 
@@ -176,7 +175,7 @@ class OtherPartsTests(unittest.TestCase):
     def test_concurrent_activities_pandas(self):
         dataframe = pandas_utils.read_csv(os.path.join("input_data", "interval_event_log.csv"))
         from pm4py.objects.log.util import dataframe_utils
-        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         from pm4py.statistics.concurrent_activities.pandas import get
         conc_act = get.apply(dataframe, parameters={get.Parameters.START_TIMESTAMP_KEY: "start_timestamp"})
 
@@ -188,7 +187,7 @@ class OtherPartsTests(unittest.TestCase):
     def test_efg_pandas(self):
         dataframe = pandas_utils.read_csv(os.path.join("input_data", "interval_event_log.csv"))
         from pm4py.objects.log.util import dataframe_utils
-        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         from pm4py.statistics.eventually_follows.pandas import get
         efg = get.apply(dataframe, parameters={get.Parameters.START_TIMESTAMP_KEY: "start_timestamp"})
 
@@ -230,11 +229,6 @@ class OtherPartsTests(unittest.TestCase):
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
         msd = minimum_self_distance.apply(log)
 
-    def test_lp_solver(self):
-        import pm4py
-        if "cvxopt" not in pm4py.util.lp.solver.DEFAULT_LP_SOLVER_VARIANT:
-            raise Exception("cvxopt is not the solver")
-
     def test_projection_univariate_log(self):
         import pm4py
         from pm4py.util.compression import util as compression_util
@@ -250,7 +244,7 @@ class OtherPartsTests(unittest.TestCase):
     def test_projection_univariate_df(self):
         from pm4py.util.compression import util as compression_util
         dataframe = pandas_utils.read_csv(os.path.join("input_data", "receipt.csv"))
-        dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT, timest_columns=["time:timestamp"])
         cl = compression_util.project_univariate(dataframe, "concept:name")
         # just verify that the set is non-empty
         self.assertTrue(compression_util.get_start_activities(cl))
@@ -274,7 +268,7 @@ class OtherPartsTests(unittest.TestCase):
     def test_compression_univariate_df(self):
         from pm4py.util.compression import util as compression_util
         dataframe = pandas_utils.read_csv(os.path.join("input_data", "receipt.csv"))
-        dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT, timest_columns=["time:timestamp"])
         cl, lookup = compression_util.compress_univariate(dataframe, "concept:name")
         # just verify that the set is non-empty
         self.assertTrue(compression_util.get_start_activities(cl))
@@ -298,7 +292,7 @@ class OtherPartsTests(unittest.TestCase):
     def test_compression_multivariate_df(self):
         from pm4py.util.compression import util as compression_util
         dataframe = pandas_utils.read_csv(os.path.join("input_data", "receipt.csv"))
-        dataframe["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT, timest_columns=["time:timestamp"])
         cl, lookup = compression_util.compress_multivariate(dataframe, ["concept:name", "org:resource"])
         # just verify that the set is non-empty
         self.assertTrue(compression_util.get_start_activities(cl))

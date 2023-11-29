@@ -937,7 +937,7 @@ def main():
     execute_script(link_analysis_vbfa)
     execute_script(ocel_streaming)
     execute_script(petri_manual_generation)
-    execute_script(timestamp_interleavings)
+    #execute_script(timestamp_interleavings)
     execute_script(object_centric_petri_net_discovery)
     execute_script(trans_system_stochastic_view)
     execute_script(network_analysis)

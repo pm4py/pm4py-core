@@ -2,7 +2,7 @@ import os
 
 import pm4py
 from pm4py.util import constants, pandas_utils
-import pandas as pd
+from pm4py.objects.log.util import dataframe_utils
 from examples import examples_conf
 
 
@@ -14,7 +14,7 @@ def execute_script():
 
     # reads a CSV into a dataframe
     df = pandas_utils.read_csv("../tests/input_data/running-example.csv")
-    df["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(df["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+    df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT, timest_columns=["time:timestamp"])
     df["case:concept:name"] = df["case:concept:name"].astype("string")
 
     # converts the dataframe to an event log

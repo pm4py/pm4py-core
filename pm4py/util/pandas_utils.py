@@ -283,10 +283,11 @@ def instantiate_dataframe_from_records(*args, **kwargs):
 
 def dataframe_column_string_to_datetime(*args, **kwargs):
     if importlib.util.find_spec("cudf") or constants.TEST_CUDF_DATAFRAMES_ENVIRONMENT:
-        if DATAFRAME == pd:
+        pass
+        """if DATAFRAME == pd:
             format = kwargs["format"] if "format" in kwargs else None
             if format not in [None, 'mixed', 'ISO8601']:
-                kwargs["exact"] = False
+                kwargs["exact"] = False"""
 
     return DATAFRAME.to_datetime(*args, **kwargs)
 

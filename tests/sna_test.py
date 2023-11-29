@@ -3,7 +3,6 @@ import unittest
 
 from pm4py.algo.organizational_mining.sna import algorithm as sna_alg, util as sna_util, util
 from pm4py.objects.log.importer.xes import importer as xes_importer
-import pandas as pd
 from pm4py.util import constants, pandas_utils
 from pm4py.objects.log.util import dataframe_utils
 
@@ -27,7 +26,7 @@ class SnaTests(unittest.TestCase):
         self.dummy_variable = "dummy_value"
 
         log = pandas_utils.read_csv(os.path.join("..", "tests", "input_data", "running-example.csv"))
-        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
 
         hw_values = sna_alg.apply(log, variant=sna_alg.Variants.HANDOVER_PANDAS)
         wt_values = sna_alg.apply(log, variant=sna_alg.Variants.WORKING_TOGETHER_PANDAS)
@@ -77,7 +76,7 @@ class SnaTests(unittest.TestCase):
     def test_res_profiles_df(self):
         from pm4py.algo.organizational_mining.resource_profiles import algorithm
         log = pandas_utils.read_csv(os.path.join("..", "tests", "input_data", "running-example.csv"))
-        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         algorithm.distinct_activities(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sara")
         algorithm.activity_frequency(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sara", "decide")
         algorithm.activity_completions(log, "2010-12-30 00:00:00", "2011-01-25 00:00:00", "Sara")

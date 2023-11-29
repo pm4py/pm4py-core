@@ -1,6 +1,5 @@
 import os
 import pm4py
-import pandas as pd
 from pm4py.algo.transformation.ocel.features.events import algorithm as events_feature_extraction
 from pm4py.util import pandas_utils, constants
 

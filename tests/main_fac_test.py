@@ -1,8 +1,6 @@
 import os
 import unittest
 
-import pandas as pd
-
 from pm4py.algo.conformance.alignments.petri_net import algorithm as align_alg
 from pm4py.algo.conformance.tokenreplay import algorithm as tr_alg
 from pm4py.algo.discovery.alpha import algorithm as alpha_miner
@@ -47,7 +45,7 @@ class MainFactoriesTest(unittest.TestCase):
 
     def test_alphaminer_stream(self):
         df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         stream = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
         net, im, fm = alpha_miner.apply(stream)
         aligned_traces_tr = tr_alg.apply(stream, net, im, fm)
@@ -60,7 +58,7 @@ class MainFactoriesTest(unittest.TestCase):
 
     def test_alphaminer_df(self):
         log = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         net, im, fm = alpha_miner.apply(log)
         aligned_traces_tr = tr_alg.apply(log, net, im, fm)
         aligned_traces_alignments = align_alg.apply(log, net, im, fm)
@@ -84,7 +82,7 @@ class MainFactoriesTest(unittest.TestCase):
 
     def test_inductiveminer_df(self):
         log = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         process_tree = inductive_miner.apply(log)
         net, im, fm = process_tree_converter.apply(process_tree)
         aligned_traces_tr = tr_alg.apply(log, net, im, fm)
@@ -108,7 +106,7 @@ class MainFactoriesTest(unittest.TestCase):
 
     def test_heu_stream(self):
         df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         stream = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
         net, im, fm = heuristics_miner.apply(stream)
         aligned_traces_tr = tr_alg.apply(stream, net, im, fm)
@@ -121,7 +119,7 @@ class MainFactoriesTest(unittest.TestCase):
 
     def test_heu_df(self):
         log = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         net, im, fm = heuristics_miner.apply(log)
         aligned_traces_tr = tr_alg.apply(log, net, im, fm)
         aligned_traces_alignments = align_alg.apply(log, net, im, fm)
@@ -137,13 +135,13 @@ class MainFactoriesTest(unittest.TestCase):
 
     def test_dfg_stream(self):
         df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         stream = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
         dfg = dfg_mining.apply(stream)
 
     def test_dfg_df(self):
         df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         dfg = dfg_mining.apply(df)
 
     def test_ts_log(self):
@@ -152,18 +150,18 @@ class MainFactoriesTest(unittest.TestCase):
 
     def test_ts_stream(self):
         df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         stream = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
         ts = ts_disc.apply(stream)
 
     def test_ts_df(self):
         df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         ts = ts_disc.apply(df)
 
     def test_csvimp_xesexp(self):
         df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         log0 = log_conversion.apply(df, variant=log_conversion.TO_EVENT_STREAM)
         log = log_conversion.apply(log0, variant=log_conversion.TO_EVENT_LOG)
         stream = log_conversion.apply(log0, variant=log_conversion.TO_EVENT_STREAM)
@@ -185,7 +183,7 @@ class MainFactoriesTest(unittest.TestCase):
 
     def test_pdimp_xesexp(self):
         log0 = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        log0 = dataframe_utils.convert_timestamp_columns_in_df(log0, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        log0 = dataframe_utils.convert_timestamp_columns_in_df(log0, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         log = log_conversion.apply(log0, variant=log_conversion.TO_EVENT_LOG)
         stream = log_conversion.apply(log0, variant=log_conversion.TO_EVENT_STREAM)
         df = log_conversion.apply(log0, variant=log_conversion.TO_DATA_FRAME)

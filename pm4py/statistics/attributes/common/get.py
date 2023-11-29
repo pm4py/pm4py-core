@@ -170,7 +170,7 @@ def get_kde_date_attribute(values, parameters=None):
             [x.replace(tzinfo=None).timestamp() for x in red_values])
         density = gaussian_kde(int_values)
         xs = np.linspace(min(int_values), max(int_values), graph_points)
-        xs_transf = pandas_utils.dataframe_column_string_to_datetime(xs * 10 ** 9, utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
+        xs_transf = pd.to_datetime(xs * 10 ** 9, unit="ns")
 
         return [xs_transf, density(xs)]
     else:

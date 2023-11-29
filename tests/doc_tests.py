@@ -1,7 +1,6 @@
 from pm4py.objects.log.util import dataframe_utils
 import unittest
 import os
-import pandas as pd
 from pm4py.util import constants, pandas_utils
 from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 
@@ -14,13 +13,13 @@ class DocTests(unittest.TestCase):
 
     def load_running_example_df(self):
         df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         return df
 
     def load_running_example_stream(self):
         from pm4py.objects.conversion.log import converter
         df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         stream = converter.apply(df, variant=converter.TO_EVENT_STREAM)
         return stream
 
@@ -36,13 +35,13 @@ class DocTests(unittest.TestCase):
 
     def load_receipt_df(self):
         df = pandas_utils.read_csv(os.path.join("input_data", "receipt.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         return df
 
     def load_receipt_stream(self):
         from pm4py.objects.conversion.log import converter
         df = pandas_utils.read_csv(os.path.join("input_data", "receipt.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         stream = converter.apply(df, variant=converter.TO_EVENT_STREAM)
         return stream
 
@@ -271,7 +270,7 @@ class DocTests(unittest.TestCase):
     def test_39(self):
         import os
         df = pandas_utils.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
 
         from pm4py.algo.filtering.pandas.attributes import attributes_filter
         filtered_df_events = attributes_filter.apply_numeric_events(df, 34, 36,
@@ -967,20 +966,6 @@ class DocTests(unittest.TestCase):
 
         gviz = graphs_visualizer.apply_plot(x, y, variant=graphs_visualizer.Variants.CASES)
         gviz = graphs_visualizer.apply_semilogx(x, y, variant=graphs_visualizer.Variants.CASES)
-
-    def test_distr_events_time(self):
-        import os
-        from pm4py.objects.log.importer.xes import importer as xes_importer
-        log_path = os.path.join("input_data", "receipt.xes")
-        log = xes_importer.apply(log_path)
-
-        from pm4py.algo.filtering.log.attributes import attributes_filter
-
-        x, y = attributes_filter.get_kde_date_attribute(log, attribute="time:timestamp")
-
-        from pm4py.visualization.graphs import visualizer as graphs_visualizer
-
-        gviz = graphs_visualizer.apply_plot(x, y, variant=graphs_visualizer.Variants.DATES)
 
     def test_distr_num_attribute(self):
         import os

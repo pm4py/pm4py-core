@@ -17,9 +17,9 @@ def fix_dataframe_column(serie):
 
 
 def fix_naivety(dt):
-    if dt.tzinfo is None and constants.ENABLE_DATETIME_COLUMNS_AWARE:
+    if constants.ENABLE_DATETIME_COLUMNS_AWARE:
         dt = dt.replace(tzinfo=timezone.utc)
-    elif dt.tzinfo is not None and not constants.ENABLE_DATETIME_COLUMNS_AWARE:
+    else:
         dt = dt.replace(tzinfo=None)
 
     return dt

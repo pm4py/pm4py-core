@@ -7,7 +7,6 @@ from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from pm4py.algo.conformance.tokenreplay.variants.token_replay import NoConceptNameException
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from pm4py.objects import petri_net
-import pandas as pd
 from pm4py.objects.log.util import dataframe_utils
 from pm4py.util import constants, pandas_utils
 from pm4py.objects.log.importer.xes import importer as xes_importer
@@ -33,7 +32,7 @@ class InductiveMinerTest(unittest.TestCase):
             log = xes_importer.apply(log_name)
         else:
             df = pandas_utils.read_csv(log_name)
-            df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+            df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
             log = log_conversion.apply(df, variant=log_conversion.Variants.TO_EVENT_LOG)
         process_tree = inductive_miner.apply(log)
         net, marking, final_marking = process_tree_converter.apply(process_tree)

@@ -1,7 +1,6 @@
 import pm4py
 from pm4py.algo.discovery.log_skeleton import algorithm as log_skeleton_discovery
 from pm4py.algo.conformance.log_skeleton import algorithm as log_skeleton_conformance
-import pandas as pd
 from pm4py.util import constants, pandas_utils
 
 

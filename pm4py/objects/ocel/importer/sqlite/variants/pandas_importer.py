@@ -3,7 +3,7 @@ from typing import Dict, Any, Optional
 import pandas as pd
 from pm4py.objects.ocel.util import ocel_consistency
 from pm4py.objects.ocel.util import filtering_utils
-from pm4py.util.dt_parsing.variants import strpfromiso
+from pm4py.objects.log.util import dataframe_utils
 from pm4py.util import pandas_utils, constants as pm4_constants
 
 
@@ -34,16 +34,13 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     objects = pd.read_sql("SELECT * FROM OBJECTS", conn)
     relations = pd.read_sql("SELECT * FROM RELATIONS", conn)
 
-    events["ocel:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(events["ocel:timestamp"],
-                                                              utc=pm4_constants.ENABLE_DATETIME_COLUMNS_AWARE,
-                                                              format=pm4_constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
+    events = dataframe_utils.convert_timestamp_columns_in_df(events,
+                                                                     timest_format=pm4_constants.DEFAULT_TIMESTAMP_PARSE_FORMAT,
+                                                                     timest_columns=["ocel:timestamp"])
 
-    relations["ocel:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(events["ocel:timestamp"],
-                                                              utc=pm4_constants.ENABLE_DATETIME_COLUMNS_AWARE,
-                                                              format=pm4_constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
-
-    events["ocel:timestamp"] = strpfromiso.fix_dataframe_column(events["ocel:timestamp"])
-    relations["ocel:timestamp"] = strpfromiso.fix_dataframe_column(relations["ocel:timestamp"])
+    relations = dataframe_utils.convert_timestamp_columns_in_df(relations,
+                                                                     timest_format=pm4_constants.DEFAULT_TIMESTAMP_PARSE_FORMAT,
+                                                                     timest_columns=["ocel:timestamp"])
 
     ocel = OCEL(events=events, objects=objects, relations=relations, parameters=parameters)
     ocel = ocel_consistency.apply(ocel, parameters=parameters)

@@ -4,7 +4,6 @@ from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.conversion.process_tree import converter as process_tree_converter
 from pm4py.util import constants, pandas_utils
 import os
-import pandas as pd
 
 
 class AlgorithmTest(unittest.TestCase):
@@ -103,7 +102,7 @@ class AlgorithmTest(unittest.TestCase):
 
     def test_alpha_miner_dataframe(self):
         df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         from pm4py.algo.discovery.alpha import algorithm as alpha_miner
         net, im, fm = alpha_miner.apply(df, variant=alpha_miner.Variants.ALPHA_VERSION_CLASSIC)
 
@@ -123,7 +122,7 @@ class AlgorithmTest(unittest.TestCase):
         from pm4py.algo.discovery.performance_spectrum import algorithm as pspectrum
         ps = pspectrum.apply(log, ["register request", "decide"])
         df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         ps = pspectrum.apply(df, ["register request", "decide"])
 
 if __name__ == "__main__":

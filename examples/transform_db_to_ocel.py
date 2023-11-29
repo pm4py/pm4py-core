@@ -1,7 +1,6 @@
 from datetime import datetime
 import pm4py
 from pm4py.objects.ocel.obj import OCEL
-import pandas as pd
 from pm4py.util import pandas_utils, constants
 from pm4py.util.dt_parsing.variants import strpfromiso
 import os

@@ -47,8 +47,7 @@ def apply(log, parameters=None):
         log = to_event_stream.apply(log, parameters=new_parameters)
 
     transf_log = [dict(x) for x in log]
-
-    df = pandas_utils.instantiate_dataframe_from_dict(transf_log)
+    df = pandas_utils.instantiate_dataframe(transf_log)
 
     df.attrs = copy(log.properties)
     if pm4_constants.PARAMETER_CONSTANT_CASEID_KEY in df.attrs:

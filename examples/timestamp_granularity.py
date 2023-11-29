@@ -1,4 +1,3 @@
-import pandas as pd
 import pm4py
 from pm4py.util import constants, pandas_utils
 import time
@@ -6,7 +5,7 @@ import time
 
 def execute_script():
     dataframe = pandas_utils.read_csv("../tests/input_data/receipt.csv")
-    dataframe = pm4py.format_dataframe(dataframe, timest_format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+    dataframe = pm4py.format_dataframe(dataframe, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
 
     # prints the original timestamp column of the dataframe
     print(dataframe["time:timestamp"])

@@ -1,6 +1,6 @@
-import pandas as pd
 import pm4py
 from pm4py.util import constants, pandas_utils
+from pm4py.objects.log.util import dataframe_utils
 from pm4py.algo.merging.case_relations import algorithm as case_relations_merging
 from examples import examples_conf
 import os
@@ -8,9 +8,9 @@ import os
 
 def execute_script():
     dataframe1 = pandas_utils.read_csv(os.path.join("..", "tests", "input_data", "interleavings", "receipt_even.csv"))
-    dataframe1["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe1["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
     dataframe2 = pandas_utils.read_csv(os.path.join("..", "tests", "input_data", "interleavings", "receipt_odd.csv"))
-    dataframe2["time:timestamp"] = pandas_utils.dataframe_column_string_to_datetime(dataframe2["time:timestamp"], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT)
+    dataframe1 = dataframe_utils.convert_timestamp_columns_in_df(dataframe1, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT, timest_columns=["time:timestamp"])
+    dataframe2 = dataframe_utils.convert_timestamp_columns_in_df(dataframe2, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT, timest_columns=["time:timestamp"])
     case_relations = pandas_utils.read_csv(os.path.join("..", "tests", "input_data", "interleavings", "case_relations.csv"))
     merged = case_relations_merging.apply(dataframe1, dataframe2, case_relations)
     dfg, sa, ea = pm4py.discover_dfg(merged)

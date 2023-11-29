@@ -1,7 +1,6 @@
 import os
 
 import pm4py
-import pandas as pd
 from pm4py.util import constants, pandas_utils
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.objects.conversion.dfg import converter as dfg_conv

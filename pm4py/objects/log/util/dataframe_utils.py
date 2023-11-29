@@ -10,6 +10,7 @@ from pm4py.util import exec_utils
 from pm4py.util import points_subset
 from pm4py.util import xes_constants, pandas_utils
 from pm4py.util.dt_parsing.variants import strpfromiso
+import traceback
 
 
 LEGACY_PARQUET_TP_REPLACER = "AAA"
@@ -156,18 +157,21 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None)
     if timest_format is None:
         timest_format = constants.DEFAULT_TIMESTAMP_PARSE_FORMAT
 
+    if timest_format is None:
+        timest_format = "mixed"
+
     for col in df.columns:
         if timest_columns is None or col in timest_columns:
             if "obj" in str(df[col].dtype) or "str" in str(df[col].dtype):
                 try:
-                    if timest_format is None:
-                        # makes operations faster if non-ISO8601 but anyhow regular dates are provided
-                        df[col] = pandas_utils.dataframe_column_string_to_datetime(df[col], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE)
-                    else:
-                        df[col] = pandas_utils.dataframe_column_string_to_datetime(df[col], utc=constants.ENABLE_DATETIME_COLUMNS_AWARE, format=timest_format)
+                    df[col] = pandas_utils.dataframe_column_string_to_datetime(df[col], format=timest_format, utc=True)
                 except:
-                    # print("exception converting column: "+str(col))
-                    pass
+                    try:
+                        df[col] = pandas_utils.dataframe_column_string_to_datetime(df[col], format=timest_format, exact=False, utc=True)
+                    except:
+                        # traceback.print_exc()
+                        # print("exception converting column: "+str(col))
+                        pass
 
     for col in df.columns:
         if "date" in str(df[col].dtype) or "time" in str(df[col].dtype):
