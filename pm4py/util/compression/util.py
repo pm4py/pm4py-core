@@ -60,7 +60,7 @@ def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:
     :param df_glue: key to use for combining events into traces when the input is a dataframe.
     :param df_sorting_criterion_key: key to use as a sorting criterion for traces (typically timestamps)
     """
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         log = log.loc[:, [key, df_glue, df_sorting_criterion_key]]
     lookup = list(set([x for xs in [[e[key] for e in t] for t in log]
                        for x in xs])) if type(log) is EventLog else pandas_utils.format_unique(log[key].unique())
@@ -103,7 +103,7 @@ def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = 
     :param uncompressed: columns that need to be included in the compression yet need not to be compressed
 
     """
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         retain = copy.copy(keys)
         if df_glue not in retain:
             retain.append(df_glue)
@@ -135,7 +135,7 @@ def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = 
         for key in keys:
             log[key] = log[key].map(lookup_inv[key])
         cl = list()
-        log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
+        log = log.sort_values(by=[df_glue, df_sorting_criterion_key])
         retain = copy.copy(keys)
         retain.extend([u for u in uncompressed if u not in retain])
         encoded_values = list(log[retain].itertuples(index=False, name=None))

@@ -1,4 +1,4 @@
-from pm4py.util import constants, xes_constants
+from pm4py.util import constants, xes_constants, pandas_utils
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
@@ -102,7 +102,7 @@ def filter_on_case_performance(df: pd.DataFrame, case_id_glue: str = constants.C
     start_events = grouped_df.first()
     end_events = grouped_df.last()
     end_events.columns = [str(col) + '_2' for col in end_events.columns]
-    stacked_df = pd.concat([start_events, end_events], axis=1)
+    stacked_df = pandas_utils.concat([start_events, end_events], axis=1)
     if business_hours:
         stacked_df['caseDuration'] = stacked_df.apply(
             lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], business_hours_slots), axis=1)

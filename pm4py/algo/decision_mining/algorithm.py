@@ -187,11 +187,11 @@ def apply(log: Union[EventLog, pd.DataFrame], net: PetriNet, initial_marking: Ma
         x.append({a: v for a, v in el[0].items() if a in x_attributes and type(v) is str})
         x2.append({a: v for a, v in el[0].items() if a in x_attributes and type(v) is not str})
         y.append(el[1])
-    X = pd.DataFrame(x)
+    X = pandas_utils.instantiate_dataframe(x)
     X = pd.get_dummies(data=X, columns=list(str_attributes))
-    X2 = pd.DataFrame(x2)
-    X = pd.concat([X, X2], axis=1)
-    Y = pd.DataFrame(y, columns=["Name"])
+    X2 = pandas_utils.instantiate_dataframe(x2)
+    X = pandas_utils.concat([X, X2], axis=1)
+    Y = pandas_utils.instantiate_dataframe(y, columns=["Name"])
     Y, targets = encode_target(Y, "Name")
     y = Y['Target']
     return X, y, targets

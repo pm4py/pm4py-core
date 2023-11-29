@@ -68,7 +68,7 @@ def apply(df: pd.DataFrame, temporal_profile: typing.TemporalProfile,
     business_hours_slots = exec_utils.get_param_value(Parameters.BUSINESS_HOUR_SLOTS, parameters, constants.DEFAULT_BUSINESS_HOUR_SLOTS)
     workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
-    temporal_profile = pd.DataFrame([{activity_key: x[0], activity_key + "_2": x[1], "@@min": y[0] - zeta * y[1],
+    temporal_profile = pandas_utils.instantiate_dataframe([{activity_key: x[0], activity_key + "_2": x[1], "@@min": y[0] - zeta * y[1],
                                       "@@max": y[0] + zeta * y[1], "@@mean": y[0], "@@std": y[1]} for x, y in
                                      temporal_profile.items()])
 

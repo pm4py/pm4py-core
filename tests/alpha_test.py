@@ -11,8 +11,7 @@ from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import sampling, sorting, index_attribute
 from pm4py.objects.petri_net.exporter import exporter as petri_exporter
 from pm4py.visualization.petri_net.common import visualize as pn_viz
-from pm4py.util import constants
-import pandas as pd
+from pm4py.util import constants, pandas_utils
 from pm4py.objects.log.util import dataframe_utils
 from tests.constants import INPUT_DATA_DIR, OUTPUT_DATA_DIR, PROBLEMATIC_XES_DIR
 
@@ -26,8 +25,8 @@ class AlphaMinerTest(unittest.TestCase):
         if ".xes" in log_name:
             log = xes_importer.apply(log_name)
         else:
-            df = pd.read_csv(log_name)
-            df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
+            df = pandas_utils.read_csv(log_name)
+            df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
             log = log_conversion.apply(df, variant=log_conversion.Variants.TO_EVENT_LOG)
         net, marking, fmarking = alpha_alg.apply(log)
 

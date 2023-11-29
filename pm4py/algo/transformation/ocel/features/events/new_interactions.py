@@ -23,7 +23,9 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ordered_events = ocel.events[ocel.event_id_column].to_numpy()
+    ordered_events = parameters["ordered_events"] if "ordered_events" in parameters else ocel.events[
+        ocel.event_id_column].to_numpy()
+
     rel_objs = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].agg(list).to_dict()
 
     interactions = set()

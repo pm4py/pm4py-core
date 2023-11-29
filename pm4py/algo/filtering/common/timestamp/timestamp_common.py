@@ -1,4 +1,5 @@
 from datetime import datetime
+from pm4py.util.dt_parsing.variants import strpfromiso
 
 
 def get_dt_from_string(dt):
@@ -18,5 +19,5 @@ def get_dt_from_string(dt):
     if type(dt) is str:
         dt = datetime.strptime(dt, "%Y-%m-%d %H:%M:%S")
 
-    #dt = dt.replace(tzinfo=pytz.utc)
+    dt = strpfromiso.fix_naivety(dt)
     return dt

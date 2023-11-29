@@ -9,6 +9,7 @@ from pm4py.objects.ocel.util import ocel_consistency
 from pm4py.objects.ocel.util import filtering_utils
 from pm4py.objects.ocel.validation import ocel20_rel_validation
 from pm4py.util import constants as pm4_constants
+from pm4py.objects.log.util import dataframe_utils
 import warnings
 
 
@@ -89,10 +90,10 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
         df = df.rename(columns={"ocel_id": object_id, "ocel_time": event_timestamp})
         object_types_coll.append(df)
 
-    event_types_coll = pd.concat(event_types_coll)
+    event_types_coll = pandas_utils.concat(event_types_coll)
     event_types_coll[event_activity] = event_types_coll[event_id].map(events_id_type)
-    event_types_coll[event_timestamp] = pd.to_datetime(event_types_coll[event_timestamp])
-    object_types_coll = pd.concat(object_types_coll)
+    event_types_coll = dataframe_utils.convert_timestamp_columns_in_df(event_types_coll, timest_format=pm4_constants.DEFAULT_TIMESTAMP_PARSE_FORMAT, timest_columns=[event_timestamp])
+    object_types_coll = pandas_utils.concat(object_types_coll)
     object_types_coll[object_type] = object_types_coll[object_id].map(objects_id_type)
     object_types_coll = object_types_coll.rename(columns={"ocel_changed_field": changed_field})
 
@@ -133,7 +134,9 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
     del E2O[internal_index]
 
     if object_changes is not None:
-        object_changes[event_timestamp] = pd.to_datetime(object_changes[event_timestamp])
+        object_changes = dataframe_utils.convert_timestamp_columns_in_df(object_changes,
+                                                                           timest_format=pm4_constants.DEFAULT_TIMESTAMP_PARSE_FORMAT,
+                                                                           timest_columns=[event_timestamp])
         object_changes[internal_index] = object_changes.index
         object_changes = object_changes.sort_values([event_timestamp, internal_index])
         del object_changes[internal_index]

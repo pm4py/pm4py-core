@@ -59,7 +59,7 @@ def get_base_json_object(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None
         vmap = {k: v for k, v in event.items() if not k.startswith(constants.OCEL_PREFIX)}
         event = {k: v for k, v in event.items() if k.startswith(constants.OCEL_PREFIX)}
         event[constants.OCEL_VMAP_KEY] = vmap
-        event[constants.OCEL_OMAP_KEY] = rel_objs[eid]
+        event[constants.OCEL_OMAP_KEY] = list(rel_objs[eid])
         base_object[constants.OCEL_EVENTS_KEY][eid] = event
         i = i + 1
     del events_items

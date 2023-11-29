@@ -1,24 +1,24 @@
 ocel:eid,ocel:timestamp,ocel:activity,ocel:type:element,ocel:type:order,ocel:type:delivery
-e1,1980-01-01,Create Order,"['i4', 'i1', 'i3', 'i2']",['o1'],
-e2,1980-01-02,Confirm Order,,['o1'],
-e3,1980-01-03,Item out of Stock,['i3'],,
-e4,1980-01-04,Create Delivery,"['i2', 'i1']",,['d1']
-e5,1980-01-05,Item back in Stock,['i3'],,
-e6,1980-01-08,Delivery Failed,,,['d1']
-e7,1980-01-09,Retry Delivery,,,['d1']
-e8,1980-01-10,Delivery Successful,,,['d1']
-e9,1980-01-11,Invoice Sent,,['o1'],
-e10,1980-01-12,Pay Order,,['o1'],
-e11,1981-01-01,Create Order,"['i6', 'i5']",['o2'],
-e12,1981-01-02,Remove Item,['i5'],,
-e13,1981-01-03,Cancel Order,,['o2'],
-e14,1981-01-04,Create Order,"['i8', 'i7']",['o3'],
-e15,1981-01-05,Add Item to Order,['i9'],['o3'],
-e16,1981-01-06,Create Delivery,"['i3', 'i4', 'i7']",,['d2']
-e17,1981-01-07,Delivery Successful,,,['d2']
-e18,1981-01-08,Create Delivery,"['i8', 'i9']",,['d3']
-e19,1981-01-09,Delivery Successful,,,['d3']
-e20,1981-01-10,Invoice Sent,,['o3'],
-e21,1981-01-11,Payment Reminder,,['o3'],
-e22,1981-01-11,Payment Reminder,,['o3'],
-e23,1981-01-12,Send for Credit Collection,,['o3'],
+e1,1980-01-01 00:00:00,Create Order,"['i4', 'i1', 'i3', 'i2']",['o1'],
+e2,1980-01-02 00:00:00,Confirm Order,,['o1'],
+e3,1980-01-03 00:00:00,Item out of Stock,['i3'],,
+e4,1980-01-04 00:00:00,Create Delivery,"['i2', 'i1']",,['d1']
+e5,1980-01-05 00:00:00,Item back in Stock,['i3'],,
+e6,1980-01-08 00:00:00,Delivery Failed,,,['d1']
+e7,1980-01-09 00:00:00,Retry Delivery,,,['d1']
+e8,1980-01-10 00:00:00,Delivery Successful,,,['d1']
+e9,1980-01-11 00:00:00,Invoice Sent,,['o1'],
+e10,1980-01-12 00:00:00,Pay Order,,['o1'],
+e11,1981-01-01 00:00:00,Create Order,"['i6', 'i5']",['o2'],
+e12,1981-01-02 00:00:00,Remove Item,['i5'],,
+e13,1981-01-03 00:00:00,Cancel Order,,['o2'],
+e14,1981-01-04 00:00:00,Create Order,"['i8', 'i7']",['o3'],
+e15,1981-01-05 00:00:00,Add Item to Order,['i9'],['o3'],
+e16,1981-01-06 00:00:00,Create Delivery,"['i3', 'i4', 'i7']",,['d2']
+e17,1981-01-07 00:00:00,Delivery Successful,,,['d2']
+e18,1981-01-08 00:00:00,Create Delivery,"['i8', 'i9']",,['d3']
+e19,1981-01-09 00:00:00,Delivery Successful,,,['d3']
+e20,1981-01-10 00:00:00,Invoice Sent,,['o3'],
+e21,1981-01-11 00:00:00,Payment Reminder,,['o3'],
+e22,1981-01-11 00:00:00,Payment Reminder,,['o3'],
+e23,1981-01-12 00:00:00,Send for Credit Collection,,['o3'],

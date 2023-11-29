@@ -12,7 +12,7 @@ from pm4py.statistics.traces.generic.log import case_statistics
 from pm4py.algo.filtering.log.ltl import ltl_checker
 from pm4py.algo.filtering.log.timestamp import timestamp_filter
 from tests.constants import INPUT_DATA_DIR
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 
 
 class LogFilteringTest(unittest.TestCase):

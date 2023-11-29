@@ -15,7 +15,7 @@ import importlib.util
 from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
 from pm4py.objects.petri_net.obj import PetriNet, Marking
-from pm4py.util import typing, constants
+from pm4py.util import typing, constants, pandas_utils
 import pandas as pd
 
 
@@ -301,7 +301,7 @@ def __get_variants_structure(log, parameters):
     variants_idxs = {}
     one_tr_per_var = []
 
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
         traces = log.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist(); traces = [tuple(x) for x in traces]
         for idx, trace in enumerate(traces):
@@ -388,4 +388,4 @@ def get_diagnostics_dataframe(log, align_output, parameters=None):
 
         diagn_stream.append({"case_id": case_id, "cost": cost, "fitness": fitness, "is_fit": is_fit})
 
-    return pd.DataFrame(diagn_stream)
+    return pandas_utils.instantiate_dataframe(diagn_stream)

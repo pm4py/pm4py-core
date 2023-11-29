@@ -19,7 +19,7 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties, __event_log_deprecation_warning
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 import deprecation
 import importlib.util
 
@@ -106,17 +106,17 @@ def discover_dfg_typed(log: pd.DataFrame, case_id_key: str = "case:concept:name"
     from pm4py.algo.discovery.dfg.variants import clean
     parameters = get_properties(
         log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
-    if type(log) is pd.DataFrame:
-        return clean.apply(log, parameters)
-    elif importlib.util.find_spec("polars"):
+
+    if importlib.util.find_spec("polars"):
         import polars as pl
         if type(log) is pl.DataFrame:
             from pm4py.algo.discovery.dfg.variants import clean_polars
             return clean_polars.apply(log, parameters)
-        else:
-            raise TypeError('pm4py.discover_dfg_typed is only defined for pandas/polars DataFrames')
+
+    if pandas_utils.check_is_pandas_dataframe(log):
+        return clean.apply(log, parameters)
     else:
-        raise TypeError('pm4py.discover_dfg_typed is only defined for pandas/polars DataFrames')
+        raise TypeError('pm4py.discover_dfg_typed is only defined for dataFrames')
         
 
 def discover_performance_dfg(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, business_hour_slots=constants.DEFAULT_BUSINESS_HOUR_SLOTS, workcalendar=constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Tuple[dict, dict, dict]:

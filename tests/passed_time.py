@@ -2,9 +2,8 @@ import os
 import unittest
 
 from pm4py.objects.log.importer.xes import importer as xes_importer
-import pandas as pd
 from pm4py.objects.log.util import dataframe_utils
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 from pm4py.statistics.passed_time.log import algorithm as log_passed_time
 from pm4py.statistics.passed_time.pandas import algorithm as df_passed_time
 
@@ -16,8 +15,8 @@ class PassedTimeTest(unittest.TestCase):
         del prepost
 
     def test_passedtime_prepost_df(self):
-        df = pd.read_csv(os.path.join("input_data", "running-example.csv"))
-        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
+        df = pandas_utils.read_csv(os.path.join("input_data", "running-example.csv"))
+        df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         prepost = df_passed_time.apply(df, "decide", variant=df_passed_time.Variants.PREPOST)
         del prepost
 
