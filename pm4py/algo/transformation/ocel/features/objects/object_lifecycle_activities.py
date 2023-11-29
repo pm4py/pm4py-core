@@ -24,7 +24,9 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ordered_objects = ocel.objects[ocel.object_id_column].to_numpy()
+    ordered_objects = parameters["ordered_objects"] if "ordered_objects" in parameters else ocel.objects[
+        ocel.object_id_column].to_numpy()
+
     activities = pandas_utils.format_unique(ocel.events[ocel.event_activity].unique())
     lifecycle = ocel.relations.groupby(ocel.object_id_column)[ocel.event_activity].agg(list).to_dict()
 

@@ -1,5 +1,4 @@
-import pandas as pd
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 
 from pm4py.algo.discovery.correlation_mining import algorithm as correlation_miner
 from pm4py.objects.log.util import dataframe_utils
@@ -12,8 +11,8 @@ from pm4py.visualization.dfg import visualizer as dfg_vis
 
 
 def execute_script():
-    df = pd.read_csv("../tests/input_data/interval_event_log.csv")
-    df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format="ISO8601")
+    df = pandas_utils.read_csv("../tests/input_data/interval_event_log.csv")
+    df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
     act_count = dict(df["concept:name"].value_counts())
     parameters = {}
     parameters[constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY] = "start_timestamp"

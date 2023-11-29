@@ -5,7 +5,7 @@ import heapq
 from pm4py.objects.petri_net.utils.petri_utils import decorate_places_preset_trans, decorate_transitions_prepostset
 from pm4py.objects.petri_net.utils import align_utils as utils
 from pm4py.objects.petri_net.utils.incidence_matrix import construct
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 import pandas as pd
 
 
@@ -101,7 +101,7 @@ def get_log_prefixes(log, activity_key=xes_util.DEFAULT_NAME_KEY, case_id_key=co
     prefixes = {}
     prefix_count = Counter()
 
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         traces = log.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist()
     else:
         traces = [tuple(x[activity_key] for x in trace) for trace in log]

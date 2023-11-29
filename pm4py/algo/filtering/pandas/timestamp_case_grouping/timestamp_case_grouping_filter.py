@@ -58,5 +58,5 @@ def apply(log_obj: Union[EventLog, EventStream, pd.DataFrame], parameters: Optio
         ret = gdf.first()
         ret[activity_key] = gdf[activity_key].agg(list).apply(lambda x: " & ".join(sorted(list(x))))
 
-    ret.reset_index(inplace=True)
+    ret = ret.reset_index()
     return ret

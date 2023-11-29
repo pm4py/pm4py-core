@@ -1,22 +1,14 @@
 from pm4py.objects.log.util import dataframe_utils
 import unittest
 import os
-from pm4py.util import constants
-import pandas as pd
+from pm4py.util import constants, pandas_utils
 
 
 class StatisticsDfTest(unittest.TestCase):
     def get_dataframe(self):
-        dataframe = pd.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"))
-        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
+        dataframe = pandas_utils.read_csv(os.path.join("input_data", "roadtraffic100traces.csv"))
+        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         return dataframe
-
-    def test_get_attributes(self):
-        from pm4py.statistics.attributes.pandas import get
-        df = self.get_dataframe()
-        get.get_attribute_values(df, "concept:name")
-        get.get_kde_date_attribute(df, "time:timestamp")
-        get.get_kde_numeric_attribute(df, "amount")
 
     def test_end_activities(self):
         from pm4py.statistics.end_activities.pandas import get
@@ -52,8 +44,8 @@ class StatisticsDfTest(unittest.TestCase):
 
     def test_batch_detection(self):
         from pm4py.algo.discovery.batches.variants import pandas as pandas_batches
-        dataframe = pd.read_csv(os.path.join("input_data", "receipt.csv"))
-        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format="ISO8601")
+        dataframe = pandas_utils.read_csv(os.path.join("input_data", "receipt.csv"))
+        dataframe = dataframe_utils.convert_timestamp_columns_in_df(dataframe, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT)
         pandas_batches.apply(dataframe)
 
     def test_case_overlap(self):

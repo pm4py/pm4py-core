@@ -1,7 +1,6 @@
-import pandas as pd
 import pm4py
 import os
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 import unittest
 
 
@@ -61,8 +60,7 @@ class SimplifiedInterface2Test(unittest.TestCase):
         pm4py.convert_log_to_ocel(log)
 
     def test_conversion_ocelcsv_to_ocel(self):
-        import pandas as pd
-        dataframe = pd.read_csv("input_data/ocel/example_log.csv")
+        dataframe = pandas_utils.read_csv("input_data/ocel/example_log.csv")
         pm4py.convert_log_to_ocel(dataframe, activity_column="ocel:activity", timestamp_column="ocel:timestamp")
 
     def test_conversion_petri_to_nx(self):

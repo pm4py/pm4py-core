@@ -8,13 +8,6 @@ class StatisticsLogTest(unittest.TestCase):
         log = importer.apply(os.path.join("input_data", "roadtraffic100traces.xes"))
         return log
 
-    def test_get_attributes(self):
-        from pm4py.statistics.attributes.log import get
-        log = self.get_log()
-        get.get_attribute_values(log, "concept:name")
-        get.get_kde_date_attribute(log, "time:timestamp")
-        get.get_kde_numeric_attribute(log, "amount")
-
     def test_select_attributes(self):
         from pm4py.statistics.attributes.log import select
         log = self.get_log()

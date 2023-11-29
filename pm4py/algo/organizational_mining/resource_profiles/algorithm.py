@@ -2,6 +2,7 @@ from pm4py.algo.organizational_mining.resource_profiles.variants import pandas, 
 import pandas as pd
 from pm4py.objects.log.obj import EventLog
 from typing import Union, Optional, Dict, Any
+from pm4py.util import pandas_utils
 from datetime import datetime
 
 
@@ -29,7 +30,7 @@ def distinct_activities(log_obj: Union[pd.DataFrame, EventLog], t1: Union[dateti
     distinct_activities
         Distinct activities
     """
-    if type(log_obj) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         return pandas.distinct_activities(log_obj, t1, t2, r, parameters=parameters)
     else:
         return log.distinct_activities(log_obj, t1, t2, r, parameters=parameters)
@@ -62,7 +63,7 @@ def activity_frequency(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetim
     metric
         Value of the metric
     """
-    if type(log_obj) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         return pandas.activity_frequency(log_obj, t1, t2, r, a, parameters=parameters)
     else:
         return log.activity_frequency(log_obj, t1, t2, r, a, parameters=parameters)
@@ -92,7 +93,7 @@ def activity_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datet
     metric
         Value of the metric
     """
-    if type(log_obj) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         return pandas.activity_completions(log_obj, t1, t2, r, parameters=parameters)
     else:
         return log.activity_completions(log_obj, t1, t2, r, parameters=parameters)
@@ -122,7 +123,7 @@ def case_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime,
     metric
         Value of the metric
     """
-    if type(log_obj) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         return pandas.case_completions(log_obj, t1, t2, r, parameters=parameters)
     else:
         return log.case_completions(log_obj, t1, t2, r, parameters=parameters)
@@ -153,7 +154,7 @@ def fraction_case_completions(log_obj: Union[pd.DataFrame, EventLog], t1: Union[
     metric
         Value of the metric
     """
-    if type(log_obj) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         return pandas.fraction_case_completions(log_obj, t1, t2, r, parameters=parameters)
     else:
         return log.fraction_case_completions(log_obj, t1, t2, r, parameters=parameters)
@@ -183,7 +184,7 @@ def average_workload(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime,
     metric
         Value of the metric
     """
-    if type(log_obj) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         return pandas.average_workload(log_obj, t1, t2, r, parameters=parameters)
     else:
         return log.average_workload(log_obj, t1, t2, r, parameters=parameters)
@@ -214,7 +215,7 @@ def multitasking(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, str
     metric
         Value of the metric
     """
-    if type(log_obj) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         return pandas.multitasking(log_obj, t1, t2, r, parameters=parameters)
     else:
         return log.multitasking(log_obj, t1, t2, r, parameters=parameters)
@@ -246,7 +247,7 @@ def average_duration_activity(log_obj: Union[pd.DataFrame, EventLog], t1: Union[
     metric
         Value of the metric
     """
-    if type(log_obj) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         return pandas.average_duration_activity(log_obj, t1, t2, r, a, parameters=parameters)
     else:
         return log.average_duration_activity(log_obj, t1, t2, r, a, parameters=parameters)
@@ -276,7 +277,7 @@ def average_case_duration(log_obj: Union[pd.DataFrame, EventLog], t1: Union[date
     metric
         Value of the metric
     """
-    if type(log_obj) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         return pandas.average_case_duration(log_obj, t1, t2, r, parameters=parameters)
     else:
         return log.average_case_duration(log_obj, t1, t2, r, parameters=parameters)
@@ -308,7 +309,7 @@ def interaction_two_resources(log_obj: Union[pd.DataFrame, EventLog], t1: Union[
     metric
         Value of the metric
     """
-    if type(log_obj) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         return pandas.interaction_two_resources(log_obj, t1, t2, r1, r2, parameters=parameters)
     else:
         return log.interaction_two_resources(log_obj, t1, t2, r1, r2, parameters=parameters)
@@ -339,7 +340,7 @@ def social_position(log_obj: Union[pd.DataFrame, EventLog], t1: Union[datetime, 
     metric
         Value of the metric
     """
-    if type(log_obj) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         return pandas.social_position(log_obj, t1, t2, r, parameters=parameters)
     else:
         return log.social_position(log_obj, t1, t2, r, parameters=parameters)

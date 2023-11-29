@@ -1,7 +1,7 @@
 import pm4py
 from pm4py.algo.discovery.log_skeleton import algorithm as log_skeleton_discovery
 from pm4py.algo.conformance.log_skeleton import algorithm as log_skeleton_conformance
-import pandas as pd
+from pm4py.util import constants, pandas_utils
 
 
 def execute_script():
@@ -15,8 +15,8 @@ def execute_script():
     conf_result = log_skeleton_conformance.apply(event_log, log_skeleton)
     # gets the diagnostic result out of the dataframe
     diagnostics = log_skeleton_conformance.get_diagnostics_dataframe(event_log, conf_result)
-    # merges the dataframe containing the events, and the diagnostics dataframe, using the pd.merge method
-    merged_df = pd.merge(dataframe, diagnostics, how="left", left_on="case:concept:name", right_on="case_id", suffixes=('', '_diagn'))
+    # merges the dataframe containing the events, and the diagnostics dataframe
+    merged_df = pandas_utils.merge(dataframe, diagnostics, how="left", left_on="case:concept:name", right_on="case_id", suffixes=('', '_diagn'))
     print(merged_df)
 
 

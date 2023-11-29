@@ -5,7 +5,7 @@ import pandas as pd
 
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log.obj import EventLog
-from pm4py.util import xes_constants, constants, exec_utils
+from pm4py.util import xes_constants, constants, exec_utils, pandas_utils
 
 
 class Parameters(Enum):
@@ -45,7 +45,7 @@ def get_groups_from_log(log_obj: Union[pd.DataFrame, EventLog], parameters: Opti
 
     groups = {}
 
-    if type(log_obj) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         group_res = log_obj.groupby([resource_key, group_key]).count().to_dict()[activity_key]
         for el in group_res:
             if not el[1] in groups:
@@ -104,7 +104,7 @@ def get_res_act_from_log(log_obj: Union[pd.DataFrame, EventLog], parameters: Opt
     res_act = {}
     act_res = {}
 
-    if type(log_obj) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         aggr = log_obj.groupby([activity_key, resource_key]).count().to_dict()[group_key]
         for el in aggr:
             if not el[1] in res_act:
@@ -161,7 +161,7 @@ def get_resources_from_log(log_obj: Union[pd.DataFrame, EventLog], parameters: O
 
     resources = {}
 
-    if type(log_obj) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         resources = log_obj[resource_key].value_counts().to_dict()
     else:
         for trace in log_obj:

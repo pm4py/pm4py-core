@@ -44,6 +44,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
 
     exploded_ocel = explode.apply(ocel)
     ordered_events = exploded_ocel.events[exploded_ocel.event_id_column].to_numpy()
+    parameters["ordered_events"] = ordered_events
 
     datas = []
     features_namess = []

@@ -3,7 +3,7 @@ import sys
 import uuid
 from enum import Enum
 
-from pm4py.util import constants, xes_constants, exec_utils
+from pm4py.util import constants, xes_constants, exec_utils, pandas_utils
 from pm4py.util import variants_util
 from pm4py.objects.petri_net.utils import align_utils
 from pm4py.objects.log.obj import EventLog, Trace, Event
@@ -121,7 +121,7 @@ def apply_log(log, dfg, sa, ea, parameters=None):
 
     al_empty_cost = __apply_list_activities([], dfg, sa, ea, parameters=parameters)["cost"]
 
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
         traces = log.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist(); traces = [tuple(x) for x in traces]
     else:

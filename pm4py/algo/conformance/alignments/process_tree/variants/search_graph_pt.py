@@ -10,7 +10,7 @@ from pm4py.algo.conformance.alignments.process_tree.util import search_graph_pt_
 from pm4py.objects.petri_net.utils import align_utils
 from pm4py.objects.process_tree.obj import Operator
 from pm4py.objects.process_tree.utils import generic as pt_util
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import exec_utils, constants, xes_constants, pandas_utils
 from typing import Optional, Dict, Any, Union
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.log.obj import EventLog, Trace
@@ -304,7 +304,7 @@ def apply_multiprocessing(obj: Union[EventLog, Trace, pd.DataFrame], pt: Process
             futures = {}
             align_dict = {}
 
-            if type(obj) is pd.DataFrame:
+            if pandas_utils.check_is_pandas_dataframe(obj):
                 case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters,
                                                          constants.CASE_CONCEPT_NAME)
                 traces = obj.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist(); traces = [tuple(x) for x in traces]
@@ -367,7 +367,7 @@ def apply(obj: Union[EventLog, Trace, pd.DataFrame], pt: ProcessTree, parameters
         return align_variant(variant, leaves, pt)
     else:
         ret = []
-        if type(obj) is pd.DataFrame:
+        if pandas_utils.check_is_pandas_dataframe(obj):
             case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
             traces = obj.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist(); traces = [tuple(x) for x in traces]
         else:

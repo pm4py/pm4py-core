@@ -12,7 +12,7 @@ import pandas as pd
 from pm4py.objects.log.obj import EventLog, Trace, EventStream
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns, insert_ev_in_tr_index
 from pm4py.utils import get_properties, __event_log_deprecation_warning
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.process_tree.obj import ProcessTree
 import deprecation
@@ -356,7 +356,7 @@ def get_variants_paths_duration(log: Union[EventLog, pd.DataFrame], activity_key
 
         list_to_concat.append(dir_follo_dataframe)
 
-    dataframe = pd.concat(list_to_concat)
+    dataframe = pandas_utils.concat(list_to_concat)
     dataframe[index_in_trace_column] = -dataframe[index_in_trace_column]
     dataframe = dataframe.sort_values([variant_count, variant_column, index_in_trace_column], ascending=False)
     dataframe[index_in_trace_column] = -dataframe[index_in_trace_column]
@@ -383,7 +383,7 @@ def get_stochastic_language(*args, **kwargs) -> Dict[List[str], float]:
         print(language_model)
     """
     from pm4py.statistics.variants.log import get
-    if isinstance(args[0], EventLog) or isinstance(args[0], EventStream) or isinstance(args[0], pd.DataFrame):
+    if isinstance(args[0], EventLog) or isinstance(args[0], EventStream) or pandas_utils.check_is_pandas_dataframe(args[0]):
         from pm4py.objects.conversion.log import converter as log_converter
         log = log_converter.apply(args[0])
         return get.get_language(log)

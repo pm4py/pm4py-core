@@ -47,8 +47,8 @@ def apply(ocel: OCEL, file_path: str, parameters: Optional[Dict[Any, Any]] = Non
     event_types = sorted(pandas_utils.format_unique(EVENTS["ocel_type"].unique()))
     object_types = sorted(pandas_utils.format_unique(OBJECTS["ocel_type"].unique()))
 
-    EVENT_CORR_TYPE = pd.DataFrame({"ocel_type": event_types, "ocel_type_map": event_types})
-    OBJECT_CORR_TYPE = pd.DataFrame({"ocel_type": object_types, "ocel_type_map": object_types})
+    EVENT_CORR_TYPE = pandas_utils.instantiate_dataframe({"ocel_type": event_types, "ocel_type_map": event_types})
+    OBJECT_CORR_TYPE = pandas_utils.instantiate_dataframe({"ocel_type": object_types, "ocel_type_map": object_types})
 
     if enable_names_stripping:
         EVENT_CORR_TYPE["ocel_type_map"] = EVENT_CORR_TYPE["ocel_type_map"].apply(lambda x: names_stripping.apply(x))
@@ -81,15 +81,12 @@ def apply(ocel: OCEL, file_path: str, parameters: Optional[Dict[Any, Any]] = Non
         df = ocel.objects[ocel.objects[object_type] == ot].dropna(how="all", axis="columns")
         df = df.rename(columns={object_id: "ocel_id"})
         del df[object_type]
-        # Pandas 2.1.0 changes the way that datetime is written to SQL, and this is causing problems.
-        df["ocel_time"] = datetime.fromtimestamp(129600)
-        df["ocel_time"] = df["ocel_time"].astype('datetime64[ns]')
 
         df2 = ocel.object_changes[ocel.object_changes[object_type] == ot].dropna(how="all", axis="columns")
         if len(df2) > 0:
             del df2[object_type]
             df2 = df2.rename(columns={object_id: "ocel_id", event_timestamp: "ocel_time", changed_field: "ocel_changed_field"})
-            df = pd.concat([df, df2], axis=0)
+            df = pandas_utils.concat([df, df2], axis=0)
 
         df["ocel_id"] = df["ocel_id"].astype("string")
 
