@@ -32,7 +32,6 @@ def apply(log_path: str, parameters: Optional[Dict[Any, Any]] = None) -> Union[E
     if importlib.util.find_spec("cudf"):
         import cudf
         log = cudf.DataFrame(log)
-        return log
 
     if return_legacy_log_object:
         this_parameters = copy(parameters)
