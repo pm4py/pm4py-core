@@ -223,8 +223,8 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
                     for perf_couple in annotations_places_trans[el]["performance"]:
                         if timestamp_key in trace[perf_couple[0]] and timestamp_key in trace[perf_couple[1]]:
                             if business_hours:
-                                bh = BusinessHours(trace[perf_couple[1]][timestamp_key].replace(tzinfo=None),
-                                                   trace[perf_couple[0]][timestamp_key].replace(tzinfo=None),
+                                bh = BusinessHours(trace[perf_couple[1]][timestamp_key],
+                                                   trace[perf_couple[0]][timestamp_key],
                                                    business_hour_slots=business_hours_slots)
                                 perf = bh.get_seconds()
                             else:
@@ -243,8 +243,8 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
                 for perf_couple in annotations_arcs[el]["performance"]:
                     if timestamp_key in trace[perf_couple[0]] and timestamp_key in trace[perf_couple[1]]:
                         if business_hours:
-                            bh = BusinessHours(trace[perf_couple[1]][timestamp_key].replace(tzinfo=None),
-                                               trace[perf_couple[0]][timestamp_key].replace(tzinfo=None),
+                            bh = BusinessHours(trace[perf_couple[1]][timestamp_key],
+                                               trace[perf_couple[0]][timestamp_key],
                                                business_hour_slots=business_hours_slots)
                             perf = bh.get_seconds()
                         else:

@@ -19,7 +19,7 @@ import pandas as pd
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
 from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.util import exec_utils
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 from enum import Enum
 from typing import Optional, Dict, Any, Union
 
@@ -65,7 +65,7 @@ def get_case_arrival_avg(df: pd.DataFrame, parameters: Optional[Dict[Union[str, 
 
     first_df_shift.columns = [str(col) + '_2' for col in first_df_shift.columns]
 
-    df_successive_rows = pd.concat([first_df, first_df_shift], axis=1)
+    df_successive_rows = pandas_utils.concat([first_df, first_df_shift], axis=1)
     df_successive_rows['interlapsed_time'] = (
             df_successive_rows[timest_key + '_2'] - df_successive_rows[timest_key]).dt.total_seconds()
 
@@ -105,7 +105,7 @@ def get_case_dispersion_avg(df, parameters=None):
 
     first_df_shift.columns = [str(col) + '_2' for col in first_df_shift.columns]
 
-    df_successive_rows = pd.concat([first_df, first_df_shift], axis=1)
+    df_successive_rows = pandas_utils.concat([first_df, first_df_shift], axis=1)
     df_successive_rows['interlapsed_time'] = (
             df_successive_rows[timest_key + '_2'] - df_successive_rows[timest_key]).dt.total_seconds()
 

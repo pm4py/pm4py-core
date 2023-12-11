@@ -39,7 +39,7 @@ DIFF_KEY = "@@diff"
 
 def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Dict[str, float]:
     """
-    Gets the sojourn time per activity on an event log object
+    Gets the service time per activity on an event log object
 
     Parameters
     --------------
@@ -66,7 +66,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
     Returns
     --------------
     soj_time_dict
-        Sojourn time dictionary
+        Service time dictionary
     """
     if parameters is None:
         parameters = {}
@@ -95,7 +95,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
         for event in trace:
             activity = event[activity_key]
             if business_hours:
-                bh = BusinessHours(event[start_timestamp_key].replace(tzinfo=None), event[timestamp_key].replace(tzinfo=None),
+                bh = BusinessHours(event[start_timestamp_key], event[timestamp_key],
                                    business_hour_slots=business_hours_slots, workcalendar=workcalendar)
                 durations_dict[activity].append(bh.get_seconds())
             else:

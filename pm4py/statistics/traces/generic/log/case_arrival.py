@@ -69,7 +69,7 @@ def get_case_arrival_avg(log: EventLog, parameters: Optional[Dict[Union[str, Par
     case_diff_start_time = []
     for i in range(len(case_start_time)-1):
         if business_hours:
-            bh = BusinessHours(case_start_time[i].replace(tzinfo=None), case_start_time[i+1].replace(tzinfo=None),
+            bh = BusinessHours(case_start_time[i], case_start_time[i+1],
                                business_hour_slots=business_hours_slots, workcalendar=workcalendar)
             case_diff_start_time.append(bh.get_seconds())
         else:
@@ -116,7 +116,7 @@ def get_case_dispersion_avg(log: EventLog, parameters: Optional[Dict[Union[str, 
     case_diff_end_time = []
     for i in range(len(case_end_time)-1):
         if business_hours:
-            bh = BusinessHours(case_end_time[i].replace(tzinfo=None), case_end_time[i+1].replace(tzinfo=None),
+            bh = BusinessHours(case_end_time[i], case_end_time[i+1],
                                business_hour_slots=business_hours_slots, workcalendar=workcalendar)
             case_diff_end_time.append(bh.get_seconds())
         else:

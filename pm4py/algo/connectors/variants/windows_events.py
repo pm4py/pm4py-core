@@ -18,6 +18,7 @@
 from typing import Optional, Dict, Any
 import pandas as pd
 from datetime import datetime
+from pm4py.util import pandas_utils
 import importlib.util
 
 
@@ -71,12 +72,12 @@ def apply(parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
     if progress is not None:
         progress.close()
 
-    dataframe = pd.DataFrame(events)
+    dataframe = pandas_utils.instantiate_dataframe(events)
     dataframe["case:concept:name"] = dataframe["computerName"]
     dataframe["time:timestamp"] = dataframe["timeGenerated"]
     dataframe["concept:name"] = dataframe["sourceName"] + " " + dataframe["eventIdentifier"]
     dataframe["org:resource"] = dataframe["user"]
-    dataframe["@@index"] = dataframe.index
+    dataframe = pandas_utils.insert_index(dataframe, "@@index", copy_dataframe=False, reset_index=False)
     dataframe = dataframe.sort_values(["time:timestamp", "@@index"])
     dataframe["@@case_index"] = dataframe.groupby("case:concept:name", sort=False).ngroup()
     dataframe = dataframe.sort_values(["@@case_index", "time:timestamp", "@@index"])

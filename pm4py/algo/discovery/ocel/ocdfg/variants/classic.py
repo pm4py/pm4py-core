@@ -16,7 +16,7 @@
 '''
 from typing import Optional, Dict, Any
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from pm4py.objects.ocel import constants as ocel_constants
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.statistics.ocel import act_ot_dependent, act_utils, edge_metrics
@@ -94,8 +94,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
     event_activity = exec_utils.get_param_value(Parameters.EVENT_ACTIVITY, parameters, ocel.event_activity)
 
     ret = {}
-    ret["activities"] = set(ocel.events[event_activity].unique())
-    ret["object_types"] = set(ocel.objects[object_type].unique())
+    ret["activities"] = set(pandas_utils.format_unique(ocel.events[event_activity].unique()))
+    ret["object_types"] = set(pandas_utils.format_unique(ocel.objects[object_type].unique()))
 
     ret["edges"] = {}
     ret["edges"]["event_couples"] = edge_metrics.aggregate_ev_couples(edges)

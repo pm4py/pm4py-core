@@ -52,16 +52,22 @@ class Variants(Enum):
 def apply(obj: Union[EventLog, pd.DataFrame, DFG, UVCL], parameters: Optional[Dict[Any, Any]] = None, variant=Variants.IM) -> ProcessTree:
     if parameters is None:
         parameters = {}
-    if type(obj) not in [EventLog, pd.DataFrame, DFG, UVCL]:
-        raise TypeError('Inductive miner called with an incorrect data type as an input (should be a dataframe or DFG)')
     ack = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
     tk = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)
     cidk = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, pmutil.constants.CASE_CONCEPT_NAME)
-    if type(obj) in [EventLog, pd.DataFrame, UVCL]:
-        if type(obj) in [EventLog, pd.DataFrame]:
-            uvcl = comut.get_variants(comut.project_univariate(obj, key=ack, df_glue=cidk, df_sorting_criterion_key=tk))
-        else:
+    if type(obj) is DFG:
+        if variant is not Variants.IMd:
+            if constants.SHOW_INTERNAL_WARNINGS:
+                warnings.warn('Inductive Miner Variant requested for DFG artefact is not IMD, resorting back to IMD')
+        imd = IMD(parameters)
+        idfg = InductiveDFG(dfg=obj, skip=False)
+        return imd.apply(IMDataStructureDFG(idfg), parameters)
+    else:
+        if type(obj) in [UVCL]:
             uvcl = obj
+        else:
+            uvcl = comut.get_variants(comut.project_univariate(obj, key=ack, df_glue=cidk, df_sorting_criterion_key=tk))
+
         if variant is Variants.IM:
             im = IMUVCL(parameters)
             return im.apply(IMDataStructureUVCL(uvcl), parameters)
@@ -72,10 +78,4 @@ def apply(obj: Union[EventLog, pd.DataFrame, DFG, UVCL], parameters: Optional[Di
             imd = IMD(parameters)
             idfg = InductiveDFG(dfg=comut.discover_dfg_uvcl(uvcl), skip=() in uvcl)
             return imd.apply(IMDataStructureDFG(idfg), parameters)
-    elif type(obj) is DFG:
-        if variant is not Variants.IMd:
-            if constants.SHOW_INTERNAL_WARNINGS:
-                warnings.warn('Inductive Miner Variant requested for DFG artefact is not IMD, resorting back to IMD')
-        imd = IMD(parameters)
-        idfg = InductiveDFG(dfg=obj, skip=False)
-        return imd.apply(IMDataStructureDFG(idfg), parameters)
+

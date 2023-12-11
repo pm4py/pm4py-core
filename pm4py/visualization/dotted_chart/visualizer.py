@@ -24,7 +24,7 @@ from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log.obj import EventLog
 from pm4py.util import exec_utils, vis_utils
 from pm4py.visualization.dotted_chart.variants import classic
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 
 
 class Variants(Enum):
@@ -53,7 +53,7 @@ def apply(log_obj: Union[pd.DataFrame, EventLog], attributes: List[str], variant
     if parameters is None:
         parameters = {}
 
-    if isinstance(log_obj, pd.DataFrame):
+    if pandas_utils.check_is_pandas_dataframe(log_obj):
         log_obj = log_obj[list(set(attributes))]
 
     parameters["deepcopy"] = False

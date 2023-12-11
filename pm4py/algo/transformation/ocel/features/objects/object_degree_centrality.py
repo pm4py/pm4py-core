@@ -42,7 +42,9 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
 
     import networkx as nx
 
-    ordered_objects = list(ocel.objects[ocel.object_id_column])
+    ordered_objects = parameters["ordered_objects"] if "ordered_objects" in parameters else ocel.objects[
+        ocel.object_id_column].to_numpy()
+
     g0 = object_interaction_graph.apply(ocel, parameters=parameters)
     g = nx.Graph()
     for edge in g0:

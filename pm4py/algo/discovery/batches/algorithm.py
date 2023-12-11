@@ -21,7 +21,7 @@ import pandas as pd
 
 from pm4py.algo.discovery.batches.variants import pandas, log
 from pm4py.objects.log.obj import EventLog
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 
 
 class Variants(Enum):
@@ -73,7 +73,7 @@ def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Any, Any
     if parameters is None:
         parameters = {}
 
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         return exec_utils.get_variant(Variants.PANDAS).apply(log, parameters=parameters)
     else:
         return exec_utils.get_variant(Variants.LOG).apply(log, parameters=parameters)

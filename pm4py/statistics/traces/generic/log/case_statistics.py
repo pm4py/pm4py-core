@@ -146,7 +146,7 @@ def get_cases_description(log: EventLog,  parameters: Optional[Dict[Union[str, P
             st = trace[0][timestamp_key]
             et = trace[-1][timestamp_key]
             if business_hours:
-                bh = BusinessHours(st.replace(tzinfo=None), et.replace(tzinfo=None),
+                bh = BusinessHours(st, et,
                                    business_hour_slots=business_hours_slots, workcalendar=workcalendar)
                 diff = bh.get_seconds()
             else:

@@ -42,7 +42,7 @@ def occu_suc(dfg, filter_percent):
     :return: dataframe of direct succession relationship with frequency
     '''
 
-    df = pd.DataFrame.from_dict(dict(dfg), orient='index', columns=['freq'])
+    df = pandas_utils.instantiate_dataframe_from_dict(dict(dfg), orient='index', columns=['freq'])
     df = df.sort_values(axis=0, by=['freq'], ascending=False)
     df = df.reset_index().rename(columns={'index': 'suc'})
     # delete duplicated successions
@@ -69,7 +69,7 @@ def occu_var_suc(var_list, parameters=None):
 
     comb_list = [var_list[i] + constants.DEFAULT_VARIANT_SEP + var_list[i + 1] for i in range(len(var_list) - 1)]
     result = Counter(comb_list)  # count number of occurrence of each element
-    df = pd.DataFrame.from_dict(dict(result), orient='index', columns=['freq'])
+    df = pandas_utils.instantiate_dataframe_from_dict(dict(result), orient='index', columns=['freq'])
     df = df.reset_index().rename(columns={'index': 'direct_suc'})
     if (binarize):
         # Binarize succession frequency (optional)
@@ -124,7 +124,7 @@ def suc_sim(var_list_1, var_list_2, log1, log2, freq_thres, num, parameters=None
             df_1 = occu_var_suc(max_var[i], parameters={"binarize": False})
             for j in range(min_len):
                 df_2 = occu_var_suc(min_var[j], parameters={"binarize": False})
-                df = pd.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
+                df = pandas_utils.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
                 # cosine similarity is used to calculate trace similarity
                 dist_vec[j] = (pdist(np.array([df['freq_x'].values, df['freq_y'].values]), 'cosine')[0])
 
@@ -202,7 +202,7 @@ def suc_sim_dual(var_list_1, var_list_2, log1, log2, freq_thres, num, parameters
             df_1 = occu_var_suc(max_var[i], parameters={"binarize": False})
             for j in range(min_len):
                 df_2 = occu_var_suc(min_var[j], parameters={"binarize": False})
-                df = pd.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
+                df = pandas_utils.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
                 # cosine similarity is used to calculate trace similarity
                 dist_vec[j] = (pdist(np.array([df['freq_x'].values, df['freq_y'].values]), 'cosine')[0])
                 dist_matrix[i][j] = dist_vec[j]
@@ -281,7 +281,7 @@ def suc_sim_percent(log1, log2, percent_1, percent_2):
             df_1 = occu_var_suc(max_var[i], parameters={"binarize": False})
             for j in range(min_len):
                 df_2 = occu_var_suc(min_var[j], parameters={"binarize": False})
-                df = pd.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
+                df = pandas_utils.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
                 # cosine similarity is used to calculate trace similarity
                 dist_vec[j] = (pdist(np.array([df['freq_x'].values, df['freq_y'].values]), 'cosine')[0])
                 if (np.isnan(dist_vec[j]) == True):
@@ -347,7 +347,7 @@ def suc_sim_percent_avg(log1, log2, percent_1, percent_2):
         df_1 = occu_var_suc(max_var[i], parameters={"binarize": False})
         for j in range(min_len):
             df_2 = occu_var_suc(min_var[j], parameters={"binarize": False})
-            df = pd.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
+            df = pandas_utils.merge(df_1, df_2, how='outer', on='direct_suc').fillna(0)
             # cosine similarity is used to calculate trace similarity
             dist_vec[j] = (pdist(np.array([df['freq_x'].values, df['freq_y'].values]), 'cosine')[0])
             if (np.isnan(dist_vec[j]) == True):

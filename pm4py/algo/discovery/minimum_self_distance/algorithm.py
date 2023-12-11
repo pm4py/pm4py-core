@@ -21,7 +21,7 @@ import pandas as pd
 
 from pm4py.algo.discovery.minimum_self_distance.variants import log, pandas
 from pm4py.objects.log.obj import EventLog, EventStream
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 
 
 class Variants(Enum):
@@ -35,7 +35,7 @@ def apply(log_obj: Union[EventLog, pd.DataFrame, EventStream], variant: Union[st
         parameters = {}
 
     if variant is None:
-        if isinstance(log_obj, pd.DataFrame):
+        if pandas_utils.check_is_pandas_dataframe(log_obj):
             variant = Variants.PANDAS
         else:
             variant = Variants.LOG

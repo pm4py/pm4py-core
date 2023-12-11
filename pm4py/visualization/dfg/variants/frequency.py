@@ -19,7 +19,7 @@ from pm4py.statistics.attributes.log import get as attr_get
 from pm4py.objects.dfg.utils import dfg_utils
 from pm4py.util import xes_constants as xes
 from pm4py.util import exec_utils
-from pm4py.statistics.sojourn_time.log import get as soj_time_get
+from pm4py.statistics.service_time.log import get as serv_time_get
 from enum import Enum
 from pm4py.util import constants
 from typing import Optional, Dict, Any, Tuple
@@ -43,7 +43,7 @@ class Parameters(Enum):
     STAT_LOCALE = "stat_locale"
 
 
-def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Optional[Dict[Any, Any]] = None, activities_count : Dict[str, int] = None, soj_time: Dict[str, float] = None) -> graphviz.Digraph:
+def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Optional[Dict[Any, Any]] = None, activities_count : Dict[str, int] = None, serv_time: Dict[str, float] = None) -> graphviz.Digraph:
     """
     Visualize a frequency directly-follows graph
 
@@ -55,8 +55,8 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
         (if provided) Event log for the calculation of statistics
     activities_count
         (if provided) Dictionary associating to each activity the number of occurrences in the log.
-    soj_time
-        (if provided) Dictionary associating to each activity the average sojourn time
+    serv_time
+        (if provided) Dictionary associating to each activity the average service time
     parameters
         Variant-specific parameters
 
@@ -100,13 +100,13 @@ def apply(dfg: Dict[Tuple[str, str], int], log: EventLog = None, parameters: Opt
                 for act in start_activities:
                     activities_count[act] += start_activities[act]
 
-    if soj_time is None:
+    if serv_time is None:
         if log is not None:
-            soj_time = soj_time_get.apply(log, parameters=parameters)
+            serv_time = serv_time_get.apply(log, parameters=parameters)
         else:
-            soj_time = {key: 0 for key in activities}
+            serv_time = {key: 0 for key in activities}
 
     return dfg_gviz.graphviz_visualization(activities_count, dfg, image_format=image_format, measure="frequency",
-                                  max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
-                                  start_activities=start_activities, end_activities=end_activities, soj_time=soj_time,
-                                  font_size=font_size, bgcolor=bgcolor, rankdir=rankdir)
+                                           max_no_of_edges_in_diagram=max_no_of_edges_in_diagram,
+                                           start_activities=start_activities, end_activities=end_activities, serv_time=serv_time,
+                                           font_size=font_size, bgcolor=bgcolor, rankdir=rankdir)

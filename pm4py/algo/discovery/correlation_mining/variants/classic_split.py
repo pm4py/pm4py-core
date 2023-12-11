@@ -16,7 +16,7 @@
 '''
 from pm4py.util import exec_utils
 from enum import Enum
-from pm4py.util import constants, xes_constants
+from pm4py.util import constants, xes_constants, pandas_utils
 from pm4py.objects.conversion.log import converter
 from pm4py.algo.discovery.correlation_mining.variants import classic
 from collections import Counter
@@ -64,7 +64,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     PS_matrixes = []
     duration_matrixes = []
 
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         # keep only the two columns before conversion
         log = log[list(set([activity_key, timestamp_key, start_timestamp_key]))]
         log = log.sort_values([timestamp_key, start_timestamp_key])

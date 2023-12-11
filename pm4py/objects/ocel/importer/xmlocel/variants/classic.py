@@ -23,7 +23,7 @@ from lxml import etree, objectify
 from pm4py.objects.ocel import constants
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel.util import filtering_utils
-from pm4py.util import exec_utils, dt_parsing
+from pm4py.util import exec_utils, dt_parsing, pandas_utils
 from pm4py.objects.ocel.util import ocel_consistency
 
 
@@ -176,14 +176,14 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
     for rel in relations:
         rel[object_type] = obj_type_dict[rel[object_id]]
 
-    events = pd.DataFrame(events) if events else None
-    objects = pd.DataFrame(objects) if objects else None
-    relations = pd.DataFrame(relations) if relations else None
-    o2o = pd.DataFrame(o2o) if o2o else None
-    object_changes = pd.DataFrame(object_changes) if object_changes else None
+    events = pandas_utils.instantiate_dataframe(events) if events else None
+    objects = pandas_utils.instantiate_dataframe(objects) if objects else None
+    relations = pandas_utils.instantiate_dataframe(relations) if relations else None
+    o2o = pandas_utils.instantiate_dataframe(o2o) if o2o else None
+    object_changes = pandas_utils.instantiate_dataframe(object_changes) if object_changes else None
 
-    events[internal_index] = events.index
-    relations[internal_index] = relations.index
+    events = pandas_utils.insert_index(events, internal_index, reset_index=False, copy_dataframe=False)
+    relations = pandas_utils.insert_index(relations, internal_index, reset_index=False, copy_dataframe=False)
 
     events = events.sort_values([event_timestamp, internal_index])
     relations = relations.sort_values([event_timestamp, internal_index])

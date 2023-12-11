@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from enum import Enum
-from pm4py.util import constants, xes_constants, exec_utils
+from pm4py.util import constants, xes_constants, exec_utils, pandas_utils
 from typing import Optional, Dict, Any
 import pandas as pd
 from copy import copy
@@ -71,7 +71,7 @@ def apply(df0: pd.DataFrame, activity: str, parameters: Optional[Dict[Any, Any]]
     df = df[list({activity_key, case_id_key})]
     df = df[df[activity_key] == activity]
     df[INT_CASE_ACT_SIZE] = df.groupby([activity_key, case_id_key]).cumcount()
-    cases = df[df[INT_CASE_ACT_SIZE] >= (min_occurrences-1)][case_id_key].unique()
+    cases = pandas_utils.format_unique(df[df[INT_CASE_ACT_SIZE] >= (min_occurrences-1)][case_id_key].unique())
 
     if positive:
         ret = df0[df0[case_id_key].isin(cases)]

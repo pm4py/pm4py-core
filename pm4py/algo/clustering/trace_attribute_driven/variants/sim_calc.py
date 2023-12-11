@@ -21,7 +21,7 @@ from pm4py.algo.clustering.trace_attribute_driven.util import filter_subsets
 from scipy.spatial.distance import pdist
 from pm4py.util import exec_utils
 from enum import Enum
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 
 
 class Parameters(Enum):
@@ -96,8 +96,8 @@ def dist_calc(var_list_1, var_list_2, log1, log2, freq_thres, num, alpha, parame
                 df_2_act = act_dist_calc.occu_var_act(min_var[j])
                 df_2_suc = suc_dist_calc.occu_var_suc(min_var[j], parameters={"binarize": True})
 
-                df_act = pd.merge(df_1_act, df_2_act, how='outer', on='var').fillna(0)
-                df_suc = pd.merge(df_1_suc, df_2_suc, how='outer', on='direct_suc').fillna(0)
+                df_act = pandas_utils.merge(df_1_act, df_2_act, how='outer', on='var').fillna(0)
+                df_suc = pandas_utils.merge(df_1_suc, df_2_suc, how='outer', on='direct_suc').fillna(0)
 
                 dist_vec_act[j] = (pdist(np.array([df_act['freq_x'].values, df_act['freq_y'].values]), 'cosine')[0])
                 dist_vec_suc[j] = (pdist(np.array([df_suc['freq_x'].values, df_suc['freq_y'].values]), 'cosine')[0])

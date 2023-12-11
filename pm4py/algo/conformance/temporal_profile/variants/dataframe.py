@@ -21,7 +21,7 @@ from typing import Optional, Dict, Any
 import pandas as pd
 
 from pm4py.algo.discovery.dfg.adapters.pandas.df_statistics import get_partial_order_dataframe
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import exec_utils, constants, xes_constants, pandas_utils
 from pm4py.util import typing
 
 
@@ -84,11 +84,11 @@ def apply(df: pd.DataFrame, temporal_profile: typing.TemporalProfile,
     business_hours_slots = exec_utils.get_param_value(Parameters.BUSINESS_HOUR_SLOTS, parameters, constants.DEFAULT_BUSINESS_HOUR_SLOTS)
     workcalendar = exec_utils.get_param_value(Parameters.WORKCALENDAR, parameters, constants.DEFAULT_BUSINESS_HOURS_WORKCALENDAR)
 
-    temporal_profile = pd.DataFrame([{activity_key: x[0], activity_key + "_2": x[1], "@@min": y[0] - zeta * y[1],
+    temporal_profile = pandas_utils.instantiate_dataframe([{activity_key: x[0], activity_key + "_2": x[1], "@@min": y[0] - zeta * y[1],
                                       "@@max": y[0] + zeta * y[1], "@@mean": y[0], "@@std": y[1]} for x, y in
                                      temporal_profile.items()])
 
-    cases = list(df[case_id_key].unique())
+    cases = pandas_utils.format_unique(df[case_id_key].unique())
     ret = [[] for c in cases]
     efg = get_partial_order_dataframe(df, activity_key=activity_key, timestamp_key=timestamp_key,
                                       start_timestamp_key=start_timestamp_key, case_id_glue=case_id_key,

@@ -56,7 +56,7 @@ def directly_follows_dataframe(dataframe: pd.DataFrame, parameters: Optional[Dic
 
     df_shifted = dataframe.shift(-1)
     df_shifted.columns = [x+"_2" for x in df_shifted.columns]
-    dataframe = pd.concat([dataframe, df_shifted], axis=1)
+    dataframe = pandas_utils.concat([dataframe, df_shifted], axis=1)
     dataframe = dataframe[dataframe[case_id_key] == dataframe[case_id_key+"_2"]]
 
     return dataframe

@@ -58,7 +58,7 @@ def filter_start_events_per_object_type(ocel: OCEL, object_type: str, parameters
     object_id = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, ocel.object_id_column)
     object_type_column = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
 
-    evs = set(ocel.relations[ocel.relations[object_type_column] == object_type].groupby(object_id).first()[event_id].unique())
+    evs = ocel.relations[ocel.relations[object_type_column] == object_type].groupby(object_id).first()[event_id].to_numpy().tolist()
 
     ocel = copy(ocel)
     ocel.events = ocel.events[ocel.events[event_id].isin(evs)]
@@ -95,7 +95,7 @@ def filter_end_events_per_object_type(ocel: OCEL, object_type: str, parameters: 
     object_id = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, ocel.object_id_column)
     object_type_column = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
 
-    evs = set(ocel.relations[ocel.relations[object_type_column] == object_type].groupby(object_id).last()[event_id].unique())
+    evs = ocel.relations[ocel.relations[object_type_column] == object_type].groupby(object_id).last()[event_id]
 
     ocel = copy(ocel)
     ocel.events = ocel.events[ocel.events[event_id].isin(evs)]

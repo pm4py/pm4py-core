@@ -2,15 +2,14 @@ import pm4py
 from pm4py.algo.discovery.heuristics.variants import plusplus
 from pm4py.visualization.heuristics_net import visualizer
 from pm4py.visualization.petri_net import visualizer as pn_visualizer
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
+from pm4py.objects.log.util import dataframe_utils
 from examples import examples_conf
-import pandas as pd
 
 
 def execute_script():
-    df = pd.read_csv("../tests/input_data/interval_event_log.csv")
-    df["time:timestamp"] = pd.to_datetime(df["time:timestamp"], utc=True, format="ISO8601")
-    df["start_timestamp"] = pd.to_datetime(df["start_timestamp"], utc=True, format="ISO8601")
+    df = pandas_utils.read_csv("../tests/input_data/interval_event_log.csv")
+    df = dataframe_utils.convert_timestamp_columns_in_df(df, timest_format=constants.DEFAULT_TIMESTAMP_PARSE_FORMAT, timest_columns=["start_timestamp", "time:timestamp"])
     log = pm4py.read_xes("../tests/input_data/interval_event_log.xes")
     heu_net = plusplus.apply_heu(log, parameters={"heu_net_decoration": "performance"})
     heu_net_2 = plusplus.apply_heu_pandas(df, parameters={"heu_net_decoration": "performance"})

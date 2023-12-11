@@ -16,7 +16,7 @@
 '''
 from pm4py.util import exec_utils
 from enum import Enum
-from pm4py.util import constants, xes_constants
+from pm4py.util import constants, xes_constants, pandas_utils
 from pm4py.objects.conversion.log import converter
 from pm4py.algo.discovery.correlation_mining import util as cm_util
 from statistics import mean
@@ -163,7 +163,7 @@ def preprocess_log(log, activities=None, activities_counter=None, parameters=Non
     caseid_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     index_key = exec_utils.get_param_value(Parameters.INDEX_KEY, parameters, DEFAULT_INDEX_KEY)
 
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         # keep only the two columns before conversion
         log = log[list(set([activity_key, timestamp_key, start_timestamp_key, caseid_key]))]
 

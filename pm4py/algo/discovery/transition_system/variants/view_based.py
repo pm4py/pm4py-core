@@ -21,7 +21,7 @@ from pm4py.objects.log import util as log_util
 from pm4py.util.xes_constants import DEFAULT_NAME_KEY
 from pm4py.objects.transition_system import obj as ts, constants as ts_constants
 from enum import Enum
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 from pm4py.objects.transition_system.obj import TransitionSystem
 from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog, EventStream
@@ -57,9 +57,9 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame],
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, DEFAULT_NAME_KEY)
     include_data = exec_utils.get_param_value(Parameters.INCLUDE_DATA, parameters, False)
 
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
-        control_flow_log = list(log.groupby(case_id_key)[activity_key].apply(list))
+        control_flow_log = list(log.groupby(case_id_key)[activity_key].agg(list))
     else:
         log = log_conversion.apply(log, parameters, log_conversion.TO_EVENT_LOG)
         control_flow_log = log_util.log.project_traces(log, activity_key)

@@ -19,7 +19,7 @@ from enum import Enum
 from pm4py.algo.discovery.heuristics.variants import classic, plusplus
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.objects.heuristics_net.obj import HeuristicsNet
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
@@ -71,7 +71,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     fm
         Final marking
     """
-    if isinstance(log, pd.DataFrame):
+    if pandas_utils.check_is_pandas_dataframe(log):
         return exec_utils.get_variant(variant).apply_pandas(log, parameters=parameters)
 
     return exec_utils.get_variant(variant).apply(log_conversion.apply(log, variant=log_conversion.Variants.TO_EVENT_LOG, parameters=parameters),

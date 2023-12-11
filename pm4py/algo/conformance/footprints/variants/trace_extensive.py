@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from enum import Enum
-from pm4py.util import exec_utils, xes_constants, constants
+from pm4py.util import exec_utils, xes_constants, constants, pandas_utils
 from typing import Optional, Dict, Any, Union, List
 from pm4py.objects.log.obj import EventLog
 import pandas as pd
@@ -152,4 +152,4 @@ def get_diagnostics_dataframe(log: EventLog, conf_result: List[Dict[str, Any]], 
         diagn_stream.append({"case_id": case_id, "is_fit": is_fit, "footprints_violations": footprints_violations, "start_activities_violations": start_activities_violations,
                              "end_activities_violations": end_activities_violations, "act_always_happening_violations": act_always_happening_violations, "min_length_fit": min_length_fit})
 
-    return pd.DataFrame(diagn_stream)
+    return pandas_utils.instantiate_dataframe(diagn_stream)

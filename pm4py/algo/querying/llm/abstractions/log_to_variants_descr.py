@@ -189,7 +189,8 @@ def apply(log_obj: Union[EventLog, EventStream, pd.DataFrame], parameters: Optio
 
     log_obj = log_converter.apply(log_obj, variant=log_converter.Variants.TO_DATA_FRAME, parameters=parameters)
     gdf = log_obj.groupby(case_id_key)
-    variants = gdf[activity_key].agg(tuple).to_dict()
+    variants = gdf[activity_key].agg(list).to_dict()
+    variants = {c: tuple(v) for c, v in variants.items()}
     gdf = gdf[timestamp_key]
     start_time = gdf.min().to_dict()
     start_time = {x: y.timestamp() for x, y in start_time.items()}

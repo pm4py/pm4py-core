@@ -19,6 +19,7 @@ from datetime import timedelta, datetime, time
 from typing import List, Tuple
 
 from pm4py.util import constants
+from pm4py.util.dt_parsing.variants import strpfromiso
 
 
 def soj_time_business_hours_diff(st: datetime, et: datetime, business_hour_slots: List[Tuple[int]],
@@ -49,7 +50,7 @@ def soj_time_business_hours_diff(st: datetime, et: datetime, business_hour_slots
     diff
         Difference in business hours
     """
-    bh = BusinessHours(st.replace(tzinfo=None), et.replace(tzinfo=None),
+    bh = BusinessHours(st, et,
                        business_hour_slots=business_hour_slots, work_calendar=work_calendar)
     return bh.get_seconds()
 
@@ -65,8 +66,8 @@ def get_overlapping_time(timespan1_begin: datetime, timespan1_end: datetime,
 
 class BusinessHours:
     def __init__(self, datetime1, datetime2, **kwargs):
-        self.datetime1 = datetime1
-        self.datetime2 = datetime2
+        self.datetime1 = datetime1.replace(tzinfo=None)
+        self.datetime2 = datetime2.replace(tzinfo=None)
 
         self.business_hour_slots = kwargs[
             "business_hour_slots"] if "business_hour_slots" in kwargs else constants.DEFAULT_BUSINESS_HOUR_SLOTS

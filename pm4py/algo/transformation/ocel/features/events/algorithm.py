@@ -86,7 +86,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
 
     enable_related_objects_features = exec_utils.get_param_value(Parameters.ENABLE_RELATED_OBJECTS_FEATURES, parameters, False)
 
-    ordered_events = list(ocel.events[ocel.event_id_column])
+    ordered_events = ocel.events[ocel.event_id_column].to_numpy()
+    parameters["ordered_events"] = ordered_events
 
     datas = [[] for x in ordered_events]
     feature_namess = []
@@ -176,7 +177,7 @@ def transform_features_to_dict_dict(ocel: OCEL, data: List[List[float]], feature
     if parameters is None:
         parameters = {}
 
-    events = list(ocel.events[ocel.event_id_column])
+    events = ocel.events[ocel.event_id_column].to_numpy()
     ret = {}
     i = 0
     while i < len(data):

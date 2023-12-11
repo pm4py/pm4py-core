@@ -44,8 +44,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Set[Tuple[
 
     graph = set()
 
-    ordered_events = list(ocel.events[ocel.event_id_column])
-    ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].apply(list).to_dict()
+    ordered_events = ocel.events[ocel.event_id_column].to_numpy()
+    ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].agg(list).to_dict()
     set_objects = set()
 
     for ev in ordered_events:

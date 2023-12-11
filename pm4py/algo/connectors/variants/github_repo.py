@@ -19,9 +19,10 @@ import time
 import traceback
 import pandas as pd
 from dateutil.parser import parse
+from pm4py.util.dt_parsing.variants import strpfromiso
 from typing import Optional, Dict, Any
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 import importlib.util
 
 
@@ -87,7 +88,7 @@ def apply(parameters: Optional[Dict[Any, str]] = None) -> pd.DataFrame:
                 if continuee:
                     if "timeline_url" in i:
                         timeline_url = i["timeline_url"]
-                        eve = {"case:owner": owner, "case:repo": owner+"/"+repo, "case:concept:name": timeline_url, "time:timestamp": parse(i["created_at"]), "concept:name": "created", "org:resource": i["user"]["login"], "case:author_association": i["author_association"], "case:title": i["title"]}
+                        eve = {"case:owner": owner, "case:repo": owner+"/"+repo, "case:concept:name": timeline_url, "time:timestamp": strpfromiso.fix_naivety(parse(i["created_at"])), "concept:name": "created", "org:resource": i["user"]["login"], "case:author_association": i["author_association"], "case:title": i["title"]}
                         if "pull_request" in i:
                             eve["case:pull_request"] = i["pull_request"]["url"]
                         events.append(eve)
@@ -96,7 +97,7 @@ def apply(parameters: Optional[Dict[Any, str]] = None) -> pd.DataFrame:
                         issue_events.reverse()
                         for ev in issue_events:
                             if "created_at" in ev and "event" in ev and "actor" in ev:
-                                eve = {"case:owner": owner, "case:repo": owner+"/"+repo, "case:concept:name": timeline_url, "time:timestamp": parse(ev["created_at"]), "concept:name": ev["event"], "org:resource": ev["actor"]["login"], "case:author_association": i["author_association"], "case:title": i["title"]}
+                                eve = {"case:owner": owner, "case:repo": owner+"/"+repo, "case:concept:name": timeline_url, "time:timestamp": strpfromiso.fix_naivety(parse(ev["created_at"])), "concept:name": ev["event"], "org:resource": ev["actor"]["login"], "case:author_association": i["author_association"], "case:title": i["title"]}
                                 if "pull_request" in i:
                                     eve["case:pull_request"] = i["pull_request"]["url"]
                                 events.append(eve)
@@ -112,9 +113,9 @@ def apply(parameters: Optional[Dict[Any, str]] = None) -> pd.DataFrame:
                 progress.close()
             break
 
-    dataframe = pd.DataFrame(events)
+    dataframe = pandas_utils.instantiate_dataframe(events)
     if len(dataframe) > 0:
-        dataframe["@@index"] = dataframe.index
+        dataframe = pandas_utils.insert_index(dataframe, "@@index", copy_dataframe=False, reset_index=False)
         dataframe = dataframe.sort_values(["time:timestamp", "@@index"])
         dataframe["@@case_index"] = dataframe.groupby("case:concept:name", sort=False).ngroup()
         dataframe = dataframe.sort_values(["@@case_index", "time:timestamp", "@@index"])

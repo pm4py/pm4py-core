@@ -28,7 +28,7 @@ from pm4py.objects.log.obj import EventLog
 from pm4py.algo.transformation.log_to_features import algorithm as log_to_features
 from pm4py.objects.log.util import sorting
 from pm4py.util import constants, xes_constants
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 
 
 class Parameters(Enum):
@@ -87,7 +87,7 @@ def apply(log: EventLog, parameters: Optional[Dict[str, Any]] = None) -> Tuple[L
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters,
                                                xes_constants.DEFAULT_TIMESTAMP_KEY)
 
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         # keep only the needed columns
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
         log = log[[case_id_key, activity_key, timestamp_key]]

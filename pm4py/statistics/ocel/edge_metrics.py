@@ -20,6 +20,8 @@ from enum import Enum
 from pm4py.util import exec_utils, constants
 from pm4py.objects.ocel import constants as ocel_constants
 from pm4py.util.business_hours import BusinessHours
+import numpy as np
+import datetime
 
 
 class Parameters(Enum):
@@ -73,7 +75,7 @@ def performance_calculation_ocel_aggregation(ocel: OCEL, aggregation: Dict[str, 
 
     event_id = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, ocel.event_id_column)
     timestamp_key = exec_utils.get_param_value(Parameters.EVENT_TIMESTAMP, parameters, ocel.event_timestamp)
-    timestamps = ocel.events.groupby(event_id)[timestamp_key].apply(list).to_dict()
+    timestamps = ocel.events.groupby(event_id)[timestamp_key].agg(list).to_dict()
     timestamps = {x: y[0] for x, y in timestamps.items()}
 
     business_hours = exec_utils.get_param_value(Parameters.BUSINESS_HOURS, parameters, False)
@@ -95,7 +97,12 @@ def performance_calculation_ocel_aggregation(ocel: OCEL, aggregation: Dict[str, 
                                        workcalendar=workcalendar)
                     diff = bh.get_seconds()
                 else:
-                    diff = (timestamps[el[1]] - timestamps[el[0]]).total_seconds()
+                    timedelta = timestamps[el[1]] - timestamps[el[0]]
+                    diff = 0
+                    if isinstance(timedelta, np.timedelta64):
+                        diff = timedelta / np.timedelta64(1, 's')
+                    elif isinstance(timedelta, datetime.timedelta):
+                        diff = timedelta.total_seconds()
                 ret[ot][act].append(diff)
             ret[ot][act] = sorted(ret[ot][act])
 
@@ -204,12 +211,12 @@ def find_associations_per_edge(ocel: OCEL, parameters: Optional[Dict[Any, Any]] 
     object_id = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, ocel.object_id_column)
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
 
-    identifiers = list(ocel.events[event_id])
-    activities = ocel.events.groupby(event_id)[event_activity].apply(list).to_dict()
+    identifiers = ocel.events[event_id].to_numpy().tolist()
+    activities = ocel.events.groupby(event_id)[event_activity].agg(list).to_dict()
     activities = {x: y[0] for x, y in activities.items()}
 
-    omap = ocel.relations.groupby(event_id)[object_id].apply(list).to_dict()
-    objtypes = ocel.objects.groupby(object_id)[object_type].apply(list).to_dict()
+    omap = ocel.relations.groupby(event_id)[object_id].agg(list).to_dict()
+    objtypes = ocel.objects.groupby(object_id)[object_type].agg(list).to_dict()
     objtypes = {x: y[0] for x, y in objtypes.items()}
 
     history = {}

@@ -21,7 +21,7 @@ from collections import Counter
 from scipy.spatial.distance import pdist
 from pm4py.util import exec_utils
 from enum import Enum
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 
 
 class Parameters(Enum):
@@ -41,7 +41,7 @@ def occu_var_act(var_list):
     :return:
     '''
     result = Counter(var_list)  # count number of occurrence of each element
-    df = pd.DataFrame.from_dict(dict(result), orient='index', columns=['freq'])
+    df = pandas_utils.instantiate_dataframe_from_dict(dict(result), orient='index', columns=['freq'])
     df = df.reset_index().rename(columns={'index': 'var'})
 
     return df
@@ -92,7 +92,7 @@ def act_sim(var_list_1, var_list_2, log1, log2, freq_thres, num, parameters=None
             df_1 = occu_var_act(max_var[i])
             for j in range(min_len):
                 df_2 = occu_var_act(min_var[j])
-                df = pd.merge(df_1, df_2, how='outer', on='var').fillna(0)
+                df = pandas_utils.merge(df_1, df_2, how='outer', on='var').fillna(0)
                 # cosine similarity is used to calculate trace similarity
                 dist_vec[j] = (pdist(np.array([df['freq_x'].values, df['freq_y'].values]), 'cosine')[0])
                 dist_matrix[i][j] = dist_vec[j]
@@ -162,7 +162,7 @@ def act_sim_med(var_list_1, var_list_2, log1, log2, freq_thres, num, parameters=
             df_1 = occu_var_act(max_var[i])
             for j in range(min_len):
                 df_2 = occu_var_act(min_var[j])
-                df = pd.merge(df_1, df_2, how='outer', on='var').fillna(0)
+                df = pandas_utils.merge(df_1, df_2, how='outer', on='var').fillna(0)
                 # cosine similarity is used to calculate trace similarity
                 dist_vec[j] = (pdist(np.array([df['freq_x'].values, df['freq_y'].values]), 'cosine')[0])
                 dist_matrix[i][j] = 1 - dist_vec[j]
@@ -225,7 +225,7 @@ def act_sim_dual(var_list_1, var_list_2, log1, log2, freq_thres, num, parameters
             df_1 = occu_var_act(max_var[i])
             for j in range(min_len):
                 df_2 = occu_var_act(min_var[j])
-                df = pd.merge(df_1, df_2, how='outer', on='var').fillna(0)
+                df = pandas_utils.merge(df_1, df_2, how='outer', on='var').fillna(0)
                 # cosine similarity is used to calculate trace similarity
                 dist_vec[j] = (pdist(np.array([df['freq_x'].values, df['freq_y'].values]), 'cosine')[0])
                 dist_matrix[i][j] = dist_vec[j]
@@ -301,7 +301,7 @@ def act_sim_percent(log1, log2, percent_1, percent_2):
             df_1 = occu_var_act(max_var[i])
             for j in range(min_len):
                 df_2 = occu_var_act(min_var[j])
-                df = pd.merge(df_1, df_2, how='outer', on='var').fillna(0)
+                df = pandas_utils.merge(df_1, df_2, how='outer', on='var').fillna(0)
                 # cosine similarity is used to calculate trace similarity
                 dist_vec[j] = (pdist(np.array([df['freq_x'].values, df['freq_y'].values]), 'cosine')[0])
                 dist_matrix[i][j] = dist_vec[j]
@@ -364,7 +364,7 @@ def act_sim_percent_avg(log1, log2, percent_1, percent_2):
         df_1 = occu_var_act(max_var[i])
         for j in range(min_len):
             df_2 = occu_var_act(min_var[j])
-            df = pd.merge(df_1, df_2, how='outer', on='var').fillna(0)
+            df = pandas_utils.merge(df_1, df_2, how='outer', on='var').fillna(0)
             dist_vec[j] = (pdist(np.array([df['freq_x'].values, df['freq_y'].values]), 'cosine')[0])
             col_sum[i] += dist_vec[j] * var_count_max.iloc[i] * var_count_min.iloc[j]
             dist_matrix[i][j] = dist_vec[j]
@@ -413,10 +413,10 @@ def act_sim_percent_avg_actset(log1, log2, percent_1, percent_2, actset):
     for i in range(max_len):
         dist_vec = np.zeros(min_len)
         df_1 = occu_var_act(max_var[i])
-        df_1 = pd.merge(actset['var'], df_1, how='outer', on='var').fillna(0)
+        df_1 = pandas_utils.merge(actset['var'], df_1, how='outer', on='var').fillna(0)
         for j in range(min_len):
             df_2 = occu_var_act(min_var[j])
-            df = pd.merge(df_1, df_2, how='outer', on='var').fillna(0)
+            df = pandas_utils.merge(df_1, df_2, how='outer', on='var').fillna(0)
             # cosine similarity is used to calculate trace similarity
             dist_vec[j] = (pdist(np.array([df['freq_x'].values, df['freq_y'].values]), 'cosine')[0])
             col_sum[i] += dist_vec[j] * var_count_max.iloc[i] * var_count_min.iloc[j]

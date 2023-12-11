@@ -23,7 +23,7 @@ from typing import List, Dict, Collection, Any, Optional, Set, Tuple
 import pandas as pd
 
 from pm4py.objects.ocel.obj import OCEL
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 import sys
 import random
 
@@ -42,7 +42,7 @@ def ocel_get_object_types(ocel: OCEL) -> List[str]:
 
         object_types = pm4py.ocel_get_object_types(ocel)
     """
-    return list(ocel.objects[ocel.object_type_column].unique())
+    return pandas_utils.format_unique(ocel.objects[ocel.object_type_column].unique())
 
 
 def ocel_get_attribute_names(ocel: OCEL) -> List[str]:
@@ -123,7 +123,7 @@ def ocel_temporal_summary(ocel: OCEL) -> pd.DataFrame:
     """
     Returns the ``temporal summary'' from an object-centric event log.
     The temporal summary aggregates all the events performed in the same timestamp,
-    and reports the set of activities and the involved objects.
+    and reports the list of activities and the involved objects.
 
     :param ocel: object-centric event log
     :rtype: ``pd.DataFrame``
@@ -135,8 +135,8 @@ def ocel_temporal_summary(ocel: OCEL) -> pd.DataFrame:
         temporal_summary = pm4py.ocel_temporal_summary(ocel)
     """
     gdf = ocel.relations.groupby(ocel.event_timestamp)
-    act_comb = gdf[ocel.event_activity].agg(set).to_frame()
-    obj_comb = gdf[ocel.object_id_column].agg(set).to_frame()
+    act_comb = gdf[ocel.event_activity].agg(list).to_frame()
+    obj_comb = gdf[ocel.object_id_column].agg(list).to_frame()
     temporal_summary = act_comb.join(obj_comb).reset_index()
     return temporal_summary
 
@@ -162,8 +162,8 @@ def ocel_objects_summary(ocel: OCEL) -> pd.DataFrame:
     objects_summary = objects_summary.join(lif_end_tim)
     objects_summary = objects_summary.reset_index()
     objects_summary["lifecycle_duration"] = (objects_summary["lifecycle_end"] - objects_summary["lifecycle_start"]).dt.total_seconds()
-    ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].apply(list).to_dict()
-    objects_ids = set(ocel.objects[ocel.object_id_column].unique())
+    ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].agg(list).to_dict()
+    objects_ids = pandas_utils.format_unique(ocel.objects[ocel.object_id_column].unique())
     graph = {o: set() for o in objects_ids}
     for ev in ev_rel_obj:
         rel_obj = ev_rel_obj[ev]
@@ -192,7 +192,7 @@ def ocel_objects_interactions_summary(ocel: OCEL) -> pd.DataFrame:
     """
     obj_types = ocel.objects.groupby(ocel.object_id_column)[ocel.object_type_column].first().to_dict()
     eve_activities = ocel.events.groupby(ocel.event_id_column)[ocel.event_activity].first().to_dict()
-    ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].apply(list).to_dict()
+    ev_rel_obj = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].agg(list).to_dict()
     stream = []
     for ev in ev_rel_obj:
         rel_obj = ev_rel_obj[ev]
@@ -203,8 +203,7 @@ def ocel_objects_interactions_summary(ocel: OCEL) -> pd.DataFrame:
                                   ocel.object_id_column: o1, ocel.object_type_column: obj_types[o1],
                                   ocel.object_id_column+"_2": o2, ocel.object_type_column+"_2": obj_types[o2]})
 
-    import pandas as pd
-    return pd.DataFrame(stream)
+    return pandas_utils.instantiate_dataframe(stream)
 
 
 def discover_ocdfg(ocel: OCEL, business_hours=False, business_hour_slots=constants.DEFAULT_BUSINESS_HOUR_SLOTS) -> Dict[str, Any]:
@@ -404,9 +403,9 @@ def sample_ocel_connected_components(ocel: OCEL, connected_components: int = 1,
             objects = cc.objects
             relations = cc.relations
         else:
-            events = pd.concat([events, cc.events])
-            objects = pd.concat([objects, cc.objects])
-            relations = pd.concat([relations, cc.relations])
+            events = pandas_utils.concat([events, cc.events])
+            objects = pandas_utils.concat([objects, cc.objects])
+            relations = pandas_utils.concat([relations, cc.relations])
 
     return OCEL(events, objects, relations)
 
@@ -462,7 +461,7 @@ def ocel_merge_duplicates(ocel: OCEL, have_common_object: Optional[bool]=False) 
     group_size = relations["@@groupn"].value_counts().to_dict()
     relations["@@groupsize"] = relations["@@groupn"].map(group_size)
     relations = relations.sort_values(["@@groupsize", "@@groupn"], ascending=False)
-    val_corr = {x: str(uuid.uuid4()) for x in relations["@@groupn"].unique()}
+    val_corr = {x: str(uuid.uuid4()) for x in pandas_utils.format_unique(relations["@@groupn"].unique())}
     relations = relations.groupby(ocel.event_id_column).first()["@@groupn"].to_dict()
     relations = {x: val_corr[y] for x, y in relations.items()}
 
@@ -495,10 +494,10 @@ def ocel_sort_by_additional_column(ocel: OCEL, additional_column: str, primary_c
         ocel = pm4py.ocel_sort_by_additional_column(ocel, 'ordering')
 
     """
-    ocel.events["@@index"] = ocel.events.index
+    ocel.events = pandas_utils.insert_index(ocel.events, "@@index", reset_index=False, copy_dataframe=False)
     ocel.events = ocel.events.sort_values([primary_column, additional_column, "@@index"])
     del ocel.events["@@index"]
-    ocel.events.reset_index(inplace=True, drop=True)
+    ocel.events = ocel.events.reset_index(drop=True)
     return ocel
 
 
@@ -520,7 +519,7 @@ def ocel_add_index_based_timedelta(ocel: OCEL) -> OCEL:
 
     """
     from datetime import timedelta
-    eids = ocel.events[ocel.event_id_column].to_list()
+    eids = ocel.events[ocel.event_id_column].to_numpy().tolist()
     eids = {eids[i]: timedelta(milliseconds=i) for i in range(len(eids))}
     ocel.events["@@timedelta"] = ocel.events[ocel.event_id_column].map(eids)
     ocel.relations["@@timedelta"] = ocel.relations[ocel.event_id_column].map(eids)

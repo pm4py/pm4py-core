@@ -16,9 +16,10 @@
 '''
 
 from typing import Optional, Dict, Any
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from enum import Enum
 from pm4py.algo.connectors.util import mail as mail_utils
+from pm4py.util.dt_parsing.variants import strpfromiso
 import pandas as pd
 from datetime import datetime
 import importlib.util
@@ -64,10 +65,10 @@ def apply(parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
         try:
             conversation_id = str(it.ConversationID)
             subject = str(it.Subject)
-            creation_time = datetime.fromtimestamp(it.CreationTime.timestamp())
-            last_modification_time = datetime.fromtimestamp(it.LastModificationTime.timestamp())
-            start_timestamp = datetime.fromtimestamp(it.Start.timestamp())
-            end_timestamp = datetime.fromtimestamp(it.Start.timestamp() + 60 * it.Duration)
+            creation_time = strpfromiso.fix_naivety(datetime.fromtimestamp(it.CreationTime.timestamp()))
+            last_modification_time = strpfromiso.fix_naivety(datetime.fromtimestamp(it.LastModificationTime.timestamp()))
+            start_timestamp = strpfromiso.fix_naivety(datetime.fromtimestamp(it.Start.timestamp()))
+            end_timestamp = strpfromiso.fix_naivety(datetime.fromtimestamp(it.Start.timestamp() + 60 * it.Duration))
 
             events.append(
                 {"case:concept:name": conversation_id, "case:subject": subject, "time:timestamp": creation_time,
@@ -93,8 +94,8 @@ def apply(parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
     if progress is not None:
         progress.close()
 
-    dataframe = pd.DataFrame(events)
-    dataframe["@@index"] = dataframe.index
+    dataframe = pandas_utils.instantiate_dataframe(events)
+    dataframe = pandas_utils.insert_index(dataframe, "@@index", copy_dataframe=False, reset_index=False)
     dataframe = dataframe.sort_values(["time:timestamp", "@@index"])
     dataframe["@@case_index"] = dataframe.groupby("case:concept:name", sort=False).ngroup()
     dataframe = dataframe.sort_values(["@@case_index", "time:timestamp", "@@index"])

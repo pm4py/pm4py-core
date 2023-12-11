@@ -51,7 +51,7 @@ def split_train_test(log: Union[EventLog, pd.DataFrame], train_percentage: float
 
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
-        cases = set(log[case_id_key].unique())
+        cases = pandas_utils.format_unique(log[case_id_key].unique())
         train_cases = set()
         test_cases = set()
         for c in cases:
@@ -179,7 +179,7 @@ def extract_features_dataframe(log: Union[EventLog, pd.DataFrame], str_tr_attr=N
 
     data, feature_names = log_to_features.apply(log, parameters=parameters)
 
-    return pd.DataFrame(data, columns=feature_names)
+    return pandas_utils.instantiate_dataframe(data, columns=feature_names)
 
 
 def extract_ocel_features(ocel: OCEL, obj_type: str, enable_object_lifecycle_paths: bool = True, enable_object_work_in_progress: bool = False, object_str_attributes: Optional[Collection[str]] = None, object_num_attributes: Optional[Collection[str]] = None, include_obj_id: bool = False, debug: bool = False) -> pd.DataFrame:
@@ -227,8 +227,8 @@ def extract_ocel_features(ocel: OCEL, obj_type: str, enable_object_lifecycle_pat
 
     data, feature_names = ocel_feature_extraction.apply(ocel, parameters=parameters)
 
-    dataframe = pd.DataFrame(data, columns=feature_names)
-    dataframe.dropna(how="any", axis=1, inplace=True)
+    dataframe = pandas_utils.instantiate_dataframe(data, columns=feature_names)
+    dataframe = dataframe.dropna(how="any", axis=1)
     dataframe = dataframe.select_dtypes(include=np.number)
 
     if include_obj_id:

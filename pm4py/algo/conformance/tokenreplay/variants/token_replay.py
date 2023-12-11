@@ -22,7 +22,7 @@ from pm4py.objects.petri_net.utils import align_utils
 from copy import copy
 from enum import Enum
 from pm4py.util import exec_utils, constants
-from pm4py.util import variants_util
+from pm4py.util import variants_util, pandas_utils
 import importlib.util
 from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog
@@ -986,8 +986,8 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
     for t in net.transitions:
         trans_map[t.label] = t
 
-    if type(log) is pd.DataFrame:
-        traces = list(log.groupby(case_id_key)[activity_key].apply(tuple))
+    if pandas_utils.check_is_pandas_dataframe(log):
+        traces = log.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist(); traces = [tuple(x) for x in traces]
     else:
         traces = [tuple(x[activity_key] for x in trace) for trace in log]
 
@@ -1215,4 +1215,4 @@ def get_diagnostics_dataframe(log: EventLog, tbr_output: typing.ListAlignments, 
 
         diagn_stream.append({"case_id": case_id, "is_fit": is_fit, "trace_fitness": trace_fitness, "missing": missing, "remaining": remaining, "produced": produced, "consumed": consumed})
 
-    return pd.DataFrame(diagn_stream)
+    return pandas_utils.instantiate_dataframe(diagn_stream)

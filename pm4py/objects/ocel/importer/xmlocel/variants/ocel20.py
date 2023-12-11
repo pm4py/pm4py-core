@@ -23,7 +23,7 @@ from lxml import etree, objectify
 from pm4py.objects.ocel import constants
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel.util import filtering_utils
-from pm4py.util import exec_utils, dt_parsing
+from pm4py.util import exec_utils, dt_parsing, pandas_utils
 from pm4py.objects.ocel.util import ocel_consistency
 
 
@@ -173,11 +173,11 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
 
                 events_list.append(ev_dict)
 
-    events_list = pd.DataFrame(events_list) if events_list else None
-    objects_list = pd.DataFrame(objects_list) if objects_list else None
-    relations_list = pd.DataFrame(relations_list) if relations_list else None
-    o2o_list = pd.DataFrame(o2o_list) if o2o_list else None
-    object_changes_list = pd.DataFrame(object_changes_list) if object_changes_list else None
+    events_list = pandas_utils.instantiate_dataframe(events_list) if events_list else None
+    objects_list = pandas_utils.instantiate_dataframe(objects_list) if objects_list else None
+    relations_list = pandas_utils.instantiate_dataframe(relations_list) if relations_list else None
+    o2o_list = pandas_utils.instantiate_dataframe(o2o_list) if o2o_list else None
+    object_changes_list = pandas_utils.instantiate_dataframe(object_changes_list) if object_changes_list else None
     globals = {}
 
     events_list[internal_index_column] = events_list.index

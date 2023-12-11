@@ -17,7 +17,7 @@
 
 from typing import Optional, Dict, Any
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 import pandas as pd
 
 
@@ -75,7 +75,7 @@ def apply(conn, parameters: Optional[Dict[Any, Any]] = None) -> pd.DataFrame:
 
     curs.execute(query)
     dataframe = curs.fetchall()
-    dataframe = pd.DataFrame.from_records(dataframe, columns=columns)
+    dataframe = pandas_utils.instantiate_dataframe_from_records(dataframe, columns=columns)
     dataframe = pm4py.format_dataframe(dataframe)
 
     curs.close()

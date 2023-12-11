@@ -20,7 +20,7 @@ from typing import Optional, Dict, Any
 from pm4py.objects.ocel import constants as ocel_constants
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from pm4py.objects.ocel.util import flattening
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
 from pm4py.objects.conversion.log import converter as log_converter
@@ -165,7 +165,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
         parameters = {}
 
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
-    obj_types = set(ocel.objects[object_type].unique())
+    obj_types = pandas_utils.format_unique(ocel.objects[object_type].unique())
 
     disc_parameters = copy(parameters)
     # disables the fallthroughs, as computing the model on a myriad of different object types

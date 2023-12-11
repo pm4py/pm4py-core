@@ -16,7 +16,7 @@
 '''
 import networkx as nx
 from enum import Enum
-from pm4py.util import exec_utils, constants, dt_parsing
+from pm4py.util import exec_utils, constants, dt_parsing, pandas_utils
 from typing import Optional, Dict, Any
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.log.obj import EventLog, Trace, Event
@@ -232,15 +232,15 @@ def nx_to_ocel(nx_graph: nx.DiGraph, parameters: Optional[Dict[Any, Any]] = None
         elif edge_type == 'O2O':
             o2o.append({"ocel:oid": source, "ocel:oid_2": target, "ocel:qualifier": qualifier})
 
-    events = pd.DataFrame(events)
-    objects = pd.DataFrame(objects)
-    relations = pd.DataFrame(relations)
-    o2o = pd.DataFrame(o2o) if o2o else None
-    object_changes = pd.DataFrame(object_changes) if object_changes else None
+    events = pandas_utils.instantiate_dataframe(events)
+    objects = pandas_utils.instantiate_dataframe(objects)
+    relations = pandas_utils.instantiate_dataframe(relations)
+    o2o = pandas_utils.instantiate_dataframe(o2o) if o2o else None
+    object_changes = pandas_utils.instantiate_dataframe(object_changes) if object_changes else None
 
     internal_index = "@@index"
-    events[internal_index] = events.index
-    relations[internal_index] = relations.index
+    events = pandas_utils.insert_index(events, internal_index, reset_index=False, copy_dataframe=False)
+    relations = pandas_utils.insert_index(relations, internal_index, reset_index=False, copy_dataframe=False)
 
     events = events.sort_values(["ocel:timestamp", internal_index])
     relations = relations.sort_values(["ocel:timestamp", internal_index])

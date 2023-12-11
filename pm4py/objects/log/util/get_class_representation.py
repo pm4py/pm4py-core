@@ -136,7 +136,7 @@ def get_class_representation_by_trace_duration(log, target_trace_duration, times
             timestamp_st = trace[0][timestamp_key]
             timestamp_et = trace[-1][timestamp_key]
             if business_hours:
-                bh = BusinessHours(timestamp_st.replace(tzinfo=None), timestamp_et.replace(tzinfo=None),
+                bh = BusinessHours(timestamp_st, timestamp_et,
                                    business_hour_slots=business_hours_slots)
                 diff = bh.get_seconds()
             else:

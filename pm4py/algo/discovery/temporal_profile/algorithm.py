@@ -20,7 +20,7 @@ import pandas as pd
 
 from pm4py.algo.discovery.temporal_profile.variants import log, dataframe
 from pm4py.objects.log.obj import EventLog
-from pm4py.util import typing
+from pm4py.util import typing, pandas_utils
 
 
 def apply(elog: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None) -> typing.TemporalProfile:
@@ -45,7 +45,7 @@ def apply(elog: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Any, An
     temporal_profile
         Temporal profile of the log
     """
-    if type(elog) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(elog):
         return dataframe.apply(elog, parameters=parameters)
 
     return log.apply(elog, parameters=parameters)

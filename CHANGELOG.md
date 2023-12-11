@@ -1,5 +1,75 @@
 # Changelog of pm4py
 
+
+## pm4py 2.7.9.1 (2023.XX.YY)
+
+### Added
+
+### Changed
+* 3173effdb98dfe37ca3b6770d55aadbbd61b6b7c
+  a48390b8be4495177d2e641fc6ae6e868f3544cb
+  95853c91ed0c9dbba61fecedac2fd98c793b6933
+  864052795e24494023a8b0c76c342db7c8a9305c
+  abd315e4c37701dbbf540726496dfb45b3625992
+  979cc906c9da648face900141be5f355821ffe61
+  4feb5c2000ce82df38294ff3459a25e358d2e69e
+  b13ea6458bbea9cc4099109cc28978aa2513a394
+  293c282dd8a90eb89273f2f8b98b1279b6e46051
+  c672a770bb1a7c58dee0f4f509a93126d0a6f11f
+  5545895f299599799222ce90ff7b446caaf9e3bf
+  6328037090236e6640a4efa51011e19001a5d300
+  ef3de4c7b7803d80b8599d84426badca0c7dfc5d
+  * major refactoring pm4py
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+* f6d15493110e613321214fbf4465fc561e42a698
+  * method to project DFG/edit distance alignments on log
+
+---
+
+
+## pm4py 2.7.9 (2023.11.20)
+
+### Added
+* e5bb3b43b47217128763157c9e64ba6b39b1672f
+  * OCEL event types-to-object types visualizer
+* be7e28440da6f69bfdad43b724931277f04efdbc
+  * NetworkX visualization utility
+* a17bb8e103b3ee46e46bef17885149070bf7e048
+  * Context-based activity label splitting approach (BPM 2023)
+* 6583504c6056c43868fe1158744fcc7655270dec
+  * Filtering on trace segments
+* 9dedaba837e561640a122e50927f7f5b13d4a334
+  * Utility to get frequent trace segments
+* 19c53e1fcf06c0566a3c697aec37f13345365d04
+  * Utility for the computation of service times
+
+### Changed
+* fb0d9fb049f128bd979c962db54e3a305ecf5f09
+  * Refactoring Pandas calls in pm4py
+* 36e19d3f48dabf03509cf87ae6508c0576b089b4
+  c38d10574587a3efa21d521f25de40e5ade4409b
+  * adapt openai calls to v1 migration
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+* 19c53e1fcf06c0566a3c697aec37f13345365d04
+  * refactored 'sojourn time' mis-spelling to 'service time' throughout the project
+
+---
+
+
 ## pm4py 2.7.8.4 (2023.11.15)
 
 ### Added

@@ -24,6 +24,7 @@ from pm4py.objects import petri_net
 from pm4py.objects.log import obj as log_instance
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.util.dt_parsing.variants import strpfromiso
 from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants
@@ -132,7 +133,7 @@ def apply(net: PetriNet, initial_marking: Marking, final_marking: Marking = None
         for act in activities:
             curr_timestamp = curr_timestamp + 1
             log_trace.append(
-                log_instance.Event({activity_key: act, timestamp_key: datetime.datetime.fromtimestamp(curr_timestamp)}))
+                log_instance.Event({activity_key: act, timestamp_key: strpfromiso.fix_naivety(datetime.datetime.fromtimestamp(curr_timestamp))}))
         log.append(log_trace)
 
     return log

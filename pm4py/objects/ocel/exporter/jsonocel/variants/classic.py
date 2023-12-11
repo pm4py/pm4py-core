@@ -25,7 +25,7 @@ from pm4py.objects.ocel.exporter.util import clean_dataframes
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel.util import attributes_names
 from pm4py.objects.ocel.util import related_objects
-from pm4py.util import exec_utils, constants as pm4_constants
+from pm4py.util import exec_utils, constants as pm4_constants, pandas_utils
 from pm4py.objects.ocel.util import ocel_consistency
 
 
@@ -44,7 +44,7 @@ def get_base_json_object(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None
     object_id = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, ocel.object_id_column)
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
 
-    all_object_types = list(ocel.objects[object_type].unique())
+    all_object_types = pandas_utils.format_unique(ocel.objects[object_type].unique())
     all_attribute_names = attributes_names.get_attribute_names(ocel, parameters=parameters)
     global_event_items = ocel.globals[
         constants.OCEL_GLOBAL_EVENT] if constants.OCEL_GLOBAL_EVENT in ocel.globals else constants.DEFAULT_GLOBAL_EVENT
@@ -75,7 +75,7 @@ def get_base_json_object(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None
         vmap = {k: v for k, v in event.items() if not k.startswith(constants.OCEL_PREFIX)}
         event = {k: v for k, v in event.items() if k.startswith(constants.OCEL_PREFIX)}
         event[constants.OCEL_VMAP_KEY] = vmap
-        event[constants.OCEL_OMAP_KEY] = rel_objs[eid]
+        event[constants.OCEL_OMAP_KEY] = list(rel_objs[eid])
         base_object[constants.OCEL_EVENTS_KEY][eid] = event
         i = i + 1
     del events_items

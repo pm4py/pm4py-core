@@ -91,7 +91,7 @@ def apply(dataframe: pd.DataFrame, list_activities: List[str], sample_size: int,
     for l, patterns in all_patterns:
         # concat shifted and suffixed dataframes to get a dataframe that allows to check for the patterns
         dfs = [dataframe.add_suffix(str(i)).shift(-i) for i in range(l)]
-        df_merged = pd.concat(dfs, axis=1)
+        df_merged = pandas_utils.concat(dfs, axis=1)
 
         indices = [shift_index(dfs[i].index, i) for i in range(len(dfs))]
         mindex = pd.MultiIndex.from_arrays(indices)

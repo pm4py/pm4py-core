@@ -18,17 +18,21 @@ import difflib
 from enum import Enum
 from typing import Optional, Dict, Any, List, Set, Union
 
-from pm4py.objects.log.obj import EventLog, Trace
+from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.objects.log.util import log_regex
 from pm4py.objects.petri_net.utils import align_utils
 from pm4py.util import exec_utils
 from pm4py.util import string_distance
 from pm4py.util import typing
+from pm4py.util import constants, xes_constants
+import pandas as pd
 from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
     PERFORM_ANTI_ALIGNMENT = "perform_anti_alignment"
+    ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
 
 
 def apply(log1: EventLog, log2: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> typing.ListAlignments:
@@ -174,3 +178,92 @@ def align_trace(trace: Trace, list_encodings: List[str], set_encodings: Set[str]
         return align
     else:
         return cache_align[encoded_trace]
+
+
+def project_log_on_variant(log: Union[EventLog, pd.DataFrame], variant: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
+    """
+    Projects the traces of an event log to the specified variant, in order to assess the conformance of the different
+    directly-follows relationships and their performance (as the timestamps are recorded).
+    The result is a event log where each 'projected' trace can be replayed on the given variant.
+    Each event of a 'projected' trace has the '@@is_conforming' attribute set to:
+    - True when the activity is mimicked by the original trace (sync move)
+    - False when the activity is not reflected in the original trace (move-on-model)
+    Move-on-log (activities of the trace that are not mimicked by the variant) are skipped altogether.
+
+    Minimum Viable Example:
+
+        import pm4py
+        from pm4py.algo.conformance.alignments.edit_distance.variants import edit_distance
+
+        log = pm4py.read_xes("tests/input_data/receipt.xes", return_legacy_log_object=True)
+        variant = ('Confirmation of receipt', 'T02 Check confirmation of receipt', 'T04 Determine confirmation of receipt',
+           'T05 Print and send confirmation of receipt', 'T06 Determine necessity of stop advice',
+           'T10 Determine necessity to stop indication')
+
+        projected_log = edit_distance.project_log_on_variant(log, variant)
+        pm4py.write_xes(projected_log, "projected_log2.xes")
+
+
+    Parameters
+    ---------------
+    log
+        Event log
+    variant
+        Considered variant
+    parameters
+        Parameters of the method, including:
+            - Parameters.ACTIVITY_KEY => the attribute of the event log to be used as activity
+            - Parameters.TIMESTAMP_KEY => the attribute of the event log to be used as timestamp
+
+    Returns
+    ---------------
+    projected_log
+        Projected event log with the aforementioned features
+    """
+    if parameters is None:
+        parameters = {}
+
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+
+    log = log_converter.apply(log, parameters=parameters)
+
+    log2 = EventLog()
+    trace = Trace()
+    log2.append(trace)
+    for act in variant:
+        trace.append(Event({activity_key: act}))
+
+    aligned_traces = apply(log, log2, parameters=parameters)
+
+    projected_log = EventLog()
+    projected_log.attributes["@@aligned_variant"] = ",".join(variant)
+
+    for i in range(len(log)):
+        projected_trace = Trace()
+        projected_trace.attributes["@@original_trace"] = ",".join(x[activity_key] for x in log[i])
+
+        if len(log[i]) > 0:
+            trace = log[i]
+            alignment = aligned_traces[i]["alignment"]
+            z = 0
+            curr_timestamp = trace[z][timestamp_key]
+
+            for j in range(len(alignment)):
+                if alignment[j][1] == ">>":
+                    # move on log
+                    pass
+                elif alignment[j][0] == ">>" or alignment[j][0] == alignment[j][1]:
+                    is_conforming = False
+                    if alignment[j][0] != ">>":
+                        # sync move
+                        curr_timestamp = trace[z][timestamp_key]
+                        is_conforming = True
+                        z = z + 1
+                    event = Event({activity_key: alignment[j][1], timestamp_key: curr_timestamp,
+                                   "@@is_conforming": is_conforming})
+                    projected_trace.append(event)
+
+            projected_log.append(projected_trace)
+
+    return projected_log

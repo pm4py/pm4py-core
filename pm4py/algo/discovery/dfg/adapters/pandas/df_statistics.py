@@ -69,7 +69,8 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     st_eq_ct = start_timestamp_key == timestamp_key
     if start_timestamp_key is None:
         start_timestamp_key = xes_constants.DEFAULT_START_TIMESTAMP_KEY
-        df[start_timestamp_key] = df[timestamp_key]
+        if start_timestamp_key not in df.columns:
+            df[start_timestamp_key] = df[timestamp_key]
         st_eq_ct = True
 
     # to increase the speed of the approaches reduce dataframe to case, activity (and possibly complete timestamp)
@@ -102,7 +103,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
     # change column names to shifted dataframe
     df_shifted.columns = [str(col) + '_2' for col in df_shifted.columns]
     # concate the two dataframe to get a unique dataframe
-    df_successive_rows = pd.concat([df, df_shifted], axis=1)
+    df_successive_rows = pandas_utils.concat([df, df_shifted], axis=1)
     # as successive rows in the sorted dataframe may belong to different case IDs we have to restrict ourselves to
     # successive rows belonging to same case ID
     df_successive_rows = df_successive_rows[df_successive_rows[case_id_glue] == df_successive_rows[case_id_glue + '_2']]
@@ -155,7 +156,7 @@ def get_dfg_graph(df, measure="frequency", activity_key="concept:name", case_id_
             for key in dfg_performance_mean:
                 dfg_performance[key] = {"mean": dfg_performance_mean[key], "median": dfg_performance_median[key], "max": dfg_performance_max[key], "min": dfg_performance_min[key], "sum": dfg_performance_sum[key], "stdev": dfg_performance_std[key]}
         elif perf_aggregation_key == "raw_values":
-            dfg_performance = directly_follows_grouping.apply(list).to_dict()
+            dfg_performance = directly_follows_grouping.agg(list).to_dict()
         else:
             dfg_performance = directly_follows_grouping.agg(perf_aggregation_key).to_dict()
 
@@ -226,18 +227,18 @@ def get_partial_order_dataframe(df, start_timestamp_key=None, timestamp_key="tim
             df = df.sort_values([case_id_glue, start_timestamp_key, timestamp_key])
         else:
             df = df.sort_values(case_id_glue)
-        df.reset_index(drop=True, inplace=True)
+        df = df.reset_index(drop=True)
 
     if event_index not in df.columns:
-        df[event_index] = df.index
+        df = pandas_utils.insert_index(df, event_index, copy_dataframe=False, reset_index=False)
 
-    df.set_index(case_id_glue, inplace=True)
+    df = df.set_index(case_id_glue)
 
     df = df.join(df, rsuffix="_2")
     df = df[df[event_index] < df[event_index + "_2"]]
     df = df[df[timestamp_key] <= df[start_timestamp_key + '_2']]
 
-    df.reset_index(inplace=True)
+    df = df.reset_index()
 
     if business_hours:
         if business_hours_slot is None:

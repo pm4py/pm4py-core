@@ -60,7 +60,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Collection
     interaction_graph = pm4py.discover_objects_graph(ocel, "object_interaction")
 
     objects_start = ocel.relations.groupby(ocel.object_id_column)[ocel.event_timestamp].first().to_dict()
-    objects = set(ocel.objects[ocel.objects[ocel.object_type_column] == object_type][ocel.object_id_column].unique())
+    objects = ocel.objects[ocel.objects[ocel.object_type_column] == object_type][ocel.object_id_column].to_numpy().tolist()
 
     G = nx.DiGraph()
     for obj in objects:

@@ -44,7 +44,7 @@ def apply(ocel: OCEL, child_obj_type: str, parent_obj_type: str, parameters: Opt
     if parameters is None:
         parameters = {}
 
-    ev_lf = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].agg(tuple).to_dict()
+    ev_lf = ocel.relations.groupby(ocel.event_id_column)[ocel.object_id_column].agg(list).to_dict()
     obj_types = ocel.objects[[ocel.object_id_column, ocel.object_type_column]].to_dict("records")
     obj_types = {x[ocel.object_id_column]: x[ocel.object_type_column] for x in obj_types}
     parents = {}

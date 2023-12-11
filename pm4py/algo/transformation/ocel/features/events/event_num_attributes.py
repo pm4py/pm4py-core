@@ -47,7 +47,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ordered_events = list(ocel.events[ocel.event_id_column])
+    ordered_events = parameters["ordered_events"] if "ordered_events" in parameters else ocel.events[ocel.event_id_column].to_numpy()
+
     data = []
     feature_names = []
 

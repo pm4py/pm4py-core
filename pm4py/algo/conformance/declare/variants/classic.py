@@ -20,7 +20,7 @@ from pm4py.objects.log.obj import EventLog
 import pandas as pd
 from typing import Union, Dict, Optional, Any, List
 from pm4py.algo.discovery.declare.templates import *
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import exec_utils, constants, xes_constants, pandas_utils
 from collections import Counter
 
 
@@ -389,4 +389,4 @@ def get_diagnostics_dataframe(log, conf_result, parameters=None) -> pd.DataFrame
         diagn_stream.append({"case_id": case_id, "no_dev_total": no_dev_total, "no_constr_total": no_constr_total,
                              "dev_fitness": dev_fitness})
 
-    return pd.DataFrame(diagn_stream)
+    return pandas_utils.instantiate_dataframe(diagn_stream)

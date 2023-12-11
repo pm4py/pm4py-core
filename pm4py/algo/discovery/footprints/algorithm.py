@@ -22,7 +22,7 @@ from pm4py.objects.log.obj import EventLog
 from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.process_tree.obj import ProcessTree
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 import pandas as pd
 from typing import Optional, Dict, Any
 
@@ -68,7 +68,7 @@ def apply(*args, variant=None, parameters: Optional[Dict[Any, Any]] = None) -> D
         elif isinstance(args[0], dict):
             variant = Variants.DFG
 
-        if type(args[0]) is pd.DataFrame:
+        if pandas_utils.check_is_pandas_dataframe(args[0]):
             variant = Variants.ENTIRE_DATAFRAME
 
         if variant is None:

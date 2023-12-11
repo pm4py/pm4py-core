@@ -88,7 +88,6 @@ def read_xes(file_path: str, variant: Optional[str] = None, return_legacy_log_ob
 
     if type(log) is EventLog and not return_legacy_log_object:
         log = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
-        log = dataframe_utils.convert_timestamp_columns_in_df(log, timest_format="ISO8601")
 
     return log
 

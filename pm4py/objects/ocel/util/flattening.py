@@ -73,6 +73,4 @@ def flatten(ocel: OCEL, ot: str, parameters: Optional[Dict[Any, Any]] = None) ->
     events = ocel.events.merge(objects, on=ocel.event_id_column).rename(
         columns={event_activity: xes_constants.DEFAULT_NAME_KEY, event_timestamp: xes_constants.DEFAULT_TIMESTAMP_KEY})
 
-    from pm4py.utils import format_dataframe
-
     return events

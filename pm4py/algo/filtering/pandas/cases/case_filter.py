@@ -1,20 +1,4 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
-from pm4py.util import constants, xes_constants
+from pm4py.util import constants, xes_constants, pandas_utils
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
@@ -118,7 +102,7 @@ def filter_on_case_performance(df: pd.DataFrame, case_id_glue: str = constants.C
     start_events = grouped_df.first()
     end_events = grouped_df.last()
     end_events.columns = [str(col) + '_2' for col in end_events.columns]
-    stacked_df = pd.concat([start_events, end_events], axis=1)
+    stacked_df = pandas_utils.concat([start_events, end_events], axis=1)
     if business_hours:
         stacked_df['caseDuration'] = stacked_df.apply(
             lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], business_hours_slots), axis=1)

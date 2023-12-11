@@ -19,10 +19,10 @@ import sys
 import uuid
 from enum import Enum
 
-from pm4py.util import constants, xes_constants, exec_utils
+from pm4py.util import constants, xes_constants, exec_utils, pandas_utils
 from pm4py.util import variants_util
 from pm4py.objects.petri_net.utils import align_utils
-from pm4py.objects.log.obj import EventLog, Trace
+from pm4py.objects.log.obj import EventLog, Trace, Event
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.util import typing
 from pm4py.objects.conversion.log import converter as log_converter
@@ -32,6 +32,7 @@ import pandas as pd
 class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     SYNC_COST_FUNCTION = "sync_cost_function"
     MODEL_MOVE_COST_FUNCTION = "model_move_cost_function"
     LOG_MOVE_COST_FUNCTION = "log_move_cost_function"
@@ -136,9 +137,9 @@ def apply_log(log, dfg, sa, ea, parameters=None):
 
     al_empty_cost = __apply_list_activities([], dfg, sa, ea, parameters=parameters)["cost"]
 
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
-        traces = list(log.groupby(case_id_key)[activity_key].apply(tuple))
+        traces = log.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist(); traces = [tuple(x) for x in traces]
     else:
         log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
         traces = [tuple(x[activity_key] for x in trace) for trace in log]
@@ -502,3 +503,89 @@ def __return_alignment(state, trace, closed):
 
     return {Outputs.ALIGNMENT.value: moves, Outputs.COST.value: cost, Outputs.VISITED.value: visited,
             Outputs.CLOSED.value: closed, Outputs.INTERNAL_COST.value: internal_cost}
+
+
+def project_log_on_dfg(log: Union[EventLog, pd.DataFrame], dfg: Dict[Tuple[str, str], int], sa: Dict[str, int], ea: Dict[str, int], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> EventLog:
+    """
+    Projects the traces of an event log to the specified DFG, in order to assess the conformance of the different
+    directly-follows relationships and their performance (as the timestamps are recorded).
+    The result is a event log where each 'projected' trace can be replayed on the given DFG.
+    Each event of a 'projected' trace has the '@@is_conforming' attribute set to:
+    - True when the activity is mimicked by the original trace (sync move)
+    - False when the activity is not reflected in the original trace (move-on-model)
+    Move-on-log (activities of the trace that are not mimicked by the DFG) are skipped altogether.
+
+    Minimum Viable Example:
+
+        import pm4py
+        from pm4py.algo.conformance.alignments.dfg.variants import classic as dfg_alignments
+
+        log = pm4py.read_xes("tests/input_data/receipt.xes", return_legacy_log_object=True)
+        filtered_log = pm4py.filter_variants_top_k(log, 1)
+        dfg, sa, ea = pm4py.discover_dfg(filtered_log)
+
+        projected_log = dfg_alignments.project_log_on_dfg(log, dfg, sa, ea)
+        pm4py.write_xes(projected_log, "projected_log.xes")
+
+
+    Parameters
+    ---------------
+    log
+        Event log
+    dfg
+        Directly-Follows Graph
+    sa
+        Start activities
+    ea
+        End activities
+    parameters
+        Parameters of the method, including:
+            - Parameters.ACTIVITY_KEY => the attribute of the event log to be used as activity
+            - Parameters.TIMESTAMP_KEY => the attribute of the event log to be used as timestamp
+
+    Returns
+    ---------------
+    projected_log
+        Projected event log with the aforementioned features
+    """
+    if parameters is None:
+        parameters = {}
+
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
+    timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+
+    log = log_converter.apply(log, parameters=parameters)
+
+    aligned_traces = apply_log(log, dfg, sa, ea, parameters=parameters)
+
+    projected_log = EventLog()
+    projected_log.attributes["@@aligned_dfg"] = repr([dfg, sa, ea])
+
+    for i in range(len(log)):
+        projected_trace = Trace()
+        projected_trace.attributes["@@original_trace"] = ",".join(x[activity_key] for x in log[i])
+
+        if len(log[i]) > 0:
+            trace = log[i]
+            alignment = aligned_traces[i]["alignment"]
+            z = 0
+            curr_timestamp = trace[z][timestamp_key]
+
+            for j in range(len(alignment)):
+                if alignment[j][1] == ">>":
+                    # move on log
+                    pass
+                elif alignment[j][0] == ">>" or alignment[j][0] == alignment[j][1]:
+                    is_conforming = False
+                    if alignment[j][0] != ">>":
+                        # sync move
+                        curr_timestamp = trace[z][timestamp_key]
+                        is_conforming = True
+                        z = z + 1
+                    event = Event({activity_key: alignment[j][1], timestamp_key: curr_timestamp,
+                                   "@@is_conforming": is_conforming})
+                    projected_trace.append(event)
+
+        projected_log.append(projected_trace)
+
+    return projected_log

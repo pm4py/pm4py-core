@@ -26,6 +26,7 @@ import matplotlib as mpl
 import matplotlib.cm as cm
 
 from pm4py.util import exec_utils
+from pm4py.util.dt_parsing.variants import strpfromiso
 from pm4py.util.colors import get_string_from_int_below_255
 
 
@@ -144,7 +145,7 @@ def apply(perf_spectrum: Dict[str, Any], parameters: Optional[Dict[Union[str, Pa
             for j in range(n_div + 1):
                 pos = float(j * overall_length) / float(n_div)
                 tst = min_x + float(j) / float(n_div) * (max_x - min_x)
-                dt = datetime.fromtimestamp(tst)
+                dt = strpfromiso.fix_naivety(datetime.fromtimestamp(tst))
                 n_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
                 lines.append("%s [label=\"%s\", pos=\"%.10f,%.10f!\", shape=none, width=\"0px\", height=\"0px\"];" % (
                 n_id, str(dt), pos*layout_ext_multiplier, (second_coord - date_divider)*layout_ext_multiplier))

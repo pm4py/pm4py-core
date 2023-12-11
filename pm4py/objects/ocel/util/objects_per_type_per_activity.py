@@ -1,20 +1,4 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from enum import Enum
 from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any
@@ -59,8 +43,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Dict[str, 
     object_id = exec_utils.get_param_value(Parameters.OBJECT_ID, parameters, ocel.object_id_column)
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
 
-    activities = set(ocel.events[event_activity].unique())
-    object_types = set(ocel.objects[object_type].unique())
+    activities = pandas_utils.format_unique(ocel.events[event_activity].unique())
+    object_types = pandas_utils.format_unique(ocel.objects[object_type].unique())
 
     ret = {}
 

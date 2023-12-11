@@ -65,7 +65,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
                 graph[el[1]] = set()
             graph[el[1]].add(el[0])
 
-    ordered_objects = list(ocel.objects[ocel.object_id_column])
+    ordered_objects = parameters["ordered_objects"] if "ordered_objects" in parameters else ocel.objects[ocel.object_id_column].to_numpy()
 
     feature_names = []
     for x in feature_names_objects:

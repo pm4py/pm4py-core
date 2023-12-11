@@ -50,26 +50,26 @@ def get_activities_color(activities_count):
     return activities_color
 
 
-def get_activities_color_soj_time(soj_time):
+def get_activities_color_serv_time(serv_time):
     """
-    Gets the color for the activities based on the sojourn time
+    Gets the color for the activities based on the service time
 
     Parameters
     ----------------
-    soj_time
-        Sojourn time
+    serv_time
+        Service time
 
     Returns
     ----------------
     act_color
-        Dictionary associating each activity to a color based on the sojourn time
+        Dictionary associating each activity to a color based on the service time
     """
     activities_color = {}
 
-    min_soj_time, max_soj_time = get_min_max_value(soj_time)
+    min_soj_time, max_soj_time = get_min_max_value(serv_time)
 
-    for ac in soj_time:
-        act_soj_time = soj_time[ac]
+    for ac in serv_time:
+        act_soj_time = serv_time[ac]
 
         trans_base_color = int(
             255 - 100 * (act_soj_time - min_soj_time) / (max_soj_time - min_soj_time + 0.00001))
@@ -134,7 +134,7 @@ def assign_penwidth_edges(dfg):
 
 
 def graphviz_visualization(activities_count, dfg, image_format="png", measure="frequency",
-                           max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, soj_time=None,
+                           max_no_of_edges_in_diagram=100000, start_activities=None, end_activities=None, serv_time=None,
                            font_size="12", bgcolor=constants.DEFAULT_BGCOLOR, rankdir=constants.DEFAULT_RANKDIR_GVIZ):
     """
     Do GraphViz visualization of a DFG graph
@@ -155,8 +155,8 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
         Start activities of the log
     end_activities
         End activities of the log
-    soj_time
-        For each activity, the sojourn time in the log
+    serv_time
+        For each activity, the service time in the log
     font_size
         Size of the text on the activities/edges
     bgcolor
@@ -204,7 +204,7 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
     if measure == "frequency":
         activities_color = get_activities_color(activities_count_int)
     else:
-        activities_color = get_activities_color_soj_time(soj_time)
+        activities_color = get_activities_color_serv_time(serv_time)
 
     # represent nodes
     viz.attr('node', shape='box')
@@ -222,8 +222,8 @@ def graphviz_visualization(activities_count, dfg, image_format="png", measure="f
             viz.node(str(hash(act)), act + " (" + str(activities_count_int[act]) + ")", style='filled',
                      fillcolor=activities_color[act], fontsize=font_size)
             activities_map[act] = str(hash(act))
-        elif "performance" in measure and act in soj_time and soj_time[act] >= 0:
-            viz.node(str(hash(act)), act + " (" + human_readable_stat(soj_time[act]) + ")", fontsize=font_size,
+        elif "performance" in measure and act in serv_time and serv_time[act] >= 0:
+            viz.node(str(hash(act)), act + " (" + human_readable_stat(serv_time[act]) + ")", fontsize=font_size,
                      style='filled', fillcolor=activities_color[act])
             activities_map[act] = str(hash(act))
         else:

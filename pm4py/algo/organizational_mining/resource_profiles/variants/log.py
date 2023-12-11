@@ -18,11 +18,10 @@ from datetime import datetime
 from enum import Enum
 from typing import Union, Optional, Dict, Any, Tuple
 
-import pytz
-
 from pm4py.objects.conversion.log import converter
 from pm4py.objects.log.obj import EventLog, Event
 from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.algo.filtering.common.timestamp.timestamp_common import get_dt_from_string
 from statistics import mean
 
 
@@ -32,27 +31,6 @@ class Parameters(Enum):
     START_TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_START_TIMESTAMP_KEY
     RESOURCE_KEY = constants.PARAMETER_CONSTANT_RESOURCE_KEY
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
-
-
-def get_dt_from_string(dt: Union[datetime, str]) -> datetime:
-    """
-    If the date is expressed as string, do the conversion to a datetime.datetime object
-
-    Parameters
-    -----------
-    dt
-        Date (string or datetime.datetime)
-
-    Returns
-    -----------
-    dt
-        Datetime object
-    """
-    if type(dt) is str:
-        dt = datetime.strptime(dt, "%Y-%m-%d %H:%M:%S")
-
-    dt = dt.replace(tzinfo=pytz.utc)
-    return dt
 
 
 def distinct_activities(log: EventLog, t1: Union[datetime, str], t2: Union[datetime, str], r: str,

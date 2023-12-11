@@ -1,5 +1,6 @@
 from dateutil.parser import parse
 from pm4py.objects.log.obj import EventLog, Trace, Event
+from pm4py.util.dt_parsing.variants import strpfromiso
 import pm4py
 import os
 
@@ -13,7 +14,7 @@ def extract_invoices(cursor):
         if not res[0] in invoices:
             invoices[res[0]] = []
         invoices[res[0]].append(
-            {"CustomerId": res[0], "InvoiceId": res[1], "InvoiceDate": parse(res[2]), "BillingAddress": res[3],
+            {"CustomerId": res[0], "InvoiceId": res[1], "InvoiceDate": strpfromiso.fix_naivety(parse(res[2])), "BillingAddress": res[3],
              "BillingCity": res[4], "BillingCountry": res[5], "BillingPostalCode": res[6]})
 
     return invoices

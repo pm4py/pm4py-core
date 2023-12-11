@@ -86,8 +86,8 @@ def performance(log: Union[EventLog, EventStream], parameters: Optional[Dict[Uni
     if business_hours:
         dfgs0 = map((lambda t: [
             ((t[i - 1][activity_key], t[i][activity_key]),
-             max(0, BusinessHours(t[i - 1][timestamp_key].replace(tzinfo=None),
-                                  t[i][start_timestamp_key].replace(tzinfo=None),
+             max(0, BusinessHours(t[i - 1][timestamp_key],
+                                  t[i][start_timestamp_key],
                                   business_hour_slots=business_hours_slots, workcalendar=workcalendar).get_seconds()))
             for i in range(1, len(t))]), log)
     else:

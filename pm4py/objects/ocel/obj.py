@@ -17,7 +17,7 @@
 from enum import Enum
 
 from pm4py.objects.ocel import constants
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 import pandas as pd
 import numpy as np
 from copy import copy, deepcopy
@@ -52,21 +52,21 @@ class OCEL(object):
         self.changed_field = exec_utils.get_param_value(Parameters.CHANGED_FIELD, parameters, constants.DEFAULT_CHNGD_FIELD)
 
         if events is None:
-            events = pd.DataFrame({self.event_id_column: [], self.event_activity: [], self.event_timestamp: []})
+            events = pandas_utils.instantiate_dataframe({self.event_id_column: [], self.event_activity: [], self.event_timestamp: []})
         if objects is None:
-            objects = pd.DataFrame({self.object_id_column: [], self.object_type_column: []})
+            objects = pandas_utils.instantiate_dataframe({self.object_id_column: [], self.object_type_column: []})
         if relations is None:
-            relations = pd.DataFrame(
+            relations = pandas_utils.instantiate_dataframe(
                 {self.event_id_column: [], self.event_activity: [], self.event_timestamp: [], self.object_id_column: [],
                  self.object_type_column: []})
         if globals is None:
             globals = {}
         if o2o is None:
-            o2o = pd.DataFrame({self.object_id_column: [], self.object_id_column+"_2": [], self.qualifier: []})
+            o2o = pandas_utils.instantiate_dataframe({self.object_id_column: [], self.object_id_column+"_2": [], self.qualifier: []})
         if e2e is None:
-            e2e = pd.DataFrame({self.event_id_column: [], self.event_id_column+"_2": [], self.qualifier: []})
+            e2e = pandas_utils.instantiate_dataframe({self.event_id_column: [], self.event_id_column+"_2": [], self.qualifier: []})
         if object_changes is None:
-            object_changes = pd.DataFrame({self.object_id_column: [], self.object_type_column: [], self.event_timestamp: [], self.changed_field: []})
+            object_changes = pandas_utils.instantiate_dataframe({self.object_id_column: [], self.object_type_column: [], self.event_timestamp: [], self.changed_field: []})
         if self.qualifier not in relations:
             relations[self.qualifier] = [None] * len(relations)
 
@@ -85,12 +85,12 @@ class OCEL(object):
         Transforms the current OCEL data structure into a Pandas dataframe containing the events with their
         attributes and the related objects per object type.
         """
-        object_types = self.relations[self.object_type_column].unique()
+        object_types = pandas_utils.format_unique(self.relations[self.object_type_column].unique())
         table = self.events.copy().set_index(self.event_id_column)
         for ot in object_types:
             table[ot_prefix + ot] = \
                 self.relations[self.relations[self.object_type_column] == ot].groupby(self.event_id_column)[
-                    self.object_id_column].apply(list)
+                    self.object_id_column].agg(list)
         table = table.reset_index()
         return table
 
@@ -118,7 +118,7 @@ class OCEL(object):
     def is_ocel20(self):
         unique_qualifiers = []
         if self.qualifier in self.relations.columns:
-            unique_qualifiers = [x for x in self.relations[self.qualifier].unique() if not self.__check_is_nan(x)]
+            unique_qualifiers = [x for x in pandas_utils.format_unique(self.relations[self.qualifier].unique()) if not self.__check_is_nan(x)]
 
         return len(self.o2o) > 0 or len(self.object_changes) > 0 or len(unique_qualifiers) > 0
 

@@ -27,6 +27,7 @@ from pm4py.objects.petri_net.utils import final_marking as final_marking_discove
 from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants
+from pm4py.util.dt_parsing.variants import strpfromiso
 
 
 class Parameters(Enum):
@@ -136,7 +137,7 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100,
             if type(element) is PetriNet.Transition and element.label is not None:
                 event = log_instance.Event()
                 event[activity_key] = element.label
-                event[timestamp_key] = datetime.datetime.fromtimestamp(curr_timestamp)
+                event[timestamp_key] = strpfromiso.fix_naivety(datetime.datetime.fromtimestamp(curr_timestamp))
                 trace.append(event)
                 # increases by 1 second
                 curr_timestamp += 1

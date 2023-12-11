@@ -67,7 +67,7 @@ def apply(log_obj: Union[EventLog, EventStream, pd.DataFrame], parameters: Optio
     elif filter_type == "last":
         dataframe = gdf.last()
 
-    dataframe.reset_index(drop=True, inplace=True)
+    dataframe = dataframe.reset_index(drop=True)
     del dataframe["@@extra1"]
 
     return dataframe

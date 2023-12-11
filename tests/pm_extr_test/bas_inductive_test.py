@@ -1,7 +1,7 @@
 import os
 import traceback
 
-import pandas as pd
+from pm4py.util import constants, pandas_utils
 
 import pm4py
 from pm4py.algo.discovery.inductive import algorithm as im_clean
@@ -40,7 +40,7 @@ if __name__ == "__main__":
                 elif "parquet" in log_name:
                     from pm4py.statistics.attributes.pandas import get as attributes_get_pandas
 
-                    dataframe = pd.read_parquet(log_path)
+                    dataframe = pandas_utils.DATAFRAME.read_parquet(log_path)
                     activities = set(attributes_get_pandas.get_attribute_values(dataframe, CLASSIFIER).keys())
                     variants = pm4py.get_variants_as_tuples(dataframe)
                     variants = {",".join(x): y for x, y in variants.items()}

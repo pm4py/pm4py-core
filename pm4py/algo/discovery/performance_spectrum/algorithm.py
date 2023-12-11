@@ -17,7 +17,7 @@
 from pm4py.algo.discovery.performance_spectrum.variants import dataframe, log, dataframe_disconnected, log_disconnected
 from pm4py.util import exec_utils
 from enum import Enum
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 from typing import Optional, Dict, Any, Union, List
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
@@ -78,8 +78,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], list_activities: List
 
     points = None
 
-    import pandas as pd
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         if variant is None:
             variant = Variants.DATAFRAME
 

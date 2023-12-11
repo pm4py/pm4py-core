@@ -106,8 +106,8 @@ def apply(log: EventLog, temporal_profile: typing.TemporalProfile,
                     act_j = trace[j][activity_key]
                     if (act_i, act_j) in temporal_profile:
                         if business_hours:
-                            bh = BusinessHours(trace[i][timestamp_key].replace(tzinfo=None),
-                                               trace[j][start_timestamp_key].replace(tzinfo=None),
+                            bh = BusinessHours(trace[i][timestamp_key],
+                                               trace[j][start_timestamp_key],
                                                business_hour_slots=business_hours_slots)
                             this_diff = bh.get_seconds()
                         else:

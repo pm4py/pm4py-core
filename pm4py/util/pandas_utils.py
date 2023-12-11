@@ -15,9 +15,20 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import pandas as pd
+import importlib.util
 
 from pm4py.util import constants, xes_constants
 import numpy as np
+
+
+def get_default_dataframe_environment():
+    if importlib.util.find_spec("cudf"):
+        #import cudf; return cudf
+        pass
+    return pd
+
+
+DATAFRAME = get_default_dataframe_environment()
 
 
 def to_dict_records(df):
@@ -54,7 +65,7 @@ def to_dict_index(df):
     return df.to_dict('index')
 
 
-def insert_index(df, column_name=constants.DEFAULT_INDEX_KEY, copy_dataframe=True):
+def insert_index(df, column_name=constants.DEFAULT_INDEX_KEY, copy_dataframe=True, reset_index=True):
     """
     Inserts the dataframe index in the specified column
 
@@ -74,7 +85,10 @@ def insert_index(df, column_name=constants.DEFAULT_INDEX_KEY, copy_dataframe=Tru
     """
     if copy_dataframe:
         df = df.copy()
-    df = df.reset_index(drop=True)
+
+    if reset_index:
+        df = df.reset_index(drop=True)
+
     df[column_name] = df.index
     return df
 
@@ -101,12 +115,13 @@ def insert_case_index(df, column_name=constants.DEFAULT_CASE_INDEX_KEY, case_id=
     """
     if copy_dataframe:
         df = df.copy()
+
     df[column_name] = df.groupby(case_id).ngroup()
     return df
 
 
 def insert_ev_in_tr_index(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAME,
-                          column_name: str = constants.DEFAULT_INDEX_IN_TRACE_KEY) -> pd.DataFrame:
+                          column_name: str = constants.DEFAULT_INDEX_IN_TRACE_KEY, copy_dataframe=True) -> pd.DataFrame:
     """
     Inserts a column that specify the index of the event inside the case
 
@@ -124,10 +139,22 @@ def insert_ev_in_tr_index(df: pd.DataFrame, case_id: str = constants.CASE_CONCEP
     df
         Dataframe with index
     """
-    df = df.copy()
+    if copy_dataframe:
+        df = df.copy()
+
     df_trace_idx = df.groupby(case_id).cumcount()
     df[column_name] = df_trace_idx
     return df
+
+
+def format_unique(values):
+    try:
+        values = values.to_numpy()
+    except:
+        pass
+
+    values = values.tolist()
+    return values
 
 
 def insert_feature_activity_position_in_trace(df: pd.DataFrame, case_id: str = constants.CASE_CONCEPT_NAME,
@@ -154,7 +181,7 @@ def insert_feature_activity_position_in_trace(df: pd.DataFrame, case_id: str = c
         Pandas dataframe
     """
     df = insert_ev_in_tr_index(df, case_id=case_id)
-    activities = set(df[activity_key].unique())
+    activities = format_unique(df[activity_key].unique())
     for act in activities:
         df[prefix + act] = df[activity_key].apply(lambda x: np.nan if x == act else -1)
         df[prefix + act] = df[prefix + act].fillna(df[constants.DEFAULT_INDEX_IN_TRACE_KEY])
@@ -254,8 +281,47 @@ def check_is_pandas_dataframe(log):
     boolean
         Is dataframe?
     """
-    import pandas as pd
-    return type(log) is pd.DataFrame
+    log_type = str(type(log)).lower()
+    return "dataframe" in log_type
+
+
+def instantiate_dataframe(*args, **kwargs):
+    return DATAFRAME.DataFrame(*args, **kwargs)
+
+
+def instantiate_dataframe_from_dict(*args, **kwargs):
+    return DATAFRAME.DataFrame.from_dict(*args, **kwargs)
+
+
+def instantiate_dataframe_from_records(*args, **kwargs):
+    return DATAFRAME.DataFrame.from_records(*args, **kwargs)
+
+
+def dataframe_column_string_to_datetime(*args, **kwargs):
+    if importlib.util.find_spec("cudf") or constants.TEST_CUDF_DATAFRAMES_ENVIRONMENT:
+        pass
+        """if DATAFRAME == pd:
+            format = kwargs["format"] if "format" in kwargs else None
+            if format not in [None, 'mixed', 'ISO8601']:
+                kwargs["exact"] = False"""
+
+    return DATAFRAME.to_datetime(*args, **kwargs)
+
+
+def read_csv(*args, **kwargs):
+    if importlib.util.find_spec("cudf") or constants.TEST_CUDF_DATAFRAMES_ENVIRONMENT:
+        if kwargs and "encoding" in kwargs:
+            del kwargs["encoding"]
+
+    return DATAFRAME.read_csv(*args, **kwargs)
+
+
+def concat(*args, **kwargs):
+    return DATAFRAME.concat(*args, **kwargs)
+
+
+def merge(*args, **kwargs):
+    return DATAFRAME.merge(*args, **kwargs)
 
 
 def check_pandas_dataframe_columns(df, activity_key=None, case_id_key=None, timestamp_key=None, start_timestamp_key=None):

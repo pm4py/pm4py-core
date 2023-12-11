@@ -26,6 +26,7 @@ from collections import Counter
 from copy import copy
 from typing import Optional, Dict, Any, Union, Tuple, List, Set
 from pm4py.objects.conversion.log import converter as log_converter
+from pm4py.util.dt_parsing.variants import strpfromiso
 
 
 class Parameters(Enum):
@@ -362,7 +363,7 @@ def get_kde_date_attribute(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters=None
 
     event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters=this_parameters)
 
-    values = [event[attribute].replace(tzinfo=None) for event in event_log if attribute in event]
+    values = [strpfromiso.fix_naivety(event[attribute]) for event in event_log if attribute in event]
 
     return attributes_common.get_kde_date_attribute(values, parameters=parameters)
 
@@ -399,6 +400,6 @@ def get_kde_date_attribute_json(log, attribute=DEFAULT_TIMESTAMP_KEY, parameters
 
     event_log = log_conversion.apply(log, variant=log_conversion.TO_EVENT_STREAM, parameters=this_parameters)
 
-    values = [event[attribute].replace(tzinfo=None) for event in event_log if attribute in event]
+    values = [strpfromiso.fix_naivety(event[attribute]) for event in event_log if attribute in event]
 
     return attributes_common.get_kde_date_attribute_json(values, parameters=parameters)

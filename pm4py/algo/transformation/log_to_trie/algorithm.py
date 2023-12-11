@@ -21,6 +21,7 @@ from pm4py.objects.log.obj import EventLog
 from pm4py.objects.trie.obj import Trie
 from pm4py.statistics.variants.log import get as get_variants_log
 from pm4py.statistics.variants.pandas import get as get_variants_pandas
+from pm4py.util import pandas_utils
 from typing import Optional, Dict, Any, Union
 import pandas as pd
 
@@ -32,7 +33,7 @@ class Parameters(Enum):
 def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> Trie:
     parameters = parameters if parameters is not None else dict()
 
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         variants = get_variants_pandas.get_variants_set(log, parameters=parameters)
     else:
         variants = get_variants_log.get_variants(log, parameters=parameters)

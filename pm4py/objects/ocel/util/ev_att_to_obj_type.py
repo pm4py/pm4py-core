@@ -19,7 +19,7 @@ from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any
 from enum import Enum
 from pm4py.objects.ocel import constants
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from copy import deepcopy
 import pandas as pd
 
@@ -70,16 +70,16 @@ def apply(ocel: OCEL, param: str, parameters: Optional[Dict[Any, Any]] = None):
     new_ocel = deepcopy(ocel)
     new_ocel.events[param] = new_ocel.events[param].astype(str)
     ev_param = new_ocel.events.dropna(subset=[param])[[event_id, event_activity, event_timestamp, param]]
-    vals = set(ev_param[param].unique())
+    vals = pandas_utils.format_unique(ev_param[param].unique())
     ev_param = ev_param.rename(columns={param: object_id})
     ev_param[object_type] = param
 
-    new_objects_df = pd.DataFrame([{object_id: v, object_type: param} for v in vals])
+    new_objects_df = pandas_utils.instantiate_dataframe([{object_id: v, object_type: param} for v in vals])
 
-    new_ocel.objects = pd.concat([new_ocel.objects, new_objects_df])
-    new_ocel.relations = pd.concat([new_ocel.relations, ev_param])
+    new_ocel.objects = pandas_utils.concat([new_ocel.objects, new_objects_df])
+    new_ocel.relations = pandas_utils.concat([new_ocel.relations, ev_param])
 
-    new_ocel.relations[internal_index] = new_ocel.relations.index
+    new_ocel.relations = pandas_utils.insert_index(new_ocel.relations, internal_index, reset_index=False, copy_dataframe=False)
 
     new_ocel.relations = new_ocel.relations.sort_values([event_timestamp, internal_index])
 

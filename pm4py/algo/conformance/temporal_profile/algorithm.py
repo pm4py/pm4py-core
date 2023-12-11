@@ -21,7 +21,7 @@ import pandas as pd
 
 from pm4py.algo.conformance.temporal_profile.variants import log, dataframe
 from pm4py.objects.log.obj import EventLog
-from pm4py.util import typing, exec_utils, constants, xes_constants
+from pm4py.util import typing, exec_utils, constants, xes_constants, pandas_utils
 from pm4py.objects.conversion.log import converter as log_converter
 from enum import Enum
 
@@ -62,7 +62,7 @@ def apply(elog: Union[EventLog, pd.DataFrame], temporal_profile: typing.Temporal
         - 3) The time passed between the occurrence of the source activity and the target activity
         - 4) The value of (time passed - mean)/std for this occurrence (zeta).
     """
-    if type(elog) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(elog):
         return dataframe.apply(elog, temporal_profile, parameters=parameters)
     else:
         elog = log_converter.apply(elog, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
@@ -89,9 +89,9 @@ def get_diagnostics_dataframe(elog: Union[EventLog, pd.DataFrame], conf_result: 
     if parameters is None:
         parameters = {}
 
-    if type(elog) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
-        cases = list(elog[case_id_key].unique())
+        cases = pandas_utils.format_unique(elog[case_id_key].unique())
     else:
         elog = log_converter.apply(elog, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, xes_constants.DEFAULT_TRACEID_KEY)
@@ -111,6 +111,6 @@ def get_diagnostics_dataframe(elog: Union[EventLog, pd.DataFrame], conf_result: 
             throughput.append(el[2])
             num_st_devs.append(el[3])
 
-    dataframe = pd.DataFrame({"case": case, "source_activity": source_activities, "target_activity": target_activities, "throughput": throughput, "num_st_devs": num_st_devs})
+    dataframe = pandas_utils.instantiate_dataframe({"case": case, "source_activity": source_activities, "target_activity": target_activities, "throughput": throughput, "num_st_devs": num_st_devs})
 
     return dataframe

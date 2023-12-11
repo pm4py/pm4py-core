@@ -61,7 +61,9 @@ def apply(exploded_ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     enable_prefix_timediff = exec_utils.get_param_value(Parameters.ENABLE_PREFIX_TIMEDIFF, parameters, enable_all)
     enable_prefix_1h_encoding = exec_utils.get_param_value(Parameters.ENABLE_PREFIX_ONE_HOT_ENCODING, parameters, enable_all)
 
-    ordered_events = list(exploded_ocel.events[exploded_ocel.event_id_column])
+    ordered_events = parameters["ordered_events"] if "ordered_events" in parameters else exploded_ocel.events[
+        exploded_ocel.event_id_column].to_numpy()
+
     datas = []
     feature_namess = []
 

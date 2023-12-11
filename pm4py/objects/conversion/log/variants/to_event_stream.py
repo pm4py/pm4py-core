@@ -138,7 +138,7 @@ def apply(log, parameters=None):
     compress = exec_utils.get_param_value(Parameters.COMPRESS, parameters, False)
     extensions = exec_utils.get_param_value(Parameters.EXTENSIONS, parameters, None)
 
-    if isinstance(log, pd.DataFrame):
+    if pandas_utils.check_is_pandas_dataframe(log):
         return __transform_dataframe_to_event_stream(log, stream_post_processing=stream_post_processing, compress=compress, extensions=extensions)
 
     if isinstance(log, EventLog):

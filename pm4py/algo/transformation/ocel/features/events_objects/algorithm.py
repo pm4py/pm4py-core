@@ -60,7 +60,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     enable_prefix_features = exec_utils.get_param_value(Parameters.ENABLE_PREFIX_FEATURES, parameters, enable_all)
 
     exploded_ocel = explode.apply(ocel)
-    ordered_events = list(exploded_ocel.events[exploded_ocel.event_id_column])
+    ordered_events = exploded_ocel.events[exploded_ocel.event_id_column].to_numpy()
+    parameters["ordered_events"] = ordered_events
 
     datas = []
     features_namess = []

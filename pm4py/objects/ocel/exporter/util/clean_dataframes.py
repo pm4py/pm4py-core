@@ -31,7 +31,7 @@ def get_dataframes_from_ocel(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = 
         if str(events[col].dtype) == "object":
             events[col] = events[col].astype('string')
         elif "date" in str(events[col].dtype):
-            events[col] = events[col].apply(pd.Timestamp.isoformat).astype('string')
+            events[col] = events[col].dt.strftime('%Y-%m-%dT%H:%M:%SZ')
 
     objects = ocel.objects.copy()
     for col in objects.columns:

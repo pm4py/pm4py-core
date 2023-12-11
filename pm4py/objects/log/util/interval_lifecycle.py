@@ -110,7 +110,7 @@ def to_interval(log, parameters=None):
                     new_event["@@duration"] = (timestamp - start_timestamp).total_seconds()
 
                     if business_hours:
-                        bh = BusinessHours(start_timestamp.replace(tzinfo=None), timestamp.replace(tzinfo=None),
+                        bh = BusinessHours(start_timestamp, timestamp,
                                            business_hour_slots=business_hours_slots)
                         new_event["@@approx_bh_duration"] = bh.get_seconds()
 
@@ -223,7 +223,7 @@ def assign_lead_cycle_time(log, parameters=None):
             et_seconds = et.timestamp()
 
             if max_et_seconds > 0 and st_seconds > max_et_seconds:
-                bh_unworked = BusinessHours(max_et.replace(tzinfo=None), st.replace(tzinfo=None),
+                bh_unworked = BusinessHours(max_et, st,
                                                            business_hour_slots=business_hours_slots)
                 unworked_sec = bh_unworked.get_seconds()
                 approx_partial_lead_time = approx_partial_lead_time + unworked_sec
@@ -231,14 +231,14 @@ def assign_lead_cycle_time(log, parameters=None):
                 this_wasted_time = unworked_sec
 
             if st_seconds > max_et_seconds:
-                bh = BusinessHours(st.replace(tzinfo=None), et.replace(tzinfo=None),
+                bh = BusinessHours(st, et,
                                                   business_hour_slots=business_hours_slots)
                 approx_bh_duration = bh.get_seconds()
 
                 approx_partial_cycle_time = approx_partial_cycle_time + approx_bh_duration
                 approx_partial_lead_time = approx_partial_lead_time + approx_bh_duration
             elif st_seconds < max_et_seconds and et_seconds > max_et_seconds:
-                bh = BusinessHours(max_et.replace(tzinfo=None), et.replace(tzinfo=None),
+                bh = BusinessHours(max_et, et,
                                                   business_hour_slots=business_hours_slots)
                 approx_bh_duration = bh.get_seconds()
 

@@ -22,11 +22,13 @@ import itertools
 from pathlib import Path
 import traceback
 import pandas as pd
+from pm4py.util import constants, pandas_utils
+
 
 methods = {
     "ConvertToXES": {"inputs": [".csv"], "output_extension": ".xes",
                      "method": lambda x: pm4py.write_xes(
-                         pm4py.convert_to_event_log(pm4py.format_dataframe(pd.read_csv(x[0]))), x[1])},
+                         pm4py.convert_to_event_log(pm4py.format_dataframe(pandas_utils.read_csv(x[0]))), x[1])},
     "ConvertToCSV": {"inputs": [".xes"], "output_extension": ".csv",
                      "method": lambda x: pm4py.convert_to_dataframe(pm4py.read_xes(x[0])).to_csv(x[1], index=False)},
     "ConvertPNMLtoBPMN": {"inputs": [".pnml"], "output_extension": ".bpmn",
@@ -143,7 +145,7 @@ def __read_log(log_path):
     if "xes" in log_path.lower():
         return pm4py.read_xes(log_path)
     elif "csv" in log_path.lower():
-        dataframe = pd.read_csv(log_path)
+        dataframe = pandas_utils.read_csv(log_path)
         dataframe = pm4py.format_dataframe(dataframe)
         return dataframe
 

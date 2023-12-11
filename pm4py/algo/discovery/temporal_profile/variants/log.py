@@ -95,8 +95,8 @@ def apply(log: EventLog, parameters: Optional[Dict[Any, Any]] = None) -> typing.
                     if not (act_i, act_j) in diff_time_recordings:
                         diff_time_recordings[(act_i, act_j)] = []
                     if business_hours:
-                        bh = BusinessHours(trace[i][timestamp_key].replace(tzinfo=None),
-                                           trace[j][start_timestamp_key].replace(tzinfo=None),
+                        bh = BusinessHours(trace[i][timestamp_key],
+                                           trace[j][start_timestamp_key],
                                            business_hour_slots=business_hours_slots)
                         diff_time_recordings[(act_i, act_j)].append(bh.get_seconds())
                     else:

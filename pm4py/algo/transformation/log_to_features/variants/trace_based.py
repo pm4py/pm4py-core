@@ -22,7 +22,7 @@ import pandas as pd
 from pm4py.objects.conversion.log import converter
 from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.objects.log.util import dataframe_utils
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes
 from pm4py.util import xes_constants
@@ -1156,7 +1156,7 @@ def apply(log: EventLog, parameters: Optional[Dict[Union[str, Parameters], Any]]
     if num_ev_attr is None:
         num_ev_attr = []
 
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         case_attribute_prefix = exec_utils.get_param_value(Parameters.CASE_ATTRIBUTE_PREFIX, parameters, "case:")
 
         if str_tr_attr or num_tr_attr or str_ev_attr or num_ev_attr:

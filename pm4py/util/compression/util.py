@@ -24,6 +24,7 @@ import pandas as pd
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.log.obj import EventLog
 from pm4py.util.compression.dtypes import UCL, MCL, ULT, MLT, UVCL
+from pm4py.util import pandas_utils
 
 
 def project_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:name',
@@ -41,17 +42,14 @@ def project_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:n
     :param df_glue: key to use for combining events into traces when the input is a dataframe.
     :param df_sorting_criterion_key: key to use as a sorting criterion for traces (typically timestamps)
     '''
-    if type(log) not in {EventLog, pd.DataFrame}:
-        raise TypeError('%s provided, expecting %s or %s' %
-                        (str(type(log)), str(EventLog), str(pd.DataFrame)))
-    if type(log) is pd.DataFrame:
-        log = log.loc[:, [key, df_glue, df_sorting_criterion_key]]
     if type(log) is EventLog:
         return [[e[key] for e in t] for t in log]
-    elif type(log) is pd.DataFrame:
+    else:
+        log = log.loc[:, [key, df_glue, df_sorting_criterion_key]]
+
         cl = list()
-        log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
-        values = log[key].to_list()
+        log = log.sort_values(by=[df_glue, df_sorting_criterion_key])
+        values = log[key].to_numpy().tolist()
         distinct_ids, start_indexes, case_sizes = np.unique(
             log[df_glue].to_numpy(), return_index=True, return_counts=True)
         for i in range(len(distinct_ids)):
@@ -78,21 +76,18 @@ def compress_univariate(log: Union[EventLog, pd.DataFrame], key: str = 'concept:
     :param df_glue: key to use for combining events into traces when the input is a dataframe.
     :param df_sorting_criterion_key: key to use as a sorting criterion for traces (typically timestamps)
     """
-    if type(log) not in {EventLog, pd.DataFrame}:
-        raise TypeError('%s provided, expecting %s or %s' %
-                        (str(type(log)), str(EventLog), str(pd.DataFrame)))
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         log = log.loc[:, [key, df_glue, df_sorting_criterion_key]]
     lookup = list(set([x for xs in [[e[key] for e in t] for t in log]
-                       for x in xs])) if type(log) is EventLog else list(log[key].unique())
+                       for x in xs])) if type(log) is EventLog else pandas_utils.format_unique(log[key].unique())
     lookup_inv = {lookup[i]: i for i in range(len(lookup))}
     if type(log) is EventLog:
         return [[lookup_inv[t[i][key]] for i in range(0, len(t))] for t in log], lookup
-    elif type(log) is pd.DataFrame:
+    else:
         log[key] = log[key].map(lookup_inv)
         cl = list()
-        log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
-        encoded_values = log[key].to_list()
+        log = log.sort_values(by=[df_glue, df_sorting_criterion_key])
+        encoded_values = log[key].to_numpy().tolist()
         distinct_ids, start_indexes, case_sizes = np.unique(
             log[df_glue].to_numpy(), return_index=True, return_counts=True)
         for i in range(len(distinct_ids)):
@@ -124,10 +119,7 @@ def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = 
     :param uncompressed: columns that need to be included in the compression yet need not to be compressed
 
     """
-    if type(log) not in {EventLog, pd.DataFrame}:
-        raise TypeError('%s provided, expecting %s or %s' %
-                        (str(type(log)), str(EventLog), str(pd.DataFrame)))
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         retain = copy.copy(keys)
         if df_glue not in retain:
             retain.append(df_glue)
@@ -140,7 +132,7 @@ def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = 
     for key in keys:
         if key not in uncompressed:
             lookup[key] = list(set([x for xs in [[e[key] for e in t] for t in log]
-                                    for x in xs])) if type(log) is EventLog else list(log[key].unique())
+                                    for x in xs])) if type(log) is EventLog else pandas_utils.format_unique(log[key].unique())
             lookup_inv[key] = {lookup[key][i]: i for i in range(len(lookup[key]))}
     if type(log) is EventLog:
         encoded = list()
@@ -159,7 +151,7 @@ def compress_multivariate(log: Union[EventLog, pd.DataFrame], keys: List[str] = 
         for key in keys:
             log[key] = log[key].map(lookup_inv[key])
         cl = list()
-        log.sort_values(by=[df_glue, df_sorting_criterion_key], inplace=True)
+        log = log.sort_values(by=[df_glue, df_sorting_criterion_key])
         retain = copy.copy(keys)
         retain.extend([u for u in uncompressed if u not in retain])
         encoded_values = list(log[retain].itertuples(index=False, name=None))

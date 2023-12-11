@@ -16,8 +16,10 @@
 '''
 from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any
+from pm4py.util import pandas_utils
 from pm4py.algo.transformation.ocel.features.objects import object_lifecycle_duration
 import pandas as pd
+
 
 def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     """
@@ -43,7 +45,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
         parameters = {}
 
     data, feature_names = object_lifecycle_duration.apply(ocel, parameters=parameters)
-    obj_dur = pd.DataFrame(data, columns=feature_names)
+    obj_dur = pandas_utils.instantiate_dataframe(data, columns=feature_names)
 
     obj_dur["@@index"] = obj_dur.index
     obj_dur = obj_dur.to_dict("records")

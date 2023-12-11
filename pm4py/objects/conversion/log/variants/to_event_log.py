@@ -22,7 +22,7 @@ from pm4py.objects.conversion.log import constants
 from pm4py.objects.conversion.log.variants import to_event_stream
 from pm4py.objects.log import obj as log_instance
 from pm4py.util import xes_constants as xes
-from pm4py.util import exec_utils, constants as pmconstants
+from pm4py.util import exec_utils, constants as pmconstants, pandas_utils
 import pandas as pd
 
 
@@ -45,7 +45,7 @@ def apply(log, parameters=None):
     case_pref = exec_utils.get_param_value(Parameters.CASE_ATTRIBUTE_PREFIX, parameters,
                                            "case:")
 
-    if isinstance(log, pd.DataFrame):
+    if pandas_utils.check_is_pandas_dataframe(log):
         log = to_event_stream.apply(log, parameters=parameters)
 
     if isinstance(log, log_instance.EventStream) and (not isinstance(log, log_instance.EventLog)):

@@ -1,13 +1,12 @@
 import os
 
 import pm4py
-import pandas as pd
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 from pm4py.algo.discovery.dfg.adapters.pandas import df_statistics
 from pm4py.objects.conversion.dfg import converter as dfg_conv
 from pm4py.statistics.attributes.pandas import get as att_get
 from pm4py.statistics.end_activities.pandas import get as ea_get
-from pm4py.statistics.sojourn_time.pandas import get as soj_time_get
+from pm4py.statistics.service_time.pandas import get as soj_time_get
 from pm4py.statistics.concurrent_activities.pandas import get as conc_act_get
 from pm4py.statistics.eventually_follows.pandas import get as efg_get
 from pm4py.statistics.start_activities.pandas import get as sa_get
@@ -18,7 +17,7 @@ from examples import examples_conf
 
 def execute_script():
     log_path = os.path.join("..", "tests", "input_data", "interval_event_log.csv")
-    dataframe = pd.read_csv(log_path)
+    dataframe = pandas_utils.read_csv(log_path)
     log_path = os.path.join("..", "tests", "input_data", "reviewing.xes")
     log = pm4py.read_xes(log_path)
     dataframe = pm4py.convert_to_dataframe(log)
@@ -45,10 +44,10 @@ def execute_script():
     print(efg)
     dfg_freq, dfg_perf = df_statistics.get_dfg_graph(dataframe, measure="both", start_timestamp_key="start_timestamp")
     dfg_gv_freq = dfg_vis_fact.apply(dfg_freq, activities_count=att_count, variant=dfg_vis_fact.Variants.FREQUENCY,
-                                     soj_time=soj_time, parameters=parameters)
+                                     serv_time=soj_time, parameters=parameters)
     dfg_vis_fact.view(dfg_gv_freq)
     dfg_gv_perf = dfg_vis_fact.apply(dfg_perf, activities_count=att_count, variant=dfg_vis_fact.Variants.PERFORMANCE,
-                                     soj_time=soj_time, parameters=parameters)
+                                     serv_time=soj_time, parameters=parameters)
     dfg_vis_fact.view(dfg_gv_perf)
     net, im, fm = dfg_conv.apply(dfg_freq)
     gviz = pn_vis.apply(net, im, fm, parameters=parameters)

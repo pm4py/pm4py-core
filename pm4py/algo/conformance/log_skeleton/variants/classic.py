@@ -17,7 +17,7 @@
 from pm4py.objects.log.util import xes
 from pm4py.algo.discovery.log_skeleton import trace_skel
 from pm4py.util import xes_constants
-from pm4py.util import variants_util
+from pm4py.util import variants_util, pandas_utils
 from pm4py.util import exec_utils
 from typing import Optional, Dict, Any, Union, List, Set
 from pm4py.objects.log.obj import EventLog, Trace
@@ -93,9 +93,9 @@ def apply_log(log: Union[EventLog, pd.DataFrame], model: Dict[str, Any], paramet
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
 
-    if type(log) is pd.DataFrame:
+    if pandas_utils.check_is_pandas_dataframe(log):
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
-        traces = list(log.groupby(case_id_key)[activity_key].apply(tuple))
+        traces = log.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist(); traces = [tuple(x) for x in traces]
     else:
         traces = [tuple(y[activity_key] for y in x) for x in log]
     grouped_traces = {}
@@ -324,4 +324,4 @@ def get_diagnostics_dataframe(log, conf_result, parameters=None):
 
         diagn_stream.append({"case_id": case_id, "no_dev_total": no_dev_total, "no_constr_total": no_constr_total, "dev_fitness": dev_fitness})
 
-    return pd.DataFrame(diagn_stream)
+    return pandas_utils.instantiate_dataframe(diagn_stream)

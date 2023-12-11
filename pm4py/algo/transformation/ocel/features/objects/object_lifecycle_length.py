@@ -39,7 +39,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ordered_objects = list(ocel.objects[ocel.object_id_column])
+    ordered_objects = parameters["ordered_objects"] if "ordered_objects" in parameters else ocel.objects[ocel.object_id_column].to_numpy()
+
     lifecycle_length = ocel.relations.groupby(ocel.object_id_column).size().to_dict()
 
     data = []

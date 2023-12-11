@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import pandas as pd
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import exec_utils, constants, xes_constants, pandas_utils
 from enum import Enum
 from typing import Optional, Dict, Any
 
@@ -69,7 +69,7 @@ def apply(dataframe1: pd.DataFrame, dataframe2: pd.DataFrame, case_relations: pd
     dataframe2 = dataframe2.merge(case_relations, left_on=case_id_key, right_on=case_id_key + right_suffix)
     dataframe2[case_id_key] = dataframe2[case_id_key + left_suffix]
 
-    dataframe1 = pd.concat([dataframe1, dataframe2])
+    dataframe1 = pandas_utils.concat([dataframe1, dataframe2])
     dataframe1 = dataframe1.sort_values([case_id_key, timestamp_key])
 
     return dataframe1

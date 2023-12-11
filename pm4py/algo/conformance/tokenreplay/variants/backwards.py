@@ -19,7 +19,7 @@ from pm4py.objects.petri_net.semantics import is_enabled, weak_execute
 from pm4py.objects.petri_net.utils.align_utils import get_visible_transitions_eventually_enabled_by_marking
 from copy import copy
 from collections import Counter
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import exec_utils, constants, xes_constants, pandas_utils
 import warnings
 from enum import Enum
 from pm4py.util import variants_util
@@ -372,4 +372,4 @@ def get_diagnostics_dataframe(log: EventLog, tbr_output: typing.ListAlignments, 
 
         diagn_stream.append({"case_id": case_id, "is_fit": is_fit, "trace_fitness": trace_fitness, "missing": missing, "remaining": remaining, "produced": produced, "consumed": consumed})
 
-    return pd.DataFrame(diagn_stream)
+    return pandas_utils.instantiate_dataframe(diagn_stream)

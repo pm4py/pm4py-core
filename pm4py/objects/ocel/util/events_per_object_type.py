@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel import constants as ocel_constants
 from typing import Optional, Dict, Any
@@ -51,7 +51,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     event_id = exec_utils.get_param_value(Parameters.EVENT_ID, parameters, ocel.event_id_column)
     object_type = exec_utils.get_param_value(Parameters.OBJECT_TYPE, parameters, ocel.object_type_column)
 
-    object_types = set(ocel.objects[object_type].unique())
+    object_types = pandas_utils.format_unique(ocel.objects[object_type].unique())
 
     ret = {}
 

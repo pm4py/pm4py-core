@@ -20,6 +20,7 @@ The ``pm4py.stats`` module contains the statistics offered in ``pm4py``
 
 from typing import Dict, Union, List, Tuple, Collection, Iterator
 from typing import Set, Optional
+from typing import Counter as TCounter
 from collections import Counter
 
 import pandas as pd
@@ -27,7 +28,7 @@ import pandas as pd
 from pm4py.objects.log.obj import EventLog, Trace, EventStream
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns, insert_ev_in_tr_index
 from pm4py.utils import get_properties, __event_log_deprecation_warning
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.process_tree.obj import ProcessTree
 import deprecation
@@ -371,7 +372,7 @@ def get_variants_paths_duration(log: Union[EventLog, pd.DataFrame], activity_key
 
         list_to_concat.append(dir_follo_dataframe)
 
-    dataframe = pd.concat(list_to_concat)
+    dataframe = pandas_utils.concat(list_to_concat)
     dataframe[index_in_trace_column] = -dataframe[index_in_trace_column]
     dataframe = dataframe.sort_values([variant_count, variant_column, index_in_trace_column], ascending=False)
     dataframe[index_in_trace_column] = -dataframe[index_in_trace_column]
@@ -398,7 +399,7 @@ def get_stochastic_language(*args, **kwargs) -> Dict[List[str], float]:
         print(language_model)
     """
     from pm4py.statistics.variants.log import get
-    if isinstance(args[0], EventLog) or isinstance(args[0], EventStream) or isinstance(args[0], pd.DataFrame):
+    if isinstance(args[0], EventLog) or isinstance(args[0], EventStream) or pandas_utils.check_is_pandas_dataframe(args[0]):
         from pm4py.objects.conversion.log import converter as log_converter
         log = log_converter.apply(args[0])
         return get.get_language(log)
@@ -601,6 +602,43 @@ def get_cycle_time(log: Union[EventLog, pd.DataFrame], activity_key: str = "conc
         return cycle_time.apply(log, parameters=properties)
 
 
+def get_service_time(log: Union[EventLog, pd.DataFrame], aggregation_measure: str = "mean", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", start_timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[str, float]:
+    """
+    Gets the activities' (average/median/...) service time in the provided event log
+
+    :param log: event log
+    :param aggregation_measure: the aggregation to be used (mean, median, min, max, sum)
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param start_timestamp_key: attribute to be used for the start timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``Dict[str, float]``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes('tests/input_data/interval_event_log.xes')
+        mean_serv_time = pm4py.get_service_time(log, start_timestamp_key='start_timestamp', aggregation_measure='mean')
+        print(mean_serv_time)
+        median_serv_time = pm4py.get_service_time(log, start_timestamp_key='start_timestamp', aggregation_measure='median')
+        print(median_serv_time)
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, start_timestamp_key=start_timestamp_key)
+    properties["aggregationMeasure"] = aggregation_measure
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, start_timestamp_key=start_timestamp_key)
+        from pm4py.statistics.service_time.pandas import get as serv_time_get
+        return serv_time_get.apply(log, parameters=properties)
+    else:
+        from pm4py.statistics.service_time.log import get as serv_time_get
+        return serv_time_get.apply(log, parameters=properties)
+
+
 def get_all_case_durations(log: Union[EventLog, pd.DataFrame], business_hours: bool = False, business_hour_slots=constants.DEFAULT_BUSINESS_HOUR_SLOTS, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> List[float]:
     """
     Gets the durations of the cases in the event log
@@ -667,6 +705,53 @@ def get_case_duration(log: Union[EventLog, pd.DataFrame], case_id: str, business
         from pm4py.statistics.traces.generic.log import case_statistics
         cd = case_statistics.get_cases_description(log, parameters=properties)
         return cd[case_id]["caseDuration"]
+
+
+def get_frequent_trace_segments(log: Union[EventLog, pd.DataFrame], min_occ: int, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> TCounter:
+    """
+    Get the traces (segments of activities) from an event log object.
+    Each trace is preceded and followed by "...", reminding that the trace/segment
+    can be preceded and followed by any other set of activities.
+
+    :param log: event log
+    :param min_occ: minimum number of occurrence of a trace in order to be included
+    :param activity_key: the attribute to be used as activity
+    :param timestamp_key: the attribute to be used as timestamp
+    :param case_id_key: the attribute to be used as case identifier (for Pandas dataframes)
+    :rtype: ``TCounter``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_xes("tests/input_data/receipt.xes")
+        traces = pm4py.get_frequent_trace_segments(log, min_occ=100)
+        print(traces)
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    import pm4py.utils
+    from prefixspan import PrefixSpan
+
+    projection = pm4py.utils.project_on_event_attribute(log, attribute_key=activity_key, case_id_key=case_id_key)
+    traces0 = PrefixSpan(projection).frequent(min_occ)
+    traces = {}
+    for x in traces0:
+        trace = ["..."]
+        for i in range(len(x[1])):
+            if i > 0:
+                trace.append("...")
+            trace.append(x[1][i])
+        trace.append("...")
+        trace = tuple(trace)
+        traces[trace] = x[0]
+    traces = Counter(traces)
+
+    return traces
 
 
 def get_activity_position_summary(log: Union[EventLog, pd.DataFrame], activity: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[int, int]:

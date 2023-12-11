@@ -16,7 +16,7 @@
 '''
 
 from typing import Optional, Dict, Any, Union
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import exec_utils, constants, pandas_utils
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
 from pm4py.objects.conversion.log import converter as log_converter
@@ -191,6 +191,6 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
 
     data, feature_names = log_to_features.apply(log, parameters=parameters)
 
-    fea_df = pd.DataFrame(data, columns=feature_names)
+    fea_df = pandas_utils.instantiate_dataframe(data, columns=feature_names)
 
     return textual_abstraction_from_fea_df(fea_df, parameters=parameters)

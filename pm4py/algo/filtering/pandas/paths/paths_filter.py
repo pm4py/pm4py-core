@@ -22,7 +22,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from pm4py.util.constants import PARAMETER_CONSTANT_TIMESTAMP_KEY
 from pm4py.util.constants import DEFAULT_VARIANT_SEP
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from copy import copy
 from typing import Optional, Dict, Any, Union, Tuple, List
 import pandas as pd
@@ -74,7 +74,7 @@ def apply(df: pd.DataFrame, paths: List[Tuple[str, str]], parameters: Optional[D
     filt_df = df[list({case_id_glue, attribute_key, target_attribute_key})]
     filt_dif_shifted = filt_df.shift(-1)
     filt_dif_shifted.columns = [str(col) + '_2' for col in filt_dif_shifted.columns]
-    stacked_df = pd.concat([filt_df, filt_dif_shifted], axis=1)
+    stacked_df = pandas_utils.concat([filt_df, filt_dif_shifted], axis=1)
     stacked_df = stacked_df[stacked_df[case_id_glue] == stacked_df[case_id_glue + '_2']]
     stacked_df["@@path"] = stacked_df[attribute_key] + DEFAULT_VARIANT_SEP + stacked_df[target_attribute_key + "_2"]
     stacked_df = stacked_df[stacked_df["@@path"].isin(paths)]
@@ -128,7 +128,7 @@ def apply_performance(df: pd.DataFrame, provided_path: Tuple[str, str], paramete
     filt_df = df[[case_id_glue, attribute_key, timestamp_key]]
     filt_dif_shifted = filt_df.shift(-1)
     filt_dif_shifted.columns = [str(col) + '_2' for col in filt_dif_shifted.columns]
-    stacked_df = pd.concat([filt_df, filt_dif_shifted], axis=1)
+    stacked_df = pandas_utils.concat([filt_df, filt_dif_shifted], axis=1)
     stacked_df["@@path"] = stacked_df[attribute_key] + DEFAULT_VARIANT_SEP + stacked_df[attribute_key + "_2"]
     stacked_df = stacked_df[stacked_df["@@path"] == provided_path]
     stacked_df["@@timedelta"] = (stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]).dt.total_seconds()

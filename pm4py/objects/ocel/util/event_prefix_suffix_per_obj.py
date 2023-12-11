@@ -18,7 +18,7 @@
 from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 
 
 class Parameters(Enum):
@@ -72,7 +72,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     right_suffix = exec_utils.get_param_value(Parameters.RIGHT_SUFFIX, parameters, "_RIGHT")
 
     relations = ocel.relations.copy()
-    relations[index_attribute] = relations.index
+    relations = pandas_utils.insert_index(relations, index_attribute, reset_index=False, copy_dataframe=False)
     relations_merged = relations.merge(relations, left_on=ocel.object_id_column, right_on=ocel.object_id_column, suffixes=(left_suffix, right_suffix))
     if prefix_or_suffix == "prefix":
         relations_merged = relations_merged[

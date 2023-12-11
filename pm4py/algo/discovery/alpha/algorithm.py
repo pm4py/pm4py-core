@@ -22,7 +22,7 @@ from pm4py.statistics.end_activities.pandas import get as end_activities_get
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.util import exec_utils
 from pm4py.util import xes_constants as xes_util
-from pm4py.util import constants
+from pm4py.util import constants, pandas_utils
 from enum import Enum
 from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog, EventStream
@@ -81,7 +81,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
                                                      None)
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)
 
-    if isinstance(log, pd.DataFrame) and variant == ALPHA_VERSION_CLASSIC:
+    if pandas_utils.check_is_pandas_dataframe(log) and variant == ALPHA_VERSION_CLASSIC:
         dfg = df_statistics.get_dfg_graph(log, case_id_glue=case_id_glue,
                                           activity_key=activity_key,
                                           timestamp_key=timestamp_key, start_timestamp_key=start_timestamp_key)

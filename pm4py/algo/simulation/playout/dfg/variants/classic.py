@@ -27,6 +27,7 @@ from typing import Optional, Dict, Any, Union, Tuple
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.log.obj import Trace, Event
 from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util.dt_parsing.variants import strpfromiso
 
 
 class Parameters(Enum):
@@ -273,7 +274,7 @@ def apply(dfg: Dict[Tuple[str, str], int], start_activities: Dict[str, int], end
                 attributes={xes_constants.DEFAULT_TRACEID_KEY: str(index), "probability": -tr[0]})
             for act in tr[1]:
                 log_trace.append(
-                    Event({activity_key: act, timestamp_key: datetime.datetime.fromtimestamp(curr_timestamp)}))
+                    Event({activity_key: act, timestamp_key: strpfromiso.fix_naivety(datetime.datetime.fromtimestamp(curr_timestamp))}))
                 # increases by 1 second
                 curr_timestamp += 1
             event_log.append(log_trace)

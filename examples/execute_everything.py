@@ -16,6 +16,36 @@ def variants_paths_duration():
     variants_paths_duration.execute_script()
 
 
+def ev_to_obj_types_graph():
+    from examples import ev_to_obj_types_graph
+    print("\n\nev_to_obj_types_graph")
+    ev_to_obj_types_graph.execute_script()
+
+
+def label_splitting():
+    from examples import label_splitting
+    print("\n\nlabel_splitting")
+    label_splitting.execute_script()
+
+
+def nx_ocel_to_graphviz():
+    from examples import nx_ocel_to_graphviz
+    print("\n\nnx_ocel_to_graphviz")
+    nx_ocel_to_graphviz.execute_script()
+
+
+def nx_traditional_to_graphviz():
+    from examples import nx_traditional_to_graphviz
+    print("\n\nnx_traditional_to_graphviz")
+    nx_traditional_to_graphviz.execute_script()
+
+
+def segments_retrieval_filtering():
+    from examples import segments_retrieval_filtering
+    print("\n\nsegments_retrieval_filtering")
+    segments_retrieval_filtering.execute_script()
+
+
 def feature_extraction_case_loc():
     from examples import feature_extraction_case_loc
     print("\n\nfeature_extraction_case_loc")
@@ -843,6 +873,11 @@ def main():
     
     execute_script(powl_discovery)
     execute_script(powl_parsing)
+    execute_script(ev_to_obj_types_graph)
+    execute_script(label_splitting)
+    execute_script(nx_ocel_to_graphviz)
+    execute_script(nx_traditional_to_graphviz)
+    execute_script(segments_retrieval_filtering)
     execute_script(stochastic_petri_playout)
     execute_script(simplified_interface)
     execute_script(read_write_ocel)
@@ -902,7 +937,7 @@ def main():
     execute_script(link_analysis_vbfa)
     execute_script(ocel_streaming)
     execute_script(petri_manual_generation)
-    execute_script(timestamp_interleavings)
+    #execute_script(timestamp_interleavings)
     execute_script(object_centric_petri_net_discovery)
     execute_script(trans_system_stochastic_view)
     execute_script(network_analysis)

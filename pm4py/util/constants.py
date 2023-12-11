@@ -26,6 +26,33 @@ def get_param_from_env(name, default):
     return default
 
 
+TEST_CUDF_DATAFRAMES_ENVIRONMENT = get_param_from_env("PM4PY_TEST_CUDF_DATAFRAMES_ENVIRONMENT", False)
+
+
+def get_default_timestamp_format():
+    if importlib.util.find_spec("cudf") or TEST_CUDF_DATAFRAMES_ENVIRONMENT:
+        return "%Y-%m-%d %H:%M:%S"
+        pass
+
+    return None
+
+
+def get_default_xes_timestamp_format():
+    if importlib.util.find_spec("cudf") or TEST_CUDF_DATAFRAMES_ENVIRONMENT:
+        return "%Y-%m-%dT%H:%M:%S"
+        pass
+
+    return "ISO8601"
+
+
+def get_default_is_aware_enabled():
+    if importlib.util.find_spec("cudf") or TEST_CUDF_DATAFRAMES_ENVIRONMENT:
+        return False
+        pass
+    
+    return True
+
+
 PARAMETER_CONSTANT_ACTIVITY_KEY = 'pm4py:param:activity_key'
 PARAMETER_CONSTANT_ATTRIBUTE_KEY = "pm4py:param:attribute_key"
 PARAMETER_CONSTANT_TIMESTAMP_KEY = 'pm4py:param:timestamp_key'
@@ -80,13 +107,15 @@ TRIGGERED_DT_PARSING_WARNING = False
 DEFAULT_BGCOLOR = get_param_from_env("PM4PY_DEFAULT_BGCOLOR", "white")
 DEFAULT_FORMAT_GVIZ_VIEW = get_param_from_env("PM4PY_DEFAULT_FORMAT_GVIZ_VIEW", "png")
 DEFAULT_RANKDIR_GVIZ = get_param_from_env("PM4PY_DEFAULT_RANKDIR_GVIZ", "LR")
-DEFAULT_TIMESTAMP_PARSE_FORMAT = get_param_from_env("PM4PY_DEFAULT_TIMESTAMP_PARSE_FORMAT", None)
+DEFAULT_TIMESTAMP_PARSE_FORMAT = get_param_from_env("PM4PY_DEFAULT_TIMESTAMP_PARSE_FORMAT", get_default_timestamp_format())
+DEFAULT_XES_TIMESTAMP_PARSE_FORMAT = get_param_from_env("PM4PY_DEFAULT_XES_TIMESTAMP_PARSE_FORMAT", get_default_xes_timestamp_format())
 
 ENABLE_MULTIPROCESSING_DEFAULT = True if get_param_from_env("PM4PY_ENABLE_MULTIPROCESSING_DEFAULT", "False").lower() == "true" else False
 SHOW_PROGRESS_BAR = True if get_param_from_env("PM4PY_SHOW_PROGRESS_BAR", "True").lower() == "true" else False
 DEFAULT_READ_XES_LEGACY_OBJECT = True if get_param_from_env("PM4PY_DEFAULT_READ_XES_LEGACY_OBJECT", "False").lower() == "true" else False
 DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME = True if get_param_from_env("PM4PY_DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME", "False").lower() == "true" else False
 DEFAULT_PANDAS_PARSING_DTYPE_BACKEND = get_param_from_env("PM4PY_DEFAULT_PANDAS_PARSING_DTYPE_BACKEND", "numpy_nullable")
+ENABLE_DATETIME_COLUMNS_AWARE = get_param_from_env("PM4PY_ENABLE_DATETIME_COLUMNS_AWARE", get_default_is_aware_enabled())
 
 # Default business hour slots: Mondays to Fridays, 7:00 - 17:00 (in seconds)
 DEFAULT_BUSINESS_HOUR_SLOTS = [

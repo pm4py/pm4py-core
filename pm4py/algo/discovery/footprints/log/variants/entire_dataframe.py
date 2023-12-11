@@ -91,9 +91,9 @@ def apply(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], An
     dfg = df_statistics.get_dfg_graph(df, measure="frequency", activity_key=activity_key, case_id_glue=caseid_key,
                                       timestamp_key=timestamp_key, sort_caseid_required=False,
                                       sort_timestamp_along_case_id=False, start_timestamp_key=start_timestamp_key)
-    activities = set(df[activity_key].unique())
-    start_activities = set(grouped_df.first()[activity_key].unique())
-    end_activities = set(grouped_df.last()[activity_key].unique())
+    activities = set(pandas_utils.format_unique(df[activity_key].unique()))
+    start_activities = set(pandas_utils.format_unique(grouped_df.first()[activity_key].unique()))
+    end_activities = set(pandas_utils.format_unique(grouped_df.last()[activity_key].unique()))
 
     parallel = {(x, y) for (x, y) in dfg if (y, x) in dfg}
     sequence = set(causal_discovery.apply(dfg, causal_discovery.Variants.CAUSAL_ALPHA))

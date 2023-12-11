@@ -1,20 +1,4 @@
-'''
-    This file is part of PM4Py (More Info: https://pm4py.fit.fraunhofer.de).
-
-    PM4Py is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    PM4Py is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
-'''
-from pm4py.util import exec_utils, xes_constants, constants
+from pm4py.util import exec_utils, xes_constants, constants, pandas_utils
 from typing import Optional, Dict, Any, Union, List
 from pm4py.objects.log.obj import EventLog
 import pandas as pd
@@ -144,4 +128,4 @@ def get_diagnostics_dataframe(log: EventLog, conf_result: Union[List[Dict[str, A
 
         diagn_stream.append({"case_id": case_id, "num_violations": num_violations, "is_fit": is_fit})
 
-    return pd.DataFrame(diagn_stream)
+    return pandas_utils.instantiate_dataframe(diagn_stream)

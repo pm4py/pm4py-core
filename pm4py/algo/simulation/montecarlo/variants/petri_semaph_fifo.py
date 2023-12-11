@@ -22,6 +22,7 @@ from statistics import median
 from pm4py.objects.log.obj import Trace, Event
 from pm4py.util import xes_constants
 from pm4py.objects.stochastic_petri import utils as stochastic_utils
+from pm4py.util.dt_parsing.variants import strpfromiso
 import datetime
 from time import sleep, time
 import logging
@@ -238,7 +239,7 @@ class SimulationThread(Thread):
 
             if ct.label is not None:
                 eve = Event({xes_constants.DEFAULT_NAME_KEY: ct.label,
-                             xes_constants.DEFAULT_TIMESTAMP_KEY: datetime.datetime.fromtimestamp(current_time)})
+                             xes_constants.DEFAULT_TIMESTAMP_KEY: strpfromiso.fix_naivety(datetime.datetime.fromtimestamp(current_time))})
                 last_event = eve
                 if first_event is None:
                     first_event = last_event

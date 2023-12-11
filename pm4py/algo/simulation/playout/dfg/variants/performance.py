@@ -23,6 +23,7 @@ from numpy.random import choice, exponential
 
 from pm4py.objects.log.obj import EventLog, Trace, Event
 from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util.dt_parsing.variants import strpfromiso
 
 
 class Parameters(Enum):
@@ -144,7 +145,7 @@ def apply(frequency_dfg: Dict[Tuple[str, str], int], start_activities: Dict[str,
             perf = 0 if perf == 0 else exponential(perf)
             curr_t += perf
             curr_act = next_act
-            eve = Event({activity_key: curr_act, timestamp_key: datetime.fromtimestamp(curr_t)})
+            eve = Event({activity_key: curr_act, timestamp_key: strpfromiso.fix_naivety(datetime.fromtimestamp(curr_t))})
             trace.append(eve)
 
     return log

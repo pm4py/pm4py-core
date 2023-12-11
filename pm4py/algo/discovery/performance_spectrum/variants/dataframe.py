@@ -81,7 +81,7 @@ def apply(dataframe: pd.DataFrame, list_activities: List[str], sample_size: int,
 
     # create a dataframe with all needed columns to check for the activities pattern 
     dfs = [dataframe.add_suffix(str(i)).shift(-i) for i in range(len(list_activities))]
-    dataframe = pd.concat(dfs, axis=1)
+    dataframe = pandas_utils.concat(dfs, axis=1)
     # keep only rows that belong to exactly one case
     for i in range(len(list_activities) - 1):
         dataframe = dataframe[dataframe[key(case_id_glue, i)] == dataframe[key(case_id_glue, i + 1)]]

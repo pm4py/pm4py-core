@@ -20,6 +20,7 @@ from pm4py.util import constants, xes_constants, pandas_utils, exec_utils
 import numpy as np
 from collections import Counter
 from typing import Tuple, Dict, Collection
+import importlib.util
 
 
 class Parameters(Enum):
@@ -75,19 +76,25 @@ def apply(dataframe: pd.DataFrame, parameters=None) -> Tuple[Dict[Collection[str
         dataframe = pandas_utils.insert_index(dataframe, index_key)
         dataframe.sort_values([case_id_key, timestamp_key, index_key])
 
-    cases = dataframe[case_id_key].to_numpy()
-    activities = dataframe[activity_key].to_numpy()
-
-    c_unq, c_ind, c_counts = np.unique(cases, return_index=True, return_counts=True)
-    variants_counter = Counter()
     case_variant = dict()
 
-    for i in range(len(c_ind)):
-        si = c_ind[i]
-        ei = si + c_counts[i]
-        acts = tuple(activities[si:ei])
-        variants_counter[acts] += 1
-        case_variant[c_unq[i]] = acts
+    if importlib.util.find_spec("cudf"):
+        case_variant = dataframe.groupby(case_id_key)[activity_key].agg(list).to_dict()
+        case_variant = {x: tuple(y) for x, y in case_variant.items()}
+        variants_counter = Counter(case_variant.items())
+    else:
+        variants_counter = Counter()
+        cases = dataframe[case_id_key].to_numpy()
+        activities = dataframe[activity_key].to_numpy()
+
+        c_unq, c_ind, c_counts = np.unique(cases, return_index=True, return_counts=True)
+
+        for i in range(len(c_ind)):
+            si = c_ind[i]
+            ei = si + c_counts[i]
+            acts = tuple(activities[si:ei])
+            variants_counter[acts] += 1
+            case_variant[c_unq[i]] = acts
 
     # return as Python dictionary
     variants_dict = {x: y for x, y in variants_counter.items()}

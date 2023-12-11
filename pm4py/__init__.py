@@ -28,7 +28,7 @@ from pm4py.filtering import filter_log_relative_occurrence_event_attribute, filt
     filter_between, filter_case_size, filter_case_performance, filter_activities_rework, filter_paths_performance, \
     filter_variants_by_coverage_percentage, filter_variants_by_maximum_coverage_percentage, filter_variants_top_k, filter_ocel_event_attribute, filter_ocel_object_attribute, \
     filter_ocel_object_types_allowed_activities, filter_ocel_object_per_type_count, filter_ocel_start_events_per_object_type, \
-    filter_ocel_end_events_per_object_type, filter_ocel_events_timestamp, filter_prefixes, filter_suffixes, \
+    filter_ocel_end_events_per_object_type, filter_ocel_events_timestamp, filter_prefixes, filter_suffixes, filter_trace_segments, \
     filter_four_eyes_principle, filter_activity_done_different_resources, filter_ocel_events, filter_ocel_objects, \
     filter_ocel_object_types, filter_ocel_cc_object, filter_ocel_cc_length, filter_ocel_cc_otype, filter_ocel_cc_activity
 from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_plus, discover_petri_net_ilp, discover_petri_net_heuristics, \
@@ -61,10 +61,10 @@ from pm4py.analysis import cluster_log, check_soundness, compute_emd, solve_mark
     reduce_petri_net_invisibles, reduce_petri_net_implicit_places, insert_case_arrival_finish_rate, insert_case_service_waiting_time, get_enabled_transitions
 from pm4py.stats import get_start_activities, get_end_activities, get_event_attributes, get_event_attribute_values, get_variants, \
     get_trace_attributes, get_variants_as_tuples, get_trace_attribute_values, get_case_arrival_average, \
-    get_minimum_self_distances, get_minimum_self_distance_witnesses, \
+    get_minimum_self_distances, get_minimum_self_distance_witnesses, get_frequent_trace_segments, \
     get_case_arrival_average, get_rework_cases_per_activity, get_case_overlap, get_cycle_time, \
     get_all_case_durations, get_case_duration, get_activity_position_summary, get_stochastic_language, \
-    split_by_process_variant, get_variants_paths_duration
+    split_by_process_variant, get_variants_paths_duration, get_service_time
 from pm4py.sim import play_out, generate_process_tree
 from pm4py.ml import split_train_test, get_prefixes_from_log, extract_ocel_features, extract_features_dataframe, extract_temporal_features_dataframe, extract_outcome_enriched_dataframe, extract_target_vector
 from pm4py.org import discover_handover_of_work_network, discover_activity_based_resource_similarity, discover_subcontracting_network, discover_working_together_network, discover_organizational_roles, discover_network_analysis

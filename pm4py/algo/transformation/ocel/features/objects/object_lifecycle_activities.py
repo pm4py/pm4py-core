@@ -16,6 +16,7 @@
 '''
 from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any
+from pm4py.util import pandas_utils
 
 
 def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
@@ -39,8 +40,10 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ordered_objects = list(ocel.objects[ocel.object_id_column])
-    activities = list(set(ocel.events[ocel.event_activity].unique()))
+    ordered_objects = parameters["ordered_objects"] if "ordered_objects" in parameters else ocel.objects[
+        ocel.object_id_column].to_numpy()
+
+    activities = pandas_utils.format_unique(ocel.events[ocel.event_activity].unique())
     lifecycle = ocel.relations.groupby(ocel.object_id_column)[ocel.event_activity].agg(list).to_dict()
 
     data = []

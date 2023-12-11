@@ -144,7 +144,7 @@ def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) 
             out_clmn.append(k)
             in_clmn.append(v)
 
-    rel = pd.DataFrame({index_column + "_out": out_clmn, index_column + "_in": in_clmn})
+    rel = pandas_utils.instantiate_dataframe({index_column + "_out": out_clmn, index_column + "_in": in_clmn})
 
     df_link = dataframe.copy()
     df_link.columns = [x + "_out" for x in df_link.columns]

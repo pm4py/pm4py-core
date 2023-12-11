@@ -25,6 +25,8 @@ from pm4py.util import constants
 from pm4py.util import exec_utils
 from pm4py.util import points_subset
 from pm4py.util import xes_constants, pandas_utils
+from pm4py.util.dt_parsing.variants import strpfromiso
+import traceback
 
 
 LEGACY_PARQUET_TP_REPLACER = "AAA"
@@ -171,18 +173,26 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None)
     if timest_format is None:
         timest_format = constants.DEFAULT_TIMESTAMP_PARSE_FORMAT
 
+    if timest_format is None:
+        timest_format = "mixed"
+
     for col in df.columns:
         if timest_columns is None or col in timest_columns:
             if "obj" in str(df[col].dtype) or "str" in str(df[col].dtype):
                 try:
-                    if timest_format is None:
-                        # makes operations faster if non-ISO8601 but anyhow regular dates are provided
-                        df[col] = pd.to_datetime(df[col], utc=True)
-                    else:
-                        df[col] = pd.to_datetime(df[col], utc=True, format=timest_format)
+                    df[col] = pandas_utils.dataframe_column_string_to_datetime(df[col], format=timest_format, utc=True)
                 except:
-                    # print("exception converting column: "+str(col))
-                    pass
+                    try:
+                        df[col] = pandas_utils.dataframe_column_string_to_datetime(df[col], format=timest_format, exact=False, utc=True)
+                    except:
+                        # traceback.print_exc()
+                        # print("exception converting column: "+str(col))
+                        pass
+
+    for col in df.columns:
+        if "date" in str(df[col].dtype) or "time" in str(df[col].dtype):
+            df[col] = strpfromiso.fix_dataframe_column(df[col])
+
     return df
 
 
@@ -210,7 +220,7 @@ def sample_dataframe(df, parameters=None):
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     max_no_cases = exec_utils.get_param_value(Parameters.MAX_NO_CASES, parameters, 100)
 
-    case_ids = list(df[case_id_key].unique())
+    case_ids = pandas_utils.format_unique(df[case_id_key].unique())
     case_id_to_retain = points_subset.pick_chosen_points_list(min(max_no_cases, len(case_ids)), case_ids)
 
     return df[df[case_id_key].isin(case_id_to_retain)]
@@ -323,10 +333,10 @@ def select_string_column(df: pd.DataFrame, fea_df: pd.DataFrame, col: str,
     fea_df
         Feature dataframe (desidered output)
     """
-    vals = df[col].unique()
+    vals = pandas_utils.format_unique(df[col].unique())
     for val in vals:
         if val is not None:
-            filt_df_cases = df[df[col] == val][case_id_key].unique()
+            filt_df_cases = pandas_utils.format_unique(df[df[col] == val][case_id_key].unique())
             new_col = col + "_" + val.encode('ascii', errors='ignore').decode('ascii').replace(" ", "")
             fea_df[new_col] = fea_df[case_id_key].isin(filt_df_cases)
             fea_df[new_col] = fea_df[new_col].astype("int")
@@ -359,7 +369,7 @@ def get_features_df(df: pd.DataFrame, list_columns: List[str],
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     add_case_identifier_column = exec_utils.get_param_value(Parameters.ADD_CASE_IDENTIFIER_COLUMN, parameters, False)
 
-    fea_df = pd.DataFrame({case_id_key: sorted(list(df[case_id_key].unique()))})
+    fea_df = pandas_utils.instantiate_dataframe({case_id_key: sorted(pandas_utils.format_unique(df[case_id_key].unique()))})
     for col in list_columns:
         if "obj" in str(df[col].dtype) or "str" in str(df[col].dtype):
             fea_df = select_string_column(df, fea_df, col, case_id_key=case_id_key)
@@ -460,7 +470,7 @@ def insert_artificial_start_end(df0: pd.DataFrame, parameters: Optional[Dict[Any
     start_df[activity_key] = artificial_start_activity
     end_df[activity_key] = artificial_end_activity
 
-    df = pd.concat([start_df, df, end_df])
+    df = pandas_utils.concat([start_df, df, end_df])
     df = pandas_utils.insert_index(df, index_key)
     df = df.sort_values([case_id_key, timestamp_key, index_key])
 

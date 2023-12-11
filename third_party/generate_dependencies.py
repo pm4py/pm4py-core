@@ -81,7 +81,7 @@ libraries are added/removed.
 | --------------------------- | ------------------------------------------------------------ | --------------------------- | ------------------- |
 """)
 for x in packages:
-    F.write("| %s | %s | %s | %s |\n" % (x[0], x[1], x[3], x[2]))
+    F.write("| %s | %s | %s | %s |\n" % (x[0].strip(), x[1].strip(), x[3].strip(), x[2].strip()))
 F.close()
 packages_line = ""
 for x in packages:

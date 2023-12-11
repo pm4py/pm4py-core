@@ -5,7 +5,7 @@ from pm4py.objects.conversion.dfg import converter as dfg_conv
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.statistics.end_activities.log import get as ea_get
 from pm4py.statistics.start_activities.log import get as sa_get
-from pm4py.statistics.sojourn_time.log import get as soj_time_get
+from pm4py.statistics.service_time.log import get as soj_time_get
 from pm4py.statistics.concurrent_activities.log import get as conc_act_get
 from pm4py.statistics.eventually_follows.log import get as efg_get
 from pm4py.util import constants

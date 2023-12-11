@@ -24,7 +24,8 @@ from pm4py.objects.ocel import constants
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.objects.ocel.util import filtering_utils
 from pm4py.objects.ocel.util import ocel_consistency
-from pm4py.util import exec_utils, dt_parsing, constants as pm4_constants
+from pm4py.util import exec_utils, dt_parsing, constants as pm4_constants, pandas_utils
+from pm4py.objects.log.util import dataframe_utils
 
 
 class Parameters(Enum):
@@ -91,12 +92,12 @@ def get_base_ocel(json_obj: Any, parameters: Optional[Dict[Any, Any]] = None):
     if constants.OCEL_OBJCHANGES_KEY in json_obj:
         object_changes = json_obj[constants.OCEL_OBJCHANGES_KEY]
 
-    events = pd.DataFrame(events)
-    objects = pd.DataFrame(objects)
-    relations = pd.DataFrame(relations)
+    events = pandas_utils.instantiate_dataframe(events)
+    objects = pandas_utils.instantiate_dataframe(objects)
+    relations = pandas_utils.instantiate_dataframe(relations)
 
-    events[internal_index] = events.index
-    relations[internal_index] = relations.index
+    events = pandas_utils.insert_index(events, internal_index, reset_index=False, copy_dataframe=False)
+    relations = pandas_utils.insert_index(relations, internal_index, reset_index=False, copy_dataframe=False)
 
     events = events.sort_values([event_timestamp, internal_index])
     relations = relations.sort_values([event_timestamp, internal_index])
@@ -109,10 +110,10 @@ def get_base_ocel(json_obj: Any, parameters: Optional[Dict[Any, Any]] = None):
     globals[constants.OCEL_GLOBAL_EVENT] = json_obj[constants.OCEL_GLOBAL_EVENT]
     globals[constants.OCEL_GLOBAL_OBJECT] = json_obj[constants.OCEL_GLOBAL_OBJECT]
 
-    o2o = pd.DataFrame(o2o) if o2o else None
-    object_changes = pd.DataFrame(object_changes) if object_changes else None
+    o2o = pandas_utils.instantiate_dataframe(o2o) if o2o else None
+    object_changes = pandas_utils.instantiate_dataframe(object_changes) if object_changes else None
     if object_changes is not None and len(object_changes) > 0:
-        object_changes[event_timestamp] = pd.to_datetime(object_changes[event_timestamp])
+        object_changes = dataframe_utils.convert_timestamp_columns_in_df(object_changes, timest_format=pm4_constants.DEFAULT_XES_TIMESTAMP_PARSE_FORMAT, timest_columns=[event_timestamp])
         obj_id_map = objects[[object_id, object_type]].to_dict("records")
         obj_id_map = {x[object_id]: x[object_type] for x in obj_id_map}
         object_changes[object_type] = object_changes[object_id].map(obj_id_map)
