@@ -9,6 +9,8 @@ from pm4py.util import xes_constants as xes
 from pm4py.util.business_hours import soj_time_business_hours_diff
 from pm4py.util.constants import CASE_CONCEPT_NAME
 from pm4py.util.xes_constants import DEFAULT_TIMESTAMP_KEY
+from collections import Counter
+import importlib.util
 
 
 class Parameters(Enum):
@@ -54,14 +56,23 @@ def get_variant_statistics(df: pd.DataFrame, parameters: Optional[Dict[Union[str
     if parameters is None:
         parameters = {}
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
+    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
 
     max_variants_to_return = exec_utils.get_param_value(Parameters.MAX_VARIANTS_TO_RETURN, parameters, None)
-    variants_df = exec_utils.get_param_value(Parameters.VARIANTS_DF, parameters, get_variants_df(df,
-                                                                                                 parameters=parameters))
 
-    variants_df = variants_df.reset_index()
-    variants_list = pandas_utils.to_dict_records(variants_df.groupby("variant").agg("count").reset_index())
+    if importlib.util.find_spec("cudf"):
+        variants_list = df.groupby(case_id_glue)[activity_key].agg(list).to_numpy().tolist()
+        variants_list = [tuple(x) for x in variants_list]
+        variants_list = Counter(variants_list)
+        variants_list = [{"variant": x, case_id_glue: y} for x, y in variants_list.items()]
+    else:
+        variants_df = exec_utils.get_param_value(Parameters.VARIANTS_DF, parameters, get_variants_df(df,
+                                                                                                     parameters=parameters))
+        variants_df = variants_df.reset_index()
+        variants_list = pandas_utils.to_dict_records(variants_df.groupby("variant").agg("count").reset_index())
+
     variants_list = sorted(variants_list, key=lambda x: (x[case_id_glue], x["variant"]), reverse=True)
+
     if max_variants_to_return:
         variants_list = variants_list[:min(len(variants_list), max_variants_to_return)]
     return variants_list
@@ -201,7 +212,7 @@ def get_variants_df(df, parameters=None):
     case_id_glue = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
 
-    new_df = df.groupby(case_id_glue, sort=False)[activity_key].agg(lambda col: tuple(pd.Series.to_list(col))).to_frame()
+    new_df = df.groupby(case_id_glue, sort=False)[activity_key].agg(tuple).to_frame()
 
     new_cols = list(new_df.columns)
     new_df = new_df.rename(columns={new_cols[0]: "variant"})
@@ -242,7 +253,7 @@ def get_variants_df_with_case_duration(df, parameters=None):
 
     grouped_df = df[[case_id_glue, timestamp_key, activity_key]].groupby(df[case_id_glue])
 
-    df1 = grouped_df[activity_key].agg(lambda col: tuple(pd.Series.to_list(col))).to_frame()
+    df1 = grouped_df[activity_key].agg(tuple).to_frame()
     new_cols = list(df1.columns)
     df1 = df1.rename(columns={new_cols[0]: "variant"})
 

@@ -417,7 +417,7 @@ def calculate(heu_net: HeuristicsNet, dependency_thresh: float, and_measure_thre
             heu_net.performance_matrix[act1] = {}
         heu_net.dfg_matrix[act1][act2] = heu_net.dfg[el]
         heu_net.dependency_matrix[act1][act2] = -1
-        heu_net.performance_matrix[act1][act2] = heu_net.performance_dfg[el] if heu_net.performance_dfg else 0.0
+        heu_net.performance_matrix[act1][act2] = heu_net.performance_dfg[el] if heu_net.performance_dfg and el in heu_net.performance_dfg else 0.0
     for act1 in heu_net.activities:
         heu_net.nodes[act1] = Node(heu_net, act1, heu_net.activities_occurrences[act1], node_type=heu_net.node_type)
     # calculates the dependencies between the activities
