@@ -54,7 +54,7 @@ def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = Non
 
 
 def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, file_path: str, bgcolor: str = "white",
-                   decorations: Dict[Any, Any] = None, debug: bool = False, rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+                   decorations: Dict[Any, Any] = None, debug: bool = False, rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
     """
     Saves a Petri net visualization to a file
 
@@ -119,7 +119,7 @@ def view_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict
 
 
 def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str,
-                             aggregation_measure="mean", bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, serv_time: Optional[Dict[str, float]] = None):
+                             aggregation_measure="mean", bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, serv_time: Optional[Dict[str, float]] = None, **kwargs):
     """
     Saves the visualization of a performance DFG
 
@@ -189,7 +189,7 @@ def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: st
     dfg_visualizer.view(gviz)
 
 
-def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str, bgcolor: str = "white", max_num_edges: int = sys.maxsize, rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str, bgcolor: str = "white", max_num_edges: int = sys.maxsize, rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
     """
     Saves a DFG visualization to a file
 
@@ -247,7 +247,7 @@ def view_process_tree(tree: ProcessTree, format: str = constants.DEFAULT_FORMAT_
     pt_visualizer.view(gviz)
 
 
-def save_vis_process_tree(tree: ProcessTree, file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+def save_vis_process_tree(tree: ProcessTree, file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
     """
     Saves the visualization of a process tree
 
@@ -271,7 +271,7 @@ def save_vis_process_tree(tree: ProcessTree, file_path: str, bgcolor: str = "whi
     return pt_visualizer.save(gviz, file_path)
 
 
-def save_vis_bpmn(bpmn_graph: BPMN, file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+def save_vis_bpmn(bpmn_graph: BPMN, file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
     """
     Saves the visualization of a BPMN graph
 
@@ -340,7 +340,7 @@ def view_heuristics_net(heu_net: HeuristicsNet, format: str = "png", bgcolor: st
     hn_visualizer.view(gviz)
 
 
-def save_vis_heuristics_net(heu_net: HeuristicsNet, file_path: str, bgcolor: str = "white"):
+def save_vis_heuristics_net(heu_net: HeuristicsNet, file_path: str, bgcolor: str = "white", **kwargs):
     """
     Saves the visualization of an heuristics net
 
@@ -432,7 +432,7 @@ def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", a
     dotted_chart_visualizer.view(gviz)
 
 
-def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, attributes=None, bgcolor: str = "white", show_legend: bool = True):
+def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, attributes=None, bgcolor: str = "white", show_legend: bool = True, **kwargs):
     """
     Saves the visualization of the dotted chart
 
@@ -510,7 +510,7 @@ def view_sna(sna_metric: SNA, variant_str: Optional[str] = None):
     sna_visualizer.view(gviz, variant=variant)
 
 
-def save_vis_sna(sna_metric: SNA, file_path: str, variant_str: Optional[str] = None):
+def save_vis_sna(sna_metric: SNA, file_path: str, variant_str: Optional[str] = None, **kwargs):
     """
     Saves the visualization of a SNA metric in a .html file
 
@@ -573,7 +573,7 @@ def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "
     graphs_visualizer.view(graph_vis)
 
 
-def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: str, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
+def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: str, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name", **kwargs):
     """
     Saves the case duration graph in the specified path
 
@@ -636,7 +636,7 @@ def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str =
     graphs_visualizer.view(graph_vis)
 
 
-def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path: str, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
+def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path: str, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name", **kwargs):
     """
     Saves the events per time graph in the specified path
 
@@ -707,7 +707,7 @@ def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: Li
     perf_spectrum_visualizer.view(gviz)
 
 
-def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], file_path: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", bgcolor: str = "white"):
+def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], file_path: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", bgcolor: str = "white", **kwargs):
     """
     Saves the visualization of the performance spectrum to a file
 
@@ -823,7 +823,7 @@ def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_typ
 
 
 def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_path: str,
-                                       distr_type: str = "days_week", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
+                                       distr_type: str = "days_week", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name", **kwargs):
     """
     Saves the distribution of the events in a picture file
 
@@ -901,7 +901,7 @@ def view_ocdfg(ocdfg: Dict[str, Any], annotation: str = "frequency", act_metric:
     visualizer.view(gviz)
 
 
-def save_vis_ocdfg(ocdfg: Dict[str, Any], file_path: str, annotation: str = "frequency", act_metric: str = "events", edge_metric="event_couples", act_threshold: int = 0, edge_threshold: int = 0, performance_aggregation: str = "mean", bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+def save_vis_ocdfg(ocdfg: Dict[str, Any], file_path: str, annotation: str = "frequency", act_metric: str = "events", edge_metric="event_couples", act_threshold: int = 0, edge_threshold: int = 0, performance_aggregation: str = "mean", bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
     """
     Saves the visualization of an OC-DFG (object-centric directly-follows graph) with the provided configuration.
 
@@ -966,7 +966,7 @@ def view_ocpn(ocpn: Dict[str, Any], format: str = constants.DEFAULT_FORMAT_GVIZ_
     ocpn_visualizer.view(gviz)
 
 
-def save_vis_ocpn(ocpn: Dict[str, Any], file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+def save_vis_ocpn(ocpn: Dict[str, Any], file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
     """
     Saves the visualization of the object-centric Petri net into a file
 
@@ -1015,7 +1015,7 @@ def view_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, Any]
     network_analysis_visualizer.view(gviz)
 
 
-def save_vis_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, Any]], file_path: str, variant: str = "frequency", activity_threshold: int = 1, edge_threshold: int = 1, bgcolor: str = "white"):
+def save_vis_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, Any]], file_path: str, variant: str = "frequency", activity_threshold: int = 1, edge_threshold: int = 1, bgcolor: str = "white", **kwargs):
     """
     Saves the visualization of the network analysis
 
@@ -1063,7 +1063,7 @@ def view_transition_system(transition_system: TransitionSystem, format: str = co
     ts_visualizer.view(gviz)
 
 
-def save_vis_transition_system(transition_system: TransitionSystem, file_path: str, bgcolor: str = "white"):
+def save_vis_transition_system(transition_system: TransitionSystem, file_path: str, bgcolor: str = "white", **kwargs):
     """
     Persists the visualization of a transition system
 
@@ -1107,7 +1107,7 @@ def view_prefix_tree(trie: Trie, format: str = constants.DEFAULT_FORMAT_GVIZ_VIE
     trie_visualizer.view(gviz)
 
 
-def save_vis_prefix_tree(trie: Trie, file_path: str, bgcolor: str = "white"):
+def save_vis_prefix_tree(trie: Trie, file_path: str, bgcolor: str = "white", **kwargs):
     """
     Persists the visualization of a prefix tree
 
@@ -1154,7 +1154,7 @@ def view_alignments(log: Union[EventLog, pd.DataFrame], aligned_traces: List[Dic
     visualizer.view(gviz)
 
 
-def save_vis_alignments(log: Union[EventLog, pd.DataFrame], aligned_traces: List[Dict[str, Any]], file_path: str):
+def save_vis_alignments(log: Union[EventLog, pd.DataFrame], aligned_traces: List[Dict[str, Any]], file_path: str, **kwargs):
     """
     Saves an alignment table's figure in the disk
 
@@ -1205,7 +1205,7 @@ def view_footprints(footprints: Union[Tuple[Dict[str, Any], Dict[str, Any]], Dic
     fps_visualizer.view(gviz)
 
 
-def save_vis_footprints(footprints: Union[Tuple[Dict[str, Any], Dict[str, Any]], Dict[str, Any]], file_path: str):
+def save_vis_footprints(footprints: Union[Tuple[Dict[str, Any], Dict[str, Any]], Dict[str, Any]], file_path: str, **kwargs):
     """
     Saves the footprints' visualization on disk
 
@@ -1261,7 +1261,7 @@ def view_powl(powl: POWL, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgco
     powl_visualizer.view(gviz)
 
 
-def save_vis_powl(powl: POWL, file_path: str, bgcolor: str = "white", rankdir: str = "TB"):
+def save_vis_powl(powl: POWL, file_path: str, bgcolor: str = "white", rankdir: str = "TB", **kwargs):
     """
     Saves the visualization of a POWL model.
 
@@ -1315,7 +1315,7 @@ def view_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], format: str = con
     obj_graph_vis.view(gviz)
 
 
-def save_vis_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+def save_vis_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
     """
     Saves the visualization of an object graph
 
