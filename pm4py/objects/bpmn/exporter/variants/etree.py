@@ -66,7 +66,6 @@ def get_xml_string(bpmn_graph, parameters=None):
     definitions.set("expressionLanguage", "http://www.w3.org/1999/XPath")
     definitions.set("xmlns:xsd", "http://www.w3.org/2001/XMLSchema")
 
-    diagram = ET.SubElement(definitions, "bpmndi:BPMNDiagram", {"id": "id" + str(uuid.uuid4()), "name": "diagram"})
     all_processes = set()
     process_planes = {}
     process_process = {}
@@ -74,14 +73,17 @@ def get_xml_string(bpmn_graph, parameters=None):
         all_processes.add(node.get_process())
 
     for process in all_processes:
-        plane = ET.SubElement(diagram, "bpmndi:BPMNPlane",
-                              {"bpmnElement": "id" + process, "id": "id" + str(uuid.uuid4())})
-        process_planes[process] = plane
-
         p = ET.SubElement(definitions, "bpmn:process",
                           {"id": "id" + process, "isClosed": "false", "isExecutable": "false",
                            "processType": "None"})
         process_process[process] = p
+
+    diagram = ET.SubElement(definitions, "bpmndi:BPMNDiagram", {"id": "id" + str(uuid.uuid4()), "name": "diagram"})
+
+    for process in all_processes:
+        plane = ET.SubElement(diagram, "bpmndi:BPMNPlane",
+                              {"bpmnElement": "id" + process, "id": "id" + str(uuid.uuid4())})
+        process_planes[process] = plane
 
     for node in bpmn_graph.get_nodes():
         process = node.get_process()
@@ -125,15 +127,15 @@ def get_xml_string(bpmn_graph, parameters=None):
             task = ET.SubElement(process, "bpmn:subProcess", {"id": node.get_id(), "name": node.get_name()})
         elif isinstance(node, BPMN.ExclusiveGateway):
             task = ET.SubElement(process, "bpmn:exclusiveGateway",
-                                 {"id": node.get_id(), "gatewayDirection": node.get_gateway_direction().value.lower(),
+                                 {"id": node.get_id(), "gatewayDirection": node.get_gateway_direction().value,
                                   "name": ""})
         elif isinstance(node, BPMN.ParallelGateway):
             task = ET.SubElement(process, "bpmn:parallelGateway",
-                                 {"id": node.get_id(), "gatewayDirection": node.get_gateway_direction().value.lower(),
+                                 {"id": node.get_id(), "gatewayDirection": node.get_gateway_direction().value,
                                   "name": ""})
         elif isinstance(node, BPMN.InclusiveGateway):
             task = ET.SubElement(process, "bpmn:inclusiveGateway",
-                                 {"id": node.get_id(), "gatewayDirection": node.get_gateway_direction().value.lower(),
+                                 {"id": node.get_id(), "gatewayDirection": node.get_gateway_direction().value,
                                   "name": ""})
         else:
             raise Exception("Unexpected node type.")
