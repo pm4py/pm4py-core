@@ -28,6 +28,8 @@
 ### Deprecated
 
 ### Fixed
+* 093637828f08618f2d149145dc1740cc2b631ecd
+  * fixed BPMN 2.0 exporting (according to the specification)
 
 ### Removed
 

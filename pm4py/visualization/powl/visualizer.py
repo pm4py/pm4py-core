@@ -50,6 +50,7 @@ def save(gviz: graphviz.Graph, output_file_path: str):
         Path where the GraphViz output should be saved
     """
     gsave.save(gviz, output_file_path)
+    return ""
 
 
 def view(gviz: graphviz.Graph):
