@@ -175,7 +175,8 @@ class ProcessTree(object):
         """
         return self.__repr__()
 
-    def model_description(self) -> str:
+    @staticmethod
+    def model_description() -> str:
         descr = """A process tree is a hierarchical process model.
 The following operators are defined for process trees:
 -> ( A, B ) tells that the process tree A should be executed before the process tree B
