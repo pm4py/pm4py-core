@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dcrgraph>
+  <specification>
+    <resources>
+      <events>
+        <event id="Event_1a9u6vy">
+          <custom>
+            <roles>
+              <role>role</role>
+            </roles>
+            <visualization>
+              <location xLoc="500" yLoc="200"/>
+              <size width="130" height="150"/>
+            </visualization>
+          </custom>
+        </event>
+      </events>
+      <subProcesses/>
+      <labels>
+        <label id="some activity"/>
+      </labels>
+      <labelMappings>
+        <labelMapping eventId="Event_1a9u6vy" labelId="some activity"/>
+      </labelMappings>
+      <variables/>
+      <expressions/>
+      <variableAccesses>
+        <readAccessess/>
+        <writeAccessess/>
+      </variableAccesses>
+    </resources>
+    <constraints>
+      <conditions/>
+      <responses/>
+      <coresponces/>
+      <excludes/>
+      <includes/>
+      <milestones/>
+      <updates/>
+      <spawns/>
+    </constraints>
+  </specification>
+  <runtime>
+    <marking>
+      <globalStore/>
+      <executed/>
+      <included>
+        <event id="Event_1a9u6vy"/>
+      </included>
+      <pendingResponses>
+        <event id="Event_1a9u6vy"/>
+      </pendingResponses>
+    </marking>
+  </runtime>
+</dcrgraph>

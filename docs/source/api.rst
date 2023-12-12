@@ -17,6 +17,7 @@ Additional file formats that are currently supported by pm4py are:
   * ``.dfg`` files; File format specifying *directly follows graphs* (also referred to as *process maps*) :meth:`pm4py.read.read_dfg`
   * ``.pnml`` files; File format specifying *Petri net* models :meth:`pm4py.read.read_pnml`
   * ``.ptml`` files; File format specifying *Process Tree* models :meth:`pm4py.read.read_ptml`
+  * ``.xml`` files; File format specifying *Dynamic Condition Response (DCR) Graphs* :meth:`pm4py.read.read_dcr_xml`
 
 Importing object-centric event logs is possible given the following formats:
 
@@ -41,6 +42,7 @@ Similarly to event data importing, ``pm4py`` supports export functionalities to:
   * ``.pnml`` files, :meth:`pm4py.write.write_pnml`
   * ``.ptml`` files, :meth:`pm4py.write.write_ptml`
   * ``.xes`` files. :meth:`pm4py.write.write_xes`
+  * ``.xml`` files. File format specifying *Dynamic Condition Response (DCR) Graphs* :meth:`pm4py.write.write_dcr_xml`
 
 Exporting object-centric event logs is possible to the following formats:
 
@@ -99,6 +101,7 @@ Among *declarative process models*, ``pm4py`` currently supports:
   * :meth:`pm4py.discovery.discover_declare`; discovers a *DECLARE* model.
   * :meth:`pm4py.discovery.discover_log_skeleton`; discovers a *log skeleton*.
   * :meth:`pm4py.discovery.discover_temporal_profile`; discovers a *temporal profile*.
+  * :meth:`pm4py.discovery.discover_dcr`; discovers a *DCR Graph*.
 
 
 Conformance Checking (:mod:`pm4py.conformance`)
@@ -122,6 +125,8 @@ Among declarative process models, ``pm4py`` currently supports:
   * :meth:`pm4py.conformance.conformance_log_skeleton`; conformance checking using the *log skeleton*.
   * :meth:`pm4py.conformance.conformance_declare`; conformance checking using a *DECLARE model*.
   * :meth:`pm4py.conformance.conformance_temporal_profile`; conformance checking using the *temporal profile*.
+  * :meth:`pm4py.conformance.conformance_dcr`; rule based conformance checking using a *DCR Graph*
+  * :meth:`pm4py.conformance.optimal_alignment_dcr`; optimal alignment conformance checking using a *DCR Graph*
 
 
 Visualization (:mod:`pm4py.vis`)
@@ -413,6 +418,7 @@ Overall List of Methods
    pm4py.read.read_dfg
    pm4py.read.read_pnml
    pm4py.read.read_ptml
+   pm4py.read.read_dcr_xml
    pm4py.read.read_xes
    pm4py.read.read_ocel_csv
    pm4py.read.read_ocel_jsonocel
@@ -426,6 +432,7 @@ Overall List of Methods
    pm4py.write.write_dfg
    pm4py.write.write_pnml
    pm4py.write.write_ptml
+   pm4py.write.write_dcr_xml
    pm4py.write.write_xes
    pm4py.write.write_ocel_csv
    pm4py.write.write_ocel_jsonocel
@@ -467,10 +474,13 @@ Overall List of Methods
    pm4py.discovery.discover_log_skeleton
    pm4py.discovery.discover_batches
    pm4py.discovery.discover_powl
+   pm4py.discovery.discover_dcr
    pm4py.conformance
    pm4py.conformance.conformance_diagnostics_token_based_replay
    pm4py.conformance.conformance_diagnostics_alignments
    pm4py.conformance.conformance_diagnostics_footprints
+   pm4py.conformance.conformance_dcr
+   pm4py.conformance.optimal_alignment_dcr
    pm4py.conformance.fitness_token_based_replay
    pm4py.conformance.fitness_alignments
    pm4py.conformance.fitness_footprints

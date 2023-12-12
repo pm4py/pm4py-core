@@ -18,8 +18,8 @@ import time
 
 from pm4py import util, objects, statistics, algo, visualization, llm, connectors
 from pm4py import analysis, conformance, convert, discovery, filtering, hof, ml, ocel, org, read, sim, stats, utils, vis, write
-from pm4py.read import read_xes, read_dfg, read_bpmn, read_pnml, read_ptml, read_ocel, read_ocel_csv, read_ocel_xml, read_ocel_json, read_ocel_sqlite, read_ocel2, read_ocel2_sqlite, read_ocel2_xml
-from pm4py.write import write_xes, write_dfg, write_bpmn, write_pnml, write_ptml, write_ocel, write_ocel_json, write_ocel_csv, write_ocel_xml, write_ocel_sqlite, write_ocel2, write_ocel2_sqlite, write_ocel2_xml
+from pm4py.read import read_xes, read_dfg, read_bpmn, read_pnml, read_ptml, read_ocel, read_ocel_csv, read_ocel_xml, read_ocel_json, read_ocel_sqlite, read_ocel2, read_ocel2_sqlite, read_ocel2_xml, read_dcr_xml
+from pm4py.write import write_xes, write_dfg, write_bpmn, write_pnml, write_ptml, write_ocel, write_ocel_json, write_ocel_csv, write_ocel_xml, write_ocel_sqlite, write_ocel2, write_ocel2_sqlite, write_ocel2_xml, write_dcr_xml
 from pm4py.utils import format_dataframe, parse_process_tree, serialize, deserialize, set_classifier, parse_event_log_string, project_on_event_attribute, \
     sample_cases, sample_events, rebase, parse_powl_model_string
 from pm4py.filtering import filter_log_relative_occurrence_event_attribute, filter_start_activities, filter_end_activities, filter_variants, \
@@ -35,13 +35,13 @@ from pm4py.discovery import discover_petri_net_alpha, discover_petri_net_alpha_p
     discover_petri_net_inductive, discover_process_tree_inductive, discover_heuristics_net, \
     discover_dfg, discover_footprints, discover_eventually_follows_graph, discover_directly_follows_graph, discover_bpmn_inductive, \
     discover_performance_dfg, discover_transition_system, discover_prefix_tree, \
-    discover_temporal_profile, discover_log_skeleton, discover_batches, derive_minimum_self_distance, discover_dfg_typed, discover_declare, discover_powl
+    discover_temporal_profile, discover_log_skeleton, discover_batches, derive_minimum_self_distance, discover_dfg_typed, discover_declare, discover_powl, discover_dcr
 from pm4py.conformance import conformance_diagnostics_token_based_replay, conformance_diagnostics_alignments, \
     fitness_token_based_replay, \
     fitness_alignments, precision_token_based_replay, \
     precision_alignments, conformance_diagnostics_footprints, \
     fitness_footprints, precision_footprints, check_is_fitting, conformance_temporal_profile, \
-    conformance_declare, conformance_log_skeleton, replay_prefix_tbr
+    conformance_declare, conformance_log_skeleton, replay_prefix_tbr, conformance_dcr, optimal_alignment_dcr
 from pm4py.ocel import ocel_objects_interactions_summary, ocel_temporal_summary, ocel_objects_summary, ocel_get_object_types, ocel_get_attribute_names, ocel_flattening, ocel_object_type_activities, ocel_objects_ot_count, \
                         discover_ocdfg, discover_oc_petri_net, discover_objects_graph, sample_ocel_objects, ocel_drop_duplicates, ocel_merge_duplicates, ocel_sort_by_additional_column, \
                         ocel_add_index_based_timedelta, sample_ocel_connected_components, ocel_o2o_enrichment, ocel_e2o_lifecycle_enrichment, cluster_equivalent_ocel
