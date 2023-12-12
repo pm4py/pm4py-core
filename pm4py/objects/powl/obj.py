@@ -22,7 +22,8 @@ class POWL(ProcessTree):
         res = res.simplify_using_frequent_transitions()
         return res
 
-    def model_description(self) -> str:
+    @staticmethod
+    def model_description() -> str:
         descr = """A partially ordered workflow language (POWL) is a partially ordered graph representation of a process, extended with control-flow operators for modeling choice and loop structures. There are four types of POWL models:
 - an activity (identified by its label, i.e., 'M' identifies the activity M). Silent activities (i.e., with empty labels) are also supported.
 - a choice of other POWL models (an exclusive choice between the sub-models A and B is identified by X ( A, B ) )
