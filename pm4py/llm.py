@@ -17,14 +17,16 @@
 
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
-from typing import Union, Optional, Dict, Tuple
+from typing import Union, Optional, Dict, Tuple, Any
 from pm4py.utils import get_properties, constants
 from pm4py.utils import __event_log_deprecation_warning
 from pm4py.objects.ocel.obj import OCEL
+from sqlite3 import Connection as SQ3_Connection
+from copy import copy
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 
 
-def openai_query(prompt: str, api_key: Optional[str] = None, openai_model: Optional[str] = None) -> str:
+def openai_query(prompt: str, api_key: Optional[str] = None, openai_model: Optional[str] = None, **kwargs) -> str:
     """
     Executes the provided prompt, obtaining the answer from the OpenAI APIs.
 
@@ -40,7 +42,7 @@ def openai_query(prompt: str, api_key: Optional[str] = None, openai_model: Optio
         resp = pm4py.llm.openai_query('what is the result of 3+3?', api_key="sk-382393", openai_model="gpt-3.5-turbo")
         print(resp)
     """
-    parameters = {}
+    parameters = copy(kwargs) if kwargs is not None else {}
     if api_key is not None:
         parameters["api_key"] = api_key
     if openai_model is not None:
