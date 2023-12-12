@@ -110,7 +110,6 @@ class LogAlignment:
             aligned_traces = aligned_traces + trace_alignment.perform_alignment()
         return aligned_traces
 
-
 class TraceAlignment:
     """
     The TraceAlignment class provides a simplified interface to perform optimal alignment for DCR graphs,
@@ -235,7 +234,6 @@ class Outputs(Enum):
     GLOBAL_MIN = "global_min"
     ALIGN_FITNESS = 'fitness'
     BEST_WORST_COST = "bwc"
-
 
 class Performance:
     def __init__(self, alignment, graph_handler, trace_handler):
@@ -404,7 +402,6 @@ class DCRGraphHandler:
         if not new_graph:
             return curr_graph
         return new_graph
-
 
 class Alignment:
     def __init__(self, graph_handler: DCRGraphHandler, trace_handler: TraceHandler, parameters: Optional[Dict] = None):
@@ -725,8 +722,7 @@ class Alignment:
             Outputs.GLOBAL_MIN.value: self.global_min,
         }
 
-
-def apply(trace_or_log: Union[pd.DataFrame, EventLog, Trace], graph: DcrGraph, parameters=None):
+def apply(trace_or_log: Union[pd.DataFrame,EventLog,Trace], graph: DcrGraph, parameters=None):
     """
     Applies an alignment operation on a given trace or log against a specified DCR graph.
 
@@ -781,7 +777,6 @@ def get_diagnostics_dataframe(log: EventLog, conf_result: List[Dict[str, Any]], 
     diagn_stream = []
     for index in range(len(log)):
         case_id = log[index].attributes[case_id_key]
-
         cost = conf_result[index][Outputs.COST.value]
         align_fitness = conf_result[index][Outputs.ALIGN_FITNESS.value]
         is_fit = align_fitness == 1.0

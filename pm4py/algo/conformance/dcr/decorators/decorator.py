@@ -85,7 +85,7 @@ class ConcreteChecker(Checker):
             optional parameters
         """
         CheckCondition.check_rule(event, graph, deviations)
-        CheckExclude.check_rule(event, graph, deviations)
+        CheckExclude.check_rule(event, graph, parameters['executionHistory'], deviations)
         CheckInclude.check_rule(event, graph, deviations)
 
     def all_checker(self, event: str, event_attributes: dict, graph: DcrGraph, deviations: List[Any], parameters: Optional[Dict[Union[str, Any], Any]] = None) -> None:

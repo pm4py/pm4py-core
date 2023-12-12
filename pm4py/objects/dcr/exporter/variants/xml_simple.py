@@ -3,12 +3,20 @@ from lxml import etree
 
 def export_dcr_graph(dcr, root, parents_dict=None):
     # Writes the DCR graph to the XML file
+
+    event_labels = list(dcr['labelMapping'].keys())
+    event_ids = []
+    for event in list(dcr['labelMapping'].values()):
+        for event_id in event:
+            event_ids.append(event_id)
+
     for event in dcr['events']:
         xml_event = etree.SubElement(root, "events")
         xml_event_id = etree.SubElement(xml_event, "id")
         xml_event_id.text = event
         xml_event_label = etree.SubElement(xml_event, "label")
-        xml_event_label.text = event
+        label_id = event_labels[event_ids.index(event)]
+        xml_event_label.text = label_id
         if parents_dict and event in parents_dict:
             xml_event_parent = etree.SubElement(xml_event, "parent")
             xml_event_parent.text = parents_dict[event]

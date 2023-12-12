@@ -16,7 +16,6 @@ The `dcr_template` dictionary provides a blueprint for initializing new DCR Grap
 
 from enum import Enum
 from typing import Set, Dict
-from copy import deepcopy
 
 class Relations(Enum):
     I = 'includesTo'
@@ -102,9 +101,9 @@ class Marking:
             the events in the DCR Graphs
 
         """
-        self.__executed = initial_marking.executed
-        self.__included = initial_marking.included
-        self.__pending = initial_marking.pending
+        self.__executed = set(initial_marking['executed'])
+        self.__included = set(initial_marking['included'])
+        self.__pending = set(initial_marking['pending'])
 
     # built-in functions for printing a visual string representation
     def __str__(self) -> str:

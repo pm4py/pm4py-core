@@ -23,6 +23,7 @@ def parse_element(curr_el, parent, dcr):
             dcr['events'].add(id)
             label = curr_el.find('label').text
             dcr['labels'].add(label)
+            dcr['labelMapping'][label] = {id}
         case 'rules':
             type = curr_el.find('type').text
             source = curr_el.find('source').text

@@ -3,7 +3,7 @@ from pm4py.objects.dcr.obj import Relations, dcr_template
 from copy import deepcopy
 
 
-def export_dcr_xml(dcr, output_file_name, dcr_title):
+def export_dcr_xml(dcr, output_file_name, dcr_title='DCR from pm4py'):
     '''
     Writes a DCR graph object to disk in the ``.xml`` file format (exported as ``.xml`` file).
     The file is to be visualised using the following link: https://hugoalopez-dtu.github.io/dcr-js/

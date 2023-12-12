@@ -87,7 +87,7 @@ def parse_element(curr_el, parent, dcr):
                 if delay.isdecimal():
                     delay_days = int(delay)
                 else:
-                    delay_days = isodate.parse_duration(delay).days
+                    delay_days = isodate.parse_duration(delay)#.days
                 dcr['conditionsForDelays'][event_prime].add((event, delay_days))
 
         case 'response':
@@ -186,27 +186,27 @@ def clean_input(dcr, white_space_replacement=None):
         if k in [I, E, C, R, M, N]:
             v_new = {}
             for k2, v2 in v.items():
-                v_new[k2.strip().replace(' ', white_space_replacement)] = set(
-                    [v3.strip().replace(' ', white_space_replacement) for v3 in v2])
+                v_new[k2.strip().replace('_', white_space_replacement)] = set(
+                    [v3.strip().replace('_', white_space_replacement) for v3 in v2])
             dcr[k] = v_new
         elif k in ['conditionsForDelays', 'responseToDeadlines']:
             v_new = {}
             for k2, v2 in v.items():
-                v_new[k2.strip().replace(' ', white_space_replacement)] = set(
-                    [(v3.strip().replace(' ', white_space_replacement), d) for (v3, d) in v2])
+                v_new[k2.strip().replace('_', white_space_replacement)] = set(
+                    [(v3.strip().replace('_', white_space_replacement), d) for (v3, d) in v2])
             dcr[k] = v_new
         elif k == 'marking':
             for k2 in ['executed', 'included', 'pending']:
-                new_v = set([v2.strip().replace(' ', white_space_replacement) for v2 in dcr[k][k2]])
+                new_v = set([v2.strip().replace('_', white_space_replacement) for v2 in dcr[k][k2]])
                 dcr[k][k2] = new_v
         elif k in ['subprocesses', 'nestings', 'labelMapping', 'roleAssignments', 'readRoleAssignments']:
             v_new = {}
             for k2, v2 in v.items():
-                v_new[k2.strip().replace(' ', white_space_replacement)] = set(
-                    [v3.strip().replace(' ', white_space_replacement) for v3 in v2])
+                v_new[k2.strip().replace('_', white_space_replacement)] = set(
+                    [v3.strip().replace('_', white_space_replacement) for v3 in v2])
             dcr[k] = v_new
         else:
-            new_v = set([v2.strip().replace(' ', white_space_replacement) for v2 in dcr[k]])
+            new_v = set([v2.strip().replace('_', white_space_replacement) for v2 in dcr[k]])
             dcr[k] = new_v
     return dcr
 

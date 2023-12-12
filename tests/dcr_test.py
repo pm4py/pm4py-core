@@ -342,8 +342,8 @@ class TestConformanceDCR(unittest.TestCase):
         dcr, _ = pm4py.discover_dcr(log)
         # when running getConstraints
         no = dcr.get_constraints()
-        # then object, should contain 31 constraints
-        self.assertTrue(no == 31)
+        # then object, should contain 30 constraints
+        self.assertTrue(no == 30)
 
         del log
         del dcr
@@ -486,6 +486,26 @@ class TestConformanceDCR(unittest.TestCase):
         del conf_res
         del collect
 
+    def test_exclude_violation2(self):
+        # given A log with check ticket at end after it has been excluded
+        log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
+        dcr, _ = pm4py.discover_dcr(log)
+        log = log[log['case:concept:name'] == "1"]
+        row = log[log['concept:name'] == "check ticket"]
+        log = pd.concat([log,row]).reset_index(drop=True)
+
+        #when conformance is checked
+        from pm4py.algo.conformance.dcr.algorithm import apply as conf_alg
+        conf_res = conf_alg(log, dcr)
+
+        # fitness is not 1, and has 1 exclude violation
+        collect = []
+        for i in conf_res[0]['deviations']:
+            if i[0] == 'excludeViolation':
+                collect.append(i[0])
+        self.assertIn('excludeViolation', collect)
+        self.assertEqual(1, len(collect))
+
     def test_include_violation(self):
         # given a log
         log = pm4py.read_xes(os.path.join("input_data", "running-example.xes"))
@@ -531,7 +551,7 @@ class TestConformanceDCR(unittest.TestCase):
         no = dcr.get_constraints()
         # then object, should contain the roleAssignment
         # 31 original constraints, but also, 19 additional role assignments
-        self.assertTrue(no == 50)
+        self.assertTrue(no == 49)
 
         del log
         del dcr
@@ -871,6 +891,14 @@ class TestAlignment(unittest.TestCase):
         expected_cost = model_moves + log_moves
         self.assertEqual(expected_cost, alignment_cost)
 
+    def test_return_datafrane_alignment(self):
+        log_path = os.path.join("input_data", "running-example.xes")
+        self.log = pm4py.read_xes(log_path)
+        res = pm4py.optimal_alignment_dcr(self.log, self.dcr, return_diagnostics_dataframe=True)
+        self.assertIsInstance(res,pd.DataFrame)
+        for index,row in res.iterrows():
+            self.assertTrue(row['fitness'] == 1.0)
+
 class TestImportExportDCR(unittest.TestCase):
 
     def setUp(self) -> None:
@@ -908,13 +936,13 @@ class TestImportExportDCR(unittest.TestCase):
     # Events are not included (dashed lines) in the portal
     def test_xml_simple_to_dcr_js_portal(self):
         event_log_file = os.path.join("input_data", "receipt.xes")
-        self.test_file = os.path.join("input_data", "receipt_xml_simple.xml")
+        self.test_file = os.path.join("test_output_data", "receipt_xml_simple.xml")
         self.export_file_simple(event_log_file)
         dcr = pm4py.read_dcr_xml(self.test_file, variant=dcr_importer.Variants.XML_SIMPLE)
 
         os.remove(self.test_file)
 
-        self.test_file = os.path.join("input_data", "receipt_xml_simple_to_dcr_js_portal.xml")
+        self.test_file = os.path.join("test_output_data", "receipt_xml_simple_to_dcr_js_portal.xml")
         pm4py.write_dcr_xml(dcr_graph=dcr,path=self.test_file,variant=dcr_exporter.Variants.DCR_JS_PORTAL, dcr_title='receipt_xml_simple_to_dcr_js_portal')
 
         del dcr
@@ -942,10 +970,10 @@ class TestImportExportDCR(unittest.TestCase):
 
     def test_import_export_dcr_portal(self):
 
-        self.test_file = os.path.join("input_data", "sepsis_dcr_portal.xml")
+        self.test_file = os.path.join("test_output_data", "sepsis_dcr_portal.xml")
         self.export_file_dcr_portal(self.sepsis)
         dcr = pm4py.read_dcr_xml(self.test_file)
-        self.second_test_file = os.path.join("input_data", "sepsis_dcr_portal_exported.xml")
+        self.second_test_file = os.path.join("test_output_data", "sepsis_dcr_portal_exported.xml")
         pm4py.write_dcr_xml(dcr_graph=dcr,path=self.second_test_file,variant=dcr_exporter.XML_DCR_PORTAL, dcr_title='sepsis_dcr_portal_exported_xml')
         dcr_imported_after_export = pm4py.read_dcr_xml(self.second_test_file)
         self.assertEqual(len(dcr.__dict__), len(dcr_imported_after_export.__dict__))
