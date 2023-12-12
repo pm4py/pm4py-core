@@ -50,6 +50,7 @@ def save(temp_file_name, target_path):
         Path where the image shall eventually be saved
     """
     shutil.copyfile(temp_file_name, target_path)
+    return ""
 
 
 def view(temp_file_name):

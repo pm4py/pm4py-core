@@ -67,6 +67,7 @@ def save(gviz: graphviz.Digraph, output_file_path: str, parameters=None):
         Path where the GraphViz output should be saved
     """
     gsave.save(gviz, output_file_path, parameters=parameters)
+    return ""
 
 
 def view(gviz: graphviz.Digraph, parameters=None):

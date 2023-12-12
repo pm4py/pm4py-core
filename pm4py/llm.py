@@ -22,6 +22,7 @@ from pm4py.utils import get_properties, constants
 from pm4py.utils import __event_log_deprecation_warning
 from pm4py.objects.ocel.obj import OCEL
 from sqlite3 import Connection as SQ3_Connection
+from tempfile import NamedTemporaryFile
 from copy import copy
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 

@@ -85,6 +85,7 @@ def save(figure: str, output_file_path: str):
         Path into which the image should be saved
     """
     shutil.copyfile(figure, output_file_path)
+    return ""
 
 
 def serialize(figure: str):

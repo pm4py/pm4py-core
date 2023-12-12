@@ -130,6 +130,7 @@ def save(figure, output_file_path):
         pass
 
     shutil.copyfile(figure, output_file_path)
+    return ""
 
 
 def serialize(figure: tempfile._TemporaryFileWrapper) -> bytes:

@@ -70,7 +70,7 @@ def view_petri_net(petri_net: PetriNet, initial_marking: Optional[Marking] = Non
 
 
 def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_marking: Marking, file_path: str, bgcolor: str = "white",
-                   decorations: Dict[Any, Any] = None, debug: bool = False, rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+                   decorations: Dict[Any, Any] = None, debug: bool = False, rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
     """
     Saves a Petri net visualization to a file
 
@@ -95,7 +95,7 @@ def save_vis_petri_net(petri_net: PetriNet, initial_marking: Marking, final_mark
     from pm4py.visualization.petri_net import visualizer as pn_visualizer
     gviz = pn_visualizer.apply(petri_net, initial_marking, final_marking,
                                parameters={pn_visualizer.Variants.WO_DECORATION.value.Parameters.FORMAT: format, "bgcolor": bgcolor, "decorations": decorations, "debug": debug, "set_rankdir": rankdir})
-    pn_visualizer.save(gviz, file_path)
+    return pn_visualizer.save(gviz, file_path)
 
 
 def view_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW,
@@ -135,7 +135,7 @@ def view_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict
 
 
 def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str,
-                             aggregation_measure="mean", bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, serv_time: Optional[Dict[str, float]] = None):
+                             aggregation_measure="mean", bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, serv_time: Optional[Dict[str, float]] = None, **kwargs):
     """
     Saves the visualization of a performance DFG
 
@@ -168,7 +168,7 @@ def save_vis_performance_dfg(dfg: dict, start_activities: dict, end_activities: 
     parameters["bgcolor"] = bgcolor
     parameters["rankdir"] = rankdir
     gviz = dfg_perf_visualizer.apply(dfg, serv_time=serv_time, parameters=parameters)
-    dfg_visualizer.save(gviz, file_path)
+    return dfg_visualizer.save(gviz, file_path)
 
 
 def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", max_num_edges: int = sys.maxsize, rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
@@ -205,7 +205,7 @@ def view_dfg(dfg: dict, start_activities: dict, end_activities: dict, format: st
     dfg_visualizer.view(gviz)
 
 
-def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str, bgcolor: str = "white", max_num_edges: int = sys.maxsize, rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_path: str, bgcolor: str = "white", max_num_edges: int = sys.maxsize, rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
     """
     Saves a DFG visualization to a file
 
@@ -237,7 +237,7 @@ def save_vis_dfg(dfg: dict, start_activities: dict, end_activities: dict, file_p
     parameters["maxNoOfEdgesInDiagram"] = max_num_edges
     gviz = dfg_visualizer.apply(dfg, variant=dfg_visualizer.Variants.FREQUENCY,
                                 parameters=parameters)
-    dfg_visualizer.save(gviz, file_path)
+    return dfg_visualizer.save(gviz, file_path)
 
 
 def view_process_tree(tree: ProcessTree, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
@@ -263,7 +263,7 @@ def view_process_tree(tree: ProcessTree, format: str = constants.DEFAULT_FORMAT_
     pt_visualizer.view(gviz)
 
 
-def save_vis_process_tree(tree: ProcessTree, file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+def save_vis_process_tree(tree: ProcessTree, file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
     """
     Saves the visualization of a process tree
 
@@ -284,10 +284,10 @@ def save_vis_process_tree(tree: ProcessTree, file_path: str, bgcolor: str = "whi
     from pm4py.visualization.process_tree import visualizer as pt_visualizer
     parameters = pt_visualizer.Variants.WO_DECORATION.value.Parameters
     gviz = pt_visualizer.apply(tree, parameters={parameters.FORMAT: format, "bgcolor": bgcolor, "rankdir": rankdir})
-    pt_visualizer.save(gviz, file_path)
+    return pt_visualizer.save(gviz, file_path)
 
 
-def save_vis_bpmn(bpmn_graph: BPMN, file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+def save_vis_bpmn(bpmn_graph: BPMN, file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
     """
     Saves the visualization of a BPMN graph
 
@@ -308,7 +308,7 @@ def save_vis_bpmn(bpmn_graph: BPMN, file_path: str, bgcolor: str = "white", rank
     from pm4py.visualization.bpmn import visualizer as bpmn_visualizer
     parameters = bpmn_visualizer.Variants.CLASSIC.value.Parameters
     gviz = bpmn_visualizer.apply(bpmn_graph, parameters={parameters.FORMAT: format, "bgcolor": bgcolor, "rankdir": rankdir})
-    bpmn_visualizer.save(gviz, file_path)
+    return bpmn_visualizer.save(gviz, file_path)
 
 
 def view_bpmn(bpmn_graph: BPMN, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
@@ -356,7 +356,7 @@ def view_heuristics_net(heu_net: HeuristicsNet, format: str = "png", bgcolor: st
     hn_visualizer.view(gviz)
 
 
-def save_vis_heuristics_net(heu_net: HeuristicsNet, file_path: str, bgcolor: str = "white"):
+def save_vis_heuristics_net(heu_net: HeuristicsNet, file_path: str, bgcolor: str = "white", **kwargs):
     """
     Saves the visualization of an heuristics net
 
@@ -376,7 +376,7 @@ def save_vis_heuristics_net(heu_net: HeuristicsNet, file_path: str, bgcolor: str
     from pm4py.visualization.heuristics_net import visualizer as hn_visualizer
     parameters = hn_visualizer.Variants.PYDOTPLUS.value.Parameters
     gviz = hn_visualizer.apply(heu_net, parameters={parameters.FORMAT: format, "bgcolor": bgcolor})
-    hn_visualizer.save(gviz, file_path)
+    return hn_visualizer.save(gviz, file_path)
 
 
 def __dotted_attribute_selection(log: Union[EventLog, pd.DataFrame], attributes):
@@ -448,7 +448,7 @@ def view_dotted_chart(log: Union[EventLog, pd.DataFrame], format: str = "png", a
     dotted_chart_visualizer.view(gviz)
 
 
-def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, attributes=None, bgcolor: str = "white", show_legend: bool = True):
+def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, attributes=None, bgcolor: str = "white", show_legend: bool = True, **kwargs):
     """
     Saves the visualization of the dotted chart
 
@@ -495,7 +495,7 @@ def save_vis_dotted_chart(log: Union[EventLog, pd.DataFrame], file_path: str, at
 
     from pm4py.visualization.dotted_chart import visualizer as dotted_chart_visualizer
     gviz = dotted_chart_visualizer.apply(log, attributes, parameters=parameters)
-    dotted_chart_visualizer.save(gviz, file_path)
+    return dotted_chart_visualizer.save(gviz, file_path)
 
 
 def view_sna(sna_metric: SNA, variant_str: Optional[str] = None):
@@ -526,7 +526,7 @@ def view_sna(sna_metric: SNA, variant_str: Optional[str] = None):
     sna_visualizer.view(gviz, variant=variant)
 
 
-def save_vis_sna(sna_metric: SNA, file_path: str, variant_str: Optional[str] = None):
+def save_vis_sna(sna_metric: SNA, file_path: str, variant_str: Optional[str] = None, **kwargs):
     """
     Saves the visualization of a SNA metric in a .html file
 
@@ -555,7 +555,7 @@ def save_vis_sna(sna_metric: SNA, file_path: str, variant_str: Optional[str] = N
         variant = sna_visualizer.Variants.NETWORKX
 
     gviz = sna_visualizer.apply(sna_metric, variant=variant)
-    sna_visualizer.save(gviz, file_path, variant=variant)
+    return sna_visualizer.save(gviz, file_path, variant=variant)
 
 
 def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "png", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
@@ -589,7 +589,7 @@ def view_case_duration_graph(log: Union[EventLog, pd.DataFrame], format: str = "
     graphs_visualizer.view(graph_vis)
 
 
-def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: str, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
+def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: str, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name", **kwargs):
     """
     Saves the case duration graph in the specified path
 
@@ -618,7 +618,7 @@ def save_vis_case_duration_graph(log: Union[EventLog, pd.DataFrame], file_path: 
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.CASES,
                                         parameters={"format": format})
-    graphs_visualizer.save(graph_vis, file_path)
+    return graphs_visualizer.save(graph_vis, file_path)
 
 
 def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str = "png", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
@@ -652,7 +652,7 @@ def view_events_per_time_graph(log: Union[EventLog, pd.DataFrame], format: str =
     graphs_visualizer.view(graph_vis)
 
 
-def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path: str, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
+def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path: str, activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name", **kwargs):
     """
     Saves the events per time graph in the specified path
 
@@ -681,7 +681,7 @@ def save_vis_events_per_time_graph(log: Union[EventLog, pd.DataFrame], file_path
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     graph_vis = graphs_visualizer.apply(graph[0], graph[1], variant=graphs_visualizer.Variants.DATES,
                                         parameters={"format": format})
-    graphs_visualizer.save(graph_vis, file_path)
+    return graphs_visualizer.save(graph_vis, file_path)
 
 
 def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], format: str = "png", activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", bgcolor: str = "white"):
@@ -723,7 +723,7 @@ def view_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: Li
     perf_spectrum_visualizer.view(gviz)
 
 
-def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], file_path: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", bgcolor: str = "white"):
+def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities: List[str], file_path: str, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", bgcolor: str = "white", **kwargs):
     """
     Saves the visualization of the performance spectrum to a file
 
@@ -758,7 +758,7 @@ def save_vis_performance_spectrum(log: Union[EventLog, pd.DataFrame], activities
     from pm4py.visualization.performance_spectrum.variants import neato
     format = os.path.splitext(file_path)[1][1:].lower()
     gviz = perf_spectrum_visualizer.apply(perf_spectrum, parameters={neato.Parameters.FORMAT.value: format, "bgcolor": bgcolor})
-    perf_spectrum_visualizer.save(gviz, file_path)
+    return perf_spectrum_visualizer.save(gviz, file_path)
 
 
 def __builds_events_distribution_graph(log: Union[EventLog, pd.DataFrame], parameters, distr_type: str = "days_week"):
@@ -839,7 +839,7 @@ def view_events_distribution_graph(log: Union[EventLog, pd.DataFrame], distr_typ
 
 
 def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_path: str,
-                                       distr_type: str = "days_week", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name"):
+                                       distr_type: str = "days_week", activity_key="concept:name", timestamp_key="time:timestamp", case_id_key="case:concept:name", **kwargs):
     """
     Saves the distribution of the events in a picture file
 
@@ -872,7 +872,7 @@ def save_vis_events_distribution_graph(log: Union[EventLog, pd.DataFrame], file_
     parameters["format"] = format
     from pm4py.visualization.graphs import visualizer as graphs_visualizer
     gviz = graphs_visualizer.apply(x, y, variant=graphs_visualizer.Variants.BARPLOT, parameters=parameters)
-    graphs_visualizer.save(gviz, file_path)
+    return graphs_visualizer.save(gviz, file_path)
 
 
 def view_ocdfg(ocdfg: Dict[str, Any], annotation: str = "frequency", act_metric: str = "events", edge_metric="event_couples", act_threshold: int = 0, edge_threshold: int = 0, performance_aggregation: str = "mean", format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
@@ -917,7 +917,7 @@ def view_ocdfg(ocdfg: Dict[str, Any], annotation: str = "frequency", act_metric:
     visualizer.view(gviz)
 
 
-def save_vis_ocdfg(ocdfg: Dict[str, Any], file_path: str, annotation: str = "frequency", act_metric: str = "events", edge_metric="event_couples", act_threshold: int = 0, edge_threshold: int = 0, performance_aggregation: str = "mean", bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+def save_vis_ocdfg(ocdfg: Dict[str, Any], file_path: str, annotation: str = "frequency", act_metric: str = "events", edge_metric="event_couples", act_threshold: int = 0, edge_threshold: int = 0, performance_aggregation: str = "mean", bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
     """
     Saves the visualization of an OC-DFG (object-centric directly-follows graph) with the provided configuration.
 
@@ -956,7 +956,7 @@ def save_vis_ocdfg(ocdfg: Dict[str, Any], file_path: str, annotation: str = "fre
     parameters["bgcolor"] = bgcolor
     parameters["rankdir"] = rankdir
     gviz = classic.apply(ocdfg, parameters=parameters)
-    visualizer.save(gviz, file_path)
+    return visualizer.save(gviz, file_path)
 
 
 def view_ocpn(ocpn: Dict[str, Any], format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
@@ -982,7 +982,7 @@ def view_ocpn(ocpn: Dict[str, Any], format: str = constants.DEFAULT_FORMAT_GVIZ_
     ocpn_visualizer.view(gviz)
 
 
-def save_vis_ocpn(ocpn: Dict[str, Any], file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+def save_vis_ocpn(ocpn: Dict[str, Any], file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
     """
     Saves the visualization of the object-centric Petri net into a file
 
@@ -1002,7 +1002,7 @@ def save_vis_ocpn(ocpn: Dict[str, Any], file_path: str, bgcolor: str = "white", 
     format = os.path.splitext(file_path)[1][1:].lower()
     from pm4py.visualization.ocel.ocpn import visualizer as ocpn_visualizer
     gviz = ocpn_visualizer.apply(ocpn, parameters={"format": format, "bgcolor": bgcolor, "rankdir": rankdir})
-    ocpn_visualizer.save(gviz, file_path)
+    return ocpn_visualizer.save(gviz, file_path)
 
 
 def view_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, Any]], variant: str = "frequency", format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, activity_threshold: int = 1, edge_threshold: int = 1, bgcolor: str = "white"):
@@ -1031,7 +1031,7 @@ def view_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, Any]
     network_analysis_visualizer.view(gviz)
 
 
-def save_vis_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, Any]], file_path: str, variant: str = "frequency", activity_threshold: int = 1, edge_threshold: int = 1, bgcolor: str = "white"):
+def save_vis_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, Any]], file_path: str, variant: str = "frequency", activity_threshold: int = 1, edge_threshold: int = 1, bgcolor: str = "white", **kwargs):
     """
     Saves the visualization of the network analysis
 
@@ -1054,7 +1054,7 @@ def save_vis_network_analysis(network_analysis: Dict[Tuple[str, str], Dict[str, 
     from pm4py.visualization.network_analysis import visualizer as network_analysis_visualizer
     variant = network_analysis_visualizer.Variants.PERFORMANCE if variant == "performance" else network_analysis_visualizer.Variants.FREQUENCY
     gviz = network_analysis_visualizer.apply(network_analysis, variant=variant, parameters={"format": format, "activity_threshold": activity_threshold, "edge_threshold": edge_threshold, "bgcolor": bgcolor})
-    network_analysis_visualizer.save(gviz, file_path)
+    return network_analysis_visualizer.save(gviz, file_path)
 
 
 def view_transition_system(transition_system: TransitionSystem, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white"):
@@ -1079,7 +1079,7 @@ def view_transition_system(transition_system: TransitionSystem, format: str = co
     ts_visualizer.view(gviz)
 
 
-def save_vis_transition_system(transition_system: TransitionSystem, file_path: str, bgcolor: str = "white"):
+def save_vis_transition_system(transition_system: TransitionSystem, file_path: str, bgcolor: str = "white", **kwargs):
     """
     Persists the visualization of a transition system
 
@@ -1098,7 +1098,7 @@ def save_vis_transition_system(transition_system: TransitionSystem, file_path: s
     format = os.path.splitext(file_path)[1][1:].lower()
     from pm4py.visualization.transition_system import visualizer as ts_visualizer
     gviz = ts_visualizer.apply(transition_system, parameters={"format": format, "bgcolor": bgcolor})
-    ts_visualizer.save(gviz, file_path)
+    return ts_visualizer.save(gviz, file_path)
 
 
 def view_prefix_tree(trie: Trie, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white"):
@@ -1123,7 +1123,7 @@ def view_prefix_tree(trie: Trie, format: str = constants.DEFAULT_FORMAT_GVIZ_VIE
     trie_visualizer.view(gviz)
 
 
-def save_vis_prefix_tree(trie: Trie, file_path: str, bgcolor: str = "white"):
+def save_vis_prefix_tree(trie: Trie, file_path: str, bgcolor: str = "white", **kwargs):
     """
     Persists the visualization of a prefix tree
 
@@ -1142,7 +1142,7 @@ def save_vis_prefix_tree(trie: Trie, file_path: str, bgcolor: str = "white"):
     format = os.path.splitext(file_path)[1][1:].lower()
     from pm4py.visualization.trie import visualizer as trie_visualizer
     gviz = trie_visualizer.apply(trie, parameters={"format": format, "bgcolor": bgcolor})
-    trie_visualizer.save(gviz, file_path)
+    return trie_visualizer.save(gviz, file_path)
 
 
 def view_alignments(log: Union[EventLog, pd.DataFrame], aligned_traces: List[Dict[str, Any]], format: str = "png"):
@@ -1170,7 +1170,7 @@ def view_alignments(log: Union[EventLog, pd.DataFrame], aligned_traces: List[Dic
     visualizer.view(gviz)
 
 
-def save_vis_alignments(log: Union[EventLog, pd.DataFrame], aligned_traces: List[Dict[str, Any]], file_path: str):
+def save_vis_alignments(log: Union[EventLog, pd.DataFrame], aligned_traces: List[Dict[str, Any]], file_path: str, **kwargs):
     """
     Saves an alignment table's figure in the disk
 
@@ -1191,7 +1191,7 @@ def save_vis_alignments(log: Union[EventLog, pd.DataFrame], aligned_traces: List
     format = os.path.splitext(file_path)[1][1:].lower()
     from pm4py.visualization.align_table import visualizer
     gviz = visualizer.apply(log, aligned_traces, parameters={"format": format})
-    visualizer.save(gviz, file_path)
+    return visualizer.save(gviz, file_path)
 
 
 def view_footprints(footprints: Union[Tuple[Dict[str, Any], Dict[str, Any]], Dict[str, Any]], format: str = "png"):
@@ -1221,7 +1221,7 @@ def view_footprints(footprints: Union[Tuple[Dict[str, Any], Dict[str, Any]], Dic
     fps_visualizer.view(gviz)
 
 
-def save_vis_footprints(footprints: Union[Tuple[Dict[str, Any], Dict[str, Any]], Dict[str, Any]], file_path: str):
+def save_vis_footprints(footprints: Union[Tuple[Dict[str, Any], Dict[str, Any]], Dict[str, Any]], file_path: str, **kwargs):
     """
     Saves the footprints' visualization on disk
 
@@ -1246,7 +1246,7 @@ def save_vis_footprints(footprints: Union[Tuple[Dict[str, Any], Dict[str, Any]],
     else:
         gviz = fps_visualizer.apply(footprints[0], footprints[1], variant=fps_visualizer.Variants.COMPARISON_SYMMETRIC, parameters={"format": format})
 
-    fps_visualizer.save(gviz, file_path)
+    return fps_visualizer.save(gviz, file_path)
 
 
 def view_powl(powl: POWL, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", rankdir: str = "TB"):
@@ -1277,7 +1277,7 @@ def view_powl(powl: POWL, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgco
     powl_visualizer.view(gviz)
 
 
-def save_vis_powl(powl: POWL, file_path: str, bgcolor: str = "white", rankdir: str = "TB"):
+def save_vis_powl(powl: POWL, file_path: str, bgcolor: str = "white", rankdir: str = "TB", **kwargs):
     """
     Saves the visualization of a POWL model.
 
@@ -1303,7 +1303,7 @@ def save_vis_powl(powl: POWL, file_path: str, bgcolor: str = "white", rankdir: s
     from pm4py.visualization.powl import visualizer as powl_visualizer
     gviz = powl_visualizer.apply(powl, parameters={"format": format, "bgcolor": bgcolor, "rankdir": rankdir})
 
-    powl_visualizer.save(gviz, file_path)
+    return powl_visualizer.save(gviz, file_path)
 
 
 def view_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
@@ -1331,7 +1331,7 @@ def view_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], format: str = con
     obj_graph_vis.view(gviz)
 
 
-def save_vis_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+def save_vis_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
     """
     Saves the visualization of an object graph
 
@@ -1353,4 +1353,4 @@ def save_vis_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], file_path: st
     format = os.path.splitext(file_path)[1][1:].lower()
     from pm4py.visualization.ocel.object_graph import visualizer as obj_graph_vis
     gviz = obj_graph_vis.apply(ocel, graph, parameters={"format": format, "bgcolor": bgcolor, "rankdir": rankdir})
-    obj_graph_vis.save(gviz, file_path)
+    return obj_graph_vis.save(gviz, file_path)
