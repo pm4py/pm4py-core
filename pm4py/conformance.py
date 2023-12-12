@@ -24,6 +24,7 @@ from pm4py.objects.log.obj import EventLog, Trace, Event, EventStream
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.convert import convert_to_event_log
 from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.dcr.obj import DcrGraph
 from pm4py.util import xes_constants, constants
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
@@ -776,5 +777,117 @@ def conformance_log_skeleton(log: Union[EventLog, pd.DataFrame], log_skeleton: D
 
     if return_diagnostics_dataframe:
         return log_skeleton_conformance.get_diagnostics_dataframe(log, result, parameters=properties)
+
+    return result
+
+
+def conformance_dcr(log: Union[EventLog, pd.DataFrame], dcr_graph: DcrGraph, activity_key: str = "concept:name",
+                    timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name",
+                    group_key: str = "org:group", resource_key: str = "org:resource",
+                    return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> pd.DataFrame | \
+                                                                                                            List[Tuple[
+                                                                                                                str,
+                                                                                                                Dict[
+                                                                                                                    str, Any]]]:
+    """
+    Applies conformance checking against a DCR model.
+    inspired by github implementation:
+    https://github.com/fau-is/cc-dcr/tree/master
+    :param log: event log
+    :param dcr_graph: DCR graph
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :param group_key: attribute to be used as role identifier
+    :param resource_key: attribute to be used as resource identifier
+    :param return_diagnostics_dataframe: if possible, returns a dataframe with the diagnostics (instead of the usual output)
+    :rtype: `DataFrame | List[Tuple[str,Dict[str, Any]]]`
+    .. code-block:: python3
+        import pm4py
+        log = pm4py.read_xes("C:/receipt.xes")
+        grap, la = pm4py.discover_dcr(log)
+        conf_res = pm4py.conformance_dcr(log, dcr_graph)
+    """
+    if type(log) not in [pd.DataFrame, EventLog]: raise Exception(
+        "the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key,
+                                       case_id_key=case_id_key)
+
+    if return_diagnostics_dataframe:
+        log = convert_to_event_log(log, case_id_key=case_id_key)
+        case_id_key = None
+
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key,
+                                group_key=group_key, resource_key=resource_key)
+
+    from pm4py.algo.conformance.dcr import algorithm as dcr_conformance
+    result = dcr_conformance.apply(log, dcr_graph, parameters=properties)
+
+    if return_diagnostics_dataframe:
+        return dcr_conformance.get_diagnostics_dataframe(log, result, parameters=properties)
+
+    return result
+
+
+def optimal_alignment_dcr(
+        log: Union[EventLog, pd.DataFrame, Trace],
+        dcr_graph: DcrGraph,
+        activity_key: str = "concept:name",
+        timestamp_key: str = "time:timestamp",
+        case_id_key: str = "case:concept:name",
+        return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME
+) -> pd.DataFrame | Any:
+    """
+    Applies optimal alignment against a DCR model.
+    Parameters
+    ----------
+    log : EventLog | pd.DataFrame | Trace
+        Event log to be used for alignment. also supports Trace
+    dcr_graph : DCRGraph
+        The DCR graph against which the log is aligned.
+    activity_key : str
+        The key to identify activity names in the log.
+    timestamp_key : str
+        The key to identify timestamps in the log.
+    case_id_key : str
+        The key to identify case identifiers in the log.
+    return_diagnostics_dataframe : bool, default False
+        If True, returns a diagnostics dataframe instead of the usual list output.
+    Returns
+    -------
+    Union[pd.DataFrame, List[Tuple[str, Dict[str, Any]]]]
+        Depending on the value of `return_diagnostics_dataframe`, returns either
+        a pandas DataFrame with diagnostics or a list of alignment results.
+    Raises
+    ------
+    Exception
+        If the log provided is not an instance of EventLog or pandas DataFrame.
+    Examples
+    --------
+    .. code-block:: python3
+        import pm4py
+        graph, la = pm4py.discover_DCR(log)
+        conf_res = pm4py.optimal_alignment_dcr(log,graph)
+    """
+
+    if type(log) not in [pd.DataFrame, EventLog, Trace]:
+        raise Exception("The method can be applied only to a traditional event log or Trace!")
+
+    from pm4py.algo.conformance.alignments.dcr import algorithm as dcr_alignment
+
+    if return_diagnostics_dataframe:
+        if isinstance(log, Trace):
+            raise Exception("The method can be applied only to a traditional event log!")
+        log = convert_to_event_log(log, case_id_key=case_id_key)
+        case_id_key = None
+
+    properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    result = dcr_alignment.apply(log, dcr_graph, parameters=properties)
+    if return_diagnostics_dataframe:
+        return dcr_alignment.get_diagnostics_dataframe(log, result, parameters=properties)
 
     return result
