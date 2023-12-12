@@ -20,6 +20,10 @@
   6328037090236e6640a4efa51011e19001a5d300
   ef3de4c7b7803d80b8599d84426badca0c7dfc5d
   * major refactoring pm4py
+* 8f494f541b5337ae6abc152afea9b6f09b81fef9
+  691aa7d31ae401b16058220a656ffee89fc30eff
+  6366dcb3bc08859d4f435b8ad44bdb38c515361d
+  * refactoring OpenAI connector
 
 ### Deprecated
 
