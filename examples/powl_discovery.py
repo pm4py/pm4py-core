@@ -1,12 +1,14 @@
 import pm4py
 from examples import examples_conf
+from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_varaints import POWLDiscoveryVariant
+from pm4py.visualization.powl.visualizer import POWLVisualizationVariants
 
 
 def execute_script():
     log = pm4py.read_xes("../tests/input_data/helpdesk.xes.gz", return_legacy_log_object=True)
 
     # discovers the POWL model
-    powl_model = pm4py.discover_powl(log)
+    powl_model = pm4py.discover_powl(log, variant=POWLDiscoveryVariant.DYNAMIC_CLUSTERING, order_graph_filtering_threshold=0.6)
 
     # prints the repr of the POWL model
     print(powl_model)

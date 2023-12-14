@@ -4,6 +4,9 @@
 ## pm4py 2.7.9.1 (2023.XX.YY)
 
 ### Added
+* efff63955c1dfd3a3c04c6bf5aecc53042da3b4c
+  9ec7578c95d78f91c6c8fcb906f979b6e8680b10
+  * description of POWL and process tree models
 
 ### Changed
 * 3173effdb98dfe37ca3b6770d55aadbbd61b6b7c
@@ -20,10 +23,18 @@
   6328037090236e6640a4efa51011e19001a5d300
   ef3de4c7b7803d80b8599d84426badca0c7dfc5d
   * major refactoring pm4py
+* 8f494f541b5337ae6abc152afea9b6f09b81fef9
+  691aa7d31ae401b16058220a656ffee89fc30eff
+  6366dcb3bc08859d4f435b8ad44bdb38c515361d
+  * refactoring OpenAI connector
+* 376996620052fc23586edc393c73a43288e64164
+  * refactoring POWL class and methods
 
 ### Deprecated
 
 ### Fixed
+* 093637828f08618f2d149145dc1740cc2b631ecd
+  * fixed BPMN 2.0 exporting (according to the specification)
 
 ### Removed
 
