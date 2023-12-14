@@ -14,7 +14,7 @@ def execute_script():
     print(powl_model)
 
     # views the POWL model on the screen
-    pm4py.view_powl(powl_model, format=examples_conf.TARGET_IMG_FORMAT, variant=POWLVisualizationVariants.NET)
+    pm4py.view_powl(powl_model, format=examples_conf.TARGET_IMG_FORMAT)
 
     # converts the POWL model to a Petri net (which can be used for conformance checking)
     net, im, fm = pm4py.convert_to_petri_net(powl_model)
