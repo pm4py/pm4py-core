@@ -1,7 +1,7 @@
 from pm4py.objects.powl.BinaryRelation import BinaryRelation
 from pm4py.objects.powl.constants import STRICT_PARTIAL_ORDER_LABEL
 from pm4py.objects.process_tree.obj import ProcessTree, Operator
-from typing import Optional, Union, List as TList
+from typing import List as TList
 
 
 class POWL(ProcessTree):
@@ -17,16 +17,11 @@ class POWL(ProcessTree):
     def simplify(self) -> "POWL":
         return self
 
-    def apply_all_reductions(self) -> "POWL":
-        res = self.simplify()
-        res = res.simplify_using_frequent_transitions()
-        return res
-
 
 class Transition(POWL):
     transition_id: int = 0
 
-    def __init__(self, label: Optional[str] = None) -> None:
+    def __init__(self, label: str | None) -> None:
         super().__init__()
         self._label = label
         self._identifier = Transition.transition_id
@@ -63,18 +58,19 @@ class SilentTransition(Transition):
 
 
 class FrequentTransition(Transition):
-    def __init__(self, label, min_freq: Union[str, int], max_freq: Union[str, int]) -> None:
-        self.min_freq = min_freq
-        self.max_freq = max_freq
-        if min_freq == 0 and max_freq == "-":
-            suffix = "*"
-        elif min_freq == 1 and max_freq == "-":
-            suffix = "+"
-        elif min_freq == 0 and max_freq == 1:
-            suffix = "?"
-        else:
-            suffix = str(min_freq) + ", " + str(max_freq)
-        super().__init__(label=label + "\n" + "[" + suffix + "]")
+    def __init__(self, label, min_freq: str | int, max_freq: str | int) -> None:
+        self.skippable = False
+        self.selfloop = False
+        if min_freq == 0:
+            self.skippable = True
+        if max_freq == "-":
+            self.selfloop = True
+        min_freq = "1"
+        self.activity = label
+        if self.skippable or self.selfloop:
+            label = str(label) + "\n" + "[" + str(min_freq) + "," + str(max_freq) + "]"
+
+        super().__init__(label=label)
 
 
 class StrictPartialOrder(POWL):
@@ -112,7 +108,6 @@ class StrictPartialOrder(POWL):
     partial_order = property(get_order, _set_order)
     children = property(get_children, _set_children)
 
-
     # def __eq__(self, other):
     #     if not isinstance(other, StrictPartialOrder):
     #         return False
@@ -134,7 +129,6 @@ class StrictPartialOrder(POWL):
     #             if not self.order.is_edge(source_1, target_1) and other.order.is_edge(source_2, target_2):
     #                 return False
     #     return True
-
 
     def equal_content(self, other: object) -> bool:
         if not isinstance(other, StrictPartialOrder):
@@ -171,17 +165,32 @@ class StrictPartialOrder(POWL):
     def simplify(self) -> "StrictPartialOrder":
         simplified_nodes = {}
         sub_nodes = {}
+        start_nodes = {}
+        end_nodes = {}
+
+        def connected(node):
+            for node2 in self.children:
+                if self.partial_order.is_edge(node, node2) or self.partial_order.is_edge(node2, node):
+                    return True
+            return False
 
         for node_1 in self.children:
-            connected = False
-            for node_2 in self.children:
-                if self.partial_order.is_edge(node_1, node_2) or self.partial_order.is_edge(node_2, node_1):
-                    connected = True
-                    # break
-            if not connected and isinstance(node_1, StrictPartialOrder):
-                sub_nodes[node_1] = node_1.simplify()
+            simplified_node = node_1.simplify()
+            if isinstance(simplified_node, StrictPartialOrder):
+
+                if not connected(node_1):
+                    sub_nodes[node_1] = simplified_node
+                else:
+                    s_nodes = simplified_node.order.get_start_nodes()
+                    e_nodes = simplified_node.order.get_end_nodes()
+                    if len(s_nodes) == 1 and len(e_nodes) == 1:
+                        sub_nodes[node_1] = simplified_node
+                        start_nodes[node_1] = list(s_nodes)[0]
+                        end_nodes[node_1] = list(e_nodes)[0]
+                    else:
+                        simplified_nodes[node_1] = simplified_node
             else:
-                simplified_nodes[node_1] = node_1.simplify()
+                simplified_nodes[node_1] = simplified_node
 
         new_nodes = list(simplified_nodes.values())
         for po, simplified_po in sub_nodes.items():
@@ -190,7 +199,14 @@ class StrictPartialOrder(POWL):
         for node_1 in self.children:
             for node_2 in self.children:
                 if self.partial_order.is_edge(node_1, node_2):
-                    res.partial_order.add_edge(simplified_nodes[node_1], simplified_nodes[node_2])
+                    if node_1 in simplified_nodes.keys() and node_2 in simplified_nodes.keys():
+                        res.partial_order.add_edge(simplified_nodes[node_1], simplified_nodes[node_2])
+                    elif node_1 in simplified_nodes.keys():
+                        res.partial_order.add_edge(simplified_nodes[node_1], start_nodes[node_2])
+                    elif node_2 in simplified_nodes.keys():
+                        res.partial_order.add_edge(end_nodes[node_1], simplified_nodes[node_2])
+                    else:
+                        res.partial_order.add_edge(end_nodes[node_1], start_nodes[node_2])
         for po, simplified_po in sub_nodes.items():
             for node_1 in simplified_po.children:
                 for node_2 in simplified_po.children:
@@ -204,40 +220,8 @@ class Sequence(StrictPartialOrder):
     def __init__(self, nodes: TList[POWL]) -> None:
         super().__init__(nodes)
         for i in range(len(nodes)):
-            for j in range(i+1, len(nodes)):
+            for j in range(i + 1, len(nodes)):
                 self.partial_order.add_edge(nodes[i], nodes[j])
-        self.operator = Operator.SEQUENCE
-
-    def _set_sequence(self, nodes: TList[POWL]) -> None:
-        self._sequence: list[POWL] = nodes
-
-    def get_sequence(self) -> TList[POWL]:
-        return self._sequence
-
-    def simplify(self) -> "Sequence":
-        new_nodes = []
-        for child in self.children:
-            if isinstance(child, Sequence):
-                for node in child.children:
-                    new_nodes.append(node)
-            else:
-                new_nodes.append(child)
-        return Sequence([child.simplify() for child in new_nodes])
-
-    # def simplify_using_frequent_transitions(self):
-    #     sequences = []
-    #     last_activity = None
-    #     counter = 0
-    #     for child in self.children:
-    #         if isinstance(child, Transition):
-    #
-    #             if last_activity is not None:
-    #                 if child.label == last_activity:
-    #                     counter = counter + 1
-    #                 else:
-    #                     if counter == 1:
-    #                         sequences.append(Transition(label = last_activity))
-    #                     counter = 1
 
 
 class OperatorPOWL(POWL):
@@ -246,7 +230,7 @@ class OperatorPOWL(POWL):
         self.operator = operator
         self.children = children
 
-    def __lt__(self, other: object)-> bool:
+    def __lt__(self, other: object) -> bool:
         if isinstance(other, OperatorPOWL):
             return self.__repr__() < other.__repr__()
         elif isinstance(other, Transition):
@@ -255,7 +239,7 @@ class OperatorPOWL(POWL):
             return True
         return NotImplemented
 
-    def equal_content(self, other: object)-> bool:
+    def equal_content(self, other: object) -> bool:
         if not isinstance(other, OperatorPOWL):
             return False
 
@@ -298,8 +282,8 @@ class OperatorPOWL(POWL):
             child_1 = self.children[1]
 
             def merge_with_children(child0, child1):
-                if isinstance(child0, SilentTransition) and isinstance(child1,
-                                                                       OperatorPOWL) and child1.operator is Operator.LOOP:
+                if isinstance(child0, SilentTransition) and isinstance(child1, OperatorPOWL) \
+                        and child1.operator is Operator.LOOP:
                     if isinstance(child1.children[0], SilentTransition):
                         return OperatorPOWL(Operator.LOOP, [n.simplify() for n in child1.children])
                     elif isinstance(child1.children[1], SilentTransition):
@@ -318,11 +302,12 @@ class OperatorPOWL(POWL):
         if self.operator is Operator.XOR:
             new_children = []
             for child in self.children:
-                if isinstance(child, OperatorPOWL) and child.operator is Operator.XOR:
-                    for node in child.children:
+                s_child = child.simplify()
+                if isinstance(s_child, OperatorPOWL) and s_child.operator is Operator.XOR:
+                    for node in s_child.children:
                         new_children.append(node)
                 else:
-                    new_children.append(child)
-            return OperatorPOWL(Operator.XOR, [child.simplify() for child in new_children])
+                    new_children.append(s_child)
+            return OperatorPOWL(Operator.XOR, [child for child in new_children])
         else:
-            return OperatorPOWL(self.operator, [child.simplify() for child in self.children])
+            return OperatorPOWL(self.operator, [child for child in self.children])
