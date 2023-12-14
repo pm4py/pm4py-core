@@ -106,7 +106,7 @@ def conformance_diagnostics_token_based_replay(log: Union[EventLog, pd.DataFrame
     return result
 
 
-def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", variant_str : Optional[str] = None, return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME) -> List[Dict[str, Any]]:
+def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args, multi_processing: bool = constants.ENABLE_MULTIPROCESSING_DEFAULT, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", variant_str : Optional[str] = None, return_diagnostics_dataframe: bool = constants.DEFAULT_RETURN_DIAGNOSTICS_DATAFRAME, **kwargs) -> List[Dict[str, Any]]:
     """
     Apply the alignments algorithm between a log and a process model.
     The methods return the full alignment diagnostics.
@@ -152,6 +152,9 @@ def conformance_diagnostics_alignments(log: Union[EventLog, pd.DataFrame], *args
         case_id_key = None
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    if kwargs is not None:
+        for k, v in kwargs.items():
+            properties[k] = v
 
     if len(args) == 3:
         if type(args[0]) is PetriNet:
