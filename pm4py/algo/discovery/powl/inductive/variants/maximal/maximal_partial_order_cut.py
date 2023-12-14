@@ -24,6 +24,8 @@ from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
 from pm4py.objects.powl.BinaryRelation import BinaryRelation
 from pm4py.objects.powl.obj import StrictPartialOrder, POWL
+from pm4py.objects.dfg import util as dfu
+from pm4py.statistics.eventually_follows.uvcl.get import apply as to_efg
 
 
 def generate_initial_order(nodes, efg):
@@ -36,6 +38,7 @@ def generate_initial_order(nodes, efg):
             if (b, a) in efg:
                 po.add_edge(b, a)
     return po
+
 
 def remove(blocks, g):
     res = []
@@ -52,7 +55,10 @@ def contains(blocks, g):
     return False
 
 
-def is_valid_order(po, parameters):
+def is_valid_order(po, efg, start_activities, end_activities):
+    if po is None:
+        return False
+
     if len(po.nodes) < 2:
         return False
 
@@ -61,7 +67,6 @@ def is_valid_order(po, parameters):
 
     start_blocks = po.nodes
     end_blocks = po.nodes
-    efg = parameters["EFG"]
 
     for group_1, group_2 in combinations(po.nodes, 2):
 
@@ -93,12 +98,11 @@ def is_valid_order(po, parameters):
     for i in range(n):
         group = po.nodes[i]
         c1 = contains(start_blocks, group)
-        c2 = len(set(group).intersection(set(parameters["start_activities"]))) > 0
+        c2 = len(set(group).intersection(start_activities)) > 0
         c3 = contains(end_blocks, group)
-        c4 = len(set(group).intersection(set(parameters["end_activities"]))) > 0
+        c4 = len(set(group).intersection(end_activities)) > 0
         if (c1 and not c2) or (c3 and not c4):
             return False
-
 
     return True
 
@@ -135,7 +139,7 @@ def cluster_order(binary_relation):
     return new_relation
 
 
-class ClusterPartialOrderEFGCut(Cut[T], ABC, Generic[T]):
+class MaximalPartialOrderCut(Cut[T], ABC, Generic[T]):
 
     @classmethod
     def operator(cls, parameters: Optional[Dict[str, Any]] = None) -> StrictPartialOrder:
@@ -144,18 +148,21 @@ class ClusterPartialOrderEFGCut(Cut[T], ABC, Generic[T]):
     @classmethod
     def holds(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[BinaryRelation]:
 
-        efg = parameters["EFG"]
-        alphabet = parameters["alphabet"]
+        efg = to_efg(obj)
+        alphabet = sorted(dfu.get_vertices(obj.dfg), key=lambda g: g.__str__())
         po = generate_initial_order(alphabet, efg)
         clustered_po = cluster_order(po)
 
-        if is_valid_order(clustered_po, parameters):
+        start_activities = set(list(obj.dfg.start_activities.keys()))
+        end_activities = set(list(obj.dfg.end_activities.keys()))
+        if is_valid_order(clustered_po, efg, start_activities, end_activities):
             return clustered_po
         else:
             return None
 
     @classmethod
-    def apply(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[Tuple[StrictPartialOrder, List[POWL]]]:
+    def apply(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[Tuple[StrictPartialOrder,
+                                                                                          List[POWL]]]:
         g = cls.holds(obj, parameters)
         if g is None:
             return g
@@ -169,15 +176,27 @@ class ClusterPartialOrderEFGCut(Cut[T], ABC, Generic[T]):
         return po, po.children
 
 
-class ClusterPartialOrderEFGCutUVCL(ClusterPartialOrderEFGCut[IMDataStructureUVCL]):
+def project_on_groups_with_unique_activities(log: Counter, groups: List[Collection[Any]]):
+    r = list()
+    for g in groups:
+        new_log = Counter()
+        for var, freq in log.items():
+            new_var = []
+            for activity in var:
+                if activity in g:
+                    new_var.append(activity)
+            new_var_tuple = tuple(new_var)
+            if new_var_tuple in new_log.keys():
+                new_log[new_var_tuple] = new_log[new_var_tuple] + freq
+            else:
+                new_log[new_var_tuple] = freq
+        r.append(new_log)
+    return list(map(lambda l: IMDataStructureUVCL(l), r))
+
+
+class MaximalPartialOrderCutUVCL(MaximalPartialOrderCut[IMDataStructureUVCL]):
 
     @classmethod
     def project(cls, obj: IMDataStructureUVCL, groups: List[Collection[Any]],
                 parameters: Optional[Dict[str, Any]] = None) -> List[IMDataStructureUVCL]:
-        r = list()
-        for g in groups:
-            c = Counter()
-            for t in obj.data_structure:
-                c[tuple(filter(lambda e: e in g, t))] = obj.data_structure[t]
-            r.append(c)
-        return list(map(lambda l: IMDataStructureUVCL(l), r))
+        return project_on_groups_with_unique_activities(obj.data_structure, groups)

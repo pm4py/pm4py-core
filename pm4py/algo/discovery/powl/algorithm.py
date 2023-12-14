@@ -16,12 +16,14 @@
 '''
 
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
-from pm4py.algo.discovery.powl.inductive.variants.im_base import IMBasePOWL
-from pm4py.algo.discovery.powl.inductive.variants.im_brute_force import BruteForcePOWL
-from pm4py.algo.discovery.powl.inductive.variants.im_cluster import ClusterPOWL
-from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_variants import POWLDiscoveryVariant
+from pm4py.algo.discovery.powl.inductive.variants.im_dynamic_clustering_frequencies import \
+    POWLInductiveMinerDynamicClusteringFrequency
+from pm4py.algo.discovery.powl.inductive.variants.im_tree import IMBasePOWL
+from pm4py.algo.discovery.powl.inductive.variants.im_brute_force import POWLInductiveMinerBruteForce
+from pm4py.algo.discovery.powl.inductive.variants.im_maximal import POWLInductiveMinerMaximalOrder
+from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_varaints import POWLDiscoveryVariant
 
-from pm4py import util as pmutil
+from pm4py import util
 from pm4py.algo.discovery.inductive.algorithm import Parameters
 from pm4py.objects.powl.obj import POWL
 
@@ -36,23 +38,25 @@ import pandas as pd
 
 
 def get_variant(variant: POWLDiscoveryVariant) -> Type[IMBasePOWL]:
-    if variant == POWLDiscoveryVariant.IM_BASE:
+    if variant == POWLDiscoveryVariant.TREE:
         return IMBasePOWL
     elif variant == POWLDiscoveryVariant.BRUTE_FORCE:
-        return BruteForcePOWL
-    elif variant == POWLDiscoveryVariant.CLUSTER:
-        return ClusterPOWL
+        return POWLInductiveMinerBruteForce
+    elif variant == POWLDiscoveryVariant.MAXIMAL:
+        return POWLInductiveMinerMaximalOrder
+    elif variant == POWLDiscoveryVariant.DYNAMIC_CLUSTERING:
+        return POWLInductiveMinerDynamicClusteringFrequency
     else:
         raise Exception('Invalid Variant!')
 
 
 def apply(obj: Union[EventLog, pd.DataFrame, UVCL], parameters: Optional[Dict[Any, Any]] = None,
-          variant=POWLDiscoveryVariant.CLUSTER, simplify_using_frequent_transitions=False) -> POWL:
+          variant=POWLDiscoveryVariant.MAXIMAL) -> POWL:
     if parameters is None:
         parameters = {}
     ack = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
     tk = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)
-    cidk = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, pmutil.constants.CASE_CONCEPT_NAME)
+    cidk = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, util.constants.CASE_CONCEPT_NAME)
     if type(obj) in [EventLog, pd.DataFrame]:
         uvcl = comut.get_variants(comut.project_univariate(obj, key=ack, df_glue=cidk, df_sorting_criterion_key=tk))
     else:
@@ -61,9 +65,6 @@ def apply(obj: Union[EventLog, pd.DataFrame, UVCL], parameters: Optional[Dict[An
     algorithm = get_variant(variant)
     im = algorithm(parameters)
     res = im.apply(IMDataStructureUVCL(uvcl), parameters)
-
     res = res.simplify()
-    if simplify_using_frequent_transitions:
-        return res.simplify_using_frequent_transitions()
 
     return res

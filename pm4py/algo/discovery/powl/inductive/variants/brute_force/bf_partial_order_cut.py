@@ -28,7 +28,6 @@ from pm4py.objects.powl.obj import StrictPartialOrder, POWL
 from pm4py.objects.dfg import util as dfu
 from pm4py.statistics.eventually_follows.uvcl.get import apply as to_efg
 
-# MAX_NUM_PARTITIONS = 1000
 
 def remove(blocks, g):
     res = []
@@ -64,14 +63,14 @@ def get_partitions_of_size_k(nodes, k=None):
         elif k > n:
             return
 
-    def set_partitions_helper(L, k):
-        n = len(L)
+    def set_partitions_helper(l, k):
+        length = len(l)
         if k == 1:
-            yield [tuple(L)]
-        elif n == k:
-            yield [tuple([s]) for s in L]
+            yield [tuple(l)]
+        elif length == k:
+            yield [tuple([s]) for s in l]
         else:
-            e, *M = L
+            e, *M = l
             for p in set_partitions_helper(M, k - 1):
                 yield [tuple([e]), *p]
             for p in set_partitions_helper(M, k):
@@ -86,13 +85,9 @@ def get_partitions_of_size_k(nodes, k=None):
 
 
 def partition(collection):
-    # count = 1
     i = len(collection)
     while i > 1:
         for part in get_partitions_of_size_k(collection, i):
-            # if count > MAX_NUM_PARTITIONS:
-            #     return
-            # count = count + 1
             yield part
         i = i - 1
     return
@@ -184,14 +179,14 @@ class BruteForcePartialOrderCut(Cut[T], ABC, Generic[T]):
         efg = to_efg(obj)
         alphabet = sorted(dfu.get_vertices(dfg_graph), key=lambda g: g.__str__())
         for part in partition(alphabet):
-            # print(part)
             po = generate_order(part, efg)
             if is_valid_order(po, dfg_graph, efg):
                 return po
         return None
 
     @classmethod
-    def apply(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[Tuple[StrictPartialOrder, List[POWL]]]:
+    def apply(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[
+            Tuple[StrictPartialOrder, List[POWL]]]:
         g = cls.holds(obj, parameters)
         if g is None:
             return g

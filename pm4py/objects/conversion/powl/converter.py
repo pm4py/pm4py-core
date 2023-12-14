@@ -23,6 +23,7 @@ from enum import Enum
 class Variants(Enum):
     TO_PETRI_NET = to_petri_net
 
+
 def apply(powl, parameters=None, variant=Variants.TO_PETRI_NET):
     """
     Method for converting from POWL to Petri net

@@ -16,7 +16,7 @@
 '''
 
 from multiprocessing import Pool, Manager
-from typing import List, TypeVar, Tuple, Optional, Dict, Any, Type, Union
+from typing import List, TypeVar, Tuple, Optional, Dict, Any, Type
 
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructure, IMDataStructureUVCL
 from pm4py.algo.discovery.inductive.fall_through.abc import FallThrough
@@ -42,7 +42,7 @@ class FallThroughFactory:
         return list()
 
     @classmethod
-    def fall_through(cls, obj: T, pool: Pool, manager: Manager, parameters: Optional[Dict[str, Any]] = None) -> Union[Tuple[POWL, List[T]], None]:
+    def fall_through(cls, obj: T, pool: Pool, manager: Manager, parameters: Optional[Dict[str, Any]] = None) -> Optional[Tuple[POWL, List[T]]]:
         for f in FallThroughFactory.get_fall_throughs(obj):
             r = f.apply(obj, pool, manager, parameters)
             if r is not None:

@@ -1249,7 +1249,7 @@ def save_vis_footprints(footprints: Union[Tuple[Dict[str, Any], Dict[str, Any]],
     return fps_visualizer.save(gviz, file_path)
 
 
-def view_powl(powl: POWL, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", rankdir: str = "TB"):
+def view_powl(powl: POWL, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white"):
     """
     Perform a visualization of a POWL model.
 
@@ -1272,7 +1272,7 @@ def view_powl(powl: POWL, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgco
     format = str(format).lower()
 
     from pm4py.visualization.powl import visualizer as powl_visualizer
-    gviz = powl_visualizer.apply(powl, parameters={"format": format, "bgcolor": bgcolor, "rankdir": rankdir})
+    gviz = powl_visualizer.apply(powl, parameters={"format": format, "bgcolor": bgcolor})
 
     powl_visualizer.view(gviz)
 

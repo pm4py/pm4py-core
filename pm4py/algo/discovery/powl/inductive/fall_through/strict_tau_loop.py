@@ -33,3 +33,4 @@ class POWLStrictTauLoopUVCL(StrictTauLoopUVCL):
         proj = cls._get_projected_log(log)
         if sum(proj.values()) > sum(log.values()):
             return OperatorPOWL(Operator.LOOP, []), [IMDataStructureUVCL(proj), IMDataStructureUVCL(Counter())]
+
