@@ -13,7 +13,7 @@ from copy import copy
 from enum import Enum
 import sys
 from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
-from typing import Optional, Dict, Any, Union
+from typing import Optional, Dict, Any, Union, List as TList
 from pm4py.objects.log.obj import Trace
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import typing
@@ -320,7 +320,7 @@ def repr_searchtuple ( st: utils.DijkstraSearchTuple ) -> str :
 
 
 
-def rec_hub (hub, curr_m) -> list[list[utils.DijkstraSearchTuple]]:
+def rec_hub (hub, curr_m) -> TList[TList[utils.DijkstraSearchTuple]]:
 
     out = []
     for curr_st in hub[curr_m] :

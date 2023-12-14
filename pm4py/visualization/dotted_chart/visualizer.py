@@ -84,6 +84,7 @@ def save(figure: str, output_file_path: str):
         Destination path
     """
     shutil.copyfile(figure, output_file_path)
+    return ""
 
 
 def serialize(figure: str):
