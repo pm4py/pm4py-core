@@ -23,6 +23,7 @@ from typing import Union, Dict, Optional, Any, Tuple, Collection, Set, List
 from typing import Counter as TCounter
 from pm4py.util import exec_utils, constants, xes_constants, pandas_utils
 from collections import Counter
+import numpy as np
 
 
 class Parameters(Enum):
@@ -294,178 +295,172 @@ def chainprecedence_template_step1(rules: Dict[Union[Tuple[str, str], Tuple[str,
                         rules[__rule_chain_precedence(act2, act)] = 1 if is_ok_chain_prec else -1
 
 
-def absence_template(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def absence_template(table, columns: Collection[str], activities: Set[str],
                      allowed_templates: Collection[str]) -> pd.DataFrame:
     if ABSENCE in allowed_templates and EXISTENCE in allowed_templates:
         for act in activities:
-            dataframe[__rule_absence_act(act)] = -1 * dataframe[__rule_existence_column(act)]
-    return dataframe
+            table[__rule_absence_act(act)] = -1 * table[__rule_existence_column(act)]
+    return table
 
 
-def exactly_one_template_step2(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def exactly_one_template_step2(table, columns: Collection[str], activities: Set[str],
                                allowed_templates: Collection[str]) -> pd.DataFrame:
     if EXACTLY_ONE in allowed_templates:
         for act in activities:
             if __rule_exactly_one_column(act) not in columns:
-                dataframe[__rule_exactly_one_column(act)] = [0] * len(dataframe)
-    return dataframe
+                table[__rule_exactly_one_column(act)] = [0] * len(table[list(table.keys())[0]])
+    return table
 
 
-def responded_existence_template_step2(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def responded_existence_template_step2(table, columns: Collection[str], activities: Set[str],
                                        allowed_templates: Collection[str]) -> pd.DataFrame:
     if RESPONDED_EXISTENCE in allowed_templates:
         for act in activities:
             for act2 in activities:
                 if act2 != act:
                     if __rule_responded_existence_column(act, act2) not in columns:
-                        dataframe[__rule_responded_existence_column(act, act2)] = [0] * len(dataframe)
-    return dataframe
+                        table[__rule_responded_existence_column(act, act2)] = [0] * len(table[list(table.keys())[0]])
+    return table
 
 
-def response_template_step2(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def response_template_step2(table, columns: Collection[str], activities: Set[str],
                             allowed_templates: Collection[str]) -> pd.DataFrame:
     if RESPONSE in allowed_templates:
         for act in activities:
             for act2 in activities:
                 if act2 != act:
                     if __rule_response(act, act2) not in columns:
-                        dataframe[__rule_response(act, act2)] = [0] * len(dataframe)
-    return dataframe
+                        table[__rule_response(act, act2)] = [0] * len(table[list(table.keys())[0]])
+    return table
 
 
-def precedence_template_step2(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def precedence_template_step2(table, columns: Collection[str], activities: Set[str],
                               allowed_templates: Collection[str]) -> pd.DataFrame:
     if PRECEDENCE in allowed_templates:
         for act in activities:
             for act2 in activities:
                 if act2 != act:
                     if __rule_precedence(act, act2) not in columns:
-                        dataframe[__rule_precedence(act, act2)] = [0] * len(dataframe)
-    return dataframe
+                        table[__rule_precedence(act, act2)] = [0] * len(table[list(table.keys())[0]])
+    return table
 
 
-def altresponse_template_step2(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def altresponse_template_step2(table, columns: Collection[str], activities: Set[str],
                                allowed_templates: Collection[str]) -> pd.DataFrame:
     if ALTRESPONSE in allowed_templates:
         for act in activities:
             for act2 in activities:
                 if act2 != act:
                     if __rule_alternate_response(act, act2) not in columns:
-                        dataframe[__rule_alternate_response(act, act2)] = [0] * len(dataframe)
-    return dataframe
+                        table[__rule_alternate_response(act, act2)] = [0] * len(table[list(table.keys())[0]])
+    return table
 
 
-def chainresponse_template_step2(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def chainresponse_template_step2(table, columns: Collection[str], activities: Set[str],
                                  allowed_templates: Collection[str]) -> pd.DataFrame:
     if CHAINRESPONSE in allowed_templates:
         for act in activities:
             for act2 in activities:
                 if act2 != act:
                     if __rule_chain_response(act, act2) not in columns:
-                        dataframe[__rule_chain_response(act, act2)] = [0] * len(dataframe)
-    return dataframe
+                        table[__rule_chain_response(act, act2)] = [0] * len(table[list(table.keys())[0]])
+    return table
 
 
-def altprecedence_template_step2(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def altprecedence_template_step2(table, columns: Collection[str], activities: Set[str],
                                  allowed_templates: Collection[str]) -> pd.DataFrame:
     if ALTPRECEDENCE in allowed_templates:
         for act in activities:
             for act2 in activities:
                 if act2 != act:
                     if __rule_alternate_precedence(act, act2) not in columns:
-                        dataframe[__rule_alternate_precedence(act, act2)] = [0] * len(dataframe)
-    return dataframe
+                        table[__rule_alternate_precedence(act, act2)] = [0] * len(table[list(table.keys())[0]])
+    return table
 
 
-def chainprecedence_template_step2(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def chainprecedence_template_step2(table, columns: Collection[str], activities: Set[str],
                                    allowed_templates: Collection[str]) -> pd.DataFrame:
     if CHAINPRECEDENCE in allowed_templates:
         for act in activities:
             for act2 in activities:
                 if act2 != act:
                     if __rule_chain_precedence(act, act2) not in columns:
-                        dataframe[__rule_chain_precedence(act, act2)] = [0] * len(dataframe)
-    return dataframe
+                        table[__rule_chain_precedence(act, act2)] = [0] * len(table[list(table.keys())[0]])
+    return table
 
 
-def succession_template(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def succession_template(table, columns: Collection[str], activities: Set[str],
                         allowed_templates: Collection[str]) -> pd.DataFrame:
     if SUCCESSION in allowed_templates and RESPONSE in allowed_templates and PRECEDENCE in allowed_templates:
         for act in activities:
             for act2 in activities:
                 if act2 != act:
-                    dataframe[__rule_succession(act, act2)] = dataframe[
-                        [__rule_response(act, act2), __rule_precedence(act, act2)]].min(axis=1)
-    return dataframe
+                    table[__rule_succession(act, act2)] = np.minimum(table[__rule_response(act, act2)], table[__rule_precedence(act, act2)])
+    return table
 
 
-def altsuccession_template(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def altsuccession_template(table, columns: Collection[str], activities: Set[str],
                            allowed_templates: Collection[str]) -> pd.DataFrame:
     if ALTSUCCESSION in allowed_templates and ALTRESPONSE in allowed_templates and ALTPRECEDENCE in allowed_templates:
         for act in activities:
             for act2 in activities:
                 if act2 != act:
-                    dataframe[__rule_alternate_succession(act, act2)] = dataframe[
-                        [__rule_alternate_response(act, act2), __rule_alternate_precedence(act, act2)]].min(axis=1)
-    return dataframe
+                    table[__rule_alternate_succession(act, act2)] = np.minimum(table[__rule_alternate_response(act, act2)], table[__rule_alternate_precedence(act, act2)])
+    return table
 
 
-def chainsuccession_template(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def chainsuccession_template(table, columns: Collection[str], activities: Set[str],
                              allowed_templates: Collection[str]) -> pd.DataFrame:
     if CHAINSUCCESSION in allowed_templates and CHAINRESPONSE in allowed_templates and CHAINPRECEDENCE in allowed_templates:
         for act in activities:
             for act2 in activities:
                 if act2 != act:
-                    dataframe[__rule_chain_succession(act, act2)] = dataframe[
-                        [__rule_chain_response(act, act2), __rule_chain_precedence(act, act2)]].min(axis=1)
-    return dataframe
+                    table[__rule_chain_succession(act, act2)] = np.minimum(table[__rule_chain_response(act, act2)], table[__rule_chain_precedence(act, act2)])
+    return table
 
 
-def coexistence_template(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def coexistence_template(table, columns: Collection[str], activities: Set[str],
                          allowed_templates: Collection[str]) -> pd.DataFrame:
     if COEXISTENCE in allowed_templates and RESPONDED_EXISTENCE in allowed_templates:
         for act in activities:
             for act2 in activities:
                 if act2 != act:
-                    dataframe[__rule_coexistence(act, act2)] = dataframe[[__rule_responded_existence_column(act, act2),
-                                                                          __rule_responded_existence_column(act2,
-                                                                                                            act)]].min(
-                        axis=1)
-    return dataframe
+                    table[__rule_coexistence(act, act2)] = np.minimum(table[__rule_responded_existence_column(act, act2)], table[__rule_responded_existence_column(act2, act)])
+    return table
 
 
-def noncoexistence_template(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def noncoexistence_template(table, columns: Collection[str], activities: Set[str],
                             allowed_templates: Collection[str]) -> pd.DataFrame:
     if NONCOEXISTENCE in allowed_templates and COEXISTENCE in allowed_templates and RESPONDED_EXISTENCE in allowed_templates:
         for act in activities:
             for act2 in activities:
                 if act2 != act:
-                    dataframe[__rule_non_coexistence(act, act2)] = -1 * dataframe[__rule_coexistence(act, act2)]
-    return dataframe
+                    table[__rule_non_coexistence(act, act2)] = -1 * table[__rule_coexistence(act, act2)]
+    return table
 
 
-def nonsuccession_template(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def nonsuccession_template(table, columns: Collection[str], activities: Set[str],
                            allowed_templates: Collection[str]) -> pd.DataFrame:
     if NONSUCCESSION in allowed_templates and SUCCESSION in allowed_templates and RESPONSE in allowed_templates and PRECEDENCE in allowed_templates:
         for act in activities:
             for act2 in activities:
                 if act2 != act:
-                    dataframe[__rule_non_succession(act, act2)] = -1 * dataframe[__rule_succession(act, act2)]
-    return dataframe
+                    table[__rule_non_succession(act, act2)] = -1 * table[__rule_succession(act, act2)]
+    return table
 
 
-def nonchainsuccession_template(dataframe: pd.DataFrame, columns: Collection[str], activities: Set[str],
+def nonchainsuccession_template(table, columns: Collection[str], activities: Set[str],
                                 allowed_templates: Collection[str]) -> pd.DataFrame:
     if NONCHAINSUCCESSION in allowed_templates and CHAINSUCCESSION in allowed_templates and CHAINRESPONSE in allowed_templates and CHAINPRECEDENCE in allowed_templates:
         for act in activities:
             for act2 in activities:
                 if act2 != act:
-                    dataframe[__rule_non_chain_succession(act, act2)] = -1 * dataframe[
+                    table[__rule_non_chain_succession(act, act2)] = -1 * table[
                         __rule_chain_succession(act, act2)]
-    return dataframe
+    return table
 
 
-def form_rules_dataframe(log: Union[EventLog, pd.DataFrame],
+def form_rules_table(log: Union[EventLog, pd.DataFrame],
                          parameters: Optional[Dict[Any, Any]] = None) -> pd.DataFrame:
     if parameters is None:
         parameters = {}
@@ -492,7 +487,7 @@ def form_rules_dataframe(log: Union[EventLog, pd.DataFrame],
     activities = set(activities)
 
     vars = Counter([tuple([y for y in x if y in activities]) for x in projected_log])
-    dataframe = []
+    table = []
 
     for trace, occs in vars.items():
         act_counter = Counter(trace)
@@ -515,34 +510,44 @@ def form_rules_dataframe(log: Union[EventLog, pd.DataFrame],
         chainprecedence_template_step1(rules, trace, activities, act_counter, act_idxs, allowed_templates)
 
         for i in range(occs):
-            dataframe.append(rules)
+            table.append(rules)
 
-    dataframe = pandas_utils.instantiate_dataframe(dataframe)
-    dataframe = dataframe.fillna(0)
-    columns = set(dataframe.columns)
+    columns = set(y for x in table for y in x.keys())
+    table2 = {c: [] for c in columns}
+    for i in range(len(table)):
+        trace = table[i]
+        for c in columns:
+            if c in trace:
+                table2[c].append(trace[c])
+            else:
+                table2[c].append(0)
 
-    dataframe = absence_template(dataframe, columns, activities, allowed_templates)
-    dataframe = exactly_one_template_step2(dataframe, columns, activities, allowed_templates)
-    dataframe = responded_existence_template_step2(dataframe, columns, activities, allowed_templates)
-    dataframe = response_template_step2(dataframe, columns, activities, allowed_templates)
-    dataframe = precedence_template_step2(dataframe, columns, activities, allowed_templates)
-    dataframe = altresponse_template_step2(dataframe, columns, activities, allowed_templates)
-    dataframe = chainresponse_template_step2(dataframe, columns, activities, allowed_templates)
-    dataframe = altprecedence_template_step2(dataframe, columns, activities, allowed_templates)
-    dataframe = chainprecedence_template_step2(dataframe, columns, activities, allowed_templates)
+    for c in table2:
+        table2[c] = np.array(table2[c])
 
-    dataframe = succession_template(dataframe, columns, activities, allowed_templates)
-    dataframe = altsuccession_template(dataframe, columns, activities, allowed_templates)
-    dataframe = chainsuccession_template(dataframe, columns, activities, allowed_templates)
-    dataframe = coexistence_template(dataframe, columns, activities, allowed_templates)
-    dataframe = noncoexistence_template(dataframe, columns, activities, allowed_templates)
-    dataframe = nonsuccession_template(dataframe, columns, activities, allowed_templates)
-    dataframe = nonchainsuccession_template(dataframe, columns, activities, allowed_templates)
+    table2 = absence_template(table2, columns, activities, allowed_templates)
+    table2 = exactly_one_template_step2(table2, columns, activities, allowed_templates)
+    table2 = responded_existence_template_step2(table2, columns, activities, allowed_templates)
+    table2 = response_template_step2(table2, columns, activities, allowed_templates)
+    table2 = precedence_template_step2(table2, columns, activities, allowed_templates)
+    table2 = altresponse_template_step2(table2, columns, activities, allowed_templates)
+    table2 = chainresponse_template_step2(table2, columns, activities, allowed_templates)
+    table2 = altprecedence_template_step2(table2, columns, activities, allowed_templates)
+    table2 = chainprecedence_template_step2(table2, columns, activities, allowed_templates)
 
-    return dataframe
+    table2 = succession_template(table2, columns, activities, allowed_templates)
+    table2 = altsuccession_template(table2, columns, activities, allowed_templates)
+    table2 = chainsuccession_template(table2, columns, activities, allowed_templates)
+    table2 = coexistence_template(table2, columns, activities, allowed_templates)
+    table2 = noncoexistence_template(table2, columns, activities, allowed_templates)
+    table2 = nonsuccession_template(table2, columns, activities, allowed_templates)
+    table2 = nonchainsuccession_template(table2, columns, activities, allowed_templates)
+
+    return pandas_utils.instantiate_dataframe(table2)
 
 
-def get_rules_from_rules_df(rules_df: pd.DataFrame, parameters: Optional[Dict[Any, Any]] = None) -> Dict[
+
+def get_rules_from_rules_df(rules_df, parameters: Optional[Dict[Any, Any]] = None) -> Dict[
     str, Dict[Any, Dict[str, int]]]:
     if parameters is None:
         parameters = {}
@@ -598,7 +603,7 @@ def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Any, Any
     Parameters
     ---------------
     log
-        Log object (EventLog, Pandas dataframe)
+        Log object (EventLog, Pandas table)
     parameters
         Possible parameters of the algorithm, including:
         - Parameters.ACTIVITY_KEY
@@ -634,7 +639,7 @@ def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Any, Any
     if parameters is None:
         parameters = {}
 
-    rules_df = form_rules_dataframe(log, parameters=parameters)
+    rules_df = form_rules_table(log, parameters=parameters)
 
     rules = get_rules_from_rules_df(rules_df, parameters=parameters)
 
