@@ -1,5 +1,24 @@
 # Changelog of pm4py
 
+## pm4py 2.7.9.2 (2023.12.YY)
+
+### Added
+
+### Changed
+* ab48f194ed0bbcd864683d313285e0db6a3ae570
+  * refactoring DECLARE discovery
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
 
 ## pm4py 2.7.9.1 (2023.12.14)
 
