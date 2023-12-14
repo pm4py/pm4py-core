@@ -7,6 +7,10 @@ from typing import Tuple, Union, List, Dict, Any, Optional, Set
 import pandas as pd
 from pandas import DataFrame
 
+from pm4py.algo.discovery.powl.inductive.utils.filtering import FILTERING_THRESHOLD
+from pm4py.algo.discovery.powl.inductive.variants.dynamic_clustering_frequency.dynamic_clustering_frequency_partial_order_cut import \
+    ORDER_FREQUENCY_RATIO
+from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_varaints import POWLDiscoveryVariant
 from pm4py.objects.bpmn.obj import BPMN
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.powl.obj import POWL
@@ -740,7 +744,10 @@ def discover_declare(log: Union[EventLog, pd.DataFrame], allowed_templates: Opti
     return declare_discovery.apply(log, parameters=properties)
 
 
-def discover_powl(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> POWL:
+def discover_powl(log: Union[EventLog, pd.DataFrame], variant=POWLDiscoveryVariant.MAXIMAL,
+                  filtering_weight_factor: float = 0.0, order_graph_filtering_threshold: float = None,
+                  activity_key: str = "concept:name", timestamp_key: str = "time:timestamp",
+                  case_id_key: str = "case:concept:name") -> POWL:
     """
     Discovers a POWL model from an event log.
 
@@ -748,6 +755,9 @@ def discover_powl(log: Union[EventLog, pd.DataFrame], activity_key: str = "conce
     Kourani, Humam, and Sebastiaan J. van Zelst. "POWL: partially ordered workflow language." International Conference on Business Process Management. Cham: Springer Nature Switzerland, 2023.
 
     :param log: event log / Pandas dataframe
+    :param variant: variant of the algorithm
+    :param filtering_weight_factor: accepts values 0 <= x < 1
+    :param order_graph_filtering_threshold: accepts values 0.5 < x <= 1
     :param activity_key: attribute to be used for the activity
     :param timestamp_key: attribute to be used for the timestamp
     :param case_id_key: attribute to be used as case identifier
@@ -771,8 +781,16 @@ def discover_powl(log: Union[EventLog, pd.DataFrame], activity_key: str = "conce
     log = pm4py.convert_to_event_log(log, case_id_key=case_id_key)
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key)
 
+    if order_graph_filtering_threshold is not None:
+        if variant is POWLDiscoveryVariant.DYNAMIC_CLUSTERING:
+            properties[ORDER_FREQUENCY_RATIO] = order_graph_filtering_threshold
+        else:
+            raise Exception("the order graph filtering threshold can only be used for the variant DYNAMIC_CLUSTERING")
+
+    properties[FILTERING_THRESHOLD] = filtering_weight_factor
+
     from pm4py.algo.discovery.powl import algorithm as powl_discovery
-    return powl_discovery.apply(log, parameters=properties)
+    return powl_discovery.apply(log, variant=variant, parameters=properties)
 
 
 def discover_batches(log: Union[EventLog, pd.DataFrame], merge_distance: int = 15 * 60, min_batch_size: int = 2, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name", resource_key: str = "org:resource") -> List[
