@@ -25,7 +25,7 @@ class FallThroughFactory:
         return list()
 
     @classmethod
-    def fall_through(cls, obj: T, pool: Pool, manager: Manager, parameters: Optional[Dict[str, Any]] = None) -> Tuple[POWL, List[T]] | None:
+    def fall_through(cls, obj: T, pool: Pool, manager: Manager, parameters: Optional[Dict[str, Any]] = None) -> Optional[Tuple[POWL, List[T]]]:
         for f in FallThroughFactory.get_fall_throughs(obj):
             r = f.apply(obj, pool, manager, parameters)
             if r is not None:

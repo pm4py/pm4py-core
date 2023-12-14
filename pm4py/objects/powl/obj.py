@@ -1,7 +1,7 @@
 from pm4py.objects.powl.BinaryRelation import BinaryRelation
 from pm4py.objects.powl.constants import STRICT_PARTIAL_ORDER_LABEL
 from pm4py.objects.process_tree.obj import ProcessTree, Operator
-from typing import List as TList
+from typing import List as TList, Optional, Union
 
 
 class POWL(ProcessTree):
@@ -35,7 +35,7 @@ in this case, NODE2 can be executed only after NODE1 is completed, while the cho
 class Transition(POWL):
     transition_id: int = 0
 
-    def __init__(self, label: str | None) -> None:
+    def __init__(self, label: Optional[str] = None) -> None:
         super().__init__()
         self._label = label
         self._identifier = Transition.transition_id
@@ -72,7 +72,7 @@ class SilentTransition(Transition):
 
 
 class FrequentTransition(Transition):
-    def __init__(self, label, min_freq: str | int, max_freq: str | int) -> None:
+    def __init__(self, label, min_freq: Union[str, int], max_freq: Union[str, int]) -> None:
         self.skippable = False
         self.selfloop = False
         if min_freq == 0:
