@@ -80,8 +80,6 @@ class IMBasePOWL(Generic[T], InductiveMinerFramework[T]):
     def _recurse(self, powl: POWL, objs: List[T], parameters: Optional[Dict[str, Any]] = None):
         children = [self.apply(obj, parameters=parameters) for obj in objs]
         if isinstance(powl, StrictPartialOrder):
-            if isinstance(powl, Sequence):
-                return Sequence(children)
             powl_new = StrictPartialOrder(children)
             for i, j in combinations(range(len(powl.children)), 2):
                 if powl.order.is_edge_id(i, j):

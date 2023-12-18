@@ -319,9 +319,9 @@ class OperatorPOWL(POWL):
                 s_child = child.simplify()
                 if isinstance(s_child, OperatorPOWL) and s_child.operator is Operator.XOR:
                     for node in s_child.children:
-                        new_children.append(node)
+                        new_children.append(node.simplify())
                 else:
                     new_children.append(s_child)
             return OperatorPOWL(Operator.XOR, [child for child in new_children])
         else:
-            return OperatorPOWL(self.operator, [child for child in self.children])
+            return OperatorPOWL(self.operator, [child.simplify() for child in self.children])
