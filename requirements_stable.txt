@@ -22,4 +22,4 @@ six==1.16.0
 sortedcontainers==2.4.0
 StringDist==1.0.9
 tqdm==4.66.1
-tzdata==2023.3
+tzdata==2023.4
