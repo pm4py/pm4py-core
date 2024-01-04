@@ -17,8 +17,8 @@
 
 import pandas as pd
 from pm4py.objects.log.obj import EventLog, EventStream, Trace
-from typing import Union, Optional, Dict, Tuple, Any
-from pm4py.utils import get_properties, constants
+from typing import Union, Optional, Dict, Tuple, List, Any
+from pm4py.utils import get_properties, constants, check_is_pandas_dataframe
 from pm4py.utils import __event_log_deprecation_warning
 from pm4py.objects.ocel.obj import OCEL
 from sqlite3 import Connection as SQ3_Connection
