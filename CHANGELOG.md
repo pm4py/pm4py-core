@@ -1,6 +1,6 @@
 # Changelog of pm4py
 
-## pm4py 2.7.9.2 (2023.12.YY)
+## pm4py 2.7.9.2 (2024.01.YY)
 
 ### Added
 
@@ -15,7 +15,12 @@
 ### Removed
 
 ### Other
-
+* 73edc01f9e7d986d72dc90b88fe92c5265a5d09b
+  * utility to convert live event stream to static event stream
+* 8ba3e4868b4da409f46559abbb716256517712ee
+  * annotating the SearchTuple alignments class with the description of its properties
+* 847cf991df054edf81e2b13b70b0e6679a9a15ca
+  * check if get_best_worst_cost calculation is always needed
 
 ---
 
