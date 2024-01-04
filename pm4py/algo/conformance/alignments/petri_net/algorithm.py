@@ -62,6 +62,7 @@ class Parameters(Enum):
     FITNESS_ROUND_DIGITS = "fitness_round_digits"
     SYNCHRONOUS = "synchronous_dijkstra"
     EXPONENT="theta"
+    ENABLE_BEST_WORST_COST = "enable_best_worst_cost"
 
 
 def __variant_mapper(variant):
@@ -138,8 +139,8 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
 
     variant = __variant_mapper(variant)
     parameters = copy(parameters)
-    best_worst_cost = exec_utils.get_param_value(Parameters.BEST_WORST_COST_INTERNAL, parameters,
-                                                 __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters))
+
+    enable_best_worst_cost = exec_utils.get_param_value(Parameters.ENABLE_BEST_WORST_COST, parameters, True)
 
     ali = exec_utils.get_variant(variant).apply(trace, petri_net, initial_marking, final_marking,
                                                  parameters=parameters)
@@ -148,32 +149,20 @@ def apply_trace(trace, petri_net, initial_marking, final_marking, parameters=Non
     # Instead of using the length of the trace, use the sum of the trace cost function
     trace_cost_function_sum = sum(trace_cost_function)
 
-    if ali is not None and best_worst_cost is not None:
-        ltrace_bwc = trace_cost_function_sum + best_worst_cost
+    if enable_best_worst_cost:
+        best_worst_cost = exec_utils.get_param_value(Parameters.BEST_WORST_COST_INTERNAL, parameters,
+                                                     __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters))
 
-        fitness_num = ali['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST
-        fitness_den = ltrace_bwc // align_utils.STD_MODEL_LOG_MOVE_COST
-        fitness = 1 - fitness_num / fitness_den if fitness_den > 0 else 0
+        if ali is not None and best_worst_cost is not None:
+            ltrace_bwc = trace_cost_function_sum + best_worst_cost
 
-        # other possibility: avoid integer division but proceed to rounding.
-        # could lead to small differences with respect to the adopted-since-now fitness
-        # (since it is rounded)
+            fitness_num = ali['cost'] // align_utils.STD_MODEL_LOG_MOVE_COST
+            fitness_den = ltrace_bwc // align_utils.STD_MODEL_LOG_MOVE_COST
+            fitness = 1 - fitness_num / fitness_den if fitness_den > 0 else 0
 
-        """
-        initial_trace_cost_function = exec_utils.get_param_value(Parameters.PARAM_TRACE_COST_FUNCTION, parameters, None)
-        initial_model_cost_function = exec_utils.get_param_value(Parameters.PARAM_MODEL_COST_FUNCTION, parameters, None)
-        initial_sync_cost_function = exec_utils.get_param_value(Parameters.PARAM_SYNC_COST_FUNCTION, parameters, None)
-        uses_standard_cost_function = initial_trace_cost_function is None and initial_model_cost_function is None and \
-                                    initial_sync_cost_function is None
-            
-        fitness = 1 - ali['cost'] / ltrace_bwc if ltrace_bwc > 0 else 0
-        fitness_round_digits = exec_utils.get_param_value(Parameters.FITNESS_ROUND_DIGITS, parameters, 3)
-        fitness = round(fitness, fitness_round_digits)
-        """
-
-        ali["fitness"] = fitness
-        # returning also the best worst cost, for log fitness computation
-        ali["bwc"] = ltrace_bwc
+            ali["fitness"] = fitness
+            # returning also the best worst cost, for log fitness computation
+            ali["bwc"] = ltrace_bwc
 
     return ali
 
@@ -211,6 +200,8 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
         if not check_soundness.check_easy_soundness_net_in_fin_marking(petri_net, initial_marking, final_marking):
             raise Exception("trying to apply alignments on a Petri net that is not a easy sound net!!")
 
+    enable_best_worst_cost = exec_utils.get_param_value(Parameters.ENABLE_BEST_WORST_COST, parameters, True)
+
     variant = __variant_mapper(variant)
 
     start_time = time.time()
@@ -219,10 +210,12 @@ def apply_log(log, petri_net, initial_marking, final_marking, parameters=None, v
     max_align_time_case = exec_utils.get_param_value(Parameters.PARAM_MAX_ALIGN_TIME_TRACE, parameters,
                                                      sys.maxsize)
 
-    best_worst_cost = __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters)
     variants_idxs, one_tr_per_var = __get_variants_structure(log, parameters)
     progress = __get_progress_bar(len(one_tr_per_var), parameters)
-    parameters[Parameters.BEST_WORST_COST_INTERNAL] = best_worst_cost
+
+    if enable_best_worst_cost:
+        best_worst_cost = __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters)
+        parameters[Parameters.BEST_WORST_COST_INTERNAL] = best_worst_cost
 
     all_alignments = []
     for trace in one_tr_per_var:
@@ -270,9 +263,13 @@ def apply_multiprocessing(log, petri_net, initial_marking, final_marking, parame
 
     num_cores = exec_utils.get_param_value(Parameters.CORES, parameters, multiprocessing.cpu_count() - 2)
 
-    best_worst_cost = __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters)
+    enable_best_worst_cost = exec_utils.get_param_value(Parameters.ENABLE_BEST_WORST_COST, parameters, True)
+
     variants_idxs, one_tr_per_var = __get_variants_structure(log, parameters)
-    parameters[Parameters.BEST_WORST_COST_INTERNAL] = best_worst_cost
+
+    if enable_best_worst_cost:
+        best_worst_cost = __get_best_worst_cost(petri_net, initial_marking, final_marking, variant, parameters)
+        parameters[Parameters.BEST_WORST_COST_INTERNAL] = best_worst_cost
 
     all_alignments = []
 

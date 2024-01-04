@@ -292,6 +292,15 @@ def __vectorize_initial_final_cost(incidence_matrix, ini, fin, cost_function):
 
 
 class SearchTuple:
+    # different properties of the class:
+    # - g => actual cost of the alignment moves
+    # - h => computed heuristic value
+    # - f => the sum of g and h, used for the A* algorithm
+    # - m => marking reached in the synchronous product net in the current state
+    # - p => parent state of the alignment (used at the end to reconstruct the alignment)
+    # - t => transition just visited
+    # - trustable => indicates if the heuristic comes from an exact solution of an (I)LP problem
+    # - x => solution vector of the (I)LP
     def __init__(self, f, g, h, m, p, t, x, trust):
         self.f = f
         self.g = g
