@@ -6,7 +6,7 @@ fonttools==4.47.0
 graphviz==0.20.1
 intervaltree==3.1.0
 kiwisolver==1.4.5
-lxml==5.0.1
+lxml==5.1.0
 matplotlib==3.8.2
 networkx==3.2.1
 numpy==1.26.3
