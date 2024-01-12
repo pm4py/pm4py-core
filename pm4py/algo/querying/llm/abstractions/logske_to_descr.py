@@ -24,6 +24,19 @@ class Parameters(Enum):
     INCLUDE_HEADER = "include_header"
 
 
+def get_model_description():
+    description = """
+The Log Skeleton process model contains the following declarative constraints:
+- Equivalence (if the first activity occurs, then it has the same occurrences as the second one)
+- Always Before (if the first activity occur, then the second activity should have been executed previously)
+- Always After (if the first activity occur, then the second activity is executed in one of the following events)
+- Never Together (the two activities cannot co-exist inside the same case)
+- Activity Occurrences (bounds the number of occurrences for an activity in a case)
+- Directly-Follows Constraints (if the first activity occurs, then the second activity shall occur immediately after)
+    """
+    return description
+
+
 def apply(lsk: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) -> str:
     if parameters is None:
         parameters = {}
@@ -33,40 +46,42 @@ def apply(lsk: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) -> s
     ret = ["\n"]
 
     if include_header:
+        ret.append(get_model_description())
+        ret.append("\n\n")
         ret.append("I have a Log Skeleton process model containing the following declarative constraints:\n\n")
 
     # equivalence
-    ret.append("Equivalence (if the first activity occurs, then it has the same occurrences as the second one): ")
+    ret.append("Equivalence: ")
     for constr in lsk["equivalence"]:
         ret.append(" " + str(constr))
     ret.append("\n\n")
 
     # always before
-    ret.append("Always Before (if the first activity occur, then the second activity should have been executed previously): ")
+    ret.append("Always Before: ")
     for constr in lsk["always_before"]:
         ret.append(" " + str(constr))
     ret.append("\n\n")
 
     # always after
-    ret.append("Always After (if the first activity occur, then the second activity is executed in one of the following events): ")
+    ret.append("Always After: ")
     for constr in lsk["always_after"]:
         ret.append(" " + str(constr))
     ret.append("\n\n")
 
     # never together
-    ret.append("Never Together (the two activities cannot co-exist inside the same case): ")
+    ret.append("Never Together: ")
     for constr in lsk["never_together"]:
         ret.append(" " + str(constr))
     ret.append("\n\n")
 
     # activity occurrences
-    ret.append("Activity Occurrences (bounds the number of occurrences for an activity in a case): ")
+    ret.append("Activity Occurrences: ")
     for constr, occs in lsk["activ_freq"].items():
         ret.append(" " + str(constr) + ": " + ", ".join(sorted([str(x) for x in occs])) + ";")
     ret.append("\n\n")
 
     # directly-follows
-    ret.append("Directly-Follows Constraints (if the first activity occurs, then the second activity shall occur immediately after): ")
+    ret.append("Directly-Follows Constraints: ")
     for constr in lsk["directly_follows"]:
         ret.append(" "+str(constr))
     ret.append("\n\n")

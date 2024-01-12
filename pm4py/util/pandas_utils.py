@@ -24,7 +24,9 @@ import numpy as np
 def get_default_dataframe_environment():
     if importlib.util.find_spec("cudf"):
         #import cudf; return cudf
-        pass
+        import cudf.pandas
+        cudf.pandas.install()
+        import pandas as pd
     return pd
 
 

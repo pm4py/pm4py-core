@@ -7,10 +7,16 @@
 ### Changed
 * ab48f194ed0bbcd864683d313285e0db6a3ae570
   * refactoring DECLARE discovery
+* ba3dd14250f3b713c495833d1ed16d42efb74c7a
+  * moved LLM descriptions to separate methods
 
 ### Deprecated
 
 ### Fixed
+* 99efc597545a1f0f717c90303db8ca3825062e63
+  * bug fix DECLARE discovery
+* 4e3cedf1dfdaa70da1e381930812676afc103b22
+  * additional PNGs for POWL visualization
 
 ### Removed
 
