@@ -10,7 +10,7 @@ def get_default_dataframe_environment():
         #import cudf; return cudf
         import cudf.pandas
         cudf.pandas.install()
-        import pandas as pd
+    import pandas as pd
     return pd
 
 
