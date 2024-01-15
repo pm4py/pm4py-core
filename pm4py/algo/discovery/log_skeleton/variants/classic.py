@@ -275,7 +275,7 @@ def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Union[st
     elif pandas_utils.check_is_pandas_dataframe(log):
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
         all_activs = log[activity_key].value_counts().to_dict()
-        logs_traces = Counter([tuple(x) for x in log.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist()])
+        logs_traces = Counter([tuple(x) for x in log.groupby(case_id_key)[activity_key].agg(list).to_dict().values()])
 
     ret = {}
     ret[Outputs.EQUIVALENCE.value] = equivalence(logs_traces, all_activs, noise_threshold=noise_threshold)

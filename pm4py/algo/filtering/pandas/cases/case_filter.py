@@ -50,7 +50,7 @@ def filter_on_ncases(df: pd.DataFrame, case_id_glue: str = constants.CASE_CONCEP
     df
         Filtered dataframe
     """
-    cases_values_dict = dict(df[case_id_glue].value_counts())
+    cases_values_dict = df[case_id_glue].value_counts().to_dict()
     cases_to_keep = []
     for case in cases_values_dict:
         cases_to_keep.append(case)
@@ -124,7 +124,7 @@ def filter_on_case_performance(df: pd.DataFrame, case_id_glue: str = constants.C
             lambda x: soj_time_business_hours_diff(x[timestamp_key], x[timestamp_key + "_2"], business_hours_slots), axis=1)
     else:
         stacked_df['caseDuration'] = stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]
-        stacked_df['caseDuration'] = stacked_df['caseDuration'].dt.total_seconds()
+        stacked_df['caseDuration'] = pandas_utils.get_total_seconds(stacked_df['caseDuration'])
     stacked_df = stacked_df[stacked_df['caseDuration'] <= max_case_performance]
     stacked_df = stacked_df[stacked_df['caseDuration'] >= min_case_performance]
     i1 = df.set_index(case_id_glue).index

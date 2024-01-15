@@ -624,7 +624,6 @@ def get_service_time(log: Union[EventLog, pd.DataFrame], aggregation_measure: st
         median_serv_time = pm4py.get_service_time(log, start_timestamp_key='start_timestamp', aggregation_measure='median')
         print(median_serv_time)
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     properties = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key, start_timestamp_key=start_timestamp_key)
@@ -728,7 +727,6 @@ def get_frequent_trace_segments(log: Union[EventLog, pd.DataFrame], min_occ: int
         traces = pm4py.get_frequent_trace_segments(log, min_occ=100)
         print(traces)
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     if check_is_pandas_dataframe(log):

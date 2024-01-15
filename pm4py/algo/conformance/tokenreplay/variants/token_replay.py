@@ -987,7 +987,7 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
         trans_map[t.label] = t
 
     if pandas_utils.check_is_pandas_dataframe(log):
-        traces = log.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist(); traces = [tuple(x) for x in traces]
+        traces = [tuple(x) for x in log.groupby(case_id_key)[activity_key].agg(list).to_dict().values()]
     else:
         traces = [tuple(x[activity_key] for x in trace) for trace in log]
 

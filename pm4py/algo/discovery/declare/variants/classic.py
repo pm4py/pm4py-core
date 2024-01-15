@@ -112,7 +112,7 @@ def __col_to_dict_rule(col_name: Union[Tuple[str, str], Tuple[str, str, str]]) -
     if len(col_name) == 2:
         return col_name[0], col_name[1]
     else:
-        if col_name[2] is None or pd.isna(col_name[2]):
+        if col_name[2] is None or pd.isna(col_name[2]) or not col_name[2]:
             return col_name[0], col_name[1]
 
         return col_name[0], (col_name[1], col_name[2])

@@ -185,9 +185,10 @@ def convert_timestamp_columns_in_df(df, timest_format=None, timest_columns=None)
                     try:
                         df[col] = pandas_utils.dataframe_column_string_to_datetime(df[col], format=timest_format, exact=False, utc=True)
                     except:
-                        # traceback.print_exc()
-                        # print("exception converting column: "+str(col))
-                        pass
+                        try:
+                            df[col] = pandas_utils.dataframe_column_string_to_datetime(df[col], format=timest_format)
+                        except:
+                            pass
 
     for col in df.columns:
         if "date" in str(df[col].dtype) or "time" in str(df[col].dtype):

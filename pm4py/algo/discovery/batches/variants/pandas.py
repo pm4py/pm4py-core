@@ -20,7 +20,7 @@ from typing import Optional, Dict, Any, List, Tuple, Union
 import pandas as pd
 
 from pm4py.algo.discovery.batches.utils import detection
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import exec_utils, constants, xes_constants, pandas_utils
 import numpy as np
 
 
@@ -98,10 +98,10 @@ def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], A
     # here, we want them to have the second granularity, so we divide by 10**9
     # for example 1001000000 nanoseconds (value stored in the column)
     # is equivalent to 1,001 seconds.
-    log[timestamp_key] = log[timestamp_key].values.astype(np.int64) / 10**9
+    log[timestamp_key] = pandas_utils.convert_to_seconds(log[timestamp_key])
     if start_timestamp_key != timestamp_key:
         # see the aforementioned explanation.
-        log[start_timestamp_key] = log[start_timestamp_key].values.astype(np.int64) / 10**9
+        log[start_timestamp_key] = pandas_utils.convert_to_seconds(log[start_timestamp_key])
 
     actres_grouping0 = log.groupby([activity_key, resource_key]).agg(list).to_dict()
     start_timestamps = actres_grouping0[start_timestamp_key]

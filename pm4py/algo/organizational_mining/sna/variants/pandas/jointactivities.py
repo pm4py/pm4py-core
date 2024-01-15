@@ -56,9 +56,9 @@ def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], A
     resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes.DEFAULT_RESOURCE_KEY)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
 
-    activities = dict(log[activity_key].value_counts())
-    resources = dict(log[resource_key].value_counts())
-    activity_resource_couples = dict(log.groupby([resource_key, activity_key]).size())
+    activities = log[activity_key].value_counts().to_dict()
+    resources = log[resource_key].value_counts().to_dict()
+    activity_resource_couples = log.groupby([resource_key, activity_key]).size().to_dict()
     activities_keys = sorted(list(activities.keys()))
     resources_keys = sorted(list(resources.keys()))
     rsc_act_matrix = np.zeros((len(resources_keys), len(activities_keys)))

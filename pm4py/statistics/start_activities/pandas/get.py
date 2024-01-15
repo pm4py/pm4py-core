@@ -21,6 +21,7 @@ from pm4py.util import exec_utils
 from pm4py.util import constants
 from enum import Enum
 from typing import Optional, Dict, Any, Union
+from collections import Counter
 import pandas as pd
 
 
@@ -60,5 +61,5 @@ def get_start_activities(df: pd.DataFrame, parameters: Optional[Dict[Union[str, 
 
     grouped_df = parameters[GROUPED_DATAFRAME] if GROUPED_DATAFRAME in parameters else df.groupby(case_id_glue, sort=False)
 
-    startact_dict = dict(grouped_df[activity_key].first().value_counts())
+    startact_dict = dict(Counter(grouped_df[activity_key].first().to_numpy().tolist()))
     return startact_dict

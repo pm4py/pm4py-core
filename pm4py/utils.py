@@ -307,8 +307,6 @@ def get_properties(log, activity_key: str = "concept:name", timestamp_key: str =
     """
     __event_log_deprecation_warning(log)
 
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: return {}
-
     from copy import copy
     parameters = copy(log.properties) if hasattr(log, 'properties') else copy(log.attrs) if hasattr(log,
                                                                                                     'attrs') else {}

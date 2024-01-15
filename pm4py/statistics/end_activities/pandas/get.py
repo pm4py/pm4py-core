@@ -21,6 +21,7 @@ from pm4py.util import exec_utils
 from pm4py.util import constants
 from enum import Enum
 from typing import Optional, Dict, Any, Union
+from collections import Counter
 import pandas as pd
 
 
@@ -62,5 +63,5 @@ def get_end_activities(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Pa
     if grouped_df is None:
         grouped_df = df.groupby(case_id_glue, sort=False)
 
-    endact_dict = dict(grouped_df[activity_key].last().value_counts())
+    endact_dict = dict(Counter(grouped_df[activity_key].last().to_numpy().tolist()))
     return endact_dict

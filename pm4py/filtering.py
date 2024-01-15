@@ -315,11 +315,11 @@ def filter_eventually_follows_relation(log: Union[EventLog, pd.DataFrame], relat
         if retain:
             cases = set()
         else:
-            cases = set(log[case_id_key])
+            cases = set(log[case_id_key].to_numpy().tolist())
         for path in relations:
             filt_log = ltl_checker.eventually_follows(log, path,
                                                       parameters=parameters)
-            this_traces = set(filt_log[case_id_key])
+            this_traces = set(filt_log[case_id_key].to_numpy().tolist())
             if retain:
                 cases = cases.union(this_traces)
             else:
@@ -1005,7 +1005,6 @@ def filter_trace_segments(log: Union[EventLog, pd.DataFrame], admitted_traces: L
         filtered_log = pm4py.filter_trace_segments(log, [["...", "check ticket", "decide", "reinitiate request", "..."]])
         print(filtered_log)
     """
-    if type(log) not in [pd.DataFrame, EventLog, EventStream]: raise Exception("the method can be applied only to a traditional event log!")
     __event_log_deprecation_warning(log)
 
     parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)

@@ -208,11 +208,11 @@ def insert_case_arrival_finish_rate(log: pd.DataFrame, case_id_column=constants.
     if start_timestamp_column is None:
         start_timestamp_column = timestamp_column
 
-    case_arrival = log.groupby(case_id_column)[start_timestamp_column].agg(min).to_dict()
+    case_arrival = log.groupby(case_id_column)[start_timestamp_column].agg("min").to_dict()
     case_arrival = [[x, y.timestamp()] for x, y in case_arrival.items()]
     case_arrival.sort(key=lambda x: (x[1], x[0]))
 
-    case_finish = log.groupby(case_id_column)[timestamp_column].agg(max).to_dict()
+    case_finish = log.groupby(case_id_column)[timestamp_column].agg("max").to_dict()
     case_finish = [[x, y.timestamp()] for x, y in case_finish.items()]
     case_finish.sort(key=lambda x: (x[1], x[0]))
 
@@ -255,12 +255,12 @@ def insert_case_service_waiting_time(log: pd.DataFrame, case_id_column=constants
     if start_timestamp_column is None:
         start_timestamp_column = timestamp_column
 
-    log[diff_start_end_column] = (log[timestamp_column] - log[start_timestamp_column]).dt.total_seconds()
+    log[diff_start_end_column] = get_total_seconds(log[timestamp_column] - log[start_timestamp_column])
     service_times = log.groupby(case_id_column)[diff_start_end_column].sum().to_dict()
     log[service_time_column] = log[case_id_column].map(service_times)
 
-    start_timestamps = log.groupby(case_id_column)[start_timestamp_column].agg(min).to_dict()
-    complete_timestamps = log.groupby(case_id_column)[timestamp_column].agg(max).to_dict()
+    start_timestamps = log.groupby(case_id_column)[start_timestamp_column].agg("min").to_dict()
+    complete_timestamps = log.groupby(case_id_column)[timestamp_column].agg("max").to_dict()
     sojourn_time_cases = {x: complete_timestamps[x].timestamp() - start_timestamps[x].timestamp() for x in start_timestamps}
 
     log[sojourn_time_column] = log[case_id_column].map(sojourn_time_cases)
@@ -297,6 +297,23 @@ def instantiate_dataframe_from_dict(*args, **kwargs):
 
 def instantiate_dataframe_from_records(*args, **kwargs):
     return DATAFRAME.DataFrame.from_records(*args, **kwargs)
+
+
+def get_grouper(*args, **kwargs):
+    return DATAFRAME.Grouper(*args, **kwargs)
+
+
+def get_total_seconds(difference):
+    return 86400 * difference.dt.days + difference.dt.seconds + 10**-6 * difference.dt.microseconds + 10**-9 * difference.dt.nanoseconds
+
+
+def convert_to_seconds(dt_column):
+    try:
+        # Pandas
+        return dt_column.values.astype(np.int64) / 10**9
+    except:
+        # CUDF
+        return [x/10**9 for x in dt_column.to_numpy().tolist()]
 
 
 def dataframe_column_string_to_datetime(*args, **kwargs):

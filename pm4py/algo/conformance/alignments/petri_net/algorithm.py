@@ -318,7 +318,7 @@ def __get_variants_structure(log, parameters):
 
     if pandas_utils.check_is_pandas_dataframe(log):
         case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME)
-        traces = log.groupby(case_id_key)[activity_key].agg(list).to_numpy().tolist(); traces = [tuple(x) for x in traces]
+        traces = [tuple(x) for x in log.groupby(case_id_key)[activity_key].agg(list).to_dict().values()]
         for idx, trace in enumerate(traces):
             if trace not in variants_idxs:
                 variants_idxs[trace] = [idx]

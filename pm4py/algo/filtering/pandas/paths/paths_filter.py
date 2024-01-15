@@ -131,7 +131,7 @@ def apply_performance(df: pd.DataFrame, provided_path: Tuple[str, str], paramete
     stacked_df = pandas_utils.concat([filt_df, filt_dif_shifted], axis=1)
     stacked_df["@@path"] = stacked_df[attribute_key] + DEFAULT_VARIANT_SEP + stacked_df[attribute_key + "_2"]
     stacked_df = stacked_df[stacked_df["@@path"] == provided_path]
-    stacked_df["@@timedelta"] = (stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key]).dt.total_seconds()
+    stacked_df["@@timedelta"] = pandas_utils.get_total_seconds(stacked_df[timestamp_key + "_2"] - stacked_df[timestamp_key])
     stacked_df = stacked_df[stacked_df["@@timedelta"] >= min_performance]
     stacked_df = stacked_df[stacked_df["@@timedelta"] <= max_performance]
     i1 = df.set_index(case_id_glue).index

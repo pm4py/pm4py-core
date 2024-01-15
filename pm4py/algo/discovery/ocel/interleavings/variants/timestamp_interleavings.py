@@ -116,6 +116,6 @@ def apply(left_df: pd.DataFrame, right_df: pd.DataFrame, case_relations: pd.Data
 
     md = pandas_utils.concat([df1, df2])
     md = md.sort_values([index_key+left_suffix, index_key+right_suffix])
-    md[timestamp_diff] = (md[target_timestamp] - md[source_timestamp]).dt.total_seconds()
+    md[timestamp_diff] = pandas_utils.get_total_seconds(md[target_timestamp] - md[source_timestamp])
 
     return md

@@ -66,8 +66,7 @@ def get_case_arrival_avg(df: pd.DataFrame, parameters: Optional[Dict[Union[str, 
     first_df_shift.columns = [str(col) + '_2' for col in first_df_shift.columns]
 
     df_successive_rows = pandas_utils.concat([first_df, first_df_shift], axis=1)
-    df_successive_rows['interlapsed_time'] = (
-            df_successive_rows[timest_key + '_2'] - df_successive_rows[timest_key]).dt.total_seconds()
+    df_successive_rows['interlapsed_time'] = pandas_utils.get_total_seconds(df_successive_rows[timest_key + '_2'] - df_successive_rows[timest_key])
 
     df_successive_rows = df_successive_rows.dropna(subset=['interlapsed_time'])
 
@@ -106,8 +105,7 @@ def get_case_dispersion_avg(df, parameters=None):
     first_df_shift.columns = [str(col) + '_2' for col in first_df_shift.columns]
 
     df_successive_rows = pandas_utils.concat([first_df, first_df_shift], axis=1)
-    df_successive_rows['interlapsed_time'] = (
-            df_successive_rows[timest_key + '_2'] - df_successive_rows[timest_key]).dt.total_seconds()
+    df_successive_rows['interlapsed_time'] = pandas_utils.get_total_seconds(df_successive_rows[timest_key + '_2'] - df_successive_rows[timest_key])
 
     df_successive_rows = df_successive_rows.dropna(subset=['interlapsed_time'])
 

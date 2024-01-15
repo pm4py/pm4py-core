@@ -289,7 +289,7 @@ def filter_df_keeping_spno_activities(df: pd.DataFrame, activity_key: str = "con
     df
         Filtered dataframe
     """
-    activity_values_dict = dict(df[activity_key].value_counts())
+    activity_values_dict = df[activity_key].value_counts().to_dict()
     activity_values_ordered_list = []
     for act in activity_values_dict:
         activity_values_ordered_list.append([act, activity_values_dict[act]])

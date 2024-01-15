@@ -81,7 +81,7 @@ def apply(dataframe: pd.DataFrame, parameters=None) -> Tuple[Dict[Collection[str
     if importlib.util.find_spec("cudf"):
         case_variant = dataframe.groupby(case_id_key)[activity_key].agg(list).to_dict()
         case_variant = {x: tuple(y) for x, y in case_variant.items()}
-        variants_counter = Counter(case_variant.items())
+        variants_counter = Counter(case_variant.values())
     else:
         variants_counter = Counter()
         cases = dataframe[case_id_key].to_numpy()

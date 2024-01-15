@@ -54,6 +54,6 @@ def apply(df: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], An
 
     resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes.DEFAULT_RESOURCE_KEY)
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes.DEFAULT_NAME_KEY)
-    activity_resource_couples = Counter(dict(df.groupby([resource_key, activity_key]).size()))
+    activity_resource_couples = Counter(df.groupby([resource_key, activity_key]).size().to_dict())
 
     return algorithm.apply(activity_resource_couples, parameters=parameters)

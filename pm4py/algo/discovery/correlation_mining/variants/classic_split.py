@@ -68,7 +68,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
         # keep only the two columns before conversion
         log = log[list(set([activity_key, timestamp_key, start_timestamp_key]))]
         log = log.sort_values([timestamp_key, start_timestamp_key])
-        activities_counter = dict(log[activity_key].value_counts())
+        activities_counter = log[activity_key].value_counts().to_dict()
         activities = sorted(list(activities_counter.keys()))
     else:
         log = converter.apply(log, variant=converter.Variants.TO_EVENT_STREAM, parameters={"deepcopy": False, "include_case_attributes": False})

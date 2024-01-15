@@ -17,7 +17,7 @@
 import pandas as pd
 from enum import Enum
 
-from pm4py.util import exec_utils, constants, xes_constants
+from pm4py.util import exec_utils, constants, xes_constants, pandas_utils
 from pm4py.util.business_hours import soj_time_business_hours_diff
 from typing import Optional, Dict, Any, Union
 
@@ -86,9 +86,7 @@ def apply(dataframe: pd.DataFrame, parameters: Optional[Dict[Union[str, Paramete
         dataframe[DIFF_KEY] = dataframe.apply(
             lambda x: soj_time_business_hours_diff(x[start_timestamp_key], x[timestamp_key], business_hours_slots, workcalendar), axis=1)
     else:
-        dataframe[DIFF_KEY] = (
-            dataframe[timestamp_key] - dataframe[start_timestamp_key]
-        ).dt.total_seconds()
+        dataframe[DIFF_KEY] = pandas_utils.get_total_seconds(dataframe[timestamp_key] - dataframe[start_timestamp_key])
 
     dataframe = dataframe.reset_index()
 

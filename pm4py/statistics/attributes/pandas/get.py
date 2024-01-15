@@ -155,7 +155,7 @@ def get_attribute_values(df: pd.DataFrame, attribute_key: str, parameters: Optio
 
     if keep_once_per_case:
         df = df.groupby([case_id_glue, attribute_key]).first().reset_index()
-    attributes_values_dict = dict(df[attribute_key].value_counts())
+    attributes_values_dict = df[attribute_key].value_counts().to_dict()
     # print("attributes_values_dict=",attributes_values_dict)
     return attributes_values_dict
 

@@ -96,8 +96,7 @@ def eventually_follows(df0: pd.DataFrame, attribute_values: List[str], parameter
 
     if enable_timestamp:
         for i in range(1, len(df_a)):
-            df_join["@@difftimestamp%d" % (i - 1)] = (
-                        df_join[timestamp_key + "_%d" % i] - df_join[timestamp_key + '_%d' % (i-1)]).dt.total_seconds()
+            df_join["@@difftimestamp%d" % (i - 1)] = pandas_utils.get_total_seconds(df_join[timestamp_key + "_%d" % i] - df_join[timestamp_key + '_%d' % (i-1)])
 
             if timestamp_diff_boundaries:
                 df_join = df_join[df_join["@@difftimestamp%d" % (i-1)] >= timestamp_diff_boundaries[i-1][0]]
