@@ -1,7 +1,37 @@
 # Changelog of pm4py
 
+## pm4py 2.7.9.2 (2024.01.YY)
 
-## pm4py 2.7.9.1 (2023.XX.YY)
+### Added
+
+### Changed
+* ab48f194ed0bbcd864683d313285e0db6a3ae570
+  * refactoring DECLARE discovery
+* ba3dd14250f3b713c495833d1ed16d42efb74c7a
+  * moved LLM descriptions to separate methods
+
+### Deprecated
+
+### Fixed
+* 99efc597545a1f0f717c90303db8ca3825062e63
+  * bug fix DECLARE discovery
+* 4e3cedf1dfdaa70da1e381930812676afc103b22
+  * additional PNGs for POWL visualization
+
+### Removed
+
+### Other
+* 73edc01f9e7d986d72dc90b88fe92c5265a5d09b
+  * utility to convert live event stream to static event stream
+* 8ba3e4868b4da409f46559abbb716256517712ee
+  * annotating the SearchTuple alignments class with the description of its properties
+* 847cf991df054edf81e2b13b70b0e6679a9a15ca
+  * check if get_best_worst_cost calculation is always needed
+
+---
+
+
+## pm4py 2.7.9.1 (2023.12.14)
 
 ### Added
 * efff63955c1dfd3a3c04c6bf5aecc53042da3b4c
