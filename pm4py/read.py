@@ -325,7 +325,7 @@ def read_ocel2(file_path: str, encoding: str = constants.DEFAULT_ENCODING) -> OC
         return read_ocel2_sqlite(file_path, encoding=encoding)
     elif file_path.lower().endswith("xml") or file_path.lower().endswith("xmlocel"):
         return read_ocel2_xml(file_path, encoding=encoding)
-    elif file_path.lower().endswith("jsonocel"):
+    elif file_path.lower().endswith("json") or file_path.lower().endswith("jsonocel"):
         return read_ocel2_json(file_path, encoding=encoding)
 
 

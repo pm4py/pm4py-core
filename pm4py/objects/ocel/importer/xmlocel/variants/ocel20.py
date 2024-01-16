@@ -26,7 +26,6 @@ from pm4py.objects.ocel.util import filtering_utils
 from pm4py.util import exec_utils, dt_parsing, pandas_utils
 from pm4py.objects.ocel.util import ocel_consistency
 
-
 class Parameters(Enum):
     EVENT_ID = constants.PARAM_EVENT_ID
     EVENT_ACTIVITY = constants.PARAM_EVENT_ACTIVITY
@@ -41,10 +40,23 @@ class Parameters(Enum):
 
 def parse_xml(value, tag_str_lower, parser):
     if "float" in tag_str_lower:
+        if value == "null":
+            return 0
         return float(value)
     elif "date" in tag_str_lower:
-        return parser.apply(value)
+        return embed_date_parser(parser.apply, value)
     return str(value)
+
+
+def embed_date_parser(date_parser, x):
+    try:
+        return date_parser(x)
+    except:
+        from dateutil.parser import parse
+        try:
+            return parse(x)
+        except:
+            return parse(x, fuzzy=True)
 
 
 def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
@@ -134,7 +146,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                             if attribute_time == "0" or attribute_time.startswith("1970-01-01T00:00:00"):
                                 obj_dict[attribute_name] = attribute_text
                             else:
-                                attribute_time = date_parser.apply(attribute_time)
+                                attribute_time = embed_date_parser(date_parser.apply, attribute_time)
                                 obj_change_dict = {object_id_column: object_id, object_type_column: object_type, attribute_name: attribute_text, changed_field: attribute_name, event_timestamp_column: attribute_time}
                                 object_changes_list.append(obj_change_dict)
 
@@ -148,7 +160,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
             for event in child:
                 event_id = event.get("id")
                 event_type = event.get("type")
-                event_time = date_parser.apply(event.get("time"))
+                event_time = embed_date_parser(date_parser.apply, event.get("time"))
 
                 ev_dict = {event_id_column: event_id, event_activity_column: event_type, event_timestamp_column: event_time}
 
@@ -158,9 +170,9 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                             target_object_id = target_object.get("object-id")
                             qualifier = target_object.get("qualifier")
 
-                            rel_dict = {event_id_column: event_id, event_activity_column: event_type, event_timestamp_column: event_time, object_id_column: target_object_id, object_type_column: obj_type_dict[target_object_id], qualifier_field: qualifier}
-
-                            relations_list.append(rel_dict)
+                            if target_object_id in obj_type_dict:
+                                rel_dict = {event_id_column: event_id, event_activity_column: event_type, event_timestamp_column: event_time, object_id_column: target_object_id, object_type_column: obj_type_dict[target_object_id], qualifier_field: qualifier}
+                                relations_list.append(rel_dict)
                     elif child2.tag.endswith("attributes"):
                         for attribute in child2:
                             attribute_name = attribute.get("name")

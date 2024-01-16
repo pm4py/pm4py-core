@@ -79,12 +79,16 @@ def get_base_ocel(json_obj: Any, parameters: Optional[Dict[Any, Any]] = None):
             dct[k] = v
         this_rel = {}
         for obj in ev[constants.OCEL_OMAP_KEY]:
-            this_rel[obj] = {event_id: ev_id, event_activity: ev[event_activity],
-                              event_timestamp: parser.apply(ev[event_timestamp]), object_id: obj,
-                              object_type: types_dict[obj]}
+            if obj in types_dict:
+                this_rel[obj] = {event_id: ev_id, event_activity: ev[event_activity],
+                                  event_timestamp: parser.apply(ev[event_timestamp]), object_id: obj,
+                                  object_type: types_dict[obj]}
         if constants.OCEL_TYPED_OMAP_KEY in ev:
             for element in ev[constants.OCEL_TYPED_OMAP_KEY]:
-                this_rel[element[object_id]][constants.DEFAULT_QUALIFIER] = element[constants.DEFAULT_QUALIFIER]
+                if object_id in element:
+                    key1 = element[object_id]
+                    if key1 in this_rel:
+                        this_rel[key1][constants.DEFAULT_QUALIFIER] = element[constants.DEFAULT_QUALIFIER]
         for obj in this_rel:
             relations.append(this_rel[obj])
         events.append(dct)

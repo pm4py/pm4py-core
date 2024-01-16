@@ -38,6 +38,7 @@ class Parameters(Enum):
     INTERNAL_INDEX = constants.PARAM_INTERNAL_INDEX
     QUALIFIER = constants.PARAM_QUALIFIER
     CHANGED_FIELD = constants.PARAM_CHNGD_FIELD
+    CUMCOUNT = "cumcount"
     VALIDATION = "validation"
     EXCEPT_IF_INVALID = "except_if_invalid"
 
@@ -60,6 +61,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
     internal_index = exec_utils.get_param_value(Parameters.INTERNAL_INDEX, parameters, constants.DEFAULT_INTERNAL_INDEX)
     qualifier_field = exec_utils.get_param_value(Parameters.QUALIFIER, parameters, constants.DEFAULT_QUALIFIER)
     changed_field = exec_utils.get_param_value(Parameters.CHANGED_FIELD, parameters, constants.DEFAULT_CHNGD_FIELD)
+    cumcount_field = exec_utils.get_param_value(Parameters.CUMCOUNT, parameters, "@@cumcount")
 
     if validation:
         satisfied, unsatisfied = ocel20_rel_validation.apply(file_path)
@@ -115,9 +117,14 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
 
     events_timestamp = event_types_coll[[event_id, event_timestamp]].to_dict('records')
     events_timestamp = {x[event_id]: x[event_timestamp] for x in events_timestamp}
+    object_types_coll[cumcount_field] = object_types_coll.groupby(object_id).cumcount()
+
     if changed_field in object_types_coll:
         objects = object_types_coll[object_types_coll[changed_field].isna()]
         object_changes = object_types_coll[~object_types_coll[changed_field].isna()]
+        if len(objects) == 0:
+            objects = object_types_coll[object_types_coll[cumcount_field] == 0]
+            object_changes = object_types_coll[object_types_coll[cumcount_field] > 0]
         if len(object_changes) == 0:
             object_changes = None
         del objects[changed_field]
@@ -126,6 +133,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
         object_changes = None
 
     del objects[event_timestamp]
+    del objects[cumcount_field]
 
     E2O = pd.read_sql("SELECT * FROM event_object", conn)
     E2O = E2O.rename(columns={"ocel_event_id": event_id, "ocel_object_id": object_id, "ocel_qualifier": qualifier_field})
