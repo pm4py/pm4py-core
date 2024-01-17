@@ -16,18 +16,21 @@
 '''
 import networkx as nx
 from enum import Enum
-from pm4py.util import exec_utils, constants, dt_parsing, pandas_utils
 from typing import Optional, Dict, Any
-from pm4py.objects.ocel.obj import OCEL
-from pm4py.objects.log.obj import EventLog, Trace, Event
-from pm4py.objects.log.util import sorting
-import pandas as pd
+from pm4py.util import exec_utils, constants
 import importlib.util
 from copy import copy
 
 
 class Parameters(Enum):
     SHOW_PROGRESS_BAR = "show_progress_bar"
+
+
+def get_default_nx_enviroment():
+    return nx
+
+
+DEFAULT_NX_ENVIROMENT = get_default_nx_enviroment()
 
 
 def __format_attrs(attributes0: Dict[str, Any]) -> Dict[str, Any]:
@@ -142,6 +145,7 @@ def neo4j_download(session, parameters: Optional[Dict[Any, Any]] = None) -> nx.D
     if parameters is None:
         parameters = {}
 
+    from pm4py.util import dt_parsing
     date_parser = dt_parsing.parser.get()
 
     nodes = session.run("MATCH (n) RETURN n")
@@ -169,7 +173,7 @@ def neo4j_download(session, parameters: Optional[Dict[Any, Any]] = None) -> nx.D
     return nx_graph
 
 
-def nx_to_ocel(nx_graph: nx.DiGraph, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
+def nx_to_ocel(nx_graph: nx.DiGraph, parameters: Optional[Dict[Any, Any]] = None):
     """
     Transforms a NetworkX DiGraph representing an OCEL to a proper OCEL.
 
@@ -187,6 +191,8 @@ def nx_to_ocel(nx_graph: nx.DiGraph, parameters: Optional[Dict[Any, Any]] = None
     """
     if parameters is None:
         parameters = {}
+
+    from pm4py.util import pandas_utils
 
     events = []
     objects = []
@@ -254,10 +260,12 @@ def nx_to_ocel(nx_graph: nx.DiGraph, parameters: Optional[Dict[Any, Any]] = None
     if object_changes is not None:
         del object_changes["type"]
 
+    from pm4py.objects.ocel.obj import OCEL
+
     return OCEL(events, objects, relations, o2o=o2o, object_changes=object_changes)
 
 
-def nx_to_event_log(nx_graph: nx.DiGraph, parameters: Optional[Dict[Any, Any]] = None) -> EventLog:
+def nx_to_event_log(nx_graph: nx.DiGraph, parameters: Optional[Dict[Any, Any]] = None):
     """
     Transforms a NetworkX DiGraph representing a traditional event log to a proper event log.
 
@@ -275,6 +283,9 @@ def nx_to_event_log(nx_graph: nx.DiGraph, parameters: Optional[Dict[Any, Any]] =
     """
     if parameters is None:
         parameters = {}
+
+    from pm4py.objects.log.obj import EventLog, Trace, Event
+    from pm4py.objects.log.util import sorting
 
     log = EventLog()
 
