@@ -1,2 +1,2 @@
-from pm4py.util import variants_util, lp, constants, points_subset, business_hours, xes_constants, vis_utils, \
-    dt_parsing, colors, exec_utils, pandas_utils, typing, compression
+from pm4py.util import exec_utils, constants, xes_constants, pandas_utils, nx_utils, lp, variants_util, points_subset, business_hours, vis_utils, \
+    dt_parsing, colors, typing, compression
