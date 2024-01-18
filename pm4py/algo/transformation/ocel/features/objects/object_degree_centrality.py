@@ -1,4 +1,5 @@
 from pm4py.objects.ocel.obj import OCEL
+from pm4py.util import nx_utils
 from typing import Optional, Dict, Any
 from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
 
@@ -24,17 +25,15 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    import networkx as nx
-
     ordered_objects = parameters["ordered_objects"] if "ordered_objects" in parameters else ocel.objects[
         ocel.object_id_column].to_numpy()
 
     g0 = object_interaction_graph.apply(ocel, parameters=parameters)
-    g = nx.Graph()
+    g = nx_utils.Graph()
     for edge in g0:
         g.add_edge(edge[0], edge[1])
 
-    centrality = nx.degree_centrality(g)
+    centrality = nx_utils.degree_centrality(g)
 
     data = []
     feature_names = ["@@object_degree_centrality"]
