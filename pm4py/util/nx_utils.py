@@ -30,7 +30,7 @@ def get_default_nx_enviroment():
     return nx
 
 
-DEFAULT_NX_ENVIROMENT = get_default_nx_enviroment()
+DEFAULT_NX_ENVIRONMENT = get_default_nx_enviroment()
 
 
 def __format_attrs(attributes0: Dict[str, Any]) -> Dict[str, Any]:

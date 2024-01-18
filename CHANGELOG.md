@@ -1,6 +1,29 @@
 # Changelog of pm4py
 
-## pm4py 2.7.9.2 (2024.01.YY)
+
+## pm4py 2.7.10 (2024.01.XX)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* 25ca20af830df69a983c6fd53bb2e456ccc11c25
+  * removed circular dependency on pm4py.util
+* 0da8c5f04f89dab8b9f5a3d31d8f5beb927e71d4
+  * fixing OCEL 2.0 support
+
+### Removed
+
+### Other
+
+
+---
+
+
+## pm4py 2.7.9.2 (2024.01.16)
 
 ### Added
 
