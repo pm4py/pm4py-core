@@ -912,6 +912,42 @@ def get_variant_from_trace(trace, activity_key, disable_variants=False):
     return variants_util.get_variant_from_trace(trace, parameters=parameters)
 
 
+def transcribe_result(t, return_object_names=True):
+    corr_value = {"trace_is_fit": copy(t.t_fit),
+                  "trace_fitness": float(copy(t.t_value)),
+                  "activated_transitions": copy(t.act_trans),
+                  "reached_marking": copy(t.reached_marking),
+                  "enabled_transitions_in_marking": copy(
+                      t.enabled_trans_in_mark),
+                  "transitions_with_problems": copy(
+                      t.trans_probl),
+                  "missing_tokens": int(t.missing),
+                  "consumed_tokens": int(t.consumed),
+                  "remaining_tokens": int(t.remaining),
+                  "produced_tokens": int(t.produced)}
+
+    if return_object_names:
+        corr_value["activated_transitions_labels"] = [x.label for x in
+                                                      corr_value[
+                                                          "activated_transitions"]]
+        corr_value["activated_transitions"] = [x.name for x in corr_value[
+            "activated_transitions"]]
+        corr_value["enabled_transitions_in_marking_labels"] = [x.label for x in
+                                                               corr_value[
+                                                                   "enabled_transitions_in_marking"]]
+        corr_value["enabled_transitions_in_marking"] = [x.name for x in
+                                                        corr_value[
+                                                            "enabled_transitions_in_marking"]]
+        corr_value["transitions_with_problems"] = [x.name for x in
+                                                   corr_value[
+                                                       "transitions_with_problems"]]
+        corr_value["reached_marking"] = {x.name: y for x, y in
+                                         corr_value[
+                                             "reached_marking"].items()}
+
+    return corr_value
+
+
 def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=False, consider_remaining_in_fitness=False,
               activity_key="concept:name", reach_mark_through_hidden=True, stop_immediately_unfit=False,
               walk_through_hidden_trans=True, places_shortest_path_by_hidden=None,
@@ -987,86 +1023,94 @@ def apply_log(log, net, initial_marking, final_marking, enable_pltr_fitness=Fals
         trans_map[t.label] = t
 
     if pandas_utils.check_is_pandas_dataframe(log):
-        traces = [tuple(x) for x in log.groupby(case_id_key)[activity_key].agg(list).to_dict().values()]
+        traces = [(tuple(x), y) for y, x in log.groupby(case_id_key)[activity_key].agg(list).to_dict().items()]
+        traces = [(traces[i][0], i) for i in range(len(traces))]
     else:
-        traces = [tuple(x[activity_key] for x in trace) for trace in log]
+        traces = [(tuple(x[activity_key] for x in log[i]), i) for i in range(len(log))]
 
-    variants = Counter(traces)
+    variants = dict()
+    for t in traces:
+        if t[0] not in variants:
+            variants[t[0]] = list()
+        variants[t[0]].append(t[1])
+
+    traces = [t[0] for t in traces]
 
     vc = [(k, v) for k, v in variants.items()]
-    vc = list(sorted(vc, key=lambda x: (x[1], x[0]), reverse=True))
+    vc = list(sorted(vc, key=lambda x: (len(x[1]), x[0]), reverse=True))
+
+    threads_results = {}
 
     progress = None
+
     if importlib.util.find_spec("tqdm") and show_progress_bar and len(variants) > 1:
         from tqdm.auto import tqdm
-        progress = tqdm(total=len(variants), desc="replaying log with TBR, completed variants :: ")
 
-    threads = {}
-    threads_results = {}
+        if disable_variants and not pandas_utils.check_is_pandas_dataframe(log):
+            progress = tqdm(total=len(traces), desc="replaying log with TBR, completed traces :: ")
+        else:
+            progress = tqdm(total=len(variants), desc="replaying log with TBR, completed traces :: ")
 
     for i in range(len(vc)):
         variant = vc[i][0]
-        considered_case = variants_util.variant_to_trace(variant, parameters={constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key})
+        all_cases = vc[i][1]
 
-        threads[variant] = ApplyTraceTokenReplay(considered_case, net, initial_marking, final_marking,
-                                                 trans_map, enable_pltr_fitness, place_fitness_per_trace,
-                                                 transition_fitness_per_trace,
-                                                 notexisting_activities_in_model,
-                                                 places_shortest_path_by_hidden,
-                                                 consider_remaining_in_fitness,
-                                                 activity_key=activity_key,
-                                                 reach_mark_through_hidden=reach_mark_through_hidden,
-                                                 stop_immediately_when_unfit=stop_immediately_unfit,
-                                                 walk_through_hidden_trans=walk_through_hidden_trans,
-                                                 post_fix_caching=post_fix_cache,
-                                                 marking_to_activity_caching=marking_to_activity_cache,
-                                                 is_reduction=is_reduction,
-                                                 thread_maximum_ex_time=thread_maximum_ex_time,
-                                                 cleaning_token_flood=cleaning_token_flood,
-                                                 s_components=s_components, trace_occurrences=vc[i][1],
-                                                 consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness)
-        threads[variant].run()
-        if progress is not None:
-            progress.update()
+        if disable_variants and not pandas_utils.check_is_pandas_dataframe(log):
+            for j in range(len(all_cases)):
+                case_position = all_cases[j]
+                considered_case = log[case_position]
+                t = ApplyTraceTokenReplay(considered_case, net, initial_marking, final_marking,
+                                          trans_map, enable_pltr_fitness, place_fitness_per_trace,
+                                          transition_fitness_per_trace,
+                                          notexisting_activities_in_model,
+                                          places_shortest_path_by_hidden,
+                                          consider_remaining_in_fitness,
+                                          activity_key=activity_key,
+                                          reach_mark_through_hidden=reach_mark_through_hidden,
+                                          stop_immediately_when_unfit=stop_immediately_unfit,
+                                          walk_through_hidden_trans=walk_through_hidden_trans,
+                                          post_fix_caching=post_fix_cache,
+                                          marking_to_activity_caching=marking_to_activity_cache,
+                                          is_reduction=is_reduction,
+                                          thread_maximum_ex_time=thread_maximum_ex_time,
+                                          cleaning_token_flood=cleaning_token_flood,
+                                          s_components=s_components, trace_occurrences=1,
+                                          consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness)
+                t.run()
+                threads_results[case_position] = transcribe_result(t, return_object_names=return_object_names)
+                if progress is not None:
+                    progress.update()
+        else:
+            considered_case = variants_util.variant_to_trace(variant, parameters={constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key})
+            t = ApplyTraceTokenReplay(considered_case, net, initial_marking, final_marking,
+                                                     trans_map, enable_pltr_fitness, place_fitness_per_trace,
+                                                     transition_fitness_per_trace,
+                                                     notexisting_activities_in_model,
+                                                     places_shortest_path_by_hidden,
+                                                     consider_remaining_in_fitness,
+                                                     activity_key=activity_key,
+                                                     reach_mark_through_hidden=reach_mark_through_hidden,
+                                                     stop_immediately_when_unfit=stop_immediately_unfit,
+                                                     walk_through_hidden_trans=walk_through_hidden_trans,
+                                                     post_fix_caching=post_fix_cache,
+                                                     marking_to_activity_caching=marking_to_activity_cache,
+                                                     is_reduction=is_reduction,
+                                                     thread_maximum_ex_time=thread_maximum_ex_time,
+                                                     cleaning_token_flood=cleaning_token_flood,
+                                                     s_components=s_components, trace_occurrences=len(vc[i][1]),
+                                                     consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness)
+            t.run()
 
-        t = threads[variant]
-        threads_results[variant] = {"trace_is_fit": copy(t.t_fit),
-                                    "trace_fitness": float(copy(t.t_value)),
-                                    "activated_transitions": copy(t.act_trans),
-                                    "reached_marking": copy(t.reached_marking),
-                                    "enabled_transitions_in_marking": copy(
-                                        t.enabled_trans_in_mark),
-                                    "transitions_with_problems": copy(
-                                        t.trans_probl),
-                                    "missing_tokens": int(t.missing),
-                                    "consumed_tokens": int(t.consumed),
-                                    "remaining_tokens": int(t.remaining),
-                                    "produced_tokens": int(t.produced)}
+            for j in range(len(all_cases)):
+                case_position = all_cases[j]
 
-        if return_object_names:
-            threads_results[variant]["activated_transitions_labels"] = [x.label for x in
-                                                                        threads_results[variant][
-                                                                            "activated_transitions"]]
-            threads_results[variant]["activated_transitions"] = [x.name for x in threads_results[variant][
-                "activated_transitions"]]
-            threads_results[variant]["enabled_transitions_in_marking_labels"] = [x.label for x in
-                                                                                 threads_results[variant][
-                                                                                     "enabled_transitions_in_marking"]]
-            threads_results[variant]["enabled_transitions_in_marking"] = [x.name for x in
-                                                                          threads_results[variant][
-                                                                              "enabled_transitions_in_marking"]]
-            threads_results[variant]["transitions_with_problems"] = [x.name for x in
-                                                                     threads_results[variant][
-                                                                         "transitions_with_problems"]]
-            threads_results[variant]["reached_marking"] = {x.name: y for x, y in
-                                                           threads_results[variant][
-                                                               "reached_marking"].items()}
-        del threads[variant]
+                threads_results[case_position] = transcribe_result(t, return_object_names=return_object_names)
 
-    for trace_variant in traces:
-        if trace_variant in threads_results:
-            t = threads_results[trace_variant]
-            aligned_traces.append(t)
+            if progress is not None:
+                progress.update()
+
+    for i in range(len(traces)):
+        aligned_traces.append(threads_results[i])
 
     # gracefully close progress bar
     if progress is not None:
