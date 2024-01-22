@@ -12,7 +12,7 @@ networkx
 numpy
 packaging
 pandas
-Pillow
+pillow
 pydotplus
 pyparsing
 python-dateutil
