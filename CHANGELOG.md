@@ -14,6 +14,8 @@
   * removed circular dependency on pm4py.util
 * 0da8c5f04f89dab8b9f5a3d31d8f5beb927e71d4
   * fixing OCEL 2.0 support
+* 7b2c8ffee70c94c1acce7c28a7b366d5ed95bb6b
+  * fixing TBR diagnostics computation
 
 ### Removed
 
