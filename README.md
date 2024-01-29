@@ -29,7 +29,7 @@ pm4py is also running on older Python environments with different requirements s
 pm4py depends on some other Python packages, with different levels of importance:
 * *Essential requirements*: numpy, pandas, deprecation, networkx
 * *Normal requirements* (installed by default with the pm4py package, important for mainstream usage): graphviz, intervaltree, lxml, matplotlib, pydotplus, pytz, scipy, stringdist, tqdm
-* *Optional requirements* (not installed by default): scikit-learn, pyemd, pyvis, jsonschema, polars, openai, pywin32, python-dateutil, requests, workalendar
+* *Optional requirements* (not installed by default): scikit-learn, pyemd, pyvis, jsonschema, polars, openai, pywin32, python-dateutil, requests, workalendar, pygetwindow, pynput
 
 ## Release Notes
 To track the incremental updates, please refer to the *CHANGELOG* file.
