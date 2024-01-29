@@ -60,7 +60,7 @@ def cluster_affinity_propagation(sna: SNA, parameters=None) -> Dict[str, List[st
         Dictionary that contains, for each cluster that has been identified,
         the list of resources of the cluster
     """
-    from sklearn.cluster import AffinityPropagation
+    from pm4py.util import ml_utils
 
     if parameters is None:
         parameters = {}
@@ -70,7 +70,7 @@ def cluster_affinity_propagation(sna: SNA, parameters=None) -> Dict[str, List[st
     for c, w in sna.connections.items():
         matrix[originators.index(c[0]), originators.index(c[1])] = w
 
-    affinity_propagation = AffinityPropagation(**parameters)
+    affinity_propagation = ml_utils.AffinityPropagation(**parameters)
     affinity_propagation.fit(matrix)
 
     clusters = affinity_propagation.predict(matrix)

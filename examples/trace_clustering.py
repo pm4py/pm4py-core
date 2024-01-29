@@ -7,8 +7,8 @@ def execute_script():
     dataframe = pm4py.read_xes(os.path.join("..", "tests", "input_data", "receipt.xes"), return_legacy_log_object=True)
 
     # define a K-Means with 3 clusters
-    from sklearn.cluster import KMeans
-    clusterer = KMeans(n_clusters=3, random_state=0, n_init="auto")
+    from pm4py.util import ml_utils
+    clusterer = ml_utils.KMeans(n_clusters=3, random_state=0, n_init="auto")
 
     for clust_log in pm4py.cluster_log(dataframe, sklearn_clusterer=clusterer):
         print(clust_log)
