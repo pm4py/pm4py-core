@@ -1,5 +1,4 @@
-import networkx as nx
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, nx_utils
 from enum import Enum
 from pm4py.objects.petri_net.utils import petri_utils
 import copy
@@ -332,7 +331,7 @@ def step_2(woflan_object, return_asap_when_unsound=False):
         :param still_need_to_discover: set of places and transition that are not fully added to graph
         :return:
         """
-        G = nx.DiGraph()
+        G = nx_utils.DiGraph()
         while len(still_need_to_discover) > 0:
             element = still_need_to_discover.pop()
             G.add_node(element.name)
@@ -352,7 +351,7 @@ def step_2(woflan_object, return_asap_when_unsound=False):
         return False
     to_discover = woflan_object.get_s_c_net().places | woflan_object.get_s_c_net().transitions
     graph = transform_petri_net_into_regular_graph(to_discover)
-    if not nx.algorithms.components.is_strongly_connected(graph):
+    if not nx_utils.is_strongly_connected(graph):
         woflan_object.diagnostic_messages.append('Petri Net is a not a worflow net.')
         if woflan_object.print_diagnostics:
             print('Petri Net is a not a worflow net.')
@@ -508,7 +507,7 @@ def step_10(woflan_object, return_asap_when_unsound=False):
 def step_11(woflan_object, return_asap_when_unsound=False):
     woflan_object.set_r_g_s_c(
         reachability_graph(woflan_object.get_s_c_net(), woflan_object.get_initial_marking(), woflan_object.get_net()))
-    if nx.is_strongly_connected(woflan_object.get_r_g_s_c()):
+    if nx_utils.is_strongly_connected(woflan_object.get_r_g_s_c()):
         woflan_object.diagnostic_messages.append('All tasks are live.')
         if woflan_object.print_diagnostics:
             print('All tasks are live.')
@@ -582,10 +581,10 @@ def compute_non_live_sequences(woflan_object):
     # red nodes are those from which the final marking is not reachable
     red_nodes = []
     for node in woflan_object.get_r_g().nodes:
-        if not nx.has_path(woflan_object.get_r_g(), node, sucessfull_terminate_state):
+        if not nx_utils.has_path(woflan_object.get_r_g(), node, sucessfull_terminate_state):
             red_nodes.append(node)
     # Compute directed spanning tree
-    spanning_tree = nx.algorithms.tree.Edmonds(woflan_object.get_r_g()).find_optimum()
+    spanning_tree = nx_utils.Edmonds(woflan_object.get_r_g()).find_optimum()
     queue = set()
     paths = {}
     # root node
@@ -636,10 +635,10 @@ def compute_unbounded_sequences(woflan_object):
     for node in woflan_object.get_restricted_coverability_tree().nodes:
         add_to_green = True
         for marking in infinite_markings:
-            if nx.has_path(woflan_object.get_restricted_coverability_tree(), node, marking):
+            if nx_utils.has_path(woflan_object.get_restricted_coverability_tree(), node, marking):
                 add_to_green = False
         for marking in larger_markings:
-            if nx.has_path(woflan_object.get_restricted_coverability_tree(), node, marking):
+            if nx_utils.has_path(woflan_object.get_restricted_coverability_tree(), node, marking):
                 add_to_green = False
         if add_to_green:
             green_markings.append(node)
@@ -647,7 +646,7 @@ def compute_unbounded_sequences(woflan_object):
     for node in woflan_object.get_restricted_coverability_tree().nodes:
         add_to_red = True
         for node_green in green_markings:
-            if nx.has_path(woflan_object.get_restricted_coverability_tree(), node, node_green):
+            if nx_utils.has_path(woflan_object.get_restricted_coverability_tree(), node, node_green):
                 add_to_red = False
                 break
         if add_to_red:

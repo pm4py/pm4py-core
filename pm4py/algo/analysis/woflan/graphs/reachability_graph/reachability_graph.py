@@ -1,4 +1,4 @@
-import networkx as nx
+from pm4py.util import nx_utils
 import numpy as np
 from pm4py.algo.analysis.woflan.graphs import utility as helper
 
@@ -16,7 +16,7 @@ def apply(net, initial_marking, original_net=None):
     req_dict = helper.compute_firing_requirement(net)
     look_up_indices = {}
     j = 0
-    reachability_graph = nx.MultiDiGraph()
+    reachability_graph = nx_utils.MultiDiGraph()
     reachability_graph.add_node(j, marking=initial_marking)
 
     working_set = set()

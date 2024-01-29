@@ -1,6 +1,7 @@
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.petri_net.utils import reachability_graph
 from typing import Optional, Dict, Any
+from pm4py.util import nx_utils
 
 
 def apply(petri_net: PetriNet, im: Optional[Marking] = None, parameters: Optional[Dict[Any, Any]] = None) -> float:
@@ -23,8 +24,6 @@ def apply(petri_net: PetriNet, im: Optional[Marking] = None, parameters: Optiona
     if parameters is None:
         parameters = {}
 
-    import networkx as nx
-
     if im is None:
         # if not provided, try to reconstruct the initial marking by taking the places with empty preset
         im = Marking()
@@ -34,7 +33,7 @@ def apply(petri_net: PetriNet, im: Optional[Marking] = None, parameters: Optiona
 
     reach_graph = reachability_graph.construct_reachability_graph(petri_net, im, use_trans_name=True)
 
-    G = nx.DiGraph()
+    G = nx_utils.DiGraph()
     for n in reach_graph.states:
         G.add_node(n.name)
 
@@ -42,6 +41,6 @@ def apply(petri_net: PetriNet, im: Optional[Marking] = None, parameters: Optiona
         for n2 in n.outgoing:
             G.add_edge(n, n2)
 
-    sg = list(nx.strongly_connected_components(G))
+    sg = list(nx_utils.strongly_connected_components(G))
 
     return len(G.edges) - len(G.nodes) + len(sg)

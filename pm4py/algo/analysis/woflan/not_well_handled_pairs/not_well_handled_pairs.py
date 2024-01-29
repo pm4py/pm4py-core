@@ -1,4 +1,5 @@
-import networkx as nx
+from pm4py.util import nx_utils
+
 
 def create_network_graph(net):
     """
@@ -7,7 +8,7 @@ def create_network_graph(net):
     :param net: PM4Py Petri Net representation
     :return: networkx.DiGraph(), bookkeeping dictionary
     """
-    graph = nx.DiGraph()
+    graph = nx_utils.DiGraph()
     places = sorted(list(net.places), key=lambda x: x.name)
     transitions = sorted(list(net.transitions), key=lambda x: x.name)
     nodes=set(places) | set(transitions)
@@ -41,8 +42,8 @@ def apply(net):
         for transition in net.transitions:
             p=booking[place]
             t=booking[transition]
-            if nx.maximum_flow_value(graph, p+1, t)>1:
+            if nx_utils.maximum_flow_value(graph, p+1, t)>1:
                 pairs.append((p+1,t))
-            if nx.maximum_flow_value(graph, t+1, p)>1:
+            if nx_utils.maximum_flow_value(graph, t+1, p)>1:
                 pairs.append((t+1,p))
     return pairs
