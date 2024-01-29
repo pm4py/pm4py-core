@@ -124,7 +124,7 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
             - feature names
             - classes
     """
-    from sklearn import tree
+    from pm4py.util import ml_utils
 
     if parameters is None:
         parameters = {}
@@ -171,8 +171,10 @@ def diagnose_from_trans_fitness(log, trans_fitness, parameters=None):
                         target.append(1)
                 classes.append("underfed")
 
+                data = np.array([np.array(x) for x in data])
+
                 target = np.asarray(target)
-                clf = tree.DecisionTreeClassifier(max_depth=7)
+                clf = ml_utils.DecisionTreeClassifier(max_depth=7)
                 clf.fit(data, target)
                 diagn_dict = {"clf": clf, "data": data, "feature_names": feature_names, "target": target,
                               "classes": classes}
@@ -207,7 +209,7 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
             - feature names
             - classes
     """
-    from sklearn import tree
+    from pm4py.util import ml_utils
 
     if parameters is None:
         parameters = {}
@@ -259,8 +261,10 @@ def diagnose_from_notexisting_activities(log, notexisting_activities_in_model, p
                     target.append(1)
             classes.append("containing")
 
+            data = np.array([np.array(x) for x in data])
+
             target = np.asarray(target)
-            clf = tree.DecisionTreeClassifier(max_depth=7)
+            clf = ml_utils.DecisionTreeClassifier(max_depth=7)
             clf.fit(data, target)
             diagn_dict = {"clf": clf, "data": data, "feature_names": feature_names, "target": target,
                           "classes": classes}

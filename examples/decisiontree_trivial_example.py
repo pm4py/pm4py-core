@@ -1,7 +1,6 @@
 import os
 
-from sklearn import tree
-
+from pm4py.util import ml_utils
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.objects.log.util import get_class_representation
 from pm4py.algo.transformation.log_to_features import algorithm as log_to_features
@@ -18,7 +17,7 @@ def execute_script():
     # gets classes representation by final concept:name value (end activity)
     target, classes = get_class_representation.get_class_representation_by_str_ev_attr_value_value(log, "concept:name")
     # mine the decision tree given 'data' and 'target'
-    clf = tree.DecisionTreeClassifier(max_depth=7)
+    clf = ml_utils.DecisionTreeClassifier(max_depth=7)
     clf.fit(data, target)
     # visualize the decision tree
     gviz = dt_vis.apply(clf, feature_names, classes, parameters={dt_vis.Variants.CLASSIC.value.Parameters.FORMAT: examples_conf.TARGET_IMG_FORMAT})
@@ -27,7 +26,7 @@ def execute_script():
     # gets classes representation by trace duration (threshold between the two classes = 200D)
     target, classes = get_class_representation.get_class_representation_by_trace_duration(log, 2 * 8640000)
     # mine the decision tree given 'data' and 'target'
-    clf = tree.DecisionTreeClassifier(max_depth=7)
+    clf = ml_utils.DecisionTreeClassifier(max_depth=7)
     clf.fit(data, target)
     # visualize the decision tree
     gviz = dt_vis.apply(clf, feature_names, classes, parameters={dt_vis.Variants.CLASSIC.value.Parameters.FORMAT: examples_conf.TARGET_IMG_FORMAT})

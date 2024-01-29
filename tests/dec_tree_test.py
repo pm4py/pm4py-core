@@ -8,7 +8,7 @@ from pm4py.algo.transformation.log_to_features import algorithm as log_to_featur
 
 class DecisionTreeTest(unittest.TestCase):
     def test_decisiontree_evattrvalue(self):
-        from sklearn import tree
+        from pm4py.util import ml_utils
         from pm4py.visualization.decisiontree import visualizer as dt_vis
 
         # to avoid static method warnings in tests,
@@ -21,14 +21,14 @@ class DecisionTreeTest(unittest.TestCase):
                                                                 "num_tr_attr": [], "num_ev_attr": ["amount"]})
         target, classes = get_class_representation.get_class_representation_by_str_ev_attr_value_value(log,
                                                                                                        "concept:name")
-        clf = tree.DecisionTreeClassifier(max_depth=7)
+        clf = ml_utils.DecisionTreeClassifier(max_depth=7)
         clf.fit(data, target)
         gviz = dt_vis.apply(clf, feature_names, classes,
                             parameters={dt_vis.Variants.CLASSIC.value.Parameters.FORMAT: "svg"})
         del gviz
 
     def test_decisiontree_traceduration(self):
-        from sklearn import tree
+        from pm4py.util import ml_utils
         from pm4py.visualization.decisiontree import visualizer as dt_vis
 
         # to avoid static method warnings in tests,
@@ -40,7 +40,7 @@ class DecisionTreeTest(unittest.TestCase):
                                                     parameters={"str_tr_attr": [], "str_ev_attr": ["concept:name"],
                                                                 "num_tr_attr": [], "num_ev_attr": ["amount"]})
         target, classes = get_class_representation.get_class_representation_by_trace_duration(log, 2 * 8640000)
-        clf = tree.DecisionTreeClassifier(max_depth=7)
+        clf = ml_utils.DecisionTreeClassifier(max_depth=7)
         clf.fit(data, target)
         gviz = dt_vis.apply(clf, feature_names, classes,
                             parameters={dt_vis.Variants.CLASSIC.value.Parameters.FORMAT: "svg"})
