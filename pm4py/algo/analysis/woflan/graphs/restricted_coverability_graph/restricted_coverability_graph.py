@@ -15,8 +15,8 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import numpy as np
-import networkx as nx
 from pm4py.algo.analysis.woflan.graphs import utility as helper
+from pm4py.util import nx_utils
 
 
 def construct_tree(net, initial_marking):
@@ -32,7 +32,7 @@ def construct_tree(net, initial_marking):
     req_dict = helper.compute_firing_requirement(net)
     look_up_indices = {}
     j = 0
-    coverability_graph = nx.DiGraph()
+    coverability_graph = nx_utils.DiGraph()
     coverability_graph.add_node(j, marking=initial_marking)
     look_up_indices[np.array2string(initial_marking)] = j
 
@@ -83,7 +83,7 @@ def check_for_smaller_marking(marking, coverability_graph, index, current_node, 
     for node in coverability_graph.nodes:
         if all(np.less_equal(coverability_graph.nodes[node]['marking'], marking[0])):
             if coverability_graph.nodes[node]['marking'][index] < marking[0][index]:
-                if nx.has_path(coverability_graph,
+                if nx_utils.has_path(coverability_graph,
                                look_up_indices[np.array2string(coverability_graph.nodes[node]['marking'])],
                                current_node):
                     return True

@@ -17,7 +17,8 @@
 import tempfile
 from pm4py.util import exec_utils
 from enum import Enum
-from sklearn import tree
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import export_graphviz
 from typing import Optional, Dict, Any, Union, List
 import graphviz
 
@@ -26,7 +27,7 @@ class Parameters(Enum):
     FORMAT = "format"
 
 
-def apply(clf: tree.DecisionTreeClassifier, feature_names: List[str], classes: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> graphviz.Source:
+def apply(clf: DecisionTreeClassifier, feature_names: List[str], classes: List[str], parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> graphviz.Source:
     """
     Apply the visualization of the decision tree
 
@@ -54,7 +55,7 @@ def apply(clf: tree.DecisionTreeClassifier, feature_names: List[str], classes: L
     filename = tempfile.NamedTemporaryFile(suffix='.gv')
     filename.close()
 
-    dot_data = tree.export_graphviz(clf, out_file=None,
+    dot_data = export_graphviz(clf, out_file=None,
                                     feature_names=feature_names,
                                     class_names=classes,
                                     filled=True, rounded=True,

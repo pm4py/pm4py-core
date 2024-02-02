@@ -16,7 +16,7 @@
 '''
 from typing import List, Dict
 from enum import Enum
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, nx_utils
 from pm4py.objects.org.sna.obj import SNA
 import numpy as np
 
@@ -46,15 +46,13 @@ def sna_result_to_nx_graph(sna: SNA, parameters=None):
     if parameters is None:
         parameters = {}
 
-    import networkx as nx
-
     weight_threshold = exec_utils.get_param_value(Parameters.WEIGHT_THRESHOLD, parameters, 0.0)
     directed = sna.is_directed
 
     if directed:
-        graph = nx.DiGraph()
+        graph = nx_utils.DiGraph()
     else:
-        graph = nx.Graph()
+        graph = nx_utils.Graph()
 
     graph.add_edges_from({c for c, w in sna.connections.items() if w >= weight_threshold})
 
@@ -78,7 +76,7 @@ def cluster_affinity_propagation(sna: SNA, parameters=None) -> Dict[str, List[st
         Dictionary that contains, for each cluster that has been identified,
         the list of resources of the cluster
     """
-    from sklearn.cluster import AffinityPropagation
+    from pm4py.util import ml_utils
 
     if parameters is None:
         parameters = {}
@@ -88,7 +86,7 @@ def cluster_affinity_propagation(sna: SNA, parameters=None) -> Dict[str, List[st
     for c, w in sna.connections.items():
         matrix[originators.index(c[0]), originators.index(c[1])] = w
 
-    affinity_propagation = AffinityPropagation(**parameters)
+    affinity_propagation = ml_utils.AffinityPropagation(**parameters)
     affinity_propagation.fit(matrix)
 
     clusters = affinity_propagation.predict(matrix)

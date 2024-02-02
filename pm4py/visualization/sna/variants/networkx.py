@@ -24,6 +24,8 @@ import matplotlib
 from pm4py.util import exec_utils, vis_utils
 from pm4py.objects.org.sna.obj import SNA
 from pm4py.util import constants
+from pm4py.util import nx_utils
+import networkx as nx
 
 
 class Parameters(Enum):
@@ -65,8 +67,6 @@ def apply(sna: SNA, parameters=None):
     temp_file_name
         Name of a temporary file where the visualization is placed
     """
-    import networkx as nx
-
     if parameters is None:
         parameters = {}
 
@@ -78,9 +78,9 @@ def apply(sna: SNA, parameters=None):
     temp_file_name = get_temp_file_name(format)
 
     if directed:
-        graph = nx.DiGraph()
+        graph = nx_utils.DiGraph()
     else:
-        graph = nx.Graph()
+        graph = nx_utils.Graph()
 
     connections = {x for x, y in sna.connections.items() if y >= weight_threshold}
 

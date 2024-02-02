@@ -20,8 +20,7 @@ from enum import Enum
 from typing import Optional, Dict, Any, Tuple, List
 
 import numpy as np
-import pandas as pd
-from sklearn.manifold import LocallyLinearEmbedding
+from pm4py.util import ml_utils
 
 from pm4py.objects.conversion.log import converter as log_converter
 from pm4py.objects.log.obj import EventLog
@@ -97,8 +96,9 @@ def apply(log: EventLog, parameters: Optional[Dict[str, Any]] = None) -> Tuple[L
 
     x = [trace[0][timestamp_key] for trace in log]
     data, feature_names = log_to_features.apply(log, parameters={"str_ev_attr": [activity_key], "str_evsucc_attr": [activity_key]})
+    data = np.array([np.array(x) for x in data])
 
-    tsne = LocallyLinearEmbedding(n_components=1, eigen_solver='dense')
+    tsne = ml_utils.LocallyLinearEmbedding(n_components=1, eigen_solver='dense')
     data = tsne.fit_transform(data)
     data = np.ndarray.flatten(data)
 

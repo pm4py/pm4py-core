@@ -20,6 +20,7 @@ from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
+import numpy as np
 from typing import Optional, Dict, Any, Generator, Union
 from copy import copy
 
@@ -53,8 +54,8 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     if parameters is None:
         parameters = {}
 
-    from sklearn.cluster import KMeans
-    clusterer = exec_utils.get_param_value(Parameters.SKLEARN_CLUSTERER, parameters, KMeans(n_clusters=2, random_state=0, n_init="auto"))
+    from pm4py.util import ml_utils
+    clusterer = exec_utils.get_param_value(Parameters.SKLEARN_CLUSTERER, parameters, ml_utils.KMeans(n_clusters=2, random_state=0, n_init="auto"))
 
     if "enable_activity_def_representation" not in parameters:
         parameters["enable_activity_def_representation"] = True
@@ -67,6 +68,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
 
     log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=conv_parameters)
     data, feature_names = features_extractor.apply(log, parameters=parameters)
+    data = np.array([np.array(x) for x in data])
 
     clusters = clusterer.fit_predict(data)
     max_clu = max(clusters)

@@ -15,7 +15,8 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import numpy as np
-import networkx as nx
+from pm4py.util import nx_utils
+
 
 def compute_incidence_matrix(net):
     """
@@ -137,7 +138,7 @@ def check_for_substates(mcg):
     :return: True, if there exist no substate; False otherwise
     """
     for node in mcg.nodes:
-        reachable_states = nx.descendants(mcg, node)
+        reachable_states = nx_utils.descendants(mcg, node)
         for state in reachable_states:
             if all(np.less(mcg.nodes[node]['marking'],mcg.nodes[state]['marking'])):
                 return False

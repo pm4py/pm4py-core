@@ -26,11 +26,95 @@ class Parameters(Enum):
     SHOW_PROGRESS_BAR = "show_progress_bar"
 
 
-def get_default_nx_enviroment():
+def get_default_nx_environment():
     return nx
 
 
-DEFAULT_NX_ENVIRONMENT = get_default_nx_enviroment()
+DEFAULT_NX_ENVIRONMENT = get_default_nx_environment()
+
+
+def Graph(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.Graph(*args, **kwargs)
+
+
+def DiGraph(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.DiGraph(*args, **kwargs)
+
+
+def MultiGraph(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.MultiGraph(*args, **kwargs)
+
+
+def MultiDiGraph(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.MultiDiGraph(*args, **kwargs)
+
+
+def ancestors(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.ancestors(*args, **kwargs)
+
+
+def descendants(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.descendants(*args, **kwargs)
+
+
+def connected_components(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.connected_components(*args, **kwargs)
+
+
+def bfs_tree(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.bfs_tree(*args, **kwargs)
+
+
+def contracted_nodes(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.contracted_nodes(*args, **kwargs)
+
+
+def shortest_path(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.shortest_path(*args, **kwargs)
+
+
+def strongly_connected_components(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.strongly_connected_components(*args, **kwargs)
+
+
+def has_path(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.has_path(*args, **kwargs)
+
+
+def is_strongly_connected(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.is_strongly_connected(*args, **kwargs)
+
+
+def all_pairs_shortest_path(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.all_pairs_shortest_path(*args, **kwargs)
+
+
+def all_pairs_dijkstra(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.all_pairs_dijkstra(*args, **kwargs)
+
+
+def find_cliques(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.find_cliques(*args, **kwargs)
+
+
+def degree_centrality(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.degree_centrality(*args, **kwargs)
+
+
+def greedy_modularity_communities(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.algorithms.community.greedy_modularity_communities(*args, **kwargs)
+
+
+def maximum_flow_value(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.maximum_flow_value(*args, **kwargs)
+
+
+def minimum_weight_full_matching(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.bipartite.minimum_weight_full_matching(*args, **kwargs)
+
+
+def Edmonds(*args, **kwargs):
+    return DEFAULT_NX_ENVIRONMENT.algorithms.tree.Edmonds(*args, **kwargs)
 
 
 def __format_attrs(attributes0: Dict[str, Any]) -> Dict[str, Any]:
@@ -154,7 +238,7 @@ def neo4j_download(session, parameters: Optional[Dict[Any, Any]] = None) -> nx.D
     edges = session.run("MATCH (n)-[r]->(m) RETURN n, r, m")
     edges = [(edge["n"]["id"], edge["m"]["id"], dict(edge["r"])) for edge in edges]
 
-    nx_graph = nx.DiGraph()
+    nx_graph = DiGraph()
 
     for n in nodes:
         node_id = n["id"]

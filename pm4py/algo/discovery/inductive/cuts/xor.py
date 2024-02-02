@@ -18,7 +18,7 @@ from abc import ABC
 from collections import Counter
 from typing import Optional, List, Collection, Any, Generic, Dict
 
-import networkx as nx
+from pm4py.util import nx_utils
 
 from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
 from pm4py.algo.discovery.inductive.dtypes.im_dfg import InductiveDFG
@@ -48,7 +48,7 @@ class ExclusiveChoiceCut(Cut[T], ABC, Generic[T]):
         '''
         nx_dfg = dfu.as_nx_graph(obj.dfg)
         nx_und = nx_dfg.to_undirected()
-        conn_comps = [nx_und.subgraph(c).copy() for c in nx.connected_components(nx_und)]
+        conn_comps = [nx_und.subgraph(c).copy() for c in nx_utils.connected_components(nx_und)]
         if len(conn_comps) > 1:
             cuts = list()
             for comp in conn_comps:

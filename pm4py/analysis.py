@@ -360,6 +360,40 @@ def maximal_decomposition(net: PetriNet, im: Marking, fm: Marking) -> List[Tuple
     return decompose(net, im, fm)
 
 
+def simplicity_petri_net(net: PetriNet, im: Marking, fm: Marking, variant: Optional[str] = "arc_degree") -> float:
+    """
+    Computes the simplicity metric for a given Petri net model.
+
+    The three available approaches are:
+    - Arc degree simplicity: described in the paper     Vázquez-Barreiros, Borja, Manuel Mucientes, and Manuel Lama. "ProDiGen: Mining complete, precise and minimal structure process models with a genetic algorithm." Information Sciences 294 (2015): 315-333.
+    - Extended cardoso metric: described in the paper      "Complexity Metrics for Workflow Nets" Lassen, Kristian Bisgaard, and Wil MP van der Aalst
+    - Extended cyclomatic metric: described in the paper       "Complexity Metrics for Workflow Nets" Lassen, Kristian Bisgaard, and Wil MP van der Aalst
+
+
+    :param net: petri net
+    :param im: initial marking
+    :param fm: final marking
+    :param variant: variant to be used ('arc_degree', 'extended_cardoso', 'extended_cyclomatic')
+    :rtype: ``float``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        simplicity = pm4py.simplicity_petri_net(net, im, fm, variant='arc_degree')
+    """
+    if variant == "arc_degree":
+        from pm4py.algo.evaluation.simplicity.variants import arc_degree
+        return arc_degree.apply(net)
+    elif variant == "extended_cardoso":
+        from pm4py.algo.evaluation.simplicity.variants import extended_cardoso
+        return extended_cardoso.apply(net)
+    elif variant == "extended_cyclomatic":
+        from pm4py.algo.evaluation.simplicity.variants import extended_cyclomatic
+        return extended_cyclomatic.apply(net, im)
+
+
 def generate_marking(net: PetriNet, place_or_dct_places: Union[str, PetriNet.Place, Dict[str, int], Dict[PetriNet.Place, int]]) -> Marking:
     """
     Generate a marking for a given Petri net

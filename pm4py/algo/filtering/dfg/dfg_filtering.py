@@ -15,11 +15,10 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import math
-import uuid
 from copy import deepcopy
 
 from pm4py.objects.dfg.utils import dfg_utils
-from pm4py.util import constants
+from pm4py.util import constants, nx_utils
 
 DEFAULT_NOISE_THRESH_DF = 0.16
 
@@ -48,10 +47,9 @@ def generate_nx_graph_from_dfg(dfg, start_activities, end_activities, activities
     end_node
         Identifier of the end node (connected to all the end activities)
     """
-    import networkx as nx
     start_node = '4d872045-8664-4e21-bd55-5da5edb096fe' # made static to avoid undeterminism
     end_node = 'b8136db7-b162-4763-bd68-4d5ccbcdff87' # made static to avoid undeterminism
-    G = nx.DiGraph()
+    G = nx_utils.DiGraph()
     G.add_node(start_node)
     G.add_node(end_node)
     for act in activities_count:
@@ -94,8 +92,6 @@ def filter_dfg_on_activities_percentage(dfg0, start_activities0, end_activities0
     activities_count
         (Filtered) activities of the DFG along with their count
     """
-    import networkx as nx
-
     # since the dictionaries/sets are modified, a deepcopy is the best option to ensure data integrity
     dfg = deepcopy(dfg0)
     start_activities = deepcopy(start_activities0)
@@ -116,12 +112,12 @@ def filter_dfg_on_activities_percentage(dfg0, start_activities0, end_activities0
         graph, start_node, end_node = generate_nx_graph_from_dfg(dfg, start_activities, end_activities,
                                                                  activities_count)
         for act in activities_to_possibly_discard:
-            new_graph = nx.DiGraph(graph)
+            new_graph = nx_utils.DiGraph(graph)
             # try to remove the node
             new_graph.remove_node(act)
             # check whether all the activities to keep can be reached from the start and can reach the end
-            reachable_from_start = set(nx.descendants(new_graph, start_node))
-            reachable_to_end = set(nx.ancestors(new_graph, end_node))
+            reachable_from_start = set(nx_utils.descendants(new_graph, start_node))
+            reachable_to_end = set(nx_utils.ancestors(new_graph, end_node))
             if min_set_activities_to_keep.issubset(reachable_from_start) and min_set_activities_to_keep.issubset(
                     reachable_to_end):
                 # if that is the case, try to elaborate the new DFG (without the activity)
@@ -140,8 +136,8 @@ def filter_dfg_on_activities_percentage(dfg0, start_activities0, end_activities0
         # at the end of the previous step, some nodes may be remaining that are not reachable from the start
         # or cannot reach the end. obviously the previous steps ensured that at least the activities in min_set_activities_to_keep
         # are connected
-        reachable_from_start = set(nx.descendants(graph, start_node))
-        reachable_to_end = set(nx.ancestors(graph, end_node))
+        reachable_from_start = set(nx_utils.descendants(graph, start_node))
+        reachable_to_end = set(nx_utils.ancestors(graph, end_node))
         reachable_start_end = reachable_from_start.intersection(reachable_to_end)
         activities_set = set(activities_count.keys())
         non_reachable_activities = activities_set.difference(reachable_start_end)
@@ -160,17 +156,15 @@ def filter_dfg_on_activities_percentage(dfg0, start_activities0, end_activities0
 
 def __filter_specified_paths(dfg, start_activities, end_activities, activities_count, graph, start_node, end_node,
                              discardable_edges, activities_not_to_discard):
-    import networkx as nx
-
     for edge in discardable_edges:
         if len(dfg) > 1:
-            new_graph = nx.DiGraph(graph)
+            new_graph = nx_utils.DiGraph(graph)
             # try to remove the edge
             new_graph.remove_edge(edge[0], edge[1])
 
             # check whether all the activities to keep can be reached from the start and can reach the end
-            reachable_from_start = set(nx.descendants(new_graph, start_node))
-            reachable_to_end = set(nx.ancestors(new_graph, end_node))
+            reachable_from_start = set(nx_utils.descendants(new_graph, start_node))
+            reachable_to_end = set(nx_utils.ancestors(new_graph, end_node))
 
             if activities_not_to_discard.issubset(reachable_from_start) and activities_not_to_discard.issubset(
                     reachable_to_end):
@@ -187,8 +181,8 @@ def __filter_specified_paths(dfg, start_activities, end_activities, activities_c
     # at the end of the previous step, some nodes may be remaining that are not reachable from the start
     # or cannot reach the end. obviously the previous steps ensured that at least the activities in min_set_activities_to_keep
     # are connected
-    reachable_from_start = set(nx.descendants(graph, start_node))
-    reachable_to_end = set(nx.ancestors(graph, end_node))
+    reachable_from_start = set(nx_utils.descendants(graph, start_node))
+    reachable_to_end = set(nx_utils.ancestors(graph, end_node))
     reachable_start_end = reachable_from_start.intersection(reachable_to_end)
     activities_set = set(activities_count.keys())
     non_reachable_activities = activities_set.difference(reachable_start_end)

@@ -20,7 +20,7 @@ from pm4py.visualization.common import save as gsave
 from enum import Enum
 from pm4py.util import exec_utils
 from pm4py.visualization.common.gview import serialize, serialize_dot
-from sklearn import tree
+from sklearn.tree import DecisionTreeClassifier
 from typing import Optional, Dict, Any, List
 import graphviz
 
@@ -32,7 +32,7 @@ class Variants(Enum):
 DEFAULT_VARIANT = Variants.CLASSIC
 
 
-def apply(clf: tree.DecisionTreeClassifier, feature_names: List[str], classes: List[str], parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT) -> graphviz.Source:
+def apply(clf: DecisionTreeClassifier, feature_names: List[str], classes: List[str], parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT) -> graphviz.Source:
     """
     Method to apply the visualization of the decision tree
 

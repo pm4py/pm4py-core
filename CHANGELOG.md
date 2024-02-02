@@ -1,12 +1,20 @@
 # Changelog of pm4py
 
 
-## pm4py 2.7.10 (2024.01.XX)
+## pm4py 2.7.10 (2024.01.29)
 
 ### Added
+* f5316b9e856e16a0a7a25c27f11b73546654c4e9
+  * methods for simplicity and generalization in the simplified interface
+* c874ba919de25a2a0a69bc1adb324a25484ddc07
+  * key/mouse events logger for Windows with screenshots recording
 
 ### Changed
-
+* 1c93795884140f27d5eae5d2eade1823c93a92d2
+  * refactoring Scikit-Learn usage throughout the project
+* bd1ac4fd04019b3022bfff55553e590aefbd21cb
+  * refactoring NetworkX usage throughout the project
+* 
 ### Deprecated
 
 ### Fixed

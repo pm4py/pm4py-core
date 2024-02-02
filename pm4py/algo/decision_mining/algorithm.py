@@ -18,6 +18,7 @@ import sys
 from copy import deepcopy, copy
 from enum import Enum
 from typing import Optional, Dict, Any, Union, Tuple
+import numpy as np
 
 from pm4py.algo.conformance.alignments.petri_net import algorithm as ali
 from pm4py.algo.conformance.alignments.petri_net.variants import state_equation_a_star as star
@@ -123,14 +124,15 @@ def get_decision_tree(log: Union[EventLog, pd.DataFrame], net: PetriNet, initial
     classes
         The classes
     """
-    from sklearn import tree
+    from pm4py.util import ml_utils
 
     if parameters is None:
         parameters = {}
 
     X, y, targets = apply(log, net, initial_marking, final_marking, decision_point=decision_point,
                           attributes=attributes, parameters=parameters)
-    dt = tree.DecisionTreeClassifier()
+
+    dt = ml_utils.DecisionTreeClassifier()
     dt = dt.fit(X, y)
     return dt, list(X.columns.values.tolist()), targets
 

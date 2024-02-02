@@ -20,7 +20,7 @@ import logging
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.streaming.algo.interface import StreamingAlgorithm
 from pm4py.objects.petri_net import semantics
-from pm4py.util import pandas_utils
+from pm4py.util import pandas_utils, nx_utils
 from copy import copy
 import sys
 
@@ -102,8 +102,7 @@ class TbrStreamingConformance(StreamingAlgorithm):
         dictio_spaths
             Dictionary of shortest paths
         """
-        import networkx as nx
-        G = nx.DiGraph()
+        G = nx_utils.DiGraph()
         for pl in self.net.places:
             G.add_node(pl)
         for tr in self.net.transitions:
@@ -115,7 +114,7 @@ class TbrStreamingConformance(StreamingAlgorithm):
             for a in tr.in_arcs:
                 source_place = a.source
                 G.add_edge(source_place, tr)
-        shortest_path = nx.all_pairs_shortest_path(G)
+        shortest_path = nx_utils.all_pairs_shortest_path(G)
         dictio_spaths = {}
         for el in shortest_path:
             if type(el[0]) is PetriNet.Place:

@@ -19,10 +19,8 @@ from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.conversion.log import converter as log_converter
 import pandas as pd
 from enum import Enum
-from pm4py.util import constants, xes_constants, exec_utils, pandas_utils
-import networkx as nx
+from pm4py.util import constants, xes_constants, exec_utils, pandas_utils, nx_utils
 from pm4py.util import regex
-from networkx.algorithms import community
 import stringdist
 
 
@@ -156,7 +154,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
                 segments_chars_mapping[segment[1]] = __get_tuple_char_mapping(segment[1], sharobj)
             dict_segments_indexes[activities[i][j]][segment].add(indexes[i][j])
 
-    G = nx.Graph()
+    G = nx_utils.Graph()
 
     # STEP 1
     # creates the activity graph measuring the normalized edit-distance between every couple of segments related
@@ -180,7 +178,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     # STEP 2
     # applies modularity maximization clustering and stores the results
     if G.edges:
-        communities = community.greedy_modularity_communities(G, weight="weight")
+        communities = nx_utils.greedy_modularity_communities(G, weight="weight")
     else:
         # when the graph contains no edges, avoid to apply clustering, instead
         # consider each node as standalone

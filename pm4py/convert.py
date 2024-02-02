@@ -31,7 +31,7 @@ from pm4py.objects.log.obj import EventLog, EventStream
 from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.petri_net.obj import PetriNet
-from pm4py.util import constants
+from pm4py.util import constants, nx_utils
 from pm4py.utils import get_properties, __event_log_deprecation_warning
 from pm4py.objects.transition_system.obj import TransitionSystem
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
@@ -410,8 +410,7 @@ def convert_petri_net_to_networkx(net: PetriNet, im: Marking, fm: Marking) -> nx
         net, im, fm = pm4py.read_pnml('tests/input_data/running-example.pnml')
         nx_digraph = pm4py.convert_petri_to_networkx(net, im, fm)
     """
-    import networkx as nx
-    G = nx.DiGraph()
+    G = nx_utils.DiGraph()
     for place in net.places:
         G.add_node(place.name, attr={"name": place.name, "is_in_im": place in im, "is_in_fm": place in fm, "type": "place"})
     for trans in net.transitions:

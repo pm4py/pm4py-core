@@ -401,6 +401,43 @@ def precision_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet
     return result
 
 
+def generalization_tbr(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, initial_marking: Marking,
+                                 final_marking: Marking, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> float:
+    """
+    Computes the generalization of the model (against the event log). The approach is described in the paper:
+
+    Buijs, Joos CAM, Boudewijn F. van Dongen, and Wil MP van der Aalst. "Quality dimensions in process discovery: The importance of fitness, precision, generalization and simplicity." International Journal of Cooperative Information Systems 23.01 (2014): 1440001.
+
+
+    :param log: event log
+    :param petri_net: petri net
+    :param initial_marking: initial marking
+    :param final_marking: final marking
+    :param multi_processing: boolean value that enables the multiprocessing
+    :param activity_key: attribute to be used for the activity
+    :param timestamp_key: attribute to be used for the timestamp
+    :param case_id_key: attribute to be used as case identifier
+    :rtype: ``float``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        net, im, fm = pm4py.discover_petri_net_inductive(dataframe, activity_key='concept:name', case_id_key='case:concept:name', timestamp_key='time:timestamp')
+        generalization_tbr = pm4py.generalization_tbr(dataframe, net, im, fm)
+    """
+    __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+
+    from pm4py.algo.evaluation.generalization import algorithm as generalization_evaluator
+    parameters = get_properties(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
+    result = generalization_evaluator.apply(log, petri_net, initial_marking, final_marking, variant=generalization_evaluator.Variants.GENERALIZATION_TOKEN, parameters=parameters)
+
+    return result
+
+
 def replay_prefix_tbr(prefix: List[str], net: PetriNet, im: Marking, fm: Marking, activity_key: str = "concept:name") -> Marking:
     """
     Replays a prefix (list of activities) on a given accepting Petri net, using Token-Based Replay.

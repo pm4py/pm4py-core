@@ -15,6 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from pm4py.objects.petri_net.obj import PetriNet
+from pm4py.util import nx_utils
 
 
 def create_networkx_undirected_graph(net, unique_source, unique_sink):
@@ -42,9 +43,7 @@ def create_networkx_undirected_graph(net, unique_source, unique_sink):
     inv_dictionary
         Correspondence between NetworkX nodes and Petri net entities
     """
-    import networkx as nx
-
-    graph = nx.Graph()
+    graph = nx_utils.Graph()
     dictionary = {}
     inv_dictionary = {}
     for place in net.places:
@@ -103,9 +102,7 @@ def create_networkx_directed_graph_ret_dict_both_ways(net, weight=None):
     inv_dictionary
         dict mapping NetworkX nodes to Petri net nodes
     """
-    import networkx as nx
-
-    graph = nx.DiGraph()
+    graph = nx_utils.DiGraph()
     dictionary = {}
     inv_dictionary = {}
     for place in net.places:

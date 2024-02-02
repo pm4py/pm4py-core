@@ -29,7 +29,7 @@ from pm4py.util import exec_utils
 from pm4py.util import variants_util
 
 from enum import Enum
-from pm4py.util import constants
+from pm4py.util import constants, nx_utils
 
 from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog
@@ -332,9 +332,7 @@ def recompose_alignment(cons_nets, cons_nets_result):
     alignment
         Recomposed alignment
     """
-    import networkx as nx
-
-    G0 = nx.DiGraph()
+    G0 = nx_utils.DiGraph()
     for i in range(len(cons_nets_result)):
         if cons_nets_result[i] is not None:
             G0.add_node(i)

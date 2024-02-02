@@ -18,13 +18,11 @@ import hashlib
 
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
-from pm4py.util import constants
+from pm4py.util import constants, nx_utils
 
 
 def get_graph_components(places, inv_trans, trans_dup_label, tmap):
-    import networkx as nx
-
-    G = nx.Graph()
+    G = nx_utils.Graph()
     for x in places:
         G.add_node(x)
     for x in inv_trans:
@@ -45,7 +43,7 @@ def get_graph_components(places, inv_trans, trans_dup_label, tmap):
             v2 = arc.target
             if v2 in all_inserted_val:
                 G.add_edge(v1.name, v2.name)
-    conn_comp = list(nx.algorithms.components.connected_components(G))
+    conn_comp = list(nx_utils.connected_components(G))
     return conn_comp
 
 

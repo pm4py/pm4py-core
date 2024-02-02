@@ -19,6 +19,7 @@ import copy
 from pm4py.objects.petri_net.utils import petri_utils as pn_utils
 from pm4py.objects.petri_net.obj import PetriNet
 from typing import Optional, Dict, Any
+from pm4py.util import nx_utils
 
 
 def _short_circuit_petri_net(net):
@@ -80,13 +81,11 @@ def apply(net: PetriNet, parameters: Optional[Dict[Any, Any]] = None) -> bool:
     if parameters is None:
         parameters = {}
 
-    import networkx as nx
-
     scnet = _short_circuit_petri_net(net)
     if scnet is None:
         return False
     nodes = scnet.transitions | scnet.places
-    graph = nx.DiGraph()
+    graph = nx_utils.DiGraph()
     while len(nodes) > 0:
         element = nodes.pop()
         graph.add_node(element.name)
@@ -96,7 +95,7 @@ def apply(net: PetriNet, parameters: Optional[Dict[Any, Any]] = None) -> bool:
         for out_arc in element.out_arcs:
             graph.add_node(out_arc.target.name)
             graph.add_edge(element.name, out_arc.target.name)
-    if nx.algorithms.components.is_strongly_connected(graph):
+    if nx_utils.is_strongly_connected(graph):
         return True
     else:
         return False

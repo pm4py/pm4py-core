@@ -23,7 +23,7 @@ from typing import Union, Set, List, Tuple, Collection, Any, Dict, Optional
 import pandas as pd
 
 from pm4py.objects.log.obj import EventLog, EventStream
-from pm4py.util import constants, xes_constants, pandas_utils
+from pm4py.util import constants, xes_constants, pandas_utils, nx_utils
 import warnings
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.utils import get_properties, __event_log_deprecation_warning
@@ -1141,15 +1141,14 @@ def filter_ocel_cc_object(ocel: OCEL, object_id: str, conn_comp: Optional[List[L
     """
     if conn_comp is None:
         from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
-        import networkx as nx
 
         g0 = object_interaction_graph.apply(ocel)
-        g = nx.Graph()
+        g = nx_utils.Graph()
 
         for edge in g0:
             g.add_edge(edge[0], edge[1])
 
-        conn_comp = list(nx.connected_components(g))
+        conn_comp = list(nx_utils.connected_components(g))
 
     for cc in conn_comp:
         if object_id in cc:
@@ -1185,15 +1184,14 @@ def filter_ocel_cc_length(ocel: OCEL, min_cc_length: int, max_cc_length: int) ->
         filtered_ocel = pm4py.filter_ocel_cc_length(ocel, 2, 10)
     """
     from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
-    import networkx as nx
 
     g0 = object_interaction_graph.apply(ocel)
-    g = nx.Graph()
+    g = nx_utils.Graph()
 
     for edge in g0:
         g.add_edge(edge[0], edge[1])
 
-    conn_comp = list(nx.connected_components(g))
+    conn_comp = list(nx_utils.connected_components(g))
     conn_comp = [x for x in conn_comp if min_cc_length <= len(x) <= max_cc_length]
     objs = [y for x in conn_comp for y in x]
 
@@ -1226,15 +1224,14 @@ def filter_ocel_cc_otype(ocel: OCEL, otype: str, positive: bool = True) -> OCEL:
         objs = set(ocel.objects[~(ocel.objects[ocel.object_type_column] == otype)][ocel.object_id_column])
 
     from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
-    import networkx as nx
 
     g0 = object_interaction_graph.apply(ocel)
-    g = nx.Graph()
+    g = nx_utils.Graph()
 
     for edge in g0:
         g.add_edge(edge[0], edge[1])
 
-    conn_comp = list(nx.connected_components(g))
+    conn_comp = list(nx_utils.connected_components(g))
     conn_comp = [x for x in conn_comp if len(set(x).intersection(objs)) > 0]
 
     objs = [y for x in conn_comp for y in x]
@@ -1265,15 +1262,14 @@ def filter_ocel_cc_activity(ocel: OCEL, activity: str) -> OCEL:
     objs = pandas_utils.format_unique(ocel.relations[ocel.relations[ocel.event_id_column].isin(evs)][ocel.object_id_column].unique())
 
     from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
-    import networkx as nx
 
     g0 = object_interaction_graph.apply(ocel)
-    g = nx.Graph()
+    g = nx_utils.Graph()
 
     for edge in g0:
         g.add_edge(edge[0], edge[1])
 
-    conn_comp = list(nx.connected_components(g))
+    conn_comp = list(nx_utils.connected_components(g))
     conn_comp = [x for x in conn_comp if len(set(x).intersection(objs)) > 0]
 
     objs = [y for x in conn_comp for y in x]

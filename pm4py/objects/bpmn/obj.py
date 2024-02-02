@@ -17,6 +17,7 @@
 import uuid
 from enum import Enum
 from collections import Counter
+from pm4py.util import nx_utils
 
 
 DEFAULT_PROCESS = str(uuid.uuid4())
@@ -445,12 +446,10 @@ class BPMN(object):
             BPMN.Flow.__init__(self, source, target, id=id, name=name, process=process)
 
     def __init__(self, process_id=None, name="", nodes=None, flows=None):
-        import networkx as nx
-
         self.__process_id = str(uuid.uuid4()) if process_id == None else process_id
 
         self.__name = name
-        self.__graph = nx.MultiDiGraph()
+        self.__graph = nx_utils.MultiDiGraph()
         self.__nodes = set() if nodes is None else nodes
         self.__flows = set() if flows is None else flows
         self.__layout = BPMNLayout()

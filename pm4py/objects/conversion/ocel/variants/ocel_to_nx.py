@@ -17,9 +17,8 @@
 
 from enum import Enum
 from pm4py.objects.ocel.obj import OCEL
-import networkx as nx
 from typing import Optional, Dict, Any
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, nx_utils
 from pm4py.objects.conversion.log.variants import to_event_stream
 from copy import copy
 
@@ -29,7 +28,7 @@ class Parameters(Enum):
     INCLUDE_OBJECT_CHANGES = "include_object_changes"
 
 
-def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> nx.DiGraph:
+def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     """
     Converts an OCEL to a NetworkX DiGraph object.
     The nodes are the events and objects of the OCEL.
@@ -56,7 +55,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> nx.DiGraph
     include_df = exec_utils.get_param_value(Parameters.INCLUDE_DF, parameters, True)
     include_object_changes = exec_utils.get_param_value(Parameters.INCLUDE_OBJECT_CHANGES, parameters, True)
 
-    G = nx.DiGraph()
+    G = nx_utils.DiGraph()
 
     stream = ocel.events.to_dict("records")
     stream = to_event_stream.__postprocess_stream(stream)

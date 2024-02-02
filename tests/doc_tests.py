@@ -617,8 +617,8 @@ class DocTests(unittest.TestCase):
         target, classes = get_class_representation.get_class_representation_by_str_ev_attr_value_value(log,
                                                                                                        "concept:name")
 
-        from sklearn import tree
-        clf = tree.DecisionTreeClassifier()
+        from pm4py.util import ml_utils
+        clf = ml_utils.DecisionTreeClassifier()
         clf.fit(data, target)
 
         from pm4py.visualization.decisiontree import visualizer as dectree_visualizer
@@ -640,8 +640,8 @@ class DocTests(unittest.TestCase):
         from pm4py.objects.log.util import get_class_representation
         target, classes = get_class_representation.get_class_representation_by_trace_duration(log, 2 * 8640000)
 
-        from sklearn import tree
-        clf = tree.DecisionTreeClassifier()
+        from pm4py.util import ml_utils
+        clf = ml_utils.DecisionTreeClassifier()
         clf.fit(data, target)
 
         from pm4py.visualization.decisiontree import visualizer as dectree_visualizer

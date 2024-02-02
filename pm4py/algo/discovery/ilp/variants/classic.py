@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import numpy as np
-import networkx as nx
+from pm4py.util import nx_utils
 
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
@@ -149,12 +149,12 @@ def apply(log0: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional
     activities = sorted(list(set(x[activity_key] for trace in log for x in trace)))
 
     # check if the causal relation satisfy the criteria for relaxed sound WF-nets
-    G = nx.DiGraph()
+    G = nx_utils.DiGraph()
     for ca in causal:
         G.add_edge(ca[0], ca[1])
 
-    desc_start = set(nx.descendants(G, artificial_start_activity))
-    anc_end = set(nx.ancestors(G, artificial_end_activity))
+    desc_start = set(nx_utils.descendants(G, artificial_start_activity))
+    anc_end = set(nx_utils.ancestors(G, artificial_end_activity))
 
     if artificial_start_activity in desc_start or artificial_end_activity in anc_end or len(desc_start.union({artificial_start_activity}).difference(activities)) > 0 or len(anc_end.union({artificial_end_activity}).difference(activities)) > 0:
         if constants.SHOW_INTERNAL_WARNINGS:

@@ -20,7 +20,7 @@ The minimal coverability graph for Petri nets
 from Alain Finkel
 """
 import numpy as np
-import networkx as nx
+from pm4py.util import nx_utils
 from pm4py.algo.analysis.woflan.graphs import utility as helper
 from copy import copy
 
@@ -53,14 +53,14 @@ def minimal_coverability_tree(net, initial_marking, original_net=None):
         return False
 
     def get_first_smaller_marking_on_path(n, m2):
-        path = nx.shortest_path(G, source=0, target=n)
+        path = nx_utils.shortest_path(G, source=0, target=n)
         for node in path:
             if all(np.less_equal(G.nodes[node]['marking'], m2)):
                 return node
         return None
 
     def remove_subtree(tree, n):
-        bfs_tree = nx.bfs_tree(tree, n)
+        bfs_tree = nx_utils.bfs_tree(tree, n)
         for edge in bfs_tree.edges:
             tree.remove_edge(edge[0], edge[1])
         for node in bfs_tree.nodes:
@@ -68,7 +68,7 @@ def minimal_coverability_tree(net, initial_marking, original_net=None):
                 tree.remove_node(node)
         return tree
 
-    G = nx.MultiDiGraph()
+    G = nx_utils.MultiDiGraph()
 
     incidence_matrix = helper.compute_incidence_matrix(net)
     firing_dict = helper.split_incidence_matrix(incidence_matrix, net)
@@ -94,7 +94,7 @@ def minimal_coverability_tree(net, initial_marking, original_net=None):
         elif is_m_greater_than_other(G.nodes[n]['marking'], processed_nodes):
             m2 = G.nodes[n]['marking'].copy()
             ancestor_bool = False
-            ancestors = sorted(list(nx.ancestors(G, n)))
+            ancestors = sorted(list(nx_utils.ancestors(G, n)))
             for ancestor in ancestors:
                 if is_m_greater_than_other(G.nodes[n]['marking'], [ancestor]):
                     i = 0
@@ -110,7 +110,7 @@ def minimal_coverability_tree(net, initial_marking, original_net=None):
             if n1 != None:
                 ancestor_bool = True
                 G.nodes[n1]['marking'] = m2.copy()
-                subtree = sorted(list(nx.bfs_tree(G, n1)))
+                subtree = sorted(list(nx_utils.bfs_tree(G, n1)))
                 for node in subtree:
                     if node in processed_nodes:
                         processed_nodes.remove(node)
@@ -123,7 +123,7 @@ def minimal_coverability_tree(net, initial_marking, original_net=None):
             for node in processed_nodes_copy:
                 if node in G.nodes:
                     if all(np.less_equal(G.nodes[node]['marking'], m2)):
-                        subtree = nx.bfs_tree(G, node)
+                        subtree = nx_utils.bfs_tree(G, node)
                         for node in subtree:
                             if node in processed_nodes:
                                 processed_nodes.remove(node)
@@ -171,7 +171,7 @@ def apply(net, initial_marking, original_net=None):
                 origin = same_labels[marking][0]
                 i = 1
                 while i < len(same_labels[marking]):
-                    G = nx.contracted_nodes(G, origin, same_labels[marking][i])
+                    G = nx_utils.contracted_nodes(G, origin, same_labels[marking][i])
                     i += 1
         return G
 

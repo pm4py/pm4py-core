@@ -99,7 +99,7 @@ DEFAULT_ARTIFICIAL_END_ACTIVITY = "■"
 
 DEFAULT_BUSINESS_HOURS_WORKCALENDAR = None
 
-SHOW_EVENT_LOG_DEPRECATION = True if get_param_from_env("PM4PY_SHOW_EVENT_LOG_DEPRECATION", "True").lower() == "true" else False
+SHOW_EVENT_LOG_DEPRECATION = True if get_param_from_env("PM4PY_SHOW_EVENT_LOG_DEPRECATION", "False").lower() == "true" else False
 SHOW_INTERNAL_WARNINGS = True if get_param_from_env("PM4PY_SHOW_INTERNAL_WARNINGS", "True").lower() == "true" else False
 
 TRIGGERED_DT_PARSING_WARNING = False
@@ -128,7 +128,7 @@ DEFAULT_BUSINESS_HOUR_SLOTS = [
 
 OPENAI_MAX_LEN = int(get_param_from_env("PM4PY_OPENAI_MAX_LEN", "10000"))
 OPENAI_API_KEY = get_param_from_env("PM4PY_OPENAI_API_KEY", None)
-OPENAI_DEFAULT_MODEL = get_param_from_env("PM4PY_OPENAI_DEFAULT_MODEL", "gpt-4-1106-preview")
+OPENAI_DEFAULT_MODEL = get_param_from_env("PM4PY_OPENAI_DEFAULT_MODEL", "gpt-4-turbo-preview")
 OPENAI_DEFAULT_VISION_MODEL = get_param_from_env("PM4PY_OPENAI_DEFAULT_VISION_MODEL", "gpt-4-vision-preview")
 OPENAI_DEFAULT_STT_MODEL = get_param_from_env("PM4PY_OPENAI_DEFAULT_STT_MODEL", "whisper-1")
 OPENAI_DEFAULT_TTS_MODEL = get_param_from_env("PM4PY_OPENAI_DEFAULT_TTS_MODEL", "tts-1")

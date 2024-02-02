@@ -16,6 +16,7 @@
 '''
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to, remove_transition
+from pm4py.util import nx_utils
 
 
 def remove_rendundant_invisible_transitions(net):
@@ -68,9 +69,7 @@ def find_bindings(and_measures):
     bindings
         Bindings
     """
-    import networkx as nx
-
-    G = nx.Graph()
+    G = nx_utils.Graph()
     allocated_nodes = set()
     for n1 in list(and_measures.keys()):
         if n1 not in allocated_nodes:
@@ -81,7 +80,7 @@ def find_bindings(and_measures):
                 allocated_nodes.add(n2)
                 G.add_node(n1)
             G.add_edge(n1, n2)
-    ret = list(nx.find_cliques(G))
+    ret = list(nx_utils.find_cliques(G))
     return ret
 
 

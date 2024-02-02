@@ -17,7 +17,7 @@
 from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any
 from pm4py.algo.transformation.ocel.graphs import object_interaction_graph
-from pm4py.util import exec_utils, pandas_utils
+from pm4py.util import exec_utils, pandas_utils, nx_utils
 from enum import Enum
 import sys
 
@@ -51,14 +51,12 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    import networkx as nx
-
     centrality_measure = exec_utils.get_param_value(Parameters.CENTRALITY_MEASURE, parameters, None)
     max_value_centrality = exec_utils.get_param_value(Parameters.MAX_VALUE_CENTRALITY, parameters, sys.maxsize)
     enable_prints = exec_utils.get_param_value(Parameters.ENABLE_PRINTS, parameters, False)
 
     g0 = object_interaction_graph.apply(ocel, parameters=parameters)
-    g = nx.Graph()
+    g = nx_utils.Graph()
 
     for edge in g0:
         g.add_edge(edge[0], edge[1])
@@ -77,7 +75,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
                 removed_nodes.add(n)
                 g.remove_node(n)
 
-    conn_comp = list(nx.connected_components(g))
+    conn_comp = list(nx_utils.connected_components(g))
 
     ret = []
 

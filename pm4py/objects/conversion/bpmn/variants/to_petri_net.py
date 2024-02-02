@@ -20,7 +20,7 @@ from enum import Enum
 from pm4py.objects.petri_net.utils import reduction
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, nx_utils
 
 
 class Parameters(Enum):
@@ -44,8 +44,7 @@ def build_digraph_from_petri_net(net):
     digraph
         Digraph
     """
-    import networkx as nx
-    graph = nx.DiGraph()
+    graph = nx_utils.DiGraph()
     for place in net.places:
         graph.add_node(place.name)
     for trans in net.transitions:
@@ -87,7 +86,6 @@ def apply(bpmn_graph, parameters=None):
     if parameters is None:
         parameters = {}
 
-    import networkx as nx
     from pm4py.objects.bpmn.obj import BPMN
 
     use_id = exec_utils.get_param_value(Parameters.USE_ID, parameters, False)
@@ -226,7 +224,7 @@ def apply(bpmn_graph, parameters=None):
         # this ensures soundness and the correct translation of the BPMN
         inv_places = {x.name: x for x in net.places}
         digraph = build_digraph_from_petri_net(net)
-        all_shortest_paths = dict(nx.all_pairs_dijkstra(digraph))
+        all_shortest_paths = dict(nx_utils.all_pairs_dijkstra(digraph))
         keys = list(all_shortest_paths.keys())
 
         for pl1 in inclusive_gateway_exit:

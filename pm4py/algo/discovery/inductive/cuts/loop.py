@@ -18,7 +18,7 @@ from abc import ABC
 from collections import Counter
 from typing import List, Optional, Collection, Any, Tuple, Generic, Dict
 
-import networkx as nx
+from pm4py.util import nx_utils
 
 from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
 from pm4py.algo.discovery.inductive.dtypes.im_dfg import InductiveDFG
@@ -151,7 +151,7 @@ class LoopCut(Cut[T], ABC, Generic[T]):
         [nxd.remove_node(a) for a in start_activities if nxd.has_node(a)]
         [nxd.remove_node(a) for a in end_activities if nxd.has_node(a)]
         nxu = nxd.to_undirected()
-        return [nxd.subgraph(c).copy() for c in nx.connected_components(nxu)]
+        return [nxd.subgraph(c).copy() for c in nx_utils.connected_components(nxu)]
 
 
 class LoopCutUVCL(LoopCut[IMDataStructureUVCL]):

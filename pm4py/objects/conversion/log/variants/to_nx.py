@@ -18,9 +18,8 @@
 from enum import Enum
 from pm4py.objects.log.obj import EventLog, EventStream
 import pandas as pd
-import networkx as nx
 from typing import Optional, Dict, Any, Union
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, nx_utils
 from pm4py.objects.conversion.log.variants import to_event_log
 
 
@@ -72,7 +71,7 @@ def apply(log_obj: Union[EventLog, EventStream, pd.DataFrame], parameters: Optio
     if other_case_attributes_as_nodes is None:
         other_case_attributes_as_nodes = []
 
-    nx_digraph = nx.DiGraph()
+    nx_digraph = nx_utils.DiGraph()
 
     for case in log_obj:
         case_id = "CASE="+str(case.attributes[case_id_attribute])

@@ -17,9 +17,7 @@
 
 from enum import Enum
 
-import networkx as nx
-
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, nx_utils
 from pm4py.objects.ocel.obj import OCEL
 from typing import Optional, Dict, Any, Collection
 import sys
@@ -62,7 +60,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Collection
     objects_start = ocel.relations.groupby(ocel.object_id_column)[ocel.event_timestamp].first().to_dict()
     objects = ocel.objects[ocel.objects[ocel.object_type_column] == object_type][ocel.object_id_column].to_numpy().tolist()
 
-    G = nx.DiGraph()
+    G = nx_utils.DiGraph()
     for obj in objects:
         G.add_node(obj)
     for edge in interaction_graph:
@@ -81,8 +79,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None) -> Collection
         if index >= max_objs:
             break
 
-        ancestors = nx.ancestors(G, obj)
-        descendants = nx.descendants(G, obj)
+        ancestors = nx_utils.ancestors(G, obj)
+        descendants = nx_utils.descendants(G, obj)
         overall_set = ancestors.union(descendants).union({obj})
 
         filtered_ocel = pm4py.filter_ocel_objects(ocel, overall_set)

@@ -17,7 +17,7 @@
 from collections import Counter
 from typing import Dict, Collection, Any, Tuple
 
-import networkx as nx
+from pm4py.util import nx_utils
 
 from pm4py.objects.dfg.obj import DFG
 
@@ -110,7 +110,7 @@ def get_transitive_relations(dfg: DFG) -> Tuple[Dict[Any, Collection[Any]], Dict
     activities that are able to reach the activity ('transitive pre set')
         second argument maps an activity on all other activities that it can reach (transitively) ('transitive post set')
     '''
-    G = nx.DiGraph()
+    G = nx_utils.DiGraph()
     alph = get_vertices(dfg)
 
     for act in alph:
@@ -123,8 +123,8 @@ def get_transitive_relations(dfg: DFG) -> Tuple[Dict[Any, Collection[Any]], Dict
     post = {}
 
     for a in alph:
-        pre[a] = nx.ancestors(G, a)
-        post[a] = nx.descendants(G, a)
+        pre[a] = nx_utils.ancestors(G, a)
+        post[a] = nx_utils.descendants(G, a)
 
     return pre, post
 
@@ -146,8 +146,8 @@ def get_vertex_frequencies(dfg: DFG) -> Dict[Any, int]:
     return c
 
 
-def as_nx_graph(dfg: DFG) -> nx.DiGraph:
-    nx_graph = nx.DiGraph()
+def as_nx_graph(dfg: DFG):
+    nx_graph = nx_utils.DiGraph()
     nx_graph.add_nodes_from(get_vertices(dfg))
     for a, b in dfg.graph:
         nx_graph.add_edge(a, b)
