@@ -77,17 +77,17 @@ def apply(exploded_ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
         feature_namess.append("@@ev_obj_pref_length")
         for i, ev in enumerate(ordered_events):
             if ev in prefixes:
-                datas[i].append(len(prefixes[ev]))
+                datas[i].append(float(len(prefixes[ev])))
             else:
-                datas[i].append(0)
+                datas[i].append(0.0)
 
     if enable_prefix_timediff:
         feature_namess.append("@@ev_obj_pref_timediff")
         for i, ev in enumerate(ordered_events):
             if ev in prefixes:
-                datas[i].append(evid_timest_map[ev] - evid_timest_map[prefixes[ev][0]])
+                datas[i].append(float(evid_timest_map[ev] - evid_timest_map[prefixes[ev][0]]))
             else:
-                datas[i].append(0)
+                datas[i].append(0.0)
 
     if enable_prefix_1h_encoding:
         for act in all_activities:
@@ -98,7 +98,7 @@ def apply(exploded_ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
                 pref_activities = Counter([evid_act_map[x] for x in prefixes[ev]])
             arr = []
             for act in all_activities:
-                arr.append(pref_activities[act])
+                arr.append(float(pref_activities[act]))
             datas[i] = datas[i] + arr
 
     return datas, feature_namess
