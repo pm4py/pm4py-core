@@ -34,6 +34,61 @@ class POWL(ProcessTree):
     def simplify(self) -> "POWL":
         return self
 
+    def validate_partial_orders(self):
+        if isinstance(self, StrictPartialOrder):
+            if not self.order.is_irreflexive():
+                raise Exception("The irreflexivity of the partial order is violated!")
+            if not self.order.is_transitive():
+                raise Exception("The transitivity of the partial order is violated!")
+        if hasattr(self, 'children'):
+            for child in self.children:
+                child.validate_partial_orders()
+
+    def validate_partial_orders_with_missing_transitive_edges(self):
+        if isinstance(self, StrictPartialOrder):
+            if not self.order.is_irreflexive():
+                raise Exception("The irreflexivity of the partial order is violated!")
+            if not self.order.is_transitive():
+                self.order.add_transitive_edges()
+                if not self.order.is_irreflexive():
+                    raise Exception("The transitive closure of the provided relation violates irreflexivity!")
+        if hasattr(self, 'children'):
+            for child in self.children:
+                child.validate_partial_orders_with_missing_transitive_edges()
+
+    def validate_unique_transitions(self) -> TList[Union["Transition", "SilentTransition"]]:
+        def _find_duplicates(lst):
+            counts = {}
+            duplicates = []
+            for item in lst:
+                if item in counts:
+                    counts[item] += 1
+                    if counts[item] == 2:
+                        duplicates.append(item)
+                else:
+                    counts[item] = 1
+            return duplicates
+
+        def _collect_leaves(node: "POWL"):
+            if isinstance(node, Transition) or isinstance(node, SilentTransition):
+                return [node]
+
+            elif hasattr(node, 'children'):
+                leaves = []
+                for child in node.children:
+                    leaves = leaves + _collect_leaves(child)
+                return leaves
+            else:
+                raise Exception(
+                    "Unknown model type! The following model is not a transition and has no children: " + str(node))
+
+        transitions = _collect_leaves(self)
+        duplicate_transitions = _find_duplicates(transitions)
+        if len(duplicate_transitions) > 0:
+            raise Exception("Each of the following transitions occurs in multiple submodels: "
+                            + str([t.label if t.label else "silent transition" for t in duplicate_transitions]))
+        return transitions
+
     @staticmethod
     def model_description() -> str:
         descr = """A partially ordered workflow language (POWL) is a partially ordered graph representation of a process, extended with control-flow operators for modeling choice and loop structures. There are four types of POWL models:
@@ -245,6 +300,9 @@ class StrictPartialOrder(POWL):
                         res.partial_order.add_edge(node_1, node_2)
         return res
 
+    def add_edge(self, source, target):
+        return self.order.add_edge(source, target)
+
 
 class Sequence(StrictPartialOrder):
 
@@ -257,6 +315,14 @@ class Sequence(StrictPartialOrder):
 
 class OperatorPOWL(POWL):
     def __init__(self, operator: Operator, children: TList[POWL]) -> None:
+        if operator is Operator.XOR:
+            if len(children) < 2:
+                raise Exception("Cannot create a choice of less than 2 submodels!")
+        elif operator is Operator.LOOP:
+            if len(children) != 2:
+                raise Exception("Only loops of length 2 are supported!")
+        else:
+            raise Exception("Unsupported Operator!")
         super().__init__()
         self.operator = operator
         self.children = children

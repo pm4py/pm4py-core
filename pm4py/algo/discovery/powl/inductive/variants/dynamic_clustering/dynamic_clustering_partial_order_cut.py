@@ -132,7 +132,7 @@ class DynamicClusteringPartialOrderCut(Cut[T], ABC, Generic[T]):
 
     @classmethod
     def operator(cls, parameters: Optional[Dict[str, Any]] = None) -> StrictPartialOrder:
-        return StrictPartialOrder([])
+        raise Exception("This function should not be called!")
 
     @classmethod
     def holds(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[BinaryRelation]:

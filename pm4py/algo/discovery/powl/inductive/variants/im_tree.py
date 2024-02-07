@@ -30,7 +30,7 @@ from pm4py.algo.discovery.powl.inductive.utils.filtering import FILTERING_TYPE, 
     DEFAULT_FILTERING_TYPE
 from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_varaints import POWLDiscoveryVariant
 
-from pm4py.objects.powl.obj import POWL, StrictPartialOrder, Sequence
+from pm4py.objects.powl.obj import POWL, StrictPartialOrder, Sequence, OperatorPOWL
 
 T = TypeVar('T', bound=IMDataStructureUVCL)
 
@@ -105,5 +105,5 @@ class IMBasePOWL(Generic[T], InductiveMinerFramework[T]):
                     powl_new.order.add_edge(children[j], children[i])
             return powl_new
         else:
-            powl.children.extend(children)
-            return powl
+            new_powl = OperatorPOWL(operator=powl.operator, children=children)
+            return new_powl

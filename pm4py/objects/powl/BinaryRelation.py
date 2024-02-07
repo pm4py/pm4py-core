@@ -50,7 +50,7 @@ class BinaryRelation:
             i = self._map_node_to_id[source]
             j = self._map_node_to_id[target]
         except Exception:
-            raise Exception("Unable to create edge! Invalid  source or target!")
+            raise Exception("Unable to add edge! Source or target not found!")
         else:
             self._edges[i][j] = True
 

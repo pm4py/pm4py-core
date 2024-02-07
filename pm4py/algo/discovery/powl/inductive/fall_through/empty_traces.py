@@ -35,7 +35,7 @@ class POWLEmptyTracesUVCL(EmptyTracesUVCL):
         if cls.holds(obj, parameters):
             data_structure = copy(obj.data_structure)
             del data_structure[()]
-            return OperatorPOWL(Operator.XOR, []), [IMDataStructureUVCL(Counter()),
-                                                        IMDataStructureUVCL(data_structure)]
+            children = [IMDataStructureUVCL(Counter()), IMDataStructureUVCL(data_structure)]
+            return OperatorPOWL(Operator.XOR, children), children
         else:
             return None

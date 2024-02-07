@@ -29,7 +29,7 @@ class POWLSequenceCut(SequenceCut, ABC, Generic[T]):
 
     @classmethod
     def operator(cls, parameters: Optional[Dict[str, Any]] = None) -> Sequence:
-        return Sequence([])
+        raise Exception("This function should not be called!")
 
     @classmethod
     def apply(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[Tuple[Sequence, List[T]]]:

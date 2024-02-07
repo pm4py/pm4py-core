@@ -38,6 +38,7 @@ class POWLFlowerModelUVCL(FlowerModelUVCL):
         uvcl_redo = UVCL()
         im_uvcl_do = IMDataStructureUVCL(uvcl_do)
         im_uvcl_redo = IMDataStructureUVCL(uvcl_redo)
-        return OperatorPOWL(Operator.LOOP, []), [im_uvcl_do, im_uvcl_redo]
+        children = [im_uvcl_do, im_uvcl_redo]
+        return OperatorPOWL(Operator.LOOP, children), children
 
 

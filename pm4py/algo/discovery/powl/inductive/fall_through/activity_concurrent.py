@@ -39,4 +39,5 @@ class POWLActivityConcurrentUVCL(ActivityConcurrentUVCL):
         for t in log:
             l_a.update({tuple(filter(lambda e: e == candidate, t)): log[t]})
             l_other.update({tuple(filter(lambda e: e != candidate, t)): log[t]})
-        return StrictPartialOrder([]), [IMDataStructureUVCL(l_a), IMDataStructureUVCL(l_other)]
+        children = [IMDataStructureUVCL(l_a), IMDataStructureUVCL(l_other)]
+        return StrictPartialOrder(children), children
