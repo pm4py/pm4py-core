@@ -13,6 +13,10 @@
   * bug fix POWL package
 * d36d0d2ff8133bc979638b7f3405f96225e06ced
   * bug fix discover_dfg_clean
+* 64ce3341d40c073f274bdda9842fd92a0798a33f
+  * fixed typing of get_variants method
+* ffd0761e8f5490382b33de4fa8187f1ed80ce802
+  * fixed stochastic Petri net PNML importing
 
 ### Removed
 
