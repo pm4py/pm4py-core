@@ -209,7 +209,7 @@ def get_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute: st
         return ret
 
 
-def get_variants(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[Tuple[str], List[Trace]]:
+def get_variants(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[Dict[Tuple[str], List[Trace]], Dict[Tuple[str], int]]:
     """
     Gets the variants from the log
 
@@ -228,7 +228,7 @@ def get_variants(log: Union[EventLog, pd.DataFrame], activity_key: str = "concep
     return get_variants_as_tuples(log, activity_key=activity_key, timestamp_key=timestamp_key, case_id_key=case_id_key)
 
 
-def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Dict[Tuple[str], List[Trace]]:
+def get_variants_as_tuples(log: Union[EventLog, pd.DataFrame], activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[Dict[Tuple[str], List[Trace]], Dict[Tuple[str], int]]:
     """
     Gets the variants from the log (where the keys are tuples and not strings)
 

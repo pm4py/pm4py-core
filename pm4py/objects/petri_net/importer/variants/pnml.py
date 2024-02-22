@@ -240,6 +240,9 @@ def import_net_from_xml_object(root, parameters=None):
                                     priority = int(value)
                                 elif key == "weight":
                                     weight = float(value)
+                                elif key == "invisible":
+                                    if value.lower() == "true":
+                                        trans_visible = False
 
                             from pm4py.objects.random_variables.random_variable import RandomVariable
 
