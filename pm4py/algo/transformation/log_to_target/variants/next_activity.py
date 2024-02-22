@@ -9,12 +9,13 @@ from pm4py.objects.conversion.log import converter as log_converter
 class Parameters(Enum):
     ACTIVITIES = "activities"
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    ENABLE_PADDING = "enable_padding"
 
 
 def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None) -> Tuple[List[List[List[int]]], List[str]]:
     """
     Returns a list of matrixes (one for every case).
-    Every matrix contains as many rows as many events are contained in the case,
+    Every matrix contains as many rows as many events are contained in the case (an automatic padding option is also available),
     and as many columns as many distinct activities are in the log.
 
     The corresponding activity to the given event is assigned to the value 1;
@@ -28,6 +29,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
         Parameters of the algorithm, including:
         - Parameters.ACTIVITIES => list of activities to consider
         - Parameters.ACTIVITY_KEY => attribute that should be used as activity
+        - Parameters.ENABLE_PADDING => enables the padding (the length of cases is normalized)
 
     Returns
     -------------
@@ -40,18 +42,23 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
         parameters = {}
 
     log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+    max_case_length = max([len(x) for x in log])
 
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     activities = exec_utils.get_param_value(Parameters.ACTIVITIES, parameters, sorted(list(set(y[activity_key] for x in log for y in x))))
+    enable_padding = exec_utils.get_param_value(Parameters.ENABLE_PADDING, parameters, False)
 
     target = []
     for trace in log:
         target.append([])
         for i in range(len(trace)):
-            target[-1].append([0] * len(activities))
+            target[-1].append([0.0] * len(activities))
             if i < len(trace) - 1:
                 act = trace[i+1][activity_key]
                 if act in activities:
-                    target[-1][-1][activities.index(act)] = 1
+                    target[-1][-1][activities.index(act)] = 1.0
+        if enable_padding:
+            while len(target[-1]) < max_case_length:
+                target[-1].append([0.0] * len(activities))
 
     return target, activities
