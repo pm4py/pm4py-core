@@ -82,7 +82,7 @@ def parse_powl_model_string(powl_string, level=0) -> POWL:
 
     indented_str_list = [x.strip() for x in indented_str_list]
     indented_str_list = [x[:-1] if x and x[-1] == ',' else x for x in indented_str_list]
-    PO = POWL()
+    PO = None
     nodes = []
 
     if indented_str_list:
