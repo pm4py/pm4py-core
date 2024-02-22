@@ -1,5 +1,32 @@
 # Changelog of pm4py
 
+## pm4py 2.7.11 (2024.02.23)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+* c2278110acbbbf36e8fe5055e0b76f867e833da4
+  * bug fix POWL package
+* d36d0d2ff8133bc979638b7f3405f96225e06ced
+  * bug fix discover_dfg_clean
+* 64ce3341d40c073f274bdda9842fd92a0798a33f
+  * fixed typing of get_variants method
+* ffd0761e8f5490382b33de4fa8187f1ed80ce802
+  * fixed stochastic Petri net PNML importing
+
+### Removed
+
+### Other
+* c4d24d54013e2a18856af840ffbad7c76e86c371
+  81fa8017fbd25352fd87961bc4dcc1406c4e0dda
+  * Process tree to POWL utility
+
+---
+
 
 ## pm4py 2.7.10 (2024.01.29)
 
@@ -14,7 +41,7 @@
   * refactoring Scikit-Learn usage throughout the project
 * bd1ac4fd04019b3022bfff55553e590aefbd21cb
   * refactoring NetworkX usage throughout the project
-* 
+
 ### Deprecated
 
 ### Fixed
