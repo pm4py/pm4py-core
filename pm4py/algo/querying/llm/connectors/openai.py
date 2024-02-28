@@ -71,4 +71,8 @@ def apply(prompt: str, parameters: Optional[Dict[Any, Any]] = None) -> str:
 
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload).json()
 
+    if "error" in response:
+        # raise an exception when the request fails, with the provided message
+        raise Exception(response["error"]["message"])
+
     return response["choices"][0]["message"]["content"]

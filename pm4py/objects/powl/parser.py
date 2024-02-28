@@ -16,43 +16,8 @@
 '''
 from pm4py.objects.powl.obj import POWL, OperatorPOWL, StrictPartialOrder, SilentTransition, Transition
 from pm4py.objects.process_tree.obj import Operator as PTOperator
+from pm4py.util import hie_utils
 import re
-
-
-def __indent_powl_string_to_list_str(powl_str):
-    max_indent = 1
-    powl_str = powl_str.replace('\n', '').replace('\r', '').strip()
-    if powl_str.startswith('PO=') or powl_str.startswith('PO('):
-        max_indent = 2
-    if powl_str.startswith("'"):
-        max_indent = 0
-
-    indent_level = 0
-    list_strs = []
-    formatted_str = ""
-    for char in powl_str:
-        if char in '({':
-            formatted_str += char
-            indent_level += 1
-            if indent_level <= max_indent:
-                list_strs.append(formatted_str)
-                formatted_str = '\t' * indent_level
-        elif char in ')}':
-            indent_level -= 1
-            if indent_level < max_indent:
-                if formatted_str[-1] not in '({':
-                    list_strs.append(formatted_str)
-                    formatted_str = '\t' * indent_level
-            formatted_str += char
-        elif char == ',':
-            formatted_str += char
-            if indent_level <= max_indent:
-                list_strs.append(formatted_str)
-                formatted_str = '\t' * indent_level
-        else:
-            formatted_str += char
-    list_strs.append(formatted_str)
-    return list_strs
 
 
 def parse_powl_model_string(powl_string, level=0) -> POWL:
@@ -78,7 +43,14 @@ def parse_powl_model_string(powl_string, level=0) -> POWL:
     powl_model
         POWL model
     """
-    indented_str_list = __indent_powl_string_to_list_str(powl_string)
+    powl_string = powl_string.replace('\n', '').replace('\r', '').replace('\t', '').strip()
+    max_indent = 1
+    if powl_string.startswith('PO=') or powl_string.startswith('PO('):
+        max_indent = 2
+    if powl_string.startswith("'"):
+        max_indent = 0
+
+    indented_str_list = hie_utils.indent_representation(powl_string, max_indent=max_indent)
 
     indented_str_list = [x.strip() for x in indented_str_list]
     indented_str_list = [x[:-1] if x and x[-1] == ',' else x for x in indented_str_list]
