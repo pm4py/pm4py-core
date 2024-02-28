@@ -215,7 +215,7 @@ def filter_trace_attribute_values(log: Union[EventLog, pd.DataFrame], attribute_
         return attributes_filter.apply_trace_attribute(log, values, parameters=parameters)
 
 
-def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str], List[str]], retain: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[
+def filter_variants(log: Union[EventLog, pd.DataFrame], variants:  Union[Set[str], List[str], List[Tuple[str]]], retain: bool = True, activity_key: str = "concept:name", timestamp_key: str = "time:timestamp", case_id_key: str = "case:concept:name") -> Union[
     EventLog, pd.DataFrame]:
     """
     Filter a log on a specified set of variants
