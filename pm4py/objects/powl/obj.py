@@ -10,7 +10,10 @@ from abc import ABC, abstractmethod
 
 class POWL(ProcessTree, ABC):
     def to_string(self, indent=False, max_indent=sys.maxsize) -> str:
-        return self.__repr__()
+        model_string = self.__repr__()
+        if indent:
+            model_string = "\n".join(hie_utils.indent_representation(model_string, max_indent=max_indent))
+        return model_string
 
     def print(self) -> None:
         print(self.to_string())
