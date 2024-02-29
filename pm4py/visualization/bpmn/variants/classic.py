@@ -4,6 +4,8 @@ import tempfile
 from graphviz import Digraph
 from typing import Optional, Dict, Any
 from pm4py.objects.bpmn.obj import BPMN
+from pm4py.visualization.common import gview
+from pm4py.visualization.common import save as gsave
 from pm4py.util import constants
 import graphviz
 
@@ -82,3 +84,42 @@ def apply(bpmn_graph: BPMN, parameters: Optional[Dict[Any, Any]] = None) -> grap
 
     return viz
 
+
+def save(gviz: graphviz.Digraph, output_file_path: str, parameters=None):
+    """
+    Save the diagram
+
+    Parameters
+    -----------
+    gviz
+        GraphViz diagram
+    output_file_path
+        Path where the GraphViz output should be saved
+    """
+    gsave.save(gviz, output_file_path, parameters=parameters)
+    return ""
+
+
+def view(gviz: graphviz.Digraph, parameters=None):
+    """
+    View the diagram
+
+    Parameters
+    -----------
+    gviz
+        GraphViz diagram
+    """
+    return gview.view(gviz, parameters=parameters)
+
+
+def matplotlib_view(gviz: graphviz.Digraph, parameters=None):
+    """
+    Views the diagram using Matplotlib
+
+    Parameters
+    ---------------
+    gviz
+        Graphviz
+    """
+
+    return gview.matplotlib_view(gviz, parameters=parameters)
