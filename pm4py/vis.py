@@ -271,7 +271,7 @@ def save_vis_process_tree(tree: ProcessTree, file_path: str, bgcolor: str = "whi
     return pt_visualizer.save(gviz, file_path)
 
 
-def save_vis_bpmn(bpmn_graph: BPMN, file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, **kwargs):
+def save_vis_bpmn(bpmn_graph: BPMN, file_path: str, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, variant_str: str = "classic", **kwargs):
     """
     Saves the visualization of a BPMN graph
 
@@ -279,6 +279,7 @@ def save_vis_bpmn(bpmn_graph: BPMN, file_path: str, bgcolor: str = "white", rank
     :param file_path: Destination path
     :param bgcolor: Background color of the visualization (default: white)
     :param rankdir: sets the direction of the graph ("LR" for left-to-right; "TB" for top-to-bottom)
+    :param variant_str: variant of the visualization to be used ("classic" or "dagrejs")
 
     .. code-block:: python3
 
@@ -289,13 +290,19 @@ def save_vis_bpmn(bpmn_graph: BPMN, file_path: str, bgcolor: str = "white", rank
     """
     file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:].lower()
+
     from pm4py.visualization.bpmn import visualizer as bpmn_visualizer
-    parameters = bpmn_visualizer.Variants.CLASSIC.value.Parameters
-    gviz = bpmn_visualizer.apply(bpmn_graph, parameters={parameters.FORMAT: format, "bgcolor": bgcolor, "rankdir": rankdir})
-    return bpmn_visualizer.save(gviz, file_path)
+    variant = None
+    if variant_str == "classic":
+        variant = bpmn_visualizer.Variants.CLASSIC
+    elif variant_str == "dagrejs":
+        variant = bpmn_visualizer.Variants.DAGREJS
+
+    gviz = bpmn_visualizer.apply(bpmn_graph, variant=variant, parameters={"format": format, "bgcolor": bgcolor, "rankdir": rankdir})
+    return bpmn_visualizer.save(gviz, file_path, variant=variant)
 
 
-def view_bpmn(bpmn_graph: BPMN, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):
+def view_bpmn(bpmn_graph: BPMN, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ, variant_str: str = "classic"):
     """
     Views a BPMN graph
 
@@ -303,6 +310,7 @@ def view_bpmn(bpmn_graph: BPMN, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW
     :param format: Format of the visualization (if html is provided, GraphvizJS is used to render the visualization in an HTML page)
     :param bgcolor: Background color of the visualization (default: white)
     :param rankdir: sets the direction of the graph ("LR" for left-to-right; "TB" for top-to-bottom)
+    :param variant_str: variant of the visualization to be used ("classic" or "dagrejs")
 
     .. code-block:: python3
 
@@ -312,10 +320,16 @@ def view_bpmn(bpmn_graph: BPMN, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW
         pm4py.view_bpmn(bpmn_graph)
     """
     format = str(format).lower()
+
     from pm4py.visualization.bpmn import visualizer as bpmn_visualizer
-    parameters = bpmn_visualizer.Variants.CLASSIC.value.Parameters
-    gviz = bpmn_visualizer.apply(bpmn_graph, parameters={parameters.FORMAT: format, "bgcolor": bgcolor, "rankdir": rankdir})
-    bpmn_visualizer.view(gviz)
+    variant = None
+    if variant_str == "classic":
+        variant = bpmn_visualizer.Variants.CLASSIC
+    elif variant_str == "dagrejs":
+        variant = bpmn_visualizer.Variants.DAGREJS
+
+    gviz = bpmn_visualizer.apply(bpmn_graph, variant=variant, parameters={"format": format, "bgcolor": bgcolor, "rankdir": rankdir})
+    bpmn_visualizer.view(gviz, variant=variant)
 
 
 def view_heuristics_net(heu_net: HeuristicsNet, format: str = "png", bgcolor: str = "white"):
