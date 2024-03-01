@@ -14,14 +14,44 @@ pm4py.util.constants.SHOW_EVENT_LOG_DEPRECATION = False
 pm4py.util.constants.SHOW_INTERNAL_WARNINGS = False
 # pm4py.util.constants.DEFAULT_TIMESTAMP_PARSE_FORMAT = None
 
-enabled_tests = ["SimplifiedInterfaceTest", "SimplifiedInterface2Test", "DocTests", "RoleDetectionTest",
-                 "PassedTimeTest", "Pm4pyImportPackageTest", "XesImportExportTest", "CsvImportExportTest",
-                 "OtherPartsTests", "AlphaMinerTest", "InductiveMinerTest", "InductiveMinerTreeTest",
-                 "AlignmentTest", "DfgTests", "SnaTests", "PetriImportExportTest", "BPMNTests", "ETCTest",
-                 "DiagnDfConfChecking", "ProcessModelEvaluationTests", "DecisionTreeTest", "GraphsForming",
-                 "HeuMinerTest", "MainFactoriesTest", "AlgorithmTest", "LogFilteringTest",
-                 "DataframePrefilteringTest", "StatisticsLogTest", "StatisticsDfTest", "TransitionSystemTest",
-                 "ImpExpFromString", "WoflanTest", "OcelFilteringTest", "OcelDiscoveryTest", "LlmTest"]
+enabled_tests = [
+    "SimplifiedInterfaceTest",
+    "SimplifiedInterface2Test",
+    "DocTests",
+    "RoleDetectionTest",
+    "PassedTimeTest",
+    "Pm4pyImportPackageTest",
+    "XesImportExportTest",
+    "CsvImportExportTest",
+    "OtherPartsTests",
+    "AlphaMinerTest",
+    "InductiveMinerTest",
+    "InductiveMinerTreeTest",
+    "AlignmentTest",
+    "DfgTests",
+    "SnaTests",
+    "PetriImportExportTest",
+    "BPMNTests",
+    "ETCTest",
+    "DiagnDfConfChecking",
+    "ProcessModelEvaluationTests",
+    "DecisionTreeTest",
+    "GraphsForming",
+    "HeuMinerTest",
+    "MainFactoriesTest",
+    "AlgorithmTest",
+    "LogFilteringTest",
+    "DataframePrefilteringTest",
+    "StatisticsLogTest",
+    "StatisticsDfTest",
+    "TransitionSystemTest",
+    "ImpExpFromString",
+    "WoflanTest",
+    "OcelFilteringTest",
+    "OcelDiscoveryTest",
+    "LlmTest",
+    "XesCompositeAttTest",
+]
 
 loader = unittest.TestLoader()
 suite = unittest.TestSuite()
@@ -200,6 +230,11 @@ if "LlmTest" in enabled_tests:
     from tests.llm_test import LlmTest
 
     suite.addTests(loader.loadTestsFromTestCase(LlmTest))
+
+if "XesCompositeAttTest" in enabled_tests:
+    from tests.xes_composite_att_test import XesCompositeListAttributesTest
+
+    suite.addTests(loader.loadTestsFromTestCase(XesCompositeListAttributesTest))
 
 
 def main():
