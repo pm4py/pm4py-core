@@ -9,6 +9,8 @@
   * refactoring BPMN-GraphViz visualization method
 * c56bd55b83133d231f37ac8c89190efb440bb826
   * moving hierarchical models indentation to separate class
+* d865660c5370640b4c5c013239f6940f145d9e93
+  * refactoring log-to-OCEL
 
 ### Deprecated
 
