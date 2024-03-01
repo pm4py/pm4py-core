@@ -17,8 +17,6 @@
 from pm4py.visualization.bpmn.variants import classic
 from pm4py.util import exec_utils
 from enum import Enum
-from pm4py.visualization.common import gview
-from pm4py.visualization.common import save as gsave
 from pm4py.visualization.common.gview import serialize, serialize_dot
 from typing import Optional, Dict, Any
 from pm4py.objects.bpmn.obj import BPMN
@@ -54,7 +52,7 @@ def apply(bpmn_graph: BPMN, variant=DEFAULT_VARIANT, parameters: Optional[Dict[A
     return exec_utils.get_variant(variant).apply(bpmn_graph, parameters=parameters)
 
 
-def save(gviz: graphviz.Digraph, output_file_path: str, parameters=None):
+def save(gviz: graphviz.Digraph, output_file_path: str, variant=DEFAULT_VARIANT, parameters=None):
     """
     Save the diagram
 
@@ -65,11 +63,10 @@ def save(gviz: graphviz.Digraph, output_file_path: str, parameters=None):
     output_file_path
         Path where the GraphViz output should be saved
     """
-    gsave.save(gviz, output_file_path, parameters=parameters)
-    return ""
+    return exec_utils.get_variant(variant).save(gviz, output_file_path, parameters=parameters)
 
 
-def view(gviz: graphviz.Digraph, parameters=None):
+def view(gviz: graphviz.Digraph, variant=DEFAULT_VARIANT, parameters=None):
     """
     View the diagram
 
@@ -78,10 +75,10 @@ def view(gviz: graphviz.Digraph, parameters=None):
     gviz
         GraphViz diagram
     """
-    return gview.view(gviz, parameters=parameters)
+    return exec_utils.get_variant(variant).view(gviz, parameters=parameters)
 
 
-def matplotlib_view(gviz: graphviz.Digraph, parameters=None):
+def matplotlib_view(gviz: graphviz.Digraph, variant=DEFAULT_VARIANT, parameters=None):
     """
     Views the diagram using Matplotlib
 
@@ -90,5 +87,4 @@ def matplotlib_view(gviz: graphviz.Digraph, parameters=None):
     gviz
         Graphviz
     """
-
-    return gview.matplotlib_view(gviz, parameters=parameters)
+    return exec_utils.get_variant(variant).matplotlib_view(gviz, parameters=parameters)

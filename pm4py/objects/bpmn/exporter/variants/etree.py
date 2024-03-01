@@ -69,8 +69,23 @@ def get_xml_string(bpmn_graph, parameters=None):
     all_processes = set()
     process_planes = {}
     process_process = {}
+    process_participants = {}
     for node in bpmn_graph.get_nodes():
         all_processes.add(node.get_process())
+    for flow in bpmn_graph.get_flows():
+        all_processes.add(flow.get_process())
+
+    if len(all_processes) > 1:
+        # when several swimlanes exist, their elements should be annexed to the same BPMN plane
+        bpmn_plane_id = "id" + str(uuid.uuid4())
+        process_collaboration = ET.SubElement(definitions, "bpmn:collaboration", {"id": bpmn_plane_id})
+
+        for process in all_processes:
+            part_id = "id" + str(uuid.uuid4())
+            ET.SubElement(process_collaboration, "bpmn:participant", {"id": part_id, "name": process, "processRef": "id" + process })
+            process_participants[process] = part_id
+    else:
+        bpmn_plane_id = "id" + list(all_processes)[0]
 
     for process in all_processes:
         p = ET.SubElement(definitions, "bpmn:process",
@@ -80,9 +95,9 @@ def get_xml_string(bpmn_graph, parameters=None):
 
     diagram = ET.SubElement(definitions, "bpmndi:BPMNDiagram", {"id": "id" + str(uuid.uuid4()), "name": "diagram"})
 
+    plane = ET.SubElement(diagram, "bpmndi:BPMNPlane",
+                              {"bpmnElement": bpmn_plane_id, "id": "id" + str(uuid.uuid4())})
     for process in all_processes:
-        plane = ET.SubElement(diagram, "bpmndi:BPMNPlane",
-                              {"bpmnElement": "id" + process, "id": "id" + str(uuid.uuid4())})
         process_planes[process] = plane
 
     for node in bpmn_graph.get_nodes():

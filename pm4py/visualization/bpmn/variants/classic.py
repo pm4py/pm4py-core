@@ -20,6 +20,8 @@ import tempfile
 from graphviz import Digraph
 from typing import Optional, Dict, Any
 from pm4py.objects.bpmn.obj import BPMN
+from pm4py.visualization.common import gview
+from pm4py.visualization.common import save as gsave
 from pm4py.util import constants
 import graphviz
 
@@ -29,6 +31,25 @@ class Parameters(Enum):
     RANKDIR = "rankdir"
     FONT_SIZE = "font_size"
     BGCOLOR = "bgcolor"
+
+
+def add_bpmn_node(graph, n, font_size):
+    n_id = str(id(n))
+
+    if isinstance(n, BPMN.Task):
+        graph.node(n_id, shape="box", label=n.get_name(), fontsize=font_size)
+    elif isinstance(n, BPMN.StartEvent):
+        graph.node(n_id, label="", shape="circle", style="filled", fillcolor="green", fontsize=font_size)
+    elif isinstance(n, BPMN.EndEvent):
+        graph.node(n_id, label="", shape="circle", style="filled", fillcolor="orange", fontsize=font_size)
+    elif isinstance(n, BPMN.ParallelGateway):
+        graph.node(n_id, label="+", shape="diamond", fontsize=font_size)
+    elif isinstance(n, BPMN.ExclusiveGateway):
+        graph.node(n_id, label="X", shape="diamond", fontsize=font_size)
+    elif isinstance(n, BPMN.InclusiveGateway):
+        graph.node(n_id, label="O", shape="diamond", fontsize=font_size)
+    else:
+        graph.node(n_id, label="", shape="circle", fontsize=font_size)
 
 
 def apply(bpmn_graph: BPMN, parameters: Optional[Dict[Any, Any]] = None) -> graphviz.Digraph:
@@ -68,24 +89,30 @@ def apply(bpmn_graph: BPMN, parameters: Optional[Dict[Any, Any]] = None) -> grap
     viz.graph_attr['rankdir'] = rankdir
 
     nodes, edges = get_sorted_nodes_edges(bpmn_graph)
+    process_ids = []
+    for n in nodes:
+        if n.process not in process_ids:
+            process_ids.append(n.process)
+    process_ids_members = {n.process: list() for n in nodes}
+    for n in nodes:
+        process_ids_members[n.process].append(n)
 
     for n in nodes:
-        n_id = str(id(n))
-        if isinstance(n, BPMN.Task):
-            viz.node(n_id, shape="box", label=n.get_name(), fontsize=font_size)
-        elif isinstance(n, BPMN.StartEvent):
-            viz.node(n_id, label="", shape="circle", style="filled", fillcolor="green", fontsize=font_size)
-        elif isinstance(n, BPMN.EndEvent):
-            viz.node(n_id, label="", shape="circle", style="filled", fillcolor="orange", fontsize=font_size)
-        elif isinstance(n, BPMN.ParallelGateway):
-            viz.node(n_id, label="+", shape="diamond", fontsize=font_size)
-        elif isinstance(n, BPMN.ExclusiveGateway):
-            viz.node(n_id, label="X", shape="diamond", fontsize=font_size)
-        elif isinstance(n, BPMN.InclusiveGateway):
-            viz.node(n_id, label="O", shape="diamond", fontsize=font_size)
-        else:
-            viz.node(n_id, label="", shape="circle", fontsize=font_size)
+        add_bpmn_node(viz, n, font_size)
 
+    """
+    viz.node('@@anchor', style='invis')
+
+    for subp in process_ids:
+        with viz.subgraph(name="cluster"+subp) as c:
+            for n in process_ids_members[subp]:
+                c.attr(label=subp)
+                add_bpmn_node(c, n, font_size)
+                c.attr(rank='same')
+
+        viz.edge('@@anchor', str(id(process_ids_members[subp][0])), style='invis')
+    """
+    
     for e in edges:
         n_id_1 = str(id(e[0]))
         n_id_2 = str(id(e[1]))
@@ -98,3 +125,42 @@ def apply(bpmn_graph: BPMN, parameters: Optional[Dict[Any, Any]] = None) -> grap
 
     return viz
 
+
+def save(gviz: graphviz.Digraph, output_file_path: str, parameters=None):
+    """
+    Save the diagram
+
+    Parameters
+    -----------
+    gviz
+        GraphViz diagram
+    output_file_path
+        Path where the GraphViz output should be saved
+    """
+    gsave.save(gviz, output_file_path, parameters=parameters)
+    return ""
+
+
+def view(gviz: graphviz.Digraph, parameters=None):
+    """
+    View the diagram
+
+    Parameters
+    -----------
+    gviz
+        GraphViz diagram
+    """
+    return gview.view(gviz, parameters=parameters)
+
+
+def matplotlib_view(gviz: graphviz.Digraph, parameters=None):
+    """
+    Views the diagram using Matplotlib
+
+    Parameters
+    ---------------
+    gviz
+        Graphviz
+    """
+
+    return gview.matplotlib_view(gviz, parameters=parameters)
