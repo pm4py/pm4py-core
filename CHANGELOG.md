@@ -5,6 +5,10 @@
 ### Added
 
 ### Changed
+* 56799b618ad1ab727705e24f40aa13a793552326
+  * refactoring BPMN-GraphViz visualization method
+* c56bd55b83133d231f37ac8c89190efb440bb826
+  * moving hierarchical models indentation to separate class
 
 ### Deprecated
 
@@ -17,6 +21,14 @@
   * fixed typing of get_variants method
 * ffd0761e8f5490382b33de4fa8187f1ed80ce802
   * fixed stochastic Petri net PNML importing
+* c9654d8089c5aa0e930ee932b222cc09be25d8a5
+  * fixed typing of pm4py.filter-variants
+* 8475c194929f74bf4e402b24c637299d8c28042a
+  * fixed export of multi-swimlanes BPMNs
+* d32e236cc99ec1b5de198466fe0966752adeb805
+  * fixed incongruency in BPMN visualizer
+* b40821da2612ae1921aec30da2333dc4e1151f1a
+  * fixed exception handling in OpenAI requests
 
 ### Removed
 
