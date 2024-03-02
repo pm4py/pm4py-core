@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<log xes.version="1849-2016" xes.features="nested-attributes" xmlns="http://www.xes-standard.org/">
+    <string key="Description" value="Minimal XES composite list attributes log."/>
+    <trace>
+        <event>
+            <list key="composite:list" >
+                <values>
+                    <string key="composite:list:elementary:string:1" value="example:string:value:1" />
+                    <string key="" value="">
+                        <string key="composite:string" value="composite:string:value:1" />
+                    </string>
+                    <string key="composite:list:elementary:string:2" value="example:string:value:2" />
+                    <list key="composite:composite:list">
+                        <values>
+                            <string key="composite:composite:list:elementary:string:1" value="example:string:value:1" />
+                            <string key="composite:composite:list:elementary:string:2" value="example:string:value:2" />
+                        </values>
+                    </list>
+                </values>
+            </list>
+        </event>
+    </trace>
+</log>
