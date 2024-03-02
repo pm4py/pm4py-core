@@ -12,3 +12,4 @@ pytz
 scipy
 stringdist
 tqdm
+deepdiff
