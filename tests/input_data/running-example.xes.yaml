@@ -1,0 +1,113 @@
+---
+log:
+  namespaces:
+    stream: https://cpee.org/datastream/
+    ssn: http://www.w3.org/ns/ssn/
+    sosa: http://www.w3.org/ns/sosa/
+  xes:
+    creator: cpee.org
+    features: nested-attributes
+  extension:
+    time: http://www.xes-standard.org/time.xesext
+    concept: http://www.xes-standard.org/concept.xesext
+    id: http://www.xes-standard.org/identity.xesext
+    lifecycle: http://www.xes-standard.org/lifecycle.xesext
+    cpee: http://cpee.org/cpee.xesext
+    stream: https://cpee.org/datastream/datastream.xesext
+  global:
+    trace:
+      concept:name: __INVALID__
+      cpee:name: __INVALID__
+    event:
+      concept:instance: -1
+      concept:name: __INVALID__
+      concept:endpoint: ''
+      id:id: ''
+      cpee:uuid: ''
+      lifecycle:transition: complete
+      cpee:lifecycle:transition: activity/calling
+      time:timestamp: ''
+  trace:
+    concept:name: 5600
+    cpee:name: Machining V2
+    cpee:instance: 4bd81fad-c6ff-461d-87a9-e35b4a98d705
+---
+event:
+  concept:instance: 5600
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 4bd81fad-c6ff-461d-87a9-e35b4a98d705
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: endpoints/change
+  data:
+  - name: timeout
+    value: http://gruppe.wst.univie.ac.at/~mangler/services/timeout.php
+  - name: start_instance
+    value: https://centurio.work/flow/start/instance/
+  - name: start_url
+    value: https://centurio.work/flow/start/url/
+  - name: queue
+    value: https://centurio.work/data/dpnorth/queue/
+  time:timestamp: '2023-04-28T17:04:32.207+02:00'
+---
+event:
+  concept:instance: 5600
+  concept:name: Fetch
+  concept:endpoint: https://centurio.work/data/dpnorth/queue/MaxxTurn45/1682694271.8567488/push
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: c4190f1f0f8217bf2befdef87683f8ec
+  cpee:instance: 4bd81fad-c6ff-461d-87a9-e35b4a98d705
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: stream/data
+  stream:datastream:
+  - stream:name: MaxxTurn45
+  - stream:source: machine
+  - stream:point:
+      stream:id: State/progStatus
+      stream:value: 3
+      stream:timestamp: '2023-04-28T17:22:42.000+02:00'
+      stream:source:
+        proto: opcua
+        host: opc.tcp://OpcUaClient:SUNDOWN1@192.168.10.59:4840
+        access: ns=2;s=/Channel/State/progStatus
+  - stream:point:
+      stream:id: MaxxTurn45/Axes/Power/Active/A
+      stream:value: 407.09490966796875
+      stream:timestamp: '2023-04-28T15:04:31.854655'
+      stream:source:
+        proto: modbus
+        ip: 192.168.10.62
+        host: 192.168.10.62
+  - stream:point:
+      stream:id: MaxxTurn45/Coolant/Power/Active/A
+      stream:value: 115.88683319091797
+      stream:timestamp: '2023-04-28T15:04:31.854643'
+      stream:source:
+        proto: modbus
+        ip: 192.168.10.63
+        host: 192.168.10.63
+  - stream:point:
+      stream:id: MaxxTurn45/Power/Active/Sum
+      stream:value: 1978.52001953125
+      stream:timestamp: '2023-04-28T15:04:31.855295'
+      stream:source:
+        proto: modbus
+        ip: 192.168.10.61
+        host: 192.168.10.61
+  - stream:point:
+      stream:id: MaxxTurn45/Coolant/Power/Active/B
+      stream:value: 102.33448028564453
+      stream:timestamp: '2023-04-28T15:04:31.858428'
+      stream:source:
+        proto: modbus
+        ip: 192.168.10.63
+        host: 192.168.10.63
+  - stream:point:
+      stream:id: MaxxTurn45/Axes/Power/Active/B
+      stream:value: 651.9251708984375
+      stream:timestamp: '2023-04-28T15:04:31.858591'
+      stream:source:
+        proto: modbus
+        ip: 192.168.10.62
+        host: 192.168.10.62
