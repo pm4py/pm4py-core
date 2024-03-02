@@ -422,10 +422,22 @@ def __parse_attribute(elem, store, key, value, tree):
             store[key] = value
     else:
         if elem.getchildren()[0].tag.endswith(xes_constants.TAG_VALUES):
-            store[key] = {xes_constants.KEY_VALUE: value, xes_constants.KEY_CHILDREN: list()}
-            tree[elem] = store[key][xes_constants.KEY_CHILDREN]
-            tree[elem.getchildren()[0]] = tree[elem]
+            if isinstance(store, list):
+                store.append((key, {xes_constants.KEY_VALUE: value, xes_constants.KEY_CHILDREN: list()}))
+                tree[elem] = store[-1][1][xes_constants.KEY_CHILDREN]
+                tree[elem.getchildren()[0]] = tree[elem]
+            else:
+                store[key] = {xes_constants.KEY_VALUE: value, xes_constants.KEY_CHILDREN: list()}
+                tree[elem] = store[key][xes_constants.KEY_CHILDREN]
+                tree[elem.getchildren()[0]] = tree[elem]
+
         else:
-            store[key] = {xes_constants.KEY_VALUE: value, xes_constants.KEY_CHILDREN: dict()}
-            tree[elem] = store[key][xes_constants.KEY_CHILDREN]
+            composite_att = {xes_constants.KEY_VALUE: value, xes_constants.KEY_CHILDREN: dict()}
+            if isinstance(store, list):
+                store.append((key, composite_att))
+                tree[elem] = store[-1][1][xes_constants.KEY_CHILDREN]
+            else:
+                store[key] = composite_att
+                tree[elem] = store[key][xes_constants.KEY_CHILDREN]
+
     return tree
