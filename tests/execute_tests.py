@@ -21,7 +21,7 @@ enabled_tests = ["SimplifiedInterfaceTest", "SimplifiedInterface2Test", "DocTest
                  "DiagnDfConfChecking", "ProcessModelEvaluationTests", "DecisionTreeTest", "GraphsForming",
                  "HeuMinerTest", "MainFactoriesTest", "AlgorithmTest", "LogFilteringTest",
                  "DataframePrefilteringTest", "StatisticsLogTest", "StatisticsDfTest", "TransitionSystemTest",
-                 "ImpExpFromString", "WoflanTest", "OcelFilteringTest", "OcelDiscoveryTest", "LlmTest"]
+                 "ImpExpFromString", "WoflanTest", "OcelFilteringTest", "OcelDiscoveryTest", "LlmTest", "XesYamlTest"]
 
 loader = unittest.TestLoader()
 suite = unittest.TestSuite()
@@ -200,6 +200,11 @@ if "LlmTest" in enabled_tests:
     from tests.llm_test import LlmTest
 
     suite.addTests(loader.loadTestsFromTestCase(LlmTest))
+
+if "XesYamlTest" in enabled_tests:
+    from tests.xes_yaml_test import XesYamlTest
+
+    suite.addTests(loader.loadTestsFromTestCase(XesYamlTest))
 
 
 def main():
