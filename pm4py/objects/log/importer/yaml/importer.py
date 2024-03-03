@@ -18,7 +18,6 @@ import yaml
 from pm4py.util import constants
 from pm4py.objects.log.importer.yaml.variants import yaml_loader
 from pm4py.objects.log.importer.yaml.variants.yaml_loader import LoaderType
-from memory_profiler import profile as profile_memory
 
 DEFAULT_VARIANT = LoaderType.C_SAFE_PYYAML
 

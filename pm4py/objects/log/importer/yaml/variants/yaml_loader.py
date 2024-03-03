@@ -75,7 +75,6 @@ def apply(
     )
 
 
-# @profile_memory
 def import_from_context_with_progress(
     filename: str, variant: LoaderType, parameters: Parameters = None
 ):
