@@ -18,16 +18,16 @@
 from pm4py.objects.powl.BinaryRelation import BinaryRelation
 from pm4py.objects.powl.constants import STRICT_PARTIAL_ORDER_LABEL
 from pm4py.objects.process_tree.obj import ProcessTree, Operator
+from pm4py.util import hie_utils
+import sys
 from typing import List as TList, Optional, Union
 from abc import ABC, abstractmethod
 
 
-class POWL(ProcessTree, ABC):
-    def __str__(self) -> str:
-        return self.__repr__()
 
+class POWL(ProcessTree, ABC):
     def print(self) -> None:
-        print(self.__repr__())
+        print(self.to_string())
 
     def simplify_using_frequent_transitions(self) -> "POWL":
         return self
@@ -156,8 +156,14 @@ class StrictPartialOrder(POWL):
     def get_children(self) -> TList[POWL]:
         return self.order.nodes
 
+    def to_string(self, level=0, indent=False, max_indent=sys.maxsize) -> str:
+        model_string = STRICT_PARTIAL_ORDER_LABEL + self.order.__repr__()
+        if indent:
+            model_string = "\n".join(hie_utils.indent_representation(model_string, max_indent=max_indent))
+        return model_string
+
     def __repr__(self) -> str:
-        return STRICT_PARTIAL_ORDER_LABEL + self.order.__repr__()
+        return self.to_string()
 
     def __lt__(self, other: object) -> bool:
         if isinstance(other, StrictPartialOrder):

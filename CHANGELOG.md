@@ -1,8 +1,10 @@
 # Changelog of pm4py
 
-## pm4py 2.7.11 (2024.02.23)
+## pm4py 2.7.11 (2024.03.01)
 
 ### Added
+* 0fcb1dc2939db30b7129f62bda0d235bd5242428
+  * improved string representation of hierarchical models
 
 ### Changed
 * 56799b618ad1ab727705e24f40aa13a793552326
@@ -31,6 +33,8 @@
   * fixed incongruency in BPMN visualizer
 * b40821da2612ae1921aec30da2333dc4e1151f1a
   * fixed exception handling in OpenAI requests
+* e8f0b84bc7de65f090e0e96799486acaaad7572f
+  * fixed incongruency between filter on EventLog
 
 ### Removed
 
