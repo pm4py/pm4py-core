@@ -13,7 +13,7 @@ RUN apt-get -y install libtool flex bison pkg-config g++ libssl-dev automake
 RUN apt-get -y install libjemalloc-dev libboost-dev libboost-filesystem-dev libboost-system-dev libboost-regex-dev python3-dev autoconf flex bison cmake
 RUN apt-get -y install libxml2-dev libxslt-dev libfreetype6-dev libsuitesparse-dev
 RUN pip install -U wheel six pytest
-RUN pip install colorama==0.4.6 contourpy==1.2.0 cycler==0.12.1 deprecation==2.1.0 fonttools==4.47.2 graphviz==0.20.1 intervaltree==3.1.0 kiwisolver==1.4.5 lxml==5.1.0 matplotlib==3.8.2 networkx==3.2.1 numpy==1.26.3 packaging==23.2 pandas==2.2.0 pillow==10.2.0 pydotplus==2.0.2 pyparsing==3.1.1 python-dateutil==2.8.2 pytz==2023.4 scipy==1.12.0 six==1.16.0 sortedcontainers==2.4.0 StringDist==1.0.9 tqdm==4.66.1 tzdata==2023.4 
+RUN pip install colorama==0.4.6 contourpy==1.2.0 cycler==0.12.1 deprecation==2.1.0 fonttools==4.49.0 graphviz==0.20.1 intervaltree==3.1.0 kiwisolver==1.4.5 lxml==5.1.0 matplotlib==3.8.3 networkx==3.2.1 numpy==1.26.4 packaging==23.2 pandas==2.2.1 pillow==10.2.0 pydotplus==2.0.2 pyparsing==3.1.1 python-dateutil==2.9.0.post0 pytz==2024.1 scipy==1.12.0 six==1.16.0 sortedcontainers==2.4.0 StringDist==1.0.9 tqdm==4.66.2 tzdata==2024.1 
 
 COPY . /app
 RUN cd /app && python setup.py install
