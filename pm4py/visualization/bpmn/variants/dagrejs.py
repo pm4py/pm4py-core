@@ -17,9 +17,9 @@ class Parameters(Enum):
 
 def get_html_file_contents():
     file_path = 'pm4py/static/myfile.html'
-    resource_path = importlib.resources.path("pm4py.visualization.bpmn.util", "dagrejs_base.html")
-    with open(resource_path, 'r') as html_file:
-        return html_file.read()
+    with importlib.resources.path("pm4py.visualization.bpmn.util", "dagrejs_base.html") as p:
+        with open(str(p), 'r') as html_file:
+            return html_file.read()
 
 
 def apply(bpmn_graph: BPMN, parameters: Optional[Dict[Any, Any]] = None) -> str:
