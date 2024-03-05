@@ -1,0 +1,47 @@
++==============================================================================+
+
+                               /$$$$$$            /$$
+                              /$$__  $$          | $$
+           /$$$$$$$  /$$$$$$ | $$  \__//$$$$$$  /$$$$$$   /$$   /$$
+          /$$_____/ |____  $$| $$$$   /$$__  $$|_  $$_/  | $$  | $$
+         |  $$$$$$   /$$$$$$$| $$_/  | $$$$$$$$  | $$    | $$  | $$
+          \____  $$ /$$__  $$| $$    | $$_____/  | $$ /$$| $$  | $$
+          /$$$$$$$/|  $$$$$$$| $$    |  $$$$$$$  |  $$$$/|  $$$$$$$
+         |_______/  \_______/|__/     \_______/   \___/   \____  $$
+                                                          /$$  | $$
+                                                         |  $$$$$$/
+  by pyup.io                                              \______/
+
++==============================================================================+
+
+ REPORT 
+
+  Safety is using PyUp's free open-source vulnerability database. This
+data is 30 days old and limited. 
+  For real-time enhanced vulnerability data, fix recommendations, severity
+reporting, cybersecurity support, team and project policy management and more
+sign up at https://pyup.io or email sales@pyup.io
+
+  Safety v2.3.5 is scanning for Vulnerabilities...
+  Scanning dependencies in your files:
+
+  -> requirements_stable.txt
+
+  Using non-commercial database
+  Found and scanned 25 packages
+  Timestamp 2024-03-04 11:38:54
+  0 vulnerabilities found
+  0 vulnerabilities ignored
++==============================================================================+
+
+ No known security vulnerabilities found. 
+
++==============================================================================+
+
+  Safety is using PyUp's free open-source vulnerability database. This
+data is 30 days old and limited. 
+  For real-time enhanced vulnerability data, fix recommendations, severity
+reporting, cybersecurity support, team and project policy management and more
+sign up at https://pyup.io or email sales@pyup.io
+
++==============================================================================+
