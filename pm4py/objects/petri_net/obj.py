@@ -7,10 +7,7 @@ class Marking(Counter):
     pass
 
     def __hash__(self):
-        r = 0
-        for p in self.items():
-            r += 31 * hash(p[0]) * p[1]
-        return r
+        return frozenset(self).__hash__()
 
     def __eq__(self, other):
         if not self.keys() == other.keys():
