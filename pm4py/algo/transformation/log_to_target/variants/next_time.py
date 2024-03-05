@@ -9,6 +9,7 @@ from pm4py.objects.conversion.log import converter as log_converter
 class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
     ENABLE_PADDING = "enable_padding"
+    PAD_SIZE = "pad_size"
 
 
 def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None) -> Tuple[List[List[int]], List[str]]:
@@ -25,6 +26,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
         Parameters of the algorithm, including:
         - Parameters.TIMESTAMP_KEY => the attribute of the log to be used as timestamp
         - Parameters.ENABLE_PADDING => enables the padding (the length of cases is normalized)
+        - Parameters.PAD_SIZE => the size of the padding
 
     Returns
     ---------------
@@ -41,6 +43,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
 
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
     enable_padding = exec_utils.get_param_value(Parameters.ENABLE_PADDING, parameters, False)
+    pad_size = exec_utils.get_param_value(Parameters.PAD_SIZE, parameters, max_case_length)
 
     target = []
     for trace in log:
@@ -50,7 +53,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
             next_time = trace[i+1][timestamp_key].timestamp() if i < len(trace)-1 else curr_time
             target[-1].append(float(next_time-curr_time))
         if enable_padding:
-            while len(target[-1]) < max_case_length:
+            while len(target[-1]) < pad_size:
                 target[-1].append(0.0)
 
     return target, ["@@next_time"]

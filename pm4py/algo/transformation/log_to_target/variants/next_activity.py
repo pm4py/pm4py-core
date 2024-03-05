@@ -10,6 +10,7 @@ class Parameters(Enum):
     ACTIVITIES = "activities"
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
     ENABLE_PADDING = "enable_padding"
+    PAD_SIZE = "pad_size"
 
 
 def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None) -> Tuple[List[List[List[int]]], List[str]]:
@@ -30,6 +31,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
         - Parameters.ACTIVITIES => list of activities to consider
         - Parameters.ACTIVITY_KEY => attribute that should be used as activity
         - Parameters.ENABLE_PADDING => enables the padding (the length of cases is normalized)
+        - Parameters.PAD_SIZE => the size of the padding
 
     Returns
     -------------
@@ -47,6 +49,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
     activities = exec_utils.get_param_value(Parameters.ACTIVITIES, parameters, sorted(list(set(y[activity_key] for x in log for y in x))))
     enable_padding = exec_utils.get_param_value(Parameters.ENABLE_PADDING, parameters, False)
+    pad_size = exec_utils.get_param_value(Parameters.PAD_SIZE, parameters, max_case_length)
 
     target = []
     for trace in log:
@@ -58,7 +61,7 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
                 if act in activities:
                     target[-1][-1][activities.index(act)] = 1.0
         if enable_padding:
-            while len(target[-1]) < max_case_length:
+            while len(target[-1]) < pad_size:
                 target[-1].append([0.0] * len(activities))
 
     return target, activities
