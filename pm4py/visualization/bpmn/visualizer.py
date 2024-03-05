@@ -1,4 +1,4 @@
-from pm4py.visualization.bpmn.variants import classic
+from pm4py.visualization.bpmn.variants import classic, dagrejs
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.visualization.common.gview import serialize, serialize_dot
@@ -9,6 +9,7 @@ import graphviz
 
 class Variants(Enum):
     CLASSIC = classic
+    DAGREJS = dagrejs
 
 
 DEFAULT_VARIANT = Variants.CLASSIC
