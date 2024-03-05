@@ -1,1 +1,2 @@
 recursive-include pm4py *.png
+recursive-include pm4py *.html
