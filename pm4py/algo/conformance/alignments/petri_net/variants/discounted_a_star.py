@@ -245,7 +245,7 @@ def apply_from_variants_list_petri_string(var_list, petri_net_string, parameters
     if parameters is None:
         parameters = {}
 
-    from pm4py.objects.petri.importer.variants import pnml as petri_importer
+    from pm4py.objects.petri_net.importer.variants import pnml as petri_importer
 
     petri_net, initial_marking, final_marking = petri_importer.import_petri_from_string(petri_net_string)
 
@@ -299,7 +299,7 @@ def apply_trace_net(petri_net, initial_marking, final_marking, trace_net, trace_
     trace_net_costs = exec_utils.get_param_value(Parameters.PARAM_TRACE_NET_COSTS, parameters, None)
 
     if trace_cost_function is None or model_cost_function is None or sync_cost_function is None:
-        sync_prod, sync_initial_marking, sync_final_marking = petri.synchronous_product.construct(trace_net, trace_im,
+        sync_prod, sync_initial_marking, sync_final_marking = petri_net.synchronous_product.construct(trace_net, trace_im,
                                                                                                   trace_fm, petri_net,
                                                                                                   initial_marking,
                                                                                                   final_marking,
