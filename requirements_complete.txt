@@ -20,6 +20,5 @@ pytz
 scipy
 six
 sortedcontainers
-StringDist
 tqdm
 tzdata

@@ -28,6 +28,5 @@ libraries are added/removed.
 | scipy | https://pypi.org/project/scipy | BSD License | 1.12.0 |
 | six | https://pypi.org/project/six | MIT License (MIT) | 1.16.0 |
 | sortedcontainers | https://pypi.org/project/sortedcontainers | Apache Software License (Apache 2.0) | 2.4.0 |
-| StringDist | https://pypi.org/project/StringDist | MIT License (MIT) | 1.0.9 |
 | tqdm | https://pypi.org/project/tqdm | MIT License, Mozilla Public License 2.0 (MPL 2.0) (MPL-2.0 AND MIT) | 4.66.2 |
 | tzdata | https://pypi.org/project/tzdata | Apache Software License (Apache-2.0) | 2024.1 |
