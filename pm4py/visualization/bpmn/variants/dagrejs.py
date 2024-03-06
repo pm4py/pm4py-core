@@ -16,7 +16,6 @@ class Parameters(Enum):
 
 
 def get_html_file_contents():
-    file_path = 'pm4py/static/myfile.html'
     with importlib.resources.path("pm4py.visualization.bpmn.util", "dagrejs_base.html") as p:
         with open(str(p), 'r') as html_file:
             return html_file.read()
@@ -75,7 +74,7 @@ def view(temp_file_name, parameters=None):
 
     iframe_width = exec_utils.get_param_value(Parameters.IFRAME_WIDTH, parameters, 900)
     iframe_height = exec_utils.get_param_value(Parameters.IFRAME_HEIGHT, parameters, 600)
-    local_jupyter_file_name = exec_utils.get_param_value(Parameters.LOCAL_JUPYTER_FILE_NAME, parameters, "jupyter_sna_vis.html")
+    local_jupyter_file_name = exec_utils.get_param_value(Parameters.LOCAL_JUPYTER_FILE_NAME, parameters, "jupyter_bpmn_vis.html")
 
     if vis_utils.check_visualization_inside_jupyter():
         from IPython.display import IFrame
