@@ -46,6 +46,8 @@
   * fixing behavior of between filter when act1 == act2
 * e1c84d7f6d6425f40a23ea3c539a0c110c331a3c
   * ensuring float return for feature extraction methods in pm4py
+* 1b5a2932a60131f648ae476e6b97230c241f5d6e
+  * fixing POWL visualization image importing
 
 ### Removed
 
