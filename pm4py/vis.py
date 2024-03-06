@@ -1247,7 +1247,7 @@ def save_vis_footprints(footprints: Union[Tuple[Dict[str, Any], Dict[str, Any]],
     return fps_visualizer.save(gviz, file_path)
 
 
-def view_powl(powl: POWL, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white"):
+def view_powl(powl: POWL, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", variant_str: str = "basic"):
     """
     Perform a visualization of a POWL model.
 
@@ -1258,6 +1258,7 @@ def view_powl(powl: POWL, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgco
     :param format: format of the visualization (default: png)
     :param bgcolor: background color of the visualization (default: white)
     :param rankdir: sets the direction of the graph ("LR" for left-to-right; "TB" for top-to-bottom)
+    :param variant_str: variant of the visualization to be used (values: "basic", "net")
 
      .. code-block:: python3
 
@@ -1265,12 +1266,21 @@ def view_powl(powl: POWL, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgco
 
         log = pm4py.read_xes('tests/input_data/running-example.xes')
         powl_model = pm4py.discover_powl(log)
-        pm4py.view_powl(powl_model, format='svg')
+        pm4py.view_powl(powl_model, format='svg', variant_str='basic')
+        pm4py.view_powl(powl_model, format='svg', variant_str='net')
     """
+    from pm4py.visualization.powl.visualizer import POWLVisualizationVariants
+    variant = POWLVisualizationVariants.BASIC
+
+    if variant_str == "basic":
+        variant = POWLVisualizationVariants.BASIC
+    elif variant_str == "net":
+        variant = POWLVisualizationVariants.NET
+
     format = str(format).lower()
 
     from pm4py.visualization.powl import visualizer as powl_visualizer
-    gviz = powl_visualizer.apply(powl, parameters={"format": format, "bgcolor": bgcolor})
+    gviz = powl_visualizer.apply(powl, variant=variant, parameters={"format": format, "bgcolor": bgcolor})
 
     powl_visualizer.view(gviz)
 
