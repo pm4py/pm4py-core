@@ -20,6 +20,5 @@ pytz==2024.1
 scipy==1.12.0
 six==1.16.0
 sortedcontainers==2.4.0
-StringDist==1.0.9
 tqdm==4.66.2
 tzdata==2024.1
