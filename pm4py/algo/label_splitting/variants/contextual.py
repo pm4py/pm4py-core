@@ -20,8 +20,7 @@ from pm4py.objects.conversion.log import converter as log_converter
 import pandas as pd
 from enum import Enum
 from pm4py.util import constants, xes_constants, exec_utils, pandas_utils, nx_utils
-from pm4py.util import regex
-import stringdist
+from pm4py.util import regex, string_distance
 
 
 class Parameters(Enum):
@@ -56,7 +55,7 @@ def __normalized_edit_distance(s1: str, s2: str) -> float:
     """
     ned = 0
     if len(s1) > 0 or len(s2) > 0:
-        ed = stringdist.levenshtein(s1, s2)
+        ed = string_distance.levenshtein(s1, s2)
         ned = ed / max(len(s1), len(s2))
     return ned
 

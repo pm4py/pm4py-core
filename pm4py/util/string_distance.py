@@ -15,11 +15,36 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import sys
+import importlib.util
 from typing import List, Union
 
-import stringdist
 
-levenshtein = lambda stru1, stru2: stringdist.levenshtein(stru1, stru2)
+def levenshtein_distance(s1, s2):
+    if len(s1) < len(s2):
+        return levenshtein_distance(s2, s1)
+
+    if len(s2) == 0:
+        return len(s1)
+
+    previous_row = range(len(s2) + 1)
+    for i, c1 in enumerate(s1):
+        current_row = [i + 1]
+        for j, c2 in enumerate(s2):
+            insertions = previous_row[j + 1] + 1
+            deletions = current_row[j] + 1
+            substitutions = previous_row[j] + (c1 != c2)
+            current_row.append(min(insertions, deletions, substitutions))
+        previous_row = current_row
+
+    return previous_row[-1]
+
+
+def levenshtein(stru1, stru2):
+    if importlib.util.find_spec("stringdist"):
+        import stringdist
+        return stringdist.levenshtein(stru1, stru2)
+
+    return levenshtein_distance(stru1, stru2)
 
 
 def argmin_levenshtein(stru: str, list_stri: List[str]) -> Union[str, None]:

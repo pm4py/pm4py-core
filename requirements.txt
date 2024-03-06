@@ -10,5 +10,4 @@ pandas
 pydotplus
 pytz
 scipy
-stringdist
 tqdm
