@@ -10,7 +10,7 @@ def apply(file_name: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     for child in root:
         for child2 in child:
             this_class = child2.get("class")
-            if this_class in ["node", "edge"]:
+            if this_class in ["cluster", "node", "edge"]:
                 title = None
                 label_x = None
                 label_y = None
@@ -34,8 +34,11 @@ def apply(file_name: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
                         waypoints = [x.split(",") for x in waypoints]
                         waypoints = [(float(x[0]), float(x[1])) for x in waypoints]
 
-                if this_class == "node":
-                    nodes[title] = {"label": label_text, "label_x": label_x, "label_y": label_y, "polygon": polygon}
+                if this_class == "node" or this_class == "cluster":
+                    key_name = title
+                    if this_class == "cluster":
+                        key_name = key_name.split(this_class)[-1]
+                    nodes[key_name] = {"label": label_text, "label_x": label_x, "label_y": label_y, "polygon": polygon}
                 elif this_class == "edge":
                     title = title.replace("-", " ").replace(">", " ").strip()
                     these_nodes = tuple(title.split(" "))
