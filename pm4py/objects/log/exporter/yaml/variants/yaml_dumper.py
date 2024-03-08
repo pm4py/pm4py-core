@@ -77,7 +77,7 @@ def __get_xes_attr_type(attr_name, attr_type):
     return attr_type_xes
 
 
-def export_log(log, fp_obj, encoding, variant=DumperType.C_DUMPER, parameters=None, log_header=None, append=False):
+def export_log(log, fp_obj, encoding, variant, parameters=None, log_header=None, append=False):
     """
     Exports the contents of the log line-by-line
     to a file object
@@ -90,6 +90,8 @@ def export_log(log, fp_obj, encoding, variant=DumperType.C_DUMPER, parameters=No
         File object
     encoding
         Encoding
+    variant
+        YAML Dumper variant
     parameters
         Parameters
     """
@@ -302,7 +304,7 @@ def apply(
         log,
         f,
         encoding,
-        variant=variant,
+        variant,
         parameters=parameters,
         log_header=log_header,
         append=append,
