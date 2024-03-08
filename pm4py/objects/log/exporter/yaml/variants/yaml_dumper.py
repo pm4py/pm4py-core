@@ -23,13 +23,15 @@ import numbers
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.util import exec_utils, constants, xes_constants
 import yaml
-from yaml.cyaml import CDumper
-from yaml import Dumper
+from yaml.cyaml import CDumper, CSafeDumper
+from yaml import Dumper, SafeDumper
 
 
 class DumperType(Enum):
     C_DUMPER = CDumper
-    Dumper = Dumper
+    C_SAFE_DUMPER = CSafeDumper
+    DUMPER = Dumper
+    SAFE_DUMPER = yaml.SafeDumper
 
 
 class Parameters(Enum):
@@ -75,7 +77,7 @@ def __get_xes_attr_type(attr_name, attr_type):
     return attr_type_xes
 
 
-def export_log(log, fp_obj, encoding, parameters=None, log_header=None, append=False):
+def export_log(log, fp_obj, encoding, variant, parameters=None, log_header=None, append=False):
     """
     Exports the contents of the log line-by-line
     to a file object
@@ -88,6 +90,8 @@ def export_log(log, fp_obj, encoding, parameters=None, log_header=None, append=F
         File object
     encoding
         Encoding
+    variant
+        YAML Dumper variant
     parameters
         Parameters
     """
@@ -144,7 +148,7 @@ def export_log(log, fp_obj, encoding, parameters=None, log_header=None, append=F
             fp_obj,
             encoding=encoding,
             default_flow_style=False,
-            Dumper=CDumper,
+            Dumper=variant.value,
         )
 
     for trace in log:
@@ -175,7 +179,7 @@ def export_log(log, fp_obj, encoding, parameters=None, log_header=None, append=F
                 fp_obj,
                 encoding=encoding,
                 default_flow_style=False,
-                Dumper=CDumper,
+                Dumper=variant.value,
             )
 
         for event in trace:
@@ -207,7 +211,7 @@ def export_log(log, fp_obj, encoding, parameters=None, log_header=None, append=F
                 fp_obj,
                 encoding=encoding,
                 default_flow_style=False,
-                Dumper=CDumper,
+                Dumper=variant.value,
             )
 
             if progress is not None:
@@ -300,6 +304,7 @@ def apply(
         log,
         f,
         encoding,
+        variant,
         parameters=parameters,
         log_header=log_header,
         append=append,
