@@ -30,8 +30,8 @@ from yaml import Dumper, SafeDumper
 class DumperType(Enum):
     C_DUMPER = CDumper
     C_SAFE_DUMPER = CSafeDumper
+    SAFE_DUMPER = SafeDumper
     DUMPER = Dumper
-    SAFE_DUMPER = yaml.SafeDumper
 
 
 class Parameters(Enum):
