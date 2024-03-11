@@ -30,6 +30,108 @@ from pm4py.util import constants
 from pm4py.util.pandas_utils import check_is_pandas_dataframe, check_pandas_dataframe_columns
 from pm4py.objects.log.obj import XESExtension
 
+def write_yaml(
+    log: Union[EventLog, pd.DataFrame],
+    file_path: str,
+    case_id_key: str = "id:id",
+    extensions: Optional[Collection[XESExtension]] = None,
+    encoding: str = constants.DEFAULT_ENCODING,
+    log_header: dict = None,
+    **kwargs,
+):
+    """
+    Writes an event log to disk in the XES-YAML format (see `xes-standard <https://xes-standard.org/>`_)
+
+    :param log: log object (``pandas.DataFrame``) that needs to be written to disk
+    :param file_path: target file path of the event log (``.xes.yaml`` file) on disk
+    :param case_id_key: column key that identifies the case identifier
+    :param extensions: extensions defined for the event log
+    :param encoding: the encoding to be used (default: utf-8)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        pm4py.write_yaml(log, '<path_to_export_to>', case_id_key='case:concept:name')
+    """
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]:
+        raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, case_id_key=case_id_key)
+
+    file_path = str(file_path)
+    if not (
+        file_path.lower().endswith("xes.yaml")
+        or file_path.lower().endswith("xes.yaml.gz")
+    ):
+        file_path = file_path + "xes.yaml"
+
+    parameters = {}
+    for k, v in kwargs.items():
+        parameters[k] = v
+    parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] = case_id_key
+    parameters["extensions"] = extensions
+    parameters["encoding"] = encoding
+
+    # print(f"Parameters in pm4py.write.write_yaml(): {parameters}")
+
+    from pm4py.objects.log.exporter.yaml import exporter as yaml_exporter
+
+    yaml_exporter.apply(log, file_path, parameters=parameters, log_header=log_header)
+
+
+def append_yaml(
+    log: Union[EventLog, pd.DataFrame],
+    file_path: str,
+    case_id_key: str = "id:id",
+    encoding: str = constants.DEFAULT_ENCODING,
+    log_header: dict = None,
+    **kwargs,
+):
+    """
+    Appends events to an existing event log on disk in the XES-YAML format (see `xes-standard <https://xes-standard.org/>`_)
+
+    :param log: log object (``pandas.DataFrame``) that needs to be written to disk
+    :param file_path: target file path of the event log (``.xes.yaml`` file) on disk
+    :param case_id_key: column key that identifies the case identifier
+    :param encoding: the encoding to be used (default: utf-8)
+
+    .. code-block:: python3
+
+        import pm4py
+
+        pm4py.append_yaml(log, '<path_to_export_to>', case_id_key='case:concept:name')
+    """
+
+    if type(log) not in [pd.DataFrame, EventLog, EventStream]:
+        raise Exception("the method can be applied only to a traditional event log!")
+    __event_log_deprecation_warning(log)
+
+    if check_is_pandas_dataframe(log):
+        check_pandas_dataframe_columns(log, case_id_key=case_id_key)
+
+    file_path = str(file_path)
+    if not (
+        file_path.lower().endswith("xes.yaml")
+        or file_path.lower().endswith("xes.yaml.gz")
+    ):
+        file_path = file_path + "xes.yaml"
+
+    parameters = {}
+    for k, v in kwargs.items():
+        parameters[k] = v
+    parameters[constants.PARAMETER_CONSTANT_CASEID_KEY] = case_id_key
+    parameters["encoding"] = encoding
+
+    # print(f"Parameters in pm4py.write.write_yaml(): {parameters}")
+
+    from pm4py.objects.log.exporter.yaml import exporter as yaml_exporter
+
+    yaml_exporter.apply(
+        log, file_path, parameters=parameters, append=True, log_header=log_header
+    )
 
 def write_xes(log: Union[EventLog, pd.DataFrame], file_path: str, case_id_key: str = "case:concept:name", extensions: Optional[Collection[XESExtension]] = None, encoding: str = constants.DEFAULT_ENCODING, **kwargs) -> None:
     """

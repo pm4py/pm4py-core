@@ -37,6 +37,73 @@ __doc__ = """
 The ``pm4py.read`` module contains all funcationality related to reading files/objects from disk.
 """
 
+def read_yaml(
+    file_path: str,
+    variant: str = "c-safe",
+    return_legacy_log_object: bool = constants.DEFAULT_READ_XES_LEGACY_OBJECT,
+    encoding: str = constants.DEFAULT_ENCODING,
+    **kwargs,
+) -> Union[DataFrame, EventLog]:
+    """
+    Reads an event log stored in XES-YAML format (see `xes-standard <https://xes-standard.org/>`_)
+    Returns a table (``pandas.DataFrame``) view of the event log.
+
+    :param file_path: file path of the event log (``.xes.yaml`` file) on disk
+    :param variant: the variant of the importer (YAML Loader) to use.
+        "safe" => pyyaml safe_load (default);
+        "full" => pyyaml full_load;
+        "c-safe" => C-based safe_load;
+        "c-full" => C-based full_load;
+        "ruamel" => ruamel.yaml round-trip load
+    :param return_legacy_log_object: boolean value enabling returning a log object (default: False)
+    :param encoding: the encoding to be used (default: utf-8)
+    :rtype: ``DataFrame``
+
+    .. code-block:: python3
+
+        import pm4py
+
+        log = pm4py.read_yaml("<path_to_xes.yaml_file>")
+    """
+    if not os.path.exists(file_path):
+        raise Exception("File does not exist")
+    from pm4py.objects.log.importer.yaml import importer as yaml_importer
+
+    v = yaml_importer.LoaderType.C_SAFE_PYYAML
+    if variant == "safe":
+        v = yaml_importer.LoaderType.SAFE_PYYAML
+
+    elif variant == "full":
+        v = yaml_importer.LoaderType.FULL_PYYAML
+
+    elif variant == "c-safe":
+        v = yaml_importer.LoaderType.C_SAFE_PYYAML
+
+    elif variant == "c-full":
+        v = yaml_importer.LoaderType.C_FULL_PYYAML
+
+    elif variant == "ruamel":
+        v = yaml_importer.LoaderType.RUAMEL_YAML
+
+    from copy import copy
+
+    parameters = copy(kwargs)
+    parameters["encoding"] = encoding
+    parameters["return_legacy_log_object"] = return_legacy_log_object
+
+    log = yaml_importer.apply(
+        file_path,
+        variant=v,
+        parameters=parameters,
+    )
+
+    if type(log) is EventLog and not return_legacy_log_object:
+        log = log_converter.apply(log, variant=log_converter.Variants.TO_DATA_FRAME)
+        log = dataframe_utils.convert_timestamp_columns_in_df(
+            log, timest_format="ISO8601"
+        )
+
+    return log
 
 def read_xes(file_path: str, variant: Optional[str] = None, return_legacy_log_object: bool = constants.DEFAULT_READ_XES_LEGACY_OBJECT, encoding: str = constants.DEFAULT_ENCODING, **kwargs) -> Union[DataFrame, EventLog]:
     """
