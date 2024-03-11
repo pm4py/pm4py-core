@@ -17,7 +17,6 @@
 from typing import Iterable, List, Tuple
 from pm4py.objects.bpmn.obj import BPMN
 
-
 def bfs_bpmn(nodes: Iterable[BPMN.Event], edges: Iterable[Tuple[BPMN.Event, BPMN.Event]]):
     start_nodes: List[BPMN.Event] = [n for n in nodes if isinstance(n, BPMN.StartEvent)]
     level = 0
