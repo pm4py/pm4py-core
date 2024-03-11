@@ -1,7 +1,9 @@
-def bfs_bpmn(nodes, edges):
-    from pm4py.objects.bpmn.obj import BPMN
+from typing import Iterable, List, Tuple
+from pm4py.objects.bpmn.obj import BPMN
 
-    start_nodes = [n for n in nodes if isinstance(n, BPMN.StartEvent)]
+
+def bfs_bpmn(nodes: Iterable[BPMN.Event], edges: Iterable[Tuple[BPMN.Event, BPMN.Event]]):
+    start_nodes: List[BPMN.Event] = [n for n in nodes if isinstance(n, BPMN.StartEvent)]
     level = 0
     bfs = {n: level for n in start_nodes}
     while True:
@@ -18,55 +20,7 @@ def bfs_bpmn(nodes, edges):
     return bfs
 
 
-def sort_nodes_given_bfs(nodes, bfs):
-    something_changed = True
-    while something_changed:
-        something_changed = False
-        i = 0
-        while i < len(nodes):
-            name_i = nodes[i].get_name()
-            j = i + 1
-            while j < len(nodes):
-                name_j = nodes[j].get_name()
-                should_exchange = False
-                if bfs[nodes[i]] > bfs[nodes[j]]:
-                    should_exchange = True
-                elif bfs[nodes[i]] == bfs[nodes[j]] and name_j and not name_i:
-                    should_exchange = True
-                elif bfs[nodes[i]] == bfs[nodes[j]] and name_i and name_j and name_i < name_j:
-                    should_exchange = True
-                if should_exchange:
-                    nodes[i], nodes[j] = nodes[j], nodes[i]
-                    something_changed = True
-                    break
-                j = j + 1
-            i = i + 1
-    return nodes
-
-
-def sort_edges_given_bfs(edges, bfs):
-    something_changed = True
-    while something_changed:
-        something_changed = False
-        i = 0
-        while i < len(edges):
-            j = i + 1
-            while j < len(edges):
-                should_exchange = False
-                if bfs[edges[i][0]] > bfs[edges[j][0]]:
-                    should_exchange = True
-                elif bfs[edges[i][0]] == bfs[edges[j][0]] and bfs[edges[i][1]] > bfs[edges[j][1]]:
-                    should_exchange = True
-                if should_exchange:
-                    edges[i], edges[j] = edges[j], edges[i]
-                    something_changed = True
-                    break
-                j = j + 1
-            i = i + 1
-    return edges
-
-
-def get_sorted_nodes_edges(bpmn_graph):
+def get_sorted_nodes_edges(bpmn_graph: BPMN) -> Tuple[List[BPMN.Event], List[Tuple[BPMN.Event, BPMN.Event]]]:
     """
     Assure an ordering as-constant-as-possible
 
@@ -83,9 +37,9 @@ def get_sorted_nodes_edges(bpmn_graph):
         List of edges of the BPMN graph
     """
     graph = bpmn_graph.get_graph()
-    graph_nodes = list(graph.nodes(data=False))
-    graph_edges = list(graph.edges(data=False))
+    graph_nodes: List[BPMN.Event] = list(graph.nodes(data=False))
+    graph_edges: List[Tuple[BPMN.Event, BPMN.Event]] = list(graph.edges(data=False))
     bfs = bfs_bpmn(graph_nodes, graph_edges)
-    graph_nodes = sort_nodes_given_bfs(graph_nodes, bfs)
-    graph_edges = sort_edges_given_bfs(graph_edges, bfs)
+    graph_nodes = sorted(graph_nodes, key=lambda x: bfs[x])
+    graph_edges = sorted(graph_edges, key=lambda x: (bfs[x[0]], bfs[x[1]]))
     return graph_nodes, graph_edges
