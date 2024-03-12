@@ -79,9 +79,9 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
         for x in feature_names_events:
             for a in activities:
                 if a in objs_act:
-                    val = dct_dct_events[objs_act[a]][x]
+                    val = float(dct_dct_events[objs_act[a]][x])
                 else:
-                    val = 0
+                    val = 0.0
                 arr.append(val)
         data.append(arr)
 

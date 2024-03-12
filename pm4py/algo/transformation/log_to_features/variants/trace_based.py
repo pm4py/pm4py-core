@@ -103,7 +103,7 @@ def max_concurrent_events(log: EventLog, parameters: Optional[Dict[Union[str, Pa
             if conc > max_conc:
                 max_conc = conc
             i = i + 1
-        data.append([max_conc])
+        data.append([float(max_conc)])
 
     return data, feature_names
 
@@ -159,7 +159,7 @@ def max_concurrent_events_per_activity(log: EventLog, parameters: Optional[Dict[
             max_conc_act[act] = max(max_conc_act[act], conc)
         arr = []
         for act in activities:
-            arr.append(max_conc_act[act])
+            arr.append(float(max_conc_act[act]))
         data.append(arr)
 
     return data, feature_names
@@ -218,9 +218,9 @@ def resource_workload(log: EventLog, parameters: Optional[Dict[Union[str, Parame
         ct = case[-1][timestamp_key].timestamp() + epsilon
         for res in resources_list:
             if res in resources:
-                data[-1].append(len(tree_dict[res][st:ct]))
+                data[-1].append(float(len(tree_dict[res][st:ct])))
             else:
-                data[-1].append(default_not_present)
+                data[-1].append(float(default_not_present))
 
     return data, feature_names
 
@@ -268,9 +268,9 @@ def work_in_progress(log: EventLog, parameters: Optional[Dict[Union[str, Paramet
         if case:
             st = case[0][start_timestamp_key].timestamp() - epsilon
             ct = case[-1][timestamp_key].timestamp() + epsilon
-            data.append([len(tree[st:ct])])
+            data.append([float(len(tree[st:ct]))])
         else:
-            data.append([default_not_present])
+            data.append([float(default_not_present)])
 
     return data, feature_names
 
@@ -326,9 +326,9 @@ def indirect_paths_times_last_occ(log: EventLog, parameters: Optional[Dict[Union
                     trace_paths_perf[p] = ts - tc
         for p in all_paths:
             if p in trace_paths_perf:
-                data[-1].append(trace_paths_perf[p])
+                data[-1].append(float(trace_paths_perf[p]))
             else:
-                data[-1].append(default_not_present)
+                data[-1].append(float(default_not_present))
 
     return data, feature_names
 
@@ -382,9 +382,9 @@ def direct_paths_times_last_occ(log: EventLog, parameters: Optional[Dict[Union[s
                 trace_paths_perf[p] = ts - tc
         for p in all_paths:
             if p in trace_paths_perf:
-                data[-1].append(trace_paths_perf[p])
+                data[-1].append(float(trace_paths_perf[p]))
             else:
-                data[-1].append(default_not_present)
+                data[-1].append(float(default_not_present))
 
     return data, feature_names
 
@@ -441,11 +441,11 @@ def times_from_first_occurrence_activity_case(log: EventLog, parameters: Optiona
                 this_ev_ct = ev[timestamp_key].timestamp()
                 start_ev_ct = trace[0][timestamp_key].timestamp()
                 end_ev_st = trace[-1][start_timestamp_key].timestamp()
-                data[-1].append(this_ev_st - start_ev_ct)
-                data[-1].append(end_ev_st - this_ev_ct)
+                data[-1].append(float(this_ev_st - start_ev_ct))
+                data[-1].append(float(end_ev_st - this_ev_ct))
             else:
-                data[-1].append(default_not_present)
-                data[-1].append(default_not_present)
+                data[-1].append(float(default_not_present))
+                data[-1].append(float(default_not_present))
 
     return data, feature_names
 
@@ -501,11 +501,11 @@ def times_from_last_occurrence_activity_case(log: EventLog, parameters: Optional
                 this_ev_ct = ev[timestamp_key].timestamp()
                 start_ev_ct = trace[0][timestamp_key].timestamp()
                 end_ev_st = trace[-1][start_timestamp_key].timestamp()
-                data[-1].append(this_ev_st - start_ev_ct)
-                data[-1].append(end_ev_st - this_ev_ct)
+                data[-1].append(float(this_ev_st - start_ev_ct))
+                data[-1].append(float(end_ev_st - this_ev_ct))
             else:
-                data[-1].append(default_not_present)
-                data[-1].append(default_not_present)
+                data[-1].append(float(default_not_present))
+                data[-1].append(float(default_not_present))
 
     return data, feature_names
 
@@ -559,11 +559,11 @@ def first_last_activity_index_trace(log: EventLog, parameters: Optional[Dict[Uni
                 first_occ[act] = index
         for act in activities_log:
             if act not in first_occ:
-                data[-1].append(default_not_present)
-                data[-1].append(default_not_present)
+                data[-1].append(float(default_not_present))
+                data[-1].append(float(default_not_present))
             else:
-                data[-1].append(first_occ[act])
-                data[-1].append(last_occ[act])
+                data[-1].append(float(first_occ[act]))
+                data[-1].append(float(last_occ[act]))
 
     return data, feature_names
 
@@ -596,9 +596,9 @@ def case_duration(log: EventLog, parameters: Optional[Dict[Union[str, Parameters
     data = []
     for trace in log:
         if trace:
-            data.append([trace[-1][timestamp_key].timestamp() - trace[0][start_timestamp_key].timestamp()])
+            data.append([float(trace[-1][timestamp_key].timestamp() - trace[0][start_timestamp_key].timestamp())])
         else:
-            data.append([0])
+            data.append([0.0])
 
     return data, feature_names
 
@@ -815,7 +815,7 @@ def get_numeric_trace_attribute_value(trace: Trace, trace_attribute: str) -> Uni
         Value of the numeric trace attribute for the given trace
     """
     if trace_attribute in trace.attributes:
-        return trace.attributes[trace_attribute]
+        return float(trace.attributes[trace_attribute])
     raise Exception("at least a trace without trace attribute: " + trace_attribute)
 
 
@@ -851,7 +851,7 @@ def get_numeric_event_attribute_value(event: Event, event_attribute: str) -> Uni
         Value of the numeric event attribute for the given event
     """
     if event_attribute in event:
-        return event[event_attribute]
+        return float(event[event_attribute])
     return None
 
 
@@ -1060,17 +1060,18 @@ def get_representation(log: EventLog, str_tr_attr: List[str], str_ev_attr: List[
         count = len(feature_names)
         for index, value in enumerate(feature_names):
             dictionary[value] = index
+
     for trace in log:
-        trace_rep = [0] * count
+        trace_rep = [0.0] * count
         for trace_attribute in str_tr_attr:
             trace_attr_rep = get_string_trace_attribute_rep(trace, trace_attribute)
             if trace_attr_rep in dictionary:
-                trace_rep[dictionary[trace_attr_rep]] = 1
+                trace_rep[dictionary[trace_attr_rep]] = 1.0
         for event_attribute in str_ev_attr:
             values = get_values_event_attribute_for_trace(trace, event_attribute)
             for value in values:
                 if value in dictionary:
-                    trace_rep[dictionary[value]] = 1
+                    trace_rep[dictionary[value]] = 1.0
         for trace_attribute in num_tr_attr:
             this_value = get_numeric_trace_attribute_rep(trace_attribute)
             if this_value in dictionary:
@@ -1086,7 +1087,7 @@ def get_representation(log: EventLog, str_tr_attr: List[str], str_ev_attr: List[
                 values = get_values_event_attribute_succession_for_trace(trace, event_attribute)
                 for value in values:
                     if value in dictionary:
-                        trace_rep[dictionary[value]] = 1
+                        trace_rep[dictionary[value]] = 1.0
         data.append(trace_rep)
     # data = np.asarray(data)
     return data, feature_names

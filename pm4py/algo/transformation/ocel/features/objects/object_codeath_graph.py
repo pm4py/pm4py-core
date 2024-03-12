@@ -57,6 +57,6 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     feature_names = ["@@object_codeath"]
 
     for obj in ordered_objects:
-        data.append([len(conn[obj])])
+        data.append([float(len(conn[obj]))])
 
     return data, feature_names

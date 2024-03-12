@@ -48,6 +48,6 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     feature_names = ["@@event_num_rel_objs"]
 
     for ev in ordered_events:
-        data.append([len(rel_objs[ev])])
+        data.append([float(len(rel_objs[ev]))])
 
     return data, feature_names

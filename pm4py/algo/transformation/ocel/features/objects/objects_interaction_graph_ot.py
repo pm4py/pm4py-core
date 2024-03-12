@@ -66,6 +66,6 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
         data.append([])
         for ot in object_types:
             cot = [x for x in conn[obj] if object_type_association[x] == ot]
-            data[-1].append(len(cot))
+            data[-1].append(float(len(cot)))
 
     return data, feature_names

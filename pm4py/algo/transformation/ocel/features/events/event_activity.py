@@ -51,7 +51,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     events_activities = {x[ocel.event_id_column]: x[ocel.event_activity] for x in events_activities}
 
     for ev in ordered_events:
-        data.append([0] * len(activities))
-        data[-1][activities.index(events_activities[ev])] = 1
+        data.append([0.0] * len(activities))
+        data[-1][activities.index(events_activities[ev])] = 1.0
 
     return data, feature_names

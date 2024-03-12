@@ -80,7 +80,13 @@ def apply(df: pd.DataFrame, act1: str, act2: str,
                     res[c_ind[i] + z] = this_case
                     z = z + 1
                 rel_count += 1
-                occ_A = -1
+                if act1 != act2:
+                    # if the between filter is applied between two activities A and B, with A different from B,
+                    # then the filter should stop until the next occurrence of A
+                    occ_A = -1
+                else:
+                    # otherwise, if A = B, then it continues outputting the events to a new subcase
+                    occ_A = j
             elif activities[c_ind[i] + j] == act1 and occ_A == -1:
                 occ_A = j
             j = j + 1

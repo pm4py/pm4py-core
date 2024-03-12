@@ -56,7 +56,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
         else:
             lif = []
         for act in activities:
-            data[-1].append(len(list(x for x in lif if x == act)))
+            data[-1].append(float(len(list(x for x in lif if x == act))))
 
     return data, feature_names
 

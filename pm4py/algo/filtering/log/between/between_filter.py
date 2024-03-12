@@ -88,8 +88,16 @@ def apply(log: EventLog, act1: str, act2: str, parameters: Optional[Dict[Union[s
                 filt_trace.append(trace[i])
                 filtered_log.append(filt_trace)
                 rel_count += 1
-                act1_encountered = False
-                filt_trace = None
+                if act1 != act2:
+                    # if the between filter is applied between two activities A and B, with A different from B,
+                    # then the filter should stop until the next occurrence of A
+                    act1_encountered = False
+                    filt_trace = None
+                else:
+                    # otherwise, if A = B, then it continues outputting the events to a new subcase
+                    filt_trace = Trace(attributes=__fix_trace_attributes(trace.attributes, idx, rel_count, case_id_key,
+                                                                         subcase_concat_str))
+                    filt_trace.append(trace[i])
 
             elif filt_trace is not None:
                 filt_trace.append(trace[i])

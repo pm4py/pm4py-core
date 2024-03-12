@@ -26,6 +26,7 @@ from pm4py.util import exec_utils
 from pm4py.util import points_subset
 from pm4py.util import xes_constants, pandas_utils
 from pm4py.util.dt_parsing.variants import strpfromiso
+import numpy as np
 import traceback
 
 
@@ -310,6 +311,7 @@ def select_number_column(df: pd.DataFrame, fea_df: pd.DataFrame, col: str,
     """
     df = df.dropna(subset=[col]).groupby(case_id_key).last().reset_index()[[case_id_key, col]]
     fea_df = fea_df.merge(df, on=[case_id_key], how="left", suffixes=('', '_y'))
+    fea_df[col] = fea_df[col].astype(np.float32)
     return fea_df
 
 
@@ -340,7 +342,7 @@ def select_string_column(df: pd.DataFrame, fea_df: pd.DataFrame, col: str,
             filt_df_cases = pandas_utils.format_unique(df[df[col] == val][case_id_key].unique())
             new_col = col + "_" + val.encode('ascii', errors='ignore').decode('ascii').replace(" ", "")
             fea_df[new_col] = fea_df[case_id_key].isin(filt_df_cases)
-            fea_df[new_col] = fea_df[new_col].astype("int")
+            fea_df[new_col] = fea_df[new_col].astype(np.float32)
     return fea_df
 
 

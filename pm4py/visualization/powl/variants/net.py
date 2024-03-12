@@ -20,6 +20,7 @@ from pm4py.objects.powl.obj import POWL
 from pm4py.util import exec_utils
 from enum import Enum
 import tempfile
+import importlib.resources
 import graphviz
 from graphviz import Digraph
 from typing import Optional, Dict, Any
@@ -100,11 +101,13 @@ def add_node(n, viz, parameters):
                 label = label + "\n*"
             viz.node(n_id, shape="box", label=label, fontsize=font_size)
     elif isinstance(n, BPMN.StartEvent):
-        viz.node(n_id, image=os.path.join(script_dir, "play.png"), label="", shape="none", width='0.35',
-                 height='0.35', fixedsize="true")
+        with importlib.resources.path("pm4py.visualization.powl.variants", "play.png") as gimg:
+            viz.node(n_id, image=str(gimg), label="", shape="none", width='0.35',
+                     height='0.35', fixedsize="true")
     elif isinstance(n, BPMN.EndEvent):
-        viz.node(n_id, image=os.path.join(script_dir, "end.png"), label="", shape="none", width='0.35',
-                 height='0.35', fixedsize="true")
+        with importlib.resources.path("pm4py.visualization.powl.variants", "end.png") as gimg:
+            viz.node(n_id, image=str(gimg), label="", shape="none", width='0.35',
+                     height='0.35', fixedsize="true")
     elif isinstance(n, BPMN.ParallelGateway):
         viz.node(n_id, label="", shape="square", fontsize=font_size, style="filled", fillcolor="black", width='0.3',
                  height='0.3')

@@ -1,10 +1,34 @@
 # Changelog of pm4py
 
+
+## pm4py 2.7.12 (2024.03.15)
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+---
+
 ## pm4py 2.7.11 (2024.03.01)
 
 ### Added
 * 0fcb1dc2939db30b7129f62bda0d235bd5242428
   * improved string representation of hierarchical models
+* 0b0d09226574916c5d33c000cbc2a4ffa0a13e7a
+  b56ff781c99ce3126c1ec45d502c16d1c2f3b0b6
+  * BPMN layouting in the frontend
+* b39a7326faf2afb55b8880ce420cdda4a03ffa5c
+  * activity split filter (Pandas dataframes)
+* 6a7cfeaa06d405591d13b6055bf890b8b4a6b3b9
+  * float dtype and padding in log_to_target transformaiton methods
 
 ### Changed
 * 56799b618ad1ab727705e24f40aa13a793552326
@@ -35,6 +59,12 @@
   * fixed exception handling in OpenAI requests
 * e8f0b84bc7de65f090e0e96799486acaaad7572f
   * fixed incongruency between filter on EventLog
+* 771cfcd6f2321a9106781e15c97895b26d5acbf3
+  * fixing behavior of between filter when act1 == act2
+* e1c84d7f6d6425f40a23ea3c539a0c110c331a3c
+  * ensuring float return for feature extraction methods in pm4py
+* 1b5a2932a60131f648ae476e6b97230c241f5d6e
+  * fixing POWL visualization image importing
 
 ### Removed
 

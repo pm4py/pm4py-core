@@ -66,11 +66,11 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
         arr = []
         for x in feature_names_objects:
             if ev in ev_rel_objs:
-                min_v = min(y[x] for y in ev_rel_objs[ev])
-                max_v = max(y[x] for y in ev_rel_objs[ev])
+                min_v = float(min(y[x] for y in ev_rel_objs[ev]))
+                max_v = float(max(y[x] for y in ev_rel_objs[ev]))
             else:
-                min_v = 0
-                max_v = 0
+                min_v = 0.0
+                max_v = 0.0
             arr.append(min_v)
             arr.append(max_v)
         data.append(arr)

@@ -24,12 +24,14 @@ from pm4py.objects.conversion.log import converter as log_converter
 
 class Parameters(Enum):
     TIMESTAMP_KEY = constants.PARAMETER_CONSTANT_TIMESTAMP_KEY
+    ENABLE_PADDING = "enable_padding"
+    PAD_SIZE = "pad_size"
 
 
 def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[Dict[Any, Any]] = None) -> Tuple[List[List[int]], List[str]]:
     """
     Returns a list of lists (one for every case of the log) containing the remaining time in seconds
-    from an event to the end of the case.
+    from an event to the end of the case (an automatic padding option is also available).
 
     Parameters
     ---------------
@@ -38,6 +40,8 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
     parameters
         Parameters of the algorithm, including:
         - Parameters.TIMESTAMP_KEY => the attribute of the log to be used as timestamp
+        - Parameters.ENABLE_PADDING => enables the padding (the length of cases is normalized)
+        - Parameters.PAD_SIZE => the size of the padding
 
     Returns
     ---------------
@@ -50,8 +54,11 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
         parameters = {}
 
     log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
+    max_case_length = max([len(x) for x in log])
 
     timestamp_key = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_constants.DEFAULT_TIMESTAMP_KEY)
+    enable_padding = exec_utils.get_param_value(Parameters.ENABLE_PADDING, parameters, False)
+    pad_size = exec_utils.get_param_value(Parameters.PAD_SIZE, parameters, max_case_length)
 
     target = []
     for trace in log:
@@ -59,7 +66,9 @@ def apply(log: Union[EventLog, EventStream, pd.DataFrame], parameters: Optional[
         for i in range(len(trace)):
             curr_time = trace[i][timestamp_key].timestamp()
             last_time = trace[-1][timestamp_key].timestamp()
-
-            target[-1].append(last_time-curr_time)
+            target[-1].append(float(last_time-curr_time))
+        if enable_padding:
+            while len(target[-1]) < pad_size:
+                target[-1].append(0.0)
 
     return target, ["@@remaining_time"]

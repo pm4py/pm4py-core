@@ -233,6 +233,20 @@ class BPMN(object):
         out_arcs = property(get_out_arcs)
         process = property(get_process, set_process)
 
+    class Collaboration(BPMNNode):
+        def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None):
+            BPMN.BPMNNode.__init__(self, id, name, in_arcs, out_arcs, process=process)
+
+    class Participant(BPMNNode):
+        def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None, process_ref=None):
+            self.process_ref = process_ref
+            BPMN.BPMNNode.__init__(self, id, name, in_arcs, out_arcs, process=process)
+
+    class TextAnnotation(BPMNNode):
+        def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None, text=None):
+            self.text = text
+            BPMN.BPMNNode.__init__(self, id, name, in_arcs, out_arcs, process=process)
+
     class Event(BPMNNode):
         def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None):
             BPMN.BPMNNode.__init__(self, id, name, in_arcs, out_arcs, process=process)
@@ -342,6 +356,14 @@ class BPMN(object):
         def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None):
             BPMN.Activity.__init__(self, id, name, in_arcs, out_arcs, process=process)
 
+    class UserTask(Task):
+        def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None):
+            BPMN.Task.__init__(self, id, name, in_arcs, out_arcs, process=process)
+
+    class SendTask(Task):
+        def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None):
+            BPMN.Task.__init__(self, id, name, in_arcs, out_arcs, process=process)
+
     class SubProcess(Activity):
         def __init__(self, id="", name="", in_arcs=None, out_arcs=None, process=None, depth=None):
             self.__depth = depth
@@ -378,6 +400,11 @@ class BPMN(object):
             BPMN.Gateway.__init__(self, id, name, gateway_direction, in_arcs, out_arcs, process=process)
 
     class InclusiveGateway(Gateway):
+        def __init__(self, id="", name="", gateway_direction=None, in_arcs=None, out_arcs=None, process=None):
+            gateway_direction = gateway_direction if gateway_direction is not None else BPMN.Gateway.Direction.UNSPECIFIED
+            BPMN.Gateway.__init__(self, id, name, gateway_direction, in_arcs, out_arcs, process=process)
+
+    class EventBasedGateway(Gateway):
         def __init__(self, id="", name="", gateway_direction=None, in_arcs=None, out_arcs=None, process=None):
             gateway_direction = gateway_direction if gateway_direction is not None else BPMN.Gateway.Direction.UNSPECIFIED
             BPMN.Gateway.__init__(self, id, name, gateway_direction, in_arcs, out_arcs, process=process)
@@ -442,6 +469,10 @@ class BPMN(object):
             BPMN.Flow.__init__(self, source, target, id=id, name=name, process=process)
 
     class MessageFlow(Flow):
+        def __init__(self, source, target, id="", name="", process=None):
+            BPMN.Flow.__init__(self, source, target, id=id, name=name, process=process)
+
+    class Association(Flow):
         def __init__(self, source, target, id="", name="", process=None):
             BPMN.Flow.__init__(self, source, target, id=id, name=name, process=process)
 

@@ -55,7 +55,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
         if obj in first_object_timestamp:
             se = first_object_timestamp[obj].timestamp()
             ee = last_object_timestamp[obj].timestamp()
-            data.append([ee - se, se, ee])
+            data.append([float(ee - se), float(se), float(ee)])
         else:
             data.append([0, 0, 0])
 

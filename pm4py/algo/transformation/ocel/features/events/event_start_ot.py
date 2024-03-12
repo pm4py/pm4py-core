@@ -59,6 +59,6 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     for ev in ordered_events:
         data.append([])
         for ot in object_types:
-            data[-1].append(1 if ev in map_endpoints[ot] else 0)
+            data[-1].append(1.0 if ev in map_endpoints[ot] else 0.0)
 
     return data, feature_names

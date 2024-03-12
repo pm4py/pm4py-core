@@ -56,8 +56,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
 
     for obj in ordered_objects:
         if obj in centrality:
-            data.append([centrality[obj]])
+            data.append([float(centrality[obj])])
         else:
-            data.append([0])
+            data.append([0.0])
 
     return data, feature_names

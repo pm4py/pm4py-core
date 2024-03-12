@@ -16,6 +16,7 @@
 '''
 import os
 import tempfile
+import importlib.resources
 from enum import Enum
 from graphviz import Digraph
 from pm4py.objects.powl.constants import SILENT_TRANSITION_LABEL
@@ -184,8 +185,9 @@ def repr_powl(powl, viz, color_map, parameters):
             block.attr(style="filled")
             block.attr(fillcolor=COLOR_LOOP)
             if powl.operator == Operator.LOOP:
-                block.node(this_node_id, image=os.path.join(script_dir, "loop.png"), label="", fontsize=font_size,
-                           width='0.5', height='0.5', fixedsize="true", style="filled", fillcolor=COLOR_LOOP)
+                with importlib.resources.path("pm4py.visualization.powl.variants", "loop.png") as gimg:
+                    block.node(this_node_id, image=str(gimg), label="", fontsize=font_size,
+                               width='0.5', height='0.5', fixedsize="true", style="filled", fillcolor=COLOR_LOOP)
                 do = powl.children[0]
                 redo = powl.children[1]
                 repr_powl(do, block, color_map, parameters)
@@ -195,8 +197,9 @@ def repr_powl(powl, viz, color_map, parameters):
             elif powl.operator == Operator.XOR:
                 block.attr(style="filled")
                 block.attr(fillcolor=COLOR_XOR)
-                block.node(this_node_id, image=os.path.join(script_dir, "xor.png"), label="", fontsize=font_size,
-                           width='0.5', height='0.5', fixedsize="true", style="filled", fillcolor=COLOR_XOR)
+                with importlib.resources.path("pm4py.visualization.powl.variants", "xor.png") as gimg:
+                    block.node(this_node_id, image=str(gimg), label="", fontsize=font_size,
+                               width='0.5', height='0.5', fixedsize="true", style="filled", fillcolor=COLOR_XOR)
                 for child in powl.children:
                     repr_powl(child, block, color_map, parameters)
                     add_operator_edge(block, this_node_id, child)

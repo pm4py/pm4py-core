@@ -64,6 +64,6 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     feature_names = ["@@object_wip"]
 
     data.sort(key=lambda x: x[1])
-    data = [[x[0]] for x in data]
+    data = [[float(x[0])] for x in data]
 
     return data, feature_names

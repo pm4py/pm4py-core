@@ -4,6 +4,24 @@ import sys
 import traceback
 
 
+def bpmn_js_visualization():
+    from examples import bpmn_js_visualization
+    print("\n\nbpmn_js_visualization")
+    bpmn_js_visualization.execute_script()
+
+
+def log_projection_dfg_variant():
+    from examples import log_projection_dfg_variant
+    print("\n\nlog_projection_dfg_variant")
+    log_projection_dfg_variant.execute_script()
+
+
+def streaming_live_to_static_stream():
+    from examples import streaming_live_to_static_stream
+    print("\n\nstreaming_live_to_static_stream")
+    streaming_live_to_static_stream.execute_script()
+
+
 def declare_simple():
     from examples import declare_simple
     print("\n\ndeclare_simple")
@@ -870,7 +888,9 @@ def main():
     pm4py.util.constants.SHOW_EVENT_LOG_DEPRECATION = False
     pm4py.util.constants.SHOW_INTERNAL_WARNINGS = False
     #pm4py.util.constants.DEFAULT_TIMESTAMP_PARSE_FORMAT = None
-    
+
+    execute_script(log_projection_dfg_variant)
+    execute_script(streaming_live_to_static_stream)
     execute_script(powl_discovery)
     execute_script(powl_parsing)
     execute_script(ev_to_obj_types_graph)
@@ -880,6 +900,7 @@ def main():
     execute_script(segments_retrieval_filtering)
     execute_script(stochastic_petri_playout)
     execute_script(simplified_interface)
+    execute_script(bpmn_js_visualization)
     execute_script(read_write_ocel)
     execute_script(discovery_data_petri_net)
     execute_script(data_petri_nets)

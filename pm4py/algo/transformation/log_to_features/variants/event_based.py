@@ -119,13 +119,13 @@ def extract_features(log: EventLog, feature_names: List[str], parameters: Option
                 if isinstance(attr_value, str):
                     str_features.add("event:" + attr_name + "@" + attr_value)
                 elif isinstance(attr_value, int) or isinstance(attr_value, float):
-                    num_features["event:" + attr_name] = attr_value
+                    num_features["event:" + attr_name] = float(attr_value)
             for attr in str_features:
                 if attr in feature_names:
-                    data[i1, i2, feature_names.index(attr)] = 1
+                    data[i1, i2, feature_names.index(attr)] = 1.0
             for attr in num_features:
                 if attr in feature_names:
-                    data[i1, i2, feature_names.index(attr)] = num_features[attr]
+                    data[i1, i2, feature_names.index(attr)] = float(num_features[attr])
 
     return data, feature_names
 

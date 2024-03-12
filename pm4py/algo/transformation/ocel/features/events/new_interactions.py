@@ -57,6 +57,6 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
                     if o1 < o2:
                         if not (o1, o2) in interactions:
                             n = n + 1
-        data.append([n])
+        data.append([float(n)])
 
     return data, feature_names

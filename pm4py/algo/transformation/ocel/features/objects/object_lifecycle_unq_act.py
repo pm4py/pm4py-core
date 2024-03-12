@@ -51,8 +51,8 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
 
     for obj in ordered_objects:
         if obj in lifecycle_unq:
-            data.append([lifecycle_unq[obj]])
+            data.append([float(lifecycle_unq[obj])])
         else:
-            data.append([0])
+            data.append([0.0])
 
     return data, feature_names

@@ -79,7 +79,7 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
                 if ev in dct_corr[attr]:
                     value = dct_corr[attr][ev]
                     idx = count + dct_corr_values[attr].index(value)
-                    data[-1][idx] = 1
+                    data[-1][idx] = 1.0
                 count += len(dct_corr_values[attr])
 
     return data, feature_names
