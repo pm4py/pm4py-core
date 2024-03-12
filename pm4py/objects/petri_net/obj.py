@@ -23,7 +23,7 @@ class Marking(Counter):
     pass
 
     def __hash__(self):
-        return frozenset(self).__hash__()
+        return frozenset(self).__hash__() # credits egrocha
 
     def __eq__(self, other):
         if not self.keys() == other.keys():
