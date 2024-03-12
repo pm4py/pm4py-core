@@ -14,52 +14,47 @@
     You should have received a copy of the GNU General Public License
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
-from collections import Counter
 from copy import deepcopy
 from typing import Any, Collection, Dict
 
 
-class Marking(Counter):
-    pass
-
+class Marking(dict):
+    """
+    A Marking is a dictionary of place->token_count, with the constraint
+        that the token count is always positive (or implicitly assumed to be 0).
+    So it is similar to the collections.Counter class, but faster.
+    """
     def __hash__(self):
-        r = 0
-        for p in self.items():
-            r += 31 * hash(p[0]) * p[1]
-        return r
+        return hash(frozenset(self.items()))
 
-    def __eq__(self, other):
-        if not self.keys() == other.keys():
-            return False
-        for p in self.keys():
-            if other.get(p) != self.get(p):
-                return False
-        return True
+    def __missing__(self, key):
+        # The count of an element not in the marking is 0
+        return 0
 
     def __le__(self, other):
         if not self.keys() <= other.keys():
             return False
-        for p in self.keys():
-            if other.get(p) < self.get(p):
+        for place, count in self.items():
+            if other[place] < count:
                 return False
         return True
 
     def __add__(self, other):
         m = Marking()
-        for p in self.items():
-            m[p[0]] = p[1]
-        for p in other.items():
-            m[p[0]] += p[1]
+        for place, count in self.items():
+            m[place] = count
+        for place, count in other.items():
+            m[place] += count
         return m
 
     def __sub__(self, other):
         m = Marking()
-        for p in self.items():
-            m[p[0]] = p[1]
-        for p in other.items():
-            m[p[0]] -= p[1]
-            if m[p[0]] == 0:
-                del m[p[0]]
+        for place, count in self.items():
+            m[place] = count
+        for place, count in other.items():
+            m[place] -= count
+            if m[place] == 0:
+                del m[place]
         return m
 
     def __repr__(self):
@@ -81,27 +76,34 @@ class Marking(Counter):
 
 class PetriNet(object):
     class Place(object):
+        __slots__ = ('_name', '_in_arcs', '_out_arcs', '_properties', '_id')
 
         def __init__(self, name, in_arcs=None, out_arcs=None, properties=None):
-            self.__name = name
-            self.__in_arcs = set() if in_arcs is None else in_arcs
-            self.__out_arcs = set() if out_arcs is None else out_arcs
-            self.__properties = dict() if properties is None else properties
+            self._name = name
+            self._in_arcs = set() if in_arcs is None else in_arcs
+            self._out_arcs = set() if out_arcs is None else out_arcs
+            self._properties = dict() if properties is None else properties
+            self._id = id(self)
 
-        def __set_name(self, name):
-            self.__name = name
+        @property
+        def name(self):
+            return self._name
 
-        def __get_name(self):
-            return self.__name
+        @name.setter
+        def name(self, name):
+            self._name = name
 
-        def __get_out_arcs(self):
-            return self.__out_arcs
+        @property
+        def out_arcs(self):
+            return self._out_arcs
 
-        def __get_in_arcs(self):
-            return self.__in_arcs
+        @property
+        def in_arcs(self):
+            return self._in_arcs
 
-        def __get_properties(self):
-            return self.__properties
+        @property
+        def properties(self):
+            return self._properties
 
         def __repr__(self):
             return str(self.name)
@@ -111,11 +113,11 @@ class PetriNet(object):
 
         def __eq__(self, other):
             # keep the ID for now in places
-            return id(self) == id(other)
+            return self._id == other._id
 
         def __hash__(self):
             # keep the ID for now in places
-            return id(self)
+            return self._id
 
         def __deepcopy__(self, memodict={}):
             if id(self) in memodict:
@@ -130,40 +132,44 @@ class PetriNet(object):
                 new_place.out_arcs.add(new_arc)
             return new_place
 
-        name = property(__get_name, __set_name)
-        in_arcs = property(__get_in_arcs)
-        out_arcs = property(__get_out_arcs)
-        properties = property(__get_properties)
-
     class Transition(object):
+        __slots__ = ('_name', '_label', '_in_arcs', '_out_arcs', '_properties', '_id')
 
         def __init__(self, name, label=None, in_arcs=None, out_arcs=None, properties=None):
-            self.__name = name
-            self.__label = None if label is None else label
-            self.__in_arcs = set() if in_arcs is None else in_arcs
-            self.__out_arcs = set() if out_arcs is None else out_arcs
-            self.__properties = dict() if properties is None else properties
+            self._name = name
+            self._label = None if label is None else label
+            self._in_arcs = set() if in_arcs is None else in_arcs
+            self._out_arcs = set() if out_arcs is None else out_arcs
+            self._properties = dict() if properties is None else properties
+            self._id = id(self)
 
-        def __set_name(self, name):
-            self.__name = name
+        @property
+        def name(self):
+            return self._name
 
-        def __get_name(self):
-            return self.__name
+        @name.setter
+        def name(self, name):
+            self._name = name
 
-        def __set_label(self, label):
-            self.__label = label
+        @property
+        def label(self):
+            return self._label
 
-        def __get_label(self):
-            return self.__label
+        @label.setter
+        def label(self, label):
+            self._label = label
 
-        def __get_out_arcs(self):
-            return self.__out_arcs
+        @property
+        def out_arcs(self):
+            return self._out_arcs
 
-        def __get_in_arcs(self):
-            return self.__in_arcs
+        @property
+        def in_arcs(self):
+            return self._in_arcs
 
-        def __get_properties(self):
-            return self.__properties
+        @property
+        def properties(self):
+            return self._properties
 
         def __repr__(self):
             if self.label is None:
@@ -176,11 +182,11 @@ class PetriNet(object):
 
         def __eq__(self, other):
             # keep the ID for now in transitions
-            return id(self) == id(other)
+            return self._id == other._id
 
         def __hash__(self):
             # keep the ID for now in transitions
-            return id(self)
+            return self._id
 
         def __deepcopy__(self, memodict={}):
             if id(self) in memodict:
@@ -195,36 +201,37 @@ class PetriNet(object):
                 new_trans.out_arcs.add(new_arc)
             return new_trans
 
-        name = property(__get_name, __set_name)
-        label = property(__get_label, __set_label)
-        in_arcs = property(__get_in_arcs)
-        out_arcs = property(__get_out_arcs)
-        properties = property(__get_properties)
-
     class Arc(object):
+        __slots__ = ('_source', '_target', '_weight', '_properties', '_id')
 
         def __init__(self, source, target, weight=1, properties=None):
             if type(source) is type(target):
                 raise Exception('Petri nets are bipartite graphs!')
-            self.__source = source
-            self.__target = target
-            self.__weight = weight
-            self.__properties = dict() if properties is None else properties
+            self._source = source
+            self._target = target
+            self._weight = weight
+            self._properties = dict() if properties is None else properties
+            self._id = id(self)
 
-        def __get_source(self):
-            return self.__source
+        @property
+        def source(self):
+            return self._source
 
-        def __get_target(self):
-            return self.__target
+        @property
+        def target(self):
+            return self._target
 
-        def __set_weight(self, weight):
-            self.__weight = weight
+        @property
+        def weight(self):
+            return self._weight
 
-        def __get_weight(self):
-            return self.__weight
+        @weight.setter
+        def weight(self, weight):
+            self._weight = weight
 
-        def __get_properties(self):
-            return self.__properties
+        @property
+        def properties(self):
+            return self._properties
 
         def __repr__(self):
             source_rep = repr(self.source)
@@ -235,7 +242,7 @@ class PetriNet(object):
             return self.__repr__()
 
         def __hash__(self):
-            return id(self)
+            return self._id
 
         def __eq__(self, other):
             return self.source == other.source and self.target == other.target
@@ -253,35 +260,36 @@ class PetriNet(object):
             memodict[id(self)] = new_arc
             return new_arc
 
-        source = property(__get_source)
-        target = property(__get_target)
-        weight = property(__get_weight, __set_weight)
-        properties = property(__get_properties)
-
     def __init__(self, name: str=None, places: Collection[Place]=None, transitions: Collection[Transition]=None, arcs: Collection[Arc]=None, properties:Dict[str, Any]=None):
-        self.__name = "" if name is None else name
-        self.__places = set() if places is None else places
-        self.__transitions = set() if transitions is None else transitions
-        self.__arcs = set() if arcs is None else arcs
-        self.__properties = dict() if properties is None else properties
+        self._name = "" if name is None else name
+        self._places = set() if places is None else places
+        self._transitions = set() if transitions is None else transitions
+        self._arcs = set() if arcs is None else arcs
+        self._properties = dict() if properties is None else properties
 
-    def __get_name(self) -> str:
-        return self.__name
+    @property
+    def name(self) -> str:
+        return self._name
 
-    def __set_name(self, name):
-        self.__name = name
+    @name.setter
+    def name(self, name):
+        self._name = name
 
-    def __get_places(self) -> Collection[Place]:
-        return self.__places
+    @property
+    def places(self) -> Collection[Place]:
+        return self._places
 
-    def __get_transitions(self) -> Collection[Transition]:
-        return self.__transitions
+    @property
+    def transitions(self) -> Collection[Transition]:
+        return self._transitions
 
-    def __get_arcs(self) -> Collection[Arc]:
-        return self.__arcs
+    @property
+    def arcs(self) -> Collection[Arc]:
+        return self._arcs
 
-    def __get_properties(self) -> Dict[str, Any]:
-        return self.__properties
+    @property
+    def properties(self) -> Dict[str, Any]:
+        return self._properties
 
     def __hash__(self):
         ret = 0
@@ -337,12 +345,6 @@ class PetriNet(object):
 
     def __str__(self):
         return self.__repr__()
-
-    name = property(__get_name, __set_name)
-    places = property(__get_places)
-    transitions = property(__get_transitions)
-    arcs = property(__get_arcs)
-    properties = property(__get_properties)
 
 
 class InhibitorNet(PetriNet):
