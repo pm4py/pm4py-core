@@ -267,7 +267,7 @@ def get_initial_roles(res_act_couples, parameters=None):
     for act in roles0:
         roles.append([[act], roles0[act]])
 
-    roles = sorted(roles, key=lambda x: (len(x[0]), len(x[1]), constants.DEFAULT_VARIANT_SEP.join(sorted(x[0]))))
+    roles = sorted(roles, key=lambda x: (len(x[0]), len(x[1]), constants.DEFAULT_VARIANT_SEP.join(sorted(x[0]))), reverse=True)
 
     roles = aggregate_roles_algorithm(roles, parameters=parameters)
 
