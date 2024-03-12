@@ -301,7 +301,6 @@ def apply(res_act_couples, parameters=None) -> List[Role]:
     final_roles = []
 
     for r in roles:
-        print(r[0])
         dictio = {x: int(y) for x, y in r[1].items()}
         final_roles.append(Role(r[0], dictio))
 
