@@ -40,11 +40,13 @@ class ConcurrencyCut(Cut[T], ABC, Generic[T]):
     def holds(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[List[Collection[Any]]]:
         dfg = obj.dfg
         alphabet = dfu.get_vertices(dfg)
+        alphabet = sorted(list(alphabet))
         msdw = comut.msdw(obj, comut.msd(obj)) if obj is not None and type(obj) is UVCL else None
         groups = [{a} for a in alphabet]
         if len(groups) == 0:
             return None
         edges = dfu.get_edges(dfg)
+        edges = sorted(list(edges))
         for a, b in product(alphabet, alphabet):
             if (a, b) not in edges or (b, a) not in edges:
                 groups = cut_util.merge_groups_based_on_activities(a, b, groups)
