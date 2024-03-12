@@ -267,9 +267,11 @@ def get_initial_roles(res_act_couples, parameters=None):
     for act in roles0:
         roles.append([[act], roles0[act]])
 
-    roles = sorted(roles, key=lambda x: constants.DEFAULT_VARIANT_SEP.join(x[0]))
+    roles = sorted(roles, key=lambda x: (len(x[0]), len(x[1]), constants.DEFAULT_VARIANT_SEP.join(sorted(x[0]))))
 
     roles = aggregate_roles_algorithm(roles, parameters=parameters)
+
+    roles = sorted(roles, key=lambda x: (len(x[0]), len(x[1]), constants.DEFAULT_VARIANT_SEP.join(sorted(x[0]))), reverse=True)
 
     return roles
 
@@ -299,6 +301,7 @@ def apply(res_act_couples, parameters=None) -> List[Role]:
     final_roles = []
 
     for r in roles:
+        print(r[0])
         dictio = {x: int(y) for x, y in r[1].items()}
         final_roles.append(Role(r[0], dictio))
 
