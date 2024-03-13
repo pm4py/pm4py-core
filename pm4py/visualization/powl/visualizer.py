@@ -124,8 +124,7 @@ def save(svg_content: str, output_file_path: str):
     elif output_file_path.endswith("pdf"):
         cairosvg.svg2pdf(url=tmpfile_path, write_to=output_file_path)
     else:
-        print(f"Unsupported format! Please use 'svg', 'png', or 'pdf'.")
-        return
+        raise Exception(f"Unsupported format! Please use 'svg', 'png', or 'pdf'.")
 
     if os.path.exists(tmpfile_path):
         os.remove(tmpfile_path)
@@ -158,5 +157,4 @@ def view(svg_content: str, image_format="svg"):
             cairosvg.svg2pdf(url=tmpfile_path, write_to=tmpfile_path + '.pdf')
             webbrowser.open('file://' + os.path.abspath(tmpfile_path + '.pdf'))
         else:
-            print(f"Unsupported format: {image_format}. Please use 'svg', 'png', or 'pdf'.")
-            return
+            raise Exception(f"Unsupported format: {image_format}. Please use 'svg', 'png', or 'pdf'.")

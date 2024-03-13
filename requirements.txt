@@ -10,3 +10,4 @@ pydotplus
 pytz
 scipy
 tqdm
+cairosvg
