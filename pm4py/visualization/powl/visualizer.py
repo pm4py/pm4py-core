@@ -1,3 +1,12 @@
+import base64
+import os
+import re
+import shutil
+import tempfile
+import webbrowser
+
+import cairosvg as cairosvg
+
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
 from pm4py.visualization.powl.variants import basic
@@ -17,8 +26,8 @@ class POWLVisualizationVariants(Enum):
 DEFAULT_VARIANT = POWLVisualizationVariants.BASIC
 
 
-def apply(powl: POWL, parameters: Optional[Dict[Any, Any]] = None, variant=DEFAULT_VARIANT, frequency_tags=True)\
-        -> graphviz.Graph:
+def apply(powl: POWL, variant=DEFAULT_VARIANT, frequency_tags=True)\
+        -> str:
     """
     Method for POWL model representation
 
@@ -38,50 +47,116 @@ def apply(powl: POWL, parameters: Optional[Dict[Any, Any]] = None, variant=DEFAU
 
     Returns
     -----------
-    gviz
-        GraphViz object
+    str
+        SVG Content
     """
     if frequency_tags:
         powl = powl.simplify_using_frequent_transitions()
 
-    return exec_utils.get_variant(variant).apply(powl, parameters=parameters)
+    viz = exec_utils.get_variant(variant).apply(powl)
+    svg_content = viz.pipe().decode('utf-8')
+
+    def inline_images_and_svgs(svg_content):
+        img_pattern = re.compile(r'<image[^>]+xlink:href=["\'](.*?)["\'][^>]*>')
+
+        def encode_file_to_base64(file_path):
+            with open(file_path, 'rb') as file:
+                return base64.b64encode(file.read()).decode('utf-8')
+
+        def read_file_content_and_viewbox(file_path):
+            with open(file_path, 'r') as file:
+                content = file.read()
+                content = re.sub(r'<\?xml.*?\?>', '', content, flags=re.DOTALL)
+                content = re.sub(r'<!DOCTYPE.*?>', '', content, flags=re.DOTALL)
+                viewBox_match = re.search(r'viewBox="([^"]*)"', content)
+                viewBox = viewBox_match.group(1) if viewBox_match else "0 0 1 1"
+                svg_content_match = re.search(r'<svg[^>]*>(.*?)</svg>', content, re.DOTALL)
+                svg_content = svg_content_match.group(1) if svg_content_match else content
+                return svg_content, viewBox
+
+        def replace_with_inline_content(match):
+            file_path = match.group(1)
+            if file_path.lower().endswith('.svg'):
+                svg_data, viewBox = read_file_content_and_viewbox(file_path)
+                viewBox_values = [float(v) for v in viewBox.split()]
+                actual_width, actual_height = viewBox_values[2], viewBox_values[3]
+
+                intended_width = float(match.group(0).split('width="')[1].split('"')[0].replace('px', ''))
+                intended_height = float(match.group(0).split('height="')[1].split('"')[0].replace('px', ''))
+                x = float(match.group(0).split('x="')[1].split('"')[0])
+                y = float(match.group(0).split('y="')[1].split('"')[0])
+
+                scale_x = intended_width / actual_width
+                scale_y = intended_height / actual_height
+
+                return f'<g transform="translate({x},{y}) scale({scale_x},{scale_y})">{svg_data}</g>'
+            else:
+                base64_data = encode_file_to_base64(file_path)
+                return match.group(0).replace(file_path, f"data:image/png;base64,{base64_data}")
+
+        return img_pattern.sub(replace_with_inline_content, svg_content)
+
+    svg_content_with_inline_images = inline_images_and_svgs(svg_content)
+
+    return svg_content_with_inline_images
 
 
-def save(gviz: graphviz.Graph, output_file_path: str):
+def save(svg_content: str, output_file_path: str):
     """
-    Save the diagram
+    Save the diagram in a specified format.
 
     Parameters
     -----------
-    gviz
-        GraphViz diagram
-    output_file_path
-        Path where the GraphViz output should be saved
+    svg_content : str
+        SVG content
+    output_file_path : str
+        Path where the output file should be saved
     """
-    gsave.save(gviz, output_file_path)
-    return ""
+
+    with tempfile.NamedTemporaryFile(delete=False, mode='w+', suffix='.svg') as tmpfile:
+        tmpfile.write(svg_content)
+        tmpfile_path = tmpfile.name
+
+    if output_file_path.endswith("svg"):
+        shutil.move(tmpfile_path, output_file_path)
+    elif output_file_path.endswith("png"):
+        cairosvg.svg2png(url=tmpfile_path, write_to=output_file_path)
+    elif output_file_path.endswith("pdf"):
+        cairosvg.svg2pdf(url=tmpfile_path, write_to=output_file_path)
+    else:
+        print(f"Unsupported format! Please use 'svg', 'png', or 'pdf'.")
+        return
+
+    if os.path.exists(tmpfile_path):
+        os.remove(tmpfile_path)
 
 
-def view(gviz: graphviz.Graph):
+def view(svg_content: str, image_format="svg"):
     """
     View the diagram
 
     Parameters
     -----------
-    gviz
-        GraphViz diagram
-    """
-    return gview.view(gviz)
-
-
-def matplotlib_view(gviz: graphviz.Graph):
-    """
-    Views the diagram using Matplotlib
-
-    Parameters
-    ---------------
-    gviz
-        Graphviz
+    svg_content
+        SVG content
+    image_format
+        image format
     """
 
-    return gview.matplotlib_view(gviz)
+    image_format = image_format.lower()
+    with tempfile.NamedTemporaryFile(delete=False, mode='w+', suffix='.svg') as tmpfile:
+        tmpfile.write(svg_content)
+        tmpfile_path = tmpfile.name
+
+        if image_format == "svg":
+            absolute_path = os.path.abspath(tmpfile_path)
+            return webbrowser.open('file://' + absolute_path)
+        elif image_format == "png":
+            cairosvg.svg2png(url=tmpfile_path, write_to=tmpfile_path + '.png')
+            webbrowser.open('file://' + os.path.abspath(tmpfile_path + '.png'))
+        elif image_format == "pdf":
+            cairosvg.svg2pdf(url=tmpfile_path, write_to=tmpfile_path + '.pdf')
+            webbrowser.open('file://' + os.path.abspath(tmpfile_path + '.pdf'))
+        else:
+            print(f"Unsupported format: {image_format}. Please use 'svg', 'png', or 'pdf'.")
+            return
