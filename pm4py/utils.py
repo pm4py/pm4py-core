@@ -519,7 +519,10 @@ def sample_events(log: Union[EventStream, OCEL], num_events: int) -> Union[Event
     if check_is_pandas_dataframe(log):
         check_pandas_dataframe_columns(log)
 
-    if isinstance(log, EventStream):
+    if isinstance(log, EventLog):
+        from pm4py.objects.log.util import sampling
+        return sampling.sample_log(log, num_events)
+    elif isinstance(log, EventStream):
         from pm4py.objects.log.util import sampling
         return sampling.sample_stream(log, num_events)
     elif isinstance(log, OCEL):

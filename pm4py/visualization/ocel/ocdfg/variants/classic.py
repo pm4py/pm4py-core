@@ -268,21 +268,22 @@ def apply(ocdfg: Dict[str, Any], parameters: Optional[Dict[Any, Any]] = None) ->
                                              edge_prefix, nodes, performance_aggregation_measure)
 
     for ot in sa_count:
-        if ot in edges_count:
-            for act in sa_count[ot]:
-                if act in nodes:
-                    if len(sa_count[ot][act]) >= edge_threshold:
-                        # add_start_node(G: Digraph, ot, act, freq, edge_prefix, nodes, annotation)
-                        add_start_node(viz, ot, act, len(sa_count[ot][act]), edge_prefix, nodes, annotation,
-                                       min_edges_count[ot], max_edges_count[ot])
+        for act in sa_count[ot]:
+            if act in nodes:
+                if len(sa_count[ot][act]) >= edge_threshold:
+                    miec = min_edges_count[ot] if ot in min_edges_count else len(sa_count[ot][act])
+                    maec = max_edges_count[ot] if ot in max_edges_count else len(sa_count[ot][act])
+                    add_start_node(viz, ot, act, len(sa_count[ot][act]), edge_prefix, nodes, annotation,
+                                   miec, maec)
 
     for ot in ea_count:
-        if ot in edges_count:
-            for act in ea_count[ot]:
-                if act in nodes:
-                    if len(ea_count[ot][act]) >= edge_threshold:
-                        add_end_node(viz, ot, act, len(ea_count[ot][act]), edge_prefix, nodes, annotation,
-                                     min_edges_count[ot], max_edges_count[ot])
+        for act in ea_count[ot]:
+            if act in nodes:
+                if len(ea_count[ot][act]) >= edge_threshold:
+                    miec = min_edges_count[ot] if ot in min_edges_count else len(ea_count[ot][act])
+                    maec = max_edges_count[ot] if ot in max_edges_count else len(ea_count[ot][act])
+                    add_end_node(viz, ot, act, len(ea_count[ot][act]), edge_prefix, nodes, annotation,
+                                 miec, maec)
 
     viz.attr(rankdir=rankdir)
     viz.format = image_format.replace("html", "plain-ext")

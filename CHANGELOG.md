@@ -1,7 +1,7 @@
 # Changelog of pm4py
 
 
-## pm4py 2.7.12 (2024.03.15)
+## pm4py 2.7.12 (2024.03.XX)
 
 ### Added
 
@@ -10,6 +10,10 @@
 ### Deprecated
 
 ### Fixed
+* e3b8172e4c005dcb633c9018b9b9439d84580f7b
+  * fixing random variables support
+* bb759da149b434d0e279256c8c6d397b06079729
+  * fixing sampling
 
 ### Removed
 

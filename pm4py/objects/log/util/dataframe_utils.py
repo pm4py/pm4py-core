@@ -27,6 +27,7 @@ from pm4py.util import points_subset
 from pm4py.util import xes_constants, pandas_utils
 from pm4py.util.dt_parsing.variants import strpfromiso
 import numpy as np
+import random
 import traceback
 
 
@@ -51,6 +52,7 @@ class Parameters(Enum):
     CASE_INDEX_KEY = "case_index_key"
     USE_EXTREMES_TIMESTAMP = "use_extremes_timestamp"
     ADD_CASE_IDENTIFIER_COLUMN = "add_case_identifier_column"
+    DETERMINISTIC = "deterministic"
 
 
 def insert_partitioning(df, num_partitions, parameters=None):
@@ -219,10 +221,16 @@ def sample_dataframe(df, parameters=None):
     if parameters is None:
         parameters = {}
 
+    deterministic = exec_utils.get_param_value(Parameters.DETERMINISTIC, parameters, False)
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     max_no_cases = exec_utils.get_param_value(Parameters.MAX_NO_CASES, parameters, 100)
 
     case_ids = pandas_utils.format_unique(df[case_id_key].unique())
+    case_ids = list(case_ids)
+
+    if not deterministic:
+        random.shuffle(case_ids)
+
     case_id_to_retain = points_subset.pick_chosen_points_list(min(max_no_cases, len(case_ids)), case_ids)
 
     return df[df[case_id_key].isin(case_id_to_retain)]

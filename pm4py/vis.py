@@ -1294,11 +1294,12 @@ def view_powl(powl: POWL, format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgco
         variant = POWLVisualizationVariants.NET
 
     format = str(format).lower()
+    parameters = parameters={"format": format, "bgcolor": bgcolor}
 
     from pm4py.visualization.powl import visualizer as powl_visualizer
-    gviz = powl_visualizer.apply(powl, variant=variant, parameters={"format": format, "bgcolor": bgcolor})
+    gviz = powl_visualizer.apply(powl, variant=variant, parameters=parameters)
 
-    powl_visualizer.view(gviz)
+    powl_visualizer.view(gviz, parameters=parameters)
 
 
 def save_vis_powl(powl: POWL, file_path: str, bgcolor: str = "white", rankdir: str = "TB", **kwargs):
@@ -1323,11 +1324,12 @@ def save_vis_powl(powl: POWL, file_path: str, bgcolor: str = "white", rankdir: s
     """
     file_path = str(file_path)
     format = os.path.splitext(file_path)[1][1:].lower()
+    parameters = {"format": format, "bgcolor": bgcolor, "rankdir": rankdir}
 
     from pm4py.visualization.powl import visualizer as powl_visualizer
-    gviz = powl_visualizer.apply(powl, parameters={"format": format, "bgcolor": bgcolor, "rankdir": rankdir})
+    gviz = powl_visualizer.apply(powl, parameters=parameters)
 
-    return powl_visualizer.save(gviz, file_path)
+    return powl_visualizer.save(gviz, file_path, parameters=parameters)
 
 
 def view_object_graph(ocel: OCEL, graph: Set[Tuple[str, str]], format: str = constants.DEFAULT_FORMAT_GVIZ_VIEW, bgcolor: str = "white", rankdir: str = constants.DEFAULT_RANKDIR_GVIZ):

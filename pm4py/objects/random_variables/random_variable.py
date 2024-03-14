@@ -17,6 +17,7 @@
 import numpy as np
 
 from pm4py.objects.random_variables.constant0.random_variable import Constant0
+from pm4py.objects.random_variables.deterministic.random_variable import Deterministic
 from pm4py.objects.random_variables.exponential.random_variable import Exponential
 from pm4py.objects.random_variables.normal.random_variable import Normal
 from pm4py.objects.random_variables.uniform.random_variable import Uniform
@@ -53,6 +54,9 @@ class RandomVariable(object):
             self.random_variable.read_from_string(distribution_parameters)
         elif distribution_type == "GAMMA":
             self.random_variable = Gamma()
+            self.random_variable.read_from_string(distribution_parameters)
+        elif distribution_type == "DETERMINISTIC":
+            self.random_variable = Deterministic()
             self.random_variable.read_from_string(distribution_parameters)
         elif distribution_type == "IMMEDIATE":
             self.random_variable = Constant0()
