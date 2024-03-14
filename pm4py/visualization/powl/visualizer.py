@@ -5,8 +5,6 @@ import shutil
 import tempfile
 import webbrowser
 
-import cairosvg as cairosvg
-
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
 from pm4py.visualization.powl.variants import basic
@@ -112,7 +110,6 @@ def save(svg_content: str, output_file_path: str):
     output_file_path : str
         Path where the output file should be saved
     """
-
     with tempfile.NamedTemporaryFile(delete=False, mode='w+', suffix='.svg') as tmpfile:
         tmpfile.write(svg_content)
         tmpfile_path = tmpfile.name
@@ -120,8 +117,10 @@ def save(svg_content: str, output_file_path: str):
     if output_file_path.endswith("svg"):
         shutil.move(tmpfile_path, output_file_path)
     elif output_file_path.endswith("png"):
+        import cairosvg as cairosvg
         cairosvg.svg2png(url=tmpfile_path, write_to=output_file_path)
     elif output_file_path.endswith("pdf"):
+        import cairosvg as cairosvg
         cairosvg.svg2pdf(url=tmpfile_path, write_to=output_file_path)
     else:
         raise Exception(f"Unsupported format! Please use 'svg', 'png', or 'pdf'.")
@@ -141,7 +140,6 @@ def view(svg_content: str, image_format="svg"):
     image_format
         image format
     """
-
     image_format = image_format.lower()
     with tempfile.NamedTemporaryFile(delete=False, mode='w+', suffix='.svg') as tmpfile:
         tmpfile.write(svg_content)
@@ -151,9 +149,11 @@ def view(svg_content: str, image_format="svg"):
             absolute_path = os.path.abspath(tmpfile_path)
             return webbrowser.open('file://' + absolute_path)
         elif image_format == "png":
+            import cairosvg as cairosvg
             cairosvg.svg2png(url=tmpfile_path, write_to=tmpfile_path + '.png')
             webbrowser.open('file://' + os.path.abspath(tmpfile_path + '.png'))
         elif image_format == "pdf":
+            import cairosvg as cairosvg
             cairosvg.svg2pdf(url=tmpfile_path, write_to=tmpfile_path + '.pdf')
             webbrowser.open('file://' + os.path.abspath(tmpfile_path + '.pdf'))
         else:
