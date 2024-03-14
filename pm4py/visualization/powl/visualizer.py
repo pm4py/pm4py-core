@@ -21,6 +21,10 @@ class POWLVisualizationVariants(Enum):
     NET = net
 
 
+class Parameters(Enum):
+    FORMAT = "format"
+
+
 DEFAULT_VARIANT = POWLVisualizationVariants.BASIC
 
 
@@ -135,7 +139,7 @@ def save(svg_content: str, output_file_path: str, parameters: Optional[Dict[Any,
         os.remove(tmpfile_path)
 
 
-def view(svg_content: str, image_format="svg", parameters: Optional[Dict[Any, Any]] = None):
+def view(svg_content: str, parameters: Optional[Dict[Any, Any]] = None):
     """
     View the diagram
 
@@ -148,8 +152,9 @@ def view(svg_content: str, image_format="svg", parameters: Optional[Dict[Any, An
     """
     if parameters is None:
         parameters = {}
-    
-    image_format = image_format.lower()
+
+    image_format = str(exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")).lower()
+
     with tempfile.NamedTemporaryFile(delete=False, mode='w+', suffix='.svg') as tmpfile:
         tmpfile.write(svg_content)
         tmpfile_path = tmpfile.name
