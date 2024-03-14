@@ -24,7 +24,7 @@ class POWLVisualizationVariants(Enum):
 DEFAULT_VARIANT = POWLVisualizationVariants.BASIC
 
 
-def apply(powl: POWL, variant=DEFAULT_VARIANT, frequency_tags=True)\
+def apply(powl: POWL, variant=DEFAULT_VARIANT, frequency_tags=True, parameters: Optional[Dict[Any, Any]] = None)\
         -> str:
     """
     Method for POWL model representation
@@ -48,6 +48,9 @@ def apply(powl: POWL, variant=DEFAULT_VARIANT, frequency_tags=True)\
     str
         SVG Content
     """
+    if parameters is None:
+        parameters = {}
+
     if frequency_tags:
         powl = powl.simplify_using_frequent_transitions()
 
@@ -99,7 +102,7 @@ def apply(powl: POWL, variant=DEFAULT_VARIANT, frequency_tags=True)\
     return svg_content_with_inline_images
 
 
-def save(svg_content: str, output_file_path: str):
+def save(svg_content: str, output_file_path: str, parameters: Optional[Dict[Any, Any]] = None):
     """
     Save the diagram in a specified format.
 
@@ -110,6 +113,9 @@ def save(svg_content: str, output_file_path: str):
     output_file_path : str
         Path where the output file should be saved
     """
+    if parameters is None:
+        parameters = {}
+
     with tempfile.NamedTemporaryFile(delete=False, mode='w+', suffix='.svg') as tmpfile:
         tmpfile.write(svg_content)
         tmpfile_path = tmpfile.name
@@ -129,7 +135,7 @@ def save(svg_content: str, output_file_path: str):
         os.remove(tmpfile_path)
 
 
-def view(svg_content: str, image_format="svg"):
+def view(svg_content: str, image_format="svg", parameters: Optional[Dict[Any, Any]] = None):
     """
     View the diagram
 
@@ -140,6 +146,9 @@ def view(svg_content: str, image_format="svg"):
     image_format
         image format
     """
+    if parameters is None:
+        parameters = {}
+    
     image_format = image_format.lower()
     with tempfile.NamedTemporaryFile(delete=False, mode='w+', suffix='.svg') as tmpfile:
         tmpfile.write(svg_content)
