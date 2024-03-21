@@ -39,6 +39,7 @@ class POWLVisualizationVariants(Enum):
 
 class Parameters(Enum):
     FORMAT = "format"
+    ENCODING = "encoding"
 
 
 DEFAULT_VARIANT = POWLVisualizationVariants.BASIC
@@ -136,6 +137,8 @@ def save(svg_content: str, output_file_path: str, parameters: Optional[Dict[Any,
     if parameters is None:
         parameters = {}
 
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, "utf-8")
+
     with tempfile.NamedTemporaryFile(delete=False, mode='w+', suffix='.svg') as tmpfile:
         tmpfile.write(svg_content)
         tmpfile_path = tmpfile.name
@@ -144,10 +147,10 @@ def save(svg_content: str, output_file_path: str, parameters: Optional[Dict[Any,
         shutil.move(tmpfile_path, output_file_path)
     elif output_file_path.endswith("png"):
         import cairosvg as cairosvg
-        cairosvg.svg2png(url=tmpfile_path, write_to=output_file_path)
+        cairosvg.svg2png(bytestring=svg_content.encode(encoding), write_to=output_file_path)
     elif output_file_path.endswith("pdf"):
         import cairosvg as cairosvg
-        cairosvg.svg2pdf(url=tmpfile_path, write_to=output_file_path)
+        cairosvg.svg2pdf(bytestring=svg_content.encode(encoding), write_to=output_file_path)
     else:
         raise Exception(f"Unsupported format! Please use 'svg', 'png', or 'pdf'.")
 
@@ -170,6 +173,7 @@ def view(svg_content: str, parameters: Optional[Dict[Any, Any]] = None):
         parameters = {}
 
     image_format = str(exec_utils.get_param_value(Parameters.FORMAT, parameters, "png")).lower()
+    encoding = exec_utils.get_param_value(Parameters.ENCODING, parameters, "utf-8")
 
     with tempfile.NamedTemporaryFile(delete=False, mode='w+', suffix='.svg') as tmpfile:
         tmpfile.write(svg_content)
@@ -180,11 +184,11 @@ def view(svg_content: str, parameters: Optional[Dict[Any, Any]] = None):
             return webbrowser.open('file://' + absolute_path)
         elif image_format == "png":
             import cairosvg as cairosvg
-            cairosvg.svg2png(url=tmpfile_path, write_to=tmpfile_path + '.png')
+            cairosvg.svg2png(bytestring=svg_content.encode(encoding), url=tmpfile_path, write_to=tmpfile_path + '.png')
             webbrowser.open('file://' + os.path.abspath(tmpfile_path + '.png'))
         elif image_format == "pdf":
             import cairosvg as cairosvg
-            cairosvg.svg2pdf(url=tmpfile_path, write_to=tmpfile_path + '.pdf')
+            cairosvg.svg2pdf(bytestring=svg_content.encode(encoding), url=tmpfile_path, write_to=tmpfile_path + '.pdf')
             webbrowser.open('file://' + os.path.abspath(tmpfile_path + '.pdf'))
         else:
             raise Exception(f"Unsupported format: {image_format}. Please use 'svg', 'png', or 'pdf'.")

@@ -15,7 +15,7 @@
     along with PM4Py.  If not, see <https://www.gnu.org/licenses/>.
 '''
 from enum import Enum
-from typing import Optional, Dict, Any, Union
+from typing import Optional, Dict, Any, Union, List
 
 import numpy as np
 import pandas as pd
@@ -29,7 +29,7 @@ class Parameters(Enum):
     SUBCASE_CONCAT_STR = "subcase_concat_str"
 
 
-def apply(df: pd.DataFrame, act1: str, act2: str,
+def apply(df: pd.DataFrame, act1: Union[str, List[str]], act2: Union[str, List[str]],
           parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Given a dataframe, filters all the subtraces going from an event with activity "act1" to an event with
@@ -40,9 +40,9 @@ def apply(df: pd.DataFrame, act1: str, act2: str,
     df
         Dataframe
     act1
-        First activity
+        First activity (or collection of activities)
     act2
-        Second activity
+        Second activity (or collection of activities)
     parameters
         Parameters of the algorithm, including:
         - Parameters.ACTIVITY_KEY => activity key
@@ -61,6 +61,9 @@ def apply(df: pd.DataFrame, act1: str, act2: str,
     case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
     subcase_concat_str = exec_utils.get_param_value(Parameters.SUBCASE_CONCAT_STR, parameters, "##@@")
 
+    act1_comparison = lambda x: (x == act1) if type(act1) is str else (x in act1)
+    act2_comparison = lambda x: (x == act2) if type(act2) is str else (x in act2)
+
     df = df.copy()
     cases = df[case_id_key].to_numpy()
     activities = df[activity_key].to_numpy()
@@ -73,7 +76,7 @@ def apply(df: pd.DataFrame, act1: str, act2: str,
         occ_A = -1
         j = 0
         while j < c_counts[i]:
-            if activities[c_ind[i] + j] == act2 and occ_A >= 0:
+            if act2_comparison(activities[c_ind[i] + j]) and occ_A >= 0:
                 z = occ_A
                 this_case = str(c_unq[i]) + subcase_concat_str + str(rel_count)
                 while z <= j:
@@ -87,7 +90,7 @@ def apply(df: pd.DataFrame, act1: str, act2: str,
                 else:
                     # otherwise, if A = B, then it continues outputting the events to a new subcase
                     occ_A = j
-            elif activities[c_ind[i] + j] == act1 and occ_A == -1:
+            elif act1_comparison(activities[c_ind[i] + j]) and occ_A == -1:
                 occ_A = j
             j = j + 1
         i = i + 1
