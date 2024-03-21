@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional, Dict, Any, Union
+from typing import Optional, Dict, Any, Union, List
 
 import numpy as np
 import pandas as pd
@@ -14,7 +14,7 @@ class Parameters(Enum):
     CUT_MODE = "cut_mode"
 
 
-def apply(df: pd.DataFrame, activity: str,
+def apply(df: pd.DataFrame, activity: Union[str, List[str]],
           parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
     """
     Splits the cases of a log (Pandas dataframe) into subcases based on the provision of an activity.
@@ -52,7 +52,7 @@ def apply(df: pd.DataFrame, activity: str,
     df
         Dataframe
     activity
-        Activity (splitter)
+        Activity (or collection of activities)
     parameters
         Parameters of the algorithm, including:
         - Parameters.ACTIVITY_KEY => activity key
@@ -76,6 +76,8 @@ def apply(df: pd.DataFrame, activity: str,
     subcase_concat_str = exec_utils.get_param_value(Parameters.SUBCASE_CONCAT_STR, parameters, "##@@")
     cut_mode = exec_utils.get_param_value(Parameters.CUT_MODE, parameters, "this")
 
+    act_equal = lambda x: x == activity if type(activity) is str else x in activity
+
     df = df.copy()
     cases = df[case_id_key].to_numpy()
     activities = df[activity_key].to_numpy()
@@ -89,7 +91,7 @@ def apply(df: pd.DataFrame, activity: str,
 
         j = 0
         while j < c_counts[i]:
-            if activities[c_ind[i] + j] == activity:
+            if act_equal(activities[c_ind[i] + j]):
                 rel_count += 1
                 next_case = str(c_unq[i]) + subcase_concat_str + str(rel_count)
                 if cut_mode == "this":
