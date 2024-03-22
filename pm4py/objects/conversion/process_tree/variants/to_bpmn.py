@@ -68,8 +68,8 @@ def add_xor_gateway(bpmn, counts):
     split_name = "xor_" + str(counts.num_xor_gateways) + "_split"
     join_name = "xor_" + str(counts.num_xor_gateways) + "_join"
 
-    split = BPMN.ExclusiveGateway(name=split_name, gateway_direction=BPMN.Gateway.Direction.DIVERGING)
-    join = BPMN.ExclusiveGateway(name=join_name, gateway_direction=BPMN.Gateway.Direction.CONVERGING)
+    split = BPMN.ExclusiveGateway(name="", gateway_direction=BPMN.Gateway.Direction.DIVERGING)
+    join = BPMN.ExclusiveGateway(name="", gateway_direction=BPMN.Gateway.Direction.CONVERGING)
     bpmn.add_node(split)
     bpmn.add_node(join)
 
@@ -82,8 +82,8 @@ def add_parallel_gateway(bpmn, counts):
     split_name = "parallel_" + str(counts.num_para_gateways) + "_split"
     join_name = "parallel_" + str(counts.num_para_gateways) + "_join"
 
-    split = BPMN.ParallelGateway(name=split_name, gateway_direction=BPMN.Gateway.Direction.DIVERGING)
-    join = BPMN.ParallelGateway(name=join_name, gateway_direction=BPMN.Gateway.Direction.CONVERGING)
+    split = BPMN.ParallelGateway(name="", gateway_direction=BPMN.Gateway.Direction.DIVERGING)
+    join = BPMN.ParallelGateway(name="", gateway_direction=BPMN.Gateway.Direction.CONVERGING)
     bpmn.add_node(split)
     bpmn.add_node(join)
     return bpmn, split, join, counts
@@ -95,8 +95,8 @@ def add_inclusive_gateway(bpmn, counts):
     split_name = "parallel_" + str(counts.num_para_gateways) + "_split"
     join_name = "parallel_" + str(counts.num_para_gateways) + "_join"
 
-    split = BPMN.InclusiveGateway(name=split_name, gateway_direction=BPMN.Gateway.Direction.DIVERGING)
-    join = BPMN.InclusiveGateway(name=join_name, gateway_direction=BPMN.Gateway.Direction.CONVERGING)
+    split = BPMN.InclusiveGateway(name="", gateway_direction=BPMN.Gateway.Direction.DIVERGING)
+    join = BPMN.InclusiveGateway(name="", gateway_direction=BPMN.Gateway.Direction.CONVERGING)
     bpmn.add_node(split)
     bpmn.add_node(join)
     return bpmn, split, join, counts
@@ -112,14 +112,14 @@ def recursively_add_tree(parent_tree, tree, bpmn, initial_event, final_event, co
         trans = tree
         if trans.label is None:
             bpmn, task, counts = add_tau_task(bpmn, counts)
-            bpmn.add_flow(BPMN.Flow(initial_event, task))
-            bpmn.add_flow(BPMN.Flow(task, final_event))
+            bpmn.add_flow(BPMN.SequenceFlow(initial_event, task))
+            bpmn.add_flow(BPMN.SequenceFlow(task, final_event))
             initial_connector = task
             final_connector = task
         else:
             bpmn, task, counts = add_task(bpmn, counts, trans.label)
-            bpmn.add_flow(BPMN.Flow(initial_event, task))
-            bpmn.add_flow(BPMN.Flow(task, final_event))
+            bpmn.add_flow(BPMN.SequenceFlow(initial_event, task))
+            bpmn.add_flow(BPMN.SequenceFlow(task, final_event))
             initial_connector = task
             final_connector = task
 
@@ -129,8 +129,8 @@ def recursively_add_tree(parent_tree, tree, bpmn, initial_event, final_event, co
             bpmn, counts, x, y = recursively_add_tree(tree, subtree, bpmn, split_gateway, join_gateway,
                                                       counts,
                                                       rec_depth + 1)
-        bpmn.add_flow(BPMN.Flow(initial_event, split_gateway))
-        bpmn.add_flow(BPMN.Flow(join_gateway, final_event))
+        bpmn.add_flow(BPMN.SequenceFlow(initial_event, split_gateway))
+        bpmn.add_flow(BPMN.SequenceFlow(join_gateway, final_event))
         initial_connector = split_gateway
         final_connector = join_gateway
 
@@ -140,8 +140,8 @@ def recursively_add_tree(parent_tree, tree, bpmn, initial_event, final_event, co
             bpmn, counts, x, y = recursively_add_tree(tree, subtree, bpmn, split_gateway, join_gateway,
                                                       counts,
                                                       rec_depth + 1)
-        bpmn.add_flow(BPMN.Flow(initial_event, split_gateway))
-        bpmn.add_flow(BPMN.Flow(join_gateway, final_event))
+        bpmn.add_flow(BPMN.SequenceFlow(initial_event, split_gateway))
+        bpmn.add_flow(BPMN.SequenceFlow(join_gateway, final_event))
         initial_connector = split_gateway
         final_connector = join_gateway
 
@@ -151,8 +151,8 @@ def recursively_add_tree(parent_tree, tree, bpmn, initial_event, final_event, co
             bpmn, counts, x, y = recursively_add_tree(tree, subtree, bpmn, split_gateway, join_gateway,
                                                       counts,
                                                       rec_depth + 1)
-        bpmn.add_flow(BPMN.Flow(initial_event, split_gateway))
-        bpmn.add_flow(BPMN.Flow(join_gateway, final_event))
+        bpmn.add_flow(BPMN.SequenceFlow(initial_event, split_gateway))
+        bpmn.add_flow(BPMN.SequenceFlow(join_gateway, final_event))
         initial_connector = split_gateway
         final_connector = join_gateway
 
@@ -179,8 +179,8 @@ def recursively_add_tree(parent_tree, tree, bpmn, initial_event, final_event, co
         bpmn, counts, i, y = recursively_add_tree(tree, do, bpmn, join, split, counts, rec_depth + 1)
         for redo in tree_childs[1:]:
             bpmn, counts, x, y = recursively_add_tree(tree, redo, bpmn, split, join, counts, rec_depth + 1)
-        bpmn.add_flow(BPMN.Flow(initial_event, join))
-        bpmn.add_flow(BPMN.Flow(split, final_event))
+        bpmn.add_flow(BPMN.SequenceFlow(initial_event, join))
+        bpmn.add_flow(BPMN.SequenceFlow(split, final_event))
         initial_connector = join
         final_connector = split
 
@@ -201,7 +201,7 @@ def delete_tau_transitions(bpmn, counts):
             target = out_flow.get_target()
             bpmn.remove_flow(out_flow)
             bpmn.remove_flow(in_flow)
-            bpmn.add_flow(BPMN.Flow(source, target))
+            bpmn.add_flow(BPMN.SequenceFlow(source, target))
         else:
             for in_flow in copy.copy(in_arcs):
                 bpmn.remove_flow(in_flow)
