@@ -74,7 +74,7 @@ def reduce_xor_gateways(bpmn_graph, parameters=None):
                             bpmn_graph.remove_flow(flow)
                     if node in bpmn_graph.get_nodes():
                         bpmn_graph.remove_node(node)
-                    bpmn_graph.add_flow(BPMN.Flow(source_node, target_node))
+                    bpmn_graph.add_flow(BPMN.SequenceFlow(source_node, target_node))
                     break
 
     return bpmn_graph

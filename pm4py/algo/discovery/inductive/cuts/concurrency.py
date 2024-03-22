@@ -16,18 +16,14 @@
 '''
 from abc import ABC
 from collections import Counter
-from itertools import product
 from typing import List, Collection, Any, Optional, Generic, Dict
 
-from pm4py.algo.discovery.inductive.cuts import utils as cut_util
 from pm4py.algo.discovery.inductive.cuts.abc import Cut, T
 from pm4py.algo.discovery.inductive.dtypes.im_dfg import InductiveDFG
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL, IMDataStructureDFG
 from pm4py.objects.dfg import util as dfu
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.process_tree.obj import Operator, ProcessTree
-from pm4py.util.compression import util as comut
-from pm4py.util.compression.dtypes import UVCL
 
 
 class ConcurrencyCut(Cut[T], ABC, Generic[T]):
@@ -41,18 +37,35 @@ class ConcurrencyCut(Cut[T], ABC, Generic[T]):
         dfg = obj.dfg
         alphabet = dfu.get_vertices(dfg)
         alphabet = sorted(list(alphabet))
-        msdw = comut.msdw(obj, comut.msd(obj)) if obj is not None and type(obj) is UVCL else None
+        edges = dfu.get_edges(dfg)
+        edges = sorted(list(edges))
+
         groups = [{a} for a in alphabet]
         if len(groups) == 0:
             return None
-        edges = dfu.get_edges(dfg)
-        edges = sorted(list(edges))
-        for a, b in product(alphabet, alphabet):
-            if (a, b) not in edges or (b, a) not in edges:
-                groups = cut_util.merge_groups_based_on_activities(a, b, groups)
-            elif msdw is not None:
-                if (a in msdw and b in msdw[a]) or (b in msdw and a in msdw[b]):
-                    groups = cut_util.merge_groups_based_on_activities(a, b, groups)
+
+        cont = True
+        while cont:
+            cont = False
+            i = 0
+            while i < len(groups):
+                j = i + 1
+                while j < len(groups):
+                    for act1 in groups[i]:
+                        for act2 in groups[j]:
+                            if (act1, act2) not in edges or (act2, act1) not in edges:
+                                groups[i] = groups[i].union(groups[j])
+                                del groups[j]
+                                cont = True
+                                break
+                        if cont:
+                            break
+                    if cont:
+                        break
+                    j = j + 1
+                if cont:
+                    break
+                i = i + 1
 
         groups = list(sorted(groups, key=lambda g: len(g)))
         i = 0

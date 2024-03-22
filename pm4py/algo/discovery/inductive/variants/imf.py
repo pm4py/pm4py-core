@@ -45,7 +45,7 @@ class IMFUVCL(IMF[IMDataStructureUVCL]):
         noise_threshold = exec_utils.get_param_value(IMFParameters.NOISE_THRESHOLD, parameters, 0.0)
 
         empty_traces = EmptyTracesUVCL.apply(obj, parameters)
-        if empty_traces is not None:
+        if empty_traces is not None and empty_traces[1]:
             number_original_traces = sum(y for y in obj.data_structure.values())
             number_filtered_traces = sum(y for y in empty_traces[1][1].data_structure.values())
 

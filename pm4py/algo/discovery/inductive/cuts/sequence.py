@@ -18,11 +18,9 @@ import itertools
 import sys
 from abc import ABC
 from collections import Counter
-from itertools import product
 from typing import Collection, Any, List, Optional, Generic, Dict
 from typing import Tuple
 
-from pm4py.algo.discovery.inductive.cuts import utils as cut_util
 from pm4py.algo.discovery.inductive.cuts.abc import Cut
 from pm4py.algo.discovery.inductive.cuts.abc import T
 from pm4py.algo.discovery.inductive.dtypes.im_dfg import InductiveDFG
@@ -37,6 +35,28 @@ class SequenceCut(Cut[T], ABC, Generic[T]):
     @classmethod
     def operator(cls, parameters: Optional[Dict[str, Any]] = None) -> ProcessTree:
         return ProcessTree(operator=Operator.SEQUENCE)
+
+    @staticmethod
+    def check_merge_condition(g1, g2, trans_succ):
+        for a1 in g1:
+            for a2 in g2:
+                if (a2 in trans_succ[a1] and a1 in trans_succ[a2]) or (a2 not in trans_succ[a1] and a1 not in trans_succ[a2]):
+                    return True
+        return False
+
+    @staticmethod
+    def merge_groups(groups, trans_succ):
+        i = 0
+        while i < len(groups):
+            j = i + 1
+            while j < len(groups):
+                if SequenceCut.check_merge_condition(groups[i], groups[j], trans_succ):
+                    groups[i] = groups[i].union(groups[j])
+                    del groups[j]
+                    continue
+                j = j + 1
+            i = i + 1
+        return groups
 
     @classmethod
     def holds(cls, obj: T, parameters: Optional[Dict[str, Any]] = None) -> Optional[List[Collection[Any]]]:
@@ -57,13 +77,15 @@ class SequenceCut(Cut[T], ABC, Generic[T]):
         groups = [{a} for a in alphabet]
         if len(groups) == 0:
             return None
-        for a, b in product(alphabet, alphabet):
-            if (b in transitive_successors[a] and a in transitive_successors[b]) or (
-                    b not in transitive_successors[a] and a not in transitive_successors[b]):
-                groups = cut_util.merge_groups_based_on_activities(a, b, groups)
+
+        old_size = None
+        while old_size != len(groups):
+            old_size = len(groups)
+            groups = SequenceCut.merge_groups(groups, transitive_successors)
 
         groups = list(sorted(groups, key=lambda g: len(
             transitive_predecessors[next(iter(g))]) + (len(alphabet) - len(transitive_successors[next(iter(g))]))))
+
         return groups if len(groups) > 1 else None
 
 

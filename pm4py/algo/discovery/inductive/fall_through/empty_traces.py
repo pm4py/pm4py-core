@@ -33,8 +33,11 @@ class EmptyTracesUVCL(FallThrough[IMDataStructureUVCL]):
         if cls.holds(obj, parameters):
             data_structure = copy(obj.data_structure)
             del data_structure[()]
-            return ProcessTree(operator=Operator.XOR), [IMDataStructureUVCL(Counter()),
-                                                        IMDataStructureUVCL(data_structure)]
+            if data_structure:
+                return ProcessTree(operator=Operator.XOR), [IMDataStructureUVCL(Counter()),
+                                                            IMDataStructureUVCL(data_structure)]
+            else:
+                return ProcessTree(), []
         else:
             return None
 

@@ -32,7 +32,10 @@ class SingleActivityBaseCaseUVCL(BaseCase[IMDataStructureUVCL]):
     @classmethod
     def leaf(cls, obj=IMDataStructureUVCL, parameters: Optional[Dict[str, Any]] = None) -> ProcessTree:
         for t in obj.data_structure:
-            return ProcessTree(label=t[0])
+            if t:
+                return ProcessTree(label=t[0])
+            else:
+                return ProcessTree()
 
 
 class SingleActivityBaseCaseDFG(BaseCase[IMDataStructureDFG]):

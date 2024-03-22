@@ -19,6 +19,8 @@ from enum import Enum
 
 from pm4py.objects.petri_net.utils import reduction
 from pm4py.objects.petri_net.obj import PetriNet, Marking
+from pm4py.objects.bpmn.obj import BPMN
+from pm4py.objects.petri_net.utils.petri_utils import remove_place
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.util import exec_utils, nx_utils
 
@@ -113,26 +115,28 @@ def apply(bpmn_graph, parameters=None):
     source_count = {}
     target_count = {}
     for flow in bpmn_graph.get_flows():
-        source = flow.get_source()
-        target = flow.get_target()
-        place = PetriNet.Place(str(flow.get_id()))
-        net.places.add(place)
-        flow_place[flow] = place
-        if source not in source_count:
-            source_count[source] = 0
-        if target not in target_count:
-            target_count[target] = 0
-        source_count[source] = source_count[source] + 1
-        target_count[target] = target_count[target] + 1
+        if isinstance(flow, BPMN.SequenceFlow):
+            source = flow.get_source()
+            target = flow.get_target()
+            place = PetriNet.Place(str(flow.get_id()))
+            net.places.add(place)
+            flow_place[flow] = place
+            if source not in source_count:
+                source_count[source] = 0
+            if target not in target_count:
+                target_count[target] = 0
+            source_count[source] = source_count[source] + 1
+            target_count[target] = target_count[target] + 1
 
     for flow in bpmn_graph.get_flows():
-        source = flow.get_source()
-        target = flow.get_target()
-        place = PetriNet.Place(str(flow.get_id()))
-        if isinstance(source, BPMN.InclusiveGateway) and source_count[source] > 1:
-            inclusive_gateway_exit.add(place.name)
-        elif isinstance(target, BPMN.InclusiveGateway) and target_count[target] > 1:
-            inclusive_gateway_entry.add(place.name)
+        if isinstance(flow, BPMN.SequenceFlow):
+            source = flow.get_source()
+            target = flow.get_target()
+            place = PetriNet.Place(str(flow.get_id()))
+            if isinstance(source, BPMN.InclusiveGateway) and source_count[source] > 1:
+                inclusive_gateway_exit.add(place.name)
+            elif isinstance(target, BPMN.InclusiveGateway) and target_count[target] > 1:
+                inclusive_gateway_entry.add(place.name)
 
     # remove possible places that are both in inclusive_gateway_exit and inclusive_gateway_entry,
     # because we do not need to add invisibles in this situation
@@ -145,77 +149,87 @@ def apply(bpmn_graph, parameters=None):
     trans_map = {}
 
     for node in bpmn_graph.get_nodes():
-        entry_place = PetriNet.Place("ent_" + str(node.get_id()))
-        net.places.add(entry_place)
-        exiting_place = PetriNet.Place("exi_" + str(node.get_id()))
-        net.places.add(exiting_place)
-        if use_id:
-            label = str(node.get_id())
-        else:
-            label = str(node.get_name()) if isinstance(node, BPMN.Task) else None
-            if not label:
-                label = None
-        transition = PetriNet.Transition(name=str(node.get_id()), label=label)
-        net.transitions.add(transition)
-        trans_map[node] = [transition]
-        add_arc_from_to(entry_place, transition, net)
-        add_arc_from_to(transition, exiting_place, net)
+        if isinstance(node, BPMN.Task) or isinstance(node, BPMN.StartEvent) or isinstance(node, BPMN.EndEvent) or \
+                isinstance(node, BPMN.ExclusiveGateway) or isinstance(node, BPMN.ParallelGateway) or \
+                isinstance(node, BPMN.InclusiveGateway):
+            if not node in source_count:
+                source_count[node] = 0
+            if not node in target_count:
+                target_count[node] = 0
 
-        if isinstance(node, BPMN.ParallelGateway) or isinstance(node, BPMN.InclusiveGateway):
-            if source_count[node] > 1:
-                exiting_object = PetriNet.Transition(str(uuid.uuid4()), None)
-                net.transitions.add(exiting_object)
-                add_arc_from_to(exiting_place, exiting_object, net)
-                trans_map[node].append(exiting_object)
+            entry_place = PetriNet.Place("ent_" + str(node.get_id()))
+            net.places.add(entry_place)
+            exiting_place = PetriNet.Place("exi_" + str(node.get_id()))
+            net.places.add(exiting_place)
+            if use_id:
+                label = str(node.get_id())
             else:
-                exiting_object = exiting_place
+                label = str(node.get_name()) if isinstance(node, BPMN.Task) else None
+                if not label:
+                    label = None
+            transition = PetriNet.Transition(name=str(node.get_id()), label=label)
+            net.transitions.add(transition)
+            trans_map[node] = [transition]
+            add_arc_from_to(entry_place, transition, net)
+            add_arc_from_to(transition, exiting_place, net)
 
-            if target_count[node] > 1:
-                entering_object = PetriNet.Transition(str(uuid.uuid4()), None)
-                net.transitions.add(entering_object)
-                add_arc_from_to(entering_object, entry_place, net)
-                trans_map[node].append(entering_object)
+            if isinstance(node, BPMN.ParallelGateway) or isinstance(node, BPMN.InclusiveGateway):
+                if source_count[node] > 1:
+                    exiting_object = PetriNet.Transition(str(uuid.uuid4()), None)
+                    net.transitions.add(exiting_object)
+                    add_arc_from_to(exiting_place, exiting_object, net)
+                    trans_map[node].append(exiting_object)
+                else:
+                    exiting_object = exiting_place
+
+                if target_count[node] > 1:
+                    entering_object = PetriNet.Transition(str(uuid.uuid4()), None)
+                    net.transitions.add(entering_object)
+                    add_arc_from_to(entering_object, entry_place, net)
+                    trans_map[node].append(entering_object)
+                else:
+                    entering_object = entry_place
+                nodes_entering[node] = entering_object
+                nodes_exiting[node] = exiting_object
             else:
-                entering_object = entry_place
-            nodes_entering[node] = entering_object
-            nodes_exiting[node] = exiting_object
-        else:
-            nodes_entering[node] = entry_place
-            nodes_exiting[node] = exiting_place
+                nodes_entering[node] = entry_place
+                nodes_exiting[node] = exiting_place
 
-        if isinstance(node, BPMN.StartEvent):
-            start_transition = PetriNet.Transition(str(uuid.uuid4()), None)
-            net.transitions.add(start_transition)
-            add_arc_from_to(source_place, start_transition, net)
-            add_arc_from_to(start_transition, entry_place, net)
-            trans_map[node].append(start_transition)
-        elif isinstance(node, BPMN.EndEvent):
-            end_transition = PetriNet.Transition(str(uuid.uuid4()), None)
-            net.transitions.add(end_transition)
-            add_arc_from_to(exiting_place, end_transition, net)
-            add_arc_from_to(end_transition, sink_place, net)
-            trans_map[node].append(end_transition)
+            if isinstance(node, BPMN.StartEvent):
+                start_transition = PetriNet.Transition(str(uuid.uuid4()), None)
+                net.transitions.add(start_transition)
+                add_arc_from_to(source_place, start_transition, net)
+                add_arc_from_to(start_transition, entry_place, net)
+                trans_map[node].append(start_transition)
+            elif isinstance(node, BPMN.EndEvent):
+                end_transition = PetriNet.Transition(str(uuid.uuid4()), None)
+                net.transitions.add(end_transition)
+                add_arc_from_to(exiting_place, end_transition, net)
+                add_arc_from_to(end_transition, sink_place, net)
+                trans_map[node].append(end_transition)
 
     for flow in bpmn_graph.get_flows():
-        source_object = nodes_exiting[flow.get_source()]
-        target_object = nodes_entering[flow.get_target()]
+        if isinstance(flow, BPMN.SequenceFlow):
+            if flow.get_source() in nodes_exiting and flow.get_target() in nodes_entering:
+                source_object = nodes_exiting[flow.get_source()]
+                target_object = nodes_entering[flow.get_target()]
 
-        if isinstance(source_object, PetriNet.Place):
-            inv1 = PetriNet.Transition(f"sfl_{flow.get_id()}", None)
-            net.transitions.add(inv1)
-            add_arc_from_to(source_object, inv1, net)
-            source_object = inv1
-            trans_map[flow.source].append(inv1)
+                if isinstance(source_object, PetriNet.Place):
+                    inv1 = PetriNet.Transition(f"sfl_{flow.get_id()}", None)
+                    net.transitions.add(inv1)
+                    add_arc_from_to(source_object, inv1, net)
+                    source_object = inv1
+                    trans_map[flow.source].append(inv1)
 
-        if isinstance(target_object, PetriNet.Place):
-            inv2 = PetriNet.Transition(f"tfl_{flow.get_id()}", None)
-            net.transitions.add(inv2)
-            add_arc_from_to(inv2, target_object, net)
-            target_object = inv2
-            trans_map[flow.target].append(inv2)
+                if isinstance(target_object, PetriNet.Place):
+                    inv2 = PetriNet.Transition(f"tfl_{flow.get_id()}", None)
+                    net.transitions.add(inv2)
+                    add_arc_from_to(inv2, target_object, net)
+                    target_object = inv2
+                    trans_map[flow.target].append(inv2)
 
-        add_arc_from_to(source_object, flow_place[flow], net)
-        add_arc_from_to(flow_place[flow], target_object, net)
+                add_arc_from_to(source_object, flow_place[flow], net)
+                add_arc_from_to(flow_place[flow], target_object, net)
 
     if inclusive_gateway_exit and inclusive_gateway_entry:
         # do the following steps if there are inclusive gateways:
@@ -240,6 +254,10 @@ def apply(bpmn_graph, parameters=None):
 
     if enable_reduction:
         reduction.apply_simple_reduction(net)
+
+    for place in list(net.places):
+        if len(place.in_arcs) == 0 and len(place.out_arcs) == 0 and not place in im and not place in fm:
+            remove_place(net, place)
 
     if return_flow_trans_map:
         return net, im, fm, flow_place, trans_map

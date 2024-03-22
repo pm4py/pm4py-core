@@ -72,23 +72,23 @@ def apply(net, im, fm, parameters=None):
             task = BPMN.Task(name=trans.label)
             bpmn_graph.add_node(task)
 
-            bpmn_graph.add_flow(BPMN.Flow(entering_node, task))
-            bpmn_graph.add_flow(BPMN.Flow(task, exiting_node))
+            bpmn_graph.add_flow(BPMN.SequenceFlow(entering_node, task))
+            bpmn_graph.add_flow(BPMN.SequenceFlow(task, exiting_node))
 
             entering_dictio[trans] = entering_node
             exiting_dictio[trans] = exiting_node
 
     for arc in net.arcs:
-        bpmn_graph.add_flow(BPMN.Flow(exiting_dictio[arc.source], entering_dictio[arc.target]))
+        bpmn_graph.add_flow(BPMN.SequenceFlow(exiting_dictio[arc.source], entering_dictio[arc.target]))
 
     start_node = BPMN.StartEvent(name="start", isInterrupting=True)
     end_node = BPMN.NormalEndEvent(name="end")
     bpmn_graph.add_node(start_node)
     bpmn_graph.add_node(end_node)
     for place in im:
-        bpmn_graph.add_flow(BPMN.Flow(start_node, entering_dictio[place]))
+        bpmn_graph.add_flow(BPMN.SequenceFlow(start_node, entering_dictio[place]))
     for place in fm:
-        bpmn_graph.add_flow(BPMN.Flow(exiting_dictio[place], end_node))
+        bpmn_graph.add_flow(BPMN.SequenceFlow(exiting_dictio[place], end_node))
 
     bpmn_graph = reduction.apply(bpmn_graph)
 
