@@ -11,3 +11,4 @@ pydotplus
 pytz
 scipy
 tqdm
+deepdiff
