@@ -259,6 +259,14 @@ def group_blocks_in_net(net, parameters=None):
     net = deepcopy(net)
 
     while len(net.transitions) > 1:
+        im = {p: 1 for p in net.places if len(p.in_arcs) == 0}
+        fm = {p: 1 for p in net.places if len(p.out_arcs) == 0}
+
+        if len(im) != 1 and len(fm) != 1:
+            # start/end conditions for block-structured nets
+            # do not hold
+            break
+
         if __group_blocks_internal(net, parameters):
             continue
         else:
