@@ -216,6 +216,22 @@ def binary_sequence_detection(net):
     return None
 
 
+def __group_blocks_internal(net, parameters=None):
+    if parameters is None:
+        parameters = {}
+
+    if binary_choice_detection(net) is not None:
+        return True
+    elif binary_sequence_detection(net) is not None:
+        return True
+    elif binary_concurrency_detection(net) is not None:
+        return True
+    elif binary_loop_detection(net) is not None:
+        return True
+    else:
+        return False
+
+
 def group_blocks_in_net(net, parameters=None):
     """
     Groups the blocks in the Petri net
@@ -243,13 +259,7 @@ def group_blocks_in_net(net, parameters=None):
     net = deepcopy(net)
 
     while len(net.transitions) > 1:
-        if binary_choice_detection(net) is not None:
-            continue
-        elif binary_sequence_detection(net) is not None:
-            continue
-        elif binary_concurrency_detection(net) is not None:
-            continue
-        elif binary_loop_detection(net) is not None:
+        if __group_blocks_internal(net, parameters):
             continue
         else:
             break
