@@ -14,6 +14,7 @@ from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.process_tree.obj import ProcessTree
 from pm4py.objects.process_tree.utils import generic as pt_util
+from pm4py.objects.process_tree.utils.generic import tree_sort
 from pm4py.util import constants
 import warnings
 from pm4py.util import exec_utils
@@ -67,5 +68,6 @@ def apply(obj: Union[EventLog, pd.DataFrame, DFG, UVCL], parameters: Optional[Di
             process_tree = imd.apply(IMDataStructureDFG(idfg), parameters)
 
     process_tree = pt_util.fold(process_tree)
+    tree_sort(process_tree)
 
     return process_tree
