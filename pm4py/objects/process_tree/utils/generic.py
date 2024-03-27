@@ -30,11 +30,11 @@ def fold(tree):
         tree = root
 
     tree_str = str(tree)
-    tau_leafs_red_tree = copy.deepcopy(tree)
-    tau_leafs_red_tree_str = str(tau_leafs_red_tree)
+    tree = reduce_tau_leafs(tree)
+    tau_leafs_red_tree_str = str(tree)
 
     if len(tau_leafs_red_tree_str) != len(tree_str):
-        tree = fold(tau_leafs_red_tree)
+        tree = fold(tree)
         tree_str = str(tree)
 
     tree2 = _fold(tree)
