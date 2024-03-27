@@ -286,6 +286,7 @@ def convert_log_to_ocel(log: Union[EventLog, EventStream, pd.DataFrame], activit
     :param object_types: list of columns to consider as object types
     :param obj_separator: separator between different objects in the same column
     :param additional_event_attributes: additional attributes to be considered as event attributes in the OCEL
+    :param additional_object_attributes: additional attributes per object type to be considered as object attributes in the OCEL (dictionary in which object types are associated to their attributes, i.e., {"order": ["quantity", "cost"], "invoice": ["date", "due date"]})
     :rtype: ``OCEL``
 
     .. code-block:: python3

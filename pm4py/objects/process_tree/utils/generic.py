@@ -44,16 +44,31 @@ def fold(tree):
         tree.children.clear()
         del tree
         tree = root
-    if str(reduce_tau_leafs(copy.deepcopy(tree))) != str(tree):
+
+    tree_str = str(tree)
+    tree = reduce_tau_leafs(tree)
+    tau_leafs_red_tree_str = str(tree)
+
+    if len(tau_leafs_red_tree_str) != len(tree_str):
         tree = fold(tree)
+        tree_str = str(tree)
+
+    tree2 = _fold(tree)
+    tree2_str = str(tree2)
+
+    if len(tree2_str) != len(tree_str):
+        tree = fold(tree2)
+
     return tree
 
 
 def _fold(tree):
     tree = reduce_tau_leafs(tree)
+
     if len(tree.children) > 0:
         tree.children = list(map(lambda c: _fold(c), tree.children))
         tree.children = list(filter(lambda c: c is not None, tree.children))
+
         if len(tree.children) == 0:
             tree.parent = None
             tree.children = None
@@ -64,6 +79,18 @@ def _fold(tree):
             tree.parent = None
             tree.children = None
             return child
+
+        if tree.operator in [pt_op.Operator.SEQUENCE, pt_op.Operator.PARALLEL]:
+            i = 0
+            while i < len(tree.children):
+                child = tree.children[i]
+                if child.operator is None and child.label is None:
+                    del tree.children[i]
+                    continue
+                i = i + 1
+            if len(tree.children) == 0:
+                tree.operator = None
+
         if tree.operator in [pt_op.Operator.SEQUENCE, pt_op.Operator.XOR, pt_op.Operator.PARALLEL]:
             chlds = [c for c in tree.children]
             for c in chlds:

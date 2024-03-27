@@ -325,6 +325,10 @@ def log_to_ocel_multiple_obj_types(log_obj: Union[EventLog, EventStream, pd.Data
         Separator between different objects in the same column
     additional_event_attributes
         Additional attributes to be considered as event attributes in the OCEL
+    additional_object_attributes
+        Additional attributes per object type to be considered as object attributes in the OCEL
+        (dictionary in which object types are associated to their attributes, i.e.,
+        {"order": ["quantity", "cost"], "invoice": ["date", "due date"]})
 
     Returns
     ----------------

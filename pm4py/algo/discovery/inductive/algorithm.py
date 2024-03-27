@@ -29,6 +29,8 @@ from pm4py.algo.discovery.inductive.variants.instances import IMInstance
 from pm4py.objects.dfg.obj import DFG
 from pm4py.objects.log.obj import EventLog
 from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.process_tree.utils import generic as pt_util
+from pm4py.objects.process_tree.utils.generic import tree_sort
 from pm4py.util import constants
 import warnings
 from pm4py.util import exec_utils
@@ -55,13 +57,15 @@ def apply(obj: Union[EventLog, pd.DataFrame, DFG, UVCL], parameters: Optional[Di
     ack = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_util.DEFAULT_NAME_KEY)
     tk = exec_utils.get_param_value(Parameters.TIMESTAMP_KEY, parameters, xes_util.DEFAULT_TIMESTAMP_KEY)
     cidk = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, pmutil.constants.CASE_CONCEPT_NAME)
+
+    process_tree = ProcessTree()
     if type(obj) is DFG:
         if variant is not Variants.IMd:
             if constants.SHOW_INTERNAL_WARNINGS:
                 warnings.warn('Inductive Miner Variant requested for DFG artefact is not IMD, resorting back to IMD')
         imd = IMD(parameters)
         idfg = InductiveDFG(dfg=obj, skip=False)
-        return imd.apply(IMDataStructureDFG(idfg), parameters)
+        process_tree = imd.apply(IMDataStructureDFG(idfg), parameters)
     else:
         if type(obj) in [UVCL]:
             uvcl = obj
@@ -70,12 +74,16 @@ def apply(obj: Union[EventLog, pd.DataFrame, DFG, UVCL], parameters: Optional[Di
 
         if variant is Variants.IM:
             im = IMUVCL(parameters)
-            return im.apply(IMDataStructureUVCL(uvcl), parameters)
+            process_tree = im.apply(IMDataStructureUVCL(uvcl), parameters)
         if variant is Variants.IMf:
             imf = IMFUVCL(parameters)
-            return imf.apply(IMDataStructureUVCL(uvcl), parameters)
+            process_tree = imf.apply(IMDataStructureUVCL(uvcl), parameters)
         if variant is Variants.IMd:
             imd = IMD(parameters)
             idfg = InductiveDFG(dfg=comut.discover_dfg_uvcl(uvcl), skip=() in uvcl)
-            return imd.apply(IMDataStructureDFG(idfg), parameters)
+            process_tree = imd.apply(IMDataStructureDFG(idfg), parameters)
 
+    process_tree = pt_util.fold(process_tree)
+    tree_sort(process_tree)
+
+    return process_tree

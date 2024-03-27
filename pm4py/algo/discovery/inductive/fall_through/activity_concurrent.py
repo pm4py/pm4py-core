@@ -53,7 +53,7 @@ class ActivityConcurrentUVCL(FallThrough[IMDataStructureUVCL]):
         enable_multiprocessing = exec_utils.get_param_value(Parameters.MULTIPROCESSING, parameters, constants.ENABLE_MULTIPROCESSING_DEFAULT)
 
         log = obj.data_structure
-        candidates = comut.get_alphabet(log)
+        candidates = sorted(list(comut.get_alphabet(log)))
         if pool is None or manager is None or not enable_multiprocessing or len(candidates) <= ActivityConcurrentUVCL.MULTI_PROCESSING_LOWER_BOUND:
             for a in candidates:
                 cut = cls._process_candidate(a, log, parameters=parameters)

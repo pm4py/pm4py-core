@@ -26,7 +26,7 @@ class ActivityOncePerTraceUVCL(ActivityConcurrentUVCL):
 
     @classmethod
     def _get_candidate(cls, obj: IMDataStructureUVCL, pool=None, manager=None, parameters: Optional[Dict[str, Any]] = None) -> Optional[Any]:
-        candidates = copy.copy(comut.get_alphabet(obj.data_structure))
+        candidates = sorted(list(comut.get_alphabet(obj.data_structure)))
         for t in obj.data_structure:
             cc = [x for x in candidates]
             for candi in cc:

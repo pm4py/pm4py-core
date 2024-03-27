@@ -21,11 +21,12 @@ from copy import deepcopy
 from enum import Enum
 
 from pm4py.objects.petri_net.utils import petri_utils as pn_util
-from pm4py.objects.petri_net.obj import PetriNet
+from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.objects.process_tree import obj as pt_operator
 from pm4py.objects.process_tree.utils import generic as pt_util
 from pm4py.objects.process_tree.utils.generic import tree_sort
 from pm4py.util import exec_utils
+from pm4py.objects.process_tree.utils.generic import parse
 
 TRANSITION_PREFIX = str(uuid.uuid4())
 
@@ -232,6 +233,51 @@ def binary_sequence_detection(net):
     return None
 
 
+def __group_blocks_internal(net, parameters=None):
+    if parameters is None:
+        parameters = {}
+
+    if binary_choice_detection(net) is not None:
+        return True
+    elif binary_sequence_detection(net) is not None:
+        return True
+    elif binary_concurrency_detection(net) is not None:
+        return True
+    elif binary_loop_detection(net) is not None:
+        return True
+    else:
+        return False
+
+
+def __insert_dummy_invisibles(net, im, fm, ini_places, parameters=None):
+    if parameters is None:
+        parameters = {}
+
+    places = list(net.places)
+
+    for p in places:
+        if p.name in ini_places:
+            if p not in im and p not in fm:
+                source_trans = [x.source for x in p.in_arcs]
+                target_trans = [x.target for x in p.out_arcs]
+
+                pn_util.remove_place(net, p)
+                source_p = PetriNet.Place(str(uuid.uuid4()))
+                target_p = PetriNet.Place(str(uuid.uuid4()))
+                skip = PetriNet.Transition(str(uuid.uuid4()))
+                net.places.add(source_p)
+                net.places.add(target_p)
+                net.transitions.add(skip)
+
+                pn_util.add_arc_from_to(source_p, skip, net)
+                pn_util.add_arc_from_to(skip, target_p, net)
+
+                for t in source_trans:
+                    pn_util.add_arc_from_to(t, source_p, net)
+                for t in target_trans:
+                    pn_util.add_arc_from_to(target_p, t, net)
+
+
 def group_blocks_in_net(net, parameters=None):
     """
     Groups the blocks in the Petri net
@@ -257,18 +303,25 @@ def group_blocks_in_net(net, parameters=None):
         raise ValueError('The Petri net provided is not a WF-net')
 
     net = deepcopy(net)
+    ini_places = set(x.name for x in net.places)
 
     while len(net.transitions) > 1:
-        if binary_choice_detection(net) is not None:
-            continue
-        elif binary_sequence_detection(net) is not None:
-            continue
-        elif binary_concurrency_detection(net) is not None:
-            continue
-        elif binary_loop_detection(net) is not None:
+        im = Marking({p: 1 for p in net.places if len(p.in_arcs) == 0})
+        fm = Marking({p: 1 for p in net.places if len(p.out_arcs) == 0})
+
+        if len(im) != 1 and len(fm) != 1:
+            # start/end conditions for block-structured nets
+            # do not hold
+            break
+
+        if __group_blocks_internal(net, parameters):
             continue
         else:
-            break
+            __insert_dummy_invisibles(net, im, fm, ini_places, parameters)
+            if __group_blocks_internal(net, parameters):
+                continue
+            else:
+                break
 
     return net
 
@@ -299,14 +352,16 @@ def apply(net, im, fm, parameters=None):
 
     grouped_net = group_blocks_in_net(net, parameters=parameters)
 
-    if len(grouped_net.transitions) == 1:
-        pt_str = list(grouped_net.transitions)[0].label
-        pt = pt_operator.ProcessTree(operator=None, label=pt_str)
-        ret = pt_util.fold(pt) if fold else pt
-        tree_sort(ret)
-        return ret
+    if debug:
+        from pm4py.visualization.petri_net import visualizer as pn_viz
+        pn_viz.view(pn_viz.apply(grouped_net, parameters={"format": "svg"}))
+        return grouped_net
     else:
-        if debug:
-            from pm4py.visualization.petri_net import visualizer as pn_viz
-            pn_viz.view(pn_viz.apply(grouped_net, parameters={"format": "svg"}))
-        raise ValueError('Parsing of WF-net Failed')
+        if len(grouped_net.transitions) == 1:
+            pt_str = list(grouped_net.transitions)[0].label
+            pt = parse(pt_str)
+            ret = pt_util.fold(pt) if fold else pt
+            tree_sort(ret)
+            return ret
+        else:
+            raise ValueError('Parsing of WF-net Failed')
