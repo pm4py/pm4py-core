@@ -10,6 +10,7 @@ from pm4py.objects.process_tree import obj as pt_operator
 from pm4py.objects.process_tree.utils import generic as pt_util
 from pm4py.objects.process_tree.utils.generic import tree_sort
 from pm4py.util import exec_utils
+from pm4py.objects.process_tree.utils.generic import parse
 
 TRANSITION_PREFIX = str(uuid.uuid4())
 
@@ -342,7 +343,7 @@ def apply(net, im, fm, parameters=None):
     else:
         if len(grouped_net.transitions) == 1:
             pt_str = list(grouped_net.transitions)[0].label
-            pt = pt_operator.ProcessTree(operator=None, label=pt_str)
+            pt = parse(pt_str)
             ret = pt_util.fold(pt) if fold else pt
             tree_sort(ret)
             return ret
