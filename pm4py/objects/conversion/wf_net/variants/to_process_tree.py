@@ -283,14 +283,16 @@ def apply(net, im, fm, parameters=None):
 
     grouped_net = group_blocks_in_net(net, parameters=parameters)
 
-    if len(grouped_net.transitions) == 1:
-        pt_str = list(grouped_net.transitions)[0].label
-        pt = pt_operator.ProcessTree(operator=None, label=pt_str)
-        ret = pt_util.fold(pt) if fold else pt
-        tree_sort(ret)
-        return ret
+    if debug:
+        from pm4py.visualization.petri_net import visualizer as pn_viz
+        pn_viz.view(pn_viz.apply(grouped_net, parameters={"format": "svg"}))
+        return grouped_net
     else:
-        if debug:
-            from pm4py.visualization.petri_net import visualizer as pn_viz
-            pn_viz.view(pn_viz.apply(grouped_net, parameters={"format": "svg"}))
-        raise ValueError('Parsing of WF-net Failed')
+        if len(grouped_net.transitions) == 1:
+            pt_str = list(grouped_net.transitions)[0].label
+            pt = pt_operator.ProcessTree(operator=None, label=pt_str)
+            ret = pt_util.fold(pt) if fold else pt
+            tree_sort(ret)
+            return ret
+        else:
+            raise ValueError('Parsing of WF-net Failed')
