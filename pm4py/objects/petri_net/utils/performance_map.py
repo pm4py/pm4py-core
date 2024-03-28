@@ -187,7 +187,7 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
         parameters = {}
 
     from pm4py.objects.conversion.log import converter as log_converter
-    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG)
+    log = log_converter.apply(log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters)
 
     business_hours = parameters["business_hours"] if "business_hours" in parameters else False
     business_hours_slots = parameters["business_hour_slots"] if "business_hour_slots" in parameters else constants.DEFAULT_BUSINESS_HOUR_SLOTS
