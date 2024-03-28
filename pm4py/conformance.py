@@ -215,6 +215,11 @@ def fitness_token_based_replay(log: Union[EventLog, pd.DataFrame], petri_net: Pe
     """
     Calculates the fitness using token-based replay.
     The fitness is calculated on a log-based level.
+    The output dictionary contains the following keys:
+    - perc_fit_traces (the percentage of fit traces (from 0.0 to 100.0))
+    - average_trace_fitness (between 0.0 and 1.0; computed as average of the trace fitnesses)
+    - log_fitness (between 0.0 and 1.0)
+    - percentage_of_fitting_traces (the percentage of fit traces (from 0.0 to 100.0)
 
     Token-based replay matches a trace and a Petri net model, starting from the initial place, in order to discover which transitions are executed and in which places we have remaining or missing tokens for the given process instance. Token-based replay is useful for Conformance Checking: indeed, a trace is fitting according to the model if, during its execution, the transitions can be fired without the need to insert any missing token. If the reaching of the final marking is imposed, then a trace is fitting if it reaches the final marking without any missing or remaining tokens.
 
@@ -260,6 +265,10 @@ def fitness_alignments(log: Union[EventLog, pd.DataFrame], petri_net: PetriNet, 
         Dict[str, float]:
     """
     Calculates the fitness using alignments
+    The output dictionary contains the following keys:
+    - average_trace_fitness (between 0.0 and 1.0; computed as average of the trace fitnesses)
+    - log_fitness (between 0.0 and 1.0)
+    - percentage_of_fitting_traces (the percentage of fit traces (from 0.0 to 100.0)
 
     Alignment-based replay aims to find one of the best alignment between the trace and the model. For each trace, the output of an alignment is a list of couples where the first element is an event (of the trace) or » and the second element is a transition (of the model) or ». For each couple, the following classification could be provided:
 
