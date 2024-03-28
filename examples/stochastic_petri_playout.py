@@ -47,7 +47,7 @@ def execute_script():
     # eventually, we can use the stochastic Petri net with a specialized algorithm,
     # such as the stochastic playout
     from pm4py.algo.simulation.playout.petri_net.variants import stochastic_playout
-    ret_log = stochastic_playout.apply(net, im, fm, parameters={"stochastic_map": smap0})
+    ret_log = stochastic_playout.apply(net, im, fm, parameters={"smap": smap0})
     print(ret_log)
 
 

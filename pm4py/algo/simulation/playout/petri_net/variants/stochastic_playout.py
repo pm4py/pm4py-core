@@ -22,7 +22,7 @@ class Parameters(Enum):
     NO_TRACES = "noTraces"
     MAX_TRACE_LENGTH = "maxTraceLength"
     LOG = "log"
-    STOCHASTIC_MAP = "stochastic_map"
+    STOCHASTIC_MAP = "smap"
     PETRI_SEMANTICS = "petri_semantics"
 
 
