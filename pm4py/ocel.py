@@ -68,6 +68,10 @@ def ocel_flattening(ocel: OCEL, object_type: str) -> pd.DataFrame:
     Flattens the object-centric event log to a traditional event log with the choice of an object type.
     In the flattened log, the objects of a given object type are the cases, and each case
     contains the set of events related to the object.
+    The flattened log follows the XES notations for case identifier, activity, and timestamp. In particular:
+    - "case:concept:name" is the column used for the case ID.
+    - "concept:name" is the column used for the activity.
+    - "time:timestamp" is the column used for the timestamp.
 
     :param ocel: object-centric event log
     :param object_type: object type
