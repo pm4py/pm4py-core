@@ -182,7 +182,7 @@ class AlignmentTest(unittest.TestCase):
                             parameters[align_alg.Parameters.TIMESTAMP_KEY] = timestamp_key
                         results = align_alg.apply_multiprocessing(
                             obj, net, im, fm,
-                            variant=align_alg.Variants.VERSION_DIJKSTRA_NO_HEURISTICS,
+                            variant=align_alg.Variants.VERSION_DIJKSTRA_LESS_MEMORY,
                             parameters=parameters,
                         )
                         if not unpack_alignments:
