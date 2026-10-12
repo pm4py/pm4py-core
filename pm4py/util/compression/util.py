@@ -64,7 +64,7 @@ def project_univariate(
             log = log.select(
                 pl.col(df_glue), pl.col(key), pl.col(df_sorting_criterion_key)
             )
-            log = log.sort([df_glue, df_sorting_criterion_key])
+            log = log.sort([df_glue, df_sorting_criterion_key], maintain_order=True)
 
             grouped = (
                 log.group_by(df_glue, maintain_order=True)

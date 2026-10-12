@@ -41,7 +41,7 @@ def _ensure_row_index(lf: pl.LazyFrame, column_name: str) -> pl.LazyFrame:
     schema_names = lf.collect_schema().names()
     if column_name in schema_names:
         return lf
-    return lf.with_row_count(column_name)
+    return lf.with_row_index(column_name)
 
 
 def get_dfg_graph(
@@ -101,9 +101,9 @@ def get_dfg_graph(
                 sort_cols.append(start_timestamp_key)
             if timestamp_key in schema_names:
                 sort_cols.append(timestamp_key)
-            df = df.sort(sort_cols)
+            df = df.sort(sort_cols, maintain_order=True)
         else:
-            df = df.sort(case_id_glue)
+            df = df.sort(case_id_glue, maintain_order=True)
 
     suffix = "_2"
     shift_exprs = [
@@ -231,7 +231,7 @@ def get_dfg_graph(
         elif perf_aggregation_key == "raw_values":
             perf_df = (
                 pairs.group_by(group_cols)
-                .agg(value_expr.list().alias("raw_values"))
+                .agg(value_expr.implode().alias("raw_values"))
                 .collect()
             )
             perf_dict = {
@@ -297,13 +297,13 @@ def get_partial_order_dataframe(
 
     if sort_caseid_required:
         if sort_timestamp_along_case_id:
-            df = df.sort([case_id_glue, start_timestamp_key, timestamp_key])
+            df = df.sort([case_id_glue, start_timestamp_key, timestamp_key], maintain_order=True)
         else:
-            df = df.sort(case_id_glue)
+            df = df.sort(case_id_glue, maintain_order=True)
 
     df = _ensure_row_index(df, event_index)
 
-    joined = df.join(df, on=case_id_glue, how="inner", suffix="_2")
+    joined = df.join(df, on=case_id_glue, how="inner", suffix="_2", maintain_order="left")
     joined = joined.filter(
         pl.col(event_index) < pl.col(event_index + "_2")
     )
@@ -339,7 +339,7 @@ def get_partial_order_dataframe(
         )
 
     if keep_first_following:
-        joined = joined.sort([case_id_glue, event_index, event_index + "_2"])
+        joined = joined.sort([case_id_glue, event_index, event_index + "_2"], maintain_order=True)
         joined = joined.unique(
             subset=[event_index], keep="first", maintain_order=True
         )
@@ -374,13 +374,13 @@ def get_concurrent_events_dataframe(
 
     if sort_caseid_required:
         if sort_timestamp_along_case_id:
-            df = df.sort([case_id_glue, start_timestamp_key, timestamp_key])
+            df = df.sort([case_id_glue, start_timestamp_key, timestamp_key], maintain_order=True)
         else:
-            df = df.sort(case_id_glue)
+            df = df.sort(case_id_glue, maintain_order=True)
 
     df = _ensure_row_index(df, constants.DEFAULT_INDEX_KEY)
 
-    joined = df.join(df, on=case_id_glue, how="inner", suffix="_2")
+    joined = df.join(df, on=case_id_glue, how="inner", suffix="_2", maintain_order="left")
     joined = joined.filter(
         pl.col(constants.DEFAULT_INDEX_KEY)
         < pl.col(constants.DEFAULT_INDEX_KEY + "_2")

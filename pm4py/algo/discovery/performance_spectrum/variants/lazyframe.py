@@ -69,10 +69,10 @@ def apply(
         pl.col(timestamp_key),
     )
     lf = lf.filter(pl.col(activity_key).is_in(list_activities))
-    lf = lf.with_row_count(constants.DEFAULT_EVENT_INDEX_KEY)
+    lf = lf.with_row_index(constants.DEFAULT_EVENT_INDEX_KEY)
 
     if sort_log_required:
-        lf = lf.sort([case_id_glue, timestamp_key, constants.DEFAULT_EVENT_INDEX_KEY])
+        lf = lf.sort([case_id_glue, timestamp_key, constants.DEFAULT_EVENT_INDEX_KEY], maintain_order=True)
 
     lf = lf.with_columns(
         pl.col(timestamp_key).dt.timestamp().alias(timestamp_key)

@@ -68,11 +68,11 @@ def get_variants_df(
 
     # Create variants by concatenating activities per case
     variants_df = (
-        df.sort([case_id_key, "time:timestamp"])  # Ensure events are ordered
+        df.sort([case_id_key, "time:timestamp"], maintain_order=True)  # Ensure events are ordered
         .group_by(case_id_key, maintain_order=True)
         .agg(
             pl.col(activity_key)
-            .str.concat(constants.DEFAULT_VARIANT_SEP)
+            .str.join(constants.DEFAULT_VARIANT_SEP)
             .alias("variant")
         )
         .collect()
@@ -146,9 +146,9 @@ def apply(
 
     if positive:
         # Keep cases with matching suffixes
-        ret = df.join(matching_cases.lazy(), on=case_id_glue, how="inner")
+        ret = df.join(matching_cases.lazy(), on=case_id_glue, how="inner", maintain_order="left")
     else:
         # Keep cases without matching suffixes
-        ret = df.join(matching_cases.lazy(), on=case_id_glue, how="anti")
+        ret = df.join(matching_cases.lazy(), on=case_id_glue, how="anti", maintain_order="left")
 
     return ret

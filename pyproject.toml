@@ -48,7 +48,7 @@ connectors = ["requests"]
 llm = ["openai", "requests"]
 ml = ["pyemd", "scikit-learn"]
 ocel = ["jsonschema", "pyarrow"]
-polars = ["polars"]
+polars = ["polars>=1.40.1,<3"]
 solvers = ["cvxopt"]
 stable = [
     "contourpy==1.3.3",

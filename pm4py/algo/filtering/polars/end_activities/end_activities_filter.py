@@ -76,7 +76,7 @@ def get_end_activities(
         df.group_by(case_id_key)
         .agg(pl.col(activity_key).last().alias("end_activity"))
         .group_by("end_activity")
-        .count()
+        .len(name="count")
         .collect()
     )
 
@@ -175,10 +175,10 @@ def filter_df_on_end_activities(
 
     if positive:
         # Keep cases with matching end activities
-        ret = df.join(matching_cases, on=case_id_glue, how="inner")
+        ret = df.join(matching_cases, on=case_id_glue, how="inner", maintain_order="left")
     else:
         # Keep cases without matching end activities
-        ret = df.join(matching_cases, on=case_id_glue, how="anti")
+        ret = df.join(matching_cases, on=case_id_glue, how="anti", maintain_order="left")
 
     return ret
 

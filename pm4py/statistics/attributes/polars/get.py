@@ -104,36 +104,36 @@ def get_events_distribution(
     all_values = None
 
     if distr_type == "days_month":
-        serie = lf.select(pl.col(timestamp_key).dt.day().alias("value")).group_by("value").count()
+        serie = lf.select(pl.col(timestamp_key).dt.day().alias("value")).group_by("value").len(name="count")
         values_df = serie.collect()
         values = Counter(dict(zip(values_df["value"].to_list(), values_df["count"].to_list())))
         all_values = Counter({i: 0 for i in range(1, 32)})
     elif distr_type == "months":
-        serie = lf.select(pl.col(timestamp_key).dt.month().alias("value")).group_by("value").count()
+        serie = lf.select(pl.col(timestamp_key).dt.month().alias("value")).group_by("value").len(name="count")
         values_df = serie.collect()
         values = Counter(dict(zip(values_df["value"].to_list(), values_df["count"].to_list())))
         all_values = Counter({i: 0 for i in range(1, 13)})
     elif distr_type == "years":
-        serie = lf.select(pl.col(timestamp_key).dt.year().alias("value")).group_by("value").count()
+        serie = lf.select(pl.col(timestamp_key).dt.year().alias("value")).group_by("value").len(name="count")
         values_df = serie.collect()
         values = Counter(dict(zip(values_df["value"].to_list(), values_df["count"].to_list())))
         all_values = Counter(
             {i: 0 for i in range(min(values), max(values) + 1)}
         )
     elif distr_type == "hours":
-        serie = lf.select(pl.col(timestamp_key).dt.hour().alias("value")).group_by("value").count()
+        serie = lf.select(pl.col(timestamp_key).dt.hour().alias("value")).group_by("value").len(name="count")
         values_df = serie.collect()
         values = Counter(dict(zip(values_df["value"].to_list(), values_df["count"].to_list())))
         all_values = Counter({i: 0 for i in range(0, 24)})
     elif distr_type == "days_week":
-        serie = lf.select(pl.col(timestamp_key).dt.weekday().alias("value")).group_by("value").count()
+        serie = lf.select(pl.col(timestamp_key).dt.weekday().alias("value")).group_by("value").len(name="count")
         values_df = serie.collect()
         # Convert from Monday=1 to Monday=0 format to match pandas
         values_dict = dict(zip(values_df["value"].to_list(), values_df["count"].to_list()))
         values = Counter({k-1: v for k, v in values_dict.items()})
         all_values = Counter({i: 0 for i in range(0, 7)})
     elif distr_type == "weeks":
-        serie = lf.select(pl.col(timestamp_key).dt.week().alias("value")).group_by("value").count()
+        serie = lf.select(pl.col(timestamp_key).dt.week().alias("value")).group_by("value").len(name="count")
         values_df = serie.collect()
         values = Counter(dict(zip(values_df["value"].to_list(), values_df["count"].to_list())))
         all_values = Counter({i: 0 for i in range(0, 53)})
@@ -193,11 +193,11 @@ def get_attribute_values(
     )
 
     if keep_once_per_case:
-        processed_lf = lf.group_by([case_id_glue, attribute_key]).agg(pl.first())
+        processed_lf = lf.select(list(dict.fromkeys([case_id_glue, attribute_key]))).unique()
     else:
         processed_lf = lf
 
-    value_counts = processed_lf.select(pl.col(attribute_key)).group_by(attribute_key).count().collect()
+    value_counts = processed_lf.select(pl.col(attribute_key)).group_by(attribute_key).len(name="count").collect()
     attributes_values_dict = dict(zip(value_counts[attribute_key].to_list(), value_counts["count"].to_list()))
 
     return attributes_values_dict

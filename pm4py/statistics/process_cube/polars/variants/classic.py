@@ -251,7 +251,7 @@ def _aggregation_expression(column: str, agg_fn: str) -> pl.Expr:
     if agg_fn == "last":
         return pl.col(column).last()
     if agg_fn == "count":
-        return pl.count()
+        return pl.len()
     # default mean
     return pl.col(column).mean()
 
@@ -339,9 +339,9 @@ def _dimension_bins(
                 bins_per_dim.append(prefix_cols)
                 attr_df = (
                     df.select([CASE_ID_COL, *prefix_cols])
-                    .melt(
-                        id_vars=[CASE_ID_COL],
-                        value_vars=prefix_cols,
+                    .unpivot(
+                        index=[CASE_ID_COL],
+                        on=prefix_cols,
                         variable_name=bin_col,
                         value_name="__value",
                     )
@@ -374,7 +374,7 @@ def _dimension_bins(
 
     combined = per_attr_dfs[0]
     for attr_df in per_attr_dfs[1:]:
-        combined = combined.join(attr_df, on=CASE_ID_COL, how="inner")
+        combined = combined.join(attr_df, on=CASE_ID_COL, how="inner", maintain_order="left")
         if combined.is_empty():
             return pl.DataFrame(), []
 
@@ -433,9 +433,9 @@ def _numeric_prefix_case(
 
     melted = (
         df.select([CASE_ID_COL, agg_col, "x_bin", *prefix_cols])
-        .melt(
-            id_vars=[CASE_ID_COL, agg_col, "x_bin"],
-            value_vars=prefix_cols,
+        .unpivot(
+            index=[CASE_ID_COL, agg_col, "x_bin"],
+            on=prefix_cols,
             variable_name=prefix_label,
             value_name="__value",
         )
@@ -466,9 +466,9 @@ def _prefix_numeric_case(
 
     melted = (
         df.select([CASE_ID_COL, agg_col, "y_bin", *prefix_cols])
-        .melt(
-            id_vars=[CASE_ID_COL, agg_col, "y_bin"],
-            value_vars=prefix_cols,
+        .unpivot(
+            index=[CASE_ID_COL, agg_col, "y_bin"],
+            on=prefix_cols,
             variable_name=prefix_label,
             value_name="__value",
         )
@@ -494,9 +494,9 @@ def _prefix_prefix_case(
 
     x_melt = (
         df.select([CASE_ID_COL, agg_col, *x_prefix_cols])
-        .melt(
-            id_vars=[CASE_ID_COL, agg_col],
-            value_vars=x_prefix_cols,
+        .unpivot(
+            index=[CASE_ID_COL, agg_col],
+            on=x_prefix_cols,
             variable_name="x_bin",
             value_name="__x_value",
         )
@@ -506,9 +506,9 @@ def _prefix_prefix_case(
 
     y_melt = (
         df.select([CASE_ID_COL, *y_prefix_cols])
-        .melt(
-            id_vars=[CASE_ID_COL],
-            value_vars=y_prefix_cols,
+        .unpivot(
+            index=[CASE_ID_COL],
+            on=y_prefix_cols,
             variable_name="y_bin",
             value_name="__y_value",
         )
@@ -517,7 +517,7 @@ def _prefix_prefix_case(
     )
 
     temp_df = (
-        x_melt.join(y_melt, on=CASE_ID_COL, how="inner")
+        x_melt.join(y_melt, on=CASE_ID_COL, how="inner", maintain_order="left")
         .select([pl.col(CASE_ID_COL), pl.col("x_bin"), pl.col("y_bin"), pl.col(agg_col)])
     )
     return temp_df
@@ -568,8 +568,8 @@ def apply(
         return pl.DataFrame(), {}
 
     temp_df = (
-        x_dim_df.join(y_dim_df, on=CASE_ID_COL, how="inner")
-        .join(df.select([CASE_ID_COL, agg_col]), on=CASE_ID_COL, how="inner")
+        x_dim_df.join(y_dim_df, on=CASE_ID_COL, how="inner", maintain_order="left")
+        .join(df.select([CASE_ID_COL, agg_col]), on=CASE_ID_COL, how="inner", maintain_order="left")
     )
 
     if temp_df.is_empty():
@@ -590,13 +590,13 @@ def apply(
     pivot_df = grouped_values.pivot(
         values="value",
         index="x_bin",
-        columns="y_bin",
+        on="y_bin",
         sort_columns=False,
     )
 
     if all_x_bins:
         base_rows = pl.DataFrame({"x_bin": all_x_bins})
-        pivot_df = base_rows.join(pivot_df, on="x_bin", how="left")
+        pivot_df = base_rows.join(pivot_df, on="x_bin", how="left", maintain_order="left")
 
     value_columns = [col for col in pivot_df.columns if col != "x_bin"]
     if all_y_bins:

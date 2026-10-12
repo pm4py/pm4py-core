@@ -825,7 +825,7 @@ def project_on_event_attribute(
             index_column = constants.DEFAULT_INDEX_KEY
             if index_column not in column_names:
                 index_column = "__pm4py_row_index__"
-                lf = lf.with_row_count(index_column)
+                lf = lf.with_row_index(index_column)
                 schema = lf.collect_schema()
                 column_names = schema.names()
 
@@ -835,7 +835,7 @@ def project_on_event_attribute(
             if index_column in column_names:
                 sort_columns.append(index_column)
 
-            lf_sorted = lf.sort(sort_columns)
+            lf_sorted = lf.sort(sort_columns, maintain_order=True)
 
             if has_activity_column:
                 lf_selected = lf_sorted.select(

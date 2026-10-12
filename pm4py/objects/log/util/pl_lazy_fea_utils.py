@@ -427,13 +427,13 @@ def select_number_columns(
         return fea_df
 
     df_numeric = (
-        df.with_row_count(row_nr_col)
+        df.with_row_index(row_nr_col)
         .select([pl.col(case_id_key), pl.col(row_nr_col)] + [pl.col(c) for c in clean_columns])
         .group_by(case_id_key)
         .agg(agg_exprs)
     )
 
-    return fea_df.join(df_numeric, on=case_id_key, how="left", coalesce=True)
+    return fea_df.join(df_numeric, on=case_id_key, how="left", coalesce=True, maintain_order="left")
 
 
 def _collect_categorical_values(
@@ -544,7 +544,7 @@ def _select_string_columns(
         .agg(agg_exprs)
     )
 
-    return fea_df.join(feature_chunk, on=case_id_key, how="left", coalesce=True)
+    return fea_df.join(feature_chunk, on=case_id_key, how="left", coalesce=True, maintain_order="left")
 
 
 def select_string_column(
@@ -610,7 +610,7 @@ def get_features_df(
     # input list contains duplicates.
     list_columns = _dedupe_preserve_order(list_columns)
 
-    fea_df = df.select(pl.col(case_id_key)).unique().sort(case_id_key)
+    fea_df = df.select(pl.col(case_id_key)).unique().sort(case_id_key, maintain_order=True)
 
     schema = _lazy_schema(df)
     numeric_columns: List[str] = []
@@ -642,7 +642,7 @@ def get_features_df(
         count_occurrences=count_occurrences,
     )
 
-    fea_df = fea_df.sort(case_id_key)
+    fea_df = fea_df.sort(case_id_key, maintain_order=True)
     if not add_case_identifier_column:
         fea_df = fea_df.drop(case_id_key)
 

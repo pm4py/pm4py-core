@@ -70,6 +70,9 @@ feature in `pyproject.toml`:
 For a source checkout, install the project with `python -m pip install -e .`. Build, CI, and lint dependencies are
 standard dependency groups and can be installed with, for example, `python -m pip install --group lint`.
 
+Polars integration supports 1.40.1 and 2.x. Joins used in filtering and enrichment preserve event
+order, including when lazy queries use the streaming engine (the default in Polars 2.0).
+
 For optional PuLP support, PM4Py selects the backend for the installed PuLP version (3.x or 4.x).
 PuLP 4 requires CBC to be installed separately: use `python -m pip install 'pulp[cbc]'` or put `cbc` on `PATH`.
 SciPy remains the default LP solver.

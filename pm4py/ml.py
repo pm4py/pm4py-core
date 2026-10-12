@@ -194,7 +194,7 @@ def extract_outcome_enriched_dataframe(
     )
 
     if is_polars_lazyframe(log):
-        return log.join(fea_df, on=case_id_key)
+        return log.join(fea_df, on=case_id_key, maintain_order="left")
     else:
         return log.merge(fea_df, on=case_id_key)
 

@@ -76,7 +76,7 @@ def get_end_activities(
         .agg(pl.col(activity_key).last().alias("end_activity"))
         .select("end_activity")
         .group_by("end_activity")
-        .count()
+        .len(name="count")
         .collect()
     )
 

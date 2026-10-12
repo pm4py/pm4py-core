@@ -115,7 +115,7 @@ def insert_index(
         existing_columns = set(_lazyframe_column_names(lf))
         if column_name in existing_columns:
             lf = lf.drop(column_name)
-        return lf.with_row_count(name=column_name)
+        return lf.with_row_index(name=column_name)
 
     if copy_dataframe:
         df = df.copy()
@@ -162,9 +162,9 @@ def insert_case_index(
         case_map = (
             lf.select(pl.col(case_id))
             .unique(maintain_order=True)
-            .with_row_count(name=column_name)
+            .with_row_index(name=column_name)
         )
-        return lf.join(case_map, on=case_id, how="left")
+        return lf.join(case_map, on=case_id, how="left", maintain_order="left")
 
     if copy_dataframe:
         df = df.copy()
@@ -350,7 +350,7 @@ def insert_case_arrival_finish_rate(
                 .dt.timestamp()
                 .alias("__arrival_microseconds")
             )
-            .sort(["__arrival_microseconds", case_id_column])
+            .sort(["__arrival_microseconds", case_id_column], maintain_order=True)
             .with_columns(
                 pl.col("__arrival_microseconds")
                 .diff()
@@ -373,7 +373,7 @@ def insert_case_arrival_finish_rate(
                 .dt.timestamp()
                 .alias("__finish_microseconds")
             )
-            .sort(["__finish_microseconds", case_id_column])
+            .sort(["__finish_microseconds", case_id_column], maintain_order=True)
             .with_columns(
                 pl.col("__finish_microseconds")
                 .diff()
@@ -384,8 +384,8 @@ def insert_case_arrival_finish_rate(
             .select(case_id_column, finish_rate_column)
         )
 
-        lf = lf.join(arrival, on=case_id_column, how="left")
-        lf = lf.join(finish, on=case_id_column, how="left")
+        lf = lf.join(arrival, on=case_id_column, how="left", maintain_order="left")
+        lf = lf.join(finish, on=case_id_column, how="left", maintain_order="left")
         return lf
 
     if start_timestamp_column is None:
@@ -508,8 +508,8 @@ def insert_case_service_waiting_time(
             .select(case_id_column, sojourn_time_column)
         )
 
-        lf = lf.join(service, on=case_id_column, how="left")
-        lf = lf.join(sojourn, on=case_id_column, how="left")
+        lf = lf.join(service, on=case_id_column, how="left", maintain_order="left")
+        lf = lf.join(sojourn, on=case_id_column, how="left", maintain_order="left")
         lf = lf.with_columns(
             (
                 pl.col(sojourn_time_column) - pl.col(service_time_column)

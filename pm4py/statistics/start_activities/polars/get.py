@@ -75,7 +75,7 @@ def get_start_activities(
         .agg(pl.col(activity_key).first().alias("start_activity"))
         .select("start_activity")
         .group_by("start_activity")
-        .count()
+        .len(name="count")
         .collect()
     )
 

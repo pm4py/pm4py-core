@@ -73,7 +73,7 @@ def apply(df, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) ->
         column_name=constants.DEFAULT_INDEX_IN_TRACE_KEY,
     )
 
-    lf = lf.sort([case_id_key, constants.DEFAULT_INDEX_IN_TRACE_KEY])
+    lf = lf.sort([case_id_key, constants.DEFAULT_INDEX_IN_TRACE_KEY], maintain_order=True)
 
     lf = lf.with_columns(
         pl.col(constants.DEFAULT_INDEX_IN_TRACE_KEY)

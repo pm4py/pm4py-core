@@ -60,15 +60,15 @@ def filter_on_ncases(
     """
     # Get case counts and select top cases
     cases_to_keep = (
-        df.group_by(case_id_glue)
-        .count()
-        .sort("count", descending=True)
+        df.group_by(case_id_glue, maintain_order=True)
+        .len(name="count")
+        .sort("count", descending=True, maintain_order=True)
         .limit(max_no_cases)
         .select(case_id_glue)
     )
 
     # Keep only events from selected cases
-    ret = df.join(cases_to_keep, on=case_id_glue, how="inner")
+    ret = df.join(cases_to_keep, on=case_id_glue, how="inner", maintain_order="left")
 
     return ret
 
@@ -101,7 +101,7 @@ def filter_on_case_size(
     # Count events per case
     case_sizes = (
         df.group_by(case_id_glue)
-        .count()
+        .len(name="count")
         .filter(pl.col("count") >= min_case_size)
     )
 
@@ -109,7 +109,7 @@ def filter_on_case_size(
         case_sizes = case_sizes.filter(pl.col("count") <= max_case_size)
 
     # Keep only cases that meet size criteria
-    ret = df.join(case_sizes.select(case_id_glue), on=case_id_glue, how="inner")
+    ret = df.join(case_sizes.select(case_id_glue), on=case_id_glue, how="inner", maintain_order="left")
 
     return ret
 
@@ -170,7 +170,7 @@ def filter_on_case_performance(
     )
 
     # Keep only cases that meet performance criteria
-    ret = df.join(case_durations, on=case_id_glue, how="inner")
+    ret = df.join(case_durations, on=case_id_glue, how="inner", maintain_order="left")
 
     return ret
 

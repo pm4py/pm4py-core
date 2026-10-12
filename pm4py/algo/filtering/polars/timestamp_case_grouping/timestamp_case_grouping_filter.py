@@ -95,14 +95,15 @@ def apply(
 
         # Get concatenated activities
         concat_activities = grouped.agg(
-            pl.col(activity_key).sort().str.concat(" & ").alias(activity_key)
+            pl.col(activity_key).sort().str.join(" & ").alias(activity_key)
         )
 
         # Update the activity column in first_df with concatenated values
         df = first_df.drop(activity_key).join(
             concat_activities,
             on=[case_id_key, timestamp_key],
-            how="left"
+            how="left",
+            maintain_order="left",
         )
 
     return df

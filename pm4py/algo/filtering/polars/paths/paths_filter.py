@@ -91,7 +91,7 @@ def apply(
     paths_str = [path[0] + DEFAULT_VARIANT_SEP + path[1] for path in paths]
 
     # Sort by case and timestamp
-    df = df.sort([case_id_glue, timestamp_key])
+    df = df.sort([case_id_glue, timestamp_key], maintain_order=True)
 
     # Get next activity using shift
     df = df.with_columns([
@@ -122,9 +122,9 @@ def apply(
 
     # Apply positive/negative filter
     if positive:
-        ret = df.join(matching_cases, on=case_id_glue, how="inner")
+        ret = df.join(matching_cases, on=case_id_glue, how="inner", maintain_order="left")
     else:
-        ret = df.join(matching_cases, on=case_id_glue, how="anti")
+        ret = df.join(matching_cases, on=case_id_glue, how="anti", maintain_order="left")
 
     # Clean up helper columns
     ret = ret.drop(["case_next", "next_activity", "@@path"])
@@ -185,7 +185,7 @@ def apply_performance(
     )
 
     # Sort by case and timestamp
-    df = df.sort([case_id_glue, timestamp_key])
+    df = df.sort([case_id_glue, timestamp_key], maintain_order=True)
 
     # Get next activity and timestamp using shift
     df = df.with_columns([
@@ -227,9 +227,9 @@ def apply_performance(
 
     # Apply positive/negative filter
     if positive:
-        ret = df.join(matching_cases, on=case_id_glue, how="inner")
+        ret = df.join(matching_cases, on=case_id_glue, how="inner", maintain_order="left")
     else:
-        ret = df.join(matching_cases, on=case_id_glue, how="anti")
+        ret = df.join(matching_cases, on=case_id_glue, how="anti", maintain_order="left")
 
     # Clean up helper columns
     ret = ret.drop(["case_next", "next_activity", "next_timestamp", "@@path", "@@duration"])

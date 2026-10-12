@@ -281,8 +281,8 @@ def apply(
     )
 
     result_lazy = (
-        basic_window.join(case_window, on=_WINDOW_START_COL, how="left")
-        .join(resource_window, on=_WINDOW_START_COL, how="left")
+        basic_window.join(case_window, on=_WINDOW_START_COL, how="left", maintain_order="left")
+        .join(resource_window, on=_WINDOW_START_COL, how="left", maintain_order="left")
         .sort(_WINDOW_START_COL)
         .rename({_WINDOW_START_COL: "timestamp"})
         .with_columns(

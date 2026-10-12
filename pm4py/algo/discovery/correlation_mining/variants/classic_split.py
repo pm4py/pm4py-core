@@ -118,7 +118,7 @@ def apply(
 
             log = (
                 log.select(required_columns)
-                .sort([timestamp_key, start_timestamp_key])
+                .sort([timestamp_key, start_timestamp_key], maintain_order=True)
                 .collect()
                 .to_pandas()
             )

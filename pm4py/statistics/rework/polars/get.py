@@ -83,7 +83,7 @@ def apply(
     unique_rework = rework_cases.select([activity_key, case_id_key]).unique()
 
     # Count cases with rework per activity
-    result_df = unique_rework.group_by(activity_key).count().collect()
+    result_df = unique_rework.group_by(activity_key).len(name="count").collect()
 
     # Convert to dictionary
     ret = dict(zip(result_df[activity_key].to_list(), result_df["count"].to_list()))

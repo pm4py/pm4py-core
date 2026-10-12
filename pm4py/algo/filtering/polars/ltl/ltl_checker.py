@@ -90,7 +90,7 @@ def eventually_follows(
     )
 
     # Add row numbers within each case for ordering
-    df = df.sort([case_id_glue, timestamp_key]).with_columns(
+    df = df.sort([case_id_glue, timestamp_key], maintain_order=True).with_columns(
         pl.int_range(pl.len()).over(case_id_glue).alias("_index")
     )
 
@@ -102,7 +102,7 @@ def eventually_follows(
             .select(case_id_glue)
             .unique()
         )
-        cases_with_all = cases_with_all.join(attr_cases, on=case_id_glue, how="inner")
+        cases_with_all = cases_with_all.join(attr_cases, on=case_id_glue, how="inner", maintain_order="left")
 
     # Check the ordering constraint
     valid_cases = cases_with_all.select(case_id_glue).unique()
@@ -121,19 +121,19 @@ def eventually_follows(
 
         # Join and check ordering
         ordered_pairs = (
-            curr_events.join(next_events, on=case_id_glue, suffix="_next")
+            curr_events.join(next_events, on=case_id_glue, suffix="_next", maintain_order="left")
             .filter(pl.col("_index") < pl.col("_index_next"))
             .select(case_id_glue)
             .unique()
         )
 
-        valid_cases = valid_cases.join(ordered_pairs, on=case_id_glue, how="inner")
+        valid_cases = valid_cases.join(ordered_pairs, on=case_id_glue, how="inner", maintain_order="left")
 
     # Apply positive/negative filter
     if positive:
-        ret = df.join(valid_cases, on=case_id_glue, how="inner")
+        ret = df.join(valid_cases, on=case_id_glue, how="inner", maintain_order="left")
     else:
-        ret = df.join(valid_cases, on=case_id_glue, how="anti")
+        ret = df.join(valid_cases, on=case_id_glue, how="anti", maintain_order="left")
 
     # Remove helper columns
     ret = ret.drop("_index")
@@ -184,7 +184,7 @@ def A_next_B_next_C(
     )
 
     # Add row numbers within each case
-    df = df.sort([case_id_glue, timestamp_key]).with_columns(
+    df = df.sort([case_id_glue, timestamp_key], maintain_order=True).with_columns(
         pl.int_range(pl.len()).over(case_id_glue).alias("_pos")
     )
 
@@ -216,9 +216,9 @@ def A_next_B_next_C(
     valid_cases_df = pl.DataFrame({case_id_glue: valid_cases}).lazy()
 
     if positive:
-        ret = df.join(valid_cases_df, on=case_id_glue, how="inner")
+        ret = df.join(valid_cases_df, on=case_id_glue, how="inner", maintain_order="left")
     else:
-        ret = df.join(valid_cases_df, on=case_id_glue, how="anti")
+        ret = df.join(valid_cases_df, on=case_id_glue, how="anti", maintain_order="left")
 
     # Remove helper columns
     ret = ret.drop("_pos")
@@ -287,7 +287,7 @@ def four_eyes_principle(
             ]).unique()
 
             # Join to find all combinations of resources for these activities
-            pairs = df1.join(df2, on=case_id_glue, suffix="_2")
+            pairs = df1.join(df2, on=case_id_glue, suffix="_2", maintain_order="left")
 
             if positive:
                 # For positive, we want ALL pairs to have different resources
@@ -301,7 +301,8 @@ def four_eyes_principle(
 
                 # Valid cases are those that have both activities but no same resource
                 valid_pairs = all_cases_with_both.join(
-                    same_resource_cases, on=case_id_glue, how="anti"
+                    same_resource_cases, on=case_id_glue, how="anti",
+                    maintain_order="left",
                 )
             else:
                 # For negative, we want at least ONE pair with the same resource
@@ -312,9 +313,9 @@ def four_eyes_principle(
             if valid_cases is None:
                 valid_cases = valid_pairs
             else:
-                valid_cases = valid_cases.join(valid_pairs, on=case_id_glue, how="inner")
+                valid_cases = valid_cases.join(valid_pairs, on=case_id_glue, how="inner", maintain_order="left")
 
-    ret = df.join(valid_cases, on=case_id_glue, how="inner")
+    ret = df.join(valid_cases, on=case_id_glue, how="inner", maintain_order="left")
 
     return ret
 
@@ -363,9 +364,9 @@ def attr_value_different_persons(
     resource_counts = (
         df.filter(pl.col(attribute_key) == attribute_value)
         .group_by([case_id_glue, resource_key])
-        .count()
+        .len(name="count")
         .group_by(case_id_glue)
-        .count()
+        .len(name="count")
         .rename({"count": "unique_resources"})
     )
 
@@ -380,6 +381,6 @@ def attr_value_different_persons(
             pl.col("unique_resources") == 1
         ).select(case_id_glue)
 
-    ret = df.join(valid_cases, on=case_id_glue, how="inner")
+    ret = df.join(valid_cases, on=case_id_glue, how="inner", maintain_order="left")
 
     return ret

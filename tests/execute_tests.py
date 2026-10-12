@@ -54,6 +54,7 @@ enabled_tests = [
 ]
 
 if importlib.util.find_spec("polars"):
+    enabled_tests.append("TestPolarsCompatibility")
     enabled_tests.append("PolarsAnalyticsDeepCoverageTest")
     enabled_tests.append("TestPolarsFilteringSimplified")
     enabled_tests.append("TestPolarsFiltering")
@@ -412,6 +413,14 @@ if "OcpnTest" in enabled_tests:
         suite.addTests(loader.loadTestsFromTestCase(OCPN_Test))
     except:
         print("OCPN_Test import failed!")
+        failed += 1
+
+if "TestPolarsCompatibility" in enabled_tests:
+    try:
+        from tests.polars_compatibility_test import TestPolarsCompatibility
+        suite.addTests(loader.loadTestsFromTestCase(TestPolarsCompatibility))
+    except:
+        print("TestPolarsCompatibility import failed!")
         failed += 1
 
 if "TestPolarsFilteringSimplified" in enabled_tests:

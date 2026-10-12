@@ -27,6 +27,7 @@ from pm4py.util.constants import PARAMETER_CONSTANT_CASEID_KEY
 from enum import Enum
 from pm4py.util import exec_utils
 from copy import copy
+from numbers import Real
 from typing import Optional, Dict, Any, Union, List
 import polars as pl
 
@@ -42,6 +43,30 @@ class Parameters(Enum):
     STREAM_FILTER_KEY2 = "stream_filter_key2"
     STREAM_FILTER_VALUE2 = "stream_filter_value2"
     KEEP_ONCE_PER_CASE = "keep_once_per_case"
+
+
+def _attribute_is_in(df: pl.LazyFrame, attribute_key: str, values) -> pl.Expr:
+    """Compare numeric values without the implicit casts removed in Polars 2.0."""
+    values = list(values)
+    dtype = df.collect_schema()[attribute_key]
+    expr = pl.col(attribute_key)
+    if all(value is None or isinstance(value, Real) for value in values):
+        if dtype.is_float():
+            # Widen Float32 too, so a fractional needle is never rounded to a match.
+            expr = expr.cast(pl.Float64)
+            needles = pl.Series(values, dtype=pl.Float64, strict=False)
+            return expr.is_in(pl.lit(needles).implode())
+        if dtype.is_integer():
+            # Fractions cannot match integers; avoid truncating them or rounding
+            # large integer identifiers through Float64.
+            values = [
+                int(value)
+                for value in values
+                if value is not None and value % 1 == 0
+            ]
+            needles = pl.Series(values, dtype=pl.Int128).cast(dtype, strict=False)
+            return expr.is_in(pl.lit(needles).implode())
+    return expr.is_in(values)
 
 
 def get_attribute_values(
@@ -79,17 +104,17 @@ def get_attribute_values(
     if keep_once_per_case:
         # Get unique values per case
         result = (
-            df.group_by([case_id_glue, attribute_key])
-            .first()
+            df.select(list(dict.fromkeys([case_id_glue, attribute_key])))
+            .unique()
             .group_by(attribute_key)
-            .count()
+            .len(name="count")
             .collect()
         )
     else:
         # Count all occurrences
         result = (
             df.group_by(attribute_key)
-            .count()
+            .len(name="count")
             .collect()
         )
 
@@ -225,10 +250,10 @@ def apply_numeric(
 
     if positive:
         # Keep cases that match
-        ret = df.join(matching_cases, on=case_id_glue, how="inner")
+        ret = df.join(matching_cases, on=case_id_glue, how="inner", maintain_order="left")
     else:
         # Keep cases that don't match
-        ret = df.join(matching_cases, on=case_id_glue, how="anti")
+        ret = df.join(matching_cases, on=case_id_glue, how="anti", maintain_order="left")
 
     return ret
 
@@ -267,10 +292,11 @@ def apply_events(
         Parameters.POSITIVE, parameters, True
     )
 
+    predicate = _attribute_is_in(df, attribute_key, values)
     if positive:
-        ret = df.filter(pl.col(attribute_key).is_in(values))
+        ret = df.filter(predicate)
     else:
-        ret = df.filter(~pl.col(attribute_key).is_in(values))
+        ret = df.filter(~predicate)
 
     return ret
 
@@ -355,17 +381,17 @@ def filter_df_on_attribute_values(
         values = []
 
     # Get events matching the attribute values
-    filtered_df_by_ev = df.filter(pl.col(attribute_key).is_in(values))
+    filtered_df_by_ev = df.filter(_attribute_is_in(df, attribute_key, values))
 
     # Get unique case IDs from filtered events
     matching_cases = filtered_df_by_ev.select(case_id_glue).unique()
 
     if positive:
         # Keep cases that have matching events
-        ret = df.join(matching_cases, on=case_id_glue, how="inner")
+        ret = df.join(matching_cases, on=case_id_glue, how="inner", maintain_order="left")
     else:
         # Keep cases that don't have matching events
-        ret = df.join(matching_cases, on=case_id_glue, how="anti")
+        ret = df.join(matching_cases, on=case_id_glue, how="anti", maintain_order="left")
 
     return ret
 
@@ -442,9 +468,9 @@ def filter_df_keeping_spno_activities(
     """
     # Get activity counts
     activity_counts = (
-        df.group_by(activity_key)
-        .count()
-        .sort("count", descending=True)
+        df.group_by(activity_key, maintain_order=True)
+        .len(name="count")
+        .sort("count", descending=True, maintain_order=True)
         .limit(max_no_activities)
         .collect()
     )
@@ -519,7 +545,7 @@ def filter_df_relative_occurrence_event_attribute(
         )
     else:
         # filter on events
-        n_events = df.select(pl.count()).collect()[0, 0]
+        n_events = df.select(pl.len()).collect()[0, 0]
         filtered_attributes = set(
             x
             for x, y in activities_occurrences.items()

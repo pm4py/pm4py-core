@@ -79,7 +79,7 @@ def apply(
     act2_list = [act2] if isinstance(act2, str) else act2
 
     # Sort by case and timestamp
-    df = df.sort([case_id_key, xes_constants.DEFAULT_TIMESTAMP_KEY])
+    df = df.sort([case_id_key, xes_constants.DEFAULT_TIMESTAMP_KEY], maintain_order=True)
 
     # Add row number within each case
     df = df.with_columns(
@@ -181,7 +181,7 @@ def apply(
     )
 
     # Keep only segments that pass the check
-    df = df.join(segment_check, on=[case_id_key, "_segment_id"], how="inner")
+    df = df.join(segment_check, on=[case_id_key, "_segment_id"], how="inner", maintain_order="left")
 
     # Assign subcase numbers
     df = df.with_columns(

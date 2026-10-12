@@ -83,7 +83,7 @@ def apply(
     case_counts = (
         filtered_df
         .group_by(case_id_key)
-        .count()
+        .len(name="count")
         .filter(
             (pl.col("count") >= min_rep) & (pl.col("count") <= max_rep)
         )
@@ -91,6 +91,6 @@ def apply(
     )
 
     # Keep only cases that meet the repetition criteria
-    ret = df.join(case_counts, on=case_id_key, how="inner")
+    ret = df.join(case_counts, on=case_id_key, how="inner", maintain_order="left")
 
     return ret

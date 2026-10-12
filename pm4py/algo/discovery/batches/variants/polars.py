@@ -121,7 +121,7 @@ def apply(
         ]
     )
 
-    lf = lf.with_row_count("__pm4py_order__")
+    lf = lf.with_row_index("__pm4py_order__")
 
     aggregation_exprs = [
         pl.col("__pm4py_start_sec__")

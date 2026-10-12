@@ -575,16 +575,17 @@ def filter_eventually_follows_relation(
                 if not case_frames:
                     return log.filter(pl.lit(False))
                 cases_frame = pl.concat(case_frames).unique()
-                return log.join(cases_frame, on=case_id_key, how="inner")
+                return log.join(cases_frame, on=case_id_key, how="inner", maintain_order="left")
             else:
                 if not case_frames:
                     return log
                 cases_frame = case_frames[0]
                 for frame in case_frames[1:]:
                     cases_frame = cases_frame.join(
-                        frame, on=case_id_key, how="inner"
+                        frame, on=case_id_key, how="inner",
+                        maintain_order="left",
                     )
-                return log.join(cases_frame, on=case_id_key, how="inner")
+                return log.join(cases_frame, on=case_id_key, how="inner", maintain_order="left")
     else:
         from pm4py.algo.filtering.log.ltl import ltl_checker
 

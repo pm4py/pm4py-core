@@ -65,11 +65,11 @@ def get_variants_df(
 
     # Create variants by grouping activities per case
     variants_df = (
-        df.sort([case_id_key, xes_constants.DEFAULT_TIMESTAMP_KEY])
+        df.sort([case_id_key, xes_constants.DEFAULT_TIMESTAMP_KEY], maintain_order=True)
         .group_by(case_id_key, maintain_order=True)
         .agg([
             pl.col(activity_key).alias("variant_list"),
-            pl.count().alias("count")
+            pl.len().alias("count")
         ])
         .with_columns(
             pl.col("variant_list").list.join(constants.DEFAULT_VARIANT_SEP).alias("variant")
@@ -151,9 +151,9 @@ def apply(
     # Filter based on positive/negative
     if positive:
         # Keep only matching cases
-        ret = df.join(matching_df, on=case_id_glue, how="inner")
+        ret = df.join(matching_df, on=case_id_glue, how="inner", maintain_order="left")
     else:
         # Keep only non-matching cases
-        ret = df.join(matching_df, on=case_id_glue, how="anti")
+        ret = df.join(matching_df, on=case_id_glue, how="anti", maintain_order="left")
 
     return ret

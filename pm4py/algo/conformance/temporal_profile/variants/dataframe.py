@@ -173,6 +173,7 @@ def apply(
                 temporal_profile_pl,
                 on=[activity_key, activity_key + "_2"],
                 how="inner",
+                maintain_order="left",
             )
             .filter(
                 (pl.col(flow_time_col) < pl.col("@@min"))

@@ -84,10 +84,10 @@ def get_partial_order_dataframe(
     lf = lf.select(needed_columns)
 
     # Sort by case ID and timestamps
-    lf = lf.sort([case_id_glue, start_timestamp_key, timestamp_key])
+    lf = lf.sort([case_id_glue, start_timestamp_key, timestamp_key], maintain_order=True)
 
     # Add index for ordering within cases
-    lf = lf.with_row_count("__index__")
+    lf = lf.with_row_index("__index__")
 
     # Self-join to get all pairs within same cases
     lf_self = lf.select([
@@ -103,7 +103,8 @@ def get_partial_order_dataframe(
         lf_self, 
         left_on=case_id_glue, 
         right_on=case_id_glue + "_2",
-        how="inner"
+        how="inner",
+        maintain_order="left",
     )
 
     # Filter to ensure proper ordering and temporal relationships
@@ -140,7 +141,11 @@ def get_partial_order_dataframe(
 
     # Keep only first following if specified
     if keep_first_following:
-        partial_order_df = partial_order_df.group_by("__index__").first()
+        partial_order_df = (
+            partial_order_df.sort(["__index__", "__index___2"])
+            .group_by("__index__", maintain_order=True)
+            .first()
+        )
 
     return partial_order_df
 
@@ -195,7 +200,7 @@ def apply(
     )
 
     # Group by activity pairs and count
-    ret_dict_df = partial_order_dataframe.group_by([activity_key, activity_key + "_2"]).count().collect()
+    ret_dict_df = partial_order_dataframe.group_by([activity_key, activity_key + "_2"]).len(name="count").collect()
 
     ret_dict = {}
     for row in ret_dict_df.iter_rows():

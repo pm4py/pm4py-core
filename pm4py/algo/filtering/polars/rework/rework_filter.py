@@ -70,14 +70,14 @@ def apply(
     # Count occurrences of each activity per case
     activity_counts = (
         df.group_by([case_id_glue, activity_key])
-        .count()
+        .len(name="count")
         .filter(pl.col("count") >= min_occurrences)
         .select(case_id_glue)
         .unique()
     )
 
     # Keep only cases with rework
-    ret = df.join(activity_counts, on=case_id_glue, how="inner")
+    ret = df.join(activity_counts, on=case_id_glue, how="inner", maintain_order="left")
 
     return ret
 
@@ -121,13 +121,13 @@ def apply_activity_set(
     activity_counts = (
         df.filter(pl.col(activity_key).is_in(list(activities)))
         .group_by([case_id_glue, activity_key])
-        .count()
+        .len(name="count")
         .filter(pl.col("count") >= min_occurrences)
         .select(case_id_glue)
         .unique()
     )
 
     # Keep only cases with rework
-    ret = df.join(activity_counts, on=case_id_glue, how="inner")
+    ret = df.join(activity_counts, on=case_id_glue, how="inner", maintain_order="left")
 
     return ret

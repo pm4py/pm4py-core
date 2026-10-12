@@ -119,7 +119,7 @@ def apply(
         sort_columns.append(timestamp_key)
         sort_columns.append(index_key)
 
-        lf_selected = lf_selected.sort(sort_columns)
+        lf_selected = lf_selected.sort(sort_columns, maintain_order=True)
 
     dfg = df_statistics.get_dfg_graph(
         lf_selected,

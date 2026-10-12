@@ -176,7 +176,7 @@ def compute_extra_columns(
         compute_extra_temporal_features,
     )
 
-    enriched = df.join(case_features, on=case_id_key, how="left", coalesce=True)
+    enriched = df.join(case_features, on=case_id_key, how="left", coalesce=True, maintain_order="left")
     return enriched
 
 

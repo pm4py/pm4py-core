@@ -71,7 +71,7 @@ def apply(
 
     # Create case variants
     variants_df = (
-        df.sort([case_id_glue, "time:timestamp"])
+        df.sort([case_id_glue, "time:timestamp"], maintain_order=True)
         .group_by(case_id_glue, maintain_order=True)
         .agg(pl.col(activity_key).alias("activities"))
     )
@@ -100,8 +100,8 @@ def apply(
         matching_cases = pl.DataFrame({case_id_glue: []}).lazy()
 
     if positive:
-        ret = df.join(matching_cases, on=case_id_glue, how="inner")
+        ret = df.join(matching_cases, on=case_id_glue, how="inner", maintain_order="left")
     else:
-        ret = df.join(matching_cases, on=case_id_glue, how="anti")
+        ret = df.join(matching_cases, on=case_id_glue, how="anti", maintain_order="left")
 
     return ret

@@ -100,7 +100,7 @@ def apply(
         start_timestamp_key = timestamp_key
 
     # Sort by case and timestamp
-    sorted_lf = lf.sort([case_id_glue, timestamp_key])
+    sorted_lf = lf.sort([case_id_glue, timestamp_key], maintain_order=True)
 
     # Create pairs of consecutive activities
     with_next = sorted_lf.with_columns([

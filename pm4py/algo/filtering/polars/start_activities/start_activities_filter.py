@@ -80,8 +80,8 @@ def apply(
     )
 
     if positive:
-        ret = df.join(matching_cases, on=case_id_glue, how="inner")
+        ret = df.join(matching_cases, on=case_id_glue, how="inner", maintain_order="left")
     else:
-        ret = df.join(matching_cases, on=case_id_glue, how="anti")
+        ret = df.join(matching_cases, on=case_id_glue, how="anti", maintain_order="left")
 
     return ret

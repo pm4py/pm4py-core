@@ -70,13 +70,13 @@ def get_concurrent_events_dataframe(
         lf = lf.with_columns(pl.col(timestamp_key).alias(start_timestamp_key))
 
     # Sort by case ID and timestamps
-    lf = lf.sort([case_id_glue, start_timestamp_key, timestamp_key])
+    lf = lf.sort([case_id_glue, start_timestamp_key, timestamp_key], maintain_order=True)
 
     # Reduce to needed columns for efficiency
     lf = lf.select([case_id_glue, activity_key, start_timestamp_key, timestamp_key])
 
     # Add index for ordering within cases
-    lf = lf.with_row_count("__index__")
+    lf = lf.with_row_index("__index__")
 
     # Self-join to get all pairs within same cases
     lf_self = lf.select([
@@ -92,7 +92,8 @@ def get_concurrent_events_dataframe(
         lf_self, 
         left_on=case_id_glue, 
         right_on=case_id_glue + "_2",
-        how="inner"
+        how="inner",
+        maintain_order="left",
     )
 
     # Filter to avoid duplicates - only keep pairs where first index < second index
@@ -181,7 +182,7 @@ def apply(
     )
 
     # Group by activity pairs and count
-    ret_dict0_df = concurrent_dataframe.group_by([activity_key, activity_key + "_2"]).count().collect()
+    ret_dict0_df = concurrent_dataframe.group_by([activity_key, activity_key + "_2"]).len(name="count").collect()
 
     ret_dict0 = {}
     for row in ret_dict0_df.iter_rows():

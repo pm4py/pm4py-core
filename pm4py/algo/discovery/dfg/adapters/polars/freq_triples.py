@@ -37,9 +37,9 @@ def get_freq_triples(
 
     if sort_caseid_required:
         if sort_timestamp_along_case_id:
-            df = df.sort([case_id_glue, timestamp_key])
+            df = df.sort([case_id_glue, timestamp_key], maintain_order=True)
         else:
-            df = df.sort(case_id_glue)
+            df = df.sort(case_id_glue, maintain_order=True)
 
     triples = df.with_columns(
         [

@@ -70,7 +70,7 @@ def apply(
     )
 
     # Add row number to maintain order
-    df = df.with_columns(pl.lit(1).cum_sum().alias("_row_num"))
+    df = df.with_row_index("_row_num")
 
     # Create a column that changes when case or activity changes
     df = df.with_columns(

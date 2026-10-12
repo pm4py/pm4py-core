@@ -71,7 +71,7 @@ def pandas_numpy_variants_apply_polars(
     )
 
     # Sort by case and timestamp to ensure proper order
-    sorted_lf = lf.sort([case_id_key, timestamp_key])
+    sorted_lf = lf.sort([case_id_key, timestamp_key], maintain_order=True)
 
     # Group by case and collect activities as lists
     # In Polars, aggregating without specifying a function collects into lists by default
