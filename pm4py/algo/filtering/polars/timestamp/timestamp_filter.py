@@ -67,7 +67,7 @@ def filter_traces_contained(
     ).select(case_id_glue)
 
     # Keep only events from valid cases
-    ret = df.join(valid_cases, on=case_id_glue, how="inner")
+    ret = df.join(valid_cases, on=case_id_glue, how="inner", maintain_order="left")
 
     return ret
 
@@ -130,7 +130,7 @@ def filter_traces_intersecting(
     ).select(case_id_glue)
 
     # Keep only events from valid cases
-    ret = df.join(valid_cases, on=case_id_glue, how="inner")
+    ret = df.join(valid_cases, on=case_id_glue, how="inner", maintain_order="left")
 
     return ret
 
@@ -236,7 +236,7 @@ def filter_traces_attribute_in_timeframe(
     )
 
     # Keep all events from those cases
-    filtered = df.join(valid_cases, on=case_id_glue, how="inner")
+    filtered = df.join(valid_cases, on=case_id_glue, how="inner", maintain_order="left")
 
     return filtered
 

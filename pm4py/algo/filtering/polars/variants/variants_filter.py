@@ -47,11 +47,11 @@ def apply(
 
     # Create variants
     variants_df = (
-        df.sort([case_id_glue, "time:timestamp"])
+        df.sort([case_id_glue, "time:timestamp"], maintain_order=True)
         .group_by(case_id_glue, maintain_order=True)
         .agg(
             pl.col(activity_key)
-            .str.concat(constants.DEFAULT_VARIANT_SEP)
+            .str.join(constants.DEFAULT_VARIANT_SEP)
             .alias("variant")
         )
     )
@@ -65,9 +65,9 @@ def apply(
     ).select(case_id_glue)
 
     if positive:
-        ret = df.join(matching_cases, on=case_id_glue, how="inner")
+        ret = df.join(matching_cases, on=case_id_glue, how="inner", maintain_order="left")
     else:
-        ret = df.join(matching_cases, on=case_id_glue, how="anti")
+        ret = df.join(matching_cases, on=case_id_glue, how="anti", maintain_order="left")
 
     return ret
 
@@ -136,27 +136,27 @@ def apply_auto_filter(
         Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME
     )
     activity_key = exec_utils.get_param_value(
-        Parameters.ACTIVITY_KEY, parameters, constants.DEFAULT_NAME_KEY
+        Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY
     )
 
     # Get variant counts
     variant_counts = (
-        df.sort([case_id_glue, "time:timestamp"])
+        df.sort([case_id_glue, "time:timestamp"], maintain_order=True)
         .group_by(case_id_glue, maintain_order=True)
         .agg(
             pl.col(activity_key)
-            .str.concat(constants.DEFAULT_VARIANT_SEP)
+            .str.join(constants.DEFAULT_VARIANT_SEP)
             .alias("variant")
         )
         .group_by("variant")
-        .count()
-        .sort("count", descending=True)
+        .len(name="count")
+        .sort(["count", "variant"], descending=[True, True])
     )
 
     # Calculate cumulative percentage
     total_cases = variant_counts.select(pl.sum("count")).collect()[0, 0]
     variant_counts = variant_counts.with_columns(
-        (pl.col("count").cumsum() / total_cases).alias("cumulative_percentage")
+        (pl.col("count").cum_sum() / total_cases).alias("cumulative_percentage")
     )
 
     # Keep variants covering 80% of cases
@@ -201,17 +201,17 @@ def apply_from_variant_list(
         Parameters.CASE_ID_KEY, parameters, CASE_CONCEPT_NAME
     )
     activity_key = exec_utils.get_param_value(
-        Parameters.ACTIVITY_KEY, parameters, constants.DEFAULT_NAME_KEY
+        Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY
     )
     positive = exec_utils.get_param_value(Parameters.POSITIVE, parameters, True)
 
     # Create variants
     variants_df = (
-        df.sort([case_id_glue, "time:timestamp"])
+        df.sort([case_id_glue, "time:timestamp"], maintain_order=True)
         .group_by(case_id_glue, maintain_order=True)
         .agg(
             pl.col(activity_key)
-            .str.concat(constants.DEFAULT_VARIANT_SEP)
+            .str.join(constants.DEFAULT_VARIANT_SEP)
             .alias("variant")
         )
     )
@@ -222,8 +222,8 @@ def apply_from_variant_list(
     ).select(case_id_glue)
 
     if positive:
-        ret = df.join(matching_cases, on=case_id_glue, how="inner")
+        ret = df.join(matching_cases, on=case_id_glue, how="inner", maintain_order="left")
     else:
-        ret = df.join(matching_cases, on=case_id_glue, how="anti")
+        ret = df.join(matching_cases, on=case_id_glue, how="anti", maintain_order="left")
 
     return ret

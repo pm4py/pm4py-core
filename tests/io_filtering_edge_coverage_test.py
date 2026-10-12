@@ -415,8 +415,9 @@ class IoFilteringEdgeCoverageTest(unittest.TestCase):
         lazy = pl.from_pandas(frame).lazy()
         rework = polars_rework.apply(lazy)
         self.assertEqual(0, rework["c1"]["rework"])
-        with self.assertRaises((AttributeError, TypeError)):
-            clean_polars.apply(pl.from_pandas(frame))
+        polars_dfg = clean_polars.apply(pl.from_pandas(frame))
+        self.assertEqual(dict(dfg.start_activities), dict(polars_dfg.start_activities))
+        self.assertEqual(dict(dfg.end_activities), dict(polars_dfg.end_activities))
 
         net = PetriNet("decorated")
         source, sink = PetriNet.Place("source"), PetriNet.Place("sink")

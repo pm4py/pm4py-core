@@ -1,4 +1,5 @@
 import os
+import random
 import unittest
 
 import polars as pl
@@ -77,6 +78,10 @@ class TestPolarsProcessDiscovery(unittest.TestCase):
         self.assertTrue(len(fm) > 0)
 
     def test_discover_petri_net_genetic(self):
+        # Keep the compatibility check reproducible across versions and test order.
+        random_state = random.getstate()
+        self.addCleanup(random.setstate, random_state)
+        random.seed(0)
         log = self._lazy_log()
         net, im, fm = pm4py.discover_petri_net_genetic(log, population_size = 10, generations = 10)
         self.assertTrue(net.places and net.transitions)

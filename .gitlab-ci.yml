@@ -45,6 +45,34 @@ test_scripts:
     - when: never
       # This job is run in merge requests
 
+polars_compatibility:
+  stage: test
+  parallel:
+    matrix:
+      - POLARS_VERSION: ["1.40.1", "2.0.0"]
+  script:
+    - python -m pip install "polars==$POLARS_VERSION" pyarrow pytest
+    - cd tests
+    - >-
+      PYTHONPATH=.. python -m pytest -q
+      polars_filters_test.py polars_filters_simp_interface.py
+      polars_statistics_get.py polars_statistics_simp_interface.py
+      polars_process_discovery_test.py polars_cc_test.py
+      polars_analytics_deep_coverage_test.py polars_compatibility_test.py
+      extended_coverage_test.py facade_utils_coverage_test.py
+      final_buffer_coverage_test.py io_filtering_edge_coverage_test.py
+      misc_subsystems_coverage_test.py serialization_log_utils_coverage_test.py
+      trace_encodings_test.py visual_performance_coverage_test.py
+      log_algorithms_coverage_test.py
+  rules:
+    - if: $CI_COMMIT_BRANCH == "staging"
+      when: always
+    - if: $CI_COMMIT_BRANCH == "integration"
+      when: manual
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - when: never
+
 example_scripts:
   stage: test
   script:

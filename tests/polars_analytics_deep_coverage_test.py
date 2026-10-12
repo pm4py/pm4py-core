@@ -1,7 +1,6 @@
 import datetime
 import importlib.util
 import unittest
-from unittest import mock
 
 import pandas as pd
 
@@ -315,14 +314,13 @@ class PolarsAnalyticsDeepCoverageTest(unittest.TestCase):
             self.assertEqual(len(x), expected_length)
             self.assertEqual(len(x), len(y))
         counts = attributes_get.get_attribute_values(self.lazy, "concept:name")
-        # Current Polars rejects the duplicate grouping column produced by this
-        # legacy branch; reaching that validation still verifies its query plan.
-        with self.assertRaises(Exception):
-            attributes_get.get_attribute_values(
-                self.lazy.select(["case:concept:name", "concept:name"]),
-                "concept:name",
-                {attributes_get.Parameters.KEEP_ONCE_PER_CASE: True},
-            )
+        once = attributes_get.get_attribute_values(
+            self.lazy.select(["case:concept:name", "concept:name"]),
+            "concept:name",
+            {attributes_get.Parameters.KEEP_ONCE_PER_CASE: True},
+        )
+        self.assertEqual(once, {"A": 3, "B": 3, "C": 3})
+        self.assertGreater(counts["A"], once["A"])
         x, y = attributes_get.get_kde_numeric_attribute(
             self.lazy,
             "score",
@@ -419,28 +417,21 @@ class PolarsAnalyticsDeepCoverageTest(unittest.TestCase):
         self.assertGreater(
             variants_filter.filter_variants_top_k(self.lazy, 1).collect().height, 0
         )
-        with mock.patch.object(
-            variants_filter.constants, "DEFAULT_NAME_KEY", "concept:name", create=True
-        ):
-            with self.assertRaises(AttributeError):
-                variants_filter.apply_auto_filter(self.lazy)
-        with mock.patch.object(
-            variants_filter.constants, "DEFAULT_NAME_KEY", "concept:name", create=True
-        ):
-            self.assertGreater(
-                variants_filter.apply_from_variant_list(
-                    self.lazy, [constants.DEFAULT_VARIANT_SEP.join(admitted[0])]
-                ).collect().height,
-                0,
-            )
-            self.assertGreater(
-                variants_filter.apply_from_variant_list(
-                    self.lazy,
-                    [constants.DEFAULT_VARIANT_SEP.join(admitted[0])],
-                    {variants_filter.Parameters.POSITIVE: False},
-                ).collect().height,
-                0,
-            )
+        self.assertGreater(variants_filter.apply_auto_filter(self.lazy).collect().height, 0)
+        self.assertGreater(
+            variants_filter.apply_from_variant_list(
+                self.lazy, [constants.DEFAULT_VARIANT_SEP.join(admitted[0])]
+            ).collect().height,
+            0,
+        )
+        self.assertGreater(
+            variants_filter.apply_from_variant_list(
+                self.lazy,
+                [constants.DEFAULT_VARIANT_SEP.join(admitted[0])],
+                {variants_filter.Parameters.POSITIVE: False},
+            ).collect().height,
+            0,
+        )
 
         log = EventLog(
             [
