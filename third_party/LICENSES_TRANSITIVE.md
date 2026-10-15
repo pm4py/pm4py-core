@@ -8,7 +8,7 @@ libraries are added/removed.
 | --------------------------- | ------------------------------------------------------------ | --------------------------- | ------------------- |
 | contourpy | https://pypi.org/pypi/contourpy/json | Unspecified | 1.4.0 |
 | cycler | https://pypi.org/pypi/cycler/json | BSD License | 0.12.1 |
-| fonttools | https://pypi.org/pypi/fonttools/json | Unspecified | 4.66.1 |
+| fonttools | https://pypi.org/pypi/fonttools/json | Unspecified | 4.67.0 |
 | graphviz | https://pypi.org/pypi/graphviz/json | Unspecified | 0.21 |
 | kiwisolver | https://pypi.org/pypi/kiwisolver/json | BSD License | 1.5.1 |
 | lxml | https://pypi.org/pypi/lxml/json | Unspecified | 6.1.3 |
