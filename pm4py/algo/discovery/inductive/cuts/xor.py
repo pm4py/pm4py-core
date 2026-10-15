@@ -68,7 +68,9 @@ class ExclusiveChoiceCut(Cut[T], ABC, Generic[T]):
             cuts = list()
             for comp in conn_comps:
                 cuts.append(set(comp.nodes))
-            return cuts
+            # Projection breaks tied event counts by group index, so keep the
+            # group order independent of graph traversal and Python's hash seed.
+            return sorted(cuts, key=lambda group: sorted(map(str, group)))
         else:
             return None
 

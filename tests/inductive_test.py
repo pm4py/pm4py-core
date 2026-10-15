@@ -1,6 +1,12 @@
+import json
 import logging
 import os, sys
+import subprocess
+import textwrap
 import unittest
+from collections import Counter
+from itertools import permutations
+from unittest.mock import patch
 
 from pm4py.objects.conversion.log import converter as log_conversion
 from pm4py.algo.conformance.tokenreplay import algorithm as token_replay
@@ -24,6 +30,89 @@ COMPRESSED_INPUT_DATA = "compressed_input_data"
 
 
 class InductiveMinerTest(unittest.TestCase):
+    def test_xor_projection_ties_are_independent_of_component_order(self):
+        from pm4py.algo.discovery.inductive.cuts.xor import ExclusiveChoiceCutUVCL
+        from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
+        from pm4py.objects.dfg.obj import DFG
+
+        # Noise filtering can disconnect activities that still share a trace.
+        variants = Counter({
+            ("a", "b"): 3,
+            ("c", "d"): 2,
+            ("a", "c", "b", "d"): 7,
+            ("a", "a", "c"): 5,
+            ("z",): 4,
+        })
+        dfg = DFG(
+            {("a", "b"): 3, ("c", "d"): 2},
+            {"a": 3, "c": 2, "z": 4},
+            {"b": 3, "d": 2, "z": 4},
+        )
+        obj = IMDataStructureUVCL(variants, dfg)
+        expected = {
+            frozenset({"a", "b"}): Counter({("a", "b"): 3, ("a", "a"): 5}),
+            frozenset({"c", "d"}): Counter({("c", "d"): 9}),
+            frozenset({"z"}): Counter({("z",): 4}),
+        }
+
+        for components in permutations([{"a", "b"}, {"c", "d"}, {"z"}]):
+            with self.subTest(components=components):
+                with patch(
+                    "pm4py.algo.discovery.inductive.cuts.xor.nx_utils.connected_components",
+                    return_value=components,
+                ):
+                    groups = ExclusiveChoiceCutUVCL.holds(obj)
+                projected = ExclusiveChoiceCutUVCL.project(obj, groups)
+                self.assertEqual(expected, {
+                    frozenset(group): sublog.data_structure
+                    for group, sublog in zip(groups, projected)
+                })
+
+    def test_receipt_imf_is_independent_of_hash_seed(self):
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        receipt_path = os.path.join(repo_root, "tests", "input_data", "receipt.xes")
+        script = textwrap.dedent("""\
+            import json
+            import sys
+            import pm4py
+
+            log = pm4py.read_xes(sys.argv[1], show_progress_bar=False)
+            results = []
+            for threshold, disabled in [(0.0, False), (0.2, False), (0.2, True)]:
+                parameters = dict(noise_threshold=threshold, disable_fallthroughs=disabled)
+                tree = pm4py.discover_process_tree_inductive(log, **parameters)
+                net, _, _ = pm4py.discover_petri_net_inductive(log, **parameters)
+                results.append({
+                    "tree": str(tree),
+                    "transitions": len(net.transitions),
+                    "labels": sorted(t.label for t in net.transitions if t.label is not None),
+                })
+            print(json.dumps(results))
+        """)
+        models = []
+        for seed in (0, 5):
+            result = subprocess.run(
+                [sys.executable, "-c", script, receipt_path],
+                cwd=repo_root,
+                env={**os.environ, "PYTHONHASHSEED": str(seed)},
+                capture_output=True,
+                text=True,
+                check=True,
+                timeout=60,
+            )
+            models.append(json.loads(result.stdout))
+
+        self.assertEqual(models[0], models[1])
+        self.assertEqual([74, 69, 38], [model["transitions"] for model in models[0]])
+        for model in models[0]:
+            for label in (
+                "T11 Create document X request unlicensed",
+                "T12 Check document X request unlicensed",
+                "T13 Adjust document X request unlicensed",
+                "T14 Determine document X request unlicensed",
+            ):
+                self.assertIn(label, model["labels"])
+
     def obtain_petri_net_through_im(self, log_name, variant=inductive_miner.Variants.IM):
         # to avoid static method warnings in tests,
         # that by construction of the unittest package have to be expressed in such way
