@@ -49,28 +49,27 @@ llm = ["openai", "requests"]
 ml = ["pyemd", "scikit-learn"]
 ocel = ["jsonschema", "pyarrow"]
 polars = ["polars>=1.40.1,<3"]
-solvers = ["cvxopt"]
 stable = [
-    "contourpy==1.3.3",
+    "contourpy==1.4.0",
     "cycler==0.12.1",
-    "fonttools==4.63.0",
+    "fonttools==4.67.0",
     "graphviz==0.21",
-    "kiwisolver==1.5.0",
-    "lxml==6.1.1",
-    "matplotlib==3.11.1",
-    "networkx==3.6.1",
-    "numpy==2.5.1",
-    "packaging==26.2",
-    "pandas==3.0.5",
+    "kiwisolver==1.5.1",
+    "lxml==6.1.3",
+    "matplotlib==3.11.2",
+    "networkx==3.7",
+    "numpy==2.5.4",
+    "packaging==26.3",
+    "pandas==3.0.6",
     "pillow==12.3.0",
-    "pyparsing==3.3.2",
+    "pyparsing==3.3.3",
     "python-dateutil==2.9.0.post0",
-    "pytz==2026.3.post1",
-    "scipy==1.18.0",
-    "setuptools==83.0.0",
+    "pytz==2026.5",
+    "scipy==1.18.1",
+    "setuptools==84.0.0",
     "six==1.17.0",
-    "tqdm==4.70.0",
-    "wheel==0.47.0",
+    "tqdm==4.70.1",
+    "wheel==0.48.0",
 ]
 visualization = ["pyvis"]
 windows = [
@@ -79,7 +78,7 @@ windows = [
     "pywin32; sys_platform == 'win32'",
 ]
 all = [
-    "pm4py[calendars,connectors,llm,ml,ocel,polars,solvers,visualization,windows]",
+    "pm4py[calendars,connectors,llm,ml,ocel,polars,visualization,windows]",
 ]
 
 [project.urls]
