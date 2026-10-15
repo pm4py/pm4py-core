@@ -14,7 +14,7 @@ from pm4py.visualization.common.utils import *
 from pm4py.util import exec_utils
 from enum import Enum
 from pm4py.util import constants
-from typing import Optional, Dict, Any, Tuple, no_type_check_decorator
+from typing import Optional, Dict, Any, Tuple
 from pm4py.objects.log.obj import EventLog
 from collections import Counter
 
