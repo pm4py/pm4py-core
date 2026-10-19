@@ -667,7 +667,7 @@ def encode_target(df, target_column):
     df_mod = df.copy()
     unique_targets = pandas_utils.format_unique(df_mod[target_column].unique())
     map_to_int = {name: n for n, name in enumerate(unique_targets)}
-    df_mod["Target"] = df_mod[target_column].replace(map_to_int)
+    df_mod["Target"] = df_mod[target_column].map(map_to_int).astype("int64")
     return df_mod, unique_targets
 
 
@@ -826,7 +826,8 @@ def _extract_decisions_perfect_fit(
         for transition in token_replay_entry["activated_transitions"]:
             # (1) Store decision with the current window (i.e., no new event has been consumed yet)
             transition_name_or_label = transition.label if labels else transition.name
-            for place_name, outgoings in decision_points_names.items():
+            outgoing_choices = decision_points_names if labels else decision_points
+            for place_name, outgoings in outgoing_choices.items():
                 if transition_name_or_label in outgoings:
                     # We have a decision at place_name
                     for attr_dict in window_attributes:

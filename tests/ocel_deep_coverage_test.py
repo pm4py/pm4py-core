@@ -132,18 +132,12 @@ class OcelDeepCoverageTest(unittest.TestCase):
                 {"@@left_index": 1, "@@right_index": 1, "@@direction": "RL"},
             ]
         )
-        original_getitem = pd.DataFrame.__getitem__
-
-        def compatible_getitem(frame, key):
-            return original_getitem(frame, list(key) if isinstance(key, set) else key)
-
-        with mock.patch.object(pd.DataFrame, "__getitem__", compatible_getitem):
-            combined = log_ocel.from_interleavings(
-                left.copy(),
-                right.copy(),
-                interleavings,
-                parameters={"target_object_type": "left", "target_object_type_2": "right"},
-            )
+        combined = log_ocel.from_interleavings(
+            left.copy(),
+            right.copy(),
+            interleavings,
+            parameters={"target_object_type": "left", "target_object_type_2": "right"},
+        )
         self.assertEqual(4, len(combined.events))
         self.assertGreater(len(combined.relations), 4)
 

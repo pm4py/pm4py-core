@@ -384,11 +384,11 @@ def from_interleavings(
     relations1 = __get_relations_from_events(events1, target_object_type)
 
     relations1_minimal = relations1[
-        {
+        [
             ocel_constants.DEFAULT_EVENT_ID,
             ocel_constants.DEFAULT_OBJECT_ID,
             ocel_constants.DEFAULT_OBJECT_TYPE,
-        }
+        ]
     ]
 
     events2 = __get_events_dataframe(
@@ -404,11 +404,11 @@ def from_interleavings(
     )
     relations2 = __get_relations_from_events(events2, target_object_type_2)
     relations2_minimal = relations2[
-        {
+        [
             ocel_constants.DEFAULT_EVENT_ID,
             ocel_constants.DEFAULT_OBJECT_ID,
             ocel_constants.DEFAULT_OBJECT_TYPE,
-        }
+        ]
     ]
 
     interleavings[left_index] = "E1_" + interleavings[left_index].astype(
