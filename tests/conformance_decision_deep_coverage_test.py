@@ -287,18 +287,8 @@ class ConformanceDecisionDeepCoverageTest(unittest.TestCase):
             )
         self.assertTrue(table["choice"])
         dataframe = pm4py.convert_to_dataframe(log)
-        class RecordingClassifier:
-            def fit(self, features, target):
-                self.features = features
-                self.target = target
-                return self
-
-        from pm4py.util import ml_utils
-
         with mock.patch.object(
             decision_mining, "token_replay", token_replay
-        ), mock.patch.object(
-            ml_utils, "DecisionTreeClassifier", return_value=RecordingClassifier()
         ):
             classifier, columns, targets = decision_mining.get_decision_tree(
                 dataframe,
@@ -310,11 +300,13 @@ class ConformanceDecisionDeepCoverageTest(unittest.TestCase):
             )
         self.assertTrue(columns)
         self.assertEqual({"B", "C"}, set(targets))
+        self.assertEqual(2, len(classifier.classes_))
         with mock.patch.object(decision_mining, "token_replay", token_replay):
             data_net, _, _ = decision_mining.create_data_petri_nets_with_decisions(
                 log, net, initial, final
             )
         self.assertTrue(data_net.transitions)
+        self.assertTrue(any("guard" in transition.properties for transition in data_net.transitions))
         prepared = decision_mining.prepare_event_log(copy.deepcopy(log))
         self.assertIn("t_region", prepared[0].attributes)
         self.assertIn("e_amount", prepared[0][0])
@@ -323,6 +315,7 @@ class ConformanceDecisionDeepCoverageTest(unittest.TestCase):
             pd.DataFrame({"choice": ["B", "C", "B"]}), "choice"
         )
         self.assertIn("Target", encoded)
+        self.assertTrue(pd.api.types.is_integer_dtype(encoded["Target"]))
         self.assertEqual({"B", "C"}, set(target_names))
 
         decision_info = {"choice": []}
